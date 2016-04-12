@@ -1,0 +1,123 @@
+---
+name: Descriptives
+title: Descriptives
+
+results:
+    - name: descriptives
+      title: Descriptives
+      type: Table
+      rows: (vars)
+      swapRowsColumns: true
+      
+      columns:
+        - name: name
+          title: ""
+          content: (name)
+          format: text
+        
+        - name: mean
+          title: Mean
+          format: number
+          visible: (mean)
+        
+        - name: median
+          title: Median
+          format: number
+          visible: (median)
+        
+        - name: mode
+          title: Mode
+          format: number
+          visible: (mode)
+          
+        - name: sum
+          title: Sum
+          format: number
+          visible: (sum)
+          
+        - name: sd
+          title: Standard deviation
+          format: number
+          visible: (sd)
+          
+        - name: variance
+          title: Variance
+          format: number
+          visible: (variance)
+          
+        - name: range
+          title: Range
+          format: number
+          visible: (range)
+          
+        - name: min
+          title: Minimum
+          format: number
+          visible: (min)
+          
+        - name: max
+          title: Maximum
+          format: number
+          visible: (max)
+          
+        - name: se
+          title: Standard error
+          format: number
+          visible: (se)
+          
+        - name: skew
+          title: Skewness
+          format: number
+          visible: (skew)
+          
+        - name: kurt
+          title: Kurtosis
+          format: number
+          visible: (kurt)
+          
+        - name: quart1
+          title: 25th percentile
+          format: number
+          visible: (quart)
+          
+        - name: quart2
+          title: 50th percentile
+          format: number
+          visible: (quart)
+          
+        - name: quart3
+          title: 75th percentile
+          format: number
+          visible: (quart)
+
+    - name: frequencies
+      title: Frequencies
+      type: Tables
+      visible: (freq)
+      
+      tables: (vars)
+      
+      template:
+          title: Frequencies of {name}
+          type: Table
+          visible: (levels(name))
+          
+          rows: (levels(name))
+          
+          columns:
+            - name: level
+              title: Level
+              format: text
+              content: (name)
+              
+            - name: counts
+              title: Counts
+              format: number
+              
+            - name: percentage
+              title: "%"
+              format: number
+
+            - name: cumpercentage
+              title: "Cumulative %"
+              format: number

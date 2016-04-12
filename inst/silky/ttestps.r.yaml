@@ -1,0 +1,145 @@
+---
+name: TTestPS
+title: Paired Samples T-Test
+
+results:
+    - name: ttest
+      title: Paired Samples T-Test
+      type: Table
+      rows: (length(vars)/2)
+      
+      columns:
+        - name: name
+          title: ""
+          format: text
+        
+        - name: studTest
+          title: Test
+          content: Student's
+          visible: (student)
+          
+        - name: studT
+          title: t
+          format: number
+          visible: (student)
+        
+        - name: studDf
+          title: df
+          format: number
+          visible: (student)
+
+        - name: studP
+          title: p
+          format: number
+          visible: (student)
+          
+        - name: studMeanDiff
+          title: Mean difference
+          format: number
+          visible: (meanDiff && student)
+          
+        - name: studSEDiff
+          title: SE difference
+          format: number
+          visible: (meanDiff && student)
+          
+        - name: studEffectSize
+          title: Cohen's d
+          format: number
+          visible: (effectSize && student)
+          
+        - name: studLowerCI
+          title: Lower
+          format: number
+          visible: (ci && student)
+          
+        - name: studUpperCI
+          title: Upper
+          format: number
+          visible: (ci && student)
+          
+        - name: wilcoxonTest
+          title: Test
+          content: Wilcoxon
+          visible: (wilcoxon)
+          
+        - name: wilcoxonW
+          title: W
+          format: number
+          visible: (wilcoxon)
+
+        - name: wilcoxonP
+          title: p
+          format: number
+          visible: (wilcoxon)
+          
+        - name: wilcoxonMeanDiff
+          title: Mean difference
+          format: number
+          visible: (meanDiff && wilcoxon)
+          
+        - name: wilcoxonSEDiff
+          title: SE difference
+          format: number
+          visible: (meanDiff && wilcoxon)
+
+        - name: wilcoxonEffectSize
+          title: Cohen's d
+          format: number
+          visible: (effectSize && wilcoxon)
+          
+        - name: wilcoxonLowerCI
+          title: Lower
+          format: number
+          visible: (ci && wilcoxon)
+          
+        - name: wilcoxonUpperCI
+          title: Upper
+          format: number
+          visible: (ci && wilcoxon)
+          
+    - name: normality
+      title: Test of Normality (Shapiro-Wilk)
+      type: Table
+      visible: (norm)
+      rows: (length(vars)/2)
+      
+      columns:
+        - name: name
+          title: ""
+          format: text
+          
+        - name: w
+          title: "W"
+          format: number
+          
+        - name: p
+          format: number
+
+    - name: descriptives
+      title: Descriptives
+      type: Table
+      visible: (desc)
+      rows: (unique(vars))
+      
+      columns:
+        - name: name
+          title: ""
+          content: (name)
+          format: text
+          
+        - name: num
+          title: "N"
+          format: number
+          
+        - name: mean
+          title: Mean
+          format: number
+          
+        - name: sd
+          title: SD
+          format: number
+          
+        - name: se
+          title: SE
+          format: number

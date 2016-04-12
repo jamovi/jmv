@@ -1,0 +1,137 @@
+---
+name: TTestOneS
+title: One Sample T-Test
+
+results:
+    - name: ttest
+      title: One Sample T-Test
+      type: Table
+      rows: (vars)
+      
+      columns:
+        - name: name
+          title: ""
+          content: (name)
+          format: text
+        
+        - name: studTest
+          title: Test
+          content: Student's
+          visible: (student)
+          
+        - name: studT
+          title: t
+          format: number
+          visible: (student)
+        
+        - name: studDf
+          title: df
+          format: number
+          visible: (student)
+
+        - name: studP
+          title: p
+          format: number
+          visible: (student)
+          
+        - name: studMeanDiff
+          title: Mean difference
+          format: number
+          visible: (meanDiff && student)
+          
+        - name: studEffectSize
+          title: Cohen's d
+          format: number
+          visible: (effectSize && student)
+          
+        - name: studLowerCI
+          title: Lower
+          format: number
+          visible: (ci && student)
+          
+        - name: studUpperCI
+          title: Upper
+          format: number
+          visible: (ci && student)
+          
+        - name: mannTest
+          title: Test
+          content: Mann-Whitney
+          visible: (mann)
+          
+        - name: mannV
+          title: V
+          format: number
+          visible: (mann)
+
+        - name: mannP
+          title: p
+          format: number
+          visible: (mann)
+          
+        - name: mannMeanDiff
+          title: Mean difference
+          format: number
+          visible: (meanDiff && mann)
+
+        - name: mannEffectSize
+          title: Cohen's d
+          format: number
+          visible: (effectSize && mann)
+          
+        - name: mannLowerCI
+          title: Lower
+          format: number
+          visible: (ci && mann)
+          
+        - name: mannUpperCI
+          title: Upper
+          format: number
+          visible: (ci && mann)
+          
+    - name: normality
+      title: Test of Normality (Shapiro-Wilk)
+      type: Table
+      visible: (norm)
+      rows: (vars)
+      
+      columns:
+        - name: name
+          title: ""
+          content: (name)
+          format: text
+          
+        - name: w
+          title: "W"
+          format: number
+          
+        - name: p
+          format: number
+
+    - name: descriptives
+      title: Descriptives
+      type: Table
+      visible: (desc)
+      rows: (vars)
+      
+      columns:
+        - name: name
+          title: ""
+          content: (name)
+          format: text
+          
+        - name: num
+          title: "N"
+          format: number
+          
+        - name: mean
+          title: Mean
+          format: number
+          
+        - name: sd
+          title: SD
+          format: number
+          
+        - name: se
+          title: SE
+          format: number

@@ -1,0 +1,222 @@
+---
+name: TTestIS
+title: Independent Samples T-Test
+
+results:
+    - name: ttest
+      title: Independent Samples T-Test
+      type: Table
+      rows: (vars)
+      
+      columns:
+        - name: name
+          title: ""
+          content: (name)
+          format: text
+        
+        - name: studTest
+          title: Test
+          content: Student's
+          visible: (student)
+          
+        - name: studT
+          title: t
+          format: number
+          visible: (student)
+        
+        - name: studDf
+          title: df
+          format: number
+          visible: (student)
+
+        - name: studP
+          title: p
+          format: number
+          visible: (student)
+          
+        - name: studMeanDiff
+          title: Mean difference
+          format: number
+          visible: (meanDiff && student)
+          
+        - name: studSEDiff
+          title: SE difference
+          format: number
+          visible: (meanDiff && student)
+          
+        - name: studEffectSize
+          title: Cohen's d
+          format: number
+          visible: (effectSize && student)
+          
+        - name: studLowerCI
+          title: Lower
+          format: number
+          visible: (ci && student)
+          
+        - name: studUpperCI
+          title: Upper
+          format: number
+          visible: (ci && student)
+          
+        - name: welchTest
+          title: Test
+          content: Welch's
+          visible: (welch)
+          
+        - name: welchT
+          title: t
+          format: number
+          visible: (welch)
+        
+        - name: welchDf
+          title: df
+          format: number
+          visible: (welch)
+
+        - name: welchP
+          title: p
+          format: number
+          visible: (welch)
+          
+        - name: welchMeanDiff
+          title: Mean difference
+          format: number
+          visible: (meanDiff && welch)
+          
+        - name: welchSEDiff
+          title: SE difference
+          format: number
+          visible: (meanDiff && welch)
+          
+        - name: welchEffectSize
+          title: Cohen's d
+          format: number
+          visible: (effectSize && Welchs)
+          
+        - name: welchLowerCI
+          title: Lower
+          format: number
+          visible: (ci && welch)
+          
+        - name: welchUpperCI
+          title: Upper
+          format: number
+          visible: (ci && welch)
+          
+        - name: mannTest
+          title: Test
+          content: Mann-Whitney
+          visible: (mann)
+          
+        - name: mannW
+          title: W
+          format: number
+          visible: (mann)
+
+        - name: mannP
+          title: p
+          format: number
+          visible: (mann)
+          
+        - name: mannMeanDiff
+          title: Mean difference
+          format: number
+          visible: (meanDiff && mann)
+          
+        - name: mannSEDiff
+          title: SE difference
+          format: number
+          visible: (meanDiff && mann)
+
+        - name: mannEffectSize
+          title: Cohen's d
+          format: number
+          visible: (effectSize && mann)
+          
+        - name: mannLowerCI
+          title: Lower
+          format: number
+          visible: (ci && mann)
+          
+        - name: mannUpperCI
+          title: Upper
+          format: number
+          visible: (ci && mann)
+          
+    - name: normality
+      title: Test of Normality (Shapiro-Wilk)
+      type: Table
+      visible: (norm)
+      rows: (rep(vars, each=2))
+      
+      columns:
+        - name: name
+          title: ""
+          content: (name)
+          format: text
+          
+        - name: group
+          title: Group
+          format: text
+          
+        - name: w
+          title: "W"
+          format: number
+          
+        - name: p
+          format: number
+          
+    - name: equalityOfV
+      title: Test of Equality of Variances (Levene's)
+      type: Table
+      visible: (equality)
+      rows: (vars)
+      
+      columns:
+        - name: name
+          title: ""
+          content: (name)
+          format: text
+          
+        - name: f
+          title: "F"
+          format: number
+          
+        - name: df
+          format: number
+          
+        - name: p
+          format: number
+
+    - name: descriptives
+      title: Group Descriptives
+      type: Table
+      visible: (desc)
+      rows: (rep(vars, each=2))
+      
+      columns:
+        - name: name
+          title: ""
+          content: (name)
+          format: text
+          
+        - name: group
+          title: Group
+          format: text
+          
+        - name: num
+          title: "N"
+          format: number
+          
+        - name: mean
+          title: Mean
+          format: number
+          
+        - name: sd
+          title: SD
+          format: number
+          
+        - name: se
+          title: SE
+          format: number

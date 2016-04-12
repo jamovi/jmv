@@ -1,0 +1,79 @@
+---
+name:     TTestPS
+package:  silkyR
+engineType: R
+
+options:
+    - name: dataset
+      type: Dataset
+      description: >
+        The data set as a data frame
+
+    - name: vars
+      title: Paired Variables
+      type: Variables
+      description: >
+        The variables of interest
+        
+    - name: student
+      title: Student's test
+      type: Bool
+      default: true
+      
+    - name: wilcoxon
+      title: Wilcoxon signed rank test
+      type: Bool
+      default: false
+      
+    - name: hypothesis
+      title: Alternative hypothesis
+      type: List
+      options:
+        - different
+        - oneGreater
+        - twoGreater
+      default: different
+      description: >
+        Specifies the alternative hypothesis as either "oneGreater", "twoGreater" or "different"(default)
+        
+    - name: norm
+      title: Normality assumption check
+      type: Bool
+      default: false
+      
+    - name: meanDiff
+      title: Mean and standard error difference
+      type: Bool
+      default: false
+      
+    - name: effectSize
+      title: Effect Size
+      type: Bool
+      default: false
+      
+    - name: ci
+      title: Confidence Interval
+      type: Bool
+      default: false
+      
+    - name: ciWidth
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      
+    - name: desc
+      title: Descriptives Table
+      type: Bool
+      default: false
+      
+    - name: miss
+      title: Missing values exclusion method
+      type: List
+      options:
+        - perAnalysis
+        - listwise
+      default: perAnalysis
+      description: >
+        Specifies how to deal with missing values. "perAnalysis" excludes missing values for individual dependent variables, "listwise" excludes an entire observation if one of its entries is missing.
