@@ -1,9 +1,8 @@
 
 TTestPSClass <- R6Class("TTestPSClass",
     inherit=silkycore::Analysis,
-    public=list(
-        run=function() {
-            super$run()
+    private=list(
+        .run=function() {
             
             dataset <- self$options$dataset()
             naHandling <- self$options$values()$miss

@@ -1,10 +1,8 @@
 
 DescriptivesClass <- R6Class("DescriptivesClass",
     inherit=silkycore::Analysis,
-    public=list(
-        run=function() {
-            
-            super$run()
+    private=list(
+        .run=function() {
         
             dataset <- self$options$dataset()
             
