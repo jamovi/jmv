@@ -11,7 +11,7 @@ results:
       columns:
         - name: name
           title: ""
-          content: (name)
+          content: (key)
           format: text
         
         - name: studTest
@@ -153,7 +153,7 @@ results:
       columns:
         - name: name
           title: ""
-          content: (name)
+          content: (key)
           format: text
           
         - name: group
@@ -176,7 +176,7 @@ results:
       columns:
         - name: name
           title: ""
-          content: (name)
+          content: (key)
           format: text
           
         - name: f
@@ -198,7 +198,7 @@ results:
       columns:
         - name: name
           title: ""
-          content: (name)
+          content: (key)
           format: text
           
         - name: group

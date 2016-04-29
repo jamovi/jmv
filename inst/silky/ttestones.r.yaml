@@ -11,7 +11,7 @@ results:
       columns:
         - name: name
           title: ""
-          content: (name)
+          content: (key)
           format: text
         
         - name: studTest
@@ -98,7 +98,7 @@ results:
       columns:
         - name: name
           title: ""
-          content: (name)
+          content: (key)
           format: text
           
         - name: w
@@ -117,7 +117,7 @@ results:
       columns:
         - name: name
           title: ""
-          content: (name)
+          content: (key)
           format: text
           
         - name: num

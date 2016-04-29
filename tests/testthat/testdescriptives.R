@@ -4,9 +4,11 @@ y <- c(4,4,3,4,8,0,9,8,8,6,0,3)
 z <- c(NA,NaN,3,-1,-2,1,1,-2,2,-2,-3,3)
 
 data <- data.frame(x=x, y=y, z=z)
-desc <- Descriptives(data, c("x", "y", "z"), freq=TRUE, median=TRUE, mode=TRUE, skew=TRUE, kurt=TRUE, quart=TRUE)
+desc <- Descriptives(data, c("x", "y", "z"), freq=TRUE, median=TRUE, mode=TRUE, skew=TRUE, kurt=TRUE, quart=TRUE, plotCorr=TRUE)
 
-expect_output(desc$results$get("descriptives"),
+desc$print()
+
+expect_output(desc$results$get("descriptives")$print(),
     paste(sep="\n",
         "",
         " Descriptives                                     ",
@@ -26,9 +28,9 @@ expect_output(desc$results$get("descriptives"),
         " ──────────────────────────────────────────────── ",
         " ᵃ More than one mode exists, only the first ",
         "   is reported ",
-        ""), fixed=TRUE)
+        ""))
 
-expect_output(desc$results$get("frequencies"),
+expect_output(desc$results$get("frequencies")$print(),
     paste(sep="\n",
         " Frequencies",
         "",
@@ -39,7 +41,8 @@ expect_output(desc$results$get("frequencies"),
         "   a          4.00    33.3            33.3   ",
         "   b          4.00    33.3            66.7   ",
         "   c          4.00    33.3           100.0   ",
-        " ─────────────────────────────────────────── "), fixed=TRUE)
+        " ─────────────────────────────────────────── ",
+        ""))
     
 # Test footnote appearance
 expect_true(!length(desc$results$get("descriptives")$getCell(1, "mode")$sups))
@@ -51,8 +54,10 @@ expect_equal(4, desc$results$get("frequencies")$get("x")$getCell(1,"counts")$val
 expect_equal(100/3, desc$results$get("frequencies")$get("x")$getCell(1,"percentage")$value)
 expect_equal(200/3, desc$results$get("frequencies")$get("x")$getCell(2,"cumpercentage")$value)
 
+cat(desc$results$get("frequencies")$get("x")$path)
+
 expect_false(is.numeric(desc$results$get("descriptives")$getCell(1, "mean")$value))
 
-expect_error(Descriptives(data.frame(x=c(Inf,-Inf)),c("x")), "Error : Argument 'vars' specifies column 'x' which contains (and must not) infinite values\n", fixed=TRUE)
+expect_error(Descriptives(data.frame(x=c(Inf,-Inf)),c("x")), "Argument 'vars' specifies column 'x' which contains (and must not) infinite values", fixed=TRUE)
 
 

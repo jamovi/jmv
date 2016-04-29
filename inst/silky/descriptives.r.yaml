@@ -12,7 +12,7 @@ results:
       columns:
         - name: name
           title: ""
-          content: (name)
+          content: (key)
           format: text
         
         - name: mean
@@ -92,23 +92,23 @@ results:
 
     - name: frequencies
       title: Frequencies
-      type: Tables
+      type: Group
       visible: (freq)
       
-      tables: (vars)
+      items: (vars)
       
       template:
-          title: Frequencies of {name}
+          title: Frequencies of {key}
           type: Table
-          visible: (levels(name))
+          visible: (levels(key))
           
-          rows: (levels(name))
+          rows: (levels(key))
           
           columns:
             - name: level
               title: Level
               format: text
-              content: (name)
+              content: (key)
               
             - name: counts
               title: Counts
@@ -121,3 +121,23 @@ results:
             - name: cumpercentage
               title: "Cumulative %"
               format: number
+
+    - name: corrMatrix
+      title: Correlations
+      type: Image
+      initEntry: plotCorr
+      renderEntry: plotCorr
+      visible: (plotCorr)
+      width: 400
+      height: 300
+
+#    - name: frequencyPlots
+#      title: Frequencies
+#      type: Array
+#      visible: (plots)
+#      items: (vars)
+#      
+#      template:
+#          title: Frequencies of {name}
+#          type: Image
+#          visible: (levels(key))

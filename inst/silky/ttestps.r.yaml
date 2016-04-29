@@ -125,7 +125,7 @@ results:
       columns:
         - name: name
           title: ""
-          content: (name)
+          content: (key)
           format: text
           
         - name: num
