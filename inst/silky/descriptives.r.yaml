@@ -2,7 +2,7 @@
 name: Descriptives
 title: Descriptives
 
-results:
+items:
     - name: descriptives
       title: Descriptives
       type: Table
@@ -12,7 +12,7 @@ results:
       columns:
         - name: name
           title: ""
-          content: (key)
+          content: ($key)
           format: text
         
         - name: mean
@@ -92,23 +92,23 @@ results:
 
     - name: frequencies
       title: Frequencies
-      type: Group
+      type: Array
       visible: (freq)
       
       items: (vars)
       
       template:
-          title: Frequencies of {key}
+          title: Frequencies of $key
           type: Table
-          visible: (levels(key))
+          visible: (levels($key))
           
-          rows: (levels(key))
+          rows: (levels($key))
           
           columns:
             - name: level
               title: Level
               format: text
-              content: (key)
+              content: ($key)
               
             - name: counts
               title: Counts
@@ -125,9 +125,8 @@ results:
     - name: corrMatrix
       title: Correlations
       type: Image
-      initEntry: plotCorr
-      renderEntry: plotCorr
-      visible: (plotCorr)
+      renderInitFun: .plotCorr
+      renderFun: .plotCorr
       width: 400
       height: 300
 
@@ -138,6 +137,6 @@ results:
 #      items: (vars)
 #      
 #      template:
-#          title: Frequencies of {name}
+#          title: Frequencies of {$key}
 #          type: Image
-#          visible: (levels(key))
+#          visible: (levels($key))
