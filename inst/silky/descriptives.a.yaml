@@ -15,7 +15,7 @@ options:
       type: Variables
       description: >
         The variables of interest
-      
+
     - name: mean
       title: Mean
       type: Bool
@@ -34,78 +34,88 @@ options:
       title: Mode
       type: Bool
       default: false
-    
+
     - name: sum
       title: Sum
       type: Bool
       default: false
-    
+
     - name: sd
       title: Standard deviation
       type: Bool
       default: false
-    
+
     - name: variance
       title: Variance
       type: Bool
       default: false
-    
+
     - name: range
       title: Range
       type: Bool
       default: false
-      
+
     - name: min
       title: Minimum
       type: Bool
       default: true
-    
+
     - name: max
       title: Maximum
       type: Bool
       default: true
-    
+
     - name: se
       title: Standard error
       type: Bool
       default: false
-    
+
     - name: skew
       title: Skewness
       type: Bool
       default: false
-      
+
     - name: kurt
       title: Kurtosis
       type: Bool
       default: false
-      
+
     - name: freq
       title: Frequency tables
       type: Bool
       default: false
-    
+
     - name: plots
       title: Frequency plots
       type: Bool
       default: false
-    
+
     - name: plotCorr
       title: Correlation plot
       type: Bool
       default: false
-    
+
     - name: plotW
       title: Plot width
       type: Int
       default: 480
-    
+
     - name: plotH
       title: Plot height
       type: Int
       default: 320
-    
+
     - name: quart
       title: Quartiles
       type: Bool
       default: false
+
+    - name: pcEqGr
+      title: Cut points for
+      type: Bool
+      default: false
+
+    - name: pcNEqGr
+      title: Cut point values
+      type: Int
+      default: 4
