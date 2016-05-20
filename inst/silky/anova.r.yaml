@@ -1,0 +1,35 @@
+---
+name:  Anova
+title: ANOVA
+
+items:
+    - name: anova
+      title: ANOVA
+      type: Table
+      rows: 5
+      
+      columns:
+        - name: name
+          title: ""
+          content: ($key)
+          format: text
+          
+        - name: ss
+          title: Sum of Squares
+          format: number
+          
+        - name: df
+          title: df
+          format: number
+          
+        - name: ms
+          title: Mean Square
+          format: number
+          
+        - name: F
+          title: F
+          format: number
+          
+        - name: p
+          title: p
+          format: number
