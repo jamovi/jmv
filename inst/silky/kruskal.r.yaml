@@ -1,12 +1,12 @@
 ---
-name:  Anova
-title: ANOVA
+name:  Kruskal
+title: Kruskal-Wallis
 
 items:
-    - name: anova
-      title: ANOVA
+    - name: table
+      title: Kruskal-Wallis
       type: Table
-      rows: (terms)
+      rows: (deps)
       
       columns:
         - name: name
@@ -14,21 +14,13 @@ items:
           content: ($key)
           format: text
           
-        - name: ss
-          title: Sum of Squares
+        - name: chiSq
+          title: Χ²
           format: number
           
         - name: df
           title: df
           format: integer
-          
-        - name: ms
-          title: Mean Square
-          format: number
-          
-        - name: F
-          title: F
-          format: number
           
         - name: p
           title: p

@@ -5,7 +5,7 @@ Version: 0.1
 Date: 2016-02-14
 Author: Jonathon Love
 Maintainer: Jonathon Love <jon@thon.cc>
-Description: Allows you to make stuff really silky
+Description: R made silky
 License: TBD
-Depends: R (>= 3.2)
+Depends: R (>= 3.2), car
 Imports: silkycore

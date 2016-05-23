@@ -1,0 +1,22 @@
+---
+name:    Kruskal
+title:   Kruskal-Wallis
+package: silkyR
+
+options:
+    - name: dataset
+      type: Dataset
+      description: >
+        The data set as a data frame
+
+    - name: deps
+      title: Dependents
+      type: Variables
+      description: >
+        The dependent variables
+
+    - name: group
+      title: Grouping variable
+      type: Variable
+      description: >
+        The independent, or grouping variable

@@ -16,7 +16,7 @@ options:
         The dependent variable
 
     - name: fixedFactors
-      title: Fixed Factors
+      title: Fixed factors
       type: Variables
       description: >
         The fixed factors
