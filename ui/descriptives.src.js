@@ -7,68 +7,30 @@ var descriptivesLayout = LayoutDef.extend({
 
     title: "Descriptives",
 
-    optionText: {
-        vars : function() { return "Columns and stuff"; },
-        vars2 : function() { return "More stuff"; },
-        mean : "Mean",
-        median : function() { return "Median and stuff"; },
-        freq : "Display Frequency Tables (nominal and ordinal variables)" ,
-        plots : "Display Plots",
-        plotCorr : "Display Correlation Plot",
-        quart : "Quartiles",
-        pcEqGr : "Cut points for",
-        pcPercent : "Percentiles",
-        mode : "Mode",
-        sum : "Sum",
-        sd : "Std. deviation",
-        variance : "Variance",
-        range : "Range",
-        min : "Minimum",
-        max : "Maximum",
-        se : "S. E. Mean",
-        skew : "Skewness",
-        kurt : "Kurtosis",
-        plotW : "Plot Width",
-        plotH : "Polt Height",
-        pcNEqGr : ""
-    },
-
-    optionSuffix: {
-        pcNEqGr : "equal groups"
-    },
-
-    groupText: {
-        group3: "Statistics",
-        group4: "Percentile Values",
-        group5: "Central Tendency",
-        group6: "Dispersion",
-        group9: "Distribution",
-        group10: "Stuff"
-    },
-
     layout: [
         {
             name: "group1",
-            cell: [0, 0],
             type: "supplier",
+            cell: [0, 0],
             persistentItems: false,
             items: [
                 {
                     name: "vars",
                     type:"listbox",
+                    label: function() { return "Columns and stuff"; },
                     showColumnHeaders: false,
                     columns: [
-                        { name: 'column1', readOnly: true, formatName: "variable", stretchFactor: 1, label: "" }
+                        { name: 'column1', label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
                     ]
                 },
                 {
                     name: "vars2",
                     type:"listbox",
+                    label: function() { return "More stuff"; },
                     showColumnHeaders: true,
                     columns: [
-                        { name: "vars", readOnly: true, formatName: "variable", stretchFactor: 1, label: "Variable" },
-                        { name: "werf", readOnly: true, formatName: "bool", stretchFactor: 0.5, label: "Fixed" },
-                        "rger"
+                        { name: "vars", label: "Variable", readOnly: true, formatName: "variable", stretchFactor: 1 },
+                        { name: "werf", label: "Fixed", readOnly: true, formatName: "bool", stretchFactor: 0.5 }
                     ]
                 }
             ]
@@ -77,27 +39,30 @@ var descriptivesLayout = LayoutDef.extend({
             name: "group2",
             cell: [0, 1],
             items : [
-                { name: "plots", type:"radiobutton", actiongroup:"aG1" },
-                { name: "plotCorr", type:"radiobutton", actiongroup:"aG1" },
-                { name: "freq", type:"checkbox" }
+                { name: "plots", type:"radiobutton", label: "Display Plots", actiongroup:"aG1" },
+                { name: "plotCorr", type:"radiobutton", label: "Display Correlation Plot", actiongroup:"aG1" },
+                { name: "freq", type:"checkbox", label: "Display Frequency Tables (nominal and ordinal variables)" }
             ]
         },
         {
             name: "group10",
+            label: "Stuff",
             cell: [0, 2],
             items : [
                 {
                     name: "group4",
+                    label: "Percentile Values",
                     cell: [0, 0],
                     items : [
-                        { name: "quart", type:"checkbox" },
+                        { name: "quart", type:"checkbox", label: "Quartiles" },
                         {
                             name: "pcEqGr",
+                            label: "Cut points for",
+                            type: "checkbox",
                             cell: [0, 1],
                             style: "inline",
-                            type: "checkbox",
                             items : [
-                                { name: "pcNEqGr", type:"textbox", formatName: "number", inputPattern: "[0-9]+" }
+                                { name: "pcNEqGr", type:"textbox", label: "", suffix: "equal groups", formatName: "number", inputPattern: "[0-9]+" }
                             ]
                         }
                     ],
@@ -106,73 +71,75 @@ var descriptivesLayout = LayoutDef.extend({
         },
         {
             name: "group3",
+            label: "Statistics",
             cell: [0, 3],
             items : [
                 {
-                    name: "group4",
+                    name: "group11",
+                    label: "Percentile Values",
                     cell: [0, 0],
                     items : [
-                        { name: "quart", type:"checkbox" },
+                        { name: "quart", type:"checkbox", label: "Quartiles" },
                         {
                             name: "pcEqGr",
+                            type: "checkbox",
+                            label: "Cut points for",
                             cell: [0, 1],
                             style: "inline",
-                            type: "checkbox",
                             items : [
-                                { name: "pcNEqGr", type:"textbox", formatName:"number", inputPattern: "[0-9]+" }
+                                { name: "pcNEqGr", type:"textbox", label: "", suffix : "equal groups", formatName:"number", inputPattern: "[0-9]+" }
                             ]
                         }
                     ],
                 },
                 {
                     name: "group5",
+                    label: "Central Tendency",
                     cell: [1, 0],
                     items: [
-                        { name: "mean", type:"checkbox" },
-                        { name: "median", type:"checkbox" },
-                        { name: "mode", type:"checkbox" },
-                        { name: "sum", type:"checkbox" }
+                        { name: "mean", type:"checkbox", label: "Mean" },
+                        { name: "median", type:"checkbox", label: function() { return "Median and stuff"; } },
+                        { name: "mode", type:"checkbox", label: "Mode" },
+                        { name: "sum", type:"checkbox", label: "Sum" }
                     ]
                 },
                 {
                     name: "group6",
+                    label: "Dispersion",
                     cell: [0, 1],
                     items: [
                         {
                             name: "group7",
                             cell: [0, 0],
                             items : [
-                                { name: "sd", type:"checkbox" },
-                                { name: "variance", type:"checkbox"  },
-                                { name: "range", type:"checkbox"  }
+                                { name: "sd", type:"checkbox", label: "Std. deviation" },
+                                { name: "variance", type:"checkbox", label: "Variance" },
+                                { name: "range", type:"checkbox", label: "Range" }
                             ]
                         },
                         {
                             name: "group8",
                             cell: [1, 0],
                             items : [
-                                { name: "min", type:"checkbox" },
-                                { name: "max", type:"checkbox"},
-                                { name: "se", type:"checkbox" }
+                                { name: "min", type:"checkbox", label: "Minimum" },
+                                { name: "max", type:"checkbox", label: "Maximum" },
+                                { name: "se", type:"checkbox", label: "S. E. Mean" }
                             ]
                         }
                     ]
                 },
                 {
                     name: "group9",
+                    label: "Distribution",
                     cell: [1, 1],
                     items : [
-                        { name: "skew", type:"checkbox" },
-                        { name: "kurt", type:"checkbox" }
+                        { name: "skew", type:"checkbox", label: "Skewness" },
+                        { name: "kurt", type:"checkbox", label: "Kurtosis" }
                     ],
                 }
             ]
         }
-    ],
-
-    onRender_mean: function(e) {
-        return "STUFF AND THINGS!";
-    }
+    ]
 });
 
 module.exports = { LayoutDef : descriptivesLayout, options: options };

@@ -15,8 +15,154 @@ options:
       description: >
         The dependent variable
 
+    - name: wlsWeights
+      title: WLS Weights
+      type: Variable
+      description: >
+        The WLS weights
+
+    - name: descPlotsHAxis
+      title: Horizontal axis
+      type: Variable
+      description: >
+        The Horizontal axis variable
+
+    - name: descPlotsSepLines
+      title: Separate lines
+      type: Variable
+      description: >
+        The Separate lines variable
+
+    - name: descPlotsSepPlots
+      title: Separate plots
+      type: Variable
+      description: >
+        The Separate plots variable
+
     - name: fixedFactors
       title: Fixed factors
       type: Variables
       description: >
         The fixed factors
+
+    - name: modelTerms
+      title: Model Terms
+      type: Variables
+      description: >
+        The model terms
+
+    - name: postHocTests
+      title: Post Hoc Tests
+      type: Variables
+      description: >
+        Post Hoc Tests
+
+    - name: corrTukey
+      title: Tukey
+      type: Bool
+      default: false
+      description: >
+        Post Hoc Tests Tukey Correction
+
+    - name: corrScheffe
+      title: Scheffe
+      type: Bool
+      default: false
+      description: >
+        Post Hoc Tests Scheffe Correction
+
+    - name: corrBonf
+      title: Bonferroni
+      type: Bool
+      default: false
+      description: >
+        Post Hoc Tests Bonferroni Correction
+
+    - name: corrHolm
+      title: Holm
+      type: Bool
+      default: false
+      description: >
+        Post Hoc Tests Holm Correction
+
+    - name: margMeans
+      title: Marinal Means
+      type: Variables
+      description: >
+        The Marinal Means
+
+    - name: compMainEff
+      title: Compare main effects
+      type: Bool
+      default: false
+      description: >
+        Compare main effects
+
+    - name: confIntAdj
+      title: Confidence interval adjustment
+      type: Int
+      default: 0
+      description: >
+        Confidence interval adjustment
+
+    - name: dispDescStats
+      title: Descriptive statistics
+      type: Bool
+      default: false
+      description: >
+        Display Descriptive statistics
+
+    - name: estEffSize
+      title: Estimates of effect size
+      type: Bool
+      default: false
+      description: >
+        Display Estimates of effect size
+
+    - name: homoTests
+      title: Homogeneity tests
+      type: Bool
+      default: false
+      description: >
+        Display Homogeneity tests
+
+    - name: qqPlotRes
+      title: Q-Q plot of residuals
+      type: Bool
+      default: false
+      description: >
+        Display Q-Q plot of residuals
+
+    - name: effSizeN2
+      title: n2
+      type: Bool
+      default: false
+      description: >
+        Effect size n2
+
+    - name: partEffSizeN2
+      title: partial n2
+      type: Bool
+      default: false
+      description: >
+        Effect size partial n2
+
+    - name: effSizeW2
+      title: w2
+      type: Bool
+      default: false
+      description: >
+        Effect size w2
+
+    - name: dispErrBars
+      title: Error bars displaying
+      type: Bool
+      default: false
+      description: >
+        Error bars displaying
+
+    - name: factors
+      title: Factors
+      type: Variables
+      description: >
+        Factors
