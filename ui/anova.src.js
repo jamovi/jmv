@@ -49,7 +49,7 @@ var anovaLayout = LayoutDef.extend({
         {
             name: "group2",
             label: "Model",
-            colapsed: true,
+            collapsed: true,
             cell: [0, 1],
             items : [
                 {
@@ -77,7 +77,7 @@ var anovaLayout = LayoutDef.extend({
         {
             name: "group6",
             label: "Contrasts",
-            colapsed: true,
+            collapsed: true,
             cell: [0, 2],
             items : [
                 {
@@ -95,7 +95,7 @@ var anovaLayout = LayoutDef.extend({
         {
             name: "group3",
             label: "Post Hoc Tests",
-            colapsed: true,
+            collapsed: true,
             cell: [0, 3],
             items : [
                 {
@@ -134,7 +134,7 @@ var anovaLayout = LayoutDef.extend({
         {
             name: "group4",
             label: "Options",
-            colapsed: true,
+            collapsed: true,
             cell: [0, 4],
             items : [
                 {
@@ -191,7 +191,7 @@ var anovaLayout = LayoutDef.extend({
         {
             name: "group5",
             label: "Descriptive Plots",
-            colapsed: true,
+            collapsed: true,
             cell: [0, 5],
             items : [
                 {

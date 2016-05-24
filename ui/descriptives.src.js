@@ -47,6 +47,7 @@ var descriptivesLayout = LayoutDef.extend({
         {
             name: "group10",
             label: "Stuff",
+            collapsed: true,
             cell: [0, 2],
             items : [
                 {
@@ -73,6 +74,7 @@ var descriptivesLayout = LayoutDef.extend({
             name: "group3",
             label: "Statistics",
             cell: [0, 3],
+            collapsed: true,
             items : [
                 {
                     name: "group11",
