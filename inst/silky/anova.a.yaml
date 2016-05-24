@@ -86,10 +86,10 @@ options:
         Post Hoc Tests Holm Correction
 
     - name: margMeans
-      title: Marinal Means
+      title: Marginal Means
       type: Variables
       description: >
-        The Marinal Means
+        The Marginal Means
 
     - name: compMainEff
       title: Compare main effects
