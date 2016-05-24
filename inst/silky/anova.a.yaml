@@ -18,42 +18,49 @@ options:
     - name: wlsWeights
       title: WLS Weights
       type: Variable
+      default:
       description: >
         The WLS weights
 
     - name: descPlotsHAxis
       title: Horizontal axis
       type: Variable
+      default:
       description: >
         The Horizontal axis variable
 
     - name: descPlotsSepLines
       title: Separate lines
       type: Variable
+      default:
       description: >
         The Separate lines variable
 
     - name: descPlotsSepPlots
       title: Separate plots
       type: Variable
+      default:
       description: >
         The Separate plots variable
 
     - name: fixedFactors
       title: Fixed factors
       type: Variables
+      default:
       description: >
         The fixed factors
 
     - name: modelTerms
       title: Model Terms
       type: Variables
+      default:
       description: >
         The model terms
 
     - name: postHocTests
       title: Post Hoc Tests
       type: Variables
+      default:
       description: >
         Post Hoc Tests
 
@@ -86,8 +93,9 @@ options:
         Post Hoc Tests Holm Correction
 
     - name: margMeans
-      title: Marginal Means
+      title: Marginal means
       type: Variables
+      default:
       description: >
         The Marginal Means
 
@@ -164,5 +172,6 @@ options:
     - name: factors
       title: Factors
       type: Variables
+      default:
       description: >
         Factors

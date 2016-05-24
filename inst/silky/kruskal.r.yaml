@@ -25,3 +25,36 @@ items:
         - name: p
           title: p
           format: number
+          
+    - name: comparisons
+      title: Dwass-Steel-Chritchlow-Fligner pairwise comparisons
+      type: Array
+      items: (deps)
+      
+      template:
+        title: Pairwise comparisons - $key
+        type: Table
+        rows: 0
+          
+        columns:
+          - name: p1
+            title: ""
+            content: .
+            format: text
+        
+          - name: sep
+            title: ""
+            content: '-'
+            format: text
+            
+          - name: p2
+            title: ""
+            content: .
+            format: text
+              
+          - name: W
+            format: number
+              
+          - name: p
+            title: p
+            format: number

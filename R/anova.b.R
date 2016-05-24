@@ -6,12 +6,17 @@ AnovaClass <- R6::R6Class(
         run=function() {
             super$run()
             
+            dependentName <- self$options$get('dependent')
+            fixedFactors <- self$options$get('fixedFactors')
+            
+            if (is.null(dependentName) || is.null(fixedFactors))
+                return()
+            
             data <- self$data
             
-            for (factorName in self$options$get('fixedFactors'))
+            for (factorName in fixedFactors)
                 data[[factorName]] <- as.factor(data[[factorName]])
             
-            dependentName <- self$options$get('dependent')
             data[[dependentName]] <- as.numeric(data[[dependentName]])
             
             factors <- paste0('`', self$options$get('fixedFactors'), '`', collapse='*')
@@ -34,7 +39,7 @@ AnovaClass <- R6::R6Class(
                     F=results[i,'F value'],
                     p=results[i,'Pr(>F)'])
                 
-                anovaTable$addRow(key=rowName, tableRow)
+                anovaTable$addRow(rowKey=rowName, tableRow)
             }
         })
 )
