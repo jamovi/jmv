@@ -12,19 +12,20 @@ items:
         - name: name
           title: ""
           content: ($key)
-          format: text
+          type: text
           
         - name: chiSq
           title: Χ²
-          format: number
+          type: number
           
         - name: df
           title: df
-          format: integer
+          type: integer
           
         - name: p
           title: p
-          format: number
+          type: number
+          format: zto,pvalue
           
     - name: comparisons
       title: Dwass-Steel-Chritchlow-Fligner pairwise comparisons
@@ -40,21 +41,22 @@ items:
           - name: p1
             title: ""
             content: .
-            format: text
+            type: text
         
           - name: sep
             title: ""
             content: '-'
-            format: text
+            type: text
             
           - name: p2
             title: ""
             content: .
-            format: text
+            type: text
               
           - name: W
-            format: number
+            type: number
               
           - name: p
             title: p
-            format: number
+            type: number
+            format: zto,pvalue

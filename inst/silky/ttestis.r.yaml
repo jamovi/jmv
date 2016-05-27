@@ -2,7 +2,7 @@
 name: TTestIS
 title: Independent Samples T-Test
 
-results:
+items:
     - name: ttest
       title: Independent Samples T-Test
       type: Table
@@ -11,8 +11,8 @@ results:
       columns:
         - name: name
           title: ""
-          content: (key)
-          format: text
+          content: ($key)
+          type: text
         
         - name: studTest
           title: Test
@@ -21,42 +21,43 @@ results:
           
         - name: studT
           title: t
-          format: number
+          type: number
           visible: (student)
         
         - name: studDf
           title: df
-          format: number
+          type: number
           visible: (student)
 
         - name: studP
           title: p
-          format: number
+          type: number
+          format: zto,pvalue
           visible: (student)
           
         - name: studMeanDiff
           title: Mean difference
-          format: number
+          type: number
           visible: (meanDiff && student)
           
         - name: studSEDiff
           title: SE difference
-          format: number
+          type: number
           visible: (meanDiff && student)
           
         - name: studEffectSize
           title: Cohen's d
-          format: number
+          type: number
           visible: (effectSize && student)
           
         - name: studLowerCI
           title: Lower
-          format: number
+          type: number
           visible: (ci && student)
           
         - name: studUpperCI
           title: Upper
-          format: number
+          type: number
           visible: (ci && student)
           
         - name: welchTest
@@ -66,42 +67,43 @@ results:
           
         - name: welchT
           title: t
-          format: number
+          type: number
           visible: (welch)
         
         - name: welchDf
           title: df
-          format: number
+          type: number
           visible: (welch)
 
         - name: welchP
           title: p
-          format: number
+          type: number
+          format: zto,pvalue
           visible: (welch)
           
         - name: welchMeanDiff
           title: Mean difference
-          format: number
+          type: number
           visible: (meanDiff && welch)
           
         - name: welchSEDiff
           title: SE difference
-          format: number
+          type: number
           visible: (meanDiff && welch)
           
         - name: welchEffectSize
           title: Cohen's d
-          format: number
+          type: number
           visible: (effectSize && Welchs)
           
         - name: welchLowerCI
           title: Lower
-          format: number
+          type: number
           visible: (ci && welch)
           
         - name: welchUpperCI
           title: Upper
-          format: number
+          type: number
           visible: (ci && welch)
           
         - name: mannTest
@@ -111,37 +113,38 @@ results:
           
         - name: mannW
           title: W
-          format: number
+          type: number
           visible: (mann)
 
         - name: mannP
           title: p
-          format: number
+          type: number
+          format: zto,pvalue
           visible: (mann)
           
         - name: mannMeanDiff
           title: Mean difference
-          format: number
+          type: number
           visible: (meanDiff && mann)
           
         - name: mannSEDiff
           title: SE difference
-          format: number
+          type: number
           visible: (meanDiff && mann)
 
         - name: mannEffectSize
           title: Cohen's d
-          format: number
+          type: number
           visible: (effectSize && mann)
           
         - name: mannLowerCI
           title: Lower
-          format: number
+          type: number
           visible: (ci && mann)
           
         - name: mannUpperCI
           title: Upper
-          format: number
+          type: number
           visible: (ci && mann)
           
     - name: normality
@@ -153,19 +156,20 @@ results:
       columns:
         - name: name
           title: ""
-          content: (key)
-          format: text
+          content: ($key)
+          type: text
           
         - name: group
           title: Group
-          format: text
+          type: text
           
         - name: w
           title: "W"
-          format: number
+          type: number
           
         - name: p
-          format: number
+          type: number
+          format: zto,pvalue
           
     - name: equalityOfV
       title: Test of Equality of Variances (Levene's)
@@ -176,18 +180,19 @@ results:
       columns:
         - name: name
           title: ""
-          content: (key)
-          format: text
+          content: ($key)
+          type: text
           
         - name: f
           title: "F"
-          format: number
+          type: number
           
         - name: df
-          format: number
+          type: number
           
         - name: p
-          format: number
+          type: number
+          format: zto,pvalue
 
     - name: descriptives
       title: Group Descriptives
@@ -198,25 +203,25 @@ results:
       columns:
         - name: name
           title: ""
-          content: (key)
-          format: text
+          content: ($key)
+          type: text
           
         - name: group
           title: Group
-          format: text
+          type: text
           
         - name: num
           title: "N"
-          format: number
+          type: number
           
         - name: mean
           title: Mean
-          format: number
+          type: number
           
         - name: sd
           title: SD
-          format: number
+          type: number
           
         - name: se
           title: SE
-          format: number
+          type: number

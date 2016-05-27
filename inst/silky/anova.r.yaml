@@ -7,29 +7,90 @@ items:
       title: ANOVA
       type: Table
       rows: (terms)
-      
+
       columns:
         - name: name
           title: ""
           content: ($key)
-          format: text
-          
+          type: text
+
         - name: ss
           title: Sum of Squares
-          format: number
-          
+          type: number
+
         - name: df
           title: df
-          format: integer
-          
+          type: integer
+
         - name: ms
           title: Mean Square
-          format: number
-          
+          type: number
+
         - name: F
           title: F
-          format: number
-          
+          type: number
+
         - name: p
           title: p
-          format: number
+          type: number
+          format: zto,pvalue
+
+    - name: assump
+      title: Assumption Checks
+      type: Group
+      visible: (homoTests)
+      items:
+          - name: eqVar
+            title: Test for Equality of Variances (Levene's)
+            type: Table
+            rows: 1
+            columns:
+                - name: F
+                  type: number
+
+                - name: df1
+                  type: integer
+
+                - name: df2
+                  type: integer
+
+                - name: p
+                  type: number
+                  format: zto,pvalue
+
+    - name: contrasts
+      title: Contrasts
+      type: Array
+      items: (fixedFactors)
+      visible: (contrasts)
+
+      template:
+        title: Contrasts - $key
+        type: Table
+        rows: 0
+
+        columns:
+          - name: contrast
+            title: ""
+            content: .
+            type: text
+
+          - name: est
+            title: Estimate
+            content: .
+            type: number
+
+          - name: se
+            title: SE
+            content: .
+            type: number
+
+          - name: t
+            content: .
+            type: number
+
+          - name: p
+            title: p
+            content: .
+            type: number
+            format: zto,pvalue

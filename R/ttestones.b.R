@@ -34,8 +34,9 @@ TTestOneSClass <- R6Class("TTestOneSClass",
                 altHypothesis <- "less"
                 # Footnote message TBC
                 
-            } else 
+            } else {
                 altHypothesis <- "two.sided"
+            }
             
             for (i in seq_along(variables)) {
                 
@@ -59,58 +60,64 @@ TTestOneSClass <- R6Class("TTestOneSClass",
                 ## Normality test table
                 res <- NULL
                 if (n < 3) {
-                    normality$addFootnote(i, "name", "Too few observations (N < 3) to compute statistic")
+                    
+                    normality$addFootnote(rowNo=i, "name", "Too few observations (N < 3) to compute statistic")
                     res$statistic <- ""
                     res$p.value <- ""
-                }
-                else if (n > 5000) {
-                    normality$addFootnote(i, "name", "Too many observations (N > 5000) to compute statistic")
+                    
+                } else if (n > 5000) {
+                    
+                    normality$addFootnote(rowNo=i, "name", "Too many observations (N > 5000) to compute statistic")
                     res$statistic <- ""
                     res$p.value <- ""
+                    
                 } else if (column[n]-column[1L] == 0) {
+                    
                     silkycore::reject("Variable '{a}' has essentially constant values", code="constant_variable", a=name)
                 }
                 else {
+                    
                     res <- shapiro.test(column - testValue)
                 }
                 
-                normality$setCell(i, "w", res$statistic)
-                normality$setCell(i, "p", res$p.value)
+                normality$setCell(rowNo=i, "w", res$statistic)
+                normality$setCell(rowNo=i, "p", res$p.value)
                 
-                res<- NULL
+                res <- NULL
+                
                 if (wantsStudents) {
                     
                     res <- t.test(column, mu=testValue, paired=FALSE, conf.level=cl, alternative=altHypothesis)
                     
-                    ttest$setCell(i, "studT", res$statistic)
-                    ttest$setCell(i, "studDf", res$parameter)
-                    ttest$setCell(i, "studP", res$p.value)
-                    ttest$setCell(i, "studMeanDiff", res$estimate - testValue)
-                    ttest$setCell(i, "studEffectSize", d)
-                    ttest$setCell(i, "studLowerCI", res$conf.int[1])
-                    ttest$setCell(i, "studUpperCI", res$conf.int[2])
+                    ttest$setCell(rowNo=i, "studT", res$statistic)
+                    ttest$setCell(rowNo=i, "studDf", res$parameter)
+                    ttest$setCell(rowNo=i, "studP", res$p.value)
+                    ttest$setCell(rowNo=i, "studMeanDiff", res$estimate - testValue)
+                    ttest$setCell(rowNo=i, "studEffectSize", d)
+                    ttest$setCell(rowNo=i, "studLowerCI", res$conf.int[1])
+                    ttest$setCell(rowNo=i, "studUpperCI", res$conf.int[2])
                     
                 }
                 
                 res<- NULL
                 if (wantsMannWhitney) {
                     
-                    res <- wilcox.test(column, mu=testValue, alternative=altHypothesis, paired=FALSE, conf.int=TRUE, conf.level=cl)
+                    res <- suppressWarnings(wilcox.test(column, mu=testValue, alternative=altHypothesis, paired=FALSE, conf.int=TRUE, conf.level=cl))
                     
-                    ttest$setCell(i, "mannV", res$statistic)
-                    ttest$setCell(i, "mannP", res$p.value)
-                    ttest$setCell(i, "mannMeanDiff", res$estimate - testValue)
-                    ttest$setCell(i, "mannEffectSize", d)
-                    ttest$setCell(i, "mannLowerCI", res$conf.int[1])
-                    ttest$setCell(i, "mannUpperCI", res$conf.int[2])
+                    ttest$setCell(rowNo=i, "mannV", res$statistic)
+                    ttest$setCell(rowNo=i, "mannP", res$p.value)
+                    ttest$setCell(rowNo=i, "mannMeanDiff", res$estimate - testValue)
+                    ttest$setCell(rowNo=i, "mannEffectSize", d)
+                    ttest$setCell(rowNo=i, "mannLowerCI", res$conf.int[1])
+                    ttest$setCell(rowNo=i, "mannUpperCI", res$conf.int[2])
                     
                 }
                 
                 ## Descriptives table
-                desc$setCell(i, "num", n)
-                desc$setCell(i, "mean", m)
-                desc$setCell(i, "sd", stdDev)
-                desc$setCell(i, "se", se)
+                desc$setCell(rowNo=i, "num", n)
+                desc$setCell(rowNo=i, "mean", m)
+                desc$setCell(rowNo=i, "sd", stdDev)
+                desc$setCell(rowNo=i, "se", se)
                 
             }
         }

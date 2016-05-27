@@ -2,144 +2,188 @@
 name: TTestPS
 title: Paired Samples T-Test
 
-results:
+items:
     - name: ttest
       title: Paired Samples T-Test
       type: Table
-      rows: (length(vars)/2)
+      rows: (pairs)
       
       columns:
-        - name: name
+        - name: name1
           title: ""
-          format: text
+          type: text
         
-        - name: studTest
+        - name: sep
+          title: ""
+          type: text
+          content: '-'
+        
+        - name: name2
+          title: ""
+          type: text
+        
+        - name: test[stud]
           title: Test
-          content: Student's
+          content: Student's t
           visible: (student)
           
-        - name: studT
-          title: t
-          format: number
+        - name: stat[stud]
+          title: 'statistic'
+          type: number
           visible: (student)
         
-        - name: studDf
+        - name: df[stud]
           title: df
-          format: number
+          type: number
           visible: (student)
 
-        - name: studP
+        - name: p[stud]
           title: p
-          format: number
+          type: number
+          format: zto,pvalue
           visible: (student)
           
-        - name: studMeanDiff
+        - name: md[stud]
           title: Mean difference
-          format: number
+          type: number
           visible: (meanDiff && student)
           
-        - name: studSEDiff
+        - name: sed[stud]
           title: SE difference
-          format: number
+          type: number
           visible: (meanDiff && student)
           
-        - name: studEffectSize
+        - name: es[stud]
           title: Cohen's d
-          format: number
+          type: number
           visible: (effectSize && student)
           
-        - name: studLowerCI
+        - name: cil[stud]
           title: Lower
-          format: number
+          type: number
           visible: (ci && student)
           
-        - name: studUpperCI
+        - name: ciu[stud]
           title: Upper
-          format: number
+          type: number
           visible: (ci && student)
           
-        - name: wilcoxonTest
+        - name: test[wilc]
           title: Test
-          content: Wilcoxon
+          content: Wilcoxon W
           visible: (wilcoxon)
           
-        - name: wilcoxonW
-          title: W
-          format: number
+        - name: stat[wilc]
+          title: statistic
+          type: number
           visible: (wilcoxon)
 
-        - name: wilcoxonP
+        - name: p[wilc]
           title: p
-          format: number
+          type: number
+          format: zto,pvalue
           visible: (wilcoxon)
           
-        - name: wilcoxonMeanDiff
+        - name: md[wilc]
           title: Mean difference
-          format: number
+          type: number
           visible: (meanDiff && wilcoxon)
           
-        - name: wilcoxonSEDiff
+        - name: sed[wilc]
           title: SE difference
-          format: number
+          type: number
           visible: (meanDiff && wilcoxon)
 
-        - name: wilcoxonEffectSize
+        - name: es[wilc]
           title: Cohen's d
-          format: number
+          type: number
           visible: (effectSize && wilcoxon)
           
-        - name: wilcoxonLowerCI
+        - name: cil[wilc]
           title: Lower
-          format: number
+          type: number
           visible: (ci && wilcoxon)
           
-        - name: wilcoxonUpperCI
+        - name: ciu[wilc]
           title: Upper
-          format: number
+          type: number
           visible: (ci && wilcoxon)
           
-    - name: normality
+    - name: norm
       title: Test of Normality (Shapiro-Wilk)
       type: Table
       visible: (norm)
-      rows: (length(vars)/2)
+      rows: (pairs)
       
       columns:
-        - name: name
+        - name: name1
           title: ""
-          format: text
+          type: text
+          content: .
+          
+        - name: sep
+          title: ""
+          type: text
+          content: '-'
+          
+        - name: name2
+          title: ""
+          type: text
+          content: .
           
         - name: w
           title: "W"
-          format: number
+          type: number
           
         - name: p
-          format: number
+          type: number
+          format: zto,pvalue
 
-    - name: descriptives
+    - name: desc
       title: Descriptives
       type: Table
       visible: (desc)
-      rows: (unique(vars))
+      rows: (pairs)
       
       columns:
-        - name: name
+        - name: name1
           title: ""
-          content: (key)
-          format: text
+          content: .
+          type: text
+          
+        - name: sep
+          title: ""
+          content: '-'
+          type: text
+        
+        - name: name2
+          title: ""
+          content: .
+          type: text
           
         - name: num
           title: "N"
-          format: number
+          type: number
           
-        - name: mean
-          title: Mean
-          format: number
+        - name: m1
+          title: Mean 1
+          type: number
+        
+        - name: m2
+          title: Mean 2
           
-        - name: sd
-          title: SD
-          format: number
+        - name: sd1
+          title: SD 1
+          type: number
+        
+        - name: sd2
+          title: SD 2
+          type: number
           
-        - name: se
-          title: SE
-          format: number
+        - name: se1
+          title: SE 1
+          type: number
+          
+        - name: se2
+          title: SE 2
+          type: number

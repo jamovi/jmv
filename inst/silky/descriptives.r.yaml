@@ -13,81 +13,81 @@ items:
         - name: name
           title: ""
           content: ($key)
-          format: text
+          type: text
         
         - name: mean
           title: Mean
-          format: number
+          type: number
           visible: (mean)
         
         - name: median
           title: Median
-          format: number
+          type: number
           visible: (median)
         
         - name: mode
           title: Mode
-          format: number
+          type: number
           visible: (mode)
           
         - name: sum
           title: Sum
-          format: number
+          type: number
           visible: (sum)
           
         - name: sd
           title: Standard deviation
-          format: number
+          type: number
           visible: (sd)
           
         - name: variance
           title: Variance
-          format: number
+          type: number
           visible: (variance)
           
         - name: range
           title: Range
-          format: number
+          type: number
           visible: (range)
           
         - name: min
           title: Minimum
-          format: number
+          type: number
           visible: (min)
           
         - name: max
           title: Maximum
-          format: number
+          type: number
           visible: (max)
           
         - name: se
           title: Standard error
-          format: number
+          type: number
           visible: (se)
           
         - name: skew
           title: Skewness
-          format: number
+          type: number
           visible: (skew)
           
         - name: kurt
           title: Kurtosis
-          format: number
+          type: number
           visible: (kurt)
           
         - name: quart1
           title: 25th percentile
-          format: number
+          type: number
           visible: (quart)
           
         - name: quart2
           title: 50th percentile
-          format: number
+          type: number
           visible: (quart)
           
         - name: quart3
           title: 75th percentile
-          format: number
+          type: number
           visible: (quart)
 
     - name: frequencies
@@ -107,20 +107,20 @@ items:
           columns:
             - name: level
               title: Level
-              format: text
+              type: text
               content: ($key)
               
             - name: counts
               title: Counts
-              format: number
+              type: number
               
             - name: percentage
               title: "%"
-              format: number
+              type: number
 
             - name: cumpercentage
               title: "Cumulative %"
-              format: number
+              type: number
 
     - name: corrMatrix
       title: Correlations

@@ -98,16 +98,16 @@ TTestISClass <- R6Class("TTestISClass",
                 
                 if (is.na(levene[1,"F value"])){
                     
-                    equality$addFootnote(i,"name","F-statistic could not be calculated")
-                    equality$setCell(i,"f","")
-                    equality$setCell(i,"df","")
-                    equality$setCell(i,"p","")
+                    equality$addFootnote(rowNo=i,"name","F-statistic could not be calculated")
+                    equality$setCell(rowNo=i,"f","")
+                    equality$setCell(rowNo=i,"df","")
+                    equality$setCell(rowNo=i,"p","")
                     
                 } else {
                     
-                    equality$setCell(i,"f",levene[1,"F value"])
-                    equality$setCell(i,"df",levene[1,"Df"])
-                    equality$setCell(i,"p",levene[1,"Pr(>F)"])
+                    equality$setCell(rowNo=i,"f",levene[1,"F value"])
+                    equality$setCell(rowNo=i,"df",levene[1,"Df"])
+                    equality$setCell(rowNo=i,"p",levene[1,"Pr(>F)"])
                     
                 }
                 
@@ -117,18 +117,18 @@ TTestISClass <- R6Class("TTestISClass",
                     
                     res <- t.test(f, data=dataset.clean, var.equal=TRUE, paired=FALSE, alternative=altHypothesis, conf.level=cl)
                     
-                    ttest$setCell(i, "studT", res$statistic)
-                    ttest$setCell(i, "studDf", res$parameter)
-                    ttest$setCell(i, "studP", res$p.value)
-                    ttest$setCell(i, "studMeanDiff", res$estimate[1]-res$estimate[2])
-                    ttest$setCell(i, "studSEDiff", sediff)
-                    ttest$setCell(i, "studEffectSize", d)
-                    ttest$setCell(i, "studLowerCI", res$conf.int[1])
-                    ttest$setCell(i, "studUpperCI", res$conf.int[2])
+                    ttest$setCell(rowNo=i, "studT", res$statistic)
+                    ttest$setCell(rowNo=i, "studDf", res$parameter)
+                    ttest$setCell(rowNo=i, "studP", res$p.value)
+                    ttest$setCell(rowNo=i, "studMeanDiff", res$estimate[1]-res$estimate[2])
+                    ttest$setCell(rowNo=i, "studSEDiff", sediff)
+                    ttest$setCell(rowNo=i, "studEffectSize", d)
+                    ttest$setCell(rowNo=i, "studLowerCI", res$conf.int[1])
+                    ttest$setCell(rowNo=i, "studUpperCI", res$conf.int[2])
                     
                     ## Inform if a student's t-test is appropriate using Levene's test
                     if (!wantsWelchs && !is.na(levene[1,"Pr(>F)"]) && levene[1,"Pr(>F)"] < .05)
-                        ttest$addFootnote(i, "studTest", "Levene's test is significant (p < .05), suggesting a violation of the equal variance assumption")
+                        ttest$addFootnote(rowNo=i, "studTest", "Levene's test is significant (p < .05), suggesting a violation of the equal variance assumption")
                     
                 }
                 
@@ -137,28 +137,28 @@ TTestISClass <- R6Class("TTestISClass",
                     
                     res <- t.test(f, data=dataset.clean, var.equal=FALSE, paired=FALSE, alternative=altHypothesis, conf.level=cl)
                     
-                    ttest$setCell(i, "welchT", res$statistic)
-                    ttest$setCell(i, "welchDf", res$parameter)
-                    ttest$setCell(i, "welchP", res$p.value)
-                    ttest$setCell(i, "welchMeanDiff", res$estimate[1]-res$estimate[2])
-                    ttest$setCell(i, "welchSEDiff", sediff)
-                    ttest$setCell(i, "welchEffectSize", d)
-                    ttest$setCell(i, "welchLowerCI", res$conf.int[1])
-                    ttest$setCell(i, "welchUpperCI", res$conf.int[2])
+                    ttest$setCell(rowNo=i, "welchT", res$statistic)
+                    ttest$setCell(rowNo=i, "welchDf", res$parameter)
+                    ttest$setCell(rowNo=i, "welchP", res$p.value)
+                    ttest$setCell(rowNo=i, "welchMeanDiff", res$estimate[1]-res$estimate[2])
+                    ttest$setCell(rowNo=i, "welchSEDiff", sediff)
+                    ttest$setCell(rowNo=i, "welchEffectSize", d)
+                    ttest$setCell(rowNo=i, "welchLowerCI", res$conf.int[1])
+                    ttest$setCell(rowNo=i, "welchUpperCI", res$conf.int[2])
                 }
                 
                 res <- NULL
                 if (wantsMannWhitney) {
                     
-                    res <- wilcox.test(f, data=dataset.clean, alternative=altHypothesis, paired=FALSE ,conf.int=TRUE, conf.level=cl)
+                    res <- suppressWarnings(wilcox.test(f, data=dataset.clean, alternative=altHypothesis, paired=FALSE ,conf.int=TRUE, conf.level=cl))
                     
-                    ttest$setCell(i, "mannW", res$statistic)
-                    ttest$setCell(i, "mannP", res$p.value)
-                    ttest$setCell(i, "mannMeanDiff", res$estimate)
-                    ttest$setCell(i, "mannSEDiff", sediff)
-                    ttest$setCell(i, "mannEffectSize", d)
-                    ttest$setCell(i, "mannLowerCI", res$conf.int[1])
-                    ttest$setCell(i, "mannUpperCI", res$conf.int[2])
+                    ttest$setCell(rowNo=i, "mannW", res$statistic)
+                    ttest$setCell(rowNo=i, "mannP", res$p.value)
+                    ttest$setCell(rowNo=i, "mannMeanDiff", res$estimate)
+                    ttest$setCell(rowNo=i, "mannSEDiff", sediff)
+                    ttest$setCell(rowNo=i, "mannEffectSize", d)
+                    ttest$setCell(rowNo=i, "mannLowerCI", res$conf.int[1])
+                    ttest$setCell(rowNo=i, "mannUpperCI", res$conf.int[2])
                 }
                 
                 ## Normality test table & Descriptives table
@@ -170,12 +170,12 @@ TTestISClass <- R6Class("TTestISClass",
                     groupColumn <- column[dataset.clean[[groupingVariable]] == groupingVariableLevels[k]]
                     
                     if (length(groupColumn) < 3) {
-                        normality$addFootnote(currentGroup, "group", "Too few observations (N < 3) to compute statistic")
+                        normality$addFootnote(rowNo=currentGroup, "group", "Too few observations (N < 3) to compute statistic")
                         res$statistic <- ""
                         res$p.value <- ""
                     }
                     else if (length(groupColumn) > 5000) {
-                        normality$addFootnote(currentGroup, "group", "Too many observations (N > 5000) to compute statistic")
+                        normality$addFootnote(rowNo=currentGroup, "group", "Too many observations (N > 5000) to compute statistic")
                         res$statistic <- ""
                         res$p.value <- ""
                     }
@@ -183,15 +183,15 @@ TTestISClass <- R6Class("TTestISClass",
                         res <- shapiro.test(groupColumn)
                     }
                     
-                    normality$setCell(currentGroup, "group", groupingVariableLevels[k])
-                    normality$setCell(currentGroup, "w", res$statistic)
-                    normality$setCell(currentGroup, "p", res$p.value)
+                    normality$setCell(rowNo=currentGroup, "group", groupingVariableLevels[k])
+                    normality$setCell(rowNo=currentGroup, "w", res$statistic)
+                    normality$setCell(rowNo=currentGroup, "p", res$p.value)
                     
-                    desc$setCell(currentGroup, "group", groupingVariableLevels[k])
-                    desc$setCell(currentGroup, "num", n[k])
-                    desc$setCell(currentGroup, "mean", m[k])
-                    desc$setCell(currentGroup, "sd", sqrt(sampleVar[k]))
-                    desc$setCell(currentGroup, "se", se[k])
+                    desc$setCell(rowNo=currentGroup, "group", groupingVariableLevels[k])
+                    desc$setCell(rowNo=currentGroup, "num", n[k])
+                    desc$setCell(rowNo=currentGroup, "mean", m[k])
+                    desc$setCell(rowNo=currentGroup, "sd", sqrt(sampleVar[k]))
+                    desc$setCell(rowNo=currentGroup, "se", se[k])
                     
                 }
             }

@@ -21,6 +21,27 @@ options:
       default:
       description: >
         The WLS weights
+    
+    - name: contrasts
+      title: Contrasts
+      type: Array
+      items: (fixedFactors)
+      default:
+      template:
+          type: Group
+          elements:
+              - name: var
+                content: $key
+              - name: type
+                type: List
+                options:
+                  - none
+                  - deviation
+                  - simple
+                  - difference
+                  - helmert
+                  - repeated
+                  - polynomial
 
     - name: descPlotsHAxis
       title: Horizontal axis

@@ -9,9 +9,16 @@ options:
       description: >
         The data set as a data frame
 
-    - name: vars
+    - name: pairs
       title: Paired Variables
-      type: Variables
+      type: Array
+      template:
+          type: Group
+          elements:
+              - name: i1
+                type: Variable
+              - name: i2
+                type: Variable
       description: >
         The variables of interest
         
