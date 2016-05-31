@@ -39,35 +39,9 @@ var descriptivesLayout = LayoutDef.extend({
             name: "group2",
             cell: [0, 1],
             items : [
-                { name: "plots", type:"radiobutton", label: "Display Plots", actiongroup:"aG1" },
-                { name: "plotCorr", type:"radiobutton", label: "Display Correlation Plot", actiongroup:"aG1" },
+                { name: "plots", type:"checkbox", label: "Display Plots" },
+                { name: "plotCorr", type:"checkbox", label: "Display Correlation Plot" },
                 { name: "freq", type:"checkbox", label: "Display Frequency Tables (nominal and ordinal variables)" }
-            ]
-        },
-        {
-            name: "group10",
-            label: "Stuff",
-            collapsed: true,
-            cell: [0, 2],
-            items : [
-                {
-                    name: "group4",
-                    label: "Percentile Values",
-                    cell: [0, 0],
-                    items : [
-                        { name: "quart", type:"checkbox", label: "Quartiles" },
-                        {
-                            name: "pcEqGr",
-                            label: "Cut points for",
-                            type: "checkbox",
-                            cell: [0, 1],
-                            style: "inline",
-                            items : [
-                                { name: "pcNEqGr", type:"textbox", label: "", suffix: "equal groups", formatName: "number", inputPattern: "[0-9]+" }
-                            ]
-                        }
-                    ],
-                }
             ]
         },
         {

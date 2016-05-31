@@ -75,10 +75,20 @@ var anovaLayout = LayoutDef.extend({
             ]
         },
         {
+            name: "group7",
+            label: "Assumption Checks",
+            collapsed: true,
+            cell: [0, 2],
+            items : [
+                { name: "homoTests", type:"checkbox", label: "Homogeneity tests" },
+                { name: "qqPlotRes", type:"checkbox", label: "Q-Q plot of residuals" }
+            ]
+        },
+        {
             name: "group6",
             label: "Contrasts",
             collapsed: true,
-            cell: [0, 2],
+            cell: [0, 3],
             items : [
                 {
                     name: "factors",
@@ -86,8 +96,8 @@ var anovaLayout = LayoutDef.extend({
                     label: "Factors",
                     showColumnHeaders: false,
                     columns: [
-                        { name: "variable", label: "", readOnly: true, formatName: "variable", stretchFactor: 0.5 },
-                        { name: "factor", label: "", readOnly: false, formatName: "number", stretchFactor: 1 }
+                        { name: "var", label: "", readOnly: true, formatName: "variable", stretchFactor: 0.5 },
+                        { name: "type", label: "", readOnly: false, formatName: "string", stretchFactor: 1, options: ['none', 'deviation', 'simple', 'difference', 'helmert', 'repeated', 'polynomial'] }
                     ]
                 }
             ]
@@ -96,7 +106,7 @@ var anovaLayout = LayoutDef.extend({
             name: "group3",
             label: "Post Hoc Tests",
             collapsed: true,
-            cell: [0, 3],
+            cell: [0, 4],
             items : [
                 {
                     name: "group3-1",
@@ -127,63 +137,6 @@ var anovaLayout = LayoutDef.extend({
                         { name: "corrScheffe", type:"checkbox", label: "Scheffe" },
                         { name: "corrBonf", type:"checkbox", label: "Bonferroni" },
                         { name: "corrHolm", type:"checkbox", label: "Holm" }
-                    ]
-                }
-            ]
-        },
-        {
-            name: "group4",
-            label: "Options",
-            collapsed: true,
-            cell: [0, 4],
-            items : [
-                {
-                    name: "group4-1",
-                    type: "supplier",
-                    stretchFactor: 1,
-                    fitToGrid: false,
-                    dockContentWidth: true,
-                    cell: [0, 0],
-                    persistentItems: false,
-                    items: [
-                        {
-                            name: "margMeans",
-                            type:"listbox",
-                            label: "Marginal means",
-                            showColumnHeaders: false,
-                            columns: [
-                                { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    name: "compMainEff",
-                    label: "Compare main effects",
-                    type:"checkbox",
-                    cell: [0, 1],
-                    items: [
-                        { name: "confIntAdj", type:"textbox", label: "Confidence interval adjustment" }
-                    ]
-                },
-                {
-                    name: "group4-2",
-                    label: "Display",
-                    cell: [0, 2],
-                    items: [
-                        { name: "dispDescStats", type:"checkbox", label: "Descriptive statistics" },
-                        {
-                            name: "estEffSize",
-                            label: "Estimates of effect size",
-                            type:"checkbox",
-                            items: [
-                                { name: "effSizeN2", type:"checkbox", label: "n2" },
-                                { name: "partEffSizeN2", type:"checkbox", label: "partial n2" },
-                                { name: "effSizeW2", type:"checkbox", label: "w2" }
-                            ]
-                        },
-                        { name: "homoTests", type:"checkbox", label: "Homogeneity tests" },
-                        { name: "qqPlotRes", type:"checkbox", label: "Q-Q plot of residuals" }
                     ]
                 }
             ]
@@ -241,7 +194,67 @@ var anovaLayout = LayoutDef.extend({
                     label: "Display",
                     cell: [0, 1],
                     items: [
-                        { name: "dispErrBars", type:"checkbox", label: "Error bars displaying" }
+                        { name: "dispErrBars", type:"checkbox", label: "Error bars displaying", items: [
+                            { name: "errBarDef", type:"radiobutton", value: "ci", label: "Confidence interval", items:[
+                                { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", formatName: "number", inputPattern: "[0-9]+" }
+                            ]},
+                            { name: "errBarDef", type:"radiobutton", value: "se", label: "Standard Error" }
+                        ]}
+                    ]
+                }
+            ]
+        },
+        {
+            name: "group4",
+            label: "Additional Options",
+            collapsed: true,
+            cell: [0, 6],
+            items : [
+                {
+                    name: "group4-1",
+                    type: "supplier",
+                    stretchFactor: 1,
+                    fitToGrid: false,
+                    dockContentWidth: true,
+                    cell: [0, 0],
+                    persistentItems: false,
+                    items: [
+                        {
+                            name: "margMeans",
+                            type:"listbox",
+                            label: "Marginal means",
+                            showColumnHeaders: false,
+                            columns: [
+                                { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: "compMainEff",
+                    label: "Compare main effects",
+                    type:"checkbox",
+                    cell: [0, 1],
+                    items: [
+                        { name: "confIntAdj", type:"textbox", label: "Confidence interval adjustment" }
+                    ]
+                },
+                {
+                    name: "group4-2",
+                    label: "Display",
+                    cell: [0, 2],
+                    items: [
+                        { name: "dispDescStats", type:"checkbox", label: "Descriptive statistics" },
+                        {
+                            name: "estEffSize",
+                            label: "Estimates of effect size",
+                            type:"checkbox",
+                            items: [
+                                { name: "effSizeN2", type:"checkbox", label: "n2" },
+                                { name: "partEffSizeN2", type:"checkbox", label: "partial n2" },
+                                { name: "effSizeW2", type:"checkbox", label: "w2" }
+                            ]
+                        }
                     ]
                 }
             ]

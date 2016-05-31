@@ -21,7 +21,7 @@ options:
       default:
       description: >
         The WLS weights
-    
+
     - name: contrasts
       title: Contrasts
       type: Array
@@ -196,3 +196,20 @@ options:
       default:
       description: >
         Factors
+
+    - name: errBarDef
+      title: Error Bar Definition
+      type: List
+      options:
+        - ci
+        - se
+      default: ci
+      description: >
+        Specifies the Error Bar definition as either "Confidence interval"(default) or "Standard Error"
+
+    - name: ciWidth
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
