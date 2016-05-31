@@ -20,3 +20,9 @@ options:
       type: Variable
       description: >
         The independent, or grouping variable
+
+    - name: pairs
+      title: DSCF Pairwise Comparisons
+      type: Bool
+      description: >
+        Pairwise Comparisons
