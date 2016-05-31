@@ -129,8 +129,12 @@ options:
 
     - name: confIntAdj
       title: Confidence interval adjustment
-      type: Int
-      default: 0
+      type: List
+      options:
+        - None
+        - Bonferroni
+        - Sidak
+      default: None
       description: >
         Confidence interval adjustment
 
@@ -213,3 +217,14 @@ options:
       min: 50
       max: 99.9
       default: 95
+
+    - name: sumOfSqu
+      title: Sum of squares
+      type: List
+      options:
+        - Type I
+        - Type II
+        - Type III
+      default: Type I
+      description: >
+        Sum of squares

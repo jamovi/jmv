@@ -71,7 +71,8 @@ var anovaLayout = LayoutDef.extend({
                             ]
                         }
                     ]
-                }
+                },
+                { name: "sumOfSqu", type:"combobox", label: "Sum of squares", options: [ {label: 'Type I', value:'Type I'}, {label: 'Type II', value:'Type II'}, {label: 'Type III', value:'Type III'}] }
             ]
         },
         {
@@ -236,7 +237,7 @@ var anovaLayout = LayoutDef.extend({
                     type:"checkbox",
                     cell: [0, 1],
                     items: [
-                        { name: "confIntAdj", type:"textbox", label: "Confidence interval adjustment" }
+                        { name: "confIntAdj", type:"combobox", label: "Confidence interval adjustment", options: [{ label: "None", value: "None" }, { label: "Bonferroni", value: "Bonferroni" }, { label: "Sidak", value: "Sidak" }] }
                     ]
                 },
                 {
