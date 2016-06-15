@@ -5,14 +5,15 @@ var options = require("./descriptives.options");
 
 var descriptivesLayout = LayoutDef.extend({
 
-    title: "Descriptives",
-
-    layout: [
+    label: "Descriptives",
+    type: "root",
+    items: [
         {
             name: "group1",
             type: "supplier",
             cell: [0, 0],
             persistentItems: false,
+            useVariables: true,
             items: [
                 {
                     name: "vars",
@@ -21,16 +22,6 @@ var descriptivesLayout = LayoutDef.extend({
                     showColumnHeaders: false,
                     columns: [
                         { name: 'column1', label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
-                    ]
-                },
-                {
-                    name: "vars2",
-                    type:"listbox",
-                    label: function() { return "More stuff"; },
-                    showColumnHeaders: true,
-                    columns: [
-                        { name: "vars", label: "Variable", readOnly: true, formatName: "variable", stretchFactor: 1 },
-                        { name: "werf", label: "Fixed", readOnly: true, formatName: "bool", stretchFactor: 0.5 }
                     ]
                 }
             ]
@@ -74,7 +65,7 @@ var descriptivesLayout = LayoutDef.extend({
                     cell: [1, 0],
                     items: [
                         { name: "mean", type:"checkbox", label: "Mean" },
-                        { name: "median", type:"checkbox", label: function() { return "Median and stuff"; } },
+                        { name: "median", type:"checkbox", label: "Median" },
                         { name: "mode", type:"checkbox", label: "Mode" },
                         { name: "sum", type:"checkbox", label: "Sum" }
                     ]
@@ -115,7 +106,15 @@ var descriptivesLayout = LayoutDef.extend({
                 }
             ]
         }
-    ]
+    ],
+
+    actions: {
+
+        disable_pcNEqGr: function(context) {
+            var disabled = context.getObject("pcEqGr").get("value") === false;
+            context.getObject("pcNEqGr").set("disabled", disabled);
+        }
+    }
 });
 
 module.exports = { LayoutDef : descriptivesLayout, options: options };

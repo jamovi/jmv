@@ -6,14 +6,15 @@ var options = require('./kruskal.options')
 
 var kruskalLayout = LayoutDef.extend({
 
-    title: "Kruskal-Wallis",
-
-    layout: [
+    label: "Kruskal-Wallis",
+    type: "root",
+    items: [
         {
             name: "group1",
             type: "supplier",
             cell: [0, 0],
             persistentItems: false,
+            useVariables: true,
             items: [
                 {
                     name: "deps",
