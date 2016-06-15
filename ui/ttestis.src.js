@@ -6,14 +6,15 @@ var options = require('./ttestis.options')
 
 var ttestisLayout = LayoutDef.extend({
 
-    title: "Independent Samples T-Test",
-
-    layout: [
+    label: "Independent Samples T-Test",
+    type: "root",
+    items: [
         {
             name: "group1",
             type: "supplier",
             cell: [0, 0],
             persistentItems: false,
+            useVariables: true,
             items: [
                 {
                     name: "vars",
@@ -63,9 +64,9 @@ var ttestisLayout = LayoutDef.extend({
                             label: "Hypothesis",
                             level: "2",
                             items : [
-                                { name: "hypothesis", type:"radiobutton", value: "different", label: "Group 1 ≠ Group 2" },
-                                { name: "hypothesis", type:"radiobutton", value: "oneGreater", label: "Group 1 > Group 2" },
-                                { name: "hypothesis", type:"radiobutton", value: "twoGreater", label: "Group 1 < Group 2" }
+                                { name: "hypothesis_different", optionId: "hypothesis", type:"radiobutton", value: "different", label: "Group 1 ≠ Group 2" },
+                                { name: "hypothesis_oneGreater", optionId: "hypothesis", type:"radiobutton", value: "oneGreater", label: "Group 1 > Group 2" },
+                                { name: "hypothesis_twoGreater", optionId: "hypothesis", type:"radiobutton", value: "twoGreater", label: "Group 1 < Group 2" }
                             ]
                         },
                         {
@@ -108,15 +109,23 @@ var ttestisLayout = LayoutDef.extend({
                             label: "Missing values",
                             level: "2",
                             items : [
-                                { name: "miss", type:"radiobutton", value: "perAnalysis", label: "Exclude cases analysis by analysis" },
-                                { name: "miss", type:"radiobutton", value: "listwise", label: "Exclude cases listwise" }
+                                { name: "miss_perAnalysis", optionId: "miss", type:"radiobutton", value: "perAnalysis", label: "Exclude cases analysis by analysis" },
+                                { name: "miss_listwise", optionId: "miss", type:"radiobutton", value: "listwise", label: "Exclude cases listwise" }
                             ]
                         }
                     ]
                 }
             ]
         }
-    ]
+    ],
+
+    actions: {
+
+        disable_ciWidth: function(context) {
+            var disabled = context.getObject("ci").get("value") === false;
+            context.getObject("ciWidth").set("disabled", disabled);
+        }
+    }
 });
 
 module.exports = { LayoutDef : ttestisLayout, options: options };
