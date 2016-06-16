@@ -1,0 +1,239 @@
+---
+name:    Anovarm
+title:   Repeated Measures ANOVA
+package: silkyR
+
+options:
+    - name: dataset
+      type: Dataset
+      description: >
+        The data set as a data frame
+
+    - name: rmFactors
+      title: Repeated Measures Factors
+      type: Variables
+      description: >
+        The Repeated Measures Factors
+
+    - name: rmCells
+      title: Repeated Measures Cells
+      type: Variables
+      description: >
+        The Repeated Measures Cells
+
+    - name: btwSubjFactors
+      title: Between Subject Factors
+      type: Variables
+      default:
+      description: >
+        The Between Subject Factors
+
+    - name: covariates
+      title: Covariates
+      type: Variable
+      default:
+      description: >
+        The Covariates
+
+    - name: rmcModelTerms
+      title: Model Terms
+      type: Variables
+      default:
+      description: >
+        The Repeated Measures model terms
+
+    - name: bscModelTerms
+      title: Model Terms
+      type: Variables
+      default:
+      description: >
+        The Between Subjects model terms
+
+    - name: sumOfSqu
+      title: Sum of squares
+      type: List
+      options:
+        - Type I
+        - Type II
+        - Type III
+      default: Type I
+      description: >
+        Sum of squares
+
+    - name: spherTests
+      title: Sphericity tests
+      type: Bool
+      default: false
+      description: >
+        Sphericity tests
+
+    - name: spherCorrs
+      title: Sphericity corrections
+      type: Bool
+      default: false
+      description: >
+        Sphericity corrections
+
+    - name: spherCorrNone
+      title: None
+      type: Bool
+      default: false
+      description: >
+        No Sphericity corrections
+
+    - name: spherCorrGreenGsser
+      title: Greenhouse-Geisser
+      type: Bool
+      default: false
+      description: >
+        Greenhouse-Geisser Sphericity corrections
+
+    - name: spherCorrHuyFdt
+      title: Huynh-Feldt
+      type: Bool
+      default: false
+      description: >
+        Huynh-Feldt Sphericity corrections
+
+    - name: homoTests
+      title: Homogeneity tests
+      type: Bool
+      default: false
+      description: >
+        Display Homogeneity tests
+
+    - name: contrasts
+      title: Contrasts
+      type: Array
+      items: (btwSubjFactors)
+      default:
+      template:
+          type: Group
+          elements:
+              - name: var
+                content: $key
+              - name: type
+                type: List
+                options:
+                  - none
+                  - deviation
+                  - simple
+                  - difference
+                  - helmert
+                  - repeated
+                  - polynomial
+
+    - name: postHocTests
+      title: Post Hoc Tests
+      type: Variables
+      default:
+      description: >
+        Post Hoc Tests
+
+    - name: corrTukey
+      title: Tukey
+      type: Bool
+      default: false
+      description: >
+        Post Hoc Tests Tukey Correction
+
+    - name: corrScheffe
+      title: Scheffe
+      type: Bool
+      default: false
+      description: >
+        Post Hoc Tests Scheffe Correction
+
+    - name: corrBonf
+      title: Bonferroni
+      type: Bool
+      default: false
+      description: >
+        Post Hoc Tests Bonferroni Correction
+
+    - name: corrHolm
+      title: Holm
+      type: Bool
+      default: false
+      description: >
+        Post Hoc Tests Holm Correction
+
+    - name: descPlotsHAxis
+      title: Horizontal axis
+      type: Variable
+      default:
+      description: >
+        The Horizontal axis variable
+
+    - name: descPlotsSepLines
+      title: Separate lines
+      type: Variable
+      default:
+      description: >
+        The Separate lines variable
+
+    - name: descPlotsSepPlots
+      title: Separate plots
+      type: Variable
+      default:
+      description: >
+        The Separate plots variable
+
+    - name: dispErrBars
+      title: Error bars displaying
+      type: Bool
+      default: false
+      description: >
+        Error bars displaying
+
+    - name: errBarDef
+      title: Error Bar Definition
+      type: List
+      options:
+        - ci
+        - se
+      default: ci
+      description: >
+        Specifies the Error Bar definition as either "Confidence interval"(default) or "Standard Error"
+
+    - name: ciWidth
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+
+    - name: dispDescStats
+      title: Descriptive statistics
+      type: Bool
+      default: false
+      description: >
+        Display Descriptive statistics
+
+    - name: estEffSize
+      title: Estimates of effect size
+      type: Bool
+      default: false
+      description: >
+        Display Estimates of effect size
+
+    - name: effSizeN2
+      title: n2
+      type: Bool
+      default: false
+      description: >
+        Effect size n2
+
+    - name: partEffSizeN2
+      title: partial n2
+      type: Bool
+      default: false
+      description: >
+        Effect size partial n2
+
+    - name: effSizeW2
+      title: w2
+      type: Bool
+      default: false
+      description: >
+        Effect size w2

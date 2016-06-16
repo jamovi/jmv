@@ -64,9 +64,9 @@ var ttestisLayout = LayoutDef.extend({
                             label: "Hypothesis",
                             level: "2",
                             items : [
-                                { name: "hypothesis_different", optionId: "hypothesis", type:"radiobutton", value: "different", label: "Group 1 ≠ Group 2" },
-                                { name: "hypothesis_oneGreater", optionId: "hypothesis", type:"radiobutton", value: "oneGreater", label: "Group 1 > Group 2" },
-                                { name: "hypothesis_twoGreater", optionId: "hypothesis", type:"radiobutton", value: "twoGreater", label: "Group 1 < Group 2" }
+                                { name: "hypothesis_different", optionId: "hypothesis", type:"radiobutton", checkedValue: "different", label: "Group 1 ≠ Group 2" },
+                                { name: "hypothesis_oneGreater", optionId: "hypothesis", type:"radiobutton", checkedValue: "oneGreater", label: "Group 1 > Group 2" },
+                                { name: "hypothesis_twoGreater", optionId: "hypothesis", type:"radiobutton", checkedValue: "twoGreater", label: "Group 1 < Group 2" }
                             ]
                         },
                         {
@@ -109,8 +109,8 @@ var ttestisLayout = LayoutDef.extend({
                             label: "Missing values",
                             level: "2",
                             items : [
-                                { name: "miss_perAnalysis", optionId: "miss", type:"radiobutton", value: "perAnalysis", label: "Exclude cases analysis by analysis" },
-                                { name: "miss_listwise", optionId: "miss", type:"radiobutton", value: "listwise", label: "Exclude cases listwise" }
+                                { name: "miss_perAnalysis", optionId: "miss", type:"radiobutton", checkedValue: "perAnalysis", label: "Exclude cases analysis by analysis" },
+                                { name: "miss_listwise", optionId: "miss", type:"radiobutton", checkedValue: "listwise", label: "Exclude cases listwise" }
                             ]
                         }
                     ]
@@ -119,13 +119,14 @@ var ttestisLayout = LayoutDef.extend({
         }
     ],
 
-    actions: {
-
-        disable_ciWidth: function(context) {
-            var disabled = context.getObject("ci").get("value") === false;
-            context.getObject("ciWidth").set("disabled", disabled);
+    actions: [
+        {
+            onChange : "ci", execute : function(context) {
+                var disabled = context.getValue("ci") === false;
+                context.set("ciWidth", "disabled", disabled);
+            }
         }
-    }
+    ]
 });
 
 module.exports = { LayoutDef : ttestisLayout, options: options };

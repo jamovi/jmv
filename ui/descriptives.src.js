@@ -108,13 +108,14 @@ var descriptivesLayout = LayoutDef.extend({
         }
     ],
 
-    actions: {
-
-        disable_pcNEqGr: function(context) {
-            var disabled = context.getObject("pcEqGr").get("value") === false;
-            context.getObject("pcNEqGr").set("disabled", disabled);
+    actions: [
+        {
+            onChange : "pcEqGr", execute : function(context) {
+                var disabled = context.getValue("pcEqGr") === false;
+                context.set("pcNEqGr", "disabled", disabled);
+            }
         }
-    }
+    ]
 });
 
 module.exports = { LayoutDef : descriptivesLayout, options: options };
