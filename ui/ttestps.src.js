@@ -54,9 +54,9 @@ var ttestpsLayout = LayoutDef.extend({
                             label: "Hypothesis",
                             level: "2",
                             items : [
-                                { name: "hypothesis_different", optionId: "hypothesis", type:"radiobutton", value: "different", label: "Measure 1 ≠ Measure 2" },
-                                { name: "hypothesis_oneGreater", optionId: "hypothesis", type:"radiobutton", value: "oneGreater", label: "Measure 1 > Measure 2" },
-                                { name: "hypothesis_twoGreater", optionId: "hypothesis", type:"radiobutton", value: "twoGreater", label: "Measure 1 < Measure 2" }
+                                { name: "hypothesis_different", optionId: "hypothesis", type:"radiobutton", checkedValue: "different", label: "Measure 1 ≠ Measure 2" },
+                                { name: "hypothesis_oneGreater", optionId: "hypothesis", type:"radiobutton", checkedValue: "oneGreater", label: "Measure 1 > Measure 2" },
+                                { name: "hypothesis_twoGreater", optionId: "hypothesis", type:"radiobutton", checkedValue: "twoGreater", label: "Measure 1 < Measure 2" }
                             ]
                         },
                         {
@@ -98,8 +98,8 @@ var ttestpsLayout = LayoutDef.extend({
                             label: "Missing values",
                             level: "2",
                             items : [
-                                { name: "miss_perAnalysis", optionId: "miss", type:"radiobutton", value: "perAnalysis", label: "Exclude cases analysis by analysis" },
-                                { name: "miss_listwise", optionId: "miss", type:"radiobutton", value: "listwise", label: "Exclude cases listwise" }
+                                { name: "miss_perAnalysis", optionId: "miss", type:"radiobutton", checkedValue: "perAnalysis", label: "Exclude cases analysis by analysis" },
+                                { name: "miss_listwise", optionId: "miss", type:"radiobutton", checkedValue: "listwise", label: "Exclude cases listwise" }
                             ]
                         }
                     ]
@@ -108,13 +108,14 @@ var ttestpsLayout = LayoutDef.extend({
         }
     ],
 
-    actions: {
-
-        disable_ciWidth: function(context) {
-            var disabled = context.getObject("ci").get("value") === false;
-            context.getObject("ciWidth").set("disabled", disabled);
+    actions: [
+        {
+            onChange : "ci", execute : function(context) {
+                var disabled = context.getValue("ci") === false;
+                context.set("ciWidth", "disabled", disabled);
+            }
         }
-    }
+    ]
 });
 
 module.exports = { LayoutDef : ttestpsLayout, options: options };

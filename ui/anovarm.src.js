@@ -2,11 +2,12 @@
 // This file is an automatically generated template, it will not be subsequently
 // overwritten by the compiler, and may be edited
 
-var options = require('./anova.options');
+var options = require('./anovarm.options');
+//var _ = require('underscore');
 
-var anovaLayout = LayoutDef.extend({
+var anovarmLayout = LayoutDef.extend({
 
-    label: "ANOVA",
+    label: "Repeated Measures ANOVA",
     type: "root",
     items: [
         {
@@ -17,30 +18,37 @@ var anovaLayout = LayoutDef.extend({
             useVariables: true,
             items: [
                 {
-                    name: "dependent",
+                    name: "rmFactors",
                     type:"listbox",
-                    label: "Dependent Variable",
-                    showColumnHeaders: false,
-                    maxItemCount: 1,
-                    columns: [
-                        { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
-                    ]
-                },
-                {
-                    name: "fixedFactors",
-                    type:"listbox",
-                    label: "Fixed Factors",
+                    label: "Repeated Measures Factors",
                     showColumnHeaders: false,
                     columns: [
                         { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
                     ]
                 },
                 {
-                    name: "wlsWeights",
+                    name: "rmCells",
                     type:"listbox",
-                    label: "WLS Weights",
+                    label: "Repeated Measures Cells",
                     showColumnHeaders: false,
-                    maxItemCount: 1,
+                    columns: [
+                        { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                    ]
+                },
+                {
+                    name: "btwSubjFactors",
+                    type:"listbox",
+                    label: "Between Subject Factors",
+                    showColumnHeaders: false,
+                    columns: [
+                        { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                    ]
+                },
+                {
+                    name: "covariates",
+                    type:"listbox",
+                    label: "Covariates",
+                    showColumnHeaders: false,
                     columns: [
                         { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
                     ]
@@ -54,8 +62,9 @@ var anovaLayout = LayoutDef.extend({
             cell: [0, 1],
             items : [
                 {
-                    name: "modelSupplier",
+                    name: "rmcModelSupplier",
                     type: "supplier",
+                    label: "Repeated Measures Components",
                     cell: [0, 0],
                     persistentItems: true,
                     stretchFactor: 1,
@@ -63,7 +72,28 @@ var anovaLayout = LayoutDef.extend({
                     dockContentWidth: true,
                     items: [
                         {
-                            name: "modelTerms",
+                            name: "rmcModelTerms",
+                            type:"listbox",
+                            label: "Model Terms",
+                            showColumnHeaders: false,
+                            columns: [
+                                { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: "bscMdelSupplier",
+                    type: "supplier",
+                    label: "Repeated Measures Components",
+                    cell: [0, 1],
+                    persistentItems: true,
+                    stretchFactor: 1,
+                    fitToGrid: false,
+                    dockContentWidth: true,
+                    items: [
+                        {
+                            name: "bscModelTerms",
                             type:"listbox",
                             label: "Model Terms",
                             showColumnHeaders: false,
@@ -82,8 +112,18 @@ var anovaLayout = LayoutDef.extend({
             collapsed: true,
             cell: [0, 2],
             items : [
-                { name: "homoTests", type:"checkbox", label: "Homogeneity tests" },
-                { name: "qqPlotRes", type:"checkbox", label: "Q-Q plot of residuals" }
+                { name: "spherTests", type:"checkbox", label: "Sphericity tests" },
+                {
+                    name: "spherCorrs",
+                    type:"checkbox",
+                    label: "Sphericity corrections",
+                    items : [
+                        { name: "spherCorrNone", type:"checkbox", label: "None" },
+                        { name: "spherCorrGreenGsser", type:"checkbox", label: "Greenhouse-Geisser" },
+                        { name: "spherCorrHuyFdt", type:"checkbox", label: "Huynh-Feldt" }
+                    ]
+                },
+                { name: "homoTests", type:"checkbox", label: "Homogeneity tests" }
             ]
         },
         {
@@ -212,35 +252,6 @@ var anovaLayout = LayoutDef.extend({
             cell: [0, 6],
             items : [
                 {
-                    name: "marginalMeansSupplier",
-                    type: "supplier",
-                    stretchFactor: 1,
-                    fitToGrid: false,
-                    dockContentWidth: true,
-                    cell: [0, 0],
-                    persistentItems: false,
-                    items: [
-                        {
-                            name: "margMeans",
-                            type:"listbox",
-                            label: "Marginal means",
-                            showColumnHeaders: false,
-                            columns: [
-                                { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    name: "compMainEff",
-                    label: "Compare main effects",
-                    type:"checkbox",
-                    cell: [0, 1],
-                    items: [
-                        { name: "confIntAdj", type:"combobox", label: "Confidence interval adjustment", options: [{ label: "None", value: "None" }, { label: "Bonferroni", value: "Bonferroni" }, { label: "Sidak", value: "Sidak" }] }
-                    ]
-                },
-                {
                     name: "group4-2",
                     label: "Display",
                     cell: [0, 2],
@@ -263,25 +274,27 @@ var anovaLayout = LayoutDef.extend({
     ],
 
     actions: [
-         {
+        {
             onChange: "estEffSize", execute: function(context) {
-                var value = context.getValue("estEffSize");
-                context.set("effSizeN2", "disabled", value === false);
-                context.set("partEffSizeN2", "disabled", value === false);
-                context.set("effSizeW2", "disabled", value === false);
+                var disabled = context.getValue("estEffSize") === false;
+                context.set("effSizeN2", "disabled", disabled);
+                context.set("partEffSizeN2", "disabled", disabled);
+                context.set("effSizeW2", "disabled", disabled);
             }
         },
         {
-            onChange: "compMainEff", execute: function(context) {
-                var value = context.getValue("compMainEff") ;
-                context.set("confIntAdj", "disabled", value === false);
+            onChange: "spherCorrs", execute: function(context) {
+                var disabled = context.getValue("spherCorrs") === false;
+                context.set("spherCorrNone", "disabled", disabled);
+                context.set("spherCorrGreenGsser", "disabled", disabled);
+                context.set("spherCorrHuyFdt", "disabled", disabled);
             }
         },
         {
             onChange: "dispErrBars", execute: function(context) {
-                var value = context.getValue("dispErrBars");
-                context.set("errBarDef_se", "disabled", value === false);
-                context.set("errBarDef_ci", "disabled", value === false);
+                var disabled = context.getValue("dispErrBars") === false;
+                context.set("errBarDef_se", "disabled", disabled);
+                context.set("errBarDef_ci", "disabled", disabled);
             }
         },
         {
@@ -289,143 +302,8 @@ var anovaLayout = LayoutDef.extend({
                 var value = context.getValue("dispErrBars") === false || context.getValue("errBarDef") !== "ci";
                 context.set("ciWidth", "disabled", value);
             }
-        },
-        {
-            onChange: "fixedFactors", execute: function(context) {
-                var variableList = this.clone(context.getValue("fixedFactors"));
-                if (variableList === null)
-                    variableList = [];
-
-
-                context.setValue("modelSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
-                context.setValue("plotsSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
-                context.setValue("postHocSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
-
-
-                var diff = this.findDifferences(context.data.lastVariableList, variableList);
-                context.data.lastVariableList = variableList;
-
-                var currentList = this.clone(context.getValue("modelTerms"));
-                if (currentList === null)
-                    currentList = [];
-
-                for (var i = 0; i < diff.removed.length; i++) {
-                    for (var j = 0; j < currentList.length; j++) {
-                        if (FormatDef.variable.contains(currentList[j], diff.removed[i])) {
-                            currentList.splice(j, 1);
-                            j -= 1;
-                        }
-                    }
-                }
-
-                if (currentList === null)
-                    currentList = [];
-
-                for (var i = 0; i < diff.added.length; i++) {
-                    var listLength = currentList.length;
-                    for (var j = 0; j < listLength; j++) {
-                        var newVar = currentList[j];
-                        if (Array.isArray(newVar))
-                            newVar = this.clone(newVar);
-                        else
-                            newVar = [newVar];
-                        newVar.push(diff.added[i])
-                        currentList.push(newVar);
-                    }
-                    currentList.push(diff.added[i]);
-                }
-
-                context.setValue("modelTerms", currentList);
-
-
-                var list3 = [];
-                for (var i = 0; i < variableList.length; i++)
-                    list3.push({ var: variableList[i], type: "none" });
-
-                context.setValue("contrasts", list3);
-            }
-        },
-        {
-            onChange: "modelTerms", execute: function(context) {
-                var currentList = this.clone(context.getValue("modelTerms"));
-                if (currentList === null)
-                    currentList = [];
-                var diff = this.findDifferences(context.data.lastCurrentList, currentList);
-                context.data.lastCurrentList = currentList;
-
-                if (diff.removed.length > 0 && currentList !== null) {
-                    var itemsRemoved = false;
-                    for (var i = 0; i < diff.removed.length; i++) {
-                        var item = diff.removed[i];
-                        for (var j = 0; j < currentList.length; j++) {
-                            if (FormatDef.variable.contains(currentList[j], item)) {
-                                currentList.splice(j, 1);
-                                j -= 1;
-                                itemsRemoved = true;
-                            }
-                        }
-                    }
-
-                    if (itemsRemoved)
-                        context.setValue("modelTerms", currentList);
-                }
-
-                var list = this.convertArrayToSupplierList(currentList, FormatDef.variable);
-                context.setValue("marginalMeansSupplier", list);
-            }
         }
-    ],
-
-    convertArrayToSupplierList: function(array, format) {
-        var list = [];
-        for (var i = 0; i < array.length; i++) {
-            list.push({ value: new FormatDef.constructor(array[i], format) });
-        }
-        return list;
-    },
-
-    clone: function(object) {
-        return JSON.parse(JSON.stringify(object));
-    },
-
-    findDifferences: function(from, to) {
-        var j = 0;
-
-        var obj = { removed: [], added: [] };
-
-        if ((from === null || _.isUndefined(from)) && (to === null || _.isUndefined(to)))
-            return obj;
-        else if (from === null || _.isUndefined(from)) {
-            for (j = 0; j < to.length; j++)
-                obj.added.push(to[j]);
-        }
-        else if (to === null || _.isUndefined(to)) {
-            for (j = 0; j < from.length; j++)
-                obj.removed.push(from[j]);
-        }
-        else {
-            for (j = 0; j < from.length; j++) {
-                if (this.listContains(to, from[j]) === false)
-                    obj.removed.push(from[j]);
-            }
-
-            for (j = 0; j < to.length; j++) {
-                if (this.listContains(from, to[j]) === false)
-                    obj.added.push(to[j]);
-            }
-        }
-
-        return obj;
-    },
-
-    listContains: function(list, value) {
-        for (var i = 0; i < list.length; i++) {
-            if (FormatDef.variable.isEqual(list[i], value))
-                return true;
-        }
-
-        return false;
-    }
+    ]
 });
 
-module.exports = { LayoutDef : anovaLayout, options: options };
+module.exports = { LayoutDef : anovarmLayout, options: options };
