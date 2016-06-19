@@ -15,10 +15,11 @@ var kruskalLayout = LayoutDef.extend({
             cell: [0, 0],
             persistentItems: false,
             useVariables: true,
+            stretchFactor: 1,
             items: [
                 {
                     name: "deps",
-                    type:"listbox",
+                    type:"targetlistbox",
                     label: "Dependent Variables",
                     showColumnHeaders: false,
                     columns: [
@@ -27,7 +28,7 @@ var kruskalLayout = LayoutDef.extend({
                 },
                 {
                     name: "group",
-                    type:"listbox",
+                    type:"targetlistbox",
                     label: "Grouping Variable",
                     showColumnHeaders: false,
                     maxItemCount: 1,

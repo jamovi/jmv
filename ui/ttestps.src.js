@@ -15,10 +15,11 @@ var ttestpsLayout = LayoutDef.extend({
             cell: [0, 0],
             persistentItems: true,
             useVariables: true,
+            stretchFactor: 1,
             items: [
                 {
                     name: "pairs",
-                    type:"listbox",
+                    type:"targetlistbox",
                     label: "Paired Variables",
                     showColumnHeaders: false,
                     columns: [
@@ -32,7 +33,6 @@ var ttestpsLayout = LayoutDef.extend({
             name: "group2",
             cell: [0, 1],
             stretchFactor: 1,
-            fitToGrid: false,
             items : [
                 {
                     name: "column1",
@@ -83,9 +83,8 @@ var ttestpsLayout = LayoutDef.extend({
                                 { name: "meanDiff", type:"checkbox", label: "Mean difference" },
                                 { name: "effectSize", type:"checkbox", label: "Effect size" },
                                 {
-                                    name: "ci",
-                                    type:"checkbox",
-                                    label: "Confidence interval",
+                                    name: "groupA",
+                                    label: { name: "ci", type:"checkbox", label: "Confidence interval" },
                                     items: [
                                         { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", formatName: "number", inputPattern: "[0-9]+" }
                                     ]

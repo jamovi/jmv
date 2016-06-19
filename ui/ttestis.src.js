@@ -15,10 +15,11 @@ var ttestisLayout = LayoutDef.extend({
             cell: [0, 0],
             persistentItems: false,
             useVariables: true,
+            stretchFactor: 1,
             items: [
                 {
                     name: "vars",
-                    type:"listbox",
+                    type:"targetlistbox",
                     label: "Dependent Variables",
                     showColumnHeaders: false,
                     columns: [
@@ -27,7 +28,7 @@ var ttestisLayout = LayoutDef.extend({
                 },
                 {
                     name: "groupingVar",
-                    type:"listbox",
+                    type:"targetlistbox",
                     label: "Grouping Variable",
                     showColumnHeaders: false,
                     maxItemCount: 1,
@@ -41,7 +42,6 @@ var ttestisLayout = LayoutDef.extend({
             name: "group2",
             cell: [0, 1],
             stretchFactor: 1,
-            fitToGrid: false,
             items : [
                 {
                     name: "column1",
@@ -94,9 +94,8 @@ var ttestisLayout = LayoutDef.extend({
                                 { name: "meanDiff", type:"checkbox", label: "Mean difference" },
                                 { name: "effectSize", type:"checkbox", label: "Effect size" },
                                 {
-                                    name: "ci",
-                                    type:"checkbox",
-                                    label: "Confidence interval",
+                                    name: "groupA",
+                                    label: { name: "ci", type:"checkbox", label: "Confidence interval" },
                                     items: [
                                         { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", formatName: "number", inputPattern: "[0-9]+" }
                                     ]

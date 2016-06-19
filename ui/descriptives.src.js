@@ -14,10 +14,11 @@ var descriptivesLayout = LayoutDef.extend({
             cell: [0, 0],
             persistentItems: false,
             useVariables: true,
+            stretchFactor: 1,
             items: [
                 {
                     name: "vars",
-                    type:"listbox",
+                    type:"targetlistbox",
                     label: function() { return "Columns and stuff"; },
                     showColumnHeaders: false,
                     columns: [
@@ -29,6 +30,7 @@ var descriptivesLayout = LayoutDef.extend({
         {
             name: "group2",
             cell: [0, 1],
+            stretchFactor: 1,
             items : [
                 { name: "plots", type:"checkbox", label: "Display Plots" },
                 { name: "plotCorr", type:"checkbox", label: "Display Correlation Plot" },
@@ -40,6 +42,7 @@ var descriptivesLayout = LayoutDef.extend({
             label: "Statistics",
             cell: [0, 3],
             collapsed: true,
+            stretchFactor: 1,
             items : [
                 {
                     name: "group11",
@@ -48,9 +51,8 @@ var descriptivesLayout = LayoutDef.extend({
                     items : [
                         { name: "quart", type:"checkbox", label: "Quartiles" },
                         {
-                            name: "pcEqGr",
-                            type: "checkbox",
-                            label: "Cut points for",
+                            name: "groupA",
+                            label: { name: "pcEqGr", type:"checkbox", label: "Cut points for" },
                             cell: [0, 1],
                             style: "inline",
                             items : [

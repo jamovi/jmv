@@ -16,10 +16,11 @@ var anovarmLayout = LayoutDef.extend({
             cell: [0, 0],
             persistentItems: false,
             useVariables: true,
+            stretchFactor: 1,
             items: [
                 {
                     name: "rmFactors",
-                    type:"listbox",
+                    type:"targetlistbox",
                     label: "Repeated Measures Factors",
                     showColumnHeaders: false,
                     columns: [
@@ -28,7 +29,7 @@ var anovarmLayout = LayoutDef.extend({
                 },
                 {
                     name: "rmCells",
-                    type:"listbox",
+                    type:"targetlistbox",
                     label: "Repeated Measures Cells",
                     showColumnHeaders: false,
                     columns: [
@@ -37,7 +38,7 @@ var anovarmLayout = LayoutDef.extend({
                 },
                 {
                     name: "btwSubjFactors",
-                    type:"listbox",
+                    type:"targetlistbox",
                     label: "Between Subject Factors",
                     showColumnHeaders: false,
                     columns: [
@@ -46,7 +47,7 @@ var anovarmLayout = LayoutDef.extend({
                 },
                 {
                     name: "covariates",
-                    type:"listbox",
+                    type:"targetlistbox",
                     label: "Covariates",
                     showColumnHeaders: false,
                     columns: [
@@ -60,6 +61,7 @@ var anovarmLayout = LayoutDef.extend({
             label: "Model",
             collapsed: true,
             cell: [0, 1],
+            stretchFactor: 1,
             items : [
                 {
                     name: "rmcModelSupplier",
@@ -73,7 +75,7 @@ var anovarmLayout = LayoutDef.extend({
                     items: [
                         {
                             name: "rmcModelTerms",
-                            type:"listbox",
+                            type:"targetlistbox",
                             label: "Model Terms",
                             showColumnHeaders: false,
                             columns: [
@@ -94,7 +96,7 @@ var anovarmLayout = LayoutDef.extend({
                     items: [
                         {
                             name: "bscModelTerms",
-                            type:"listbox",
+                            type:"targetlistbox",
                             label: "Model Terms",
                             showColumnHeaders: false,
                             columns: [
@@ -111,12 +113,12 @@ var anovarmLayout = LayoutDef.extend({
             label: "Assumption Checks",
             collapsed: true,
             cell: [0, 2],
+            stretchFactor: 1,
             items : [
                 { name: "spherTests", type:"checkbox", label: "Sphericity tests" },
                 {
-                    name: "spherCorrs",
-                    type:"checkbox",
-                    label: "Sphericity corrections",
+                    name: "groupAa",
+                    label: {name: "spherCorrs", type:"checkbox", label: "Sphericity corrections"},
                     items : [
                         { name: "spherCorrNone", type:"checkbox", label: "None" },
                         { name: "spherCorrGreenGsser", type:"checkbox", label: "Greenhouse-Geisser" },
@@ -131,6 +133,7 @@ var anovarmLayout = LayoutDef.extend({
             label: "Contrasts",
             collapsed: true,
             cell: [0, 3],
+            stretchFactor: 1,
             items : [
                 {
                     name: "contrasts",
@@ -149,6 +152,7 @@ var anovarmLayout = LayoutDef.extend({
             label: "Post Hoc Tests",
             collapsed: true,
             cell: [0, 4],
+            stretchFactor: 1,
             items : [
                 {
                     name: "postHocSupplier",
@@ -161,7 +165,7 @@ var anovarmLayout = LayoutDef.extend({
                     items: [
                         {
                             name: "postHocTests",
-                            type:"listbox",
+                            type:"targetlistbox",
                             label: "",
                             showColumnHeaders: false,
                             columns: [
@@ -188,6 +192,7 @@ var anovarmLayout = LayoutDef.extend({
             label: "Descriptive Plots",
             collapsed: true,
             cell: [0, 5],
+            stretchFactor: 1,
             items : [
                 {
                     name: "plotsSupplier",
@@ -200,7 +205,7 @@ var anovarmLayout = LayoutDef.extend({
                     items: [
                         {
                             name: "descPlotsHAxis",
-                            type:"listbox",
+                            type:"targetlistbox",
                             label: "Horizontal axis",
                             showColumnHeaders: false,
                             maxItemCount: 1,
@@ -210,7 +215,7 @@ var anovarmLayout = LayoutDef.extend({
                         },
                         {
                             name: "descPlotsSepLines",
-                            type:"listbox",
+                            type:"targetlistbox",
                             label: "Separate lines",
                             showColumnHeaders: false,
                             maxItemCount: 1,
@@ -220,7 +225,7 @@ var anovarmLayout = LayoutDef.extend({
                         },
                         {
                             name: "descPlotsSepPlots",
-                            type:"listbox",
+                            type:"targetlistbox",
                             label: "Separate plots",
                             showColumnHeaders: false,
                             maxItemCount: 1,
@@ -235,12 +240,20 @@ var anovarmLayout = LayoutDef.extend({
                     label: "Display",
                     cell: [0, 1],
                     items: [
-                        { name: "dispErrBars", type:"checkbox", label: "Error bars displaying", items: [
-                            { name: "errBarDef_ci", optionId: "errBarDef", type:"radiobutton", checkedValue: "ci", label: "Confidence interval", items:[
-                                { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", formatName: "number", inputPattern: "[0-9]+" }
-                            ]},
-                            { name: "errBarDef_se", optionId: "errBarDef", type:"radiobutton", checkedValue: "se", label: "Standard Error" }
-                        ]}
+                        {
+                            name: "groupA",
+                            label: { name: "dispErrBars", type:"checkbox", label: "Error bars displaying" },
+                            items: [
+                                {
+                                    name: "groupB",
+                                    label: { name: "errBarDef_ci", optionId: "errBarDef", type:"radiobutton", checkedValue: "ci", label: "Confidence interval" },
+                                    items:[
+                                        { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", formatName: "number", inputPattern: "[0-9]+" }
+                                    ]
+                                },
+                                { name: "errBarDef_se", optionId: "errBarDef", type:"radiobutton", checkedValue: "se", label: "Standard Error" }
+                            ]
+                        }
                     ]
                 }
             ]
@@ -250,6 +263,7 @@ var anovarmLayout = LayoutDef.extend({
             label: "Additional Options",
             collapsed: true,
             cell: [0, 6],
+            stretchFactor: 1,
             items : [
                 {
                     name: "group4-2",
@@ -258,9 +272,8 @@ var anovarmLayout = LayoutDef.extend({
                     items: [
                         { name: "dispDescStats", type:"checkbox", label: "Descriptive statistics" },
                         {
-                            name: "estEffSize",
-                            label: "Estimates of effect size",
-                            type:"checkbox",
+                            name: "groupD",
+                            label: { name: "estEffSize", label: "Estimates of effect size", type:"checkbox" },
                             items: [
                                 { name: "effSizeN2", type:"checkbox", label: "n2" },
                                 { name: "partEffSizeN2", type:"checkbox", label: "partial n2" },
