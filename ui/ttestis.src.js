@@ -27,7 +27,7 @@ var ttestisLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    name: "groupingVar",
+                    name: "group",
                     type:"targetlistbox",
                     label: "Grouping Variable",
                     showColumnHeaders: false,
