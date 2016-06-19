@@ -16,6 +16,7 @@ items:
         - name: sep
           title: ""
           type: text
+          format: sep
           content: '-'
         
         - name: name2
@@ -25,23 +26,23 @@ items:
         - name: test[stud]
           title: Test
           content: Student's t
-          visible: (student)
+          visible: (students)
           
         - name: stat[stud]
           title: 'statistic'
           type: number
-          visible: (student)
+          visible: (students)
         
         - name: df[stud]
           title: df
           type: number
-          visible: (student)
+          visible: (students)
 
         - name: p[stud]
           title: p
           type: number
           format: zto,pvalue
-          visible: (student)
+          visible: (students)
           
         - name: md[stud]
           title: Mean difference
@@ -125,6 +126,7 @@ items:
           title: ""
           type: text
           content: '-'
+          format: sep
           
         - name: name2
           title: ""
@@ -143,47 +145,25 @@ items:
       title: Descriptives
       type: Table
       visible: (desc)
-      rows: (pairs)
       
       columns:
-        - name: name1
-          title: ""
-          content: .
-          type: text
-          
-        - name: sep
-          title: ""
-          content: '-'
-          type: text
-        
-        - name: name2
+        - name: name
           title: ""
           content: .
           type: text
           
         - name: num
           title: "N"
+          type: integer
+          
+        - name: m
+          title: Mean
+          type: number
+
+        - name: sd
+          title: SD
           type: number
           
-        - name: m1
-          title: Mean 1
-          type: number
-        
-        - name: m2
-          title: Mean 2
-          
-        - name: sd1
-          title: SD 1
-          type: number
-        
-        - name: sd2
-          title: SD 2
-          type: number
-          
-        - name: se1
-          title: SE 1
-          type: number
-          
-        - name: se2
-          title: SE 2
+        - name: se
+          title: SE
           type: number

@@ -4,195 +4,190 @@ TTestISClass <- R6Class("TTestISClass",
     private=list(
         .run=function() {
         
-            dataset <- self$options$dataset()
-            naHandling <- self$options$values()$miss
+            groupVarName <- self$options$get('group')
+            depVarNames <- self$options$get('vars')
             
-            ttest <- self$results$get("ttest")
-            desc <- self$results$get("descriptives")
-            normality <- self$results$get("normality")
-            equality <- self$results$get("equalityOfV")
+            if (is.null(groupVarName) || length(depVarNames) == 0)
+                return()
             
-            groupingVariable <- self$options$values()$groupingVar
-            dependentVariables <- self$options$values()$vars
+            data <- self$options$dataset()
             
-            wantsStudents <- self$options$values()$student
-            wantsWelchs <- self$options$values()$welch
-            wantsMannWhitney <- self$options$values()$mann
+            for (name in depVarNames)
+                data[[name]] <- silkycore::toNumeric(data[[name]])
             
-            cl <- self$options$values()$ciWidth/100
+            ttestTable <- self$results$get("ttest")
+            descTable <- self$results$get("desc")
+            normTable <- self$results$get("assum")$get("norm")
+            eqvTable <- self$results$get("assum")$get("eqv")
             
-            ## Clean up NAs in grouping variable from the whole dataset
-            dataset <- dataset[complete.cases(dataset[groupingVariable]),]
+            confInt <- self$options$get('ciWidth') / 100
             
-            ## Error catching for improper grouping variables
-            if (length(groupingVariable) > 1)
-                silkycore::reject("There must only be one grouping variable", code="too_many_grouping_vars")
+            if (any(depVarNames == groupVarName))
+                silkycore::reject("Grouping variable '{a}' must not also be a dependent variable", code="a_is_dependent_variable", a=groupVarName)
             
-            else if (any(dependentVariables == groupingVariable))
-                silkycore::reject("Grouping variable '{a}' must not also be a dependent variable", code="a_is_dependent_variable", a=groupingVariable)
+            # exclude rows with missings in the grouping variable
+            data <- data[ ! is.na(data[[groupVarName]]),]
             
-            else if (length(unique(dataset[[groupingVariable]])) != 2 || length(levels(dataset[[groupingVariable]])) != 2)
-                silkycore::reject("Grouping variable '{a}' must have exactly 2 levels", code="grouping_var_must_have_2_levels", a=groupingVariable)
+            #if (dimn(data)[1] == 0)
+            #    silkycore::reject("Grouping variable '{a}' must not also be a dependent variable", code="a_is_dependent_variable", a=groupVarName)
             
-            ## After checking for problems in the grouping variable, we can safely assign the levels
-            groupingVariableLevels <- levels(dataset[[groupingVariable]])
+            groupLevels <- base::levels(data[[groupVarName]])
             
-            ## Listwise NA cleanup
-            if (naHandling == "listwise") {
-                
-                dataset.clean <- dataset[complete.cases(dataset[dependentVariables]),]
-                
-                ## Check if removing NA has excluded all of one group in the grouping variable
-                if (length(unique(dataset.clean[[groupingVariable]])) != 2)
-                    silkycore::reject("Grouping variable '{a}' has less than 2 levels after missing values are excluded", code="grouping_var_must_have_2_levels", a=groupingVariable)
-                
+            if (length(groupLevels) != 2)
+                silkycore::reject("Grouping variable '{a}' must have exactly 2 levels", code="grouping_var_must_have_2_levels", a=groupVarName)
+            
+            if (self$options$get('miss') == "listwise") {
+                data <- na.omit(data)
+                if (dim(data)[1] == 0)
+                    silkycore::reject("Grouping variable '{a}' has less than 2 levels after missing values are excluded", code="grouping_var_must_have_2_levels", a=groupVarName)
             }
             
             ## Hypothesis options checking
             if (self$options$values()$hypothesis == "oneGreater") {
-                
-                altHypothesis <- "greater"
+                Ha <- "greater"
                 # Footnote message TBC
-                
             } else if (self$options$values()$hypothesis == "twoGreater") {
-                
-                altHypothesis <- "less"
+                Ha <- "less"
                 # Footnote message TBC
-                
-            } else 
-                altHypothesis <- "two.sided"
+            } else {
+                Ha <- "two.sided"
+            }
             
             
-            for (i in seq_along(dependentVariables)) {
-
-                name   <- dependentVariables[[i]]
+            for (depName in depVarNames) {
                 
-                ## NA handling analysis by analysis
-                if (naHandling == "perAnalysis") {
-                    
-                    dataset.clean <- dataset[complete.cases(dataset[[name]]),]
-                
-                    ## Check if removing NA has excluded all of one group in the grouping variable
-                    if (length(unique(dataset.clean[[groupingVariable]])) != 2)
-                        silkycore::reject("Grouping variable '{a}' has less than 2 levels after missing values of dependent variable '{b}' are excluded", code="grouping_var_must_have_2_levels", a=groupingVariable, b=name)
-                
+                if (self$options$get('miss') == "perAnalysis") {
+                    dataTTest <- data.frame(dep=data[[depName]], group=data[[groupVarName]])
+                    dataTTest <- na.omit(dataTTest)
+                } else {
+                    dataTTest <- data
                 }
                 
-                column <- dataset.clean[[name]]
+                groupLevels <- base::levels(dataTTest$group)
+                v <- tapply(dataTTest$dep, dataTTest$group, var)
+                n <- tapply(dataTTest$dep, dataTTest$group, length)
+                m <- tapply(dataTTest$dep, dataTTest$group, mean)
+                se <- sqrt(v/n)
                 
-                f <- as.formula(paste(dependentVariables[i], "~", groupingVariable))
+                sediff <- sqrt((v[1]/n[1])+(v[2]/n[2]))
                 
-                sampleVar <- tapply(column, dataset.clean[[groupingVariable]], var)
-                n <- tapply(column, dataset.clean[[groupingVariable]], length)
-                m <- tapply(column, dataset.clean[[groupingVariable]], mean)
-                se <- sqrt(sampleVar/n)
-                
-                sediff <- sqrt((sampleVar[1]/n[1])+(sampleVar[2]/n[2]))
-                
-                pooledSD <- sqrt(((n[1]-1)*sampleVar[1]+(n[2]-1)*sampleVar[2])/(n[1]+n[2]-2))
+                pooledSD <- sqrt(((n[1]-1)*v[1]+(n[2]-1)*v[2])/(n[1]+n[2]-2))
                 d <- (m[1]-m[2])/pooledSD # Cohen's d
                 
+                
                 ## Levene's test and equality of variances table
-                levene <- NULL
-                levene <- car::leveneTest(f, data=dataset.clean, "mean")
                 
+                levene <- car::leveneTest(dep ~ group, data=dataTTest, "mean")
+
                 if (is.na(levene[1,"F value"])){
-                    
-                    equality$addFootnote(rowNo=i,"name","F-statistic could not be calculated")
-                    equality$setCell(rowNo=i,"f","")
-                    equality$setCell(rowNo=i,"df","")
-                    equality$setCell(rowNo=i,"p","")
-                    
+
+                    eqvTable$setRow(rowKey=depName, list("f"=NaN, "df"="", "p"=""))
+                    eqvTable$addFootnote(rowNo=i, "f", "F-statistic could not be calculated")
+
                 } else {
-                    
-                    equality$setCell(rowNo=i,"f",levene[1,"F value"])
-                    equality$setCell(rowNo=i,"df",levene[1,"Df"])
-                    equality$setCell(rowNo=i,"p",levene[1,"Pr(>F)"])
-                    
+
+                    eqvTable$setRow(rowKey=depName, list(
+                        "f"=levene[1,"F value"],
+                        "df"=levene[1,"Df"],
+                        "p"=levene[1,"Pr(>F)"]))
                 }
                 
-                ## T-test table implementation
-                res <- NULL
-                if (wantsStudents) {
+                if (self$options$get('students')) {
                     
-                    res <- t.test(f, data=dataset.clean, var.equal=TRUE, paired=FALSE, alternative=altHypothesis, conf.level=cl)
+                    res <- t.test(dep ~ group, data=dataTTest, var.equal=TRUE, paired=FALSE, alternative=Ha, conf.level=confInt)
                     
-                    ttest$setCell(rowNo=i, "studT", res$statistic)
-                    ttest$setCell(rowNo=i, "studDf", res$parameter)
-                    ttest$setCell(rowNo=i, "studP", res$p.value)
-                    ttest$setCell(rowNo=i, "studMeanDiff", res$estimate[1]-res$estimate[2])
-                    ttest$setCell(rowNo=i, "studSEDiff", sediff)
-                    ttest$setCell(rowNo=i, "studEffectSize", d)
-                    ttest$setCell(rowNo=i, "studLowerCI", res$conf.int[1])
-                    ttest$setCell(rowNo=i, "studUpperCI", res$conf.int[2])
+                    ttestTable$setRow(rowKey=depName, list(
+                        "stat[stud]"=res$statistic,
+                        "df[stud]"=res$parameter,
+                        "p[stud]"=res$p.value,
+                        "md[stud]"=res$estimate[1]-res$estimate[2],
+                        "sed[stud]"=sediff,
+                        "es[stud]"=d,
+                        "cil[stud]"=res$conf.int[1],
+                        "ciu[stud]"=res$conf.int[2]))
                     
-                    ## Inform if a student's t-test is appropriate using Levene's test
-                    if (!wantsWelchs && !is.na(levene[1,"Pr(>F)"]) && levene[1,"Pr(>F)"] < .05)
-                        ttest$addFootnote(rowNo=i, "studTest", "Levene's test is significant (p < .05), suggesting a violation of the equal variance assumption")
-                    
+                    # ## Inform if a student's t-test is appropriate using Levene's test
+                    # if (!wantsWelchs && !is.na(levene[1,"Pr(>F)"]) && levene[1,"Pr(>F)"] < .05)
+                    #     ttestTable$addFootnote(rowNo=i, "studTest", "Levene's test is significant (p < .05), suggesting a violation of the equal variance assumption")
+                    # 
                 }
                 
-                res <- NULL
-                if (wantsWelchs) {
+                if (self$options$get('welchs')) {
+
+                    res <- t.test(dep ~ group, data=dataTTest, var.equal=FALSE, paired=FALSE, alternative=Ha, conf.level=confInt)
                     
-                    res <- t.test(f, data=dataset.clean, var.equal=FALSE, paired=FALSE, alternative=altHypothesis, conf.level=cl)
-                    
-                    ttest$setCell(rowNo=i, "welchT", res$statistic)
-                    ttest$setCell(rowNo=i, "welchDf", res$parameter)
-                    ttest$setCell(rowNo=i, "welchP", res$p.value)
-                    ttest$setCell(rowNo=i, "welchMeanDiff", res$estimate[1]-res$estimate[2])
-                    ttest$setCell(rowNo=i, "welchSEDiff", sediff)
-                    ttest$setCell(rowNo=i, "welchEffectSize", d)
-                    ttest$setCell(rowNo=i, "welchLowerCI", res$conf.int[1])
-                    ttest$setCell(rowNo=i, "welchUpperCI", res$conf.int[2])
+                    ttestTable$setRow(rowKey=depName, list(
+                        "stat[welc]"=res$statistic,
+                        "df[welc]"=res$parameter,
+                        "p[welc]"=res$p.value,
+                        "md[welc]"=res$estimate[1]-res$estimate[2],
+                        "sed[welc]"=sediff,
+                        "es[welc]"=d,
+                        "cil[welc]"=res$conf.int[1],
+                        "ciu[welc]"=res$conf.int[2]))
                 }
                 
-                res <- NULL
-                if (wantsMannWhitney) {
-                    
-                    res <- suppressWarnings(wilcox.test(f, data=dataset.clean, alternative=altHypothesis, paired=FALSE ,conf.int=TRUE, conf.level=cl))
-                    
-                    ttest$setCell(rowNo=i, "mannW", res$statistic)
-                    ttest$setCell(rowNo=i, "mannP", res$p.value)
-                    ttest$setCell(rowNo=i, "mannMeanDiff", res$estimate)
-                    ttest$setCell(rowNo=i, "mannSEDiff", sediff)
-                    ttest$setCell(rowNo=i, "mannEffectSize", d)
-                    ttest$setCell(rowNo=i, "mannLowerCI", res$conf.int[1])
-                    ttest$setCell(rowNo=i, "mannUpperCI", res$conf.int[2])
+                if (self$options$get('mann')) {
+
+                    res <- suppressWarnings(wilcox.test(dep ~ group, data=dataTTest, alternative=Ha, paired=FALSE, conf.int=TRUE, conf.level=confInt))
+
+                    ttestTable$setRow(rowKey=depName, list(
+                        "stat[mann]"=res$statistic,
+                        "df[mann]"=res$parameter,
+                        "p[mann]"=res$p.value,
+                        "md[mann]"=res$estimate,
+                        "sed[mann]"=sediff,
+                        "es[mann]"=d,
+                        "cil[mann]"=res$conf.int[1],
+                        "ciu[mann]"=res$conf.int[2]))
                 }
                 
-                ## Normality test table & Descriptives table
-                for (k in seq_along(groupingVariableLevels)) {
+                if (self$options$get('norm')) {
                     
-                    res <- NULL
-                    currentGroup <- 2*(i-1)+k
+                    columns <- tapply(dataTTest$dep, dataTTest$group, na.omit)
+                    values <- list()
+                    values[["name"]] <- depName
                     
-                    groupColumn <- column[dataset.clean[[groupingVariable]] == groupingVariableLevels[k]]
+                    column1 <- columns[[1]]
+                    column2 <- columns[[2]]
                     
-                    if (length(groupColumn) < 3) {
-                        normality$addFootnote(rowNo=currentGroup, "group", "Too few observations (N < 3) to compute statistic")
-                        res$statistic <- ""
-                        res$p.value <- ""
+                    for (i in 1:2) {
+                        group <- groupLevels[i]
+                        column <- columns[[i]]
+                        
+                        values[[paste0('group[', i, ']')]] <- group
+                        
+                        if (length(column) < 3) {
+                            values[[paste0('w[', i, ']')]] <- NaN
+                            values[[paste0('p[', i, ']')]] <- ''
+                        } else if (length(column) > 5000) {
+                            values[[paste0('w[', i, ']')]] <- NaN
+                            values[[paste0('p[', i, ']')]] <- ''
+                        } else {
+                            res <- shapiro.test(column)
+                            values[[paste0('w[', i, ']')]] <- res$statistic
+                            values[[paste0('p[', i, ']')]] <- res$p.value
+                        }
                     }
-                    else if (length(groupColumn) > 5000) {
-                        normality$addFootnote(rowNo=currentGroup, "group", "Too many observations (N > 5000) to compute statistic")
-                        res$statistic <- ""
-                        res$p.value <- ""
-                    }
-                    else {
-                        res <- shapiro.test(groupColumn)
-                    }
                     
-                    normality$setCell(rowNo=currentGroup, "group", groupingVariableLevels[k])
-                    normality$setCell(rowNo=currentGroup, "w", res$statistic)
-                    normality$setCell(rowNo=currentGroup, "p", res$p.value)
+                    normTable$setRow(rowKey=depName, values)
+                }
+                
+                if (self$options$get('desc')) {
                     
-                    desc$setCell(rowNo=currentGroup, "group", groupingVariableLevels[k])
-                    desc$setCell(rowNo=currentGroup, "num", n[k])
-                    desc$setCell(rowNo=currentGroup, "mean", m[k])
-                    desc$setCell(rowNo=currentGroup, "sd", sqrt(sampleVar[k]))
-                    desc$setCell(rowNo=currentGroup, "se", se[k])
-                    
+                    descTable$setRow(rowKey=depName, list(
+                        "dep"=depName,
+                        "group[1]"=groupLevels[1],
+                        "num[1]"=n[1],
+                        "mean[1]"=m[1],
+                        "sd[1]"=sqrt(v[1]),
+                        "se[1]"=se[1],
+                        "group[2]"=groupLevels[2],
+                        "num[2]"=n[2],
+                        "mean[2]"=m[2],
+                        "sd[2]"=sqrt(v[2]),
+                        "se[2]"=se[2]
+                    ))
                 }
             }
         }

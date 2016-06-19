@@ -9,84 +9,84 @@ items:
       rows: (vars)
       
       columns:
-        - name: name
+        - name: var
           title: ""
           content: ($key)
           type: text
         
-        - name: studTest
-          title: Test
-          content: Student's
-          visible: (student)
+        - name: name[stud]
+          title: ''
+          content: Student's t
+          visible: (students)
           
-        - name: studT
-          title: t
+        - name: stat[stud]
+          title: statistic
           type: number
-          visible: (student)
+          visible: (students)
         
-        - name: studDf
+        - name: df[stud]
           title: df
           type: number
-          visible: (student)
+          visible: (students)
 
-        - name: studP
+        - name: p[stud]
           title: p
           type: number
           format: zto,pvalue
-          visible: (student)
+          visible: (students)
           
-        - name: studMeanDiff
+        - name: md[stud]
           title: Mean difference
           type: number
-          visible: (meanDiff && student)
+          visible: (meanDiff && students)
           
-        - name: studEffectSize
+        - name: es[stud]
           title: Cohen's d
           type: number
-          visible: (effectSize && student)
+          visible: (effectSize && students)
           
-        - name: studLowerCI
+        - name: lci[stud]
           title: Lower
           type: number
-          visible: (ci && student)
+          visible: (ci && students)
           
-        - name: studUpperCI
+        - name: uci[stud]
           title: Upper
           type: number
-          visible: (ci && student)
+          visible: (ci && students)
           
-        - name: mannTest
+        - name: name[mann]
           title: Test
-          content: Mann-Whitney
+          content: Mann-Whitney U
           visible: (mann)
           
-        - name: mannV
-          title: V
+        - name: stat[mann]
+          title: stat
           type: number
           visible: (mann)
 
-        - name: mannP
+        - name: p[mann]
           title: p
           type: number
           format: zto,pvalue
           visible: (mann)
           
-        - name: mannMeanDiff
+        - name: md[mann]
           title: Mean difference
           type: number
           visible: (meanDiff && mann)
 
-        - name: mannEffectSize
+        - name: es[mann]
           title: Cohen's d
           type: number
           visible: (effectSize && mann)
           
-        - name: mannLowerCI
+        - name: lci[mann]
           title: Lower
           type: number
           visible: (ci && mann)
           
-        - name: mannUpperCI
+        - name: uci[mann]
           title: Upper
           type: number
           visible: (ci && mann)

@@ -22,7 +22,7 @@ options:
       description: >
         The variables of interest
         
-    - name: student
+    - name: students
       title: Student's test
       type: Bool
       default: true

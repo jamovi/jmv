@@ -15,6 +15,14 @@ items:
           content: ($key)
           type: text
         
+        - name: 'n'
+          title: 'N'
+          type: integer
+          
+        - name: missing
+          title: Missing
+          type: integer
+        
         - name: mean
           title: Mean
           type: number
@@ -122,14 +130,14 @@ items:
               title: "Cumulative %"
               type: number
 
-    - name: corrMatrix
-      title: Correlations
-      type: Image
-      renderInitFun: .plotCorr
-      renderFun: .plotCorr
-      width: 400
-      height: 300
-
+#    - name: corrMatrix
+#      title: Correlations
+#      type: Image
+#      renderInitFun: .plotCorr
+#      renderFun: .plotCorr
+#      width: 400
+#      height: 300
+#
 #    - name: frequencyPlots
 #      title: Frequencies
 #      type: Array

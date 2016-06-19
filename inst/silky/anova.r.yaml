@@ -7,11 +7,15 @@ items:
       title: ANOVA
       type: Table
       rows: (terms)
+      clearWith:
+        - dependent
+        - modelTerms
+        - sumOfSqu
 
       columns:
         - name: name
           title: ""
-          content: ($key)
+          content: .
           type: text
 
         - name: ss
@@ -61,7 +65,7 @@ items:
     - name: contrasts
       title: Contrasts
       type: Array
-      items: (fixedFactors)
+      items: 0
       visible: (contrasts)
 
       template:

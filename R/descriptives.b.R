@@ -9,14 +9,19 @@ DescriptivesClass <- R6::R6Class("DescriptivesClass",
             desc <- self$results$get("descriptives")
             freq <- self$results$get("frequencies")
             
-            for (i in seq_along(self$options$values()$vars)) {
+            for (i in seq_along(self$options$get("vars"))) {
                 
                 name   <- self$options$values()$vars[[i]]
-                column <- na.omit(dataset[[name]])
+                column <- dataset[[name]]
+                total <- length(column)
+                column <- na.omit(column)
+                
+                desc$setCell(rowNo=i, "n", length(column))
+                desc$setCell(rowNo=i, "missing", total - length(column))
                 
                 if (silkycore::canBeNumeric(column)) {
                     
-                    numColumn <- as.numeric(column)
+                    numColumn <- silkycore::toNumeric(column)
                     
                     desc$setCell(rowNo=i, "mean", mean(numColumn))
                     desc$setCell(rowNo=i, "median", median(numColumn))

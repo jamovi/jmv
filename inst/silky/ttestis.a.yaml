@@ -15,24 +15,24 @@ options:
       description: >
         The variables of interest
         
-    - name: groupingVar
+    - name: group
       title: Grouping variable
-      type: Variables
+      type: Variable
       description: >
         The grouping variable
         
-    - name: student
-      title: Student's test
+    - name: students
+      title: Student's
       type: Bool
       default: true
       
-    - name: welch
-      title: Welch's test
+    - name: welchs
+      title: Welch's
       type: Bool
       default: false
       
     - name: mann
-      title: Mann-Whitney U test
+      title: Mann-Whitney U
       type: Bool
       default: false
       

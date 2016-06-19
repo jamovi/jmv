@@ -4,12 +4,27 @@ AnovaClass <- R6::R6Class(
     inherit=silkycore::Analysis,
     private=list(
         .model=NA,
+        .init=function() {
+
+            fixedFactors <- self$options$get('fixedFactors')
+            anovaTable <- self$results$get('anova')
+            
+            modelTerms <- private$.modelTerms()
+            if (length(modelTerms) > 0) {
+                for (term in modelTerms)
+                    anovaTable$addRow(rowKey=term, list(name=paste(term, collapse=' \u273B ')))
+            } else {
+                anovaTable$addRow(rowKey='.', list(name='.'))
+            }
+            anovaTable$addRow(rowKey='', list(name='Residuals'))
+        },
         .run=function() {
             
             dependentName <- self$options$get('dependent')
             fixedFactors <- self$options$get('fixedFactors')
+            modelTerms <- private$.modelTerms()
             
-            if (is.null(dependentName) || is.null(fixedFactors))
+            if (is.null(dependentName) || length(fixedFactors) == 0 || length(modelTerms) == 0)
                 return()
             
             data <- self$data
@@ -17,7 +32,7 @@ AnovaClass <- R6::R6Class(
             for (factorName in fixedFactors)
                 data[[factorName]] <- as.factor(data[[factorName]])
             
-            data[[dependentName]] <- as.numeric(data[[dependentName]])
+            data[[dependentName]] <- silkycore::toNumeric(data[[dependentName]])
             
             for (contrast in self$options$get('contrasts')) {
                 base::options(contrasts=c("contr.sum","contr.poly"))
@@ -25,12 +40,18 @@ AnovaClass <- R6::R6Class(
                 stats::contrasts(data[[contrast$var]]) <- private$.createContrasts(levels, contrast$type)
             }
             
-            factors <- paste0('`', self$options$get('fixedFactors'), '`', collapse='*')
-            formula <- paste0('`', self$options$get('dependent'), '`~', factors)
-            
+            formula <- silkycore::constructFormula(self$options$get('dependent'), private$.modelTerms())
             formula <- stats::as.formula(formula)
             private$.model <- stats::aov(formula, data)
-            results <- car::Anova(private$.model, type='II', singular.ok=TRUE)
+            
+            if (self$options$get('sumOfSqu') == "Type I") {
+                results <- stats::anova(private$.model)
+            } else if (self$options$get('sumOfSqu') == "Type II") {
+                results <- car::Anova(private$.model, type='2', singular.ok=TRUE)
+            } else {
+                results <- car::Anova(private$.model, type='3', singular.ok=TRUE)
+                results <- results[-1,]
+            }
             
             anovaTable <- self$results$get('anova')
             rowCount <- dim(results)[1]
@@ -57,7 +78,7 @@ AnovaClass <- R6::R6Class(
                     p <- NA
                 
                 tableRow <- list(ss=ss, df=df, ms=ms, F=F, p=p)
-                anovaTable$addRow(rowKey=rowName, tableRow)
+                anovaTable$setRow(rowNo=i, tableRow)
             }
             
             private$.populateContrasts(data)
@@ -97,15 +118,13 @@ AnovaClass <- R6::R6Class(
             
             dep <- self$options$get('dependent')
             factors <- self$options$get('fixedFactors')
-            rhs <- paste0(factors, collapse=':')
-            formula <- as.formula(paste0(dep, '~', rhs))
+            rhs <- paste0('`', factors, '`', collapse=':')
+            formula <- as.formula(paste0('`', dep, '`', '~', rhs))
             
             result <- car::leveneTest(formula, data, center="mean")
             
             table <- self$results$get('assump')$get('eqVar')
-            
-            print(result)
-            
+
             table$setRow(rowNo=1, values=list(
                 F=result[1,'F value'],
                 df1=result[1,'Df'],
@@ -202,9 +221,26 @@ AnovaClass <- R6::R6Class(
                 
                 contrast <- stats::contr.poly(levels)
                 dimnames(contrast) <- NULL
+            } else {
+                
+                contrast <- NULL
             }
             
             contrast
+        },
+        .modelTerms = function() {
+            modelTerms <- self$options$get('modelTerms')
+            if (length(modelTerms) == 0) {
+                fixedFactors <- self$options$get('fixedFactors')
+                if (length(fixedFactors) > 0) {
+                    formula <- as.formula(paste('~', paste(paste0('`', fixedFactors, '`'), collapse='*')))
+                    terms <- attr(stats::terms(formula), 'term.labels')
+                    modelTerms <- sapply(terms, function(x) as.list(strsplit(x, ':')), USE.NAMES=FALSE)
+                } else {
+                    modelTerms <- list()
+                }
+            }
+            return(modelTerms)
         })
 )
 

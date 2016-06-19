@@ -31,6 +31,7 @@ items:
       title: Dwass-Steel-Chritchlow-Fligner pairwise comparisons
       type: Array
       items: (deps)
+      visible: (pairs)
       
       template:
         title: Pairwise comparisons - $key
@@ -47,6 +48,7 @@ items:
             title: ""
             content: '-'
             type: text
+            format: sep
             
           - name: p2
             title: ""

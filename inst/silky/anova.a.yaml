@@ -31,6 +31,7 @@ options:
           type: Group
           elements:
               - name: var
+                type: Variable
                 content: $key
               - name: type
                 type: List
@@ -73,7 +74,7 @@ options:
 
     - name: modelTerms
       title: Model Terms
-      type: Variables
+      type: Terms
       default:
       description: >
         The model terms
@@ -225,6 +226,6 @@ options:
         - Type I
         - Type II
         - Type III
-      default: Type I
+      default: Type III
       description: >
         Sum of squares

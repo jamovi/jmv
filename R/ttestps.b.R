@@ -13,24 +13,29 @@ TTestPSClass <- R6Class("TTestPSClass",
             if (self$options$get('miss') == 'listwise')
                 data <- na.omit(data)
             
-            if (self$options$values()$hypothesis == "oneGreater")
+            if (self$options$get("hypothesis") == "oneGreater")
                 Ha <- "greater"
-            else if (self$options$values()$hypothesis == "twoGreater")
+            else if (self$options$get("hypothesis") == "twoGreater")
                 Ha <- "less"
             else
                 Ha <- "two.sided"
             
-            confInt <- self$options$values()$ciWidth/100
+            confInt <- self$options$get("ciWidth")/100
             
             pairs <- self$options$get('pairs')
             
-            for (pair in pairs) {
+            for (i in seq_along(pairs)) {
+                
+                pair <- pairs[[i]]
                 
                 name1 <- pair$i1
                 name2 <- pair$i2
                 
                 if (is.null(name1) || is.null(name2))
                     next()
+                
+                data[[name1]] <- silkycore::toNumeric(data[[name1]])
+                data[[name2]] <- silkycore::toNumeric(data[[name2]])
                 
                 if (self$options$get('miss') == "perAnalysis") {
                     pairsData <- na.omit(data[c(name1, name2)])
@@ -48,6 +53,8 @@ TTestPSClass <- R6Class("TTestPSClass",
                 m2   <- mean(column2)
                 se1  <- sqrt(var1/n)
                 se2  <- sqrt(var2/n)
+                sd1  <- sd(column1)
+                sd2  <- sd(column2)
                 
                 pooledSD <- stats::sd(column1-column2)
                 sediff <- pooledSD/sqrt(n)
@@ -77,40 +84,55 @@ TTestPSClass <- R6Class("TTestPSClass",
                     'ciu[wilc]'=wilc$conf.int[2]))
                 
             
-                 ## Normality test table
-                
-                 res <- NULL
+                ## Normality test table
                  
-                 w <- NaN
-                 p <- NA
+                w <- NaN
+                p <- NA
                  
-                 if (n < 3 || n > 5000) {
-                     
-                    if (n > 5000)
-                        normTable$addFootnote(rowKey=pair, 'w', "Too many observations (N > 5000) to compute statistic")
-                    else
-                        normTable$addFootnote(rowKey=pair, 'w', "Too few observations (N < 3) to compute statistic")
-                    
-                 } else if ((column1[n]-column2[n])-(column1[1L]-column2[1L]) == 0) {
-                     
-                     normTable$addFootnote(rowKey=pair, 'w', "Unable to compute: variance is zero (variables likely contain all the same value)")
-                 }
-                 else {
-                     res <- shapiro.test(column1-column2)
-                     normTable$setRow(rowKey=pair, list(
-                         name1=name1, name2=name2, w=res$statistic, p=res$p.value))
-                 }
+                if (n < 3) {
+                    normTable$addFootnote(rowKey=pair, 'w', "Too few observations (N < 3) to compute statistic")
+                }
+                else if (n > 5000) {
+                    normTable$addFootnote(rowKey=pair, 'w', "Too many observations (N > 5000) to compute statistic")
+                }
+                else {
+                    res <- shapiro.test(column1-column2)
+                    w <- res$statistic
+                    p <- res$p.value
+                }
                 
-                descTable$setRow(rowKey=pair, list(
-                    name1=name1,
-                    name2=name2,
-                    num=n,
-                    m1=base::mean(column1),
-                    m2=base::mean(column2),
-                    sd1=stats::sd(column1),
-                    sd2=stats::sd(column2),
-                    se1=stats::var(column1),
-                    se2=stats::var(column2)))
+                normTable$setRow(rowKey=pair, list(
+                    name1=name1, name2=name2, w=w, p=p))
+                
+                
+                
+                row1Key <- paste0(pair$i1, i)
+                row2Key <- paste0(pair$i2, i)
+                
+                descTable$setRow(rowKey=row1Key, list(
+                    "name"=name1,
+                    "num"=n,
+                    "m"=m1,
+                    "sd"=sd1,
+                    "se"=se1))
+                
+                descTable$setRow(rowKey=row2Key, list(
+                    "name"=name2,
+                    "num"=n,
+                    "m"=m2,
+                    "sd"=sd2,
+                    "se"=se2))
+            }
+        },
+        .init=function() {
+            descTable <- self$results$get('desc')
+            pairs <- self$options$get('pairs')
+            for (i in seq_along(pairs)) {
+                pair <- pairs[[i]]
+                row1Key <- paste0(pair$i1, i)
+                row2Key <- paste0(pair$i2, i)
+                descTable$addRow(row1Key)
+                descTable$addRow(row2Key)
             }
         }
     )

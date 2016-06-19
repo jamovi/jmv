@@ -1,5 +1,5 @@
 ---
-name:    Anovarm
+name:    AnovaRM
 title:   Repeated Measures ANOVA
 package: silkyR
 
@@ -37,14 +37,14 @@ options:
 
     - name: rmcModelTerms
       title: Model Terms
-      type: Variables
+      type: Terms
       default:
       description: >
         The Repeated Measures model terms
 
     - name: bscModelTerms
       title: Model Terms
-      type: Variables
+      type: Terms
       default:
       description: >
         The Between Subjects model terms

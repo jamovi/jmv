@@ -9,219 +9,257 @@ items:
       rows: (vars)
       
       columns:
-        - name: name
+        - name: var
           title: ""
           content: ($key)
           type: text
         
-        - name: studTest
-          title: Test
-          content: Student's
-          visible: (student)
+        - name: name[stud]
+          title: ''
+          type: string
+          content: Student's t
+          visible: (students)
           
-        - name: studT
-          title: t
+        - name: stat[stud]
+          title: statistic
           type: number
-          visible: (student)
+          visible: (students)
         
-        - name: studDf
+        - name: df[stud]
           title: df
           type: number
-          visible: (student)
+          visible: (students)
 
-        - name: studP
+        - name: p[stud]
           title: p
           type: number
           format: zto,pvalue
-          visible: (student)
+          visible: (students)
           
-        - name: studMeanDiff
+        - name: md[stud]
           title: Mean difference
           type: number
-          visible: (meanDiff && student)
+          visible: (meanDiff && students)
           
-        - name: studSEDiff
+        - name: sed[stud]
           title: SE difference
           type: number
-          visible: (meanDiff && student)
+          visible: (meanDiff && students)
           
-        - name: studEffectSize
+        - name: es[stud]
           title: Cohen's d
           type: number
-          visible: (effectSize && student)
+          visible: (effectSize && students)
           
-        - name: studLowerCI
+        - name: cil[stud]
           title: Lower
           type: number
-          visible: (ci && student)
+          visible: (ci && students)
           
-        - name: studUpperCI
+        - name: ciu[stud]
           title: Upper
           type: number
-          visible: (ci && student)
+          visible: (ci && students)
           
-        - name: welchTest
-          title: Test
-          content: Welch's
-          visible: (welch)
-          
-        - name: welchT
-          title: t
-          type: number
-          visible: (welch)
+        - name: name[welc]
+          title: ''
+          content: Welch's t
+          visible: (welchs)
+
+        - name: stat[welc]
+          title: statistic
+          visible: (welchs)
         
-        - name: welchDf
+        - name: df[welc]
           title: df
           type: number
-          visible: (welch)
+          visible: (welchs)
 
-        - name: welchP
+        - name: p[welc]
           title: p
           type: number
           format: zto,pvalue
-          visible: (welch)
+          visible: (welchs)
           
-        - name: welchMeanDiff
+        - name: md[welc]
           title: Mean difference
           type: number
-          visible: (meanDiff && welch)
+          visible: (meanDiff && welchs)
           
-        - name: welchSEDiff
+        - name: sed[welc]
           title: SE difference
           type: number
-          visible: (meanDiff && welch)
+          visible: (meanDiff && welchs)
           
-        - name: welchEffectSize
+        - name: es[welc]
           title: Cohen's d
           type: number
-          visible: (effectSize && Welchs)
+          visible: (effectSize && welchs)
           
-        - name: welchLowerCI
+        - name: cil[welc]
           title: Lower
           type: number
-          visible: (ci && welch)
+          visible: (ci && welchs)
           
-        - name: welchUpperCI
+        - name: ciu[welc]
           title: Upper
           type: number
-          visible: (ci && welch)
-          
-        - name: mannTest
-          title: Test
-          content: Mann-Whitney
+          visible: (ci && welchs)
+
+        - name: name[mann]
+          title: ''
+          content: Mann-Whitney U
           visible: (mann)
           
-        - name: mannW
-          title: W
-          type: number
+        - name: stat[mann]
+          title: statistic
+          content: .
           visible: (mann)
 
-        - name: mannP
+        - name: p[mann]
           title: p
           type: number
           format: zto,pvalue
           visible: (mann)
           
-        - name: mannMeanDiff
+        - name: md[mann]
           title: Mean difference
           type: number
           visible: (meanDiff && mann)
           
-        - name: mannSEDiff
+        - name: sed[mann]
           title: SE difference
           type: number
           visible: (meanDiff && mann)
 
-        - name: mannEffectSize
+        - name: es[mann]
           title: Cohen's d
           type: number
           visible: (effectSize && mann)
           
-        - name: mannLowerCI
+        - name: cil[mann]
           title: Lower
           type: number
           visible: (ci && mann)
           
-        - name: mannUpperCI
+        - name: ciu[mann]
           title: Upper
           type: number
           visible: (ci && mann)
           
-    - name: normality
-      title: Test of Normality (Shapiro-Wilk)
-      type: Table
-      visible: (norm)
-      rows: (rep(vars, each=2))
-      
-      columns:
-        - name: name
-          title: ""
-          content: ($key)
-          type: text
+    - name: assum
+      title: Assumptions
+      type: Group
+      items:
+        - name: norm
+          title: Test of Normality (Shapiro-Wilk)
+          type: Table
+          visible: (norm)
+          rows: (vars)
           
-        - name: group
-          title: Group
-          type: text
+          columns:
+            - name: name
+              title: ""
+              content: ($key)
+              type: text
+              
+            - name: group[1]
+              title: Group
+              type: text
+              
+            - name: group[2]
+              title: Group
+              type: text
+              
+            - name: w[1]
+              title: "W"
+              type: number
+              
+            - name: w[2]
+              title: "W"
+              type: number
+              
+            - name: p[1]
+              title: p
+              type: number
+              format: zto,pvalue
+            
+            - name: p[2]
+              title: p
+              type: number
+              format: zto,pvalue
           
-        - name: w
-          title: "W"
-          type: number
+        - name: eqv
+          title: Test of Equality of Variances (Levene's)
+          type: Table
+          visible: (equality)
+          rows: (vars)
           
-        - name: p
-          type: number
-          format: zto,pvalue
-          
-    - name: equalityOfV
-      title: Test of Equality of Variances (Levene's)
-      type: Table
-      visible: (equality)
-      rows: (vars)
-      
-      columns:
-        - name: name
-          title: ""
-          content: ($key)
-          type: text
-          
-        - name: f
-          title: "F"
-          type: number
-          
-        - name: df
-          type: number
-          
-        - name: p
-          type: number
-          format: zto,pvalue
+          columns:
+            - name: name
+              title: ""
+              content: ($key)
+              type: text
+              
+            - name: f
+              title: "F"
+              type: number
+              
+            - name: df
+              type: number
+              
+            - name: p
+              type: number
+              format: zto,pvalue
 
-    - name: descriptives
+    - name: desc
       title: Group Descriptives
       type: Table
       visible: (desc)
-      rows: (rep(vars, each=2))
+      rows: (vars)
       
       columns:
-        - name: name
+        - name: dep
           title: ""
           content: ($key)
           type: text
           
-        - name: group
+        - name: group[1]
           title: Group
           type: text
           
-        - name: num
+        - name: num[1]
           title: "N"
-          type: number
+          type: integer
           
-        - name: mean
+        - name: mean[1]
           title: Mean
           type: number
           
-        - name: sd
+        - name: sd[1]
           title: SD
           type: number
           
-        - name: se
+        - name: se[1]
+          title: SE
+          type: number
+          
+        - name: group[2]
+          title: Group
+          type: text
+          
+        - name: num[2]
+          title: "N"
+          type: integer
+          
+        - name: mean[2]
+          title: Mean
+          type: number
+          
+        - name: sd[2]
+          title: SD
+          type: number
+          
+        - name: se[2]
           title: SE
           type: number
