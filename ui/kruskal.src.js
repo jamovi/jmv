@@ -8,18 +8,16 @@ var kruskalLayout = LayoutDef.extend({
 
     label: "Kruskal-Wallis",
     type: "root",
-    items: [
+    controls: [
         {
-            name: "group1",
             type: "supplier",
-            cell: [0, 0],
             persistentItems: false,
             useVariables: true,
             stretchFactor: 1,
-            items: [
+            controls: [
                 {
-                    name: "deps",
                     type:"targetlistbox",
+                    name: "deps",
                     label: "Dependent Variables",
                     showColumnHeaders: false,
                     columns: [
@@ -27,8 +25,8 @@ var kruskalLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    name: "group",
                     type:"targetlistbox",
+                    name: "group",
                     label: "Grouping Variable",
                     showColumnHeaders: false,
                     maxItemCount: 1,
@@ -38,7 +36,7 @@ var kruskalLayout = LayoutDef.extend({
                 }
             ]
         },
-        { name: "pairs", type:"checkbox", label: "DSCF Pairwise Comparisons" }
+        { type:"checkbox", name: "pairs", label: "DSCF Pairwise Comparisons" }
     ]
 });
 

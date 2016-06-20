@@ -9,18 +9,17 @@ var anovarmLayout = LayoutDef.extend({
 
     label: "Repeated Measures ANOVA",
     type: "root",
-    items: [
+    controls: [
         {
-            name: "variableSupplier",
             type: "supplier",
-            cell: [0, 0],
+            name: "variableSupplier",
             persistentItems: false,
             useVariables: true,
             stretchFactor: 1,
-            items: [
+            controls: [
                 {
-                    name: "rmFactors",
                     type:"targetlistbox",
+                    name: "rmFactors",
                     label: "Repeated Measures Factors",
                     showColumnHeaders: false,
                     columns: [
@@ -28,8 +27,8 @@ var anovarmLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    name: "rmCells",
                     type:"targetlistbox",
+                    name: "rmCells",
                     label: "Repeated Measures Cells",
                     showColumnHeaders: false,
                     columns: [
@@ -37,8 +36,8 @@ var anovarmLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    name: "btwSubjFactors",
                     type:"targetlistbox",
+                    name: "btwSubjFactors",
                     label: "Between Subject Factors",
                     showColumnHeaders: false,
                     columns: [
@@ -46,8 +45,8 @@ var anovarmLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    name: "covariates",
                     type:"targetlistbox",
+                    name: "covariates",
                     label: "Covariates",
                     showColumnHeaders: false,
                     columns: [
@@ -57,25 +56,21 @@ var anovarmLayout = LayoutDef.extend({
             ]
         },
         {
-            name: "group2",
+            type: "groupbox",
             label: "Model",
             collapsed: true,
-            cell: [0, 1],
             stretchFactor: 1,
-            items : [
+            controls : [
                 {
-                    name: "rmcModelSupplier",
                     type: "supplier",
+                    name: "rmcModelSupplier",
                     label: "Repeated Measures Components",
-                    cell: [0, 0],
                     persistentItems: true,
                     stretchFactor: 1,
-                    fitToGrid: false,
-                    dockContentWidth: true,
-                    items: [
+                    controls: [
                         {
+                            type: "targetlistbox",
                             name: "rmcModelTerms",
-                            type:"targetlistbox",
                             label: "Model Terms",
                             showColumnHeaders: false,
                             columns: [
@@ -85,18 +80,15 @@ var anovarmLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    name: "bscMdelSupplier",
                     type: "supplier",
-                    label: "Repeated Measures Components",
-                    cell: [0, 1],
+                    name: "bscMdelSupplier",
+                    label: "Between Subjects Components",
                     persistentItems: true,
                     stretchFactor: 1,
-                    fitToGrid: false,
-                    dockContentWidth: true,
-                    items: [
+                    controls: [
                         {
-                            name: "bscModelTerms",
                             type:"targetlistbox",
+                            name: "bscModelTerms",
                             label: "Model Terms",
                             showColumnHeaders: false,
                             columns: [
@@ -109,35 +101,37 @@ var anovarmLayout = LayoutDef.extend({
             ]
         },
         {
-            name: "group7",
+            type: "groupbox",
             label: "Assumption Checks",
             collapsed: true,
-            cell: [0, 2],
             stretchFactor: 1,
-            items : [
-                { name: "spherTests", type:"checkbox", label: "Sphericity tests" },
+            controls : [
+                { type:"checkbox", name: "spherTests", label: "Sphericity tests" },
                 {
-                    name: "groupAa",
-                    label: {name: "spherCorrs", type:"checkbox", label: "Sphericity corrections"},
-                    items : [
-                        { name: "spherCorrNone", type:"checkbox", label: "None" },
-                        { name: "spherCorrGreenGsser", type:"checkbox", label: "Greenhouse-Geisser" },
-                        { name: "spherCorrHuyFdt", type:"checkbox", label: "Huynh-Feldt" }
+                    type:"checkbox", name: "spherCorrs", label: "Sphericity corrections",
+                    controls : [
+                        {
+                            style: "inline",
+                            controls: [
+                                { type:"checkbox", name: "spherCorrNone", label: "None" },
+                                { type:"checkbox", name: "spherCorrGreenGsser", label: "Greenhouse-Geisser" },
+                                { type:"checkbox", name: "spherCorrHuyFdt", label: "Huynh-Feldt" }
+                            ]
+                        }
                     ]
                 },
-                { name: "homoTests", type:"checkbox", label: "Homogeneity tests" }
+                { type:"checkbox", name: "homoTests", label: "Homogeneity tests" }
             ]
         },
         {
-            name: "group6",
+            type: "groupbox",
             label: "Contrasts",
             collapsed: true,
-            cell: [0, 3],
             stretchFactor: 1,
-            items : [
+            controls : [
                 {
-                    name: "contrasts",
                     type:"listbox",
+                    name: "contrasts",
                     label: "Factors",
                     showColumnHeaders: false,
                     columns: [
@@ -148,24 +142,20 @@ var anovarmLayout = LayoutDef.extend({
             ]
         },
         {
-            name: "group3",
+            type: "groupbox",
             label: "Post Hoc Tests",
             collapsed: true,
-            cell: [0, 4],
             stretchFactor: 1,
-            items : [
+            controls : [
                 {
-                    name: "postHocSupplier",
                     type: "supplier",
-                    cell: [0, 0],
+                    name: "postHocSupplier",
                     persistentItems: false,
                     stretchFactor: 1,
-                    fitToGrid: false,
-                    dockContentWidth: true,
-                    items: [
+                    controls: [
                         {
-                            name: "postHocTests",
                             type:"targetlistbox",
+                            name: "postHocTests",
                             label: "",
                             showColumnHeaders: false,
                             columns: [
@@ -175,37 +165,32 @@ var anovarmLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    name: "group3-2",
+                    type: "groupbox",
                     label: "Correction",
-                    cell: [0, 1],
-                    items: [
-                        { name: "corrTukey", type:"checkbox", label: "Tukey" },
-                        { name: "corrScheffe", type:"checkbox", label: "Scheffe" },
-                        { name: "corrBonf", type:"checkbox", label: "Bonferroni" },
-                        { name: "corrHolm", type:"checkbox", label: "Holm" }
+                    controls: [
+                        { type:"checkbox", name: "corrTukey", label: "Tukey" },
+                        { type:"checkbox", name: "corrScheffe", label: "Scheffe" },
+                        { type:"checkbox", name: "corrBonf", label: "Bonferroni" },
+                        { type:"checkbox", name: "corrHolm", label: "Holm" }
                     ]
                 }
             ]
         },
         {
-            name: "group5",
+            type: "groupbox",
             label: "Descriptive Plots",
             collapsed: true,
-            cell: [0, 5],
             stretchFactor: 1,
-            items : [
+            controls : [
                 {
-                    name: "plotsSupplier",
                     type: "supplier",
+                    name: "plotsSupplier",
                     stretchFactor: 1,
-                    fitToGrid: false,
-                    dockContentWidth: true,
-                    cell: [0, 0],
                     persistentItems: false,
-                    items: [
+                    controls: [
                         {
-                            name: "descPlotsHAxis",
                             type:"targetlistbox",
+                            name: "descPlotsHAxis",
                             label: "Horizontal axis",
                             showColumnHeaders: false,
                             maxItemCount: 1,
@@ -214,8 +199,8 @@ var anovarmLayout = LayoutDef.extend({
                             ]
                         },
                         {
-                            name: "descPlotsSepLines",
                             type:"targetlistbox",
+                            name: "descPlotsSepLines",
                             label: "Separate lines",
                             showColumnHeaders: false,
                             maxItemCount: 1,
@@ -224,8 +209,8 @@ var anovarmLayout = LayoutDef.extend({
                             ]
                         },
                         {
-                            name: "descPlotsSepPlots",
                             type:"targetlistbox",
+                            name: "descPlotsSepPlots",
                             label: "Separate plots",
                             showColumnHeaders: false,
                             maxItemCount: 1,
@@ -236,18 +221,15 @@ var anovarmLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    name: "group5-2",
+                    type: "groupbox",
                     label: "Display",
-                    cell: [0, 1],
-                    items: [
+                    controls: [
                         {
-                            name: "groupA",
-                            label: { name: "dispErrBars", type:"checkbox", label: "Error bars displaying" },
-                            items: [
+                            name: "dispErrBars", type:"checkbox", label: "Error bars displaying",
+                            controls: [
                                 {
-                                    name: "groupB",
-                                    label: { name: "errBarDef_ci", optionId: "errBarDef", type:"radiobutton", checkedValue: "ci", label: "Confidence interval" },
-                                    items:[
+                                    name: "errBarDef_ci", optionId: "errBarDef", type:"radiobutton", checkedValue: "ci", label: "Confidence interval",
+                                    controls:[
                                         { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", formatName: "number", inputPattern: "[0-9]+" }
                                     ]
                                 },
@@ -259,25 +241,27 @@ var anovarmLayout = LayoutDef.extend({
             ]
         },
         {
-            name: "group4",
+            type: "groupbox",
             label: "Additional Options",
             collapsed: true,
-            cell: [0, 6],
             stretchFactor: 1,
-            items : [
+            controls : [
                 {
-                    name: "group4-2",
+                    type: "groupbox",
                     label: "Display",
-                    cell: [0, 2],
-                    items: [
-                        { name: "dispDescStats", type:"checkbox", label: "Descriptive statistics" },
+                    controls: [
+                        { type:"checkbox", name: "dispDescStats", label: "Descriptive statistics" },
                         {
-                            name: "groupD",
-                            label: { name: "estEffSize", label: "Estimates of effect size", type:"checkbox" },
-                            items: [
-                                { name: "effSizeN2", type:"checkbox", label: "n2" },
-                                { name: "partEffSizeN2", type:"checkbox", label: "partial n2" },
-                                { name: "effSizeW2", type:"checkbox", label: "w2" }
+                            type:"checkbox", name: "estEffSize", label: "Estimates of effect size",
+                            controls: [
+                                {
+                                    style: "inline",
+                                    controls: [
+                                        { name: "effSizeN2", type:"checkbox", label: "n2" },
+                                        { name: "partEffSizeN2", type:"checkbox", label: "partial n2" },
+                                        { name: "effSizeW2", type:"checkbox", label: "w2" }
+                                    ]
+                                }
                             ]
                         }
                     ]

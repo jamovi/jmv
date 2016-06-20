@@ -7,19 +7,16 @@ var descriptivesLayout = LayoutDef.extend({
 
     label: "Descriptives",
     type: "root",
-    items: [
+    controls: [
         {
-            name: "group1",
             type: "supplier",
-            cell: [0, 0],
             persistentItems: false,
             useVariables: true,
             stretchFactor: 1,
-            items: [
+            controls: [
                 {
-                    name: "vars",
                     type:"targetlistbox",
-                    label: function() { return "Columns and stuff"; },
+                    name: "vars",
                     showColumnHeaders: false,
                     columns: [
                         { name: 'column1', label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
@@ -28,82 +25,77 @@ var descriptivesLayout = LayoutDef.extend({
             ]
         },
         {
-            name: "group2",
-            cell: [0, 1],
+            type: "groupbox",
             stretchFactor: 1,
-            items : [
-                { name: "plots", type:"checkbox", label: "Display Plots" },
-                { name: "plotCorr", type:"checkbox", label: "Display Correlation Plot" },
-                { name: "freq", type:"checkbox", label: "Display Frequency Tables (nominal and ordinal variables)" }
+            controls : [
+                {type:"checkbox",  name: "plots", label: "Display Plots" },
+                { type:"checkbox", name: "plotCorr", label: "Display Correlation Plot" },
+                { type:"checkbox", name: "freq", label: "Display Frequency Tables (nominal and ordinal variables)" }
             ]
         },
         {
-            name: "group3",
+            type: "groupbox",
             label: "Statistics",
-            cell: [0, 3],
+            type: "groupbox",
             collapsed: true,
             stretchFactor: 1,
-            items : [
+            controls : [
                 {
-                    name: "group11",
+                    type: "groupbox",
                     label: "Percentile Values",
                     cell: [0, 0],
-                    items : [
-                        { name: "quart", type:"checkbox", label: "Quartiles" },
+                    controls : [
+                        { type:"checkbox", name: "quart", label: "Quartiles" },
                         {
-                            name: "groupA",
-                            label: { name: "pcEqGr", type:"checkbox", label: "Cut points for" },
-                            cell: [0, 1],
+                            type:"checkbox", name: "pcEqGr", label: "Cut points for",
                             style: "inline",
-                            items : [
-                                { name: "pcNEqGr", type:"textbox", label: "", suffix : "equal groups", formatName:"number", inputPattern: "[0-9]+" }
+                            controls : [
+                                { type:"textbox", name: "pcNEqGr", label: "", suffix : "equal groups", formatName:"number", inputPattern: "[0-9]+" }
                             ]
                         }
                     ],
                 },
                 {
-                    name: "group5",
+                    type: "groupbox",
                     label: "Central Tendency",
                     cell: [1, 0],
-                    items: [
-                        { name: "mean", type:"checkbox", label: "Mean" },
-                        { name: "median", type:"checkbox", label: "Median" },
-                        { name: "mode", type:"checkbox", label: "Mode" },
-                        { name: "sum", type:"checkbox", label: "Sum" }
+                    controls: [
+                        { type:"checkbox", name: "mean", label: "Mean" },
+                        { type:"checkbox", name: "median", label: "Median" },
+                        { type:"checkbox", name: "mode", label: "Mode" },
+                        { type:"checkbox", name: "sum", label: "Sum" }
                     ]
                 },
                 {
-                    name: "group6",
+                    type: "groupbox",
                     label: "Dispersion",
                     cell: [0, 1],
-                    items: [
+                    controls: [
                         {
-                            name: "group7",
                             cell: [0, 0],
-                            items : [
-                                { name: "sd", type:"checkbox", label: "Std. deviation" },
-                                { name: "variance", type:"checkbox", label: "Variance" },
-                                { name: "range", type:"checkbox", label: "Range" }
+                            controls : [
+                                { type:"checkbox", name: "sd", label: "Std. deviation" },
+                                { type:"checkbox", name: "variance", label: "Variance" },
+                                { type:"checkbox", name: "range", label: "Range" }
                             ]
                         },
                         {
-                            name: "group8",
                             cell: [1, 0],
-                            items : [
-                                { name: "min", type:"checkbox", label: "Minimum" },
-                                { name: "max", type:"checkbox", label: "Maximum" },
-                                { name: "se", type:"checkbox", label: "S. E. Mean" }
+                            controls : [
+                                { type:"checkbox", name: "min", label: "Minimum" },
+                                { type:"checkbox", name: "max", label: "Maximum" },
+                                { type:"checkbox", name: "se", label: "S. E. Mean" }
                             ]
                         }
                     ]
                 },
                 {
-                    name: "group9",
+                    type: "groupbox",
                     label: "Distribution",
                     cell: [1, 1],
-                    items : [
-                        { name: "skew", type:"checkbox", label: "Skewness" },
-                        { name: "kurt", type:"checkbox", label: "Kurtosis" }
+                    controls : [
+                        { type:"checkbox", name: "skew", label: "Skewness" },
+                        { type:"checkbox", name: "kurt", label: "Kurtosis" }
                     ],
                 }
             ]
