@@ -8,18 +8,16 @@ var ttestisLayout = LayoutDef.extend({
 
     label: "Independent Samples T-Test",
     type: "root",
-    items: [
+    controls: [
         {
-            name: "group1",
             type: "supplier",
-            cell: [0, 0],
             persistentItems: false,
             useVariables: true,
             stretchFactor: 1,
-            items: [
+            controls: [
                 {
-                    name: "vars",
                     type:"targetlistbox",
+                    name: "vars",
                     label: "Dependent Variables",
                     showColumnHeaders: false,
                     columns: [
@@ -39,43 +37,40 @@ var ttestisLayout = LayoutDef.extend({
             ]
         },
         {
-            name: "group2",
-            cell: [0, 1],
             stretchFactor: 1,
-            items : [
+            controls : [
                 {
                     name: "column1",
                     cell: [0, 0],
                     stretchFactor: 1,
-                    fitToGrid: false,
-                    items : [
+                    controls : [
                         {
-                            name: "column1-1",
+                            type: "groupbox",
                             label: "Tests",
                             level: "2",
-                            items : [
-                                { name: "student", type:"checkbox", label: "Student" },
-                                { name: "welch", type:"checkbox", label: "Welch" },
-                                { name: "mann", type:"checkbox", label: "Mann-Whitney U" }
+                            controls : [
+                                { type:"checkbox", name: "student", label: "Student" },
+                                { type:"checkbox", name: "welch", label: "Welch" },
+                                { type:"checkbox", name: "mann", label: "Mann-Whitney U" }
                             ]
                         },
                         {
-                            name: "column1-2",
+                            type: "groupbox",
                             label: "Hypothesis",
                             level: "2",
-                            items : [
-                                { name: "hypothesis_different", optionId: "hypothesis", type:"radiobutton", checkedValue: "different", label: "Group 1 ≠ Group 2" },
-                                { name: "hypothesis_oneGreater", optionId: "hypothesis", type:"radiobutton", checkedValue: "oneGreater", label: "Group 1 > Group 2" },
-                                { name: "hypothesis_twoGreater", optionId: "hypothesis", type:"radiobutton", checkedValue: "twoGreater", label: "Group 1 < Group 2" }
+                            controls : [
+                                { type:"radiobutton", name: "hypothesis_different", optionId: "hypothesis", checkedValue: "different", label: "Group 1 ≠ Group 2" },
+                                { type:"radiobutton", name: "hypothesis_oneGreater", optionId: "hypothesis", checkedValue: "oneGreater", label: "Group 1 > Group 2" },
+                                { type:"radiobutton", name: "hypothesis_twoGreater", optionId: "hypothesis", checkedValue: "twoGreater", label: "Group 1 < Group 2" }
                             ]
                         },
                         {
-                            name: "column1-3",
+                            type: "groupbox",
                             label: "Assumption Checks",
                             level: "2",
-                            items : [
-                                { name: "norm", type:"checkbox", label: "Normality" },
-                                { name: "equality", type:"checkbox", label: "Equality of variances" }
+                            controls : [
+                                { type:"checkbox", name: "norm", label: "Normality" },
+                                { type:"checkbox", name: "equality", label: "Equality of variances" }
                             ]
                         }
                     ]
@@ -84,32 +79,30 @@ var ttestisLayout = LayoutDef.extend({
                     name: "column2",
                     cell: [1, 0],
                     stretchFactor: 1,
-                    fitToGrid: false,
-                    items : [
+                    controls : [
                         {
-                            name: "column2-1",
+                            type: "groupbox",
                             label: "Additional Statistics",
                             level: "2",
-                            items : [
-                                { name: "meanDiff", type:"checkbox", label: "Mean difference" },
-                                { name: "effectSize", type:"checkbox", label: "Effect size" },
+                            controls : [
+                                { type:"checkbox", name: "meanDiff", label: "Mean difference" },
+                                { type:"checkbox", name: "effectSize", label: "Effect size" },
                                 {
-                                    name: "groupA",
-                                    label: { name: "ci", type:"checkbox", label: "Confidence interval" },
-                                    items: [
-                                        { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", formatName: "number", inputPattern: "[0-9]+" }
+                                    type:"checkbox", name: "ci", label: "Confidence interval",
+                                    controls: [
+                                        { type:"textbox", name: "ciWidth", label: "Interval", suffix: "%", formatName: "number", inputPattern: "[0-9]+" }
                                     ]
                                 },
-                                { name: "desc", type:"checkbox", label: "Descriptives" }
+                                { type:"checkbox", name: "desc", label: "Descriptives" }
                             ]
                         },
                         {
-                            name: "column2-2",
+                            type: "groupbox",
                             label: "Missing values",
                             level: "2",
-                            items : [
-                                { name: "miss_perAnalysis", optionId: "miss", type:"radiobutton", checkedValue: "perAnalysis", label: "Exclude cases analysis by analysis" },
-                                { name: "miss_listwise", optionId: "miss", type:"radiobutton", checkedValue: "listwise", label: "Exclude cases listwise" }
+                            controls : [
+                                { type:"radiobutton", name: "miss_perAnalysis", optionId: "miss", checkedValue: "perAnalysis", label: "Exclude cases analysis by analysis" },
+                                { type:"radiobutton", name: "miss_listwise", optionId: "miss", checkedValue: "listwise", label: "Exclude cases listwise" }
                             ]
                         }
                     ]
@@ -117,6 +110,7 @@ var ttestisLayout = LayoutDef.extend({
             ]
         }
     ],
+    
 
     actions: [
         {

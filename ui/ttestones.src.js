@@ -8,18 +8,16 @@ var ttestonesLayout = LayoutDef.extend({
 
     label: "One Sample T-Test",
     type: "root",
-    items: [
+    controls: [
         {
-            name: "group1",
             type: "supplier",
-            cell: [0, 0],
             persistentItems: false,
             useVariables: true,
             stretchFactor: 1,
-            items: [
+            controls: [
                 {
-                    name: "vars",
                     type:"targetlistbox",
+                    name: "vars",
                     label: "Dependent Variables",
                     showColumnHeaders: false,
                     columns: [
@@ -29,46 +27,42 @@ var ttestonesLayout = LayoutDef.extend({
             ]
         },
         {
-            name: "group2",
-            cell: [0, 1],
             stretchFactor: 1,
-            items : [
+            controls : [
                 {
                     name: "column1",
                     cell: [0, 0],
                     stretchFactor: 1,
-                    fitToGrid: false,
-                    items : [
+                    controls : [
                         {
-                            name: "column1-1",
+                            type: "groupbox",
                             label: "Tests",
                             level: "2",
-                            items : [
-                                { name: "student", type:"checkbox", label: "Student" },
-                                { name: "mann", type:"checkbox", label: "Mann-Whitney U" },
+                            controls : [
+                                { type:"checkbox", name: "student", label: "Student" },
+                                { type:"checkbox", name: "mann", label: "Mann-Whitney U" },
                                 {
-                                    name: "column1-1-1",
-                                    items : [
-                                        { name: "testValue", type:"textbox", label: "Test value", formatName: "number", inputPattern: "[0-9]+" }
+                                    controls : [
+                                        { type:"textbox", name: "testValue", label: "Test value", formatName: "number", inputPattern: "[0-9]+" }
                                     ]
                                 }
                             ]
                         },
                         {
-                            name: "column1-2",
+                            type: "groupbox",
                             label: "Hypothesis",
                             level: "2",
-                            items : [
+                            controls : [
                                 { name: "hypothesis_different", optionId: "hypothesis", type:"radiobutton", checkedValue: "different", label: "Group 1 ≠ Group 2" },
                                 { name: "hypothesis_oneGreater", optionId: "hypothesis", type:"radiobutton", checkedValue: "oneGreater", label: "Group 1 > Group 2" },
                                 { name: "hypothesis_twoGreater", optionId: "hypothesis", type:"radiobutton", checkedValue: "twoGreater", label: "Group 1 < Group 2" }
                             ]
                         },
                         {
-                            name: "column1-3",
+                            type: "groupbox",
                             label: "Assumption Checks",
                             level: "2",
-                            items : [
+                            controls : [
                                 { name: "norm", type:"checkbox", label: "Normality" }
                             ]
                         }
@@ -78,19 +72,17 @@ var ttestonesLayout = LayoutDef.extend({
                     name: "column2",
                     cell: [1, 0],
                     stretchFactor: 1,
-                    fitToGrid: false,
-                    items : [
+                    controls : [
                         {
-                            name: "column2-1",
+                            type: "groupbox",
                             label: "Additional Statistics",
                             level: "2",
-                            items : [
+                            controls : [
                                 { name: "meanDiff", type:"checkbox", label: "Mean difference" },
                                 { name: "effectSize", type:"checkbox", label: "Effect size" },
                                 {
-                                    name: "groupA",
-                                    label: { name: "ci", type:"checkbox", label: "Confidence interval" },
-                                    items: [
+                                    name: "ci", type:"checkbox", label: "Confidence interval",
+                                    controls: [
                                         { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", formatName: "number", inputPattern: "[0-9]+" }
                                     ]
                                 },
@@ -98,10 +90,10 @@ var ttestonesLayout = LayoutDef.extend({
                             ]
                         },
                         {
-                            name: "column2-2",
+                            type: "groupbox",
                             label: "Missing values",
                             level: "2",
-                            items : [
+                            controls : [
                                 { name: "miss_perAnalysis", optionId: "miss", type:"radiobutton", checkedValue: "perAnalysis", label: "Exclude cases analysis by analysis" },
                                 { name: "miss_listwise", optionId: "miss", type:"radiobutton", checkedValue: "listwise", label: "Exclude cases listwise" }
                             ]
