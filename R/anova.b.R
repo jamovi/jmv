@@ -6,8 +6,10 @@ AnovaClass <- R6::R6Class(
         .model=NA,
         .init=function() {
 
-            fixedFactors <- self$options$get('fixedFactors')
-            anovaTable <- self$results$get('anova')
+            fixedFactors  <- self$options$get('fixedFactors')
+            
+            anovaTable    <- self$results$get('anova')
+            postHocTables <- self$results$get('postHoc')
             
             modelTerms <- private$.modelTerms()
             if (length(modelTerms) > 0) {
@@ -17,6 +19,17 @@ AnovaClass <- R6::R6Class(
                 anovaTable$addRow(rowKey='.', list(name='.'))
             }
             anovaTable$addRow(rowKey='', list(name='Residuals'))
+            
+            for (postHocVar in self$options$get('postHoc')) {
+                table <- postHocTables$get(postHocVar)
+                levels <- base::levels(self$data[[postHocVar]])
+                combs <- utils::combn(levels, 2)
+                apply(combs, 2, function(comb) {
+                    table$addRow(rowKey=comb, list(
+                        var1=comb[1], var2=comb[2]
+                    ))
+                })
+            }
         },
         .run=function() {
             
@@ -83,6 +96,47 @@ AnovaClass <- R6::R6Class(
             
             private$.populateContrasts(data)
             private$.populateLevenes(data)
+            private$.populatePostHoc(data)
+        },
+        .populatePostHoc=function(data) {
+            
+            depName <- self$options$get('dependent')
+            phNames <- self$options$get('postHoc')
+            dep <- data[[depName]]
+            
+            postHocTables <- self$results$get('postHoc')
+            
+            mcpArgs <- list()
+            
+            factorNames <- self$options$get('fixedFactors')
+            for (factorName in factorNames)
+                mcpArgs[[factorName]] <- 'Tukey'
+            
+            mcp <- do.call(multcomp::mcp, mcpArgs)
+            results <- summary(multcomp::glht(private$.model, mcp))$test
+
+            i <- 1
+            for (factorName in factorNames) {
+                
+                factor <- data[[factorName]]
+                levels <- base::levels(factor)
+                nCombn <- dim(combn(levels, 2))[2]
+                
+                if (factorName %in% phNames) {
+                    table <- postHocTables$get(factorName)
+                    for (j in seq_len(nCombn)) {
+                        index <- i + j - 1
+                        table$setRow(rowNo=j, list(
+                            md=results$coefficients[index],
+                            se=results$sigma[index],
+                            t=results$tstat[index],
+                            p=results$pvalues[index]
+                        ))
+                    }
+                }
+                
+                i <- i + nCombn
+            }
         },
         .populateContrasts=function(data) {
             

@@ -76,25 +76,79 @@ items:
         columns:
           - name: contrast
             title: ""
-            content: .
             type: text
 
           - name: est
             title: Estimate
-            content: .
             type: number
 
           - name: se
             title: SE
-            content: .
             type: number
 
           - name: t
-            content: .
             type: number
 
           - name: p
             title: p
-            content: .
+            type: number
+            format: zto,pvalue
+
+    - name: postHoc
+      title: Post Hoc Tests
+      type: Array
+      items: (postHoc)
+
+      template:
+        title: Post Hoc Comparisons - $key
+        type: Table
+
+        columns:
+          - name: var1
+            title: ''
+            type: text
+
+          - name: var2
+            title: ''
+            type: text
+
+          - name: md
+            title: Mean Difference
+            type: number
+
+          - name: se
+            title: SE
+            type: number
+            
+          - name: t
+            title: t
+            type: number
+
+          - name: p
+            title: p
+            type: number
+            format: zto,pvalue
+
+          - name: ptukey
+            title: p<sub>tukey</p>
+            visible: (corrTukey)
+            type: number
+            format: zto,pvalue
+            
+          - name: pscheffe
+            title: p<sub>scheffe</p>
+            visible: (corrScheffe)
+            type: number
+            format: zto,pvalue
+            
+          - name: pbonferroni
+            title: p<sub>bonferoni</p>
+            visible: (corrBonf)
+            type: number
+            format: zto,pvalue
+            
+          - name: pholm
+            title: p<sub>holm</p>
+            visible: (corrHolm)
             type: number
             format: zto,pvalue

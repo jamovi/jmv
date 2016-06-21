@@ -79,7 +79,7 @@ options:
       description: >
         The model terms
 
-    - name: postHocTests
+    - name: postHoc
       title: Post Hoc Tests
       type: Variables
       default:

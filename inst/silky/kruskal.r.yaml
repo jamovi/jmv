@@ -30,7 +30,7 @@ items:
           format: zto,pvalue
           
     - name: comparisons
-      title: Dwass-Steel-Chritchlow-Fligner pairwise comparisons
+      title: Dwass-Steel-Critchlow-Fligner pairwise comparisons
       type: Array
       items: (deps)
       visible: (pairs)
