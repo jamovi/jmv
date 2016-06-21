@@ -47,27 +47,27 @@ items:
         - name: md[stud]
           title: Mean difference
           type: number
-          visible: (meanDiff && student)
+          visible: (meanDiff && students)
           
         - name: sed[stud]
           title: SE difference
           type: number
-          visible: (meanDiff && student)
+          visible: (meanDiff && students)
           
         - name: es[stud]
           title: Cohen's d
           type: number
-          visible: (effectSize && student)
+          visible: (effectSize && students)
           
         - name: cil[stud]
           title: Lower
           type: number
-          visible: (ci && student)
+          visible: (ci && students)
           
         - name: ciu[stud]
           title: Upper
           type: number
-          visible: (ci && student)
+          visible: (ci && students)
           
         - name: test[wilc]
           title: Test

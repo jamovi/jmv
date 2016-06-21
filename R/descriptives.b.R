@@ -50,9 +50,9 @@ DescriptivesClass <- R6::R6Class("DescriptivesClass",
                     mode <- NULL
                     
                     desc$setRow(rowNo=i, values=list(
-                        mean=NA, median=NA, mode=NA, sum=NA, sd=NA, variance=NA,
-                        range=NA, min=NA, max=NA, se=NA, skew=NA, kurt=NA,
-                        quart1=NA, quart2=NA, quart3=NA))
+                        mean='', median='', mode='', sum='', sd='', variance='',
+                        range='', min='', max='', se='', skew='', kurt='',
+                        quart1='', quart2='', quart3=''))
                 }
                 
                 cumCount <- 0

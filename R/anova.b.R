@@ -67,15 +67,15 @@ AnovaClass <- R6::R6Class(
                 p  <- results[i,'Pr(>F)']
                 
                 if ( ! is.finite(ss))
-                    ss <- NA
+                    ss <- ''
                 if (df == 0)
-                    df <- NA
+                    df <- ''
                 if ( ! is.finite(ms))
-                    ms <- NA
+                    ms <- ''
                 if ( ! is.finite(F))
-                    F <- NA
+                    F <- ''
                 if ( ! is.finite(p))
-                    p <- NA
+                    p <- ''
                 
                 tableRow <- list(ss=ss, df=df, ms=ms, F=F, p=p)
                 anovaTable$setRow(rowNo=i, tableRow)

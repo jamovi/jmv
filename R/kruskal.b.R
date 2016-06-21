@@ -37,17 +37,21 @@ KruskalClass <- R6::R6Class(
                     sdata <- base::split(depColumn, groupColumn)
                     
                     for (pair in pairs) {
-                        pairData <- list(sdata[[pair[1]]], sdata[[pair[2]]])
-                        result <- pSDCFlig(pairData, method="Asymptotic")
-                        
-                        table$setRow(rowKey=pair, list(
-                            p1=pair[1],
-                            p2=pair[2],
-                            W=result$obs.stat,
-                            p=result$p.val
-                        ))
+                        if (table$getCell(rowKey=pair, 'W')$isEmpty) {
+                            
+                            private$.checkpoint(TRUE)
+                            
+                            pairData <- list(sdata[[pair[1]]], sdata[[pair[2]]])
+                            result <- pSDCFlig(pairData, method="Asymptotic")
+                            
+                            table$setRow(rowKey=pair, list(
+                                p1=pair[1],
+                                p2=pair[2],
+                                W=result$obs.stat,
+                                p=result$p.val
+                            ))
+                        }
                     }
-                    
                 }
             }
         },
