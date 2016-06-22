@@ -40,7 +40,7 @@ var ttestpsLayout = LayoutDef.extend({
                             label: "Tests",
                             level: "2",
                             controls : [
-                                { name: "student", type:"checkbox", label: "Student" },
+                                { name: "students", type:"checkbox", label: "Student's" },
                                 { name: "wilcoxon", type:"checkbox", label: "Wilcoxon rank" },
                             ]
                         },

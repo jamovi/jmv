@@ -49,7 +49,7 @@ var ttestisLayout = LayoutDef.extend({
                             label: "Tests",
                             level: "2",
                             controls : [
-                                { type:"checkbox", name: "student", label: "Student" },
+                                { type:"checkbox", name: "students", label: "Student's" },
                                 { type:"checkbox", name: "welch", label: "Welch" },
                                 { type:"checkbox", name: "mann", label: "Mann-Whitney U" }
                             ]

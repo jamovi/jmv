@@ -7,5 +7,5 @@ Author: Jonathon Love
 Maintainer: Jonathon Love <jon@thon.cc>
 Description: R made silky
 License: TBD
-Depends: R (>= 3.2), car
-Imports: silkycore
+Depends: R (>= 3.2)
+Imports: silkycore, car, multcomp

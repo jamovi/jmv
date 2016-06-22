@@ -119,7 +119,7 @@ var anovaLayout = LayoutDef.extend({
                     controls: [
                         {
                             type:"targetlistbox",
-                            name: "postHocTests",
+                            name: "postHoc",
                             showColumnHeaders: false,
                             columns: [
                                 { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
