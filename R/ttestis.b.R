@@ -190,6 +190,43 @@ TTestISClass <- R6Class("TTestISClass",
                     ))
                 }
             }
+        },
+        .plot=function(name, key, ...) {
+            
+            groupName <- self$options$get('group')
+            plots <- self$options$get('plots')
+            
+            data <- self$options$dataset()
+            
+            if (plots == FALSE || is.null(groupName) || length(data[[groupName]]) == 0) {
+                return(FALSE)
+            }
+            
+            dep   <- silkycore::toNumeric(data[[key]])
+            group <- as.factor(data[[groupName]])
+            
+            means <- aggregate(dep, by=list(group), mean, simplify=FALSE)
+            cies  <- aggregate(dep, by=list(group), function(x) { qnorm(0.975) * sd(x) / sqrt(length(x)) }, simplify=FALSE)
+            
+            plotData <- data.frame(group=means$Group.1)
+            plotData <- cbind(plotData, mean=unlist(means$x))
+            plotData <- cbind(plotData, cie=unlist(cies$x))
+            
+            print(ggplot(data=plotData, aes(x=group, y=mean, group=group)) +
+                geom_errorbar(aes(x=group, ymin=mean-cie, ymax=mean+cie, width=.1), size=.8) +
+                geom_point(shape=21, fill='white', size=3) +
+                theme(
+                    legend.justification=c(1,0),
+                    legend.position=c(1,0),
+                    text=element_text(size=20),
+                    plot.background=element_rect(fill='transparent', color=NA),
+                    panel.background=element_rect(color=NA),
+                    axis.title.y=element_text(lineheight = 50)) +
+                ylab(key) +
+                xlab(groupName)
+            )
+            
+            return(TRUE)
         }
     )
 )

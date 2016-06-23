@@ -94,7 +94,7 @@ AnovaClass <- R6::R6Class(
                 anovaTable$setRow(rowNo=i, tableRow)
             }
             
-            private$.populateContrasts(data)
+            #private$.populateContrasts(data)
             private$.populateLevenes(data)
             private$.populatePostHoc(data)
         },
@@ -282,7 +282,7 @@ AnovaClass <- R6::R6Class(
             
             contrast
         },
-        .modelTerms = function() {
+        .modelTerms=function() {
             modelTerms <- self$options$get('modelTerms')
             if (length(modelTerms) == 0) {
                 fixedFactors <- self$options$get('fixedFactors')
@@ -295,6 +295,68 @@ AnovaClass <- R6::R6Class(
                 }
             }
             return(modelTerms)
+        },
+        .plot=function(name, key) {
+            
+            depName <- self$options$get('dependent')
+            groupName <- self$options$get('descPlotsHAxis')
+            linesName <- self$options$get('descPlotsSepLines')
+            
+            if (length(depName) == 0 || length(groupName) == 0)
+                return(FALSE)
+            
+            data <- self$options$dataset()
+            dep  <- silkycore::toNumeric(data[[depName]])
+            group <- as.factor(data[[groupName]])
+            
+            by <- list()
+            by[['group']] <- group
+            
+            if ( ! is.null(linesName)) {
+                lines <- as.factor(data[[linesName]])
+                by[['lines']] <- lines
+            }
+            
+            means <- aggregate(dep, by=by, mean, simplify=FALSE)
+            ses   <- aggregate(dep, by=by, function(x) { sd(x) / sqrt(length(x)) }, simplify=FALSE)
+            
+            plotData <- data.frame(group=means$group)
+            if ( ! is.null(linesName))
+                plotData <- cbind(plotData, lines=means$lines)
+            plotData <- cbind(plotData, mean=unlist(means$x))
+            plotData <- cbind(plotData, se=unlist(ses$x))
+            
+            the <- theme(
+                legend.justification=c(1,0),
+                legend.position=c(1,0),
+                text=element_text(size=16),
+                plot.background=element_rect(fill='transparent', color=NA),
+                panel.background=element_rect(fill='#E8E8E8'))
+            
+            dodge <- position_dodge(0.1)
+            
+            if ( ! is.null(linesName)) {
+                
+                print(ggplot(data=plotData, aes(x=group, y=mean, group=lines, color=lines)) +
+                    geom_errorbar(aes(x=group, ymin=mean-se, ymax=mean+se, width=.1, group=lines), size=.8, position=dodge) +
+                    geom_line(size=.8, position=dodge) +
+                    geom_point(shape=21, fill='white', size=3, position=dodge) +
+                    ylab(depName) +
+                    xlab(groupName) +
+                    labs(colour=linesName) +
+                    the)
+                
+            } else {
+                
+                print(ggplot(data=plotData, aes(x=group, y=mean, group=group)) +
+                    geom_errorbar(aes(x=group, ymin=mean-se, ymax=mean+se, width=.1), size=.8) +
+                    geom_point(shape=21, fill='white', size=3) +
+                    ylab(depName) +
+                    xlab(groupName) +
+                    the)
+            }
+            
+            TRUE
         })
 )
 

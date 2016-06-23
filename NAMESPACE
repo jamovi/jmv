@@ -4,3 +4,4 @@ importFrom(RProtoBuf, readProtoFiles)
 exportPattern("^[[:alpha:]]+")
 
 import(R6)
+import(ggplot2)

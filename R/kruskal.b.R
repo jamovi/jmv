@@ -39,7 +39,8 @@ KruskalClass <- R6::R6Class(
                     for (pair in pairs) {
                         if (table$getCell(rowKey=pair, 'W')$isEmpty) {
                             
-                            private$.checkpoint(TRUE)
+                            table$setStatus('running')
+                            private$.checkpoint()
                             
                             pairData <- list(sdata[[pair[1]]], sdata[[pair[2]]])
                             result <- pSDCFlig(pairData, method="Asymptotic")
@@ -50,6 +51,8 @@ KruskalClass <- R6::R6Class(
                                 W=result$obs.stat,
                                 p=result$p.val
                             ))
+                            
+                            table$setStatus('complete')
                         }
                     }
                 }

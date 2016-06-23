@@ -93,7 +93,8 @@ var ttestisLayout = LayoutDef.extend({
                                         { type:"textbox", name: "ciWidth", label: "Interval", suffix: "%", formatName: "number", inputPattern: "[0-9]+" }
                                     ]
                                 },
-                                { type:"checkbox", name: "desc", label: "Descriptives" }
+                                { type:"checkbox", name: "desc", label: "Descriptives" },
+                                { type:"checkbox", name: "plots", label: "Descriptives Plots" },
                             ]
                         },
                         {
@@ -110,7 +111,7 @@ var ttestisLayout = LayoutDef.extend({
             ]
         }
     ],
-    
+
 
     actions: [
         {

@@ -263,3 +263,14 @@ items:
         - name: se[2]
           title: SE
           type: number
+
+    - name: plots
+      title: Plots
+      visible: (plots)
+      type: Array
+      items: (vars)
+      template:
+          title: {$key}
+          type: Image
+          renderInitFun: .plot
+          renderFun: .plot

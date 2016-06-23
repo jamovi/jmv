@@ -84,6 +84,11 @@ options:
       type: Bool
       default: false
       
+    - name: plots
+      title: Descriptives Plots
+      type: Bool
+      default: false
+      
     - name: miss
       title: Missing values exclusion method
       type: List
