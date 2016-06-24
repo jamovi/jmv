@@ -1,0 +1,48 @@
+---
+name:     Friedman
+package:  silkyR
+engineType: R
+
+options:
+    - name: dataset
+      type: Dataset
+      description: >
+        The data set as a data frame
+
+    - name: pairs
+      title: Paired Variables
+      type: Array
+      template:
+          type: Group
+          elements:
+              - name: i1
+                type: Variable
+              - name: i2
+                type: Variable
+      description: >
+        The variables of interest
+
+    - name: paircomps
+      title: Pairwise comparisons - Durbin-Conover
+      type: Bool
+      default: true
+
+    - name: desc
+      title: Descriptives
+      type: Bool
+      default: false
+
+    - name: plots
+      title: Descriptive plot
+      type: Bool
+      default: false
+
+    - name: plottype
+      title: Plot Type
+      type: List
+      options:
+        - means
+        - medians
+      default: means
+      description: >
+        stuff
