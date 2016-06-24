@@ -18,13 +18,9 @@ var anovarmLayout = LayoutDef.extend({
             stretchFactor: 1,
             controls: [
                 {
-                    type:"targetlistbox",
+                    type:"rmanovafactorsbox",
                     name: "rmFactors",
                     label: "Repeated Measures Factors",
-                    showColumnHeaders: false,
-                    columns: [
-                        { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
-                    ]
                 },
                 {
                     type:"targetlistbox",
