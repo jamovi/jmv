@@ -329,7 +329,7 @@ AnovaClass <- R6::R6Class(
             the <- theme(
                 legend.justification=c(1,0),
                 legend.position=c(1,0),
-                text=element_text(size=16),
+                text=element_text(size=16, colour='#333333'),
                 plot.background=element_rect(fill='transparent', color=NA),
                 panel.background=element_rect(fill='#E8E8E8'))
             
@@ -349,8 +349,8 @@ AnovaClass <- R6::R6Class(
             } else {
                 
                 print(ggplot(data=plotData, aes(x=group, y=mean, group=group)) +
-                    geom_errorbar(aes(x=group, ymin=mean-se, ymax=mean+se, width=.1), size=.8) +
-                    geom_point(shape=21, fill='white', size=3) +
+                    geom_errorbar(aes(x=group, ymin=mean-se, ymax=mean+se, width=.1), size=.8, colour='#333333') +
+                    geom_point(shape=21, fill='white', size=3, colour='#333333') +
                     ylab(depName) +
                     xlab(groupName) +
                     the)

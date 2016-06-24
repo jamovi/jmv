@@ -18,7 +18,7 @@ TTestOneSClass <- R6Class("TTestOneSClass",
             
             ## Listwise NA cleanup
             if (naHandling == "listwise")
-                dataset <- na.omit(dataset)
+                dataset <- naOmit(dataset)
             
             ## Hypothesis options checking
             if (self$options$get("hypothesis") == "oneGreater") {
@@ -35,7 +35,7 @@ TTestOneSClass <- R6Class("TTestOneSClass",
                 
                 name <- variables[[i]]
                 column <- silkycore::toNumeric(dataset[[name]])
-                column <- na.omit(column)
+                column <- naOmit(column)
                 
                 n <- length(column)
                 

@@ -11,7 +11,7 @@ TTestPSClass <- R6Class("TTestPSClass",
             normTable <- self$results$get('norm')
             
             if (self$options$get('miss') == 'listwise')
-                data <- na.omit(data)
+                data <- naOmit(data)
             
             if (self$options$get("hypothesis") == "oneGreater")
                 Ha <- "greater"
@@ -38,7 +38,7 @@ TTestPSClass <- R6Class("TTestPSClass",
                 data[[name2]] <- silkycore::toNumeric(data[[name2]])
                 
                 if (self$options$get('miss') == "perAnalysis") {
-                    pairsData <- na.omit(data[c(name1, name2)])
+                    pairsData <- naOmit(data[c(name1, name2)])
                     column1 <- pairsData[[name1]]
                     column2 <- pairsData[[name2]]
                 } else {

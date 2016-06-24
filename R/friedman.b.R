@@ -10,8 +10,8 @@ FriedmanClass <- R6::R6Class(
         if (length(measureNames) < 2)
             return()
         
-        data <- subset(self$data, subset=TRUE, select=measureNames)
-        data <- na.omit(data)
+        data <- select(self$data, measureNames)
+        data <- silkycore::naOmit(data)
         mat <- matrix(nrow=nrow(data), ncol=length(measureNames), dimnames=list(NULL, measureNames))
         
         for (i in seq_along(measureNames)) {

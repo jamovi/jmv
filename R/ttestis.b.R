@@ -37,7 +37,7 @@ TTestISClass <- R6Class("TTestISClass",
                 silkycore::reject("Grouping variable '{a}' must have exactly 2 levels", code="grouping_var_must_have_2_levels", a=groupVarName)
             
             if (self$options$get('miss') == "listwise") {
-                data <- na.omit(data)
+                data <- naOmit(data)
                 if (dim(data)[1] == 0)
                     silkycore::reject("Grouping variable '{a}' has less than 2 levels after missing values are excluded", code="grouping_var_must_have_2_levels", a=groupVarName)
             }
@@ -58,7 +58,7 @@ TTestISClass <- R6Class("TTestISClass",
                 
                 if (self$options$get('miss') == "perAnalysis") {
                     dataTTest <- data.frame(dep=data[[depName]], group=data[[groupVarName]])
-                    dataTTest <- na.omit(dataTTest)
+                    dataTTest <- naOmit(dataTTest)
                 } else {
                     dataTTest <- data
                 }
@@ -144,7 +144,7 @@ TTestISClass <- R6Class("TTestISClass",
                 
                 if (self$options$get('norm')) {
                     
-                    columns <- tapply(dataTTest$dep, dataTTest$group, na.omit)
+                    columns <- tapply(dataTTest$dep, dataTTest$group, naOmit)
                     values <- list()
                     values[["name"]] <- depName
                     
@@ -213,12 +213,12 @@ TTestISClass <- R6Class("TTestISClass",
             plotData <- cbind(plotData, cie=unlist(cies$x))
             
             print(ggplot(data=plotData, aes(x=group, y=mean, group=group)) +
-                geom_errorbar(aes(x=group, ymin=mean-cie, ymax=mean+cie, width=.1), size=.8) +
+                geom_errorbar(aes(x=group, ymin=mean-cie, ymax=mean+cie, width=.1), size=.8, colour='#333333') +
                 geom_point(shape=21, fill='white', size=3) +
                 theme(
                     legend.justification=c(1,0),
                     legend.position=c(1,0),
-                    text=element_text(size=20),
+                    text=element_text(size=20, colour='#333333'),
                     plot.background=element_rect(fill='transparent', color=NA),
                     panel.background=element_rect(color=NA),
                     axis.title.y=element_text(lineheight = 50)) +

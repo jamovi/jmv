@@ -5,16 +5,18 @@ DescriptivesClass <- R6::R6Class("DescriptivesClass",
         .run=function() {
             
             dataset <- self$options$dataset()
+            vars <- self$options$get('vars')
             
             desc <- self$results$get("descriptives")
             freq <- self$results$get("frequencies")
             
-            for (i in seq_along(self$options$get("vars"))) {
+            for (i in seq_along(vars)) {
                 
-                name   <- self$options$values()$vars[[i]]
+                name   <- vars[[i]]
                 column <- dataset[[name]]
+                
                 total <- length(column)
-                column <- na.omit(column)
+                column <- silkycore::naOmit(column)
                 
                 desc$setCell(rowNo=i, "n", length(column))
                 desc$setCell(rowNo=i, "missing", total - length(column))
