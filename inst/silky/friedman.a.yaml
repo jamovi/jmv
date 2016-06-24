@@ -9,23 +9,16 @@ options:
       description: >
         The data set as a data frame
 
-    - name: pairs
-      title: Paired Variables
-      type: Array
-      template:
-          type: Group
-          elements:
-              - name: i1
-                type: Variable
-              - name: i2
-                type: Variable
+    - name: measures
+      title: Measures
+      type: Variables
       description: >
         The variables of interest
 
-    - name: paircomps
+    - name: pairs
       title: Pairwise comparisons - Durbin-Conover
       type: Bool
-      default: true
+      default: false
 
     - name: desc
       title: Descriptives
@@ -37,7 +30,7 @@ options:
       type: Bool
       default: false
 
-    - name: plottype
+    - name: plotType
       title: Plot Type
       type: List
       options:

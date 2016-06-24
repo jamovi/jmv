@@ -11,18 +11,16 @@ var friedmanLayout = LayoutDef.extend({
     controls: [
         {
             type: "supplier",
-            persistentItems: true,
             useVariables: true,
             stretchFactor: 1,
             controls: [
                 {
                     type:"targetlistbox",
-                    name: "pairs",
-                    label: "Paired Variables",
+                    name: "measures",
+                    label: "Measures",
                     showColumnHeaders: false,
                     columns: [
-                        { name: "i1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 },
-                        { name: "i2", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                        { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
                     ]
                 }
             ]
@@ -30,13 +28,13 @@ var friedmanLayout = LayoutDef.extend({
         {
             type: "groupbox",
             controls : [
-                { name: "paircomps", type:"checkbox", label: "Pairwise comparisons - Durbin-Conover" },
+                { name: "pairs", type:"checkbox", label: "Pairwise Comparisons (Durbin-Conover)" },
                 { name: "desc", type:"checkbox", label: "Descriptives" },
                 {
-                    name: "plots", type:"checkbox", label: "Descriptives plot",
+                    name: "plots", type:"checkbox", label: "Descriptives Plot",
                     controls: [
-                        { name: "plottype_means", optionId: "plottype", type:"radiobutton", checkedValue: "means", label: "Means" },
-                        { name: "plottype_medians", optionId: "plottype", type:"radiobutton", checkedValue: "medians", label: "Medians" }
+                        { name: "plotType_means", optionId: "plotType", type:"radiobutton", checkedValue: "means", label: "Means" },
+                        { name: "plotType_medians", optionId: "plotType", type:"radiobutton", checkedValue: "medians", label: "Medians" }
                     ]
                 }
             ]
@@ -47,8 +45,8 @@ var friedmanLayout = LayoutDef.extend({
         {
             onChange : "plots", execute : function(context) {
                 var disabled = context.getValue("plots") === false;
-                context.set("plottype_means", "disabled", disabled);
-                context.set("plottype_medians", "disabled", disabled);
+                context.set("plotType_means", "disabled", disabled);
+                context.set("plotType_medians", "disabled", disabled);
             }
         }
     ]
