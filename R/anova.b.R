@@ -40,18 +40,20 @@ AnovaClass <- R6::R6Class(
             if (is.null(dependentName) || length(fixedFactors) == 0 || length(modelTerms) == 0)
                 return()
             
-            data <- self$data
+            names <- c(dependentName, fixedFactors)
+            data <- select(self$data, names)
+            data <- naOmit(data)
             
             for (factorName in fixedFactors)
                 data[[factorName]] <- as.factor(data[[factorName]])
             
             data[[dependentName]] <- silkycore::toNumeric(data[[dependentName]])
             
-            for (contrast in self$options$get('contrasts')) {
-                base::options(contrasts=c("contr.sum","contr.poly"))
-                levels <- base::levels(data[[contrast$var]])
-                stats::contrasts(data[[contrast$var]]) <- private$.createContrasts(levels, contrast$type)
-            }
+            #for (contrast in self$options$get('contrasts')) {
+            #    base::options(contrasts=c("contr.sum","contr.poly"))
+            #    levels <- base::levels(data[[contrast$var]])
+            #    stats::contrasts(data[[contrast$var]]) <- private$.createContrasts(levels, contrast$type)
+            #}
             
             formula <- silkycore::constructFormula(self$options$get('dependent'), private$.modelTerms())
             formula <- stats::as.formula(formula)
@@ -97,6 +99,7 @@ AnovaClass <- R6::R6Class(
             #private$.populateContrasts(data)
             private$.populateLevenes(data)
             private$.populatePostHoc(data)
+            private$.preparePlots(data)
         },
         .populatePostHoc=function(data) {
             
@@ -296,26 +299,22 @@ AnovaClass <- R6::R6Class(
             }
             return(modelTerms)
         },
-        .plot=function(name, key) {
+        .preparePlots=function(data) {
             
             depName <- self$options$get('dependent')
             groupName <- self$options$get('descPlotsHAxis')
             linesName <- self$options$get('descPlotsSepLines')
             
             if (length(depName) == 0 || length(groupName) == 0)
-                return(FALSE)
-            
-            data <- self$options$dataset()
-            dep  <- silkycore::toNumeric(data[[depName]])
-            group <- as.factor(data[[groupName]])
+                return()
             
             by <- list()
-            by[['group']] <- group
+            by[['group']] <- data[[groupName]]
             
-            if ( ! is.null(linesName)) {
-                lines <- as.factor(data[[linesName]])
-                by[['lines']] <- lines
-            }
+            if ( ! is.null(linesName))
+                by[['lines']] <- data[[linesName]]
+            
+            dep <- data[[depName]]
             
             means <- aggregate(dep, by=by, mean, simplify=FALSE)
             ses   <- aggregate(dep, by=by, function(x) { sd(x) / sqrt(length(x)) }, simplify=FALSE)
@@ -326,9 +325,20 @@ AnovaClass <- R6::R6Class(
             plotData <- cbind(plotData, mean=unlist(means$x))
             plotData <- cbind(plotData, se=unlist(ses$x))
             
+            image <- self$results$get('plots')
+            image$setState(plotData)
+            
+        },
+        .plot=function(image, ...) {
+            
+            if (is.null(image$state))
+                return(FALSE)
+            
+            depName <- self$options$get('dependent')
+            groupName <- self$options$get('descPlotsHAxis')
+            linesName <- self$options$get('descPlotsSepLines')
+            
             the <- theme(
-                legend.justification=c(1,0),
-                legend.position=c(1,0),
                 text=element_text(size=16, colour='#333333'),
                 plot.background=element_rect(fill='transparent', color=NA),
                 panel.background=element_rect(fill='#E8E8E8'))
@@ -337,23 +347,22 @@ AnovaClass <- R6::R6Class(
             
             if ( ! is.null(linesName)) {
                 
-                print(ggplot(data=plotData, aes(x=group, y=mean, group=lines, color=lines)) +
+                print(ggplot(data=image$state, aes(x=group, y=mean, group=lines, colour=lines)) +
                     geom_errorbar(aes(x=group, ymin=mean-se, ymax=mean+se, width=.1, group=lines), size=.8, position=dodge) +
                     geom_line(size=.8, position=dodge) +
                     geom_point(shape=21, fill='white', size=3, position=dodge) +
-                    ylab(depName) +
-                    xlab(groupName) +
-                    labs(colour=linesName) +
+                    labs(x=groupName, y=depName, colour=paste(linesName, '(SE)')) +
                     the)
                 
             } else {
                 
-                print(ggplot(data=plotData, aes(x=group, y=mean, group=group)) +
-                    geom_errorbar(aes(x=group, ymin=mean-se, ymax=mean+se, width=.1), size=.8, colour='#333333') +
-                    geom_point(shape=21, fill='white', size=3, colour='#333333') +
-                    ylab(depName) +
-                    xlab(groupName) +
-                    the)
+                print(ggplot(data=image$state) +
+                    geom_errorbar(aes(x=group, ymin=mean-se, ymax=mean+se, colour='colour', width=.1), size=.8) +
+                    geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill='white', size=3) +
+                    labs(x=groupName, y=depName, colour=paste(depName, '(SE)')) +
+                    scale_colour_manual(name=paste(depName, '(SE)'), values=c(colour='#333333'), labels='') +
+                    the
+                )
             }
             
             TRUE

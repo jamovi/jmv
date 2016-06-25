@@ -157,6 +157,8 @@ items:
       title: Plots
       visible: (descPlotsHAxis)
       type: Image
+      width: 500
+      height: 300
       renderInitFun: .plot
       renderFun: .plot
       clearWith:
