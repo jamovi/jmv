@@ -20,7 +20,7 @@ var friedmanLayout = LayoutDef.extend({
                     label: "Measures",
                     showColumnHeaders: false,
                     columns: [
-                        { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 }
             ]

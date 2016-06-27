@@ -5,6 +5,50 @@
 var options = require('./anovarm.options');
 //var _ = require('underscore');
 
+var rma_cell =  {
+
+    name: 'rma_cell',
+
+    default: [],
+
+    toString: function(raw) {
+        var r = raw[0];
+        for (var i = 1; i < raw.length; i++)
+            r = r + ", " + raw[i];
+        return r;
+    },
+
+    parse: function(value) {
+        throw "need to implement";
+        return value;
+    },
+
+    isValid: function(raw) {
+        if (Array.isArray(raw) === false)
+            return false;
+
+        for (var i = 0; i < raw.length; i++) {
+            if (typeof(raw[i]) !== 'string')
+                return false;
+        }
+
+        return true;
+    },
+
+    isEqual: function(raw1, raw2) {
+
+        if (raw1.length !== raw2.length)
+            return false;
+
+        for (var i = 0; i < raw1.length; i++) {
+            if (raw1[i] !== raw2[i])
+                return false;
+        }
+
+        return true;
+    }
+}
+
 var anovarmLayout = LayoutDef.extend({
 
     label: "Repeated Measures ANOVA",
@@ -27,8 +71,11 @@ var anovarmLayout = LayoutDef.extend({
                     name: "rmCells",
                     label: "Repeated Measures Cells",
                     showColumnHeaders: false,
+                    removeAction: "clear_cell",
+                    height: "large",
                     columns: [
-                        { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                        { name: "measure", label: "Measure", readOnly: true, format: FormatDef.variable, stretchFactor: 1 },
+                        { name: "cell", label: "Cell", readOnly: true, selectable: false, format: rma_cell, stretchFactor: 1 }
                     ]
                 },
                 {
@@ -36,8 +83,9 @@ var anovarmLayout = LayoutDef.extend({
                     name: "bs",
                     label: "Between Subject Factors",
                     showColumnHeaders: false,
+                    height: "small",
                     columns: [
-                        { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 },
                 {
@@ -45,8 +93,9 @@ var anovarmLayout = LayoutDef.extend({
                     name: "cov",
                     label: "Covariates",
                     showColumnHeaders: false,
+                    height: "small",
                     columns: [
-                        { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 }
             ]
@@ -70,7 +119,7 @@ var anovarmLayout = LayoutDef.extend({
                             label: "Model Terms",
                             showColumnHeaders: false,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -88,7 +137,7 @@ var anovarmLayout = LayoutDef.extend({
                             label: "Model Terms",
                             showColumnHeaders: false,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -131,8 +180,8 @@ var anovarmLayout = LayoutDef.extend({
                     label: "Factors",
                     showColumnHeaders: false,
                     columns: [
-                        { name: "var", label: "", readOnly: true, formatName: "variable", stretchFactor: 0.5 },
-                        { name: "type", label: "", readOnly: false, formatName: "string", stretchFactor: 1, options: ['none', 'deviation', 'simple', 'difference', 'helmert', 'repeated', 'polynomial'] }
+                        { name: "var", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 0.5 },
+                        { name: "type", label: "", readOnly: false, format: FormatDef.string, stretchFactor: 1, options: ['none', 'deviation', 'simple', 'difference', 'helmert', 'repeated', 'polynomial'] }
                     ]
                 }
             ]
@@ -155,7 +204,7 @@ var anovarmLayout = LayoutDef.extend({
                             label: "",
                             showColumnHeaders: false,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -191,7 +240,7 @@ var anovarmLayout = LayoutDef.extend({
                             showColumnHeaders: false,
                             maxItemCount: 1,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         },
                         {
@@ -201,7 +250,7 @@ var anovarmLayout = LayoutDef.extend({
                             showColumnHeaders: false,
                             maxItemCount: 1,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         },
                         {
@@ -211,7 +260,7 @@ var anovarmLayout = LayoutDef.extend({
                             showColumnHeaders: false,
                             maxItemCount: 1,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -226,7 +275,7 @@ var anovarmLayout = LayoutDef.extend({
                                 {
                                     name: "errBarDef_ci", optionId: "errBarDef", type:"radiobutton", checkedValue: "ci", label: "Confidence interval",
                                     controls:[
-                                        { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", formatName: "number", inputPattern: "[0-9]+" }
+                                        { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", format: FormatDef.number, inputPattern: "[0-9]+" }
                                     ]
                                 },
                                 { name: "errBarDef_se", optionId: "errBarDef", type:"radiobutton", checkedValue: "se", label: "Standard Error" }
@@ -295,8 +344,101 @@ var anovarmLayout = LayoutDef.extend({
                 var value = context.getValue("dispErrBars") === false || context.getValue("errBarDef") !== "ci";
                 context.set("ciWidth", "disabled", value);
             }
+        },
+        {
+            onChange: "rm", execute: function(context) {
+                var value = context.getValue("rm");
+                if (value === null)
+                    value = [{label: "RM Factors 1", levels: ["Level 1", "Level 2"]}];
+
+                var data = []
+                var indices = []
+                for (var i = 0; i < value.length; i++) {
+                    indices[i] = 0;
+                }
+
+                var end = false;
+                var pos = 0;
+                while (end === false) {
+                    var cell = []
+                    for (var k = 0; k < indices.length; k++) {
+                        cell.push(value[k].levels[indices[k]])
+                    }
+                    data.push(cell);
+                    pos += 1;
+                    var zeroCount = 0;
+
+                    var r = indices.length - 1;
+                    if (r < 0)
+                        end = true;
+                    while (r >= 0) {
+                        indices[r] = (indices[r] + 1) % value[r].levels.length;
+                        if (indices[r] === 0)
+                            r -= 1;
+                        else
+                            break;
+
+                        if (r === -1)
+                            end = true;
+                    }
+                }
+
+                this._factorCells = data;
+                this.filterCells(context);
+            }
+        },
+        {
+            onChange: "rmCells", execute: function(context) {
+                this.filterCells(context);
+            }
         }
-    ]
+    ],
+
+    filterCells: function(context) {
+        var cells = this.clone(context.getValue("rmCells"));
+        if (cells === null)
+            cells = [];
+
+        var factorCells = this.clone(this._factorCells);
+
+        var changed = false;
+        for (var j = 0; j < factorCells.length; j++) {
+            if (j < cells.length) {
+                if (rma_cell.isEqual(cells[j].cell, factorCells[j]) === false) {
+                    cells[j].cell = factorCells[j];
+                    changed = true;
+                }
+            }
+            else {
+                cells.push({ measure: null, cell: factorCells[j] });
+                changed = true;
+            }
+        }
+
+        if (cells.length > factorCells.length) {
+            cells.splice(factorCells.length, cells.length - factorCells.length);
+            changed = true;
+        }
+
+        if (changed) {
+            context.setValue("rmCells", cells);
+            context.set("rmCells", "maxItemCount", cells.length);
+        }
+    },
+
+    isInArray: function(value, array) {
+        for (var i = 0; i < array.length; i++) {
+            if (rma_cell.isEqual(value, array[i]))
+                return i;
+        }
+        return -1;
+    },
+
+    clone: function(object) {
+        return JSON.parse(JSON.stringify(object));
+    },
+
+    _factorCells : []
 });
 
 module.exports = { LayoutDef : anovarmLayout, options: options };
