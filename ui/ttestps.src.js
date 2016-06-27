@@ -20,9 +20,10 @@ var ttestpsLayout = LayoutDef.extend({
                     name: "pairs",
                     label: "Paired Variables",
                     showColumnHeaders: false,
+                    fullRowSelect: true,
                     columns: [
-                        { name: "i1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 },
-                        { name: "i2", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                        { name: "i1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 },
+                        { name: "i2", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 }
             ]
@@ -79,7 +80,7 @@ var ttestpsLayout = LayoutDef.extend({
                                 {
                                     name: "ci", type:"checkbox", label: "Confidence interval",
                                     controls: [
-                                        { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", formatName: "number", inputPattern: "[0-9]+" }
+                                        { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", format: FormatDef.number, inputPattern: "[0-9]+" }
                                     ]
                                 },
                                 { name: "desc", type:"checkbox", label: "Descriptives" }

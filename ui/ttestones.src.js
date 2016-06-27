@@ -21,7 +21,7 @@ var ttestonesLayout = LayoutDef.extend({
                     label: "Dependent Variables",
                     showColumnHeaders: false,
                     columns: [
-                        { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 }
             ]
@@ -43,7 +43,7 @@ var ttestonesLayout = LayoutDef.extend({
                                 { type:"checkbox", name: "mann", label: "Mann-Whitney U" },
                                 {
                                     controls : [
-                                        { type:"textbox", name: "testValue", label: "Test value", formatName: "number", inputPattern: "[0-9]+" }
+                                        { type:"textbox", name: "testValue", label: "Test value", format: FormatDef.number, inputPattern: "[0-9]+" }
                                     ]
                                 }
                             ]
@@ -83,7 +83,7 @@ var ttestonesLayout = LayoutDef.extend({
                                 {
                                     name: "ci", type:"checkbox", label: "Confidence interval",
                                     controls: [
-                                        { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", formatName: "number", inputPattern: "[0-9]+" }
+                                        { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", format: FormatDef.number, inputPattern: "[0-9]+" }
                                     ]
                                 },
                                 { name: "desc", type:"checkbox", label: "Descriptives" }

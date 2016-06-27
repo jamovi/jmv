@@ -19,7 +19,7 @@ var descriptivesLayout = LayoutDef.extend({
                     name: "vars",
                     showColumnHeaders: false,
                     columns: [
-                        { name: 'column1', label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                        { name: 'column1', label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 }
             ]
@@ -50,7 +50,7 @@ var descriptivesLayout = LayoutDef.extend({
                             type:"checkbox", name: "pcEqGr", label: "Cut points for",
                             style: "inline",
                             controls : [
-                                { type:"textbox", name: "pcNEqGr", label: "", suffix : "equal groups", formatName:"number", inputPattern: "[0-9]+" }
+                                { type:"textbox", name: "pcNEqGr", label: "", suffix : "equal groups", format: FormatDef.number, inputPattern: "[0-9]+" }
                             ]
                         }
                     ],

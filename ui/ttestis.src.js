@@ -21,7 +21,7 @@ var ttestisLayout = LayoutDef.extend({
                     label: "Dependent Variables",
                     showColumnHeaders: false,
                     columns: [
-                        { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 },
                 {
@@ -31,7 +31,7 @@ var ttestisLayout = LayoutDef.extend({
                     showColumnHeaders: false,
                     maxItemCount: 1,
                     columns: [
-                        { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 }
             ]
@@ -90,7 +90,7 @@ var ttestisLayout = LayoutDef.extend({
                                 {
                                     type:"checkbox", name: "ci", label: "Confidence interval",
                                     controls: [
-                                        { type:"textbox", name: "ciWidth", label: "Interval", suffix: "%", formatName: "number", inputPattern: "[0-9]+" }
+                                        { type:"textbox", name: "ciWidth", label: "Interval", suffix: "%", format: FormatDef.number, inputPattern: "[0-9]+" }
                                     ]
                                 },
                                 { type:"checkbox", name: "desc", label: "Descriptives" },

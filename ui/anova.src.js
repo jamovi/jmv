@@ -26,7 +26,7 @@ var anovaLayout = LayoutDef.extend({
                     showColumnHeaders: false,
                     maxItemCount: 1,
                     columns: [
-                        { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 },
                 {
@@ -35,7 +35,7 @@ var anovaLayout = LayoutDef.extend({
                     label: "Fixed Factors",
                     showColumnHeaders: false,
                     columns: [
-                        { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 },
                 {
@@ -45,7 +45,7 @@ var anovaLayout = LayoutDef.extend({
                     showColumnHeaders: false,
                     maxItemCount: 1,
                     columns: [
-                        { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 }
             ]
@@ -69,7 +69,7 @@ var anovaLayout = LayoutDef.extend({
                             label: "Model Terms",
                             showColumnHeaders: false,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -99,8 +99,8 @@ var anovaLayout = LayoutDef.extend({
                     label: "Factors",
                     showColumnHeaders: false,
                     columns: [
-                        { name: "var", label: "", readOnly: true, formatName: "variable", stretchFactor: 0.5 },
-                        { name: "type", label: "", readOnly: false, formatName: "string", stretchFactor: 1, options: ['none', 'deviation', 'simple', 'difference', 'helmert', 'repeated', 'polynomial'] }
+                        { name: "var", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 0.5 },
+                        { name: "type", label: "", readOnly: false, format: FormatDef.string, stretchFactor: 1, options: ['none', 'deviation', 'simple', 'difference', 'helmert', 'repeated', 'polynomial'] }
                     ]
                 }
             ]
@@ -122,7 +122,7 @@ var anovaLayout = LayoutDef.extend({
                             name: "postHoc",
                             showColumnHeaders: false,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -159,7 +159,7 @@ var anovaLayout = LayoutDef.extend({
                             showColumnHeaders: false,
                             maxItemCount: 1,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         },
                         {
@@ -169,7 +169,7 @@ var anovaLayout = LayoutDef.extend({
                             showColumnHeaders: false,
                             maxItemCount: 1,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         },
                         {
@@ -179,7 +179,7 @@ var anovaLayout = LayoutDef.extend({
                             showColumnHeaders: false,
                             maxItemCount: 1,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -194,7 +194,7 @@ var anovaLayout = LayoutDef.extend({
                                 {
                                     name: "errBarDef_ci", optionId: "errBarDef", type:"radiobutton", checkedValue: "ci", label: "Confidence interval",
                                     controls:[
-                                        { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", formatName: "number", inputPattern: "[0-9]+" }
+                                        { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", format: FormatDef.number, inputPattern: "[0-9]+" }
                                     ]
                                 },
                                 { name: "errBarDef_se", optionId: "errBarDef", type:"radiobutton", checkedValue: "se", label: "Standard Error" }
@@ -222,7 +222,7 @@ var anovaLayout = LayoutDef.extend({
                             label: "Marginal means",
                             showColumnHeaders: false,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, formatName: "variable", stretchFactor: 1 }
+                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         }
                     ]
