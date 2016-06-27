@@ -3,7 +3,7 @@ name:  AnovaRM
 title: Repeated Measures ANOVA
 
 items:
-    - name: anova
+    - name: rmTable
       title: Within Subjects
       type: Table
       clearWith:
@@ -38,7 +38,7 @@ items:
           type: number
           format: zto,pvalue
 
-    - name: bs
+    - name: bsTable
       title: Between Subjects
       type: Table
       clearWith:
@@ -74,13 +74,34 @@ items:
           format: zto,pvalue
 
     - name: assump
-      title: Assumption Checks
+      title: Assumptions
       type: Group
-      visible: (homoTests)
       items:
+          - name: spher
+            title: Tests of Sphericity
+            type: Table
+            visible: (spherTests)
+            columns:
+                - name: name
+                  title: ''
+                - name: mauch
+                  title: Mauchly's W
+                  type: number
+                - name: p
+                  title: p
+                  type: number
+                  format: zto,pvalue
+                - name: gg
+                  title: Greenhouse-Geisser ε
+                  type: number
+                - name: hf
+                  title: Huynh-Feldt ε
+                  type: number
+
           - name: eqVar
             title: Test for Equality of Variances (Levene's)
             type: Table
+            visible: false
             rows: 1
             columns:
                 - name: F
