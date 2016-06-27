@@ -9,9 +9,14 @@ options:
       description: >
         The data set as a data frame
 
-    - name: rmFactors
+    - name: rm
       title: Repeated Measures Factors
-      type: Variables
+      type: Group
+      elements:
+        - name: label
+          type: Variable
+        - name: levels
+          type: Variables
       description: >
         The Repeated Measures Factors
 
@@ -21,14 +26,14 @@ options:
       description: >
         The Repeated Measures Cells
 
-    - name: btwSubjFactors
+    - name: bs
       title: Between Subject Factors
       type: Variables
       default:
       description: >
         The Between Subject Factors
 
-    - name: covariates
+    - name: cov
       title: Covariates
       type: Variable
       default:
@@ -123,7 +128,7 @@ options:
                   - repeated
                   - polynomial
 
-    - name: postHocTests
+    - name: postHoc
       title: Post Hoc Tests
       type: Variables
       default:

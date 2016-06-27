@@ -214,17 +214,13 @@ TTestISClass <- R6Class("TTestISClass",
             
             print(ggplot(data=image$state, aes(x=group, y=mean, group=group)) +
                 geom_errorbar(aes(x=group, ymin=mean-cie, ymax=mean+cie, width=.1), size=.8, colour='#333333') +
-                geom_point(shape=21, fill='white', size=3) +
+                geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill='white', size=3) +
+                labs(x=groupName, y=image$key, colour=paste(image$key, '(95% CI)')) +
+                scale_colour_manual(name=paste(image$key, '(95% CI)'), values=c(colour='#333333'), labels='') +
                 theme(
-                    legend.justification=c(1,0),
-                    legend.position=c(1,0),
-                    text=element_text(size=20, colour='#333333'),
+                    text=element_text(size=16, colour='#333333'),
                     plot.background=element_rect(fill='transparent', color=NA),
-                    panel.background=element_rect(color=NA),
-                    axis.title.y=element_text(lineheight = 50),
-                    panel.background=element_rect(fill='#E8E8E8')) +
-                ylab(image$key) +
-                xlab(groupName)
+                    panel.background=element_rect(fill='#E8E8E8'))
             )
             
             return(TRUE)

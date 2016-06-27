@@ -19,7 +19,7 @@ var anovarmLayout = LayoutDef.extend({
             controls: [
                 {
                     type:"rmanovafactorsbox",
-                    name: "rmFactors",
+                    name: "rm",
                     label: "Repeated Measures Factors",
                 },
                 {
@@ -33,7 +33,7 @@ var anovarmLayout = LayoutDef.extend({
                 },
                 {
                     type:"targetlistbox",
-                    name: "btwSubjFactors",
+                    name: "bs",
                     label: "Between Subject Factors",
                     showColumnHeaders: false,
                     columns: [
@@ -42,7 +42,7 @@ var anovarmLayout = LayoutDef.extend({
                 },
                 {
                     type:"targetlistbox",
-                    name: "covariates",
+                    name: "cov",
                     label: "Covariates",
                     showColumnHeaders: false,
                     columns: [
@@ -151,7 +151,7 @@ var anovarmLayout = LayoutDef.extend({
                     controls: [
                         {
                             type:"targetlistbox",
-                            name: "postHocTests",
+                            name: "postHoc",
                             label: "",
                             showColumnHeaders: false,
                             columns: [
