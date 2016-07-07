@@ -349,7 +349,7 @@ var anovarmLayout = LayoutDef.extend({
             onChange: "rm", execute: function(context) {
                 var value = context.getValue("rm");
                 if (value === null)
-                    value = [{label: "RM Factors 1", levels: ["Level 1", "Level 2"]}];
+                    return;
 
                 var data = []
                 var indices = []
@@ -391,10 +391,19 @@ var anovarmLayout = LayoutDef.extend({
             onChange: "rmCells", execute: function(context) {
                 this.filterCells(context);
             }
+        },
+        {
+            onEvent: "analysis.initialising", execute: function(context) {
+                this._factorCells = null;
+            }
         }
     ],
 
     filterCells: function(context) {
+
+        if (this._factorCells === null)
+            return;
+
         var cells = this.clone(context.getValue("rmCells"));
         if (cells === null)
             cells = [];
@@ -438,7 +447,7 @@ var anovarmLayout = LayoutDef.extend({
         return JSON.parse(JSON.stringify(object));
     },
 
-    _factorCells : []
+    _factorCells : null
 });
 
 module.exports = { LayoutDef : anovarmLayout, options: options };
