@@ -54,12 +54,7 @@ var ttestonesLayout = LayoutDef.extend({
                                         }
                                     ]
                                 },
-                                { type:"checkbox", name: "mann", label: "Mann-Whitney U" },
-                                {
-                                    controls : [
-                                        { type:"textbox", name: "testValue", label: "Test value", format: FormatDef.number, inputPattern: "[0-9]+" }
-                                    ]
-                                }
+                                { type:"checkbox", name: "mann", label: "Mann-Whitney U" }
                             ]
                         },
                         {
@@ -67,6 +62,9 @@ var ttestonesLayout = LayoutDef.extend({
                             label: "Hypothesis",
                             level: "2",
                             controls : [
+                                {
+                                    controls: [{ type:"textbox", name: "testValue", label: "Test value", format: FormatDef.number, inputPattern: "[0-9]+" }]
+                                },
                                 { name: "hypothesis_dt", optionId: "hypothesis", type:"radiobutton", checkedValue: "dt", label: "≠ Test value" },
                                 { name: "hypothesis_gt", optionId: "hypothesis", type:"radiobutton", checkedValue: "gt", label: "> Test value" },
                                 { name: "hypothesis_lt", optionId: "hypothesis", type:"radiobutton", checkedValue: "lt", label: "< Test value" }
