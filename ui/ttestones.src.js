@@ -39,7 +39,21 @@ var ttestonesLayout = LayoutDef.extend({
                             label: "Tests",
                             level: "2",
                             controls : [
-                                { type:"checkbox", name: "student", label: "Student" },
+                                { type:"checkbox", name: "students", label: "Student" },
+                                {
+                                    type:"checkbox",
+                                    name: "bf",
+                                    label: "Bayes factor",
+                                    controls: [
+                                        {
+                                            type:"textbox",
+                                            name: "bfPrior",
+                                            label: "Prior",
+                                            format: FormatDef.number,
+                                            inputPattern: "[0-9]+"
+                                        }
+                                    ]
+                                },
                                 { type:"checkbox", name: "mann", label: "Mann-Whitney U" },
                                 {
                                     controls : [
@@ -53,9 +67,9 @@ var ttestonesLayout = LayoutDef.extend({
                             label: "Hypothesis",
                             level: "2",
                             controls : [
-                                { name: "hypothesis_different", optionId: "hypothesis", type:"radiobutton", checkedValue: "different", label: "Group 1 ≠ Group 2" },
-                                { name: "hypothesis_oneGreater", optionId: "hypothesis", type:"radiobutton", checkedValue: "oneGreater", label: "Group 1 > Group 2" },
-                                { name: "hypothesis_twoGreater", optionId: "hypothesis", type:"radiobutton", checkedValue: "twoGreater", label: "Group 1 < Group 2" }
+                                { name: "hypothesis_dt", optionId: "hypothesis", type:"radiobutton", checkedValue: "dt", label: "≠ Test value" },
+                                { name: "hypothesis_gt", optionId: "hypothesis", type:"radiobutton", checkedValue: "gt", label: "> Test value" },
+                                { name: "hypothesis_lt", optionId: "hypothesis", type:"radiobutton", checkedValue: "lt", label: "< Test value" }
                             ]
                         },
                         {
@@ -86,7 +100,8 @@ var ttestonesLayout = LayoutDef.extend({
                                         { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", format: FormatDef.number, inputPattern: "[0-9]+" }
                                     ]
                                 },
-                                { name: "desc", type:"checkbox", label: "Descriptives" }
+                                { name: "desc", type:"checkbox", label: "Descriptives" },
+                                { name: "plots", type:"checkbox", label: "Descriptives Plots" }
                             ]
                         },
                         {

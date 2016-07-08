@@ -42,6 +42,20 @@ var ttestpsLayout = LayoutDef.extend({
                             level: "2",
                             controls : [
                                 { name: "students", type:"checkbox", label: "Student's" },
+                                {
+                                    type:"checkbox",
+                                    name: "bf",
+                                    label: "Bayes factor",
+                                    controls: [
+                                        {
+                                            type:"textbox",
+                                            name: "bfPrior",
+                                            label: "Prior",
+                                            format: FormatDef.number,
+                                            inputPattern: "[0-9]+"
+                                        }
+                                    ]
+                                },
                                 { name: "wilcoxon", type:"checkbox", label: "Wilcoxon rank" },
                             ]
                         },
@@ -83,7 +97,8 @@ var ttestpsLayout = LayoutDef.extend({
                                         { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", format: FormatDef.number, inputPattern: "[0-9]+" }
                                     ]
                                 },
-                                { name: "desc", type:"checkbox", label: "Descriptives" }
+                                { name: "desc", type:"checkbox", label: "Descriptives" },
+                                { name: "plots", type:"checkbox", label: "Descriptives Plots" }
                             ]
                         },
                         {

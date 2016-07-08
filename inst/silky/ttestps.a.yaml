@@ -27,6 +27,18 @@ options:
       type: Bool
       default: true
       
+    - name: bf
+      title: Bayes factor
+      type: Bool
+      default: false
+      
+    - name: bfPrior
+      title: Prior width
+      type: number
+      default: 0.707
+      min: 0.5
+      max: 2.0
+      
     - name: wilcoxon
       title: Wilcoxon signed rank test
       type: Bool
@@ -72,6 +84,11 @@ options:
       
     - name: desc
       title: Descriptives Table
+      type: Bool
+      default: false
+      
+    - name: plots
+      title: Descriptives Plots
       type: Bool
       default: false
       

@@ -50,6 +50,20 @@ var ttestisLayout = LayoutDef.extend({
                             level: "2",
                             controls : [
                                 { type:"checkbox", name: "students", label: "Student's" },
+                                {
+                                    type:"checkbox",
+                                    name: "bf",
+                                    label: "Bayes factor",
+                                    controls: [
+                                        {
+                                            type:"textbox",
+                                            name: "bfPrior",
+                                            label: "Prior",
+                                            format: FormatDef.number,
+                                            inputPattern: "[0-9]+"
+                                        }
+                                    ]
+                                },
                                 { type:"checkbox", name: "welchs", label: "Welch's" },
                                 { type:"checkbox", name: "mann", label: "Mann-Whitney U" }
                             ]
@@ -70,7 +84,7 @@ var ttestisLayout = LayoutDef.extend({
                             level: "2",
                             controls : [
                                 { type:"checkbox", name: "norm", label: "Normality" },
-                                { type:"checkbox", name: "equality", label: "Equality of variances" }
+                                { type:"checkbox", name: "eqv", label: "Equality of variances" }
                             ]
                         }
                     ]
@@ -94,7 +108,7 @@ var ttestisLayout = LayoutDef.extend({
                                     ]
                                 },
                                 { type:"checkbox", name: "desc", label: "Descriptives" },
-                                { type:"checkbox", name: "plots", label: "Descriptives Plots" },
+                                { type:"checkbox", name: "plots", label: "Descriptives plots" },
                             ]
                         },
                         {
@@ -118,6 +132,12 @@ var ttestisLayout = LayoutDef.extend({
             onChange : "ci", execute : function(context) {
                 var disabled = context.getValue("ci") === false;
                 context.set("ciWidth", "disabled", disabled);
+            }
+        },
+        {
+            onChange : "bf", execute : function(context) {
+                var disabled = context.getValue("bf") === false;
+                context.set("bfPrior", "disabled", disabled);
             }
         }
     ]

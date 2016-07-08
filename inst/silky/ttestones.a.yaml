@@ -10,8 +10,9 @@ options:
         The data set as a data frame
 
     - name: vars
-      title: Paired Variables
+      title: Variables
       type: Variables
+      rejectInf: false
       description: >
         The variables of interest
         
@@ -19,6 +20,18 @@ options:
       title: Student's test
       type: Bool
       default: true
+      
+    - name: bf
+      title: Bayes factor
+      type: Bool
+      default: false
+      
+    - name: bfPrior
+      title: Prior width
+      type: number
+      default: 0.707
+      min: 0.5
+      max: 2.0
       
     - name: mann
       title: Mann-Whitney U
@@ -34,12 +47,12 @@ options:
       title: Alternative hypothesis
       type: List
       options:
-        - different
-        - oneGreater
-        - twoGreater
-      default: different
+        - dt
+        - gt
+        - lt
+      default: dt
       description: >
-        Specifies the alternative hypothesis as either "oneGreater", "twoGreater" or "different"(default)
+        Specifies the alternative hypothesis as either "different to", "greater than" or "less than"
         
     - name: norm
       title: Normality assumption check
@@ -72,7 +85,12 @@ options:
       title: Descriptives Table
       type: Bool
       default: false
-      
+
+    - name: plots
+      title: Descriptives Plots
+      type: Bool
+      default: false
+
     - name: miss
       title: Missing values exclusion method
       type: List

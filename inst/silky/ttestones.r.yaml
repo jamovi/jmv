@@ -7,6 +7,9 @@ items:
       title: One Sample T-Test
       type: Table
       rows: (vars)
+      clearWith:
+        - hypothesis
+        - testValue
       
       columns:
         - name: var
@@ -23,6 +26,12 @@ items:
           title: statistic
           type: number
           visible: (students)
+          
+        - name: err[stud]
+          title: '±%'
+          type: number
+          visible: (students && bf)
+          content: ''
         
         - name: df[stud]
           title: df
@@ -55,6 +64,65 @@ items:
           type: number
           visible: (ci && students)
           
+        - name: name[bf]
+          title: ''
+          type: string
+          content: Bayes factor
+          visible: (bf)
+          
+        - name: stat[bf]
+          title: statistic
+          type: number
+          visible: (bf)
+        
+        - name: err[bf]
+          title: '±%'
+          type: number
+          visible: (bf)
+        
+        - name: df[bf]
+          title: df
+          type: number
+          visible: (bf)
+          content: ''
+
+        - name: p[bf]
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (bf)
+          content: ''
+          
+        - name: md[bf]
+          title: Mean difference
+          type: number
+          visible: (meanDiff && bf)
+          content: ''
+          
+        - name: sed[bf]
+          title: SE difference
+          type: number
+          visible: (meanDiff && bf)
+          content: ''
+          
+        - name: es[bf]
+          title: Cohen's d
+          type: number
+          visible: (effectSize && bf)
+          content: ''
+          
+        - name: cil[bf]
+          title: Lower
+          type: number
+          visible: (ci && bf)
+          content: ''
+          
+        - name: ciu[bf]
+          title: Upper
+          type: number
+          visible: (ci && bf)
+          content: ''
+          
         - name: name[mann]
           title: Test
           content: Mann-Whitney U
@@ -64,6 +132,12 @@ items:
           title: stat
           type: number
           visible: (mann)
+          
+        - name: err[mann]
+          title: '±%'
+          type: number
+          visible: (mann && bf)
+          content: ''
 
         - name: p[mann]
           title: p
@@ -96,6 +170,8 @@ items:
       type: Table
       visible: (norm)
       rows: (vars)
+      notes:
+              p: A low p-value suggests a violation of the assumption of normality
       
       columns:
         - name: name
@@ -130,6 +206,10 @@ items:
         - name: mean
           title: Mean
           type: number
+        
+        - name: median
+          title: Median
+          type: number
           
         - name: sd
           title: SD
@@ -138,3 +218,12 @@ items:
         - name: se
           title: SE
           type: number
+          
+    - name: plots
+      title: Plots
+      visible: (plots)
+      type: Image
+      renderFun: .plot
+      clearWith:
+        - vars
+          

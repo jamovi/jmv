@@ -12,6 +12,7 @@ options:
     - name: vars
       title: Variables
       type: Variables
+      rejectInf: false
       description: >
         The variables of interest
         
@@ -25,6 +26,18 @@ options:
       title: Student's
       type: Bool
       default: true
+      
+    - name: bf
+      title: Bayes factor
+      type: Bool
+      default: false
+      
+    - name: bfPrior
+      title: Prior width
+      type: number
+      default: 0.707
+      min: 0.5
+      max: 2.0
       
     - name: welchs
       title: Welch's
@@ -52,7 +65,7 @@ options:
       type: Bool
       default: false
       
-    - name: equality
+    - name: eqv
       title: Equality of Variances assumption check
       type: Bool
       default: false

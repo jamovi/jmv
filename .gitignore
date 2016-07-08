@@ -1,3 +1,4 @@
 
 ui/*.options.js
 inst/silky/*.js
+.Rproj.user
