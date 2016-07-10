@@ -1,5 +1,5 @@
 
-TTestOneSClass <- R6Class("TTestOneSClass",
+TTestOneSClass <- R6::R6Class("TTestOneSClass",
     inherit=silkycore::Analysis,
     private=list(
         .run=function() {
@@ -249,9 +249,11 @@ TTestOneSClass <- R6Class("TTestOneSClass",
             
             ciw <- self$options$get('ciWidth')
             
+            pd <- ggplot2::position_dodge(0.2)
+            
             plot <- ggplot(data=image$state, aes(x=var, y=stat, shape=type)) +
-                geom_errorbar(aes(x=var, ymin=stat-cie, ymax=stat+cie, shape=type, width=.1), size=.8, colour='#333333') +
-                geom_point(aes(x=var, y=stat, colour=type, shape=type), fill='white', size=3, colour='#333333') +
+                geom_errorbar(aes(x=var, ymin=stat-cie, ymax=stat+cie, shape=type, width=.1), size=.8, colour='#333333', position=pd) +
+                geom_point(aes(x=var, y=stat, colour=type, shape=type), fill='white', size=3, colour='#333333', position=pd) +
                 labs(x='', y='') +
                 expand_limits(y=0) +
                 scale_shape_manual(name='', values=c(mean=21, median=22), labels=c(mean=paste0('Mean (', ciw, '% CI)'), median='Median')) +

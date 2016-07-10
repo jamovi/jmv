@@ -252,6 +252,7 @@ TTestPSClass <- R6Class("TTestPSClass",
                     medianPlotData <- cbind(medianPlotData, type='median')
                     
                     plotData <- rbind(meanPlotData, medianPlotData)
+                    plotData$group <- factor(plotData$group, levels=unique(plotData$group))
                     
                     if (all(is.na(plotData$stat)))
                         image$setState(NULL)
@@ -299,10 +300,12 @@ TTestPSClass <- R6Class("TTestPSClass",
             groupName <- self$options$get('group')
             ciw <- self$options$get('ciWidth')
             
+            pd <- ggplot2::position_dodge(0.2)
+            
             plot <- ggplot(data=image$state, aes(x=group, y=stat, shape=type)) +
-                geom_errorbar(aes(x=group, ymin=stat-cie, ymax=stat+cie, shape=type, width=.1), size=.8, colour='#333333') +
-                geom_point(aes(x=group, y=stat, colour=type, shape=type), fill='white', size=3, colour='#333333') +
-                labs(x=groupName, y=image$key) +
+                geom_errorbar(aes(x=group, ymin=stat-cie, ymax=stat+cie, shape=type, width=.2), size=.8, colour='#333333', position=pd) +
+                geom_point(aes(x=group, y=stat, colour=type, shape=type), fill='white', size=3, colour='#333333', position=pd) +
+                labs(x=groupName, y=NULL) +
                 scale_shape_manual(name='', values=c(mean=21, median=22), labels=c(mean=paste0('Mean (', ciw, '% CI)'), median='Median')) +
                 theme(
                     text=element_text(size=16, colour='#333333'),

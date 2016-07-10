@@ -98,7 +98,7 @@ var ttestpsLayout = LayoutDef.extend({
                                     ]
                                 },
                                 { name: "desc", type:"checkbox", label: "Descriptives" },
-                                { name: "plots", type:"checkbox", label: "Descriptives Plots" }
+                                { name: "plots", type:"checkbox", label: "Descriptives plots" }
                             ]
                         },
                         {

@@ -28,7 +28,7 @@ items:
           visible: (students)
           
         - name: err[stud]
-          title: '±%'
+          title: 'error %'
           type: number
           visible: (students && bf)
           content: ''
@@ -67,7 +67,7 @@ items:
         - name: name[bf]
           title: ''
           type: string
-          content: Bayes factor
+          content: Bayes factor₁₀
           visible: (bf)
           
         - name: stat[bf]

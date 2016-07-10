@@ -126,7 +126,7 @@ TTestISClass <- R6Class("TTestISClass",
                         
                         message <- extractErrorMessage(res)
                         if (message == 'grouping factor must have exactly 2 levels')
-                            message <- 'Variable contains no observations'
+                            message <- 'One or both groups do not contain enough observations'
                         else if (message == 'not enough observations')
                             message <- 'One or both groups do not contain enough observations'
                         else if (message == 'data are essentially constant')
@@ -187,7 +187,7 @@ TTestISClass <- R6Class("TTestISClass",
                         
                         message <- extractErrorMessage(res)
                         if (message == 'grouping factor must have exactly 2 levels')
-                            message <- 'Variable contains no observations'
+                            message <- 'One or both groups do not contain enough observations'
                         else if (message == "not enough 'x' observations")
                             message <- 'One or both groups do not contain enough observations'
                         else if (message == 'missing value where TRUE/FALSE needed')
@@ -234,7 +234,7 @@ TTestISClass <- R6Class("TTestISClass",
                         
                         message <- extractErrorMessage(res)
                         if (message == 'grouping factor must have exactly 2 levels')
-                            message <- 'Variable contains no observations'
+                            message <- 'One or both groups do not contain enough observations'
                         else if (message == 'not enough observations')
                             message <- 'One or both groups do not contain enough observations'
                         else if (message == 'cannot compute confidence interval when all observations are tied')
@@ -323,7 +323,7 @@ TTestISClass <- R6Class("TTestISClass",
                         
                         message <- extractErrorMessage(res)
                         if (message == 'grouping factor must have exactly 2 levels')
-                            message <- 'Variable contains no observations'
+                            message <- 'One or both groups do not contain enough observations'
                         else if (message == 'not enough observations')
                             message <- 'One or both groups do not contain enough observations'
                         else if (message == 'Dependent variable must be numeric.')
@@ -411,9 +411,11 @@ TTestISClass <- R6Class("TTestISClass",
             
             ciw <- self$options$get('ciWidth')
             
+            pd <- ggplot2::position_dodge(0.2)
+            
             plot <- ggplot(data=image$state, aes(x=group, y=stat, shape=type)) +
-                geom_errorbar(aes(x=group, ymin=stat-cie, ymax=stat+cie, shape=type, width=.1), size=.8, colour='#333333') +
-                geom_point(aes(x=group, y=stat, colour=type, shape=type), fill='white', size=3, colour='#333333') +
+                geom_errorbar(aes(x=group, ymin=stat-cie, ymax=stat+cie, shape=type, width=.1), size=.8, colour='#333333', position=pd) +
+                geom_point(aes(x=group, y=stat, colour=type, shape=type), fill='white', size=3, colour='#333333', position=pd) +
                 labs(x=groupName, y=image$key) +
                 scale_shape_manual(name='', values=c(mean=21, median=22), labels=c(mean=paste0('Mean (', ciw, '% CI)'), median='Median')) +
                 theme(
