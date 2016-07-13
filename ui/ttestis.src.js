@@ -21,7 +21,7 @@ var ttestisLayout = LayoutDef.extend({
                     label: "Dependent Variables",
                     showColumnHeaders: false,
                     columns: [
-                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                        { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 },
                 {
@@ -31,7 +31,7 @@ var ttestisLayout = LayoutDef.extend({
                     showColumnHeaders: false,
                     maxItemCount: 1,
                     columns: [
-                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                        { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 }
             ]
@@ -55,13 +55,7 @@ var ttestisLayout = LayoutDef.extend({
                                     name: "bf",
                                     label: "Bayes factor",
                                     controls: [
-                                        {
-                                            type:"textbox",
-                                            name: "bfPrior",
-                                            label: "Prior",
-                                            format: FormatDef.number,
-                                            inputPattern: "[0-9]+"
-                                        }
+                                        { type:"textbox", name: "bfPrior", label: "Prior", format: FormatDef.number, inputPattern: "[0-9]+" }
                                     ]
                                 },
                                 { type:"checkbox", name: "welchs", label: "Welch's" },

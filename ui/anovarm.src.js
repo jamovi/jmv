@@ -74,8 +74,8 @@ var anovarmLayout = LayoutDef.extend({
                     removeAction: "clear_cell",
                     height: "large",
                     columns: [
-                        { name: "measure", label: "Measure", readOnly: true, format: FormatDef.variable, stretchFactor: 1 },
-                        { name: "cell", label: "Cell", readOnly: true, selectable: false, format: rma_cell, stretchFactor: 1 }
+                        { type: "listitem.variablelabel", name: "measure", label: "Measure", format: FormatDef.variable, stretchFactor: 1 },
+                        { type: "listitem.label", name: "cell", label: "Cell", selectable: false, format: rma_cell, stretchFactor: 1 }
                     ]
                 },
                 {
@@ -85,7 +85,7 @@ var anovarmLayout = LayoutDef.extend({
                     showColumnHeaders: false,
                     height: "small",
                     columns: [
-                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                        { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 },
                 {
@@ -95,7 +95,7 @@ var anovarmLayout = LayoutDef.extend({
                     showColumnHeaders: false,
                     height: "small",
                     columns: [
-                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                        { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 }
             ]
@@ -119,7 +119,7 @@ var anovarmLayout = LayoutDef.extend({
                             label: "Model Terms",
                             showColumnHeaders: false,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -137,7 +137,7 @@ var anovarmLayout = LayoutDef.extend({
                             label: "Model Terms",
                             showColumnHeaders: false,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -180,8 +180,8 @@ var anovarmLayout = LayoutDef.extend({
                     label: "Factors",
                     showColumnHeaders: false,
                     columns: [
-                        { name: "var", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 0.5 },
-                        { name: "type", label: "", readOnly: false, format: FormatDef.string, stretchFactor: 1, options: ['none', 'deviation', 'simple', 'difference', 'helmert', 'repeated', 'polynomial'] }
+                        { type: "listitem.variablelabel", name: "var", label: "", format: FormatDef.variable, stretchFactor: 0.5 },
+                        { type: "listitem.combobox", name: "type", label: "", format: FormatDef.string, stretchFactor: 1, options: ['none', 'deviation', 'simple', 'difference', 'helmert', 'repeated', 'polynomial'] }
                     ]
                 }
             ]
@@ -204,7 +204,7 @@ var anovarmLayout = LayoutDef.extend({
                             label: "",
                             showColumnHeaders: false,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -240,7 +240,7 @@ var anovarmLayout = LayoutDef.extend({
                             showColumnHeaders: false,
                             maxItemCount: 1,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         },
                         {
@@ -250,7 +250,7 @@ var anovarmLayout = LayoutDef.extend({
                             showColumnHeaders: false,
                             maxItemCount: 1,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         },
                         {
@@ -260,7 +260,7 @@ var anovarmLayout = LayoutDef.extend({
                             showColumnHeaders: false,
                             maxItemCount: 1,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         }
                     ]

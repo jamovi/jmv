@@ -22,8 +22,8 @@ var ttestpsLayout = LayoutDef.extend({
                     showColumnHeaders: false,
                     fullRowSelect: true,
                     columns: [
-                        { name: "i1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 },
-                        { name: "i2", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                        { type: "listitem.variablelabel", name: "i1", label: "", format: FormatDef.variable, stretchFactor: 1 },
+                        { type: "listitem.variablelabel", name: "i2", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 }
             ]
@@ -47,13 +47,7 @@ var ttestpsLayout = LayoutDef.extend({
                                     name: "bf",
                                     label: "Bayes factor",
                                     controls: [
-                                        {
-                                            type:"textbox",
-                                            name: "bfPrior",
-                                            label: "Prior",
-                                            format: FormatDef.number,
-                                            inputPattern: "[0-9]+"
-                                        }
+                                        { type:"textbox", name: "bfPrior", label: "Prior", format: FormatDef.number, inputPattern: "[0-9]+" }
                                     ]
                                 },
                                 { name: "wilcoxon", type:"checkbox", label: "Wilcoxon rank" },
@@ -121,6 +115,12 @@ var ttestpsLayout = LayoutDef.extend({
             onChange : "ci", execute : function(context) {
                 var disabled = context.getValue("ci") === false;
                 context.set("ciWidth", "disabled", disabled);
+            }
+        },
+        {
+            onChange : "bf", execute : function(context) {
+                var disabled = context.getValue("bf") === false;
+                context.set("bfPrior", "disabled", disabled);
             }
         }
     ]

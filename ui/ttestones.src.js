@@ -21,7 +21,7 @@ var ttestonesLayout = LayoutDef.extend({
                     label: "Dependent Variables",
                     showColumnHeaders: false,
                     columns: [
-                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                        { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 }
             ]
@@ -45,13 +45,7 @@ var ttestonesLayout = LayoutDef.extend({
                                     name: "bf",
                                     label: "Bayes factor",
                                     controls: [
-                                        {
-                                            type:"textbox",
-                                            name: "bfPrior",
-                                            label: "Prior",
-                                            format: FormatDef.number,
-                                            inputPattern: "[0-9]+"
-                                        }
+                                        { type:"textbox", name: "bfPrior", label: "Prior", format: FormatDef.number, inputPattern: "[0-9]+" }
                                     ]
                                 },
                                 { type:"checkbox", name: "mann", label: "Mann-Whitney U" }
@@ -122,6 +116,12 @@ var ttestonesLayout = LayoutDef.extend({
             onChange : "ci", execute : function(context) {
                 var disabled = context.getValue("ci") === false;
                 context.set("ciWidth", "disabled", disabled);
+            }
+        },
+        {
+            onChange : "bf", execute : function(context) {
+                var disabled = context.getValue("bf") === false;
+                context.set("bfPrior", "disabled", disabled);
             }
         }
     ]
