@@ -26,7 +26,7 @@ var anovaLayout = LayoutDef.extend({
                     showColumnHeaders: false,
                     maxItemCount: 1,
                     columns: [
-                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                        { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 },
                 {
@@ -35,7 +35,7 @@ var anovaLayout = LayoutDef.extend({
                     label: "Fixed Factors",
                     showColumnHeaders: false,
                     columns: [
-                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                        { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 },
                 {
@@ -45,7 +45,7 @@ var anovaLayout = LayoutDef.extend({
                     showColumnHeaders: false,
                     maxItemCount: 1,
                     columns: [
-                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                        { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 }
             ]
@@ -69,7 +69,7 @@ var anovaLayout = LayoutDef.extend({
                             label: "Model Terms",
                             showColumnHeaders: false,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -99,8 +99,8 @@ var anovaLayout = LayoutDef.extend({
                     label: "Factors",
                     showColumnHeaders: false,
                     columns: [
-                        { name: "var", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 0.5 },
-                        { name: "type", label: "", readOnly: false, format: FormatDef.string, stretchFactor: 1, options: ['none', 'deviation', 'simple', 'difference', 'helmert', 'repeated', 'polynomial'] }
+                        { type: "listitem.variablelabel", name: "var", label: "", format: FormatDef.variable, stretchFactor: 0.5 },
+                        { type: "listitem.combobox", name: "type", label: "", format: FormatDef.string, stretchFactor: 1, options: ['none', 'deviation', 'simple', 'difference', 'helmert', 'repeated', 'polynomial'] }
                     ]
                 }
             ]
@@ -122,7 +122,7 @@ var anovaLayout = LayoutDef.extend({
                             name: "postHoc",
                             showColumnHeaders: false,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -159,7 +159,7 @@ var anovaLayout = LayoutDef.extend({
                             showColumnHeaders: false,
                             maxItemCount: 1,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         },
                         {
@@ -169,7 +169,7 @@ var anovaLayout = LayoutDef.extend({
                             showColumnHeaders: false,
                             maxItemCount: 1,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         },
                         {
@@ -179,7 +179,7 @@ var anovaLayout = LayoutDef.extend({
                             showColumnHeaders: false,
                             maxItemCount: 1,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -222,7 +222,7 @@ var anovaLayout = LayoutDef.extend({
                             label: "Marginal means",
                             showColumnHeaders: false,
                             columns: [
-                                { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -301,9 +301,13 @@ var anovaLayout = LayoutDef.extend({
                 context.setValue("plotsSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
                 context.setValue("postHocSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
 
+                var diff = null;
+                if ( ! this._initialising)
+                    diff = this.findDifferences(this._lastVariableList, variableList);
+                this._lastVariableList = variableList;
 
-                var diff = this.findDifferences(context.data.lastVariableList, variableList);
-                context.data.lastVariableList = variableList;
+                if (this._initialising)
+                    return;
 
                 var currentList = this.clone(context.getValue("modelTerms"));
                 if (currentList === null)
@@ -337,12 +341,7 @@ var anovaLayout = LayoutDef.extend({
                 this.sortByLength(currentList)
                 context.setValue("modelTerms", currentList);
 
-
-                var list3 = [];
-                for (var i = 0; i < variableList.length; i++)
-                    list3.push({ var: variableList[i], type: "none" });
-
-                context.setValue("contrasts", list3);
+                this.updateContrasts(context, variableList);
             }
         },
         {
@@ -350,8 +349,17 @@ var anovaLayout = LayoutDef.extend({
                 var currentList = this.clone(context.getValue("modelTerms"));
                 if (currentList === null)
                     currentList = [];
-                var diff = this.findDifferences(context.data.lastCurrentList, currentList);
-                context.data.lastCurrentList = currentList;
+
+                var list = this.convertArrayToSupplierList(currentList, FormatDef.variable);
+                context.setValue("marginalMeansSupplier", list);
+
+                var diff = null;
+                if ( ! this._initialising)
+                    diff = this.findDifferences(this._lastCurrentList, currentList);
+                this._lastCurrentList = currentList;
+
+                if (this._initialising)
+                    return;
 
                 if (diff.removed.length > 0 && currentList !== null) {
                     var itemsRemoved = false;
@@ -370,11 +378,34 @@ var anovaLayout = LayoutDef.extend({
                         context.setValue("modelTerms", currentList);
                 }
 
-                var list = this.convertArrayToSupplierList(currentList, FormatDef.variable);
-                context.setValue("marginalMeansSupplier", list);
+
+            }
+        },
+        {
+            onEvent: "analysis.initialising", execute: function(context) {
+                this._lastVariableList = null;
+                this._lastCurrentList = null;
+                this._initialising = true;
+            }
+        },
+        {
+            onEvent: "analysis.initialised", execute: function(context) {
+                this._initialising = false;
             }
         }
     ],
+
+    updateContrasts : function(context, variableList) {
+        var currentList = this.clone(context.getValue("contrasts"));
+        if (currentList === null)
+            currentList = [];
+
+        var list3 = [];
+        for (var i = 0; i < variableList.length; i++)
+            list3.push({ var: variableList[i], type: "none" });
+
+        context.setValue("contrasts", list3);
+    },
 
     sortByLength : function(list) {
         for (var i = 0; i < list.length; i++) {

@@ -21,7 +21,7 @@ var kruskalLayout = LayoutDef.extend({
                     label: "Dependent Variables",
                     showColumnHeaders: false,
                     columns: [
-                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                        { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 },
                 {
@@ -31,7 +31,7 @@ var kruskalLayout = LayoutDef.extend({
                     showColumnHeaders: false,
                     maxItemCount: 1,
                     columns: [
-                        { name: "column1", label: "", readOnly: true, format: FormatDef.variable, stretchFactor: 1 }
+                        { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 }
             ]
