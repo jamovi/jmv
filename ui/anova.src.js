@@ -68,6 +68,8 @@ var anovaLayout = LayoutDef.extend({
                             name: "modelTerms",
                             label: "Model Terms",
                             showColumnHeaders: false,
+                            valueFilter: "unique",
+                            multipleSelectionAction: "interactions",
                             columns: [
                                 { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                             ]
@@ -338,7 +340,7 @@ var anovaLayout = LayoutDef.extend({
                     }
                     currentList.push(diff.added[i]);
                 }
-                this.sortByLength(currentList)
+
                 context.setValue("modelTerms", currentList);
 
                 this.updateContrasts(context, variableList);
@@ -361,6 +363,7 @@ var anovaLayout = LayoutDef.extend({
                 if (this._initialising)
                     return;
 
+                var changed = false;
                 if (diff.removed.length > 0 && currentList !== null) {
                     var itemsRemoved = false;
                     for (var i = 0; i < diff.removed.length; i++) {
@@ -375,10 +378,36 @@ var anovaLayout = LayoutDef.extend({
                     }
 
                     if (itemsRemoved)
-                        context.setValue("modelTerms", currentList);
+                        changed = true;
                 }
 
+                if (this.sortByLength(currentList))
+                    changed = true;
 
+                if (changed)
+                    context.setValue("modelTerms", currentList);
+
+                if (diff.removed.length > 0) {
+                    itemsRemoved = false;
+                    var margMeans = this.clone(context.getValue("margMeans"));
+                    if (margMeans === null)
+                        margMeans = [];
+
+                    for (var i = 0; i < diff.removed.length; i++) {
+                        var item = diff.removed[i];
+                        for (var j = 0; j < margMeans.length; j++) {
+                            if (FormatDef.variable.contains(margMeans[j], item)) {
+                                margMeans.splice(j, 1);
+                                j -= 1;
+                                itemsRemoved = true;
+                            }
+                        }
+                    }
+
+                    if (itemsRemoved) {
+                        context.setValue("margMeans", margMeans);
+                    }
+                }
             }
         },
         {
@@ -408,6 +437,7 @@ var anovaLayout = LayoutDef.extend({
     },
 
     sortByLength : function(list) {
+        var changed = false;
         for (var i = 0; i < list.length; i++) {
             var l1 = 1;
             if (Array.isArray(list[i]))
@@ -418,6 +448,7 @@ var anovaLayout = LayoutDef.extend({
                 l2 = list[i+1].length;
 
             if (list.length > i + 1 && (l1 > l2)) {
+                changed = true;
                 var temp = list[i+1];
                 list[i+1] = list[i];
                 list[i] = temp;
@@ -425,6 +456,8 @@ var anovaLayout = LayoutDef.extend({
                     i = i - 2
             }
         }
+
+        return changed;
     },
 
     convertArrayToSupplierList: function(array, format) {
