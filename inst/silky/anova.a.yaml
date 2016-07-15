@@ -25,6 +25,7 @@ options:
     - name: wlsWeights
       title: WLS Weights
       type: Variable
+      default: 
 
     - name: modelTerms
       title: Model Terms

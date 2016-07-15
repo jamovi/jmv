@@ -6,9 +6,19 @@ AnovaClass <- R6::R6Class(
         .model=NA,
         .init=function() {
 
-            fixedFactors  <- self$options$get('fixedFactors')
+            dependentName <- self$options$get('dependent')
+            fixedFactors <- self$options$get('fixedFactors')
+            modelTerms <- private$.modelTerms()
             
-            anovaTable    <- self$results$get('anova')
+            if (is.null(dependentName) || length(fixedFactors) == 0 || length(modelTerms) == 0)
+                return()
+            
+            data <- self$data
+            for (varName in fixedFactors)
+                data[[varName]] <- as.factor(data[[varName]])
+            data[[dependentName]] <- silkycore::toNumeric(data[[dependentName]])
+            
+            anovaTable    <- self$results$get('main')
             postHocTables <- self$results$get('postHoc')
             contrastsTables <- self$results$get('contrasts')
             
@@ -36,7 +46,7 @@ AnovaClass <- R6::R6Class(
                     next()
                 table <- contrastsTables$addItem(contrast)
                 
-                var <- self$data[[contrast$var]]
+                var <- data[[contrast$var]]
                 levels <- base::levels(var)
                 labels <- private$.contrastLabels(levels, contrast$type)
                 
@@ -50,7 +60,7 @@ AnovaClass <- R6::R6Class(
             for (postHocVar in self$options$get('postHoc')) {
                 
                 table <- postHocTables$get(postHocVar)
-                levels <- base::levels(self$data[[postHocVar]])
+                levels <- base::levels(data[[postHocVar]])
                 combs <- utils::combn(levels, 2)
                 apply(combs, 2, function(comb) {
                     table$addRow(rowKey=comb, list(
@@ -65,12 +75,13 @@ AnovaClass <- R6::R6Class(
             mmTables <- self$results$get('margMeans')
             
             for (mmTerm in self$options$get('margMeans')) {
+                
                 table <- mmTables$get(mmTerm)
                 title <- paste(table$title, '-', stringifyTerm(mmTerm))
                 table$setTitle(title)
                 
-                data <- select(self$data, rev(mmTerm))
-                al <- as.list(data)
+                mmData <- select(data, rev(mmTerm))
+                al <- as.list(mmData)
                 names(al) <- rev(paste0('f', seq_len(length(al))))
                 ll <- sapply(al, base::levels, simplify=FALSE)
                 ll$stringsAsFactors <- FALSE
@@ -98,7 +109,7 @@ AnovaClass <- R6::R6Class(
             
             if (length(factorNames) > 0) {
             
-                data <- select(self$data, rev(factorNames))
+                data <- select(data, rev(factorNames))
                 al <- as.list(data)
                 names(al) <- rev(paste0('f', seq_len(length(al))))
                 ll <- sapply(al, base::levels, simplify=FALSE)
@@ -122,6 +133,8 @@ AnovaClass <- R6::R6Class(
         },
         .run=function() {
             
+            suppressWarnings({
+            
             dependentName <- self$options$get('dependent')
             fixedFactors <- self$options$get('fixedFactors')
             modelTerms <- private$.modelTerms()
@@ -131,28 +144,29 @@ AnovaClass <- R6::R6Class(
             
             base::options(contrasts = c("contr.sum","contr.poly"))
             
-            names <- c(dependentName, fixedFactors)
-            data <- select(self$data, names)
+            data <- self$data
+            for (varName in fixedFactors)
+                data[[varName]] <- as.factor(data[[varName]])
+            data[[dependentName]] <- silkycore::toNumeric(data[[dependentName]])
             data <- naOmit(data)
             
+            if (is.factor(data[[dependentName]]))
+                reject('Dependent variable must be numeric')
+            
             for (factorName in fixedFactors) {
-                fac <- as.factor(data[[factorName]])
-                data[[factorName]] <- fac
-                lvls <- base::levels(fac)
+                lvls <- base::levels(data[[factorName]])
                 if (length(lvls) == 1)
                     reject("Factor '{}' contains only a single level", factorName=factorName)
                 else if (length(lvls) == 0)
                     reject("Factor '{}' contains no data", factorName=factorName)
             }
             
-            data[[dependentName]] <- silkycore::toNumeric(data[[dependentName]])
-            
             for (contrast in self$options$get('contrasts')) {
                levels <- base::levels(data[[contrast$var]])
                stats::contrasts(data[[contrast$var]]) <- private$.createContrasts(levels, contrast$type)
             }
             
-            formula <- silkycore::constructFormula(self$options$get('dependent'), private$.modelTerms())
+            formula <- silkycore::constructFormula(dependentName, modelTerms)
             formula <- stats::as.formula(formula)
             
             private$.model <- stats::aov(formula, data)
@@ -161,22 +175,22 @@ AnovaClass <- R6::R6Class(
             
             if (self$options$get('ss') == '1') {
                 
-                results <- try(stats::anova(private$.model))
+                results <- try(stats::anova(private$.model), silent=TRUE)
                 
             } else if (self$options$get('ss') == '2') {
                 
-                results <- try(car::Anova(private$.model, type=2, singular.ok=FALSE))
+                results <- try(car::Anova(private$.model, type=2, singular.ok=FALSE), silent=TRUE)
                 if (isError(results)) {
                     message <- extractErrorMessage(results)
                     if (message == 'there are aliased coefficients in the model')
                         singular <- 'Singular fit encountered; one or more predictor variables are a linear combination of other predictor variables'
-                    results <- try(car::Anova(private$.model, type=2, singular.ok=TRUE))
+                    results <- try(car::Anova(private$.model, type=2, singular.ok=TRUE), silent=TRUE)
                 }
                 
             } else {
                 
                 results <- try({
-                    r <- car::Anova(private$.model, type=3, singular.ok=FALSE)
+                    r <- car::Anova(private$.model, type=3, singular.ok=FALSE, silent=TRUE)
                     r <- r[-1,]
                 })
                 
@@ -185,7 +199,7 @@ AnovaClass <- R6::R6Class(
                     if (message == 'there are aliased coefficients in the model')
                         singular <- 'Singular fit encountered; one or more predictor variables are a linear combination of other predictor variables'
                     results <- try({
-                        r <- car::Anova(private$.model, type=3, singular.ok=TRUE)
+                        r <- car::Anova(private$.model, type=3, singular.ok=TRUE, silent=TRUE)
                         r <- r[-1,]
                     })
                 }
@@ -200,7 +214,7 @@ AnovaClass <- R6::R6Class(
             if (results['Residuals', 'Sum Sq'] == 0 || results['Residuals', 'Df'] == 0)
                 reject('Residual sum of squares and/or degrees of freedom is zero, indicating a perfect fit')
             
-            anovaTable <- self$results$get('anova')
+            anovaTable <- self$results$get('main')
             
             if ( ! is.null(singular))
                 anovaTable$setNote('singular', singular)
@@ -256,11 +270,17 @@ AnovaClass <- R6::R6Class(
             private$.prepareDescPlots(data)
             private$.populateMarginalMeans()
             private$.populateDescriptives(data)
+            
+            }) # suppressWarnings
         },
         .populatePostHoc=function(data) {
             
             depName <- self$options$get('dependent')
             phNames <- self$options$get('postHoc')
+            
+            if (length(phNames) == 0)
+                return()
+            
             dep <- data[[depName]]
             
             postHocTables <- self$results$get('postHoc')
@@ -274,7 +294,7 @@ AnovaClass <- R6::R6Class(
             results <- try(suppressWarnings({
                 mcp <- do.call(multcomp::mcp, mcpArgs)
                 summary(multcomp::glht(private$.model, mcp))$test
-            }))
+            }), silent=TRUE)
             
             if ( ! isError(results)) {
                 i <- 1
@@ -391,6 +411,9 @@ AnovaClass <- R6::R6Class(
             
         },
         .populateDescriptives=function(data) {
+            
+            if ( ! self$options$get('descStats'))
+                return()
             
             descTable <- self$results$get('desc')
             dependentName <- self$options$get('dependent')

@@ -3,7 +3,7 @@ name:  Anova
 title: ANOVA
 
 items:
-    - name: anova
+    - name: main
       title: ANOVA
       type: Table
       rows: (terms)

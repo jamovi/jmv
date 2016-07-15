@@ -37,16 +37,6 @@ var anovaLayout = LayoutDef.extend({
                     columns: [
                         { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
-                },
-                {
-                    name: "wlsWeights",
-                    type:"targetlistbox",
-                    label: "WLS Weights",
-                    showColumnHeaders: false,
-                    maxItemCount: 1,
-                    columns: [
-                        { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
-                    ]
                 }
             ]
         },

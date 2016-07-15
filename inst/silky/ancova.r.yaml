@@ -3,7 +3,7 @@ name:  Ancova
 title: ANCOVA
 
 items:
-    - name: ancova
+    - name: main
       title: ANCOVA
       type: Table
       rows: (terms)
