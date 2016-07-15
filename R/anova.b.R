@@ -539,7 +539,7 @@ AnovaClass <- R6::R6Class(
         .prepareQQPlot=function(data) {
             
             residuals <- rstandard(private$.model)
-            df <- as.data.frame(qqnorm(residuals))
+            df <- as.data.frame(qqnorm(residuals, plot.it=FALSE))
             
             image <- self$results$get('assump')$get('qq')
             image$setState(df)
