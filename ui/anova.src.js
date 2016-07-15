@@ -51,6 +51,18 @@ var anovaLayout = LayoutDef.extend({
             ]
         },
         {
+            controls: [
+                {
+                    style: "inline",
+                    controls: [
+                        { name: "etaSq",   type:"checkbox", label: "η²" },
+                        { name: "etaSqP",  type:"checkbox", label: "partial η²" },
+                        { name: "omegaSq", type:"checkbox", label: "ω²" }
+                    ]
+                }
+            ]
+        },
+        {
             type: "groupbox",
             label: "Model",
             collapsed: true,
@@ -76,7 +88,11 @@ var anovaLayout = LayoutDef.extend({
                         }
                     ]
                 },
-                { name: "sumOfSqu", type:"combobox", label: "Sum of squares", options: [ {label: 'Type I', value:'Type I'}, {label: 'Type II', value:'Type II'}, {label: 'Type III', value:'Type III'}] }
+                { name: "ss", type:"combobox", label: "Sum of squares", options: [
+                    { label: 'Type 1', value: '1' },
+                    { label: 'Type 2', value: '2' },
+                    { label: 'Type 3', value: '3' }
+                ] }
             ]
         },
         {
@@ -85,8 +101,8 @@ var anovaLayout = LayoutDef.extend({
             collapsed: true,
             stretchFactor: 1,
             controls : [
-                { name: "homoTests", type:"checkbox", label: "Homogeneity tests" },
-                { name: "qqPlotRes", type:"checkbox", label: "Q-Q plot of residuals" }
+                { name: "homo", type:"checkbox", label: "Homogeneity tests" },
+                { name: "qq", type:"checkbox", label: "Q-Q plot of residuals" }
             ]
         },
         {
@@ -191,17 +207,10 @@ var anovaLayout = LayoutDef.extend({
                     label: "Display",
                     controls: [
                         {
-                            name: "dispErrBars", label: "Error bars displaying", type:"checkbox",
-                            controls: [
-                                {
-                                    name: "errBarDef_ci", optionId: "errBarDef", type:"radiobutton", checkedValue: "ci", label: "Confidence interval",
-                                    controls:[
-                                        { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", format: FormatDef.number, inputPattern: "[0-9]+" }
-                                    ]
-                                },
-                                { name: "errBarDef_se", optionId: "errBarDef", type:"radiobutton", checkedValue: "se", label: "Standard Error" }
-                            ]
-                        }
+                            name: "errBarDef_ci", optionId: "plotError", type:"radiobutton", checkedValue: "ci", label: "Confidence interval",
+                            controls: [ { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", format: FormatDef.number, inputPattern: "[0-9]+" } ]
+                        },
+                        { name: "errBarDef_se", optionId: "plotError", type:"radiobutton", checkedValue: "se", label: "Standard Error" }
                     ]
                 }
             ]
@@ -233,9 +242,14 @@ var anovaLayout = LayoutDef.extend({
                     type: "groupbox",
                     controls: [
                         {
-                            name: "compMainEff", label: "Compare main effects", type:"checkbox",
+                            name: "compMain", label: "Compare main effects", type:"checkbox",
                             controls: [
-                                { name: "confIntAdj", type:"combobox", label: "Confidence interval adjustment", options: [{ label: "None", value: "None" }, { label: "Bonferroni", value: "Bonferroni" }, { label: "Sidak", value: "Sidak" }] }
+                                { name: "compMainCorr", type:"combobox", label: "Correction", options: [
+                                    { label: "None", value: "none" },
+                                    { label: "Tukey", value: "tukey" },
+                                    { label: "Bonferroni", value: "bonferroni" },
+                                    { label: "Scheffe", value: "scheffe" },
+                                    { label: "Sidak", value: "sidak" } ] }
                             ]
                         }
                     ]
@@ -244,20 +258,7 @@ var anovaLayout = LayoutDef.extend({
                     type: "groupbox",
                     label: "Display",
                     controls: [
-                        { name: "dispDescStats", type:"checkbox", label: "Descriptive statistics" },
-                        {
-                            name: "estEffSize", label: "Estimates of effect size", type:"checkbox",
-                            controls: [
-                                {
-                                    style: "inline",
-                                    controls: [
-                                        { name: "effSizeN2", type:"checkbox", label: "n2" },
-                                        { name: "partEffSizeN2", type:"checkbox", label: "partial n2" },
-                                        { name: "effSizeW2", type:"checkbox", label: "w2" }
-                                    ]
-                                }
-                            ]
-                        }
+                        { name: "descStats", type:"checkbox", label: "Descriptive statistics" }
                     ]
                 }
             ]
@@ -265,31 +266,16 @@ var anovaLayout = LayoutDef.extend({
     ],
 
     actions: [
-         {
-            onChange: "estEffSize", execute: function(context) {
-                var value = context.getValue("estEffSize");
-                context.set("effSizeN2", "disabled", value === false);
-                context.set("partEffSizeN2", "disabled", value === false);
-                context.set("effSizeW2", "disabled", value === false);
+        {
+            onChange: "compMain", execute: function(context) {
+                var value = context.getValue("compMain") ;
+                context.set("compMainCorr", "disabled", value === false);
             }
         },
         {
-            onChange: "compMainEff", execute: function(context) {
-                var value = context.getValue("compMainEff") ;
-                context.set("confIntAdj", "disabled", value === false);
-            }
-        },
-        {
-            onChange: "dispErrBars", execute: function(context) {
-                var value = context.getValue("dispErrBars");
-                context.set("errBarDef_se", "disabled", value === false);
-                context.set("errBarDef_ci", "disabled", value === false);
-            }
-        },
-        {
-            onChange: ["dispErrBars", "errBarDef"], execute: function(context) {
-                var value = context.getValue("dispErrBars") === false || context.getValue("errBarDef") !== "ci";
-                context.set("ciWidth", "disabled", value);
+            onChange: "plotError", execute: function(context) {
+                var disabled = context.getValue("plotError") !== "ci";
+                context.set("ciWidth", "disabled", disabled);
             }
         },
         {

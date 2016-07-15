@@ -7,6 +7,9 @@ items:
       title: Independent Samples T-Test
       type: Table
       rows: (vars)
+      clearWith:
+        - group
+        - hypothesis
       
       columns:
         - name: var
@@ -344,5 +347,6 @@ items:
       template:
           title: {$key}
           type: Image
-          renderInitFun: .plot
           renderFun: .plot
+          clearWith:
+            - group

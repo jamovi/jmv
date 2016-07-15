@@ -336,12 +336,18 @@ TTestISClass <- R6Class("TTestISClass",
                         
                         extracted <- BayesFactor::extractBF(res)
                         error <- extracted$error[1]
+                        bf <- extracted$bf[1]
                         if (is.na(error))
                             error <- NaN
+                        if ( ! is.numeric(bf))
+                            bf <- NaN
                         
                         ttestTable$setRow(rowKey=depName, list(
-                            "stat[bf]"=extracted$bf[1],
+                            "stat[bf]"=bf,
                             "err[bf]"=error))
+                        
+                        if ( ! is.na(bf) && bf < 1)
+                            ttestTable$addFormat(col='stat[bf]', rowKey=depName, Cell.NEGATIVE)
                     }
                 }
                 
@@ -421,7 +427,11 @@ TTestISClass <- R6Class("TTestISClass",
                 theme(
                     text=element_text(size=16, colour='#333333'),
                     plot.background=element_rect(fill='transparent', color=NA),
-                    panel.background=element_rect(fill='#E8E8E8'))
+                    panel.background=element_rect(fill='#E8E8E8'),
+                    axis.text.x=element_text(margin=margin(5,0,0,0)),
+                    axis.text.y=element_text(margin=margin(0,5,0,0)),
+                    axis.title.x=element_text(margin=margin(10,0,0,0)),
+                    axis.title.y=element_text(margin=margin(0,10,0,0)))
             
             suppressWarnings(print(plot))
             

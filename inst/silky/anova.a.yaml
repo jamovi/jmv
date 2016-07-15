@@ -14,13 +14,24 @@ options:
       type: Variable
       description: >
         The dependent variable
-
+        
+    - name: fixedFactors
+      title: Fixed factors
+      type: Variables
+      default:
+      description: >
+        The fixed factors
+        
     - name: wlsWeights
       title: WLS Weights
       type: Variable
+
+    - name: modelTerms
+      title: Model Terms
+      type: Terms
       default:
       description: >
-        The WLS weights
+        The model terms
 
     - name: contrasts
       title: Contrasts
@@ -30,9 +41,11 @@ options:
       template:
           type: Group
           elements:
+          
               - name: var
                 type: Variable
                 content: $key
+                
               - name: type
                 type: List
                 options:
@@ -64,20 +77,6 @@ options:
       default:
       description: >
         The Separate plots variable
-
-    - name: fixedFactors
-      title: Fixed factors
-      type: Variables
-      default:
-      description: >
-        The fixed factors
-
-    - name: modelTerms
-      title: Model Terms
-      type: Terms
-      default:
-      description: >
-        The model terms
 
     - name: postHoc
       title: Post Hoc Tests
@@ -116,84 +115,72 @@ options:
 
     - name: margMeans
       title: Marginal means
-      type: Variables
+      type: Terms
       default:
       description: >
         The Marginal Means
 
-    - name: compMainEff
+    - name: compMain
       title: Compare main effects
       type: Bool
       default: false
       description: >
         Compare main effects
 
-    - name: confIntAdj
-      title: Confidence interval adjustment
+    - name: compMainCorr
+      title: Correction
       type: List
       options:
-        - None
-        - Bonferroni
-        - Sidak
-      default: None
+        - none
+        - tukey
+        - bonferroni
+        - scheffe
+        - sidak
+      default: none
       description: >
         Confidence interval adjustment
 
-    - name: dispDescStats
+    - name: descStats
       title: Descriptive statistics
       type: Bool
       default: false
       description: >
-        Display Descriptive statistics
+        Descriptive statistics
 
-    - name: estEffSize
-      title: Estimates of effect size
-      type: Bool
-      default: false
-      description: >
-        Display Estimates of effect size
-
-    - name: homoTests
+    - name: homo
       title: Homogeneity tests
       type: Bool
       default: false
       description: >
         Display Homogeneity tests
 
-    - name: qqPlotRes
+    - name: qq
       title: Q-Q plot of residuals
       type: Bool
       default: false
       description: >
         Display Q-Q plot of residuals
 
-    - name: effSizeN2
+    - name: etaSq
       title: n2
       type: Bool
       default: false
       description: >
         Effect size n2
 
-    - name: partEffSizeN2
+    - name: etaSqP
       title: partial n2
       type: Bool
       default: false
       description: >
         Effect size partial n2
 
-    - name: effSizeW2
+    - name: omegaSq
       title: w2
       type: Bool
       default: false
       description: >
         Effect size w2
-
-    - name: dispErrBars
-      title: Error bars displaying
-      type: Bool
-      default: false
-      description: >
-        Error bars displaying
 
     - name: factors
       title: Factors
@@ -202,7 +189,7 @@ options:
       description: >
         Factors
 
-    - name: errBarDef
+    - name: plotError
       title: Error Bar Definition
       type: List
       options:
@@ -219,13 +206,13 @@ options:
       max: 99.9
       default: 95
 
-    - name: sumOfSqu
+    - name: ss
       title: Sum of squares
       type: List
       options:
-        - Type I
-        - Type II
-        - Type III
-      default: Type III
+        - '1'
+        - '2'
+        - '3'
+      default: '3'
       description: >
         Sum of squares
