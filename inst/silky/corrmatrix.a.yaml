@@ -1,0 +1,90 @@
+---
+name:    CorrMatrix
+title:   Correlation Matrix
+package: silkyR
+engineType: R
+
+options:
+    - name: dataset
+      type: Dataset
+      description: >
+        The data set as a data frame
+
+    - name: vars
+      title: Variables
+      type: Variables
+      description: >
+        The variables of interest
+
+    - name: pearson
+      title: Pearson
+      type: Bool
+      default: true
+      description: >
+        The pearson
+
+    - name: spearman
+      title: Spearman
+      type: Bool
+      default: false
+      description: >
+        The spearman
+
+    - name: kendallTaub
+      title: Kendall's tau-b
+      type: Bool
+      default: false
+      description: >
+        The Kendall's tau-b
+
+    - name: sig
+      title: Report Significance
+      type: Bool
+      default: false
+      description: >
+        The Report Significance
+
+    - name: flag
+      title: Flag significant correlations
+      type: Bool
+      default: false
+      description: >
+        The Report Significance
+
+    - name: ci
+      title: Confidence Intervals
+      type: Bool
+      default: false
+
+    - name: ciWidth
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+
+    - name: plots
+      title: Correlation matrix
+      type: Bool
+      default: false
+
+    - name: densities
+      title: Densities for variables
+      type: Bool
+      default: false
+
+    - name: stats
+      title: Statistics
+      type: Bool
+      default: false
+
+    - name: hypothesis
+      title: Hypothesis
+      type: List
+      options:
+        - corr
+        - pos
+        - neg
+      default: corr
+      description: >
+        Stuff

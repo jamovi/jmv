@@ -270,22 +270,12 @@ var anovaLayout = LayoutDef.extend({
         },
         {
             onChange: "fixedFactors", execute: function(context) {
-                /*if (this._initialising) {
-                    this._calcModelTermsPending = true;
-                    return;
-                }*/
-
-                this.calcModelTerms(context, this._initialising);
+                this.calcModelTerms(context);
             }
         },
         {
             onChange: "modelTerms", execute: function(context) {
-                /*if (this._initialising) {
-                    this._filterModelTermsPending = true;
-                    return;
-                }*/
-
-                this.filterModelTerms(context, this._initialising);
+                this.filterModelTerms(context);
             }
         },
         {
@@ -297,22 +287,18 @@ var anovaLayout = LayoutDef.extend({
         },
         {
             onEvent: "analysis.initialised", execute: function(context) {
-                this._initialising = false;
-
-                /*if (this._calcModelTermsPending) {
+                if (this._lastVariableList === null)
                     this.calcModelTerms(context);
-                    this._calcModelTermsPending = false;
-                }
 
-                if (this._filterModelTermsPending) {
+                if (this._lastCurrentList === null)
                     this.filterModelTerms(context);
-                    this._filterModelTermsPending = false;
-                }*/
+
+                this._initialising = false;
             }
         }
     ],
 
-    calcModelTerms: function(context, initialising) {
+    calcModelTerms: function(context) {
         var variableList = this.clone(context.getValue("fixedFactors"));
         if (variableList === null)
             variableList = [];
@@ -321,10 +307,12 @@ var anovaLayout = LayoutDef.extend({
         context.setValue("plotsSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
         context.setValue("postHocSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
 
-        var diff = this.findDifferences(this._lastVariableList, variableList);
+        var diff = { removed: [], added: [] };
+        if (this._lastVariableList !== null)
+            diff = this.findDifferences(this._lastVariableList, variableList);
         this._lastVariableList = variableList;
 
-        if (initialising)
+        if (this._initialising)
             return;
 
         var currentList = this.clone(context.getValue("modelTerms"));
@@ -362,7 +350,7 @@ var anovaLayout = LayoutDef.extend({
         this.updateContrasts(context, variableList);
     },
 
-    filterModelTerms : function(context, initalising) {
+    filterModelTerms : function(context) {
         var currentList = this.clone(context.getValue("modelTerms"));
         if (currentList === null)
             currentList = [];
@@ -370,10 +358,12 @@ var anovaLayout = LayoutDef.extend({
         var list = this.convertArrayToSupplierList(currentList, FormatDef.variable);
         context.setValue("marginalMeansSupplier", list);
 
-        var diff = this.findDifferences(this._lastCurrentList, currentList);
+        var diff = { removed: [], added: [] };
+        if (this._lastCurrentList !== null)
+            diff = this.findDifferences(this._lastCurrentList, currentList);
         this._lastCurrentList = currentList;
 
-        if (initalising)
+        if (this._initialising)
             return;
 
         var changed = false;
