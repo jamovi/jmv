@@ -1,0 +1,225 @@
+---
+name:    Ancova
+title:   ANCOVA
+package: silkyR
+
+options:
+    - name: dataset
+      type: Dataset
+      description: >
+        The data set as a data frame
+
+    - name: dependent
+      title: Dependent
+      type: Variable
+      description: >
+        The dependent variable
+
+    - name: fixedFactors
+      title: Fixed factors
+      type: Variables
+      default:
+      description: >
+        The fixed factors
+
+    - name: covariates
+      title: Covariates
+      type: Variables
+      default:
+      description: >
+        The covariates
+
+    - name: wlsWeights
+      title: WLS Weights
+      type: Variable
+
+    - name: modelTerms
+      title: Model Terms
+      type: Terms
+      default:
+      description: >
+        The model terms
+
+    - name: contrasts
+      title: Contrasts
+      type: Array
+      items: (fixedFactors)
+      default:
+      template:
+          type: Group
+          elements:
+
+              - name: var
+                type: Variable
+                content: $key
+
+              - name: type
+                type: List
+                options:
+                  - none
+                  - deviation
+                  - simple
+                  - difference
+                  - helmert
+                  - repeated
+                  - polynomial
+
+    - name: descPlotsHAxis
+      title: Horizontal axis
+      type: Variable
+      default:
+      description: >
+        The Horizontal axis variable
+
+    - name: descPlotsSepLines
+      title: Separate lines
+      type: Variable
+      default:
+      description: >
+        The Separate lines variable
+
+    - name: descPlotsSepPlots
+      title: Separate plots
+      type: Variable
+      default:
+      description: >
+        The Separate plots variable
+
+    - name: postHoc
+      title: Post Hoc Tests
+      type: Variables
+      default:
+      description: >
+        Post Hoc Tests
+
+    - name: corrTukey
+      title: Tukey
+      type: Bool
+      default: false
+      description: >
+        Post Hoc Tests Tukey Correction
+
+    - name: corrScheffe
+      title: Scheffe
+      type: Bool
+      default: false
+      description: >
+        Post Hoc Tests Scheffe Correction
+
+    - name: corrBonf
+      title: Bonferroni
+      type: Bool
+      default: false
+      description: >
+        Post Hoc Tests Bonferroni Correction
+
+    - name: corrHolm
+      title: Holm
+      type: Bool
+      default: false
+      description: >
+        Post Hoc Tests Holm Correction
+
+    - name: margMeans
+      title: Marginal means
+      type: Terms
+      default:
+      description: >
+        The Marginal Means
+
+    - name: compMain
+      title: Compare main effects
+      type: Bool
+      default: false
+      description: >
+        Compare main effects
+
+    - name: compMainCorr
+      title: Correction
+      type: List
+      options:
+        - none
+        - tukey
+        - bonferroni
+        - scheffe
+        - sidak
+      default: none
+      description: >
+        Confidence interval adjustment
+
+    - name: descStats
+      title: Descriptive statistics
+      type: Bool
+      default: false
+      description: >
+        Descriptive statistics
+
+    - name: homo
+      title: Homogeneity tests
+      type: Bool
+      default: false
+      description: >
+        Display Homogeneity tests
+
+    - name: qq
+      title: Q-Q plot of residuals
+      type: Bool
+      default: false
+      description: >
+        Display Q-Q plot of residuals
+
+    - name: etaSq
+      title: n2
+      type: Bool
+      default: false
+      description: >
+        Effect size n2
+
+    - name: etaSqP
+      title: partial n2
+      type: Bool
+      default: false
+      description: >
+        Effect size partial n2
+
+    - name: omegaSq
+      title: w2
+      type: Bool
+      default: false
+      description: >
+        Effect size w2
+
+    - name: factors
+      title: Factors
+      type: Variables
+      default:
+      description: >
+        Factors
+
+    - name: plotError
+      title: Error Bar Definition
+      type: List
+      options:
+        - ci
+        - se
+      default: ci
+      description: >
+        Specifies the Error Bar definition as either "Confidence interval"(default) or "Standard Error"
+
+    - name: ciWidth
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+
+    - name: ss
+      title: Sum of squares
+      type: List
+      options:
+        - '1'
+        - '2'
+        - '3'
+      default: '3'
+      description: >
+        Sum of squares
