@@ -289,19 +289,11 @@ var ancovaLayout = LayoutDef.extend({
         },
         {
             onChange: ["fixedFactors", "covariates"], execute: function(context) {
-                if (this._initialising) {
-                    this._pendingModelTermsCalc = true;
-                    return;
-                }
                 this.calcModelTerms(context);
             }
         },
         {
             onChange: "modelTerms", execute: function(context) {
-                if (this._initialising) {
-                    this._pendingModelTermsFilter = true;
-                    return;
-                }
                 this.filterModelTerms(context);
             }
         },
@@ -309,20 +301,20 @@ var ancovaLayout = LayoutDef.extend({
             onEvent: "analysis.initialising", execute: function(context) {
                 this._lastVariableList = null;
                 this._lastCurrentList = null;
+                this._lastCombinedList = null;
+                this._lastCovariatesList = null;
                 this._initialising = true;
             }
         },
         {
             onEvent: "analysis.initialised", execute: function(context) {
-                this._initialising = false;
-                /*if (this._pendingModelTermsCalc) {
+                if (this._lastVariableList === null || this._lastCombinedList === null || this._lastCovariatesList === null)
                     this.calcModelTerms(context);
-                    this._pendingModelTermsCalc = false;
-                }
-                if (this._pendingModelTermsFilter) {
+
+                if (this._lastCurrentList === null)
                     this.filterModelTerms(context);
-                    this._pendingModelTermsFilter = false;
-                }*/
+
+                this._initialising = false;
             }
         }
     ],
@@ -416,13 +408,19 @@ var ancovaLayout = LayoutDef.extend({
         context.setValue("plotsSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
         context.setValue("postHocSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
 
-        var diff = this.findDifferences(this._lastVariableList, variableList);
+        var diff = { removed: [], added: [] };
+        if (this._lastVariableList !== null)
+            diff = this.findDifferences(this._lastVariableList, variableList);
         this._lastVariableList = variableList;
 
-        var diff2 = this.findDifferences(this._lastCovariatesList, covariatesList);
+        var diff2 = { removed: [], added: [] };
+        if (this._lastCovariatesList !== null)
+            diff2 = this.findDifferences(this._lastCovariatesList, covariatesList);
         this._lastCovariatesList = covariatesList;
 
-        var combinedDiff = this.findDifferences(this._lastCombinedList, combinedList);
+        var combinedDiff = { removed: [], added: [] };
+        if (this._lastCombinedList !== null)
+            combinedDiff = this.findDifferences(this._lastCombinedList, combinedList);
         this._lastCombinedList = combinedList;
 
         if (this._initialising)
