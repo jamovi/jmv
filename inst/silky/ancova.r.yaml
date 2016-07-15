@@ -1,0 +1,254 @@
+---
+name:  Ancova
+title: ANCOVA
+
+items:
+    - name: ancova
+      title: ANCOVA
+      type: Table
+      rows: (terms)
+      clearWith:
+        - dependent
+        - modelTerms
+        - ss
+
+      columns:
+        - name: name
+          title: ""
+          content: .
+          type: text
+
+        - name: ss
+          title: Sum of Squares
+          type: number
+
+        - name: df
+          title: df
+          type: integer
+
+        - name: ms
+          title: Mean Square
+          type: number
+
+        - name: F
+          title: F
+          type: number
+
+        - name: p
+          title: p
+          type: number
+          format: zto,pvalue
+
+        - name: etaSq
+          title: η²
+          type: number
+          visible: (etaSq)
+          format: zto
+
+        - name: etaSqP
+          title: η²p
+          type: number
+          visible: (etaSqP)
+          format: zto
+
+        - name: omegaSq
+          title: ω²
+          type: number
+          visible: (omegaSq)
+          format: zto
+
+    - name: assump
+      title: Assumption Checks
+      type: Group
+      items:
+        - name: homo
+          title: Test for Homogeneity of Variances (Levene's)
+          type: Table
+          visible: (homo)
+          rows: 1
+          columns:
+            - name: F
+              type: number
+
+            - name: df1
+              type: integer
+
+            - name: df2
+              type: integer
+
+            - name: p
+              type: number
+              format: zto,pvalue
+
+        - name: qq
+          title: QQ Plot
+          visible: (qq)
+          type: Image
+          width: 300
+          height: 300
+          renderFun: .qqPlot
+          clearWith:
+            - dependent
+            - modelTerms
+
+    - name: contrasts
+      title: Contrasts
+      type: Array
+      visible: (contrasts)
+
+      template:
+        title: Contrasts - $key
+        type: Table
+
+        columns:
+          - name: contrast
+            title: ""
+            type: text
+
+          - name: est
+            title: Estimate
+            type: number
+
+          - name: se
+            title: SE
+            type: number
+
+          - name: t
+            type: number
+
+          - name: p
+            title: p
+            type: number
+            format: zto,pvalue
+
+    - name: postHoc
+      title: Post Hoc Tests
+      type: Array
+      items: (postHoc)
+
+      template:
+        title: Post Hoc Comparisons - $key
+        type: Table
+
+        columns:
+          - name: var1
+            title: ''
+            type: text
+
+          - name: var2
+            title: ''
+            type: text
+
+          - name: md
+            title: Mean Difference
+            type: number
+
+          - name: se
+            title: SE
+            type: number
+
+          - name: t
+            title: t
+            type: number
+
+          - name: p
+            title: p
+            type: number
+            format: zto,pvalue
+
+          - name: ptukey
+            title: p<sub>tukey</p>
+            visible: (corrTukey)
+            type: number
+            format: zto,pvalue
+
+          - name: pscheffe
+            title: p<sub>scheffe</p>
+            visible: (corrScheffe)
+            type: number
+            format: zto,pvalue
+
+          - name: pbonferroni
+            title: p<sub>bonferoni</p>
+            visible: (corrBonf)
+            type: number
+            format: zto,pvalue
+
+          - name: pholm
+            title: p<sub>holm</p>
+            visible: (corrHolm)
+            type: number
+            format: zto,pvalue
+
+    - name: margMeans
+      title: Marginal Means
+      type: Array
+      items: (margMeans)
+
+      template:
+        title: Marginal Means
+        type: Table
+        clearWith:
+          - compMainCorr
+
+        columns:
+          - name: mm
+            title: Marginal Mean
+            type: number
+
+          - name: se
+            title: SE
+            type: number
+
+          - name: lci
+            title: Lower CI
+            type: number
+
+          - name: uci
+            title: Upper CI
+            type: number
+
+          - name: t
+            type: number
+            visible: (compMain)
+
+          - name: p
+            type: number
+            format: zto,pvalue
+            visible: (compMain)
+
+    - name: desc
+      title: Descriptives
+      type: Table
+      visible: (descStats)
+      clearWith:
+        - dependent
+        - modelTerms
+        - ss
+
+      columns:
+        - name: 'n'
+          title: 'N'
+          type: integer
+
+        - name: mean
+          title: Mean
+          type: text
+
+        - name: sd
+          title: SD
+          type: number
+
+    - name: plots
+      title: Plots
+      visible: (descPlotsHAxis)
+      type: Image
+      width: 500
+      height: 300
+      renderFun: .descPlot
+      clearWith:
+        - descPlotsHAxis
+        - descPlotsSepLines
+        - descPlotsSepPlots
+        - plotError
+        - ciWidth
