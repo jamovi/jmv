@@ -144,11 +144,10 @@ AnovaClass <- R6::R6Class(
             
             base::options(contrasts = c("contr.sum","contr.poly"))
             
-            data <- self$data
+            data <- naOmit(self$data)
             for (varName in fixedFactors)
                 data[[varName]] <- as.factor(data[[varName]])
             data[[dependentName]] <- silkycore::toNumeric(data[[dependentName]])
-            data <- naOmit(data)
             
             if (is.factor(data[[dependentName]]))
                 reject('Dependent variable must be numeric')
@@ -226,12 +225,12 @@ AnovaClass <- R6::R6Class(
             errSS <- results[errIndex,'Sum Sq']
             errDF <- results[errIndex,'Df']
             errMS <- errSS / errDF
-            totalSS <- sum(results[['Sum Sq']])
+            totalSS <- sum(results[['Sum Sq']], na.rm=TRUE)
             
             ss <- as.integer(self$options$get('ss'))
             es <- lsr::etaSquared(private$.model, ss)
             
-            for (i in 1:rowCount) {
+            for (i in seq_len(rowCount)) {
                 rowName <- rowNames[i]
                 
                 ss <- results[i,'Sum Sq']
@@ -260,7 +259,18 @@ AnovaClass <- R6::R6Class(
                     p <- ''
                 
                 tableRow <- list(ss=ss, df=df, ms=ms, F=F, p=p, etaSq=e, etaSqP=ep, omegaSq=w)
-                anovaTable$setRow(rowNo=i, tableRow)
+                
+                if (i < rowCount) {
+                    anovaTable$setRow(rowNo=i, tableRow)
+                }
+                else {
+                    if (rowCount < anovaTable$rowCount()) {
+                        blankRow <- list(ss=0, df=0, ms='', F='', p='', etaSq='', etaSqP='', omegaSq='')
+                        for (j in seq(i, anovaTable$rowCount()-1))
+                            anovaTable$setRow(rowNo=j, blankRow)
+                    }
+                    anovaTable$setRow(rowKey='', tableRow) # residual
+                }
             }
             
             private$.populateContrasts(data)
