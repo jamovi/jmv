@@ -1,0 +1,137 @@
+---
+name:    ContTable
+title:   Contingency Tables
+package: silkyR
+engineType: R
+
+options:
+    - name: dataset
+      type: Dataset
+      description: >
+        The data set as a data frame
+
+    - name: rows
+      title: Rows
+      type: Variable
+      description: >
+        The variables of interest
+
+    - name: cols
+      title: Columns
+      type: Variable
+      description: >
+        The variables of interest
+
+    - name: counts
+      title: Counts
+      type: Variable
+      description: >
+        The variables of interest
+
+    - name: layers
+      title: Layers
+      type: Variables
+      description: >
+        The variables of interest
+
+    - name: phi
+      title: X2
+      type: Bool
+      default: true
+      description: >
+        The phi
+
+    - name: phiCont
+      title: X2 continuity correction
+      type: Bool
+      default: false
+      description: >
+        The
+
+    - name: likeRatio
+      title: Likelihood ratio
+      type: Bool
+      default: false
+      description: >
+        The
+
+    - name: contCoef
+      title: Contingency coefficient
+      type: Bool
+      default: false
+      description: >
+        The Contingency coefficient
+
+    - name: phiCra
+      title: Phi and Cramer's V
+      type: Bool
+      default: false
+      description: >
+        Phi and Cramer's V
+
+    - name: oddsRatio
+      title: Log odds ratio (2x2 only)
+      type: Bool
+      default: false
+
+    - name: ciWidth
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+
+    - name: gamma
+      title: Gamma
+      type: Bool
+      default: false
+
+    - name: kenTaub
+      title: Kendall's tau-b
+      type: Bool
+      default: false
+
+    - name: cntsObs
+      title: Observed
+      type: Bool
+      default: true
+
+    - name: cntsExp
+      title: Expected
+      type: Bool
+      default: false
+
+    - name: percRow
+      title: Row
+      type: Bool
+      default: false
+
+    - name: percCol
+      title: Column
+      type: Bool
+      default: false
+
+    - name: percTtl
+      title: Total
+      type: Bool
+      default: false
+
+    - name: rowOrder
+      title: Row Order
+      type: List
+      options:
+        - asc
+        - desc
+      default: asc
+      description: >
+        Stuff
+
+    - name: colOrder
+      title: Column Order
+      type: List
+      options:
+        - asc
+        - desc
+      default: asc
+      description: >
+        Stuff
