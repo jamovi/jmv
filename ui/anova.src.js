@@ -107,8 +107,8 @@ var anovaLayout = LayoutDef.extend({
                     label: "Factors",
                     showColumnHeaders: false,
                     columns: [
-                        { type: "listitem.variablelabel", name: "var", label: "", format: FormatDef.variable, stretchFactor: 0.5 },
-                        { type: "listitem.combobox", name: "type", label: "", format: FormatDef.string, stretchFactor: 1, options: ['none', 'deviation', 'simple', 'difference', 'helmert', 'repeated', 'polynomial'] }
+                        { type: "listitem.variablelabel", name: "var", label: "", selectable: false, format: FormatDef.variable, stretchFactor: 0.5 },
+                        { type: "listitem.combobox", name: "type", label: "", selectable: false, format: FormatDef.string, stretchFactor: 1, options: ['none', 'deviation', 'simple', 'difference', 'helmert', 'repeated', 'polynomial'] }
                     ]
                 }
             ]
