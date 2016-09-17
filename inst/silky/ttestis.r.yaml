@@ -284,6 +284,8 @@ items:
       type: Table
       visible: (desc)
       rows: (vars)
+      clearWith:
+        - group
       
       columns:
         - name: dep

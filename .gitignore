@@ -2,3 +2,5 @@
 ui/*.options.js
 inst/silky/*.js
 .Rproj.user
+.DS_Store
+

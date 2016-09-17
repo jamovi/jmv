@@ -95,6 +95,9 @@ items:
       title: Contrasts
       type: Array
       visible: (contrasts)
+      clearWith:
+        - dependent
+        - modelTerms
 
       template:
         title: Contrasts - $key
@@ -125,6 +128,9 @@ items:
       title: Post Hoc Tests
       type: Array
       items: (postHoc)
+      clearWith:
+        - dependent
+        - modelTerms
 
       template:
         title: Post Hoc Comparisons - $key

@@ -27,7 +27,7 @@ AnovaClass <- R6::R6Class(
             modelTerms <- private$.modelTerms()
             if (length(modelTerms) > 0) {
                 for (term in modelTerms)
-                    anovaTable$addRow(rowKey=term, list(name=paste(term, collapse=' \u273B ')))
+                    anovaTable$addRow(rowKey=term, list(name=stringifyTerm(term)))
                 anovaTable$addFormat(col=1, rowNo=1,                  format=Cell.BEGIN_GROUP)
                 anovaTable$addFormat(col=1, rowNo=length(modelTerms), format=Cell.END_GROUP)
             } else {
@@ -319,9 +319,9 @@ AnovaClass <- R6::R6Class(
                         for (j in seq_len(nCombn)) {
                             index <- i + j - 1
                             table$setRow(rowNo=j, list(
-                                md=results$coefficients[index],
+                                md= -results$coefficients[index],
                                 se=results$sigma[index],
-                                t=results$tstat[index],
+                                t= -results$tstat[index],
                                 p=results$pvalues[index]
                             ))
                         }
@@ -544,8 +544,8 @@ AnovaClass <- R6::R6Class(
                 
                 contrast <- matrix(0, nrow=nLevels, ncol=nLevels-1)
                 for (i in seq_len(nLevels-1)) {
-                    contrast[1:i,i] <- 1-(i / nLevels)
-                    contrast[(i+1):nLevels,i] <- 0-(i / nLevels)
+                    contrast[i,  i] <- 1
+                    contrast[i+1,i] <- -1
                 }
                 
             } else {
@@ -557,17 +557,28 @@ AnovaClass <- R6::R6Class(
         },
         .modelTerms=function() {
             modelTerms <- self$options$get('modelTerms')
-            if (length(modelTerms) == 0) {
-                fixedFactors <- self$options$get('fixedFactors')
-                if (length(fixedFactors) > 0) {
-                    formula <- as.formula(paste('~', paste(paste0('`', fixedFactors, '`'), collapse='*')))
-                    terms <- attr(stats::terms(formula), 'term.labels')
-                    modelTerms <- sapply(terms, function(x) as.list(strsplit(x, ':')), USE.NAMES=FALSE)
-                } else {
-                    modelTerms <- list()
-                }
+            if (length(modelTerms) == 0)
+                modelTerms <- private$.ff()
+            modelTerms
+        },
+        .ff=function() {
+            fixedFactors <- self$options$get('fixedFactors')
+            if (length(fixedFactors) > 1) {
+                formula <- as.formula(paste('~', paste(paste0('`', fixedFactors, '`'), collapse='*')))
+                terms   <- attr(stats::terms(formula), 'term.labels')
+                modelTerms <- sapply(terms, function(x) as.list(strsplit(x, ':')), USE.NAMES=FALSE)
+            } else {
+                modelTerms <- as.list(fixedFactors)
             }
-            return(modelTerms)
+            
+            for (i in seq_along(modelTerms)) {
+                term <- modelTerms[[i]]
+                quoted <- grepl('^`.*`$', term)
+                term[quoted] <- substring(term[quoted], 2, nchar(term[quoted])-1)
+                modelTerms[[i]] <- term
+            }
+            
+            modelTerms
         },
         .prepareQQPlot=function(data) {
             
@@ -690,6 +701,26 @@ AnovaClass <- R6::R6Class(
                 the)
             
             TRUE
+        },
+        .sourcifyOption = function(name, value, option) {
+            
+            if (name == 'contrasts') {
+                i <- 1
+                while (i <= length(value)) {
+                    item <- value[[i]]
+                    if (item$type == 'none')
+                        value[[i]] <- NULL
+                    else
+                        i <- i + 1
+                }
+                if (length(value) == 0)
+                    return('')
+            } else if (name == 'modelTerms') {
+                if (base::identical(as.list(value), private$.ff()))
+                    return('')
+            }
+            
+            super$.sourcifyOption(name, value, option)
         })
 )
 
