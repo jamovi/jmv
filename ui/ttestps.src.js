@@ -8,6 +8,7 @@ var ttestpsLayout = LayoutDef.extend({
 
     label: "Paired Samples T-Test",
     type: "root",
+    stage: 0,
     controls: [
         {
             type: "supplier",

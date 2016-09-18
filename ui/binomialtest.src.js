@@ -7,6 +7,7 @@ var binomialTestLayout = LayoutDef.extend({
 
     label: "Binomial Test",
     type: "root",
+    stage: 1,
     controls: [
         {
             type: "supplier",

@@ -7,6 +7,7 @@ var descriptivesLayout = LayoutDef.extend({
 
     label: "Descriptives",
     type: "root",
+    stage: 0,
     controls: [
         {
             type: "supplier",

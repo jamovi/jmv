@@ -8,6 +8,7 @@ var ttestonesLayout = LayoutDef.extend({
 
     label: "One Sample T-Test",
     type: "root",
+    stage: 0,
     controls: [
         {
             type: "supplier",

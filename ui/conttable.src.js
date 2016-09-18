@@ -7,6 +7,7 @@ var layout = LayoutDef.extend({
 
     label: "Contingency Tables",
     type: "root",
+    stage: 1,
     controls: [
         {
             type: "supplier",

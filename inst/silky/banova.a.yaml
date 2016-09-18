@@ -1,0 +1,11 @@
+---
+name:    BAnova
+title:   Bayesian ANOVA
+package: silkyR
+engineType: R
+
+options:
+    - name: dataset
+      type: Dataset
+      description: >
+        The data set as a data frame
