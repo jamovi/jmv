@@ -1,0 +1,12 @@
+---
+name:  LinReg
+title: Linear Regression
+
+items:
+    - name: table
+      title: Linear Regression
+      type: Table
+
+      columns:
+          - name: var
+            title: ""

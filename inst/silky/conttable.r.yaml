@@ -1,0 +1,12 @@
+---
+name:  ContTable
+title: Contingency Tables
+
+items:
+    - name: contTable
+      title: Contingency Table
+      type: Table
+
+      columns:
+          - name: var
+            title: ""

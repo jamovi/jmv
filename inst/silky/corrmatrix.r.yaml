@@ -1,0 +1,12 @@
+---
+name:  CorrMatrix
+title: Correlation Matrix
+
+items:
+    - name: table
+      title: Correlation Matrix
+      type: Table
+
+      columns:
+          - name: var
+            title: ""

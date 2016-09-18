@@ -1,0 +1,12 @@
+---
+name:  BAnova
+title: Bayesian ANOVA
+
+items:
+    - name: table
+      title: Bayesian ANOVA
+      type: Table
+
+      columns:
+          - name: var
+            title: ""

@@ -1,0 +1,12 @@
+---
+name:  BRMAnova
+title: Bayesian Repeated Measures ANOVA
+
+items:
+    - name: table
+      title: Bayesian Repeated Measures ANOVA
+      type: Table
+
+      columns:
+          - name: var
+            title: ""

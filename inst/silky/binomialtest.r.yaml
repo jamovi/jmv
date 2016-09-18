@@ -1,0 +1,12 @@
+---
+name:  BinomialTest
+title: Binomial Test
+
+items:
+    - name: test
+      title: Binomial Test
+      type: Table
+
+      columns:
+          - name: var
+            title: ""

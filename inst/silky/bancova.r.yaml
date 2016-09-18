@@ -1,0 +1,12 @@
+---
+name:  BAncova
+title: Bayesian ANCOVA
+
+items:
+    - name: table
+      title: Bayesian ANCOVA
+      type: Table
+
+      columns:
+          - name: var
+            title: ""

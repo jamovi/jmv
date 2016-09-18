@@ -1,0 +1,12 @@
+---
+name:  Mancova
+title: MANCOVA
+
+items:
+    - name: table
+      title: MANCOVA
+      type: Table
+
+      columns:
+          - name: var
+            title: ""
