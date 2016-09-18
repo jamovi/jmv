@@ -7,6 +7,7 @@ var binomialTestLayout = LayoutDef.extend({
 
     label: "Correlation Matrix",
     type: "root",
+    stage: 1,
     controls: [
         {
             type: "supplier",

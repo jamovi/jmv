@@ -1,0 +1,11 @@
+---
+name:    LinReg
+title:   Linear Regression
+package: silkyR
+engineType: R
+
+options:
+    - name: dataset
+      type: Dataset
+      description: >
+        The data set as a data frame

@@ -8,6 +8,7 @@ var kruskalLayout = LayoutDef.extend({
 
     label: "Kruskal-Wallis",
     type: "root",
+    stage: 0,
     controls: [
         {
             type: "supplier",

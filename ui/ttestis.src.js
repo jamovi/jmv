@@ -8,6 +8,7 @@ var ttestisLayout = LayoutDef.extend({
 
     label: "Independent Samples T-Test",
     type: "root",
+    stage: 0,
     controls: [
         {
             type: "supplier",

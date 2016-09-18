@@ -10,6 +10,7 @@ var anovaLayout = LayoutDef.extend({
 
     label: "ANOVA",
     type: "root",
+    stage: 0,
     controls: [
         {
             type: "supplier",

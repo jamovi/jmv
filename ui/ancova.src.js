@@ -10,6 +10,7 @@ var ancovaLayout = LayoutDef.extend({
 
     label: "ANCOVA",
     type: "root",
+    stage: 1,
     controls: [
         {
             type: "supplier",

@@ -8,6 +8,7 @@ var friedmanLayout = LayoutDef.extend({
 
     label: "Friedman",
     type: "root",
+    stage: 0,
     controls: [
         {
             type: "supplier",
