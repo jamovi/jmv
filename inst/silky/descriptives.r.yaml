@@ -138,13 +138,13 @@ items:
 #      width: 400
 #      height: 300
 #
-#    - name: frequencyPlots
-#      title: Frequencies
-#      type: Array
-#      visible: (plots)
-#      items: (vars)
-#      
-#      template:
-#          title: Frequencies of {$key}
-#          type: Image
-#          visible: (levels($key))
+    - name: freqPlots
+      title: Frequencies
+      type: Array
+      visible: (plots)
+      items: (vars)
+      
+      template:
+          title: Frequencies of {$key}
+          type: Image
+          renderFun: .plotFreq

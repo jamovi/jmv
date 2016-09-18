@@ -90,10 +90,10 @@ options:
       type: Bool
       default: false
 
-    - name: plotCorr
-      title: Correlation plot
-      type: Bool
-      default: false
+#    - name: plotCorr
+#      title: Correlation plot
+#      type: Bool
+#      default: false
 
     - name: plotW
       title: Plot width
