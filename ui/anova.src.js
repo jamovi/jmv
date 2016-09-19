@@ -349,6 +349,7 @@ var anovaLayout = LayoutDef.extend({
         context.setValue("modelTerms", currentList);
 
         this.updateContrasts(context, variableList);
+        this.updateFactorDependents(context, variableList, currentList);
     },
 
     filterModelTerms : function(context) {
@@ -424,6 +425,40 @@ var anovaLayout = LayoutDef.extend({
             list3.push({ var: variableList[i], type: "none" });
 
         context.setValue("contrasts", list3);
+    },
+
+    cleanDependentOption: function(context, sourceList, dependantName, dependantIsList) {
+        var dependantList = this.clone(context.getValue(dependantName));
+        if (dependantIsList && dependantList === null)
+            dependantList = [];
+
+        var changed = false;
+
+        if (dependantIsList) {
+            for (var i = 0; i < dependantList.length; i++) {
+                if (this.listContains(sourceList, dependantList[i]) === false) {
+                    dependantList.splice(i, 1);
+                    i -= 1;
+                    changed = true;
+                }
+            }
+        }
+        else if (this.listContains(sourceList, dependantList) === false) {
+            dependantList = null;
+            changed = true;
+        }
+
+        if (changed)
+            context.setValue(dependantName, dependantList);
+    },
+
+    updateFactorDependents : function(context, factorList, modelList) {
+
+        this.cleanDependentOption(context, factorList, "postHoc", true);
+        this.cleanDependentOption(context, factorList, "descPlotsHAxis", false);
+        this.cleanDependentOption(context, factorList, "descPlotsSepLines", false);
+        this.cleanDependentOption(context, factorList, "descPlotsSepPlots", false);
+        this.cleanDependentOption(context, modelList, "margMeans", true);
     },
 
     sortByLength : function(list) {
