@@ -253,6 +253,8 @@ items:
       height: 300
       renderFun: .descPlot
       clearWith:
+        - dependent
+        - fixedFactors
         - descPlotsHAxis
         - descPlotsSepLines
         - descPlotsSepPlots
