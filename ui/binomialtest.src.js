@@ -26,7 +26,6 @@ var binomialTestLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
             stretchFactor: 1,
             controls : [
                 { type:"textbox", name: "testValue", label: "Test value", format: FormatDef.number, inputPattern: "[0-9]+" }

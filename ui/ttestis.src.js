@@ -38,9 +38,11 @@ var ttestisLayout = LayoutDef.extend({
             ]
         },
         {
+            type: "groupbox",
             stretchFactor: 1,
             controls : [
                 {
+                    type: "groupbox",
                     name: "column1",
                     cell: [0, 0],
                     stretchFactor: 1,
@@ -48,7 +50,6 @@ var ttestisLayout = LayoutDef.extend({
                         {
                             type: "groupbox",
                             label: "Tests",
-                            level: "2",
                             controls : [
                                 { type:"checkbox", name: "students", label: "Student's" },
                                 {
@@ -66,7 +67,6 @@ var ttestisLayout = LayoutDef.extend({
                         {
                             type: "groupbox",
                             label: "Hypothesis",
-                            level: "2",
                             controls : [
                                 { type:"radiobutton", name: "hypothesis_different", optionId: "hypothesis", checkedValue: "different", label: "Group 1 ≠ Group 2" },
                                 { type:"radiobutton", name: "hypothesis_oneGreater", optionId: "hypothesis", checkedValue: "oneGreater", label: "Group 1 > Group 2" },
@@ -76,7 +76,6 @@ var ttestisLayout = LayoutDef.extend({
                         {
                             type: "groupbox",
                             label: "Assumption Checks",
-                            level: "2",
                             controls : [
                                 { type:"checkbox", name: "norm", label: "Normality" },
                                 { type:"checkbox", name: "eqv", label: "Equality of variances" }
@@ -85,6 +84,7 @@ var ttestisLayout = LayoutDef.extend({
                     ]
                 },
                 {
+                    type: "groupbox",
                     name: "column2",
                     cell: [1, 0],
                     stretchFactor: 1,
@@ -92,7 +92,6 @@ var ttestisLayout = LayoutDef.extend({
                         {
                             type: "groupbox",
                             label: "Additional Statistics",
-                            level: "2",
                             controls : [
                                 { type:"checkbox", name: "meanDiff", label: "Mean difference" },
                                 { type:"checkbox", name: "effectSize", label: "Effect size" },
@@ -109,7 +108,6 @@ var ttestisLayout = LayoutDef.extend({
                         {
                             type: "groupbox",
                             label: "Missing values",
-                            level: "2",
                             controls : [
                                 { type:"radiobutton", name: "miss_perAnalysis", optionId: "miss", checkedValue: "perAnalysis", label: "Exclude cases analysis by analysis" },
                                 { type:"radiobutton", name: "miss_listwise", optionId: "miss", checkedValue: "listwise", label: "Exclude cases listwise" }

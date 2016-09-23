@@ -57,7 +57,7 @@ var layout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "collapsebox",
             label: "Statistics",
             stretchFactor: 1,
             collapsed: true,
@@ -103,7 +103,7 @@ var layout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "collapsebox",
             label: "Cells",
             stretchFactor: 1,
             collapsed: true,
@@ -129,7 +129,7 @@ var layout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "collapsebox",
             label: "Options",
             stretchFactor: 1,
             collapsed: true,

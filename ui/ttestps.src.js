@@ -30,9 +30,11 @@ var ttestpsLayout = LayoutDef.extend({
             ]
         },
         {
+            type: "groupbox",
             stretchFactor: 1,
             controls : [
                 {
+                    type: "groupbox",
                     name: "column1",
                     cell: [0, 0],
                     stretchFactor: 1,
@@ -75,6 +77,7 @@ var ttestpsLayout = LayoutDef.extend({
                     ]
                 },
                 {
+                    type: "groupbox",
                     name: "column2",
                     cell: [1, 0],
                     stretchFactor: 1,

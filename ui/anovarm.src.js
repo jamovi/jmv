@@ -103,6 +103,15 @@ var anovarmLayout = LayoutDef.extend({
         },
         {
             type: "groupbox",
+            style: "inline",
+            controls: [
+                { name: "effSizeN2",   type:"checkbox", label: "η²" },
+                { name: "partEffSizeN2",  type:"checkbox", label: "partial η²" },
+                { name: "effSizeW2", type:"checkbox", label: "ω²" }
+            ]
+        },
+        {
+            type: "collapsebox",
             label: "Model",
             collapsed: true,
             stretchFactor: 1,
@@ -147,7 +156,7 @@ var anovarmLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "collapsebox",
             label: "Assumption Checks",
             collapsed: true,
             stretchFactor: 1,
@@ -170,7 +179,7 @@ var anovarmLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "collapsebox",
             label: "Contrasts",
             collapsed: true,
             stretchFactor: 1,
@@ -188,7 +197,7 @@ var anovarmLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "collapsebox",
             label: "Post Hoc Tests",
             collapsed: true,
             stretchFactor: 1,
@@ -223,7 +232,7 @@ var anovarmLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "collapsebox",
             label: "Descriptive Plots",
             collapsed: true,
             stretchFactor: 1,
@@ -287,7 +296,7 @@ var anovarmLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "collapsebox",
             label: "Additional Options",
             collapsed: true,
             stretchFactor: 1,
@@ -296,20 +305,7 @@ var anovarmLayout = LayoutDef.extend({
                     type: "groupbox",
                     label: "Display",
                     controls: [
-                        { type:"checkbox", name: "dispDescStats", label: "Descriptive statistics" },
-                        {
-                            type:"checkbox", name: "estEffSize", label: "Estimates of effect size",
-                            controls: [
-                                {
-                                    style: "inline",
-                                    controls: [
-                                        { name: "effSizeN2", type:"checkbox", label: "n2" },
-                                        { name: "partEffSizeN2", type:"checkbox", label: "partial n2" },
-                                        { name: "effSizeW2", type:"checkbox", label: "w2" }
-                                    ]
-                                }
-                            ]
-                        }
+                        { type:"checkbox", name: "dispDescStats", label: "Descriptive statistics" }
                     ]
                 }
             ]
@@ -317,14 +313,6 @@ var anovarmLayout = LayoutDef.extend({
     ],
 
     actions: [
-        {
-            onChange: "estEffSize", execute: function(context) {
-                var disabled = context.getValue("estEffSize") === false;
-                context.set("effSizeN2", "disabled", disabled);
-                context.set("partEffSizeN2", "disabled", disabled);
-                context.set("effSizeW2", "disabled", disabled);
-            }
-        },
         {
             onChange: "spherCorrs", execute: function(context) {
                 var disabled = context.getValue("spherCorrs") === false;

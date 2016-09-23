@@ -35,9 +35,8 @@ var descriptivesLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "collapsebox",
             label: "Statistics",
-            type: "groupbox",
             collapsed: true,
             stretchFactor: 1,
             controls : [
