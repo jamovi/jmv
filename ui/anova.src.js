@@ -42,19 +42,16 @@ var anovaLayout = LayoutDef.extend({
             ]
         },
         {
+            type: "groupbox",
+            style: "inline",
             controls: [
-                {
-                    style: "inline",
-                    controls: [
-                        { name: "etaSq",   type:"checkbox", label: "η²" },
-                        { name: "etaSqP",  type:"checkbox", label: "partial η²" },
-                        { name: "omegaSq", type:"checkbox", label: "ω²" }
-                    ]
-                }
+                { name: "etaSq",   type:"checkbox", label: "η²" },
+                { name: "etaSqP",  type:"checkbox", label: "partial η²" },
+                { name: "omegaSq", type:"checkbox", label: "ω²" }
             ]
         },
         {
-            type: "groupbox",
+            type: "collapsebox",
             label: "Model",
             collapsed: true,
             stretchFactor: 1,
@@ -87,7 +84,7 @@ var anovaLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "collapsebox",
             label: "Assumption Checks",
             collapsed: true,
             stretchFactor: 1,
@@ -97,7 +94,7 @@ var anovaLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "collapsebox",
             label: "Contrasts",
             collapsed: true,
             stretchFactor: 1,
@@ -115,7 +112,7 @@ var anovaLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "collapsebox",
             label: "Post Hoc Tests",
             collapsed: true,
             stretchFactor: 1,
@@ -149,7 +146,7 @@ var anovaLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "collapsebox",
             label: "Descriptive Plots",
             collapsed: true,
             stretchFactor: 1,
@@ -207,7 +204,7 @@ var anovaLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "collapsebox",
             label: "Additional Options",
             collapsed: true,
             stretchFactor: 1,
@@ -230,7 +227,6 @@ var anovaLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
                     controls: [
                         {
                             name: "compMain", label: "Compare main effects", type:"checkbox",
