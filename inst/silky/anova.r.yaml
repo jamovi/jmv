@@ -163,25 +163,25 @@ items:
             format: zto,pvalue
 
           - name: ptukey
-            title: p<sub>tukey</p>
+            title: p<sub>tukey</sub>
             visible: (corrTukey)
             type: number
             format: zto,pvalue
             
           - name: pscheffe
-            title: p<sub>scheffe</p>
+            title: p<sub>scheffe</sub>
             visible: (corrScheffe)
             type: number
             format: zto,pvalue
             
-          - name: pbonferroni
-            title: p<sub>bonferoni</p>
+          - name: pbonf
+            title: p<sub>bonferoni</sub>
             visible: (corrBonf)
             type: number
             format: zto,pvalue
             
           - name: pholm
-            title: p<sub>holm</p>
+            title: p<sub>holm</sub>
             visible: (corrHolm)
             type: number
             format: zto,pvalue

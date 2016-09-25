@@ -303,7 +303,19 @@ AnovaClass <- R6::R6Class(
             
             results <- try(suppressWarnings({
                 mcp <- do.call(multcomp::mcp, mcpArgs)
-                summary(multcomp::glht(private$.model, mcp))$test
+                r <- multcomp::glht(private$.model, mcp)
+                s <- summary(r, test=multcomp::adjusted('none'))$test
+                md <- s$coefficients
+                se <- s$sigma
+                t  <- s$tstat
+                p  <- s$pvalues
+                
+                ptukey <- summary(r)$test$pvalues
+                pbonf <- summary(r, test=multcomp::adjusted('bonferroni'))$test$pvalues
+                pholm <- summary(r, test=multcomp::adjusted('holm'))$test$pvalues
+                
+                list(md=md, se=se, t=t, p=p, ptukey=ptukey, pbonf=pbonf, pholm=pholm)
+                
             }), silent=TRUE)
             
             if ( ! isError(results)) {
@@ -319,10 +331,13 @@ AnovaClass <- R6::R6Class(
                         for (j in seq_len(nCombn)) {
                             index <- i + j - 1
                             table$setRow(rowNo=j, list(
-                                md= -results$coefficients[index],
-                                se=results$sigma[index],
-                                t= -results$tstat[index],
-                                p=results$pvalues[index]
+                                md=results$md[[index]],
+                                se=results$se[[index]],
+                                t=results$t[[index]],
+                                p=results$p[[index]],
+                                ptukey=results$ptukey[[index]],
+                                pbonf=results$pbonf[[index]],
+                                pholm=results$pholm[[index]]
                             ))
                         }
                     }
