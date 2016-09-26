@@ -314,7 +314,12 @@ AnovaClass <- R6::R6Class(
                 pbonf <- summary(r, test=multcomp::adjusted('bonferroni'))$test$pvalues
                 pholm <- summary(r, test=multcomp::adjusted('holm'))$test$pvalues
                 
-                list(md=md, se=se, t=t, p=p, ptukey=ptukey, pbonf=pbonf, pholm=pholm)
+                # from https://sites.google.com/site/tukeyhsdrcodetutorial/
+                k <- private$.model$rank
+                v <- private$.model$df.residual
+                pscheffe <- 1-stats::pf(t**2/(k-1),k-1,v)
+                
+                list(md=md, se=se, t=t, p=p, ptukey=ptukey, pscheffe=pscheffe, pbonf=pbonf, pholm=pholm)
                 
             }), silent=TRUE)
             
@@ -336,6 +341,7 @@ AnovaClass <- R6::R6Class(
                                 t=results$t[[index]],
                                 p=results$p[[index]],
                                 ptukey=results$ptukey[[index]],
+                                pscheffe=results$pscheffe[[index]],
                                 pbonf=results$pbonf[[index]],
                                 pholm=results$pholm[[index]]
                             ))
