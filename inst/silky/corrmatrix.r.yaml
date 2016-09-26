@@ -3,10 +3,74 @@ name:  CorrMatrix
 title: Correlation Matrix
 
 items:
-    - name: table
+    - name: matrix
       title: Correlation Matrix
       type: Table
+      rows: (vars)
+      clearWith:
+          - ciWidth
+          - hypothesis
 
       columns:
-          - name: var
+          - name: ""
+            content: ($key)
+            type: text
             title: ""
+            
+          - name: .stat[r]
+            title: ""
+            type: text
+            content: Pearson's r
+            visible: (pearson && (sig || spearman || kendall))
+            
+          - name: .stat[rp]
+            title: ""
+            type: text
+            content: p-value
+            visible: (pearson && sig)
+            
+          - name: .stat[rciu]
+            title: ""
+            type: text
+            content: CI Upper
+            visible: (pearson && ci)
+            
+          - name: .stat[rcil]
+            title: ""
+            type: text
+            content: CI Lower
+            visible: (pearson && ci)
+            
+          - name: .stat[rho]
+            title: ""
+            type: text
+            content: Spearman's rho
+            visible: (spearman && (sig || pearson || kendall))
+            
+          - name: .stat[rhop]
+            title: ""
+            type: text
+            content: p-value
+            visible: (spearman && sig)
+            
+          - name: .stat[tau]
+            title: ""
+            type: text
+            content: Kendall's Tau B
+            visible: (kendall && (sig || pearson || spearman))
+            
+          - name: .stat[taup]
+            title: ""
+            type: text
+            content: p-value
+            visible: (kendall && sig)
+
+    - name: plots
+      title: Plots
+      visible: (plots)
+      type: Image
+      width: 500
+      height: 500
+      renderFun: .plots
+      clearWith:
+          - vars

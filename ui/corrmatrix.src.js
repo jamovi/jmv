@@ -7,7 +7,7 @@ var binomialTestLayout = LayoutDef.extend({
 
     label: "Correlation Matrix",
     type: "root",
-    stage: 1,
+    stage: 0,
     controls: [
         {
             type: "supplier",
@@ -36,7 +36,7 @@ var binomialTestLayout = LayoutDef.extend({
                     controls : [
                         { type:"checkbox", name: "pearson", label: "Pearson" },
                         { type:"checkbox", name: "spearman", label: "Spearman" },
-                        { type:"checkbox", name: "kendallTaub", label: "Kendall's tau-b" },
+                        { type:"checkbox", name: "kendall", label: "Kendall's tau-b" },
                     ]
                 },
                 {

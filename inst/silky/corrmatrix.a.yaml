@@ -30,7 +30,7 @@ options:
       description: >
         The spearman
 
-    - name: kendallTaub
+    - name: kendall
       title: Kendall's tau-b
       type: Bool
       default: false
@@ -40,7 +40,7 @@ options:
     - name: sig
       title: Report Significance
       type: Bool
-      default: false
+      default: true
       description: >
         The Report Significance
 
