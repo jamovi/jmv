@@ -54,12 +54,12 @@ items:
           type: number
           visible: (effectSize && students)
           
-        - name: lci[stud]
+        - name: cil[stud]
           title: Lower
           type: number
           visible: (ci && students)
           
-        - name: uci[stud]
+        - name: ciu[stud]
           title: Upper
           type: number
           visible: (ci && students)
@@ -124,7 +124,7 @@ items:
           content: ''
           
         - name: name[mann]
-          title: Test
+          title: ''
           content: Mann-Whitney U
           visible: (mann)
           
@@ -155,12 +155,12 @@ items:
           type: number
           visible: (effectSize && mann)
           
-        - name: lci[mann]
+        - name: cil[mann]
           title: Lower
           type: number
           visible: (ci && mann)
           
-        - name: uci[mann]
+        - name: ciu[mann]
           title: Upper
           type: number
           visible: (ci && mann)

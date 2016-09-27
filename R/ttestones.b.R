@@ -73,8 +73,8 @@ TTestOneSClass <- R6::R6Class("TTestOneSClass",
                             "p[stud]"=res$p.value,
                             "md[stud]"=res$estimate - testValue,
                             "es[stud]"=d,
-                            "lci[stud]"=res$conf.int[1],
-                            "uci[stud]"=res$conf.int[2]))
+                            "cil[stud]"=res$conf.int[1],
+                            "ciu[stud]"=res$conf.int[2]))
                         
                     } else {
                         
@@ -84,8 +84,8 @@ TTestOneSClass <- R6::R6Class("TTestOneSClass",
                             "p[stud]"='',
                             "md[stud]"='',
                             "es[stud]"='',
-                            "lci[stud]"='',
-                            "uci[stud]"=''))
+                            "cil[stud]"='',
+                            "ciu[stud]"=''))
                         
                         message <- extractErrorMessage(res)
                         if (message == "not enough 'x' observations")
@@ -112,8 +112,8 @@ TTestOneSClass <- R6::R6Class("TTestOneSClass",
                             "p[mann]"=res$p.value,
                             "md[mann]"=res$estimate - testValue,
                             "es[mann]"=d,
-                            "lci[mann]"=res$conf.int[1],
-                            "uci[mann]"=res$conf.int[2]))
+                            "cil[mann]"=res$conf.int[1],
+                            "ciu[mann]"=res$conf.int[2]))
                         
                     } else {
                         
@@ -122,8 +122,8 @@ TTestOneSClass <- R6::R6Class("TTestOneSClass",
                             "p[mann]"='',
                             "md[mann]"='',
                             "es[mann]"='',
-                            "lci[mann]"='',
-                            "uci[mann]"=''))
+                            "cil[mann]"='',
+                            "ciu[mann]"=''))
                             
                         message <- extractErrorMessage(res)
                         if (message == 'cannot compute confidence interval when all observations are tied')
@@ -238,6 +238,15 @@ TTestOneSClass <- R6::R6Class("TTestOneSClass",
             hypothesis <- self$options$get('hypothesis')
             testValue  <- self$options$get('testValue')
             table <- self$results$get("ttest")
+            
+            ciTitle <- paste0(self$options$get('ciWidth'), '% Confidence Interval')
+            
+            table$getColumn('ciu[stud]')$setSuperTitle(ciTitle)
+            table$getColumn('cil[stud]')$setSuperTitle(ciTitle)
+            table$getColumn('ciu[bf]')$setSuperTitle(ciTitle)
+            table$getColumn('cil[bf]')$setSuperTitle(ciTitle)
+            table$getColumn('ciu[mann]')$setSuperTitle(ciTitle)
+            table$getColumn('cil[mann]')$setSuperTitle(ciTitle)
             
             if (hypothesis == 'dt' && testValue == 0)
                 table$setNote("hyp", NULL)

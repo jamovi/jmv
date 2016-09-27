@@ -400,6 +400,16 @@ TTestISClass <- R6Class("TTestISClass",
                 groups <- c('Group 1', 'Group 2')
             
             table <- self$results$get('ttest')
+            
+            ciTitle <- paste0(self$options$get('ciWidth'), '% Confidence Interval')
+            table$getColumn('ciu[stud]')$setSuperTitle(ciTitle)
+            table$getColumn('cil[stud]')$setSuperTitle(ciTitle)
+            table$getColumn('ciu[bf]')$setSuperTitle(ciTitle)
+            table$getColumn('cil[bf]')$setSuperTitle(ciTitle)
+            table$getColumn('ciu[welc]')$setSuperTitle(ciTitle)
+            table$getColumn('cil[welc]')$setSuperTitle(ciTitle)
+            table$getColumn('ciu[mann]')$setSuperTitle(ciTitle)
+            table$getColumn('cil[mann]')$setSuperTitle(ciTitle)
 
             if (hypothesis == 'oneGreater')
                 table$setNote("hyp", silkycore::format("H\u2090 {} > {}", groups[1], groups[2]))

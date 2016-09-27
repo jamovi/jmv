@@ -276,6 +276,15 @@ TTestPSClass <- R6Class("TTestPSClass",
             hypothesis <- self$options$get('hypothesis')
             ttestTable <- self$results$get('ttest')
             
+            ciTitle <- paste0(self$options$get('ciWidth'), '% Confidence Interval')
+            
+            ttestTable$getColumn('ciu[stud]')$setSuperTitle(ciTitle)
+            ttestTable$getColumn('cil[stud]')$setSuperTitle(ciTitle)
+            ttestTable$getColumn('ciu[bf]')$setSuperTitle(ciTitle)
+            ttestTable$getColumn('cil[bf]')$setSuperTitle(ciTitle)
+            ttestTable$getColumn('ciu[wilc]')$setSuperTitle(ciTitle)
+            ttestTable$getColumn('cil[wilc]')$setSuperTitle(ciTitle)
+            
             if (hypothesis == 'oneGreater')
                 ttestTable$setNote("hyp", "H\u2090 Measure 1 > Measure 2")
             else if (hypothesis == 'twoGreater')

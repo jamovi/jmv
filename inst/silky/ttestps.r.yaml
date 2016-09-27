@@ -24,7 +24,8 @@ items:
           type: text
         
         - name: test[stud]
-          title: Test
+          title: ''
+          type: text
           content: Student's t
           visible: (students)
           
@@ -77,7 +78,7 @@ items:
           
         - name: test[bf]
           title: ''
-          type: string
+          type: text
           content: Bayes factor₁₀
           visible: (bf)
           
@@ -135,7 +136,8 @@ items:
           content: ''
           
         - name: test[wilc]
-          title: Test
+          type: text
+          title: ''
           content: Wilcoxon W
           visible: (wilcoxon)
           

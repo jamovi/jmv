@@ -10,6 +10,7 @@ items:
       clearWith:
         - group
         - hypothesis
+        - ciWidth
       
       columns:
         - name: var
@@ -19,7 +20,7 @@ items:
         
         - name: name[stud]
           title: ''
-          type: string
+          type: text
           content: Student's t
           visible: (students)
           
@@ -72,7 +73,7 @@ items:
           
         - name: name[bf]
           title: ''
-          type: string
+          type: text
           content: Bayes factor₁₀
           visible: (bf)
           
@@ -131,6 +132,7 @@ items:
           
         - name: name[welc]
           title: ''
+          type: text
           content: Welch's t
           visible: (welchs)
 
@@ -182,6 +184,7 @@ items:
 
         - name: name[mann]
           title: ''
+          type: text
           content: Mann-Whitney U
           visible: (mann)
           
