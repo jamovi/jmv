@@ -61,7 +61,8 @@ var ancovaLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "layoutbox",
+            margin: "normal",
             style: "inline",
             controls: [
                 { name: "etaSq",   type:"checkbox", label: "η²" },
@@ -153,7 +154,7 @@ var ancovaLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Correction",
                     controls: [
                         { name: "corrTukey", type:"checkbox", label: "Tukey" },
@@ -210,7 +211,7 @@ var ancovaLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Display",
                     controls: [
                         {
@@ -246,22 +247,18 @@ var ancovaLayout = LayoutDef.extend({
                     ]
                 },
                 {
+                    name: "compMain", label: "Compare main effects", type:"checkbox",
                     controls: [
-                        {
-                            name: "compMain", label: "Compare main effects", type:"checkbox",
-                            controls: [
-                                { name: "compMainCorr", type:"combobox", label: "Correction", options: [
-                                    { label: "None", value: "none" },
-                                    { label: "Tukey", value: "tukey" },
-                                    { label: "Bonferroni", value: "bonferroni" },
-                                    { label: "Scheffe", value: "scheffe" },
-                                    { label: "Sidak", value: "sidak" } ] }
-                            ]
-                        }
+                        { name: "compMainCorr", type:"combobox", label: "Correction", options: [
+                            { label: "None", value: "none" },
+                            { label: "Tukey", value: "tukey" },
+                            { label: "Bonferroni", value: "bonferroni" },
+                            { label: "Scheffe", value: "scheffe" },
+                            { label: "Sidak", value: "sidak" } ] }
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Display",
                     controls: [
                         { name: "descStats", type:"checkbox", label: "Descriptive statistics" }

@@ -26,8 +26,9 @@ var descriptivesLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "layoutbox",
             stretchFactor: 1,
+            margin: "normal",
             controls : [
                 {type:"checkbox",  name: "plots", label: "Display Plots" },
                 { type:"checkbox", name: "plotCorr", label: "Display Correlation Plot" },
@@ -35,13 +36,14 @@ var descriptivesLayout = LayoutDef.extend({
             ]
         },
         {
+            name: "statGroup",
             type: "collapsebox",
             label: "Statistics",
             collapsed: true,
             stretchFactor: 1,
             controls : [
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Percentile Values",
                     cell: [0, 0],
                     controls : [
@@ -56,7 +58,7 @@ var descriptivesLayout = LayoutDef.extend({
                     ],
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Central Tendency",
                     cell: [1, 0],
                     controls: [
@@ -67,12 +69,14 @@ var descriptivesLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Dispersion",
                     cell: [0, 1],
+                    style: "list-inline",
                     controls: [
                         {
-                            cell: [0, 0],
+                            type: "layoutbox",
+                            margin: "normal",
                             controls : [
                                 { type:"checkbox", name: "sd", label: "Std. deviation" },
                                 { type:"checkbox", name: "variance", label: "Variance" },
@@ -80,7 +84,8 @@ var descriptivesLayout = LayoutDef.extend({
                             ]
                         },
                         {
-                            cell: [1, 0],
+                            type: "layoutbox",
+                            margin: "normal",
                             controls : [
                                 { type:"checkbox", name: "min", label: "Minimum" },
                                 { type:"checkbox", name: "max", label: "Maximum" },
@@ -90,7 +95,7 @@ var descriptivesLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Distribution",
                     cell: [1, 1],
                     controls : [

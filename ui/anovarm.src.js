@@ -102,8 +102,9 @@ var anovarmLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "layoutbox",
             style: "inline",
+            margin: "normal",
             controls: [
                 { name: "effSizeN2",   type:"checkbox", label: "η²" },
                 { name: "partEffSizeN2",  type:"checkbox", label: "partial η²" },
@@ -164,15 +165,11 @@ var anovarmLayout = LayoutDef.extend({
                 { type:"checkbox", name: "spherTests", label: "Sphericity tests" },
                 {
                     type:"checkbox", name: "spherCorrs", label: "Sphericity corrections",
+                    style: "list-inline",
                     controls : [
-                        {
-                            style: "inline",
-                            controls: [
-                                { type:"checkbox", name: "spherCorrNone", label: "None" },
-                                { type:"checkbox", name: "spherCorrGreenGsser", label: "Greenhouse-Geisser" },
-                                { type:"checkbox", name: "spherCorrHuyFdt", label: "Huynh-Feldt" }
-                            ]
-                        }
+                        { type:"checkbox", name: "spherCorrNone", label: "None" },
+                        { type:"checkbox", name: "spherCorrGreenGsser", label: "Greenhouse-Geisser" },
+                        { type:"checkbox", name: "spherCorrHuyFdt", label: "Huynh-Feldt" }
                     ]
                 },
                 { type:"checkbox", name: "homoTests", label: "Homogeneity tests" }
@@ -220,7 +217,7 @@ var anovarmLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Correction",
                     controls: [
                         { type:"checkbox", name: "corrTukey", label: "Tukey" },
@@ -276,7 +273,7 @@ var anovarmLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Display",
                     controls: [
                         {
@@ -302,7 +299,7 @@ var anovarmLayout = LayoutDef.extend({
             stretchFactor: 1,
             controls : [
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Display",
                     controls: [
                         { type:"checkbox", name: "dispDescStats", label: "Descriptive statistics" }

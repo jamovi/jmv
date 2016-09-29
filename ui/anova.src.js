@@ -42,8 +42,9 @@ var anovaLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "layoutbox",
             style: "inline",
+            margin: "normal",
             controls: [
                 { name: "etaSq",   type:"checkbox", label: "η²" },
                 { name: "etaSqP",  type:"checkbox", label: "partial η²" },
@@ -51,6 +52,7 @@ var anovaLayout = LayoutDef.extend({
             ]
         },
         {
+            name: "modelgroup",
             type: "collapsebox",
             label: "Model",
             collapsed: true,
@@ -84,6 +86,7 @@ var anovaLayout = LayoutDef.extend({
             ]
         },
         {
+            name: "assCheckgroup",
             type: "collapsebox",
             label: "Assumption Checks",
             collapsed: true,
@@ -94,6 +97,7 @@ var anovaLayout = LayoutDef.extend({
             ]
         },
         {
+            name: "contrastgroup",
             type: "collapsebox",
             label: "Contrasts",
             collapsed: true,
@@ -112,6 +116,7 @@ var anovaLayout = LayoutDef.extend({
             ]
         },
         {
+            name: "posthocgroup",
             type: "collapsebox",
             label: "Post Hoc Tests",
             collapsed: true,
@@ -134,7 +139,7 @@ var anovaLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Correction",
                     controls: [
                         { name: "corrTukey", type:"checkbox", label: "Tukey" },
@@ -146,6 +151,7 @@ var anovaLayout = LayoutDef.extend({
             ]
         },
         {
+            name: "descplotgroup",
             type: "collapsebox",
             label: "Descriptive Plots",
             collapsed: true,
@@ -191,7 +197,7 @@ var anovaLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Display",
                     controls: [
                         {
@@ -227,22 +233,18 @@ var anovaLayout = LayoutDef.extend({
                     ]
                 },
                 {
+                    name: "compMain", label: "Compare main effects", type:"checkbox",
                     controls: [
-                        {
-                            name: "compMain", label: "Compare main effects", type:"checkbox",
-                            controls: [
-                                { name: "compMainCorr", type:"combobox", label: "Correction", options: [
-                                    { label: "None", value: "none" },
-                                    { label: "Tukey", value: "tukey" },
-                                    { label: "Bonferroni", value: "bonferroni" },
-                                    { label: "Scheffe", value: "scheffe" },
-                                    { label: "Sidak", value: "sidak" } ] }
-                            ]
-                        }
+                        { name: "compMainCorr", type:"combobox", label: "Correction", options: [
+                            { label: "None", value: "none" },
+                            { label: "Tukey", value: "tukey" },
+                            { label: "Bonferroni", value: "bonferroni" },
+                            { label: "Scheffe", value: "scheffe" },
+                            { label: "Sidak", value: "sidak" } ] }
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Display",
                     controls: [
                         { name: "descStats", type:"checkbox", label: "Descriptive statistics" }

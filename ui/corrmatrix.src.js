@@ -26,10 +26,10 @@ var binomialTestLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "layoutbox",
             controls: [
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Correlation Coefficients",
                     cell: [0, 0],
                     level: "2",
@@ -40,7 +40,8 @@ var binomialTestLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "layoutbox",
+                    margin: "normal",
                     cell: [1, 0],
                     controls : [
                         { type:"checkbox", name: "sig", label: "Report significance" },
@@ -53,7 +54,7 @@ var binomialTestLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Hypothesis",
                     level: "2",
                     cell: [0, 1],
@@ -64,7 +65,7 @@ var binomialTestLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Plots",
                     level: "2",
                     cell: [1, 1],
