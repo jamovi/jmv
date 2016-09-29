@@ -63,7 +63,8 @@ var layout = LayoutDef.extend({
             collapsed: true,
             controls: [
                 {
-                    type: "groupbox",
+                    type: "layoutbox",
+                    margin: "normal",
                     cell: [0, 0],
                     controls : [
                         { type:"checkbox", name: "phi", label: "X2" },
@@ -72,7 +73,8 @@ var layout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "layoutbox",
+                    margin: "normal",
                     cell: [1, 0],
                     controls : [
                         {
@@ -83,7 +85,7 @@ var layout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Nominal",
                     cell: [0, 1],
                     controls : [
@@ -92,7 +94,7 @@ var layout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Ordinal",
                     cell: [1, 1],
                     controls : [
@@ -109,7 +111,7 @@ var layout = LayoutDef.extend({
             collapsed: true,
             controls : [
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Counts",
                     controls : [
                         { type:"checkbox", name: "cntsObs", label: "Observed" },
@@ -117,7 +119,7 @@ var layout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Percentages",
                     cell: [1, 0],
                     controls : [
@@ -135,7 +137,7 @@ var layout = LayoutDef.extend({
             collapsed: true,
             controls : [
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Row Order",
                     controls : [
                         { type:"radiobutton", name: "rowOrder_asc", optionId: "rowOrder", checkedValue: "asc", label: "Ascending" },
@@ -143,7 +145,7 @@ var layout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "label",
                     label: "Column Order",
                     cell: [1, 0],
                     controls : [

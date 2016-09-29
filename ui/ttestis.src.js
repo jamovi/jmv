@@ -38,17 +38,17 @@ var ttestisLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "layoutbox",
             stretchFactor: 1,
             controls : [
                 {
-                    type: "groupbox",
+                    type: "layoutbox",
                     name: "column1",
                     cell: [0, 0],
                     stretchFactor: 1,
                     controls : [
                         {
-                            type: "groupbox",
+                            type: "label",
                             label: "Tests",
                             controls : [
                                 { type:"checkbox", name: "students", label: "Student's" },
@@ -65,7 +65,7 @@ var ttestisLayout = LayoutDef.extend({
                             ]
                         },
                         {
-                            type: "groupbox",
+                            type: "label",
                             label: "Hypothesis",
                             controls : [
                                 { type:"radiobutton", name: "hypothesis_different", optionId: "hypothesis", checkedValue: "different", label: "Group 1 ≠ Group 2" },
@@ -74,7 +74,7 @@ var ttestisLayout = LayoutDef.extend({
                             ]
                         },
                         {
-                            type: "groupbox",
+                            type: "label",
                             label: "Assumption Checks",
                             controls : [
                                 { type:"checkbox", name: "norm", label: "Normality" },
@@ -84,13 +84,13 @@ var ttestisLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "layoutbox",
                     name: "column2",
                     cell: [1, 0],
                     stretchFactor: 1,
                     controls : [
                         {
-                            type: "groupbox",
+                            type: "label",
                             label: "Additional Statistics",
                             controls : [
                                 { type:"checkbox", name: "meanDiff", label: "Mean difference" },
@@ -106,7 +106,7 @@ var ttestisLayout = LayoutDef.extend({
                             ]
                         },
                         {
-                            type: "groupbox",
+                            type: "label",
                             label: "Missing values",
                             controls : [
                                 { type:"radiobutton", name: "miss_perAnalysis", optionId: "miss", checkedValue: "perAnalysis", label: "Exclude cases analysis by analysis" },

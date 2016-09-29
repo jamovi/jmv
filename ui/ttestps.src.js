@@ -30,17 +30,17 @@ var ttestpsLayout = LayoutDef.extend({
             ]
         },
         {
-            type: "groupbox",
+            type: "layoutbox",
             stretchFactor: 1,
             controls : [
                 {
-                    type: "groupbox",
+                    type: "layoutbox",
                     name: "column1",
                     cell: [0, 0],
                     stretchFactor: 1,
                     controls : [
                         {
-                            type: "groupbox",
+                            type: "label",
                             label: "Tests",
                             level: "2",
                             controls : [
@@ -57,7 +57,7 @@ var ttestpsLayout = LayoutDef.extend({
                             ]
                         },
                         {
-                            type: "groupbox",
+                            type: "label",
                             label: "Hypothesis",
                             level: "2",
                             controls : [
@@ -67,7 +67,7 @@ var ttestpsLayout = LayoutDef.extend({
                             ]
                         },
                         {
-                            type: "groupbox",
+                            type: "label",
                             label: "Assumption Checks",
                             level: "2",
                             controls : [
@@ -77,13 +77,13 @@ var ttestpsLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "groupbox",
+                    type: "layoutbox",
                     name: "column2",
                     cell: [1, 0],
                     stretchFactor: 1,
                     controls : [
                         {
-                            type: "groupbox",
+                            type: "label",
                             label: "Additional Statistics",
                             level: "2",
                             controls : [
@@ -100,7 +100,7 @@ var ttestpsLayout = LayoutDef.extend({
                             ]
                         },
                         {
-                            type: "groupbox",
+                            type: "label",
                             label: "Missing values",
                             level: "2",
                             controls : [
