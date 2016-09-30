@@ -28,6 +28,7 @@ var friedmanLayout = LayoutDef.extend({
         },
         {
             type: "layoutbox",
+            margin: "large",
             controls : [
                 { name: "pairs", type:"checkbox", label: "Pairwise Comparisons (Durbin-Conover)" },
                 { name: "desc", type:"checkbox", label: "Descriptives" },

@@ -545,8 +545,8 @@ var anovarmLayout = LayoutDef.extend({
             covariatesList = [];
 
         var factorList = this.clone(context.getValue("rmCells"));
-        if (covariatesList === null)
-            covariatesList = [];
+        if (factorList === null)
+            factorList = [];
         else {
             for(let i = 0; i < factorList.length; i++) {
                 factorList[0] = factorList[0].name;
