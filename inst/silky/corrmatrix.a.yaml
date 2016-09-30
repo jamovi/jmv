@@ -63,17 +63,17 @@ options:
       max: 99.9
       default: 95
 
-    - name: plots
+    - name: plot
       title: Correlation matrix
       type: Bool
       default: false
 
-    - name: densities
+    - name: plotDens
       title: Densities for variables
       type: Bool
       default: false
 
-    - name: stats
+    - name: plotStats
       title: Statistics
       type: Bool
       default: false

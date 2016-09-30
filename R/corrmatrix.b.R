@@ -61,13 +61,6 @@ CorrMatrixClass <- R6::R6Class(
             matrix$setRow(rowKey=var, values)
         }
         
-    },
-    .run=function() {
-
-        matrix <- self$results$get('matrix')
-        vars <- self$options$get('vars')
-        nVars <- length(vars)
-        
         hyp <- self$options$get('hypothesis')
         flag <- self$options$get('flag')
         
@@ -93,15 +86,32 @@ CorrMatrixClass <- R6::R6Class(
         if ( ! flag)
             matrix$setNote('flag', NULL)
         
+    },
+    .run=function() {
+
+        matrix <- self$results$get('matrix')
+        vars <- self$options$get('vars')
+        nVars <- length(vars)
+        
+        hyp <- self$options$get('hypothesis')
+        flag <- self$options$get('flag')
+        
+        if (hyp == 'pos')
+            hyp <- 'greater'
+        else if (hyp == 'neg')
+            hyp <- 'less'
+        else
+            hyp <- 'two.sided'
+        
         if (nVars > 1) {
             for (i in 1:(nVars-1)) {
                 rowVarName <- vars[[i]]
-                rowVar <- self$data[[rowVarName]]
+                rowVar <- silkycore::toNumeric(self$data[[rowVarName]])
                 for (j in seq(i+1, nVars)) {
                     values <- list()
                     
                     colVarName <- vars[[j]]
-                    colVar <- self$data[[colVarName]]
+                    colVar <- silkycore::toNumeric(self$data[[colVarName]])
                     
                     result <- private$.test(rowVar, colVar, hyp)
                     
@@ -116,7 +126,7 @@ CorrMatrixClass <- R6::R6Class(
                     
                     matrix$setRow(rowNo=i, values)
                     
-                    if (self$options$get('flag')) {
+                    if (flag) {
                         if (result$rp < .001)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[r]'), '***')
                         else if (result$rp < .01)
@@ -181,6 +191,49 @@ CorrMatrixClass <- R6::R6Class(
         }
         
         results
+    },
+    .plot=function(image, ...) {
+        
+        smooth <- GGally::wrap(GGally::ggally_smooth, size = 1, alpha=.3)
+        
+        lower <- list(
+            continuous=smooth,
+            combo="facethist",
+            discrete="facetbar",
+            na = "na")
+        
+        if (self$options$get('plotStats'))
+            upper <- list(
+                continuous="cor",
+                combo="box",
+                discrete="facetbar",
+                na="na")
+        else
+            upper <- NULL
+        
+        if (self$options$get('plotDens'))
+            diag <- list(
+                continuous="densityDiag",
+                discrete="barDiag",
+                na="naDiag")
+        else
+            diag <- NULL
+        
+        columns <- unlist(self$options$get('vars'))
+        data <- silkycore::select(self$data, columns)
+        names(data) <- paste0('f', seq_along(columns))
+        
+        for (i in seq_along(columns))
+            data[[i]] <- silkycore::toNumeric(data[[i]])
+        
+        print(GGally::ggpairs(
+            data,
+            columnLabels=columns,
+            lower=lower,
+            upper=upper,
+            diag=diag))
+        
+        TRUE
     })
 )
 

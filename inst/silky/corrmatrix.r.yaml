@@ -65,12 +65,15 @@ items:
             content: p-value
             visible: (kendall && sig)
 
-    - name: plots
-      title: Plots
-      visible: (plots)
+    - name: plot
+      title: Plot
+      visible: (plot)
       type: Image
       width: 500
       height: 500
-      renderFun: .plots
+      renderFun: .plot
+      requiresData: true
       clearWith:
           - vars
+          - plotDens
+          - plotStats
