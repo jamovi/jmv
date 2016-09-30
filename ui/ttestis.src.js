@@ -40,6 +40,7 @@ var ttestisLayout = LayoutDef.extend({
         {
             type: "layoutbox",
             stretchFactor: 1,
+            margin: "normal",
             controls : [
                 {
                     type: "layoutbox",

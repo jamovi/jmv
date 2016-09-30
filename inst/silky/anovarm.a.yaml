@@ -12,6 +12,7 @@ options:
     - name: rm
       title: Repeated Measures Factors
       type: Array
+      default:
       template:
         type: Group
         elements:
@@ -27,6 +28,7 @@ options:
     - name: rmCells
       title: Repeated Measures Cells
       type: Array
+      default:
       template:
         type: Group
         elements:

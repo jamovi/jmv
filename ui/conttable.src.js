@@ -64,7 +64,7 @@ var layout = LayoutDef.extend({
             controls: [
                 {
                     type: "layoutbox",
-                    margin: "normal",
+                    margin: "large",
                     cell: [0, 0],
                     controls : [
                         { type:"checkbox", name: "phi", label: "X2" },
@@ -74,7 +74,7 @@ var layout = LayoutDef.extend({
                 },
                 {
                     type: "layoutbox",
-                    margin: "normal",
+                    margin: "large",
                     cell: [1, 0],
                     controls : [
                         {
