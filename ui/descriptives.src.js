@@ -28,7 +28,7 @@ var descriptivesLayout = LayoutDef.extend({
         {
             type: "layoutbox",
             stretchFactor: 1,
-            margin: "normal",
+            margin: "large",
             controls : [
                 {type:"checkbox",  name: "plots", label: "Display Plots" },
                 { type:"checkbox", name: "plotCorr", label: "Display Correlation Plot" },

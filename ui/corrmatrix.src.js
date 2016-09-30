@@ -41,8 +41,7 @@ var binomialTestLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type: "layoutbox",
-                    margin: "large",
+                    type: "label",
                     cell: [1, 0],
                     controls : [
                         { type:"checkbox", name: "sig", label: "Report significance" },

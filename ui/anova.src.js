@@ -15,7 +15,6 @@ var anovaLayout = LayoutDef.extend({
         {
             type: "supplier",
             name: "variableSupplier",
-            label: "Variables",
             persistentItems: false,
             useVariables: true,
             stretchFactor: 1,
@@ -44,7 +43,7 @@ var anovaLayout = LayoutDef.extend({
         {
             type: "layoutbox",
             style: "inline",
-            margin: "normal",
+            margin: "large",
             controls: [
                 { name: "etaSq",   type:"checkbox", label: "η²" },
                 { name: "etaSqP",  type:"checkbox", label: "partial η²" },
@@ -78,11 +77,16 @@ var anovaLayout = LayoutDef.extend({
                         }
                     ]
                 },
-                { name: "ss", type:"combobox", label: "Sum of squares", options: [
-                    { label: 'Type 1', value: '1' },
-                    { label: 'Type 2', value: '2' },
-                    { label: 'Type 3', value: '3' }
-                ] }
+                {
+                    type: "layoutbox",
+                    controls: [
+                        { name: "ss", type:"combobox", label: "Sum of squares", options: [
+                            { label: 'Type 1', value: '1' },
+                            { label: 'Type 2', value: '2' },
+                            { label: 'Type 3', value: '3' }
+                        ] }
+                    ]
+                }
             ]
         },
         {

@@ -37,7 +37,13 @@ var kruskalLayout = LayoutDef.extend({
                 }
             ]
         },
-        { type:"checkbox", name: "pairs", label: "DSCF Pairwise Comparisons" }
+        {
+            type: "layoutbox",
+            margin: "large",
+            controls: [
+                { type:"checkbox", name: "pairs", label: "DSCF Pairwise Comparisons" }
+            ]
+        }
     ]
 });
 
