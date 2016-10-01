@@ -30,7 +30,7 @@ var ttestonesLayout = LayoutDef.extend({
         {
             type: "layoutbox",
             stretchFactor: 1,
-            margin: "normal",
+            margin: "large",
             controls : [
                 {
                     type: "layoutbox",

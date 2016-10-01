@@ -104,7 +104,7 @@ var anovarmLayout = LayoutDef.extend({
         {
             type: "layoutbox",
             style: "inline",
-            margin: "normal",
+            margin: "large",
             controls: [
                 { name: "effSizeN2",   type:"checkbox", label: "η²" },
                 { name: "partEffSizeN2",  type:"checkbox", label: "partial η²" },
@@ -153,7 +153,16 @@ var anovarmLayout = LayoutDef.extend({
                         }
                     ]
                 },
-                { name: "sumOfSqu", type:"combobox", label: "Sum of squares", options: [ {label: 'Type I', value:'Type I'}, {label: 'Type II', value:'Type II'}, {label: 'Type III', value:'Type III'}] }
+                {
+                    type: "layoutbox",
+                    controls: [
+                        { name: "sumOfSqu", type:"combobox", label: "Sum of squares", options: [
+                            {label: 'Type I', value:'Type I'},
+                            {label: 'Type II', value:'Type II'},
+                            {label: 'Type III', value:'Type III'}
+                        ] }
+                    ]
+                }
             ]
         },
         {

@@ -57,100 +57,105 @@ var layout = LayoutDef.extend({
             ]
         },
         {
-            type: "collapsebox",
-            label: "Statistics",
+            type: "layoutbox",
+            margin: "large",
             stretchFactor: 1,
-            collapsed: true,
             controls: [
                 {
-                    type: "layoutbox",
-                    margin: "large",
-                    cell: [0, 0],
-                    controls : [
-                        { type:"checkbox", name: "phi", label: "X2" },
-                        { type:"checkbox", name: "phiCont", label: "X2 continuity correction" },
-                        { type:"checkbox", name: "likeRatio", label: "Likelihood ratio" },
-                    ]
-                },
-                {
-                    type: "layoutbox",
-                    margin: "large",
-                    cell: [1, 0],
-                    controls : [
+                    type: "collapsebox",
+                    label: "Statistics",
+                    stretchFactor: 1,
+                    collapsed: true,
+                    controls: [
                         {
-                            type:"checkbox", name: "oddsRatio", label: "Log odds ratio (2x2 only)", controls: [
-                                { type:"textbox", name: "ciWidth", label: "Confidence level", suffix: "%", format: FormatDef.number, inputPattern: "[0-9]+" }
+                            type: "label",
+                            cell: [0, 0],
+                            controls : [
+                                { type:"checkbox", name: "phi", label: "X2" },
+                                { type:"checkbox", name: "phiCont", label: "X2 continuity correction" },
+                                { type:"checkbox", name: "likeRatio", label: "Likelihood ratio" },
+                            ]
+                        },
+                        {
+                            type: "label",
+                            cell: [1, 0],
+                            controls : [
+                                {
+                                    type:"checkbox", name: "oddsRatio", label: "Log odds ratio (2x2 only)", controls: [
+                                        { type:"textbox", name: "ciWidth", label: "Confidence level", suffix: "%", format: FormatDef.number, inputPattern: "[0-9]+" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            type: "label",
+                            label: "Nominal",
+                            cell: [0, 1],
+                            controls : [
+                                { type:"checkbox", name: "contCoef", label: "Contingency coefficient" },
+                                { type:"checkbox", name: "phiCra", label: "Phi and Cramer's V" }
+                            ]
+                        },
+                        {
+                            type: "label",
+                            label: "Ordinal",
+                            cell: [1, 1],
+                            controls : [
+                                { type:"checkbox", name: "gamma", label: "Gamma" },
+                                { type:"checkbox", name: "kenTaub", label: "Kendall's tau-b" }
                             ]
                         }
                     ]
                 },
                 {
-                    type: "label",
-                    label: "Nominal",
-                    cell: [0, 1],
+                    type: "collapsebox",
+                    label: "Cells",
+                    stretchFactor: 1,
+                    collapsed: true,
                     controls : [
-                        { type:"checkbox", name: "contCoef", label: "Contingency coefficient" },
-                        { type:"checkbox", name: "phiCra", label: "Phi and Cramer's V" }
+                        {
+                            type: "label",
+                            label: "Counts",
+                            controls : [
+                                { type:"checkbox", name: "cntsObs", label: "Observed" },
+                                { type:"checkbox", name: "cntsExp", label: "Expected" }
+                            ]
+                        },
+                        {
+                            type: "label",
+                            label: "Percentages",
+                            cell: [1, 0],
+                            controls : [
+                                { type:"checkbox", name: "percRow", label: "Row" },
+                                { type:"checkbox", name: "percCol", label: "Column" },
+                                { type:"checkbox", name: "percTtl", label: "Total" }
+                            ]
+                        }
                     ]
                 },
                 {
-                    type: "label",
-                    label: "Ordinal",
-                    cell: [1, 1],
+                    type: "collapsebox",
+                    label: "Options",
+                    stretchFactor: 1,
+                    collapsed: true,
                     controls : [
-                        { type:"checkbox", name: "gamma", label: "Gamma" },
-                        { type:"checkbox", name: "kenTaub", label: "Kendall's tau-b" }
-                    ]
-                }
-            ]
-        },
-        {
-            type: "collapsebox",
-            label: "Cells",
-            stretchFactor: 1,
-            collapsed: true,
-            controls : [
-                {
-                    type: "label",
-                    label: "Counts",
-                    controls : [
-                        { type:"checkbox", name: "cntsObs", label: "Observed" },
-                        { type:"checkbox", name: "cntsExp", label: "Expected" }
-                    ]
-                },
-                {
-                    type: "label",
-                    label: "Percentages",
-                    cell: [1, 0],
-                    controls : [
-                        { type:"checkbox", name: "percRow", label: "Row" },
-                        { type:"checkbox", name: "percCol", label: "Column" },
-                        { type:"checkbox", name: "percTtl", label: "Total" }
-                    ]
-                }
-            ]
-        },
-        {
-            type: "collapsebox",
-            label: "Options",
-            stretchFactor: 1,
-            collapsed: true,
-            controls : [
-                {
-                    type: "label",
-                    label: "Row Order",
-                    controls : [
-                        { type:"radiobutton", name: "rowOrder_asc", optionId: "rowOrder", checkedValue: "asc", label: "Ascending" },
-                        { type:"radiobutton", name: "rowOrder_desc", optionId: "rowOrder", checkedValue: "desc", label: "Descending" }
-                    ]
-                },
-                {
-                    type: "label",
-                    label: "Column Order",
-                    cell: [1, 0],
-                    controls : [
-                        { type:"radiobutton", name: "colOrder_asc", optionId: "colOrder", checkedValue: "asc", label: "Ascending" },
-                        { type:"radiobutton", name: "colOrder_desc", optionId: "colOrder", checkedValue: "desc", label: "Descending" }
+                        {
+                            type: "label",
+                            label: "Row Order",
+                            controls : [
+                                { type:"radiobutton", name: "rowOrder_asc", optionId: "rowOrder", checkedValue: "asc", label: "Ascending" },
+                                { type:"radiobutton", name: "rowOrder_desc", optionId: "rowOrder", checkedValue: "desc", label: "Descending" }
+                            ]
+                        },
+                        {
+                            type: "label",
+                            label: "Column Order",
+                            cell: [1, 0],
+                            controls : [
+                                { type:"radiobutton", name: "colOrder_asc", optionId: "colOrder", checkedValue: "asc", label: "Ascending" },
+                                { type:"radiobutton", name: "colOrder_desc", optionId: "colOrder", checkedValue: "desc", label: "Descending" }
+                            ]
+                        }
                     ]
                 }
             ]
