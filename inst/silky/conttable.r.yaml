@@ -3,10 +3,225 @@ name:  ContTable
 title: Contingency Tables
 
 items:
-    - name: contTable
+    - name: freqs
       title: Contingency Table
       type: Table
+      columns: [ ]
+      clearWith:
+        - rows
+        - cols
+        - counts
+        - layers
+
+    - name: chiSq
+      title: χ² Tests
+      type: Table
+      
+      clearWith:
+        - rows
+        - cols
+        - counts
+        - layers
+      
+      columns:
+        - name: test[chiSq]
+          title: ''
+          type: text
+          content: χ²
+          visible: (chiSq)
+
+        - name: value[chiSq]
+          title: Value
+          visible: (chiSq)
+        
+        - name: df[chiSq]
+          title: df
+          type: integer
+          visible: (chiSq)
+          
+        - name: p[chiSq]
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (chiSq)
+        
+        - name: test[chiSqCorr]
+          title: ''
+          type: text
+          content: χ² continuity correction
+          visible: (chiSqCorr)
+
+        - name: value[chiSqCorr]
+          title: Value
+          visible: (chiSqCorr)
+        
+        - name: df[chiSqCorr]
+          title: df
+          type: integer
+          visible: (chiSqCorr)
+          
+        - name: p[chiSqCorr]
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (chiSqCorr)
+        
+        - name: test[likeRat]
+          title: ''
+          type: text
+          content: Likelihood ratio
+          visible: (likeRat)
+
+        - name: value[likeRat]
+          title: Value
+          visible: (likeRat)
+        
+        - name: df[likeRat]
+          title: df
+          type: integer
+          visible: (likeRat)
+          
+        - name: p[likeRat]
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (likeRat)
+          
+        - name: test[N]
+          title: ''
+          type: text
+          content: 'N'
+        
+        - name: value[N]
+          title: Value
+          type: 'integer'
+          
+    - name: odds
+      title: Log Odds Ratio
+      type: Table
+      visible: (logOdds)
+      
+      clearWith:
+        - rows
+        - cols
+        - counts
+        - layers
+        - ciWidth
 
       columns:
-          - name: var
-            title: ""
+        - name: t[lo]
+          title: ''
+          type: text
+          content: Log odds ratio
+          
+        - name: v[lo]
+          title: Value
+          
+        - name: cil[lo]
+          title: Lower
+          superTitle: Confidence Intervals
+          
+        - name: ciu[lo]
+          title: Upper
+          superTitle: Confidence Intervals
+          
+        - name: t[f]
+          title: ''
+          type: text
+          content: Fisher's exact test
+          
+        - name: v[f]
+          title: Value
+        
+        - name: cil[f]
+          title: Lower
+          superTitle: Confidence Intervals
+          
+        - name: ciu[f]
+          title: Upper
+          superTitle: Confidence Intervals
+
+    - name: nom
+      title: Nominal
+      type: Table
+      visible: (contCoef || phiCra)
+
+      columns:
+        - name: t[cont]
+          title: ''
+          type: text
+          content: Contingency coefficient
+          visible: (contCoef)
+
+        - name: v[cont]
+          title: Value
+          visible: (contCoef)
+
+        - name: t[phi]
+          title: ''
+          type: text
+          content: Phi-coefficient
+          visible: (phiCra)
+
+        - name: v[phi]
+          title: Value
+          visible: (phiCra)
+          
+        - name: t[cra]
+          title: ''
+          type: text
+          content: Cramer's V
+          visible: (phiCra)
+
+        - name: v[cra]
+          title: Value
+          visible: (phiCra)
+
+    - name: gamma
+      title: Gamma
+      type: Table
+      visible: (gamma)
+      
+      clearWith:
+        - rows
+        - cols
+        - counts
+        - layers
+
+      columns:
+        - name: gamma
+          title: Gamma
+          
+        - name: se
+          title: Standard Error
+          
+        - name: cil
+          title: Lower
+          superTitle: Confidence Intervals
+          
+        - name: ciu
+          title: Upper
+          superTitle: Confidence Intervals
+          
+    - name: taub
+      title: Kendall's Tau-b
+      type: Table
+      visible: (taub)
+      
+      clearWith:
+        - rows
+        - cols
+        - counts
+        - layers
+
+      columns:
+        - name: taub
+          title: Kendall's Tau-B
+          
+        - name: t
+          title: t
+          
+        - name: p
+          title: p
+          type: number
+          format: zto,pvalue

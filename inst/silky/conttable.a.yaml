@@ -34,21 +34,21 @@ options:
       description: >
         The variables of interest
 
-    - name: phi
+    - name: chiSq
       title: X2
       type: Bool
       default: true
       description: >
         The phi
 
-    - name: phiCont
+    - name: chiSqCorr
       title: X2 continuity correction
       type: Bool
       default: false
       description: >
         The
 
-    - name: likeRatio
+    - name: likeRat
       title: Likelihood ratio
       type: Bool
       default: false
@@ -69,7 +69,7 @@ options:
       description: >
         Phi and Cramer's V
 
-    - name: oddsRatio
+    - name: logOdds
       title: Log odds ratio (2x2 only)
       type: Bool
       default: false
@@ -86,32 +86,32 @@ options:
       type: Bool
       default: false
 
-    - name: kenTaub
+    - name: taub
       title: Kendall's tau-b
       type: Bool
       default: false
 
-    - name: cntsObs
+    - name: obs
       title: Observed
       type: Bool
       default: true
 
-    - name: cntsExp
+    - name: exp
       title: Expected
       type: Bool
       default: false
 
-    - name: percRow
+    - name: pcRow
       title: Row
       type: Bool
       default: false
 
-    - name: percCol
+    - name: pcCol
       title: Column
       type: Bool
       default: false
 
-    - name: percTtl
+    - name: pcTot
       title: Total
       type: Bool
       default: false

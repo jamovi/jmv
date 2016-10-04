@@ -71,9 +71,9 @@ var layout = LayoutDef.extend({
                             type: "label",
                             cell: [0, 0],
                             controls : [
-                                { type:"checkbox", name: "phi", label: "X2" },
-                                { type:"checkbox", name: "phiCont", label: "X2 continuity correction" },
-                                { type:"checkbox", name: "likeRatio", label: "Likelihood ratio" },
+                                { type:"checkbox", name: "chiSq", label: "χ²" },
+                                { type:"checkbox", name: "chiSqCorr", label: "χ² continuity correction" },
+                                { type:"checkbox", name: "likeRat", label: "Likelihood ratio" },
                             ]
                         },
                         {
@@ -81,7 +81,7 @@ var layout = LayoutDef.extend({
                             cell: [1, 0],
                             controls : [
                                 {
-                                    type:"checkbox", name: "oddsRatio", label: "Log odds ratio (2x2 only)", controls: [
+                                    type:"checkbox", name: "logOdds", label: "Log odds ratio (2x2 only)", controls: [
                                         { type:"textbox", name: "ciWidth", label: "Confidence level", suffix: "%", format: FormatDef.number, inputPattern: "[0-9]+" }
                                     ]
                                 }
@@ -102,7 +102,7 @@ var layout = LayoutDef.extend({
                             cell: [1, 1],
                             controls : [
                                 { type:"checkbox", name: "gamma", label: "Gamma" },
-                                { type:"checkbox", name: "kenTaub", label: "Kendall's tau-b" }
+                                { type:"checkbox", name: "taub", label: "Kendall's tau-b" }
                             ]
                         }
                     ]
@@ -117,8 +117,8 @@ var layout = LayoutDef.extend({
                             type: "label",
                             label: "Counts",
                             controls : [
-                                { type:"checkbox", name: "cntsObs", label: "Observed" },
-                                { type:"checkbox", name: "cntsExp", label: "Expected" }
+                                { type:"checkbox", name: "obs", label: "Observed" },
+                                { type:"checkbox", name: "exp", label: "Expected" }
                             ]
                         },
                         {
@@ -126,34 +126,9 @@ var layout = LayoutDef.extend({
                             label: "Percentages",
                             cell: [1, 0],
                             controls : [
-                                { type:"checkbox", name: "percRow", label: "Row" },
-                                { type:"checkbox", name: "percCol", label: "Column" },
-                                { type:"checkbox", name: "percTtl", label: "Total" }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    type: "collapsebox",
-                    label: "Options",
-                    stretchFactor: 1,
-                    collapsed: true,
-                    controls : [
-                        {
-                            type: "label",
-                            label: "Row Order",
-                            controls : [
-                                { type:"radiobutton", name: "rowOrder_asc", optionId: "rowOrder", checkedValue: "asc", label: "Ascending" },
-                                { type:"radiobutton", name: "rowOrder_desc", optionId: "rowOrder", checkedValue: "desc", label: "Descending" }
-                            ]
-                        },
-                        {
-                            type: "label",
-                            label: "Column Order",
-                            cell: [1, 0],
-                            controls : [
-                                { type:"radiobutton", name: "colOrder_asc", optionId: "colOrder", checkedValue: "asc", label: "Ascending" },
-                                { type:"radiobutton", name: "colOrder_desc", optionId: "colOrder", checkedValue: "desc", label: "Descending" }
+                                { type:"checkbox", name: "pcRow", label: "Row" },
+                                { type:"checkbox", name: "pcCol", label: "Column" },
+                                { type:"checkbox", name: "pcTot", label: "Total" }
                             ]
                         }
                     ]
@@ -164,8 +139,8 @@ var layout = LayoutDef.extend({
 
     actions: [
         {
-            onChange : "oddsRatio", execute : function(context) {
-                var disabled = context.getValue("oddsRatio") === false;
+            onChange : "logOdds", execute : function(context) {
+                var disabled = context.getValue("logOdds") === false;
                 context.set("ciWidth", "disabled", disabled);
             }
         }

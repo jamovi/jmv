@@ -8,4 +8,4 @@ Maintainer: Jonathon Love <jon@thon.cc>
 Description: R made silky
 License: TBD
 Depends: R (>= 3.2)
-Imports: silkycore, car, multcomp, ggplot2, PMCMR, lsmeans, lsr
+Imports: silkycore, car, multcomp, ggplot2, PMCMR, lsmeans, lsr, vcd, vcdExtra
