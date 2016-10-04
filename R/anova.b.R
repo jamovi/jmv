@@ -264,9 +264,9 @@ AnovaClass <- R6::R6Class(
                     anovaTable$setRow(rowNo=i, tableRow)
                 }
                 else {
-                    if (rowCount < anovaTable$rowCount()) {
+                    if (rowCount < anovaTable$rowCount) {
                         blankRow <- list(ss=0, df=0, ms='', F='', p='', etaSq='', etaSqP='', omegaSq='')
-                        for (j in seq(i, anovaTable$rowCount()-1))
+                        for (j in seq(i, anovaTable$rowCount-1))
                             anovaTable$setRow(rowNo=j, blankRow)
                     }
                     anovaTable$setRow(rowKey='', tableRow) # residual
