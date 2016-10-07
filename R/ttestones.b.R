@@ -1,6 +1,6 @@
 
 TTestOneSClass <- R6::R6Class("TTestOneSClass",
-    inherit=silkycore::Analysis,
+    inherit=jmvcore::Analysis,
     private=list(
         .run=function() {
             
@@ -36,7 +36,7 @@ TTestOneSClass <- R6::R6Class("TTestOneSClass",
             for (i in seq_along(variables)) {
                 
                 name <- variables[[i]]
-                column <- silkycore::toNumeric(dataset[[name]])
+                column <- jmvcore::toNumeric(dataset[[name]])
                 column <- naOmit(column)
                 
                 n <- length(column)
@@ -251,11 +251,11 @@ TTestOneSClass <- R6::R6Class("TTestOneSClass",
             if (hypothesis == 'dt' && testValue == 0)
                 table$setNote("hyp", NULL)
             else if (hypothesis == 'dt')
-                table$setNote("hyp", silkycore::format("H\u2090 population mean \u2260 {}", testValue))
+                table$setNote("hyp", jmvcore::format("H\u2090 population mean \u2260 {}", testValue))
             else if (hypothesis == 'gt')
-                table$setNote("hyp", silkycore::format("H\u2090 population mean > {}", testValue))
+                table$setNote("hyp", jmvcore::format("H\u2090 population mean > {}", testValue))
             else if (hypothesis == 'lt')
-                table$setNote("hyp", silkycore::format("H\u2090 population mean < {}", testValue))
+                table$setNote("hyp", jmvcore::format("H\u2090 population mean < {}", testValue))
         },
         .plot=function(image, ...) {
             

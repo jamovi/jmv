@@ -1,6 +1,6 @@
 
 TTestISClass <- R6Class("TTestISClass",
-    inherit=silkycore::Analysis,
+    inherit=jmvcore::Analysis,
     private=list(
         .run=function() {
         
@@ -14,7 +14,7 @@ TTestISClass <- R6Class("TTestISClass",
             data <- select(self$data, varNames)
             
             for (name in depVarNames)
-                data[[name]] <- silkycore::toNumeric(data[[name]])
+                data[[name]] <- jmvcore::toNumeric(data[[name]])
             
             ttestTable <- self$results$get("ttest")
             descTable <- self$results$get("desc")
@@ -24,23 +24,23 @@ TTestISClass <- R6Class("TTestISClass",
             confInt <- self$options$get('ciWidth') / 100
             
             if (any(depVarNames == groupVarName))
-                silkycore::reject("Grouping variable '{a}' must not also be a dependent variable", code="a_is_dependent_variable", a=groupVarName)
+                jmvcore::reject("Grouping variable '{a}' must not also be a dependent variable", code="a_is_dependent_variable", a=groupVarName)
             
             # exclude rows with missings in the grouping variable
             data <- data[ ! is.na(data[[groupVarName]]),]
             
             #if (dimn(data)[1] == 0)
-            #    silkycore::reject("Grouping variable '{a}' must not also be a dependent variable", code="a_is_dependent_variable", a=groupVarName)
+            #    jmvcore::reject("Grouping variable '{a}' must not also be a dependent variable", code="a_is_dependent_variable", a=groupVarName)
             
             groupLevels <- base::levels(data[[groupVarName]])
             
             if (length(groupLevels) != 2)
-                silkycore::reject("Grouping variable '{a}' must have exactly 2 levels", code="grouping_var_must_have_2_levels", a=groupVarName)
+                jmvcore::reject("Grouping variable '{a}' must have exactly 2 levels", code="grouping_var_must_have_2_levels", a=groupVarName)
             
             if (self$options$get('miss') == "listwise") {
                 data <- naOmit(data)
                 if (dim(data)[1] == 0)
-                    silkycore::reject("Grouping variable '{a}' has less than 2 levels after missing values are excluded", code="grouping_var_must_have_2_levels", a=groupVarName)
+                    jmvcore::reject("Grouping variable '{a}' has less than 2 levels after missing values are excluded", code="grouping_var_must_have_2_levels", a=groupVarName)
             }
             
             ## Hypothesis options checking
@@ -412,9 +412,9 @@ TTestISClass <- R6Class("TTestISClass",
             table$getColumn('cil[mann]')$setSuperTitle(ciTitle)
 
             if (hypothesis == 'oneGreater')
-                table$setNote("hyp", silkycore::format("H\u2090 {} > {}", groups[1], groups[2]))
+                table$setNote("hyp", jmvcore::format("H\u2090 {} > {}", groups[1], groups[2]))
             else if (hypothesis == 'twoGreater')
-                table$setNote("hyp", silkycore::format("H\u2090 {} < {}", groups[1], groups[2]))
+                table$setNote("hyp", jmvcore::format("H\u2090 {} < {}", groups[1], groups[2]))
             else
                 table$setNote("hyp", NULL)
         },

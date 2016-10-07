@@ -1,7 +1,7 @@
 
 FriedmanClass <- R6::R6Class(
   "FriedmanClass",
-  inherit=silkycore::Analysis,
+  inherit=jmvcore::Analysis,
   private=list(
     .run=function() {
 
@@ -11,12 +11,12 @@ FriedmanClass <- R6::R6Class(
             return()
         
         data <- select(self$data, measureNames)
-        data <- silkycore::naOmit(data)
+        data <- jmvcore::naOmit(data)
         mat <- matrix(nrow=nrow(data), ncol=length(measureNames), dimnames=list(NULL, measureNames))
         
         for (i in seq_along(measureNames)) {
             name <- measureNames[[i]]
-            mat[,i] <- silkycore::toNumeric(data[[name]])
+            mat[,i] <- jmvcore::toNumeric(data[[name]])
         }
 
         result <- friedman.test(mat)

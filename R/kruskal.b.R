@@ -1,7 +1,7 @@
 
 KruskalClass <- R6::R6Class(
     "KruskalClass",
-    inherit=silkycore::Analysis,
+    inherit=jmvcore::Analysis,
     private=list(
         .run=function() {
             deps  <- self$options$get('deps')
@@ -16,7 +16,7 @@ KruskalClass <- R6::R6Class(
             groupColumn  <- as.factor(data[[group]])
             
             for (depName in self$options$get('deps')) {
-                depColumn <- silkycore::toNumeric(data[[depName]])
+                depColumn <- jmvcore::toNumeric(data[[depName]])
                 result <- kruskal.test(x=depColumn, g=groupColumn)
                 table$setRow(rowKey=depName, values=list(
                     chiSq=result$statistic,

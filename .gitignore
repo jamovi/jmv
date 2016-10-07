@@ -1,6 +1,6 @@
 
 ui/*.options.js
-inst/silky/*.js
+inst/jamovi/*.js
 .Rproj.user
 .DS_Store
 

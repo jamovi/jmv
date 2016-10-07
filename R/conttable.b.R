@@ -4,7 +4,7 @@
 
 ContTableClass <- R6::R6Class(
   "ContTableClass",
-  inherit=silkycore::Analysis,
+  inherit=jmvcore::Analysis,
   private=list(
     .init=function() {
         
@@ -195,12 +195,12 @@ ContTableClass <- R6::R6Class(
         countsName <- self$options$get('counts')
         layerNames <- rev(unlist(self$options$get('layers')))
         
-        data <- silkycore::select(self$data, c(layerNames, rowVarName, colVarName))
+        data <- jmvcore::select(self$data, c(layerNames, rowVarName, colVarName))
         
         if (is.null(countsName))
             x <- rep(1, nrow(data))
         else
-            x <- silkycore::toNumeric(self$data[[countsName]])
+            x <- jmvcore::toNumeric(self$data[[countsName]])
         
         nRows  <- base::nlevels(data[[rowVarName]])
         nCols  <- base::nlevels(data[[colVarName]])
@@ -208,7 +208,7 @@ ContTableClass <- R6::R6Class(
         
         while(TRUE) {
             
-            data <- silkycore::select(self$data, c(layerNames, rowVarName, colVarName))
+            data <- jmvcore::select(self$data, c(layerNames, rowVarName, colVarName))
             table <- ftable(xtabs(x ~ ., data=data))
             
             if (nrow(table) == 0)
@@ -235,17 +235,17 @@ ContTableClass <- R6::R6Class(
             return()
         
         if (nlevels(self$data[[rowVarName]]) < 2)
-            silkycore::reject("Row variable '{}' contains less than 2 levels", code='', rowVarName)
+            jmvcore::reject("Row variable '{}' contains less than 2 levels", code='', rowVarName)
         if (nlevels(self$data[[colVarName]]) < 2)
-            silkycore::reject("Column variable '{}' contains less than 2 levels", code='', colVarName)
+            jmvcore::reject("Column variable '{}' contains less than 2 levels", code='', colVarName)
         
         countName <- self$options$get('counts')
         if ( ! is.null(countName)) {
-            countCol <- silkycore::toNumeric(self$data[[countName]])
+            countCol <- jmvcore::toNumeric(self$data[[countName]])
             if (any(countCol < 0, na.rm=TRUE))
-                silkycore::reject('Counts may not be negative')
+                jmvcore::reject('Counts may not be negative')
             if (any(is.infinite(countCol)))
-                silkycore::reject('Counts may not be infinite')
+                jmvcore::reject('Counts may not be infinite')
         }
         
         freqs <- self$results$get('freqs')

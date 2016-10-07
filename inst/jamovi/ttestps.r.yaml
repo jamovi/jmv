@@ -12,13 +12,7 @@ items:
         - name: name1
           title: ""
           type: text
-        
-        - name: sep
-          title: ""
-          type: text
-          format: sep
-          content: '-'
-        
+
         - name: name2
           title: ""
           type: text

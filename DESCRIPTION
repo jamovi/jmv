@@ -1,11 +1,11 @@
-Package: silkyR
+Package: jmv
 Type: Package
-Title: R made silky
+Title: Rjamovi
 Version: 0.1
-Date: 2016-02-14
+Date: 2016-10-06
 Author: Jonathon Love
 Maintainer: Jonathon Love <jon@thon.cc>
-Description: R made silky
-License: TBD
+Description: Rjamovi
+License: GPL2+
 Depends: R (>= 3.2)
-Imports: silkycore, car, multcomp, ggplot2, PMCMR, lsmeans, lsr, vcd, vcdExtra
+Imports: jmvcore, car, multcomp, ggplot2, PMCMR, lsmeans, lsr, vcd, vcdExtra

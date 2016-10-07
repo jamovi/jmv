@@ -1,11 +1,11 @@
 ---
 name:     TTestPS
-package:  silkyR
+package:  jmv
 engineType: R
 
 options:
-    - name: dataset
-      type: Dataset
+    - name: data
+      type: Data
       description: >
         The data set as a data frame
 
@@ -21,29 +21,29 @@ options:
                 type: Variable
       description: >
         The variables of interest
-        
+
     - name: students
       title: Student's test
       type: Bool
       default: true
-      
+
     - name: bf
       title: Bayes factor
       type: Bool
       default: false
-      
+
     - name: bfPrior
       title: Prior width
-      type: number
+      type: Number
       default: 0.707
       min: 0.5
       max: 2.0
-      
+
     - name: wilcoxon
       title: Wilcoxon signed rank test
       type: Bool
       default: false
-      
+
     - name: hypothesis
       title: Alternative hypothesis
       type: List
@@ -54,44 +54,44 @@ options:
       default: different
       description: >
         Specifies the alternative hypothesis as either "oneGreater", "twoGreater" or "different"(default)
-        
+
     - name: norm
       title: Normality assumption check
       type: Bool
       default: false
-      
+
     - name: meanDiff
       title: Mean and standard error difference
       type: Bool
       default: false
-      
+
     - name: effectSize
       title: Effect Size
       type: Bool
       default: false
-      
+
     - name: ci
       title: Confidence Interval
       type: Bool
       default: false
-      
+
     - name: ciWidth
       title: Confidence level
       type: Number
       min: 50
       max: 99.9
       default: 95
-      
+
     - name: desc
       title: Descriptives Table
       type: Bool
       default: false
-      
+
     - name: plots
       title: Descriptives Plots
       type: Bool
       default: false
-      
+
     - name: miss
       title: Missing values exclusion method
       type: List

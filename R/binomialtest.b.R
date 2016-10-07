@@ -4,7 +4,7 @@
 
 BinomialTestClass <- R6::R6Class(
   "BinomialTestClass",
-  inherit=silkycore::Analysis,
+  inherit=jmvcore::Analysis,
   public=list(
     .run=function() {
 

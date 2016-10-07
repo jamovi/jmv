@@ -1,10 +1,10 @@
 
 TTestPSClass <- R6Class("TTestPSClass",
-    inherit=silkycore::Analysis,
+    inherit=jmvcore::Analysis,
     private=list(
         .run=function() {
             
-            data <- self$options$dataset()
+            data <- self$data
             
             ttestTable <- self$results$get('ttest')
             descTable <- self$results$get('desc')
@@ -35,8 +35,8 @@ TTestPSClass <- R6Class("TTestPSClass",
                 if (is.null(name1) || is.null(name2))
                     next()
                 
-                data[[name1]] <- silkycore::toNumeric(data[[name1]])
-                data[[name2]] <- silkycore::toNumeric(data[[name2]])
+                data[[name1]] <- jmvcore::toNumeric(data[[name1]])
+                data[[name2]] <- jmvcore::toNumeric(data[[name2]])
                 
                 if (self$options$get('miss') == "perAnalysis") {
                     pairsData <- naOmit(data[c(name1, name2)])

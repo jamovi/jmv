@@ -4,7 +4,7 @@
 
 CorrMatrixClass <- R6::R6Class(
   "CorrMatrixClass",
-  inherit=silkycore::Analysis,
+  inherit=jmvcore::Analysis,
   private=list(
     .init=function() {
         matrix <- self$results$get('matrix')
@@ -106,12 +106,12 @@ CorrMatrixClass <- R6::R6Class(
         if (nVars > 1) {
             for (i in 1:(nVars-1)) {
                 rowVarName <- vars[[i]]
-                rowVar <- silkycore::toNumeric(self$data[[rowVarName]])
+                rowVar <- jmvcore::toNumeric(self$data[[rowVarName]])
                 for (j in seq(i+1, nVars)) {
                     values <- list()
                     
                     colVarName <- vars[[j]]
-                    colVar <- silkycore::toNumeric(self$data[[colVarName]])
+                    colVar <- jmvcore::toNumeric(self$data[[colVarName]])
                     
                     result <- private$.test(rowVar, colVar, hyp)
                     
@@ -220,11 +220,11 @@ CorrMatrixClass <- R6::R6Class(
             diag <- NULL
         
         columns <- unlist(self$options$get('vars'))
-        data <- silkycore::select(self$data, columns)
+        data <- jmvcore::select(self$data, columns)
         names(data) <- paste0('f', seq_along(columns))
         
         for (i in seq_along(columns))
-            data[[i]] <- silkycore::toNumeric(data[[i]])
+            data[[i]] <- jmvcore::toNumeric(data[[i]])
         
         print(GGally::ggpairs(
             data,

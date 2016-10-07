@@ -1,11 +1,11 @@
 ---
 name:    Kruskal
 title:   Kruskal-Wallis
-package: silkyR
+package: jmv
 
 options:
-    - name: dataset
-      type: Dataset
+    - name: data
+      type: Data
       description: >
         The data set as a data frame
 

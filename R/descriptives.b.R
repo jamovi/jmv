@@ -1,10 +1,10 @@
 
 DescriptivesClass <- R6::R6Class("DescriptivesClass",
-    inherit=silkycore::Analysis,
+    inherit=jmvcore::Analysis,
     private=list(
         .run=function() {
             
-            dataset <- self$options$dataset()
+            dataset <- self$data
             vars <- self$options$get('vars')
             
             desc <- self$results$get("descriptives")
@@ -17,15 +17,15 @@ DescriptivesClass <- R6::R6Class("DescriptivesClass",
                 column <- dataset[[name]]
                 
                 total <- length(column)
-                column <- silkycore::naOmit(column)
+                column <- jmvcore::naOmit(column)
                 n <- length(column)
                 
                 desc$setCell(rowNo=i, "n", n)
                 desc$setCell(rowNo=i, "missing", total - n)
                 
-                if (silkycore::canBeNumeric(column) && n > 0) {
+                if (jmvcore::canBeNumeric(column) && n > 0) {
                     
-                    numColumn <- silkycore::toNumeric(column)
+                    numColumn <- jmvcore::toNumeric(column)
                     
                     desc$setCell(rowNo=i, "mean", mean(numColumn))
                     desc$setCell(rowNo=i, "median", median(numColumn))

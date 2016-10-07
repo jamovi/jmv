@@ -6,7 +6,6 @@ items:
     - name: main
       title: ANOVA
       type: Table
-      rows: (terms)
       clearWith:
         - dependent
         - modelTerms
@@ -140,6 +139,7 @@ items:
           - name: var1
             title: ''
             type: text
+            combineBelow: true
 
           - name: var2
             title: ''

@@ -1,11 +1,11 @@
 
 AnovaClass <- R6::R6Class(
     "AnovaClass",
-    inherit=silkycore::Analysis,
+    inherit=jmvcore::Analysis,
     private=list(
         .model=NA,
         .init=function() {
-
+            
             dependentName <- self$options$get('dependent')
             fixedFactors <- self$options$get('fixedFactors')
             modelTerms <- private$.modelTerms()
@@ -16,7 +16,7 @@ AnovaClass <- R6::R6Class(
             data <- self$data
             for (varName in fixedFactors)
                 data[[varName]] <- as.factor(data[[varName]])
-            data[[dependentName]] <- silkycore::toNumeric(data[[dependentName]])
+            data[[dependentName]] <- jmvcore::toNumeric(data[[dependentName]])
             
             anovaTable    <- self$results$get('main')
             postHocTables <- self$results$get('postHoc')
@@ -147,7 +147,7 @@ AnovaClass <- R6::R6Class(
             data <- naOmit(self$data)
             for (varName in fixedFactors)
                 data[[varName]] <- as.factor(data[[varName]])
-            data[[dependentName]] <- silkycore::toNumeric(data[[dependentName]])
+            data[[dependentName]] <- jmvcore::toNumeric(data[[dependentName]])
             
             if (is.factor(data[[dependentName]]))
                 reject('Dependent variable must be numeric')
@@ -165,7 +165,7 @@ AnovaClass <- R6::R6Class(
                stats::contrasts(data[[contrast$var]]) <- private$.createContrasts(levels, contrast$type)
             }
             
-            formula <- silkycore::constructFormula(dependentName, modelTerms)
+            formula <- jmvcore::constructFormula(dependentName, modelTerms)
             formula <- stats::as.formula(formula)
             
             private$.model <- stats::aov(formula, data)
@@ -723,7 +723,10 @@ AnovaClass <- R6::R6Class(
             
             TRUE
         },
-        .sourcifyOption = function(name, value, option) {
+        .sourcifyOption = function(option) {
+            
+            name <- option$name
+            value <- option$value
             
             if (name == 'contrasts') {
                 i <- 1
@@ -741,7 +744,7 @@ AnovaClass <- R6::R6Class(
                     return('')
             }
             
-            super$.sourcifyOption(name, value, option)
+            super$.sourcifyOption(name)
         })
 )
 
