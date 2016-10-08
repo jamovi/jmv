@@ -388,7 +388,7 @@ var anovarmLayout = LayoutDef.extend({
             }
         },
         {
-            onChange: ["bs", "cov"], execute: function(context) {
+            onChange: ["bs", "cov", "rm"], execute: function(context) {
                 this.calcModelTerms(context);
             }
         },
@@ -399,9 +399,17 @@ var anovarmLayout = LayoutDef.extend({
         },
         {
             onEvent: "analysis.initialising", execute: function(context) {
-                this._factorCells = null;
-
-                if (this._lastVariableList === null || this._lastCombinedList === null || this._lastCovariatesList === null)
+                this._lastVariableList = null;
+                this._lastCombinedList = null;
+                this._lastCombinedList2 = null;
+                this._lastCovariatesList = null;
+                this._lastCurrentList = null;
+                this._initialising = true;
+            }
+        },
+        {
+            onEvent: "analysis.initialised", execute: function(context) {
+                if (this._lastVariableList === null || this._lastCombinedList === null || this._lastCombinedList2 === null || this._lastCovariatesList === null)
                     this.calcModelTerms(context);
 
                 if (this._lastCurrentList === null)
@@ -553,21 +561,23 @@ var anovarmLayout = LayoutDef.extend({
         if (covariatesList === null)
             covariatesList = [];
 
-        var factorList = this.clone(context.getValue("rmCells"));
+        var factorList = this.clone(context.getValue("rm"));
         if (factorList === null)
             factorList = [];
         else {
             for(let i = 0; i < factorList.length; i++) {
-                factorList[0] = factorList[0].name;
+                factorList[i] = factorList[i].label;
             }
         }
 
         var combinedList = variableList.concat(covariatesList);
-        combinedList = combinedList.concat(factorList);
 
+        var combinedList2 = factorList.concat(variableList);
+
+        context.setValue("rmcModelSupplier", this.convertArrayToSupplierList(factorList, FormatDef.variable))
         context.setValue("bscModelSupplier", this.convertArrayToSupplierList(combinedList, FormatDef.variable));
-        context.setValue("plotsSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
-        context.setValue("postHocSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
+        context.setValue("plotsSupplier", this.convertArrayToSupplierList(combinedList2, FormatDef.variable));
+        context.setValue("postHocSupplier", this.convertArrayToSupplierList(combinedList2, FormatDef.variable));
 
         var diff = { removed: [], added: [] };
         if (this._lastVariableList !== null)
@@ -583,6 +593,11 @@ var anovarmLayout = LayoutDef.extend({
         if (this._lastCombinedList !== null)
             combinedDiff = this.findDifferences(this._lastCombinedList, combinedList);
         this._lastCombinedList = combinedList;
+
+        var combinedDiff2 = { removed: [], added: [] };
+        if (this._lastCombinedList2 !== null)
+            combinedDiff2 = this.findDifferences(this._lastCombinedList2, combinedList2);
+        this._lastCombinedList2 = combinedList2;
 
         if (this._initialising)
             return;
@@ -624,7 +639,7 @@ var anovarmLayout = LayoutDef.extend({
 
         context.setValue("bscModelTerms", currentList);
 
-        this.updateContrasts(context, variableList);
+        this.updateContrasts(context, combinedList2);
     },
 
     updateContrasts : function(context, variableList) {
