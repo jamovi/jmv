@@ -17,20 +17,22 @@ var ttestisLayout = LayoutDef.extend({
             stretchFactor: 1,
             controls: [
                 {
-                    type:"targetlistbox",
+                    type:"variabletargetlistbox",
                     name: "vars",
                     label: "Dependent Variables",
                     showColumnHeaders: false,
+                    variableFilter: ["continuous"],
                     columns: [
                         { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 },
                 {
                     name: "group",
-                    type:"targetlistbox",
+                    type:"variabletargetlistbox",
                     label: "Grouping Variable",
                     showColumnHeaders: false,
                     maxItemCount: 1,
+                    variableFilter: ["nominal", "ordinal"],
                     columns: [
                         { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]

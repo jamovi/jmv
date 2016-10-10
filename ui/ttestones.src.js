@@ -17,9 +17,10 @@ var ttestonesLayout = LayoutDef.extend({
             stretchFactor: 1,
             controls: [
                 {
-                    type:"targetlistbox",
+                    type:"variabletargetlistbox",
                     name: "vars",
                     label: "Dependent Variables",
+                    variableFilter: ["continuous"],
                     showColumnHeaders: false,
                     columns: [
                         { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }

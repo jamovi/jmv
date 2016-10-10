@@ -17,9 +17,10 @@ var ttestpsLayout = LayoutDef.extend({
             stretchFactor: 1,
             controls: [
                 {
-                    type:"targetlistbox",
+                    type:"variabletargetlistbox",
                     name: "pairs",
                     label: "Paired Variables",
+                    variableFilter: ["continuous"],
                     showColumnHeaders: false,
                     fullRowSelect: true,
                     columns: [
