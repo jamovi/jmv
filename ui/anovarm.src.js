@@ -608,7 +608,7 @@ var anovarmLayout = LayoutDef.extend({
 
         for (var i = 0; i < combinedDiff.removed.length; i++) {
             for (var j = 0; j < currentList.length; j++) {
-                if (FormatDef.variable.contains(currentList[j], diff.removed[i])) {
+                if (FormatDef.variable.contains(currentList[j], combinedDiff.removed[i])) {
                     currentList.splice(j, 1);
                     j -= 1;
                 }
