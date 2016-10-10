@@ -16,31 +16,34 @@ var layout = LayoutDef.extend({
             stretchFactor: 1,
             controls: [
                 {
-                    type:"targetlistbox",
+                    type:"variabletargetlistbox",
                     name: "rows",
                     label: "Rows",
                     showColumnHeaders: false,
                     maxItemCount: 1,
+                    variableFilter: ["nominal", "ordinal"],
                     columns: [
                         { type: "listitem.variablelabel", name: 'column1', label: "", format: FormatDef.variable, stretchFactor: 1 },
                     ]
                 },
                 {
-                    type:"targetlistbox",
+                    type:"variabletargetlistbox",
                     name: "cols",
                     label: "Columns",
                     showColumnHeaders: false,
                     maxItemCount: 1,
+                    variableFilter: ["nominal", "ordinal"],
                     columns: [
                         { type: "listitem.variablelabel", name: 'column1', label: "", format: FormatDef.variable, stretchFactor: 1 },
                     ]
                 },
                 {
-                    type:"targetlistbox",
+                    type:"variabletargetlistbox",
                     name: "counts",
                     label: "Counts",
                     showColumnHeaders: false,
                     maxItemCount: 1,
+                    variableFilter: ["continuous"],
                     columns: [
                         { type: "listitem.variablelabel", name: 'column1', label: "", format: FormatDef.variable, stretchFactor: 1 },
                     ]

@@ -80,20 +80,22 @@ var anovarmLayout = LayoutDef.extend({
                     ]
                 },
                 {
-                    type:"targetlistbox",
+                    type:"variabletargetlistbox",
                     name: "bs",
                     label: "Between Subject Factors",
                     showColumnHeaders: false,
+                    variableFilter: ["nominal", "ordinal"],
                     height: "small",
                     columns: [
                         { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
                 },
                 {
-                    type:"targetlistbox",
+                    type:"variabletargetlistbox",
                     name: "cov",
                     label: "Covariates",
                     showColumnHeaders: false,
+                    variableFilter: ["continuous"],
                     height: "small",
                     columns: [
                         { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
