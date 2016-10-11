@@ -1,12 +1,48 @@
 ---
-name:  BinomialTest
+name:  Binomial
 title: Binomial Test
 
 items:
-    - name: test
+    - name: table
       title: Binomial Test
       type: Table
 
       columns:
           - name: var
             title: ""
+            type: text
+            combineBelow: true
+
+          - name: level
+            title: Level
+            type: text
+
+          - name: count
+            title: Count
+            type: integer
+
+          - name: total
+            title: Total
+            type: integer
+
+          - name: prop
+            title: Proportion
+            type: number
+            format: zto
+
+          - name: p
+            title: p
+            type: number
+            format: 'zto,pvalue'
+
+          - name: cil
+            title: Lower
+            superTitle: Confidence Interval
+            type: number
+            visible: (ci)
+
+          - name: ciu
+            title: Upper
+            superTitle: Confidence Interval
+            type: number
+            visible: (ci)

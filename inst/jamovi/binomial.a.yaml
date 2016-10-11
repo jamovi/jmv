@@ -16,6 +16,10 @@ options:
       description: >
         The variables of interest
 
+    - name: areCounts
+      type: Bool
+      default: false
+
     - name: testValue
       title: Test value
       type: Number
@@ -33,3 +37,11 @@ options:
       default: notequal
       description: >
         Stuff
+
+    - name: ci
+      type: Bool
+      default: false
+
+    - name: ciWidth
+      type: Number
+      default: 95

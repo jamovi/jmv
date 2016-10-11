@@ -31,7 +31,10 @@ var binomialTestLayout = LayoutDef.extend({
             stretchFactor: 1,
             margin: "large",
             controls : [
-                { type:"textbox", name: "testValue", label: "Test value", format: FormatDef.number, inputPattern: "[0-9]+" }
+                { type:"checkbox", name: "areCounts", label: "Values are counts" },
+                { type:"layoutbox", controls: [
+                    { type:"textbox", name: "testValue", label: "Test value", format: FormatDef.number, inputPattern: "[0-9]+" },
+                ]},
             ]
         },
         {
