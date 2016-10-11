@@ -10,8 +10,43 @@ options:
       description: >
         The data set as a data frame
 
-    - name: vars
-      title: Variables
-      type: Variables
+    - name: counts
+      title: Counts (optional)
+      type: Variable
       description: >
-        The variables of interest
+        The counts
+
+    - name: factors
+      title: Factors
+      type: Variables
+      default:
+      description: >
+        The factors
+
+    - name: modelTerms
+      title: Model Terms
+      type: Terms
+      default:
+      description: >
+        The model terms
+
+    - name: est
+      title: Estimates
+      type: Bool
+      default: false
+      description: >
+        Estimates
+
+    - name: ci
+      title: Confidence Intervals
+      type: Bool
+      default: false
+      description: >
+        Confidence Intervals
+
+    - name: ciWidth
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
