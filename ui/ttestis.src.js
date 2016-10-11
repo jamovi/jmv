@@ -54,15 +54,16 @@ var ttestisLayout = LayoutDef.extend({
                             type: "label",
                             label: "Tests",
                             controls : [
-                                { type:"checkbox", name: "students", label: "Student's" },
-                                {
-                                    type:"checkbox",
-                                    name: "bf",
-                                    label: "Bayes factor",
-                                    controls: [
-                                        { type:"textbox", name: "bfPrior", label: "Prior", format: FormatDef.number, inputPattern: "[0-9]+" }
-                                    ]
-                                },
+                                { type:"checkbox", name: "students", label: "Student's", controls: [
+                                    {
+                                        type:"checkbox",
+                                        name: "bf",
+                                        label: "Bayes factor",
+                                        controls: [
+                                            { type:"textbox", name: "bfPrior", label: "Prior", format: FormatDef.number, inputPattern: "[0-9]+" }
+                                        ]
+                                    },
+                                ]},
                                 { type:"checkbox", name: "welchs", label: "Welch's" },
                                 { type:"checkbox", name: "mann", label: "Mann-Whitney U" }
                             ]

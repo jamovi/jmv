@@ -44,15 +44,16 @@ var ttestonesLayout = LayoutDef.extend({
                             label: "Tests",
                             level: "2",
                             controls : [
-                                { type:"checkbox", name: "students", label: "Student" },
-                                {
-                                    type:"checkbox",
-                                    name: "bf",
-                                    label: "Bayes factor",
-                                    controls: [
-                                        { type:"textbox", name: "bfPrior", label: "Prior", format: FormatDef.number, inputPattern: "[0-9]+" }
-                                    ]
-                                },
+                                { type:"checkbox", name: "students", label: "Student's", controls: [
+                                    {
+                                        type:"checkbox",
+                                        name: "bf",
+                                        label: "Bayes factor",
+                                        controls: [
+                                            { type:"textbox", name: "bfPrior", label: "Prior", format: FormatDef.number, inputPattern: "[0-9]+" }
+                                        ]
+                                    },
+                                ]},
                                 { type:"checkbox", name: "mann", label: "Mann-Whitney U" }
                             ]
                         },
