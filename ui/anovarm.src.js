@@ -49,7 +49,7 @@ var rma_cell =  {
     }
 }
 
-var anovarmLayout = LayoutDef.extend({
+var anovarmLayout = ui.extend({
 
     label: "Repeated Measures ANOVA",
     type: "root",
@@ -707,4 +707,4 @@ var anovarmLayout = LayoutDef.extend({
     _factorCells : null
 });
 
-module.exports = { LayoutDef : anovarmLayout, options: options };
+module.exports = { ui : anovarmLayout, options: options };

@@ -4,7 +4,7 @@
 
 var options = require('./ttestps.options')
 
-var ttestpsLayout = LayoutDef.extend({
+var ttestpsLayout = ui.extend({
 
     label: "Paired Samples T-Test",
     type: "root",
@@ -133,4 +133,4 @@ var ttestpsLayout = LayoutDef.extend({
     ]
 });
 
-module.exports = { LayoutDef : ttestpsLayout, options: options };
+module.exports = { ui : ttestpsLayout, options: options };

@@ -4,7 +4,7 @@
 
 var options = require('./ttestones.options')
 
-var ttestonesLayout = LayoutDef.extend({
+var ttestonesLayout = ui.extend({
 
     label: "One Sample T-Test",
     type: "root",
@@ -135,4 +135,4 @@ var ttestonesLayout = LayoutDef.extend({
     ]
 });
 
-module.exports = { LayoutDef : ttestonesLayout, options: options };
+module.exports = { ui : ttestonesLayout, options: options };

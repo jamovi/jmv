@@ -3,7 +3,7 @@
 var options = require("./corrmatrix.options");
 
 
-var binomialTestLayout = LayoutDef.extend({
+var binomialTestLayout = ui.extend({
 
     label: "Correlation Matrix",
     type: "root",
@@ -100,4 +100,4 @@ var binomialTestLayout = LayoutDef.extend({
     ]
 });
 
-module.exports = { LayoutDef : binomialTestLayout, options: options };
+module.exports = { ui : binomialTestLayout, options: options };

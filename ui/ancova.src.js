@@ -6,7 +6,7 @@ var options = require('./ancova.options');
 
 var controls = new ControlManager();
 
-var ancovaLayout = LayoutDef.extend({
+var ancovaLayout = ui.extend({
 
     label: "ANCOVA",
     type: "root",
@@ -565,4 +565,4 @@ var ancovaLayout = LayoutDef.extend({
     }
 });
 
-module.exports = { LayoutDef : ancovaLayout, options: options, customControls: controls };
+module.exports = { ui : ancovaLayout, options: options, customControls: controls };

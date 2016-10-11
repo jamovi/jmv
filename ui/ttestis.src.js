@@ -4,7 +4,7 @@
 
 var options = require('./ttestis.options')
 
-var ttestisLayout = LayoutDef.extend({
+var ttestisLayout = ui.extend({
 
     label: "Independent Samples T-Test",
     type: "root",
@@ -140,4 +140,4 @@ var ttestisLayout = LayoutDef.extend({
     ]
 });
 
-module.exports = { LayoutDef : ttestisLayout, options: options };
+module.exports = { ui : ttestisLayout, options: options };

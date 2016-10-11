@@ -2,7 +2,7 @@
 
 var options = require("./brmanova.options");
 
-var layout = LayoutDef.extend({
+var layout = ui.extend({
 
     label: "Bayesian Repeated Measures ANOVA",
     type: "root",
@@ -16,4 +16,4 @@ var layout = LayoutDef.extend({
     ]
 });
 
-module.exports = { LayoutDef : layout, options: options };
+module.exports = { ui : layout, options: options };

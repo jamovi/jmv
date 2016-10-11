@@ -6,7 +6,7 @@ var options = require('./anova.options');
 
 var controls = new ControlManager();
 
-var anovaLayout = LayoutDef.extend({
+var anovaLayout = ui.extend({
 
     label: "ANOVA",
     type: "root",
@@ -541,4 +541,4 @@ var anovaLayout = LayoutDef.extend({
     }
 });
 
-module.exports = { LayoutDef : anovaLayout, options: options, customControls: controls };
+module.exports = { ui : anovaLayout, options: options, customControls: controls };

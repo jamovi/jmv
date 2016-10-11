@@ -3,7 +3,7 @@
 
 var options = require("./loglinear.options");
 
-var layout = LayoutDef.extend({
+var layout = ui.extend({
 
     label: "Log-Linear Regression",
     type: "root",
@@ -291,4 +291,4 @@ var layout = LayoutDef.extend({
 
 });
 
-module.exports = { LayoutDef : layout, options: options };
+module.exports = { ui : layout, options: options };

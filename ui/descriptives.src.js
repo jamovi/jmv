@@ -3,7 +3,7 @@
 var options = require("./descriptives.options");
 
 
-var descriptivesLayout = LayoutDef.extend({
+var descriptivesLayout = ui.extend({
 
     label: "Descriptives",
     type: "root",
@@ -117,4 +117,4 @@ var descriptivesLayout = LayoutDef.extend({
     ]
 });
 
-module.exports = { LayoutDef : descriptivesLayout, options: options };
+module.exports = { ui : descriptivesLayout, options: options };
