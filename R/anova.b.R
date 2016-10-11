@@ -744,7 +744,7 @@ AnovaClass <- R6::R6Class(
                     return('')
             }
             
-            super$.sourcifyOption(name)
+            super$.sourcifyOption(option)
         })
 )
 

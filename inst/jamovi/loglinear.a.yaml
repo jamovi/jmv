@@ -1,0 +1,17 @@
+---
+name:    LogLinear
+title:   Log-Linear Regression
+package: jmv
+engineType: R
+
+options:
+    - name: data
+      type: Data
+      description: >
+        The data set as a data frame
+
+    - name: vars
+      title: Variables
+      type: Variables
+      description: >
+        The variables of interest

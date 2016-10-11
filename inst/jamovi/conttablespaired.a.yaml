@@ -1,0 +1,41 @@
+---
+name:    ContTablesPaired
+title:   Paired Samples Contingency Tables
+package: jmv
+engineType: R
+
+options:
+    - name: data
+      type: Data
+      description: >
+        The data set as a data frame
+
+    - name: pairs
+      title: Paired Variables
+      type: Array
+      template:
+          type: Group
+          elements:
+              - name: i1
+                type: Variable
+              - name: i2
+                type: Variable
+
+    - name: areCounts
+      type: Bool
+      default: false
+
+    - name: obs
+      title: Observed
+      type: Bool
+      default: true
+
+    - name: pcRow
+      title: Row
+      type: Bool
+      default: false
+
+    - name: pcCol
+      title: Column
+      type: Bool
+      default: false

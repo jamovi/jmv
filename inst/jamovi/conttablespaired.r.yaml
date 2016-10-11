@@ -1,0 +1,67 @@
+---
+name:  ContTablesPaired
+title: Paired Samples Contingency Tables
+
+items:
+    - name: tables
+      title: Contingency Tables
+      type: Array
+      items: (pairs)
+
+      template:
+          type: Table
+          title: Contingency Table
+          columns: []
+
+    - name: tests
+      title: McNemar Tests
+      type: Table
+      rows: (pairs)
+
+      clearWith:
+        - pairs
+
+      columns:
+        - name: i1
+          title: ''
+          type: text
+          content: ($key[[1]])
+
+        - name: i2
+          title: ''
+          type: text
+          content: ($key[[2]])
+
+        - name: name[mcn]
+          title: ''
+          type: 'text'
+          content: χ²
+
+        - name: value[mcn]
+          title: Value
+
+        - name: df[mcn]
+          title: df
+          type: integer
+
+        - name: p[mcn]
+          title: p
+          type: number
+          format: zto,pvalue
+
+        - name: name[cor]
+          title: ''
+          type: 'text'
+          content: χ² continuity correction
+
+        - name: value[cor]
+          title: Value
+
+        - name: df[cor]
+          title: df
+          type: integer
+
+        - name: p[cor]
+          title: p
+          type: number
+          format: zto,pvalue

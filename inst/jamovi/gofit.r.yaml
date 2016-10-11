@@ -1,0 +1,12 @@
+---
+name:  GoFit
+title: χ² Goodness of Fit
+
+items:
+    - name: table
+      title: χ² Goodness of Fit
+      type: Table
+
+      columns:
+          - name: var
+            title: ""

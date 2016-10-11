@@ -1,0 +1,24 @@
+---
+name:    GoFit
+title:   χ² Goodness of Fit
+package: jmv
+engineType: R
+
+options:
+    - name: data
+      type: Data
+      description: >
+        The data set as a data frame
+
+    - name: vars
+      title: Variables
+      type: Variables
+      description: >
+        The variables of interest
+
+    - name: testValue
+      title: Test value
+      type: Number
+      default: 0.5
+      description: >
+        The test value

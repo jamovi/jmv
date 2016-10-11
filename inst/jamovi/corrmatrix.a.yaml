@@ -63,7 +63,7 @@ options:
       max: 99.9
       default: 95
 
-    - name: plot
+    - name: plots
       title: Correlation matrix
       type: Bool
       default: false

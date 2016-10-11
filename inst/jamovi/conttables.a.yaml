@@ -1,5 +1,5 @@
 ---
-name:    ContTable
+name:    ContTables
 title:   Contingency Tables
 package: jmv
 engineType: R
@@ -25,12 +25,14 @@ options:
     - name: counts
       title: Counts
       type: Variable
+      default:
       description: >
         The variables of interest
 
     - name: layers
       title: Layers
       type: Variables
+      default: []
       description: >
         The variables of interest
 

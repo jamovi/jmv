@@ -1,6 +1,6 @@
 'use strict';
 
-var options = require("./binomialtest.options");
+var options = require("./binomial.options");
 
 
 var binomialTestLayout = LayoutDef.extend({

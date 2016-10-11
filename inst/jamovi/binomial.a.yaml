@@ -1,5 +1,5 @@
 ---
-name:    BinomialTest
+name:    Binomial
 title:   Binomial Test
 package: jmv
 engineType: R
@@ -18,7 +18,7 @@ options:
 
     - name: testValue
       title: Test value
-      type: number
+      type: Number
       default: 0.5
       description: >
         The test value

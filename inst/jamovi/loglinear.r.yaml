@@ -1,0 +1,12 @@
+---
+name:  LogLinear
+title: Log-Linear Regression
+
+items:
+    - name: table
+      title: Log-Linear Regression
+      type: Table
+
+      columns:
+          - name: var
+            title: ""
