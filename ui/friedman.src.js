@@ -4,7 +4,7 @@
 
 var options = require('./friedman.options')
 
-var friedmanLayout = LayoutDef.extend({
+var friedmanLayout = ui.extend({
 
     label: "Friedman",
     type: "root",
@@ -54,4 +54,4 @@ var friedmanLayout = LayoutDef.extend({
     ]
 });
 
-module.exports = { LayoutDef : friedmanLayout, options: options };
+module.exports = { ui : friedmanLayout, options: options };

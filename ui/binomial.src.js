@@ -3,7 +3,7 @@
 var options = require("./binomial.options");
 
 
-var binomialTestLayout = LayoutDef.extend({
+var binomialTestLayout = ui.extend({
 
     label: "Binomial Test",
     type: "root",
@@ -28,7 +28,6 @@ var binomialTestLayout = LayoutDef.extend({
         },
         {
             type: "layoutbox",
-            stretchFactor: 1,
             margin: "large",
             controls : [
                 { type:"checkbox", name: "areCounts", label: "Values are counts" },
@@ -40,15 +39,32 @@ var binomialTestLayout = LayoutDef.extend({
         {
             type: "label",
             label: "Hypothesis",
-            stretchFactor: 1,
-            level: "2",
             controls : [
                 { type:"radiobutton", name: "hypothesis_notequal", optionId: "hypothesis", checkedValue: "notequal", label: "≠ Test value" },
                 { type:"radiobutton", name: "hypothesis_greater", optionId: "hypothesis", checkedValue: "greater", label: "> Test value" },
                 { type:"radiobutton", name: "hypothesis_less", optionId: "hypothesis", checkedValue: "less", label: "< Test value" }
             ]
+        },
+        {
+            type: "label",
+            label: "Additional Statistics",
+            controls : [
+                {
+                    name: "ci", type:"checkbox", label: "Confidence intervals" ,
+                    controls: [ { name: "ciWidth", type:"textbox", label: "Interval", suffix: "%", format: FormatDef.number, inputPattern: "[0-9]+" } ]
+                }
+            ]
+        }
+    ],
+
+    actions : [
+        {
+            onChange: "ci", execute: function(context) {
+                var disabled = context.getValue("ci") === false;
+                context.set("ciWidth", "disabled", disabled);
+            }
         }
     ]
 });
 
-module.exports = { LayoutDef : binomialTestLayout, options: options };
+module.exports = { ui : binomialTestLayout, options: options };

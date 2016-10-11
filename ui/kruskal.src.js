@@ -4,7 +4,7 @@
 
 var options = require('./kruskal.options')
 
-var kruskalLayout = LayoutDef.extend({
+var kruskalLayout = ui.extend({
 
     label: "Kruskal-Wallis",
     type: "root",
@@ -47,4 +47,4 @@ var kruskalLayout = LayoutDef.extend({
     ]
 });
 
-module.exports = { LayoutDef : kruskalLayout, options: options };
+module.exports = { ui : kruskalLayout, options: options };
