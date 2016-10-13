@@ -12,12 +12,20 @@ options:
     - name: dependent
       title: Dependent
       type: Variable
+      suggested:
+        - continuous
+      permitted:
+        - nominal
+        - ordinal
       description: >
         The dependent variable
 
     - name: fixedFactors
       title: Fixed factors
       type: Variables
+      suggested:
+        - nominal
+        - ordinal
       default:
       description: >
         The fixed factors

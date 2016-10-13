@@ -20,7 +20,6 @@ var ttestpsLayout = ui.extend({
                     type:"variabletargetlistbox",
                     name: "pairs",
                     label: "Paired Variables",
-                    variableFilter: ["continuous"],
                     showColumnHeaders: false,
                     fullRowSelect: true,
                     columns: [

@@ -44,6 +44,9 @@ options:
     - name: bs
       title: Between Subject Factors
       type: Variables
+      suggested:
+        - nominal
+        - ordinal
       default:
       description: >
         The Between Subject Factors
@@ -51,6 +54,11 @@ options:
     - name: cov
       title: Covariates
       type: Variable
+      suggested:
+        - continuous
+      permitted:
+        - nominal
+        - ordinal
       default:
       description: >
         The Covariates

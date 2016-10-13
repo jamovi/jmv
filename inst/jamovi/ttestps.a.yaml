@@ -17,8 +17,18 @@ options:
           elements:
               - name: i1
                 type: Variable
+                suggested:
+                  - continuous
+                permitted:
+                  - nominal
+                  - ordinal
               - name: i2
                 type: Variable
+                suggested:
+                  - continuous
+                permitted:
+                  - nominal
+                  - ordinal
       description: >
         The variables of interest
 

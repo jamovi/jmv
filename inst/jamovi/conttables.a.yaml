@@ -13,18 +13,29 @@ options:
     - name: rows
       title: Rows
       type: Variable
+      suggested:
+        - nominal
+        - ordinal
       description: >
         The variables of interest
 
     - name: cols
       title: Columns
       type: Variable
+      suggested:
+        - nominal
+        - ordinal
       description: >
         The variables of interest
 
     - name: counts
       title: Counts
       type: Variable
+      suggested:
+        - continuous
+      permitted:
+        - nominal
+        - ordinal
       default:
       description: >
         The variables of interest

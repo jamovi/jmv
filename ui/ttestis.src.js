@@ -21,7 +21,6 @@ var ttestisLayout = ui.extend({
                     name: "vars",
                     label: "Dependent Variables",
                     showColumnHeaders: false,
-                    variableFilter: ["continuous"],
                     columns: [
                         { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
@@ -32,7 +31,6 @@ var ttestisLayout = ui.extend({
                     label: "Grouping Variable",
                     showColumnHeaders: false,
                     maxItemCount: 1,
-                    variableFilter: ["nominal", "ordinal"],
                     columns: [
                         { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]

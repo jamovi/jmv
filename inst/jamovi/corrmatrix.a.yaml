@@ -13,6 +13,11 @@ options:
     - name: vars
       title: Variables
       type: Variables
+      suggested:
+        - continuous
+        - ordinal
+      permitted:
+        - nominal
       description: >
         The variables of interest
 
