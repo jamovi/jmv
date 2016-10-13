@@ -13,12 +13,20 @@ options:
     - name: counts
       title: Counts (optional)
       type: Variable
+      suggested:
+        - continuous
+      permitted:
+        - nominal
+        - ordinal
       description: >
         The counts
 
     - name: factors
       title: Factors
       type: Variables
+      suggested:
+        - nominal
+        - ordinal
       default:
       description: >
         The factors

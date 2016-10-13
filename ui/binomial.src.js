@@ -19,7 +19,6 @@ var binomialTestLayout = ui.extend({
                     type:"variabletargetlistbox",
                     name: "vars",
                     showColumnHeaders: false,
-                    variableFilter: ["nominal", "ordinal"],
                     columns: [
                         { type: "listitem.variablelabel", name: 'column1', label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]

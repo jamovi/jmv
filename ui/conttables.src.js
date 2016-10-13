@@ -21,7 +21,6 @@ var layout = ui.extend({
                     label: "Rows",
                     showColumnHeaders: false,
                     maxItemCount: 1,
-                    variableFilter: ["nominal", "ordinal"],
                     columns: [
                         { type: "listitem.variablelabel", name: 'column1', label: "", format: FormatDef.variable, stretchFactor: 1 },
                     ]
@@ -32,7 +31,6 @@ var layout = ui.extend({
                     label: "Columns",
                     showColumnHeaders: false,
                     maxItemCount: 1,
-                    variableFilter: ["nominal", "ordinal"],
                     columns: [
                         { type: "listitem.variablelabel", name: 'column1', label: "", format: FormatDef.variable, stretchFactor: 1 },
                     ]
@@ -43,7 +41,6 @@ var layout = ui.extend({
                     label: "Counts",
                     showColumnHeaders: false,
                     maxItemCount: 1,
-                    variableFilter: ["continuous"],
                     columns: [
                         { type: "listitem.variablelabel", name: 'column1', label: "", format: FormatDef.variable, stretchFactor: 1 },
                     ]

@@ -12,6 +12,11 @@ options:
     - name: vars
       title: Variables
       type: Variables
+      suggested:
+        - continuous
+      permitted:
+        - nominal
+        - ordinal
       rejectInf: false
       description: >
         The variables of interest

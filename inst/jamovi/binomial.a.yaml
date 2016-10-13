@@ -13,6 +13,9 @@ options:
     - name: vars
       title: Variables
       type: Variables
+      suggested:
+        - nominal
+        - ordinal
       description: >
         The variables of interest
 

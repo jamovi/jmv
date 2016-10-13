@@ -24,7 +24,6 @@ var anovaLayout = ui.extend({
                     type:"variabletargetlistbox",
                     label: "Dependent Variable",
                     showColumnHeaders: false,
-                    variableFilter: ["continuous"],
                     maxItemCount: 1,
                     columns: [
                         { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
@@ -35,7 +34,6 @@ var anovaLayout = ui.extend({
                     type:"variabletargetlistbox",
                     label: "Fixed Factors",
                     showColumnHeaders: false,
-                    variableFilter: ["nominal", "ordinal"],
                     columns: [
                         { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
