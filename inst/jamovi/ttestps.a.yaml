@@ -20,6 +20,7 @@ options:
                 suggested:
                   - continuous
                 permitted:
+                  - continuous
                   - nominal
                   - ordinal
               - name: i2
@@ -27,6 +28,7 @@ options:
                 suggested:
                   - continuous
                 permitted:
+                  - continuous
                   - nominal
                   - ordinal
       description: >

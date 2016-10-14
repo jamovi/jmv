@@ -15,6 +15,7 @@ options:
       suggested:
         - continuous
       permitted:
+        - continuous
         - nominal
         - ordinal
       description: >

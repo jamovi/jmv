@@ -57,6 +57,7 @@ options:
       suggested:
         - continuous
       permitted:
+        - continuous
         - nominal
         - ordinal
       default:

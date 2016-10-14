@@ -17,6 +17,8 @@ options:
         - continuous
         - ordinal
       permitted:
+        - continuous
+        - ordinal
         - nominal
       description: >
         The variables of interest
