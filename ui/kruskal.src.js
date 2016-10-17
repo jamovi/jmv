@@ -17,7 +17,7 @@ var kruskalLayout = ui.extend({
             stretchFactor: 1,
             controls: [
                 {
-                    type:"targetlistbox",
+                    type: "variabletargetlistbox",
                     name: "deps",
                     label: "Dependent Variables",
                     showColumnHeaders: false,
@@ -26,7 +26,7 @@ var kruskalLayout = ui.extend({
                     ]
                 },
                 {
-                    type:"targetlistbox",
+                    type: "variabletargetlistbox",
                     name: "group",
                     label: "Grouping Variable",
                     showColumnHeaders: false,

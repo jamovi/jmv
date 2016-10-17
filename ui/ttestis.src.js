@@ -17,7 +17,7 @@ var ttestisLayout = ui.extend({
             stretchFactor: 1,
             controls: [
                 {
-                    type:"variabletargetlistbox",
+                    type: "variabletargetlistbox",
                     name: "vars",
                     label: "Dependent Variables",
                     showColumnHeaders: false,
@@ -27,7 +27,7 @@ var ttestisLayout = ui.extend({
                 },
                 {
                     name: "group",
-                    type:"variabletargetlistbox",
+                    type: "variabletargetlistbox",
                     label: "Grouping Variable",
                     showColumnHeaders: false,
                     maxItemCount: 1,

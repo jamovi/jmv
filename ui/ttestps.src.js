@@ -17,7 +17,7 @@ var ttestpsLayout = ui.extend({
             stretchFactor: 1,
             controls: [
                 {
-                    type:"variabletargetlistbox",
+                    type: "variabletargetlistbox",
                     name: "pairs",
                     label: "Paired Variables",
                     showColumnHeaders: false,

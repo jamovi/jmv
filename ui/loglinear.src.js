@@ -18,7 +18,7 @@ var layout = ui.extend({
             controls: [
                 {
                     name: "counts",
-                    type:"variabletargetlistbox",
+                    type: "variabletargetlistbox",
                     label: "Counts (optional)",
                     showColumnHeaders: false,
                     maxItemCount: 1,
@@ -28,7 +28,7 @@ var layout = ui.extend({
                 },
                 {
                     name: "factors",
-                    type:"variabletargetlistbox",
+                    type: "variabletargetlistbox",
                     label: "Factors",
                     showColumnHeaders: false,
                     columns: [

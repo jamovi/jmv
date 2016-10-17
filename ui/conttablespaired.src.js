@@ -16,7 +16,7 @@ var layout = ui.extend({
             stretchFactor: 1,
             controls: [
                 {
-                    type:"targetlistbox",
+                    type: "variabletargetlistbox",
                     name: "pairs",
                     label: "Paired Variables",
                     showColumnHeaders: false,

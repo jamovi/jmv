@@ -16,7 +16,7 @@ var descriptivesLayout = ui.extend({
             stretchFactor: 1,
             controls: [
                 {
-                    type:"targetlistbox",
+                    type: "variabletargetlistbox",
                     name: "vars",
                     showColumnHeaders: false,
                     columns: [
