@@ -11,9 +11,9 @@ var ttestisLayout = ui.extend({
     stage: 0,
     controls: [
         {
-            type: "supplier",
+            type: "variablesupplier",
+            suggested: ["continuous", "nominal", "ordinal"],
             persistentItems: false,
-            useVariables: true,
             stretchFactor: 1,
             controls: [
                 {

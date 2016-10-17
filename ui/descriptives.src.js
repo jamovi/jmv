@@ -10,9 +10,8 @@ var descriptivesLayout = ui.extend({
     stage: 0,
     controls: [
         {
-            type: "supplier",
+            type: "variablesupplier",
             persistentItems: false,
-            useVariables: true,
             stretchFactor: 1,
             controls: [
                 {

@@ -10,9 +10,9 @@ var layout = ui.extend({
     stage: 0,
     controls: [
         {
-            type: "supplier",
+            type: "variablesupplier",
+            suggested: ["nominal", "ordinal"],
             persistentItems: true,
-            useVariables: true,
             stretchFactor: 1,
             controls: [
                 {

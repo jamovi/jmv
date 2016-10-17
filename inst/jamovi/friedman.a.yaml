@@ -12,6 +12,12 @@ options:
     - name: measures
       title: Measures
       type: Variables
+      suggested:
+        - continuous
+      permitted:
+        - continuous
+        - nominal
+        - ordinal
       description: >
         The variables of interest
 

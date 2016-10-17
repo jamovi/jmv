@@ -11,9 +11,10 @@ var ttestpsLayout = ui.extend({
     stage: 0,
     controls: [
         {
-            type: "supplier",
+            type: "variablesupplier",
+            suggested: ["continuous"],
+            permitted: ["continuous", "ordinal", "nominal" ],
             persistentItems: true,
-            useVariables: true,
             stretchFactor: 1,
             controls: [
                 {

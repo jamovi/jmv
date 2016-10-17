@@ -11,8 +11,9 @@ var friedmanLayout = ui.extend({
     stage: 0,
     controls: [
         {
-            type: "supplier",
-            useVariables: true,
+            type: "variablesupplier",
+            suggested: ["continuous" ],
+            permitted: ["continuous", "nominal", "ordinal" ],
             stretchFactor: 1,
             controls: [
                 {
