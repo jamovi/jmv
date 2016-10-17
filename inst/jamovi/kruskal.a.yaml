@@ -12,12 +12,21 @@ options:
     - name: deps
       title: Dependents
       type: Variables
+      suggested:
+        - continuous
+      permitted:
+        - continuous
+        - nominal
+        - ordinal
       description: >
         The dependent variables
 
     - name: group
       title: Grouping variable
       type: Variable
+      suggested:
+        - nominal
+        - ordinal
       description: >
         The independent, or grouping variable
 

@@ -13,11 +13,11 @@ var ancovaLayout = ui.extend({
     stage: 1,
     controls: [
         {
-            type: "supplier",
+            type: "variablesupplier",
             name: "variableSupplier",
             persistentItems: false,
-            useVariables: true,
             stretchFactor: 1,
+            suggested: ["continuous", "nominal", "ordinal"],
             controls: [
                 {
                     name: "dependent",

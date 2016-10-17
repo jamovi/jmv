@@ -10,9 +10,10 @@ var binomialTestLayout = ui.extend({
     stage: 0,
     controls: [
         {
-            type: "supplier",
+            type: "variablesupplier",
+            suggested: ["continuous", "ordinal" ],
+            permitted: ["continuous", "ordinal", "nominal" ],
             persistentItems: false,
-            useVariables: true,
             stretchFactor: 1,
             controls: [
                 {

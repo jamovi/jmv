@@ -18,8 +18,14 @@ options:
           elements:
               - name: i1
                 type: Variable
+                suggested:
+                  - nominal
+                  - ordinal
               - name: i2
                 type: Variable
+                suggested:
+                  - nominal
+                  - ordinal
 
     - name: areCounts
       type: Bool
