@@ -16,7 +16,7 @@ var friedmanLayout = ui.extend({
             stretchFactor: 1,
             controls: [
                 {
-                    type:"targetlistbox",
+                    type: "variabletargetlistbox",
                     name: "measures",
                     label: "Measures",
                     showColumnHeaders: false,

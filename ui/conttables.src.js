@@ -46,7 +46,7 @@ var layout = ui.extend({
                     ]
                 },
                 {
-                    type:"targetlistbox",
+                    type:"variabletargetlistbox",
                     name: "layers",
                     label: "Layers",
                     showColumnHeaders: false,

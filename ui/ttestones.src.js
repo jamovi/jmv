@@ -17,7 +17,7 @@ var ttestonesLayout = ui.extend({
             stretchFactor: 1,
             controls: [
                 {
-                    type:"variabletargetlistbox",
+                    type: "variabletargetlistbox",
                     name: "vars",
                     label: "Dependent Variables",
                     showColumnHeaders: false,
