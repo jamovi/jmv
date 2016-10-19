@@ -67,12 +67,12 @@ var anovaLayout = ui.extend({
                         {
                             type:"targetlistbox",
                             name: "modelTerms",
+                            format: FormatDef.term,
                             label: "Model Terms",
                             showColumnHeaders: false,
                             valueFilter: "unique",
-                            multipleSelectionAction: "interactions",
                             columns: [
-                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.termlabel", name: "column1", label: "", format: FormatDef.term, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -137,7 +137,7 @@ var anovaLayout = ui.extend({
                             name: "postHoc",
                             showColumnHeaders: false,
                             columns: [
-                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.termlabel", name: "column1", label: "", format: FormatDef.term, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -220,34 +220,6 @@ var anovaLayout = ui.extend({
             stretchFactor: 1,
             controls : [
                 {
-                    type: "supplier",
-                    name: "marginalMeansSupplier",
-                    stretchFactor: 1,
-                    persistentItems: false,
-                    controls: [
-                        {
-                            type:"targetlistbox",
-                            name: "margMeans",
-                            label: "Marginal means",
-                            showColumnHeaders: false,
-                            columns: [
-                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    name: "compMain", label: "Compare main effects", type:"checkbox",
-                    controls: [
-                        { name: "compMainCorr", type:"combobox", label: "Correction", options: [
-                            { label: "None", value: "none" },
-                            { label: "Tukey", value: "tukey" },
-                            { label: "Bonferroni", value: "bonferroni" },
-                            { label: "Scheffe", value: "scheffe" },
-                            { label: "Sidak", value: "sidak" } ] }
-                    ]
-                },
-                {
                     type: "label",
                     label: "Display",
                     controls: [
@@ -259,12 +231,6 @@ var anovaLayout = ui.extend({
     ],
 
     actions: [
-        {
-            onChange: "compMain", execute: function(context) {
-                var value = context.getValue("compMain") ;
-                context.set("compMainCorr", "disabled", value === false);
-            }
-        },
         {
             onChange: "plotError", execute: function(context) {
                 var disabled = context.getValue("plotError") !== "ci";
@@ -279,6 +245,11 @@ var anovaLayout = ui.extend({
         {
             onChange: "modelTerms", execute: function(context) {
                 this.filterModelTerms(context);
+            }
+        },
+        {
+            onEvent: "modelTerms.preprocess", execute: function(context, data) {
+                data.items = this._variableListInteractions(data.items);
             }
         },
         {
@@ -301,6 +272,24 @@ var anovaLayout = ui.extend({
         }
     ],
 
+    _variableListInteractions: function(componentListItems) {
+        var list = [];
+        for (let i = 0; i < componentListItems.length; i++) {
+            var listLength = list.length;
+            var rawVar = componentListItems[i].value.raw;
+
+            for (let j = 0; j < listLength; j++) {
+                var newVar = JSON.parse(JSON.stringify(list[j].value.raw));
+                newVar.push(rawVar);
+                list.push({ value: new FormatDef.constructor(newVar, FormatDef.term) });
+            }
+
+            list.push({ value: new FormatDef.constructor([rawVar], FormatDef.term), original: componentListItems[i] });
+        }
+
+        return list;
+    },
+
     calcModelTerms: function(context) {
         var variableList = this.clone(context.getValue("fixedFactors"));
         if (variableList === null)
@@ -308,76 +297,69 @@ var anovaLayout = ui.extend({
 
         context.setValue("modelSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
         context.setValue("plotsSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
-        context.setValue("postHocSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
+        //context.setValue("postHocSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
 
-        var diff = { removed: [], added: [] };
+        var varsDiff = { removed: [], added: [] };
         if (this._lastVariableList !== null)
-            diff = this.findDifferences(this._lastVariableList, variableList);
+            varsDiff = this.findDifferences(FormatDef.variable, this._lastVariableList, variableList);
         this._lastVariableList = variableList;
 
         if (this._initialising)
             return;
 
-        var currentList = this.clone(context.getValue("modelTerms"));
-        if (currentList === null)
-            currentList = [];
+        var termsList = this.clone(context.getValue("modelTerms"));
+        if (termsList === null)
+            termsList = [];
 
-        for (var i = 0; i < diff.removed.length; i++) {
-            for (var j = 0; j < currentList.length; j++) {
-                if (FormatDef.variable.contains(currentList[j], diff.removed[i])) {
-                    currentList.splice(j, 1);
+        for (var i = 0; i < varsDiff.removed.length; i++) {
+            for (var j = 0; j < termsList.length; j++) {
+                if (FormatDef.term.contains(termsList[j], varsDiff.removed[i])) {
+                    termsList.splice(j, 1);
                     j -= 1;
                 }
             }
         }
 
-        if (currentList === null)
-            currentList = [];
-
-        for (var i = 0; i < diff.added.length; i++) {
-            var listLength = currentList.length;
+        for (var i = 0; i < varsDiff.added.length; i++) {
+            var listLength = termsList.length;
             for (var j = 0; j < listLength; j++) {
-                var newVar = currentList[j];
-                if (Array.isArray(newVar))
-                    newVar = this.clone(newVar);
-                else
-                    newVar = [newVar];
-                newVar.push(diff.added[i])
-                currentList.push(newVar);
+                var newTerm = this.clone(termsList[j]);
+                newTerm.push(varsDiff.added[i]);
+                termsList.push(newTerm);
             }
-            currentList.push(diff.added[i]);
+            termsList.push([varsDiff.added[i]]);
         }
 
-        context.setValue("modelTerms", currentList);
+        context.setValue("modelTerms", termsList);
 
         this.updateContrasts(context, variableList);
-        this.updateFactorDependents(context, variableList, currentList);
+        this.updateFactorDependents(context, variableList, termsList);
     },
 
     filterModelTerms : function(context) {
-        var currentList = this.clone(context.getValue("modelTerms"));
-        if (currentList === null)
-            currentList = [];
+        var termsList = this.clone(context.getValue("modelTerms"));
+        if (termsList === null)
+            termsList = [];
 
-        var list = this.convertArrayToSupplierList(currentList, FormatDef.variable);
-        context.setValue("marginalMeansSupplier", list);
+        var list = this.convertArrayToSupplierList(termsList, FormatDef.term);
+        context.setValue("postHocSupplier", list);
 
-        var diff = { removed: [], added: [] };
+        var termsDiff = { removed: [], added: [] };
         if (this._lastCurrentList !== null)
-            diff = this.findDifferences(this._lastCurrentList, currentList);
-        this._lastCurrentList = currentList;
+            termsDiff = this.findDifferences(FormatDef.term, this._lastCurrentList, termsList);
+        this._lastCurrentList = termsList;
 
         if (this._initialising)
             return;
 
         var changed = false;
-        if (diff.removed.length > 0 && currentList !== null) {
+        if (termsDiff.removed.length > 0 && termsList !== null) {
             var itemsRemoved = false;
-            for (var i = 0; i < diff.removed.length; i++) {
-                var item = diff.removed[i];
-                for (var j = 0; j < currentList.length; j++) {
-                    if (FormatDef.variable.contains(currentList[j], item)) {
-                        currentList.splice(j, 1);
+            for (var i = 0; i < termsDiff.removed.length; i++) {
+                var item = termsDiff.removed[i];
+                for (var j = 0; j < termsList.length; j++) {
+                    if (FormatDef.term.contains(termsList[j], item)) {
+                        termsList.splice(j, 1);
                         j -= 1;
                         itemsRemoved = true;
                     }
@@ -388,32 +370,31 @@ var anovaLayout = ui.extend({
                 changed = true;
         }
 
-        if (this.sortByLength(currentList))
+        if (this.sortByLength(termsList))
             changed = true;
 
         if (changed)
-            context.setValue("modelTerms", currentList);
+            context.setValue("modelTerms", termsList);
 
-        if (diff.removed.length > 0) {
+        if (termsDiff.removed.length > 0) {
             itemsRemoved = false;
-            var margMeans = this.clone(context.getValue("margMeans"));
-            if (margMeans === null)
-                margMeans = [];
+            var postHoc = this.clone(context.getValue("postHoc"));
+            if (postHoc === null)
+                postHoc = [];
 
-            for (var i = 0; i < diff.removed.length; i++) {
-                var item = diff.removed[i];
-                for (var j = 0; j < margMeans.length; j++) {
-                    if (FormatDef.variable.contains(margMeans[j], item)) {
-                        margMeans.splice(j, 1);
+            for (var i = 0; i < termsDiff.removed.length; i++) {
+                var item = termsDiff.removed[i];
+                for (var j = 0; j < postHoc.length; j++) {
+                    if (FormatDef.term.contains(postHoc[j], item)) {
+                        postHoc.splice(j, 1);
                         j -= 1;
                         itemsRemoved = true;
                     }
                 }
             }
 
-            if (itemsRemoved) {
-                context.setValue("margMeans", margMeans);
-            }
+            if (itemsRemoved)
+                context.setValue("postHoc", postHoc);
         }
     },
 
@@ -429,7 +410,7 @@ var anovaLayout = ui.extend({
         context.setValue("contrasts", list3);
     },
 
-    cleanDependentOption: function(context, sourceList, dependantName, dependantIsList) {
+    cleanDependentOption: function(context, sourceList, format, dependantName, dependantIsList) {
         var dependantList = this.clone(context.getValue(dependantName));
         if (dependantIsList && dependantList === null)
             dependantList = [];
@@ -438,14 +419,14 @@ var anovaLayout = ui.extend({
 
         if (dependantIsList) {
             for (var i = 0; i < dependantList.length; i++) {
-                if (this.listContains(sourceList, dependantList[i]) === false) {
+                if (this.listContains(sourceList, dependantList[i], format) === false) {
                     dependantList.splice(i, 1);
                     i -= 1;
                     changed = true;
                 }
             }
         }
-        else if (this.listContains(sourceList, dependantList) === false) {
+        else if (this.listContains(sourceList, dependantList, format) === false) {
             dependantList = null;
             changed = true;
         }
@@ -455,30 +436,23 @@ var anovaLayout = ui.extend({
     },
 
     updateFactorDependents : function(context, factorList, modelList) {
-
-        this.cleanDependentOption(context, factorList, "postHoc", true);
-        this.cleanDependentOption(context, factorList, "descPlotsHAxis", false);
-        this.cleanDependentOption(context, factorList, "descPlotsSepLines", false);
-        this.cleanDependentOption(context, factorList, "descPlotsSepPlots", false);
-        this.cleanDependentOption(context, modelList, "margMeans", true);
+        this.cleanDependentOption(context, factorList, FormatDef.variable, "descPlotsHAxis", false);
+        this.cleanDependentOption(context, factorList, FormatDef.variable, "descPlotsSepLines", false);
+        this.cleanDependentOption(context, factorList, FormatDef.variable, "descPlotsSepPlots", false);
+        this.cleanDependentOption(context, modelList, FormatDef.term, "postHoc", true);
     },
 
-    sortByLength : function(list) {
+    sortByLength : function(terms) {
         var changed = false;
-        for (var i = 0; i < list.length; i++) {
-            var l1 = 1;
-            if (Array.isArray(list[i]))
-                l1 = list[i].length;
+        for (var i = 0; i < terms.length - 1; i++) {
+            var l1 = terms[i].length;
+            var l2 = terms[i+1].length;
 
-            var l2 = 1;
-            if (Array.isArray(list[i+1]))
-                l2 = list[i+1].length;
-
-            if (list.length > i + 1 && (l1 > l2)) {
+            if (terms.length > i + 1 && (l1 > l2)) {
                 changed = true;
-                var temp = list[i+1];
-                list[i+1] = list[i];
-                list[i] = temp;
+                var temp = terms[i+1];
+                terms[i+1] = terms[i];
+                terms[i] = temp;
                 if (i > 0)
                     i = i - 2
             }
@@ -499,7 +473,7 @@ var anovaLayout = ui.extend({
         return JSON.parse(JSON.stringify(object));
     },
 
-    findDifferences: function(from, to) {
+    findDifferences: function(format, from, to) {
         var j = 0;
 
         var obj = { removed: [], added: [] };
@@ -516,12 +490,12 @@ var anovaLayout = ui.extend({
         }
         else {
             for (j = 0; j < from.length; j++) {
-                if (this.listContains(to, from[j]) === false)
+                if (this.listContains(to, from[j], format) === false)
                     obj.removed.push(from[j]);
             }
 
             for (j = 0; j < to.length; j++) {
-                if (this.listContains(from, to[j]) === false)
+                if (this.listContains(from, to[j], format) === false)
                     obj.added.push(to[j]);
             }
         }
@@ -529,9 +503,9 @@ var anovaLayout = ui.extend({
         return obj;
     },
 
-    listContains: function(list, value) {
+    listContains: function(list, value, format) {
         for (var i = 0; i < list.length; i++) {
-            if (FormatDef.variable.isEqual(list[i], value))
+            if (format.isEqual(list[i], value))
                 return true;
         }
 
