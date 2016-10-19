@@ -88,7 +88,6 @@ var ancovaLayout = ui.extend({
                             label: "Model Terms",
                             showColumnHeaders: false,
                             valueFilter: "unique",
-                            multipleSelectionAction: "interactions",
                             columns: [
                                 { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                             ]
