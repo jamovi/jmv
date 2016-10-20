@@ -14,10 +14,18 @@ options:
       title: Paired Variables
       type: Array
       template:
-          type: Variables
-          suggested:
-            - nominal
-            - ordinal
+          type: Group
+          elements:
+              - name: i1
+                type: Variable
+                suggested:
+                  - nominal
+                  - ordinal
+              - name: i2
+                type: Variable
+                suggested:
+                  - nominal
+                  - ordinal
 
     - name: areCounts
       type: Bool

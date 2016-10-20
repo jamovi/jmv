@@ -530,7 +530,7 @@ AnovaClass <- R6::R6Class(
                 term <- modelTerms[[i]]
                 quoted <- grepl('^`.*`$', term)
                 term[quoted] <- substring(term[quoted], 2, nchar(term[quoted])-1)
-                modelTerms[[i]] <- term
+                modelTerms[[i]] <- as.list(term)
             }
             
             modelTerms
@@ -675,6 +675,9 @@ AnovaClass <- R6::R6Class(
                     return('')
             } else if (name == 'modelTerms') {
                 if (base::identical(as.list(value), private$.ff()))
+                    return('')
+            } else if (name == 'postHoc') {
+                if (length(value) == 0)
                     return('')
             }
             
