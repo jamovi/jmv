@@ -23,6 +23,7 @@ var ttestpsLayout = ui.extend({
                     label: "Paired Variables",
                     showColumnHeaders: false,
                     fullRowSelect: true,
+                    rowDataAsArray: true,
                     columns: [
                         { type: "listitem.variablelabel", name: "i1", label: "", format: FormatDef.variable, stretchFactor: 1 },
                         { type: "listitem.variablelabel", name: "i2", label: "", format: FormatDef.variable, stretchFactor: 1 }
