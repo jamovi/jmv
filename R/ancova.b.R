@@ -1,7 +1,7 @@
 
 AncovaClass <- R6::R6Class(
     "AncovaClass",
-    inherit=silkyR::AnovaClass,
+    inherit=AnovaClass,
     public=list(),
     private=list(
         .init=function() {
