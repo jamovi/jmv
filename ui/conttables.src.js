@@ -7,7 +7,7 @@ var layout = ui.extend({
 
     label: "Contingency Tables",
     type: "root",
-    stage: 1,
+    stage: 0,
     controls: [
         {
             type: "variablesupplier",

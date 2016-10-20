@@ -55,7 +55,7 @@ FriedmanClass <- R6::R6Class(
         
         compTable <- self$results$get('comp')
         
-        combns <- combn(measureNames, 2)
+        combns <- combn(unlist(measureNames), 2)
         
         for (i in seq_len(ncol(combns))) {
             compTable$addRow(rowKey=combns[,i], values=list(

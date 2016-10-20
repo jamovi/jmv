@@ -57,9 +57,14 @@ AnovaClass <- R6::R6Class(
             
             # post hoc
             
-            for (postHocVar in self$options$get('postHoc')) {
+            for (postHocVar in self$options$postHoc) {
+                
+                if (length(postHocVar) != 1)
+                    next()
                 
                 table <- postHocTables$get(postHocVar)
+                
+                postHocVar <- postHocVar[[1]]
                 levels <- base::levels(data[[postHocVar]])
                 combs <- utils::combn(levels, 2)
                 apply(combs, 2, function(comb) {
@@ -67,38 +72,6 @@ AnovaClass <- R6::R6Class(
                         var1=comb[1], var2=comb[2]
                     ))
                 })
-            }
-            
-            
-            # marginal means
-            
-            mmTables <- self$results$get('margMeans')
-            
-            for (mmTerm in self$options$get('margMeans')) {
-                
-                table <- mmTables$get(mmTerm)
-                title <- paste(table$title, '-', stringifyTerm(mmTerm))
-                table$setTitle(title)
-                
-                mmData <- select(data, rev(mmTerm))
-                al <- as.list(mmData)
-                names(al) <- rev(paste0('f', seq_len(length(al))))
-                ll <- sapply(al, base::levels, simplify=FALSE)
-                ll$stringsAsFactors <- FALSE
-                grid <- do.call(base::expand.grid, ll)
-                grid <- rev(grid)
-                
-                for (i in seq_len(ncol(grid))) {
-                    colName <- colnames(grid)[[i]]
-                    table$addColumn(name=colName, title=mmTerm[[i]], index=i)
-                }
-                
-                for (rowNo in seq_len(nrow(grid))) {
-                    row <- grid[rowNo,]
-                    if ( ! is.list(row))
-                        row <- list(f1=row)
-                    table$addRow(rowKey=row, values=row)
-                }
             }
             
             
@@ -276,9 +249,8 @@ AnovaClass <- R6::R6Class(
             private$.populateContrasts(data)
             private$.populateLevenes(data)
             private$.prepareQQPlot(data)
-            private$.populatePostHoc(data)
+            #private$.populatePostHoc(data)
             private$.prepareDescPlots(data)
-            private$.populateMarginalMeans()
             private$.populateDescriptives(data)
             
             }) # suppressWarnings
@@ -402,44 +374,6 @@ AnovaClass <- R6::R6Class(
                 df1=result[1,'Df'],
                 df2=result[2,'Df'],
                 p=result[1,'Pr(>F)']))
-        },
-        .populateMarginalMeans=function() {
-            
-            tables <- self$results$get('margMeans')
-            
-            for (mmKey in self$options$get('margMeans')) {
-                table <- tables$get(mmKey)
-                means <- lsmeans::lsmeans(private$.model, specs=rev(unlist(mmKey)))
-                
-                corr <- self$options$get('compMainCorr')
-                
-                summ <- summary(means)
-                test <- lsmeans::test(means, adjust=corr)
-                
-                for (i in seq_len(nrow(summ))) {
-                    values <- list(
-                        mm=summ[i, 'lsmean'],
-                        se=summ[i, 'SE'],
-                        lci=summ[i, 'lower.CL'],
-                        uci=summ[i, 'upper.CL'],
-                        t=test[i, 't.ratio'],
-                        p=test[i, 'p.value'])
-                    values[is.na(values) || is.null(values)] <- NaN
-                    table$setRow(rowNo=i, values)
-                }
-                
-                if (corr == 'none')
-                    table$setNote('corr', NULL)
-                else if (corr == 'tukey')
-                    table$setNote('corr', 'Tukey correction')
-                else if (corr == 'bonferroni')
-                    table$setNote('corr', 'Bonferroni correction')
-                else if (corr == 'scheffe')
-                    table$setNote('corr', 'Scheffe correction')
-                else if (corr == 'sidak')
-                    table$setNote('corr', 'Sidak correction')
-            }
-            
         },
         .populateDescriptives=function(data) {
             

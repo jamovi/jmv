@@ -5,9 +5,9 @@ var options = require("./gofit.options");
 
 var layout = ui.extend({
 
-    label: "GoFit",
+    label: "χ² Goodness of Fit",
     type: "root",
-    stage: 0,
+    stage: 2,
     controls: [
 
     ],

@@ -72,7 +72,7 @@ var binomialTestLayout = ui.extend({
                     cell: [1, 1],
                     controls : [
                         {
-                            type:"checkbox", name: "plot", label: "Correlation matrix", controls: [
+                            type:"checkbox", name: "plots", label: "Correlation matrix", controls: [
                                 { type:"checkbox", name: "plotDens", label: "Densities for variables" },
                                 { type:"checkbox", name: "plotStats", label: "Statistics" }
                             ]
@@ -85,8 +85,8 @@ var binomialTestLayout = ui.extend({
 
     actions: [
         {
-            onChange : "plot", execute : function(context) {
-                var disabled = context.getValue("plot") === false;
+            onChange : "plots", execute : function(context) {
+                var disabled = context.getValue("plots") === false;
                 context.set("plotDens",  "disabled", disabled);
                 context.set("plotStats", "disabled", disabled);
             }

@@ -7,7 +7,7 @@ var binomialTestLayout = ui.extend({
 
     label: "Binomial Test",
     type: "root",
-    stage: 1,
+    stage: 0,
     controls: [
         {
             type: "variablesupplier",

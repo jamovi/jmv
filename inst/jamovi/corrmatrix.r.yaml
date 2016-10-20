@@ -67,7 +67,7 @@ items:
 
     - name: plot
       title: Plot
-      visible: (plot)
+      visible: (plots)
       type: Image
       width: 500
       height: 500

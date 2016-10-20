@@ -194,6 +194,11 @@ CorrMatrixClass <- R6::R6Class(
     },
     .plot=function(image, ...) {
         
+        columns <- unlist(self$options$get('vars'))
+        
+        if (length(columns) == 0)
+            return(FALSE)
+        
         smooth <- GGally::wrap(GGally::ggally_smooth, size = 1, alpha=.3)
         
         lower <- list(
@@ -219,7 +224,6 @@ CorrMatrixClass <- R6::R6Class(
         else
             diag <- NULL
         
-        columns <- unlist(self$options$get('vars'))
         data <- jmvcore::select(self$data, columns)
         names(data) <- paste0('f', seq_along(columns))
         

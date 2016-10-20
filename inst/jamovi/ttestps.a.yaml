@@ -13,24 +13,13 @@ options:
       title: Paired Variables
       type: Array
       template:
-          type: Group
-          elements:
-              - name: i1
-                type: Variable
-                suggested:
-                  - continuous
-                permitted:
-                  - continuous
-                  - nominal
-                  - ordinal
-              - name: i2
-                type: Variable
-                suggested:
-                  - continuous
-                permitted:
-                  - continuous
-                  - nominal
-                  - ordinal
+          type: Variables
+          suggested:
+            - continuous
+          permitted:
+            - continuous
+            - nominal
+            - ordinal
       description: >
         The variables of interest
 

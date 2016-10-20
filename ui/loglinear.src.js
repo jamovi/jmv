@@ -7,7 +7,7 @@ var layout = ui.extend({
 
     label: "Log-Linear Regression",
     type: "root",
-    stage: 0,
+    stage: 2,
     controls: [
         {
             type: "variablesupplier",

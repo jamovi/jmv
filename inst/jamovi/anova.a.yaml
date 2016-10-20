@@ -90,7 +90,7 @@ options:
 
     - name: postHoc
       title: Post Hoc Tests
-      type: Variables
+      type: Terms
       default:
       description: >
         Post Hoc Tests
@@ -122,13 +122,6 @@ options:
       default: false
       description: >
         Post Hoc Tests Holm Correction
-
-    - name: margMeans
-      title: Marginal means
-      type: Terms
-      default:
-      description: >
-        The Marginal Means
 
     - name: compMain
       title: Compare main effects
