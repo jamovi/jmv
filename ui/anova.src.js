@@ -253,14 +253,19 @@ var anovaLayout = ui.extend({
             }
         },
         {
-            onEvent: "analysis.initialising", execute: function(context) {
+            onEvent: "view.loaded", execute: function(context) {
+                this._loaded = true;
+            }
+        },
+        {
+            onEvent: "view.data-initialising", execute: function(context) {
                 this._lastVariableList = null;
                 this._lastCurrentList = null;
                 this._initialising = true;
             }
         },
         {
-            onEvent: "analysis.initialised", execute: function(context) {
+            onEvent: "view.data-initialised", execute: function(context) {
                 if (this._lastVariableList === null)
                     this.calcModelTerms(context);
 
@@ -297,24 +302,26 @@ var anovaLayout = ui.extend({
 
         context.setValue("modelSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
         context.setValue("plotsSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
-        //context.setValue("postHocSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
 
         var varsDiff = { removed: [], added: [] };
         if (this._lastVariableList !== null)
             varsDiff = this.findDifferences(FormatDef.variable, this._lastVariableList, variableList);
         this._lastVariableList = variableList;
 
-        if (this._initialising)
+        if (this._initialising || !this._loaded)
             return;
 
         var termsList = this.clone(context.getValue("modelTerms"));
         if (termsList === null)
             termsList = [];
 
+        var termsChanged = false;
+
         for (var i = 0; i < varsDiff.removed.length; i++) {
             for (var j = 0; j < termsList.length; j++) {
                 if (FormatDef.term.contains(termsList[j], varsDiff.removed[i])) {
                     termsList.splice(j, 1);
+                    termsChanged = true;
                     j -= 1;
                 }
             }
@@ -328,9 +335,11 @@ var anovaLayout = ui.extend({
                 termsList.push(newTerm);
             }
             termsList.push([varsDiff.added[i]]);
+            termsChanged = true;
         }
 
-        context.setValue("modelTerms", termsList);
+        if (termsChanged)
+            context.setValue("modelTerms", termsList);
 
         this.updateContrasts(context, variableList);
         this.updateFactorDependents(context, variableList, termsList);
@@ -349,7 +358,7 @@ var anovaLayout = ui.extend({
             termsDiff = this.findDifferences(FormatDef.term, this._lastCurrentList, termsList);
         this._lastCurrentList = termsList;
 
-        if (this._initialising)
+        if (this._initialising || !this._loaded)
             return;
 
         var changed = false;
