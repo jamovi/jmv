@@ -295,7 +295,7 @@ var ancovaLayout = ui.extend({
             }
         },
         {
-            onEvent: "analysis.initialising", execute: function(context) {
+            onEvent: "view.data-initialising", execute: function(context) {
                 this._lastVariableList = null;
                 this._lastCurrentList = null;
                 this._lastCombinedList = null;
@@ -304,7 +304,7 @@ var ancovaLayout = ui.extend({
             }
         },
         {
-            onEvent: "analysis.initialised", execute: function(context) {
+            onEvent: "view.data-initialised", execute: function(context) {
                 if (this._lastVariableList === null || this._lastCombinedList === null || this._lastCovariatesList === null)
                     this.calcModelTerms(context);
 
