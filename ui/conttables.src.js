@@ -1,6 +1,6 @@
 'use strict';
 
-var options = require("./conttable.options");
+var options = require("./conttables.options");
 
 
 var layout = ui.extend({
@@ -11,7 +11,6 @@ var layout = ui.extend({
     controls: [
         {
             type: "variablesupplier",
-            suggested: ["continuous", "nominal", "ordinal"],
             persistentItems: false,
             stretchFactor: 1,
             controls: [

@@ -11,28 +11,13 @@ options:
 
     - name: pairs
       title: Paired Variables
-      type: Array
-      template:
-          type: Group
-          elements:
-              - name: i1
-                type: Variable
-                suggested:
-                  - continuous
-                permitted:
-                  - continuous
-                  - nominal
-                  - ordinal
-              - name: i2
-                type: Variable
-                suggested:
-                  - continuous
-                permitted:
-                  - continuous
-                  - nominal
-                  - ordinal
-      description: >
-        The variables of interest
+      type: Pairs
+      suggested:
+        - continuous
+      permitted:
+        - continuous
+        - nominal
+        - ordinal
 
     - name: students
       title: Student's test

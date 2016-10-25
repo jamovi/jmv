@@ -11,7 +11,6 @@ var layout = ui.extend({
     controls: [
         {
             type: "variablesupplier",
-            suggested: ["nominal", "ordinal"],
             persistentItems: true,
             stretchFactor: 1,
             controls: [

@@ -12,20 +12,7 @@ options:
 
     - name: pairs
       title: Paired Variables
-      type: Array
-      template:
-          type: Group
-          elements:
-              - name: i1
-                type: Variable
-                suggested:
-                  - nominal
-                  - ordinal
-              - name: i2
-                type: Variable
-                suggested:
-                  - nominal
-                  - ordinal
+      type: Pairs
 
     - name: areCounts
       type: Bool
