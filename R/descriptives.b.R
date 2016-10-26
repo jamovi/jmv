@@ -1,6 +1,6 @@
 
 DescriptivesClass <- R6::R6Class("DescriptivesClass",
-    inherit=jmvcore::Analysis,
+    inherit=DescriptivesBase,
     private=list(
         .run=function() {
             

@@ -1,6 +1,8 @@
 ---
 name:    AnovaRM
 title:   Repeated Measures ANOVA
+version: "1.0.0"
+api: 1
 package: jmv
 
 options:

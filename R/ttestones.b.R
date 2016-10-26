@@ -1,6 +1,6 @@
 
 TTestOneSClass <- R6::R6Class("TTestOneSClass",
-    inherit=jmvcore::Analysis,
+    inherit=TTestOneSBase,
     private=list(
         .run=function() {
             

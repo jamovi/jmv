@@ -1,7 +1,7 @@
 
 KruskalClass <- R6::R6Class(
     "KruskalClass",
-    inherit=jmvcore::Analysis,
+    inherit=KruskalBase,
     private=list(
         .run=function() {
             deps  <- self$options$get('deps')

@@ -1,6 +1,7 @@
 ---
 name:  Mancova
 title: MANCOVA
+api: 1
 
 items:
     - name: table

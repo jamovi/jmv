@@ -1,6 +1,7 @@
 ---
 name: TTestIS
 title: Independent Samples T-Test
+api: 1
 
 items:
     - name: ttest
@@ -11,30 +12,30 @@ items:
         - group
         - hypothesis
         - ciWidth
-      
+
       columns:
         - name: var
           title: ""
           content: ($key)
           type: text
-        
+
         - name: name[stud]
           title: ''
           type: text
           content: Student's t
           visible: (students)
-          
+
         - name: stat[stud]
           title: statistic
           type: number
           visible: (students)
-          
+
         - name: err[stud]
           title: 'error %'
           type: number
           visible: (students && bf)
           content: ''
-        
+
         - name: df[stud]
           title: df
           type: number
@@ -45,48 +46,48 @@ items:
           type: number
           format: zto,pvalue
           visible: (students)
-          
+
         - name: md[stud]
           title: Mean difference
           type: number
           visible: (meanDiff && students)
-          
+
         - name: sed[stud]
           title: SE difference
           type: number
           visible: (meanDiff && students)
-          
+
         - name: es[stud]
           title: Cohen's d
           type: number
           visible: (effectSize && students)
-          
+
         - name: cil[stud]
           title: Lower
           type: number
           visible: (ci && students)
-          
+
         - name: ciu[stud]
           title: Upper
           type: number
           visible: (ci && students)
-          
+
         - name: name[bf]
           title: ''
           type: text
           content: Bayes factor₁₀
           visible: (bf)
-          
+
         - name: stat[bf]
           title: statistic
           type: number
           visible: (bf)
-        
+
         - name: err[bf]
           title: '±%'
           type: number
           visible: (bf)
-        
+
         - name: df[bf]
           title: df
           type: number
@@ -99,37 +100,37 @@ items:
           format: zto,pvalue
           visible: (bf)
           content: ''
-          
+
         - name: md[bf]
           title: Mean difference
           type: number
           visible: (meanDiff && bf)
           content: ''
-          
+
         - name: sed[bf]
           title: SE difference
           type: number
           visible: (meanDiff && bf)
           content: ''
-          
+
         - name: es[bf]
           title: Cohen's d
           type: number
           visible: (effectSize && bf)
           content: ''
-          
+
         - name: cil[bf]
           title: Lower
           type: number
           visible: (ci && bf)
           content: ''
-          
+
         - name: ciu[bf]
           title: Upper
           type: number
           visible: (ci && bf)
           content: ''
-          
+
         - name: name[welc]
           title: ''
           type: text
@@ -139,13 +140,13 @@ items:
         - name: stat[welc]
           title: statistic
           visible: (welchs)
-          
+
         - name: err[welc]
           title: '±%'
           type: number
           visible: (welchs && bf)
           content: ''
-        
+
         - name: df[welc]
           title: df
           type: number
@@ -156,27 +157,27 @@ items:
           type: number
           format: zto,pvalue
           visible: (welchs)
-          
+
         - name: md[welc]
           title: Mean difference
           type: number
           visible: (meanDiff && welchs)
-          
+
         - name: sed[welc]
           title: SE difference
           type: number
           visible: (meanDiff && welchs)
-          
+
         - name: es[welc]
           title: Cohen's d
           type: number
           visible: (effectSize && welchs)
-          
+
         - name: cil[welc]
           title: Lower
           type: number
           visible: (ci && welchs)
-          
+
         - name: ciu[welc]
           title: Upper
           type: number
@@ -187,12 +188,12 @@ items:
           type: text
           content: Mann-Whitney U
           visible: (mann)
-          
+
         - name: stat[mann]
           title: statistic
           content: .
           visible: (mann)
-          
+
         - name: err[mann]
           title: '±%'
           type: number
@@ -204,12 +205,12 @@ items:
           type: number
           format: zto,pvalue
           visible: (mann)
-          
+
         - name: md[mann]
           title: Mean difference
           type: number
           visible: (meanDiff && mann)
-          
+
         - name: sed[mann]
           title: SE difference
           type: number
@@ -219,17 +220,17 @@ items:
           title: Cohen's d
           type: number
           visible: (effectSize && mann)
-          
+
         - name: cil[mann]
           title: Lower
           type: number
           visible: (ci && mann)
-          
+
         - name: ciu[mann]
           title: Upper
           type: number
           visible: (ci && mann)
-          
+
     - name: assum
       title: Assumptions
       type: Group
@@ -241,22 +242,22 @@ items:
           rows: (vars)
           notes:
               p: A low p-value suggests a violation of the assumption of normality
-          
+
           columns:
             - name: name
               title: ""
               content: ($key)
               type: text
-              
+
             - name: w
               title: "W"
               type: number
-              
+
             - name: p
               title: p
               type: number
               format: zto,pvalue
-            
+
         - name: eqv
           title: Test of Equality of Variances (Levene's)
           type: Table
@@ -264,20 +265,20 @@ items:
           rows: (vars)
           notes:
               p: A low p-value suggests a violation of the assumption of equal variances
-          
+
           columns:
             - name: name
               title: ""
               content: ($key)
               type: text
-              
+
             - name: f
               title: "F"
               type: number
-              
+
             - name: df
               type: number
-              
+
             - name: p
               type: number
               format: zto,pvalue
@@ -289,57 +290,57 @@ items:
       rows: (vars)
       clearWith:
         - group
-      
+
       columns:
         - name: dep
           title: ""
           content: ($key)
           type: text
-          
+
         - name: group[1]
           title: Group
           type: text
-          
+
         - name: num[1]
           title: "N"
           type: integer
-          
+
         - name: mean[1]
           title: Mean
           type: number
-          
+
         - name: med[1]
           title: Median
           type: number
-          
+
         - name: sd[1]
           title: SD
           type: number
-          
+
         - name: se[1]
           title: SE
           type: number
-          
+
         - name: group[2]
           title: Group
           type: text
-          
+
         - name: num[2]
           title: "N"
           type: integer
-          
+
         - name: mean[2]
           title: Mean
           type: number
-          
+
         - name: med[2]
           title: Median
           type: number
-          
+
         - name: sd[2]
           title: SD
           type: number
-          
+
         - name: se[2]
           title: SE
           type: number

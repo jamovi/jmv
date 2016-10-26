@@ -1,6 +1,7 @@
 ---
 name:  CorrMatrix
 title: Correlation Matrix
+api: 1
 
 items:
     - name: matrix
@@ -16,49 +17,49 @@ items:
             content: ($key)
             type: text
             title: ""
-            
+
           - name: .stat[r]
             title: ""
             type: text
             content: Pearson's r
             visible: (pearson && (sig || spearman || kendall))
-            
+
           - name: .stat[rp]
             title: ""
             type: text
             content: p-value
             visible: (pearson && sig)
-            
+
           - name: .stat[rciu]
             title: ""
             type: text
             content: CI Upper
             visible: (pearson && ci)
-            
+
           - name: .stat[rcil]
             title: ""
             type: text
             content: CI Lower
             visible: (pearson && ci)
-            
+
           - name: .stat[rho]
             title: ""
             type: text
             content: Spearman's rho
             visible: (spearman && (sig || pearson || kendall))
-            
+
           - name: .stat[rhop]
             title: ""
             type: text
             content: p-value
             visible: (spearman && sig)
-            
+
           - name: .stat[tau]
             title: ""
             type: text
             content: Kendall's Tau B
             visible: (kendall && (sig || pearson || spearman))
-            
+
           - name: .stat[taup]
             title: ""
             type: text

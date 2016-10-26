@@ -1,6 +1,7 @@
 ---
 name:  GoFit
 title: χ² Goodness of Fit
+api: 1
 
 items:
     - name: table

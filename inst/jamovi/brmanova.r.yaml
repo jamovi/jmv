@@ -1,6 +1,7 @@
 ---
 name:  BRMAnova
 title: Bayesian Repeated Measures ANOVA
+api: 1
 
 items:
     - name: table

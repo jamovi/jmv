@@ -1,6 +1,7 @@
 ---
 name:  Anova
 title: ANOVA
+api: 1
 
 items:
     - name: main
@@ -37,19 +38,19 @@ items:
           title: p
           type: number
           format: zto,pvalue
-        
+
         - name: etaSq
           title: η²
           type: number
           visible: (etaSq)
           format: zto
-          
+
         - name: etaSqP
           title: η²p
           type: number
           visible: (etaSqP)
           format: zto
-        
+
         - name: omegaSq
           title: ω²
           type: number
@@ -78,7 +79,7 @@ items:
             - name: p
               type: number
               format: zto,pvalue
-                  
+
         - name: qq
           title: QQ Plot
           visible: (qq)
@@ -152,7 +153,7 @@ items:
           - name: se
             title: SE
             type: number
-            
+
           - name: t
             title: t
             type: number
@@ -167,25 +168,25 @@ items:
             visible: (corrTukey)
             type: number
             format: zto,pvalue
-            
+
           - name: pscheffe
             title: p<sub>scheffe</sub>
             visible: (corrScheffe)
             type: number
             format: zto,pvalue
-            
+
           - name: pbonf
             title: p<sub>bonferoni</sub>
             visible: (corrBonf)
             type: number
             format: zto,pvalue
-            
+
           - name: pholm
             title: p<sub>holm</sub>
             visible: (corrHolm)
             type: number
             format: zto,pvalue
-            
+
     - name: desc
       title: Descriptives
       type: Table
@@ -199,7 +200,7 @@ items:
         - name: 'n'
           title: 'N'
           type: integer
-          
+
         - name: mean
           title: Mean
           type: text

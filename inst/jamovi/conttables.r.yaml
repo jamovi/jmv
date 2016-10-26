@@ -1,6 +1,7 @@
 ---
 name:  ContTables
 title: Contingency Tables
+api: 1
 
 items:
     - name: freqs

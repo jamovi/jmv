@@ -1,6 +1,7 @@
 ---
 name:  Kruskal
 title: Kruskal-Wallis
+api: 1
 
 items:
     - name: table
@@ -9,26 +10,26 @@ items:
       rows: (deps)
       clearWith:
         - group
-      
+
       columns:
         - name: name
           title: ""
           content: ($key)
           type: text
-          
+
         - name: chiSq
           title: Χ²
           type: number
-          
+
         - name: df
           title: df
           type: integer
-          
+
         - name: p
           title: p
           type: number
           format: zto,pvalue
-          
+
     - name: comparisons
       title: Dwass-Steel-Critchlow-Fligner pairwise comparisons
       type: Array
@@ -36,32 +37,32 @@ items:
       visible: (pairs)
       clearWith:
         - group
-      
+
       template:
         title: Pairwise comparisons - $key
         type: Table
         rows: 0
-          
+
         columns:
           - name: p1
             title: ""
             content: .
             type: text
-        
+
           - name: sep
             title: ""
             content: '-'
             type: text
             format: sep
-            
+
           - name: p2
             title: ""
             content: .
             type: text
-              
+
           - name: W
             type: number
-              
+
           - name: p
             title: p
             type: number

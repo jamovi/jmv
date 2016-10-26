@@ -1,6 +1,7 @@
 ---
 name: TTestOneS
 title: One Sample T-Test
+api: 1
 
 items:
     - name: ttest
@@ -10,29 +11,29 @@ items:
       clearWith:
         - hypothesis
         - testValue
-      
+
       columns:
         - name: var
           title: ""
           content: ($key)
           type: text
-        
+
         - name: name[stud]
           title: ''
           content: Student's t
           visible: (students)
-          
+
         - name: stat[stud]
           title: statistic
           type: number
           visible: (students)
-          
+
         - name: err[stud]
           title: 'error %'
           type: number
           visible: (students && bf)
           content: ''
-        
+
         - name: df[stud]
           title: df
           type: number
@@ -43,43 +44,43 @@ items:
           type: number
           format: zto,pvalue
           visible: (students)
-          
+
         - name: md[stud]
           title: Mean difference
           type: number
           visible: (meanDiff && students)
-          
+
         - name: es[stud]
           title: Cohen's d
           type: number
           visible: (effectSize && students)
-          
+
         - name: cil[stud]
           title: Lower
           type: number
           visible: (ci && students)
-          
+
         - name: ciu[stud]
           title: Upper
           type: number
           visible: (ci && students)
-          
+
         - name: name[bf]
           title: ''
           type: string
           content: Bayes factor₁₀
           visible: (bf)
-          
+
         - name: stat[bf]
           title: statistic
           type: number
           visible: (bf)
-        
+
         - name: err[bf]
           title: '±%'
           type: number
           visible: (bf)
-        
+
         - name: df[bf]
           title: df
           type: number
@@ -92,47 +93,47 @@ items:
           format: zto,pvalue
           visible: (bf)
           content: ''
-          
+
         - name: md[bf]
           title: Mean difference
           type: number
           visible: (meanDiff && bf)
           content: ''
-          
+
         - name: sed[bf]
           title: SE difference
           type: number
           visible: (meanDiff && bf)
           content: ''
-          
+
         - name: es[bf]
           title: Cohen's d
           type: number
           visible: (effectSize && bf)
           content: ''
-          
+
         - name: cil[bf]
           title: Lower
           type: number
           visible: (ci && bf)
           content: ''
-          
+
         - name: ciu[bf]
           title: Upper
           type: number
           visible: (ci && bf)
           content: ''
-          
+
         - name: name[mann]
           title: ''
           content: Mann-Whitney U
           visible: (mann)
-          
+
         - name: stat[mann]
           title: stat
           type: number
           visible: (mann)
-          
+
         - name: err[mann]
           title: '±%'
           type: number
@@ -144,7 +145,7 @@ items:
           type: number
           format: zto,pvalue
           visible: (mann)
-          
+
         - name: md[mann]
           title: Mean difference
           type: number
@@ -154,17 +155,17 @@ items:
           title: Cohen's d
           type: number
           visible: (effectSize && mann)
-          
+
         - name: cil[mann]
           title: Lower
           type: number
           visible: (ci && mann)
-          
+
         - name: ciu[mann]
           title: Upper
           type: number
           visible: (ci && mann)
-          
+
     - name: normality
       title: Test of Normality (Shapiro-Wilk)
       type: Table
@@ -172,17 +173,17 @@ items:
       rows: (vars)
       notes:
               p: A low p-value suggests a violation of the assumption of normality
-      
+
       columns:
         - name: name
           title: ""
           content: ($key)
           type: text
-          
+
         - name: w
           title: "W"
           type: number
-          
+
         - name: p
           type: number
           format: zto,pvalue
@@ -192,33 +193,33 @@ items:
       type: Table
       visible: (desc)
       rows: (vars)
-      
+
       columns:
         - name: name
           title: ""
           content: ($key)
           type: text
-          
+
         - name: num
           title: "N"
           type: number
-          
+
         - name: mean
           title: Mean
           type: number
-        
+
         - name: median
           title: Median
           type: number
-          
+
         - name: sd
           title: SD
           type: number
-          
+
         - name: se
           title: SE
           type: number
-          
+
     - name: plots
       title: Plots
       visible: (plots)
@@ -226,4 +227,3 @@ items:
       renderFun: .plot
       clearWith:
         - vars
-          

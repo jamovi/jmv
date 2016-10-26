@@ -1,6 +1,7 @@
 ---
 name:  LogLinear
 title: Log-Linear Regression
+api: 1
 
 items:
     - name: table

@@ -1,7 +1,7 @@
 
 ContTablesPairedClass <- R6::R6Class(
     "ContTablesPairedClass",
-    inherit = jmvcore::Analysis,
+    inherit = ContTablesPairedBase,
     private = list(
         .run = function() {
 

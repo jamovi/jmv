@@ -1,6 +1,8 @@
 ---
 name:    Binomial
 title:   Binomial Test
+version: "1.0.0"
+api: 1
 package: jmv
 engineType: R
 

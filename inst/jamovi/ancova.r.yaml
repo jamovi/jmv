@@ -1,6 +1,7 @@
 ---
 name:  Ancova
 title: ANCOVA
+api: 1
 
 items:
     - name: main

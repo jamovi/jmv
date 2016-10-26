@@ -1,6 +1,7 @@
 ---
 name:  LinReg
 title: Linear Regression
+api: 1
 
 items:
     - name: table

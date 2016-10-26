@@ -1,6 +1,9 @@
 ---
 name:     Friedman
+title: Friedman
 package:  jmv
+version: "1.0.0"
+api: 1
 engineType: R
 
 options:

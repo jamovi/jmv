@@ -1,6 +1,7 @@
 ---
 name:  AnovaRM
 title: Repeated Measures ANOVA
+api: 1
 
 items:
     - name: rmTable

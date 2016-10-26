@@ -4,7 +4,7 @@
 
 CorrMatrixClass <- R6::R6Class(
   "CorrMatrixClass",
-  inherit=jmvcore::Analysis,
+  inherit=CorrMatrixBase,
   private=list(
     .init=function() {
         matrix <- self$results$get('matrix')

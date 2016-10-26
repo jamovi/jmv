@@ -1,6 +1,7 @@
 ---
 name:  BAncova
 title: Bayesian ANCOVA
+api: 1
 
 items:
     - name: table

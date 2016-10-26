@@ -1,6 +1,7 @@
 ---
 name: Descriptives
 title: Descriptives
+api: 1
 
 items:
     - name: descriptives
@@ -8,91 +9,91 @@ items:
       type: Table
       rows: (vars)
       swapRowsColumns: true
-      
+
       columns:
         - name: name
           title: ""
           content: ($key)
           type: text
-        
+
         - name: 'n'
           title: 'N'
           type: integer
-          
+
         - name: missing
           title: Missing
           type: integer
-        
+
         - name: mean
           title: Mean
           type: number
           visible: (mean)
-        
+
         - name: median
           title: Median
           type: number
           visible: (median)
-        
+
         - name: mode
           title: Mode
           type: number
           visible: (mode)
-          
+
         - name: sum
           title: Sum
           type: number
           visible: (sum)
-          
+
         - name: sd
           title: Standard deviation
           type: number
           visible: (sd)
-          
+
         - name: variance
           title: Variance
           type: number
           visible: (variance)
-          
+
         - name: range
           title: Range
           type: number
           visible: (range)
-          
+
         - name: min
           title: Minimum
           type: number
           visible: (min)
-          
+
         - name: max
           title: Maximum
           type: number
           visible: (max)
-          
+
         - name: se
           title: Standard error
           type: number
           visible: (se)
-          
+
         - name: skew
           title: Skewness
           type: number
           visible: (skew)
-          
+
         - name: kurt
           title: Kurtosis
           type: number
           visible: (kurt)
-          
+
         - name: quart1
           title: 25th percentile
           type: number
           visible: (quart)
-          
+
         - name: quart2
           title: 50th percentile
           type: number
           visible: (quart)
-          
+
         - name: quart3
           title: 75th percentile
           type: number
@@ -102,26 +103,26 @@ items:
       title: Frequencies
       type: Array
       visible: (freq)
-      
+
       items: (vars)
-      
+
       template:
           title: Frequencies of $key
           type: Table
           visible: (levels($key))
-          
+
           rows: (levels($key))
-          
+
           columns:
             - name: level
               title: Level
               type: text
               content: ($key)
-              
+
             - name: counts
               title: Counts
               type: number
-              
+
             - name: percentage
               title: "%"
               type: number
@@ -143,7 +144,7 @@ items:
       type: Array
       visible: (plots)
       items: (vars)
-      
+
       template:
           title: Frequencies of {$key}
           type: Image

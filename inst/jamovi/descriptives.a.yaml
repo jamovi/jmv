@@ -1,6 +1,8 @@
 ---
 name:    Descriptives
 title:   Descriptives
+version: "1.0.0"
+api: 1
 package: jmv
 engineType: R
 

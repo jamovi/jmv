@@ -1,7 +1,11 @@
 ---
 name:     TTestOneS
+title: One Sample T-Test
+version: "1.0.0"
+api: 1
 package:  jmv
 engineType: R
+
 
 options:
     - name: data

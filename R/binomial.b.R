@@ -3,7 +3,7 @@
 
 BinomialClass <- R6::R6Class(
     "BinomialClass",
-    inherit = jmvcore::Analysis,
+    inherit = BinomialBase,
     private = list(
         .run = function() {
 

@@ -1,6 +1,7 @@
 ---
 name:  Binomial
 title: Binomial Test
+api: 1
 
 items:
     - name: table

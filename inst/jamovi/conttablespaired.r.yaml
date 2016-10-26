@@ -1,6 +1,7 @@
 ---
 name:  ContTablesPaired
 title: Paired Samples Contingency Tables
+api: 1
 
 items:
     - name: tables

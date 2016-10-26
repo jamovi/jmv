@@ -1,7 +1,7 @@
 
 FriedmanClass <- R6::R6Class(
   "FriedmanClass",
-  inherit=jmvcore::Analysis,
+  inherit=FriedmanBase,
   private=list(
     .run=function() {
 

@@ -3,6 +3,8 @@ name:    Mancova
 title:   MANCOVA
 package: jmv
 engineType: R
+version: "1.0.0"
+api: 1
 
 options:
     - name: data

@@ -1,13 +1,14 @@
 ---
 name: TTestPS
 title: Paired Samples T-Test
+api: 1
 
 items:
     - name: ttest
       title: Paired Samples T-Test
       type: Table
       rows: (pairs)
-      
+
       columns:
         - name: name1
           title: ""
@@ -16,24 +17,24 @@ items:
         - name: name2
           title: ""
           type: text
-        
+
         - name: test[stud]
           title: ''
           type: text
           content: Student's t
           visible: (students)
-          
+
         - name: stat[stud]
           title: 'statistic'
           type: number
           visible: (students)
-          
+
         - name: err[stud]
           title: 'error %'
           type: number
           visible: (students && bf)
           content: ''
-        
+
         - name: df[stud]
           title: df
           type: number
@@ -44,48 +45,48 @@ items:
           type: number
           format: zto,pvalue
           visible: (students)
-          
+
         - name: md[stud]
           title: Mean difference
           type: number
           visible: (meanDiff && students)
-          
+
         - name: sed[stud]
           title: SE difference
           type: number
           visible: (meanDiff && students)
-          
+
         - name: es[stud]
           title: Cohen's d
           type: number
           visible: (effectSize && students)
-          
+
         - name: cil[stud]
           title: Lower
           type: number
           visible: (ci && students)
-          
+
         - name: ciu[stud]
           title: Upper
           type: number
           visible: (ci && students)
-          
+
         - name: test[bf]
           title: ''
           type: text
           content: Bayes factor₁₀
           visible: (bf)
-          
+
         - name: stat[bf]
           title: statistic
           type: number
           visible: (bf)
-        
+
         - name: err[bf]
           title: '±%'
           type: number
           visible: (bf)
-        
+
         - name: df[bf]
           title: df
           type: number
@@ -98,48 +99,48 @@ items:
           format: zto,pvalue
           visible: (bf)
           content: ''
-          
+
         - name: md[bf]
           title: Mean difference
           type: number
           visible: (meanDiff && bf)
           content: ''
-          
+
         - name: sed[bf]
           title: SE difference
           type: number
           visible: (meanDiff && bf)
           content: ''
-          
+
         - name: es[bf]
           title: Cohen's d
           type: number
           visible: (effectSize && bf)
           content: ''
-          
+
         - name: cil[bf]
           title: Lower
           type: number
           visible: (ci && bf)
           content: ''
-          
+
         - name: ciu[bf]
           title: Upper
           type: number
           visible: (ci && bf)
           content: ''
-          
+
         - name: test[wilc]
           type: text
           title: ''
           content: Wilcoxon W
           visible: (wilcoxon)
-          
+
         - name: stat[wilc]
           title: statistic
           type: number
           visible: (wilcoxon)
-          
+
         - name: err[wilc]
           title: '±%'
           type: number
@@ -151,12 +152,12 @@ items:
           type: number
           format: zto,pvalue
           visible: (wilcoxon)
-          
+
         - name: md[wilc]
           title: Mean difference
           type: number
           visible: (meanDiff && wilcoxon)
-          
+
         - name: sed[wilc]
           title: SE difference
           type: number
@@ -166,17 +167,17 @@ items:
           title: Cohen's d
           type: number
           visible: (effectSize && wilcoxon)
-          
+
         - name: cil[wilc]
           title: Lower
           type: number
           visible: (ci && wilcoxon)
-          
+
         - name: ciu[wilc]
           title: Upper
           type: number
           visible: (ci && wilcoxon)
-          
+
     - name: norm
       title: Test of Normality (Shapiro-Wilk)
       type: Table
@@ -184,28 +185,28 @@ items:
       rows: (pairs)
       notes:
               p: A low p-value suggests a violation of the assumption of normality
-      
+
       columns:
         - name: name1
           title: ""
           type: text
           content: .
-          
+
         - name: sep
           title: ""
           type: text
           content: '-'
           format: sep
-          
+
         - name: name2
           title: ""
           type: text
           content: .
-          
+
         - name: w
           title: "W"
           type: number
-          
+
         - name: p
           type: number
           format: zto,pvalue
@@ -214,17 +215,17 @@ items:
       title: Descriptives
       type: Table
       visible: (desc)
-      
+
       columns:
         - name: name
           title: ""
           content: .
           type: text
-          
+
         - name: num
           title: "N"
           type: integer
-          
+
         - name: m
           title: Mean
           type: number
@@ -236,11 +237,11 @@ items:
         - name: sd
           title: SD
           type: number
-          
+
         - name: se
           title: SE
           type: number
-          
+
     - name: plots
       title: Plots
       visible: (plots)
