@@ -33,5 +33,6 @@ options:
     - name: pairs
       title: DSCF Pairwise Comparisons
       type: Bool
+      default: false
       description: >
         Pairwise Comparisons

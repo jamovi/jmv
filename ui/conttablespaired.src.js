@@ -7,7 +7,7 @@ var layout = ui.extend({
 
     label: "Paired Samples Contingency Tables",
     type: "root",
-    stage: 0,
+    stage: 2,
     controls: [
         {
             type: "variablesupplier",
