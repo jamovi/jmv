@@ -295,6 +295,78 @@ var anovaLayout = ui.extend({
         return list;
     },
 
+    listContains: function(list, value, format) {
+        for (var i = 0; i < list.length; i++) {
+            if (format.isEqual(list[i], value))
+                return true;
+        }
+
+        return false;
+    },
+
+    findDifferences: function(format, from, to) {
+        var j = 0;
+
+        var obj = { removed: [], added: [] };
+
+        if ((from === null || _.isUndefined(from)) && (to === null || _.isUndefined(to)))
+            return obj;
+        else if (from === null || _.isUndefined(from)) {
+            for (j = 0; j < to.length; j++)
+                obj.added.push(to[j]);
+        }
+        else if (to === null || _.isUndefined(to)) {
+            for (j = 0; j < from.length; j++)
+                obj.removed.push(from[j]);
+        }
+        else {
+            for (j = 0; j < from.length; j++) {
+                if (this.listContains(to, from[j], format) === false)
+                    obj.removed.push(from[j]);
+            }
+
+            for (j = 0; j < to.length; j++) {
+                if (this.listContains(from, to[j], format) === false)
+                    obj.added.push(to[j]);
+            }
+        }
+
+        return obj;
+    },
+
+    clone: function(object) {
+        return JSON.parse(JSON.stringify(object));
+    },
+
+    convertArrayToSupplierList: function(array, format) {
+        var list = [];
+        for (var i = 0; i < array.length; i++) {
+            list.push({ value: new FormatDef.constructor(array[i], format) });
+        }
+        return list;
+    },
+
+    sortByLength : function(terms) {
+        var changed = false;
+        for (var i = 0; i < terms.length - 1; i++) {
+            var l1 = terms[i].length;
+            var l2 = terms[i+1].length;
+
+            if (terms.length > i + 1 && (l1 > l2)) {
+                changed = true;
+                var temp = terms[i+1];
+                terms[i+1] = terms[i];
+                terms[i] = temp;
+                if (i > 0)
+                    i = i - 2
+            }
+        }
+
+        return changed;
+    },
+
+
+
     calcModelTerms: function(context) {
         var variableList = this.clone(context.getValue("fixedFactors"));
         if (variableList === null)
@@ -449,77 +521,8 @@ var anovaLayout = ui.extend({
         this.cleanDependentOption(context, factorList, FormatDef.variable, "descPlotsSepLines", false);
         this.cleanDependentOption(context, factorList, FormatDef.variable, "descPlotsSepPlots", false);
         this.cleanDependentOption(context, modelList, FormatDef.term, "postHoc", true);
-    },
-
-    sortByLength : function(terms) {
-        var changed = false;
-        for (var i = 0; i < terms.length - 1; i++) {
-            var l1 = terms[i].length;
-            var l2 = terms[i+1].length;
-
-            if (terms.length > i + 1 && (l1 > l2)) {
-                changed = true;
-                var temp = terms[i+1];
-                terms[i+1] = terms[i];
-                terms[i] = temp;
-                if (i > 0)
-                    i = i - 2
-            }
-        }
-
-        return changed;
-    },
-
-    convertArrayToSupplierList: function(array, format) {
-        var list = [];
-        for (var i = 0; i < array.length; i++) {
-            list.push({ value: new FormatDef.constructor(array[i], format) });
-        }
-        return list;
-    },
-
-    clone: function(object) {
-        return JSON.parse(JSON.stringify(object));
-    },
-
-    findDifferences: function(format, from, to) {
-        var j = 0;
-
-        var obj = { removed: [], added: [] };
-
-        if ((from === null || _.isUndefined(from)) && (to === null || _.isUndefined(to)))
-            return obj;
-        else if (from === null || _.isUndefined(from)) {
-            for (j = 0; j < to.length; j++)
-                obj.added.push(to[j]);
-        }
-        else if (to === null || _.isUndefined(to)) {
-            for (j = 0; j < from.length; j++)
-                obj.removed.push(from[j]);
-        }
-        else {
-            for (j = 0; j < from.length; j++) {
-                if (this.listContains(to, from[j], format) === false)
-                    obj.removed.push(from[j]);
-            }
-
-            for (j = 0; j < to.length; j++) {
-                if (this.listContains(from, to[j], format) === false)
-                    obj.added.push(to[j]);
-            }
-        }
-
-        return obj;
-    },
-
-    listContains: function(list, value, format) {
-        for (var i = 0; i < list.length; i++) {
-            if (format.isEqual(list[i], value))
-                return true;
-        }
-
-        return false;
     }
+
 });
 
 module.exports = { ui : anovaLayout, options: options, customControls: controls };

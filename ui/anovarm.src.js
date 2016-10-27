@@ -128,9 +128,10 @@ var anovarmLayout = ui.extend({
                             type: "targetlistbox",
                             name: "rmcModelTerms",
                             label: "Model Terms",
+                            valueFilter: "unique",
                             showColumnHeaders: false,
                             columns: [
-                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.term, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -146,9 +147,10 @@ var anovarmLayout = ui.extend({
                             type:"targetlistbox",
                             name: "bscModelTerms",
                             label: "Model Terms",
+                            valueFilter: "unique",
                             showColumnHeaders: false,
                             columns: [
-                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.term, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -398,6 +400,16 @@ var anovarmLayout = ui.extend({
             }
         },
         {
+            onEvent: "bscModelTerms.preprocess", execute: function(context, data) {
+                data.items = this._variableListInteractions(data.items);
+            }
+        },
+        {
+            onEvent: "view.loaded", execute: function(context) {
+                this._loaded = true;
+            }
+        },
+        {
             onEvent: "view.data-initialising", execute: function(context) {
                 this._lastVariableList = null;
                 this._lastCombinedList = null;
@@ -420,22 +432,35 @@ var anovarmLayout = ui.extend({
         }
     ],
 
-    sortByLength : function(list) {
+    _variableListInteractions: function(componentListItems) {
+        var list = [];
+        for (let i = 0; i < componentListItems.length; i++) {
+            var listLength = list.length;
+            var rawVar = componentListItems[i].value.raw;
+
+            for (let j = 0; j < listLength; j++) {
+                var newVar = JSON.parse(JSON.stringify(list[j].value.raw));
+                newVar.push(rawVar);
+                list.push({ value: new FormatDef.constructor(newVar, FormatDef.term) });
+            }
+
+            list.push({ value: new FormatDef.constructor([rawVar], FormatDef.term), original: componentListItems[i] });
+        }
+
+        return list;
+    },
+
+    sortByLength : function(terms) {
         var changed = false;
-        for (var i = 0; i < list.length; i++) {
-            var l1 = 1;
-            if (Array.isArray(list[i]))
-                l1 = list[i].length;
+        for (var i = 0; i < terms.length - 1; i++) {
+            var l1 = terms[i].length;
+            var l2 = terms[i+1].length;
 
-            var l2 = 1;
-            if (Array.isArray(list[i+1]))
-                l2 = list[i+1].length;
-
-            if (list.length > i + 1 && (l1 > l2)) {
+            if (terms.length > i + 1 && (l1 > l2)) {
                 changed = true;
-                var temp = list[i+1];
-                list[i+1] = list[i];
-                list[i] = temp;
+                var temp = terms[i+1];
+                terms[i+1] = terms[i];
+                terms[i] = temp;
                 if (i > 0)
                     i = i - 2
             }
@@ -444,77 +469,20 @@ var anovarmLayout = ui.extend({
         return changed;
     },
 
-    filterModelTerms: function(context) {
-        var currentList = this.clone(context.getValue("bscModelTerms"));
-        if (currentList === null)
-            currentList = [];
-
-        var covariatesList = context.getValue("cov");
-        if (covariatesList === null)
-            covariatesList = [];
-
-        var covariateFreeList = [];
-        for (let i = 0; i < currentList.length; i++) {
-            let newVar = currentList[i];
-            if (this.containsCovariate(newVar, covariatesList) === false)
-                covariateFreeList.push(this.clone(newVar));
-        }
-
-        //var list = this.convertArrayToSupplierList(covariateFreeList, FormatDef.variable);
-        //context.setValue("marginalMeansSupplier", list);
-
-        var diff = null;
-        if ( ! this._initialising)
-            diff = this.findDifferences(this._lastCurrentList, currentList);
-        this._lastCurrentList = currentList;
-
-        if (this._initialising)
-            return;
-
-        var changed = false;
-        if (diff.removed.length > 0 && currentList !== null) {
-            var itemsRemoved = false;
-            for (var i = 0; i < diff.removed.length; i++) {
-                var item = diff.removed[i];
-                for (var j = 0; j < currentList.length; j++) {
-                    if (FormatDef.variable.contains(currentList[j], item)) {
-                        currentList.splice(j, 1);
-                        j -= 1;
-                        itemsRemoved = true;
-                    }
-                }
-            }
-
-            if (itemsRemoved)
-                changed = true;
-        }
-
-        if (this.sortByLength(currentList))
-            changed = true;
-
-        if (changed)
-            context.setValue("bscModelTerms", currentList);
+    clone: function(object) {
+        return JSON.parse(JSON.stringify(object));
     },
 
-    listContains: function(list, value) {
+    listContains: function(list, value, format) {
         for (var i = 0; i < list.length; i++) {
-            if (FormatDef.variable.isEqual(list[i], value))
+            if (format.isEqual(list[i], value))
                 return true;
         }
 
         return false;
     },
 
-    containsCovariate: function(value, covariates) {
-        for (var i = 0; i < covariates.length; i++) {
-            if (FormatDef.variable.contains(value, covariates[i]))
-                return true;
-        }
-
-        return false;
-    },
-
-    findDifferences: function(from, to) {
+    findDifferences: function(format, from, to) {
         var j = 0;
 
         var obj = { removed: [], added: [] };
@@ -531,12 +499,12 @@ var anovarmLayout = ui.extend({
         }
         else {
             for (j = 0; j < from.length; j++) {
-                if (this.listContains(to, from[j]) === false)
+                if (this.listContains(to, from[j], format) === false)
                     obj.removed.push(from[j]);
             }
 
             for (j = 0; j < to.length; j++) {
-                if (this.listContains(from, to[j]) === false)
+                if (this.listContains(from, to[j], format) === false)
                     obj.added.push(to[j]);
             }
         }
@@ -552,6 +520,16 @@ var anovarmLayout = ui.extend({
         return list;
     },
 
+    isInArray: function(value, array, format) {
+        for (var i = 0; i < array.length; i++) {
+            if (format.isEqual(value, array[i]))
+                return i;
+        }
+        return -1;
+    },
+
+
+
     calcModelTerms : function(context) {
         var variableList = this.clone(context.getValue("bs"));
         if (variableList === null)
@@ -565,9 +543,8 @@ var anovarmLayout = ui.extend({
         if (factorList === null)
             factorList = [];
         else {
-            for(let i = 0; i < factorList.length; i++) {
+            for(let i = 0; i < factorList.length; i++)
                 factorList[i] = factorList[i].label;
-            }
         }
 
         var combinedList = variableList.concat(covariatesList);
@@ -581,65 +558,126 @@ var anovarmLayout = ui.extend({
 
         var diff = { removed: [], added: [] };
         if (this._lastVariableList !== null)
-            diff = this.findDifferences(this._lastVariableList, variableList);
+            diff = this.findDifferences(FormatDef.variable, this._lastVariableList, variableList);
         this._lastVariableList = variableList;
 
         var diff2 = { removed: [], added: [] };
         if (this._lastCovariatesList !== null)
-            diff2 = this.findDifferences(this._lastCovariatesList, covariatesList);
+            diff2 = this.findDifferences(FormatDef.variable, this._lastCovariatesList, covariatesList);
         this._lastCovariatesList = covariatesList;
 
         var combinedDiff = { removed: [], added: [] };
         if (this._lastCombinedList !== null)
-            combinedDiff = this.findDifferences(this._lastCombinedList, combinedList);
+            combinedDiff = this.findDifferences(FormatDef.variable, this._lastCombinedList, combinedList);
         this._lastCombinedList = combinedList;
 
-        var combinedDiff2 = { removed: [], added: [] };
+        /*var combinedDiff2 = { removed: [], added: [] };
         if (this._lastCombinedList2 !== null)
-            combinedDiff2 = this.findDifferences(this._lastCombinedList2, combinedList2);
-        this._lastCombinedList2 = combinedList2;
+            combinedDiff2 = this.findDifferences(FormatDef.variable, this._lastCombinedList2, combinedList2);
+        this._lastCombinedList2 = combinedList2;*/
 
-        if (this._initialising)
+        if (this._initialising || !this._loaded)
             return;
 
-        var currentList = this.clone(context.getValue("bscModelTerms"));
-        if (currentList === null)
-            currentList = [];
+        var termsList = this.clone(context.getValue("bscModelTerms"));
+        if (termsList === null)
+            termsList = [];
+
+        var termsChanged = false;
 
         for (var i = 0; i < combinedDiff.removed.length; i++) {
-            for (var j = 0; j < currentList.length; j++) {
-                if (FormatDef.variable.contains(currentList[j], combinedDiff.removed[i])) {
-                    currentList.splice(j, 1);
+            for (var j = 0; j < termsList.length; j++) {
+                if (FormatDef.term.contains(termsList[j], combinedDiff.removed[i])) {
+                    termsList.splice(j, 1);
+                    termsChanged = true;
                     j -= 1;
                 }
             }
         }
 
-        if (currentList === null)
-            currentList = [];
-
         for (var i = 0; i < diff.added.length; i++) {
-            var listLength = currentList.length;
+            var listLength = termsList.length;
             for (var j = 0; j < listLength; j++) {
-                var newVar = currentList[j];
-                if (this.containsCovariate(newVar, covariatesList) === false) {
-                    if (Array.isArray(newVar))
-                        newVar = this.clone(newVar);
-                    else
-                        newVar = [newVar];
-                    newVar.push(diff.added[i])
-                    currentList.push(newVar);
+                var newTerm = this.clone(termsList[j]);
+                if (this.containsCovariate(newTerm, covariatesList) === false) {
+                    newTerm.push(diff.added[i])
+                    termsList.push(newTerm);
                 }
             }
-            currentList.push(diff.added[i]);
+            termsList.push([diff.added[i]]);
+            termsChanged = true;
         }
 
-        for (var i = 0; i < diff2.added.length; i++)
-            currentList.push(diff2.added[i]);
+        for (var i = 0; i < diff2.added.length; i++) {
+            termsList.push([diff2.added[i]]);
+            termsChanged = true;
+        }
 
-        context.setValue("bscModelTerms", currentList);
+        if (termsChanged)
+            context.setValue("bscModelTerms", termsList);
 
         this.updateContrasts(context, combinedList2);
+    },
+
+    filterModelTerms: function(context) {
+        var termsList = this.clone(context.getValue("bscModelTerms"));
+        if (termsList === null)
+            termsList = [];
+
+        /*var covariatesList = context.getValue("cov");
+        if (covariatesList === null)
+            covariatesList = [];
+
+        var covariateFreeList = [];
+        for (let i = 0; i < termsList.length; i++) {
+            let term = termsList[i];
+            if (this.containsCovariate(term, covariatesList) === false)
+                covariateFreeList.push(this.clone(term));
+        }*/
+
+        //var list = this.convertArrayToSupplierList(covariateFreeList, FormatDef.variable);
+        //context.setValue("marginalMeansSupplier", list);
+
+        var diff = null;
+        if ( ! this._initialising && this._loaded)
+            diff = this.findDifferences(FormatDef.term, this._lastCurrentList, termsList);
+        this._lastCurrentList = termsList;
+
+        if (this._initialising || !this._loaded)
+            return;
+
+        var changed = false;
+        if (diff.removed.length > 0) {
+            var itemsRemoved = false;
+            for (var i = 0; i < diff.removed.length; i++) {
+                var item = diff.removed[i];
+                for (var j = 0; j < termsList.length; j++) {
+                    if (FormatDef.term.contains(termsList[j], item)) {
+                        termsList.splice(j, 1);
+                        j -= 1;
+                        itemsRemoved = true;
+                    }
+                }
+            }
+
+            if (itemsRemoved)
+                changed = true;
+        }
+
+        if (this.sortByLength(termsList))
+            changed = true;
+
+        if (changed)
+            context.setValue("bscModelTerms", termsList);
+    },
+
+    containsCovariate: function(value, covariates) {
+        for (var i = 0; i < covariates.length; i++) {
+            if (FormatDef.term.contains(value, covariates[i]))
+                return true;
+        }
+
+        return false;
     },
 
     updateContrasts : function(context, variableList) {
@@ -690,17 +728,6 @@ var anovarmLayout = ui.extend({
         }
     },
 
-    isInArray: function(value, array) {
-        for (var i = 0; i < array.length; i++) {
-            if (rma_cell.isEqual(value, array[i]))
-                return i;
-        }
-        return -1;
-    },
-
-    clone: function(object) {
-        return JSON.parse(JSON.stringify(object));
-    },
 
     _factorCells : null
 });
