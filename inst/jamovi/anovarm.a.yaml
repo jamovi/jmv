@@ -66,14 +66,14 @@ options:
       description: >
         The Covariates
 
-    - name: rmcModelTerms
+    - name: rmTerms
       title: Model Terms
       type: Terms
       default:
       description: >
         The Repeated Measures model terms
 
-    - name: bscModelTerms
+    - name: bsTerms
       title: Model Terms
       type: Terms
       default:

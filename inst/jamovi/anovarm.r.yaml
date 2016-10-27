@@ -9,8 +9,10 @@ items:
       type: Table
       clearWith:
         - dependent
-        - modelTerms
         - sumOfSqu
+        - rmCells
+        - rmcModelTerms
+        - bscModelTerms
 
       columns:
         - name: name
@@ -44,8 +46,10 @@ items:
       type: Table
       clearWith:
         - dependent
-        - modelTerms
         - sumOfSqu
+        - rmCells
+        - rmcModelTerms
+        - bscModelTerms
 
       columns:
         - name: name

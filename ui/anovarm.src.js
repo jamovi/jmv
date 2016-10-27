@@ -126,7 +126,7 @@ var anovarmLayout = ui.extend({
                     controls: [
                         {
                             type: "targetlistbox",
-                            name: "rmcModelTerms",
+                            name: "rmTerms",
                             label: "Model Terms",
                             valueFilter: "unique",
                             showColumnHeaders: false,
@@ -145,7 +145,7 @@ var anovarmLayout = ui.extend({
                     controls: [
                         {
                             type:"targetlistbox",
-                            name: "bscModelTerms",
+                            name: "bsTerms",
                             label: "Model Terms",
                             valueFilter: "unique",
                             showColumnHeaders: false,
@@ -395,12 +395,12 @@ var anovarmLayout = ui.extend({
             }
         },
         {
-            onChange: "bscModelTerms", execute: function(context) {
+            onChange: "bsTerms", execute: function(context) {
                 this.filterModelTerms(context);
             }
         },
         {
-            onEvent: "bscModelTerms.preprocess", execute: function(context, data) {
+            onEvent: "bsTerms.preprocess", execute: function(context, data) {
                 data.items = this._variableListInteractions(data.items);
             }
         },
@@ -579,7 +579,7 @@ var anovarmLayout = ui.extend({
         if (this._initialising || !this._loaded)
             return;
 
-        var termsList = this.clone(context.getValue("bscModelTerms"));
+        var termsList = this.clone(context.getValue("bsTerms"));
         if (termsList === null)
             termsList = [];
 
@@ -614,13 +614,13 @@ var anovarmLayout = ui.extend({
         }
 
         if (termsChanged)
-            context.setValue("bscModelTerms", termsList);
+            context.setValue("bsTerms", termsList);
 
         this.updateContrasts(context, combinedList2);
     },
 
     filterModelTerms: function(context) {
-        var termsList = this.clone(context.getValue("bscModelTerms"));
+        var termsList = this.clone(context.getValue("bsTerms"));
         if (termsList === null)
             termsList = [];
 
@@ -668,7 +668,7 @@ var anovarmLayout = ui.extend({
             changed = true;
 
         if (changed)
-            context.setValue("bscModelTerms", termsList);
+            context.setValue("bsTerms", termsList);
     },
 
     containsCovariate: function(value, covariates) {

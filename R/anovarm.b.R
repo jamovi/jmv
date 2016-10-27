@@ -1,7 +1,7 @@
 
 AnovaRMClass <- R6::R6Class(
     "AnovaRMClass",
-    inherit=jmvcore::Analysis,
+    inherit=AnovaRMBase,
     private=list(
         .model=NA,
         .init=function() {
