@@ -20,9 +20,9 @@ TTestOneSOptions <- R6::R6Class(
             ciWidth = 95,
             desc = FALSE,
             plots = FALSE,
-            miss = "perAnalysis") {
+            miss = "perAnalysis", ...) {
 
-            super$initialize(package='jmv', name='TTestOneS')
+            super$initialize(package='jmv', name='TTestOneS', ...)
         
             private$..vars <- jmvcore::OptionVariables$new(
                 "vars",
@@ -156,7 +156,7 @@ TTestOneSBase <- R6::R6Class(
     "TTestOneSBase",
     inherit = jmvcore::Analysis,
     public = list(
-        initialize = function(options, data=NULL, datasetId="", analysisId="") {
+        initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
                 name = 'TTestOneS',
@@ -164,7 +164,8 @@ TTestOneSBase <- R6::R6Class(
                 options = options,
                 data = data,
                 datasetId = datasetId,
-                analysisId = analysisId)
+                analysisId = analysisId,
+                revision = revision)
         }))
 
 TTestOneS <- function(

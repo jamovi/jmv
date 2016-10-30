@@ -8,9 +8,9 @@ KruskalOptions <- R6::R6Class(
         initialize = function(
             deps = NULL,
             group = NULL,
-            pairs = FALSE) {
+            pairs = FALSE, ...) {
 
-            super$initialize(package='jmv', name='Kruskal')
+            super$initialize(package='jmv', name='Kruskal', ...)
         
             private$..deps <- jmvcore::OptionVariables$new(
                 "deps",
@@ -50,7 +50,7 @@ KruskalBase <- R6::R6Class(
     "KruskalBase",
     inherit = jmvcore::Analysis,
     public = list(
-        initialize = function(options, data=NULL, datasetId="", analysisId="") {
+        initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
                 name = 'Kruskal',
@@ -58,7 +58,8 @@ KruskalBase <- R6::R6Class(
                 options = options,
                 data = data,
                 datasetId = datasetId,
-                analysisId = analysisId)
+                analysisId = analysisId,
+                revision = revision)
         }))
 
 Kruskal <- function(

@@ -1,9 +1,8 @@
 ---
 name:     TTestIS
 title: Independent Samples T-Test
-package:  jmv
 version: "1.0.0"
-api: 1
+jmc: "1.0.0"
 engineType: R
 
 options:

@@ -11,9 +11,9 @@ BinomialOptions <- R6::R6Class(
             testValue = 0.5,
             hypothesis = "notequal",
             ci = FALSE,
-            ciWidth = 95) {
+            ciWidth = 95, ...) {
 
-            super$initialize(package='jmv', name='Binomial')
+            super$initialize(package='jmv', name='Binomial', ...)
         
             private$..vars <- jmvcore::OptionVariables$new(
                 "vars",
@@ -73,7 +73,7 @@ BinomialBase <- R6::R6Class(
     "BinomialBase",
     inherit = jmvcore::Analysis,
     public = list(
-        initialize = function(options, data=NULL, datasetId="", analysisId="") {
+        initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
                 name = 'Binomial',
@@ -81,7 +81,8 @@ BinomialBase <- R6::R6Class(
                 options = options,
                 data = data,
                 datasetId = datasetId,
-                analysisId = analysisId)
+                analysisId = analysisId,
+                revision = revision)
         }))
 
 Binomial <- function(

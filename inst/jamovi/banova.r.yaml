@@ -1,7 +1,7 @@
 ---
 name:  BAnova
 title: Bayesian ANOVA
-api: 1
+jmc: "1.0.0"
 
 items:
     - name: table

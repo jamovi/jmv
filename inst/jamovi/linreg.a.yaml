@@ -2,8 +2,7 @@
 name:    LinReg
 title:   Linear Regression
 version: "1.0.0"
-api: 1
-package: jmv
+jmc: "1.0.0"
 engineType: R
 
 options:

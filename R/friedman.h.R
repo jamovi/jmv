@@ -10,9 +10,9 @@ FriedmanOptions <- R6::R6Class(
             pairs = FALSE,
             desc = FALSE,
             plots = FALSE,
-            plotType = "means") {
+            plotType = "means", ...) {
 
-            super$initialize(package='jmv', name='Friedman')
+            super$initialize(package='jmv', name='Friedman', ...)
         
             private$..measures <- jmvcore::OptionVariables$new(
                 "measures",
@@ -67,7 +67,7 @@ FriedmanBase <- R6::R6Class(
     "FriedmanBase",
     inherit = jmvcore::Analysis,
     public = list(
-        initialize = function(options, data=NULL, datasetId="", analysisId="") {
+        initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
                 name = 'Friedman',
@@ -75,7 +75,8 @@ FriedmanBase <- R6::R6Class(
                 options = options,
                 data = data,
                 datasetId = datasetId,
-                analysisId = analysisId)
+                analysisId = analysisId,
+                revision = revision)
         }))
 
 Friedman <- function(

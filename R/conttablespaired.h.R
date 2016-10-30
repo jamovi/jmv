@@ -10,9 +10,9 @@ ContTablesPairedOptions <- R6::R6Class(
             areCounts = FALSE,
             obs = TRUE,
             pcRow = FALSE,
-            pcCol = FALSE) {
+            pcCol = FALSE, ...) {
 
-            super$initialize(package='jmv', name='ContTablesPaired')
+            super$initialize(package='jmv', name='ContTablesPaired', ...)
         
             private$..pairs <- jmvcore::OptionPairs$new(
                 "pairs",
@@ -58,7 +58,7 @@ ContTablesPairedBase <- R6::R6Class(
     "ContTablesPairedBase",
     inherit = jmvcore::Analysis,
     public = list(
-        initialize = function(options, data=NULL, datasetId="", analysisId="") {
+        initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
                 name = 'ContTablesPaired',
@@ -66,7 +66,8 @@ ContTablesPairedBase <- R6::R6Class(
                 options = options,
                 data = data,
                 datasetId = datasetId,
-                analysisId = analysisId)
+                analysisId = analysisId,
+                revision = revision)
         }))
 
 ContTablesPaired <- function(

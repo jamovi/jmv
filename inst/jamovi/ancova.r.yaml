@@ -1,7 +1,7 @@
 ---
 name:  Ancova
 title: ANCOVA
-api: 1
+jmc: "1.0.0"
 
 items:
     - name: main

@@ -2,8 +2,7 @@
 name: TTestPS
 title: Paired Samples T-Test
 version: "1.0.0"
-api: 1
-package:  jmv
+jmc: "1.0.0"
 engineType: R
 
 options:

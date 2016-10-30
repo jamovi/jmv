@@ -2,8 +2,7 @@
 name:    ContTablesPaired
 title:   Paired Samples Contingency Tables
 version: "1.0.0"
-api: 1
-package: jmv
+jmc: "1.0.0"
 engineType: R
 
 options:

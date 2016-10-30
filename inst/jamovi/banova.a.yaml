@@ -2,8 +2,7 @@
 name:    BAnova
 title:   Bayesian ANOVA
 version: "1.0.0"
-api: 1
-package: jmv
+jmc: "1.0.0"
 engineType: R
 
 options:

@@ -25,9 +25,9 @@ ContTablesOptions <- R6::R6Class(
             pcCol = FALSE,
             pcTot = FALSE,
             rowOrder = "asc",
-            colOrder = "asc") {
+            colOrder = "asc", ...) {
 
-            super$initialize(package='jmv', name='ContTables')
+            super$initialize(package='jmv', name='ContTables', ...)
         
             private$..rows <- jmvcore::OptionVariable$new(
                 "rows",
@@ -197,7 +197,7 @@ ContTablesBase <- R6::R6Class(
     "ContTablesBase",
     inherit = jmvcore::Analysis,
     public = list(
-        initialize = function(options, data=NULL, datasetId="", analysisId="") {
+        initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
                 name = 'ContTables',
@@ -205,7 +205,8 @@ ContTablesBase <- R6::R6Class(
                 options = options,
                 data = data,
                 datasetId = datasetId,
-                analysisId = analysisId)
+                analysisId = analysisId,
+                revision = revision)
         }))
 
 ContTables <- function(

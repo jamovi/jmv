@@ -17,9 +17,9 @@ CorrMatrixOptions <- R6::R6Class(
             plots = FALSE,
             plotDens = FALSE,
             plotStats = FALSE,
-            hypothesis = "corr") {
+            hypothesis = "corr", ...) {
 
-            super$initialize(package='jmv', name='CorrMatrix')
+            super$initialize(package='jmv', name='CorrMatrix', ...)
         
             private$..vars <- jmvcore::OptionVariables$new(
                 "vars",
@@ -127,7 +127,7 @@ CorrMatrixBase <- R6::R6Class(
     "CorrMatrixBase",
     inherit = jmvcore::Analysis,
     public = list(
-        initialize = function(options, data=NULL, datasetId="", analysisId="") {
+        initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
                 name = 'CorrMatrix',
@@ -135,7 +135,8 @@ CorrMatrixBase <- R6::R6Class(
                 options = options,
                 data = data,
                 datasetId = datasetId,
-                analysisId = analysisId)
+                analysisId = analysisId,
+                revision = revision)
         }))
 
 CorrMatrix <- function(
