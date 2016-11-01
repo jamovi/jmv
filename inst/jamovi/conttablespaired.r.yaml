@@ -4,35 +4,24 @@ title: Paired Samples Contingency Tables
 api: 1
 
 items:
-    - name: tables
+    - name: freqs
       title: Contingency Tables
-      type: Array
-      items: (pairs)
-
-      template:
-          type: Table
-          title: Contingency Table
-          columns: []
-
-    - name: tests
-      title: McNemar Tests
       type: Table
-      rows: (pairs)
-
+      columns: [ ]
       clearWith:
-        - pairs
+        - rows
+        - cols
+        - counts
+
+    - name: test
+      title: McNemar Test
+      type: Table
+      clearWith:
+        - rows
+        - cols
+        - counts
 
       columns:
-        - name: i1
-          title: ''
-          type: text
-          content: ($key[[1]])
-
-        - name: i2
-          title: ''
-          type: text
-          content: ($key[[2]])
-
         - name: name[mcn]
           title: ''
           type: 'text'
