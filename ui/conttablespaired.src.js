@@ -7,11 +7,11 @@ var layout = ui.extend({
 
     label: "Paired Samples Contingency Tables",
     type: "root",
-    stage: 2,
+    stage: 0,
     controls: [
         {
             type: "variablesupplier",
-            persistentItems: true,
+            persistentItems: false,
             stretchFactor: 1,
             suggested: ["continuous", "nominal", "ordinal"],
             controls: [
@@ -52,7 +52,6 @@ var layout = ui.extend({
             label: "Cells",
             margin: "large",
             controls : [
-                { type:"checkbox", name: "areCounts", label: "Values are counts" },
                 {
                     type: "label",
                     label: "Percentages",

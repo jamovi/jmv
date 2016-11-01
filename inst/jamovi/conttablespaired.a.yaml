@@ -42,10 +42,6 @@ options:
       description: >
         The variables of interest
 
-    - name: areCounts
-      type: Bool
-      default: false
-
     - name: obs
       title: Observed
       type: Bool
