@@ -11,9 +11,36 @@ options:
       description: >
         The data set as a data frame
 
-    - name: pairs
-      title: Paired Variables
-      type: Pairs
+    - name: rows
+      title: Rows
+      type: Variable
+      suggested:
+        - nominal
+        - ordinal
+      description: >
+        The variables of interest
+
+    - name: cols
+      title: Columns
+      type: Variable
+      suggested:
+        - nominal
+        - ordinal
+      description: >
+        The variables of interest
+
+    - name: counts
+      title: Counts (optional)
+      type: Variable
+      suggested:
+        - continuous
+      permitted:
+        - continuous
+        - nominal
+        - ordinal
+      default:
+      description: >
+        The variables of interest
 
     - name: areCounts
       type: Bool

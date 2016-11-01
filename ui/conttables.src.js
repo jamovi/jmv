@@ -37,7 +37,7 @@ var layout = ui.extend({
                 {
                     type:"variabletargetlistbox",
                     name: "counts",
-                    label: "Counts",
+                    label: "Counts (optional)",
                     showColumnHeaders: false,
                     maxItemCount: 1,
                     columns: [

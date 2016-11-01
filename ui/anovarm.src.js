@@ -68,7 +68,7 @@ var anovarmLayout = ui.extend({
                     label: "Repeated Measures Factors",
                 },
                 {
-                    type:"targetlistbox",
+                    type:"variabletargetlistbox",
                     name: "rmCells",
                     label: "Repeated Measures Cells",
                     showColumnHeaders: false,
@@ -571,10 +571,6 @@ var anovarmLayout = ui.extend({
             combinedDiff = this.findDifferences(FormatDef.variable, this._lastCombinedList, combinedList);
         this._lastCombinedList = combinedList;
 
-        /*var combinedDiff2 = { removed: [], added: [] };
-        if (this._lastCombinedList2 !== null)
-            combinedDiff2 = this.findDifferences(FormatDef.variable, this._lastCombinedList2, combinedList2);
-        this._lastCombinedList2 = combinedList2;*/
 
         if (this._initialising || !this._loaded)
             return;
@@ -623,20 +619,6 @@ var anovarmLayout = ui.extend({
         var termsList = this.clone(context.getValue("bsTerms"));
         if (termsList === null)
             termsList = [];
-
-        /*var covariatesList = context.getValue("cov");
-        if (covariatesList === null)
-            covariatesList = [];
-
-        var covariateFreeList = [];
-        for (let i = 0; i < termsList.length; i++) {
-            let term = termsList[i];
-            if (this.containsCovariate(term, covariatesList) === false)
-                covariateFreeList.push(this.clone(term));
-        }*/
-
-        //var list = this.convertArrayToSupplierList(covariateFreeList, FormatDef.variable);
-        //context.setValue("marginalMeansSupplier", list);
 
         var diff = null;
         if ( ! this._initialising && this._loaded)
