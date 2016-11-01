@@ -13,18 +13,38 @@ var layout = ui.extend({
             type: "variablesupplier",
             persistentItems: true,
             stretchFactor: 1,
+            suggested: ["continuous", "nominal", "ordinal"],
             controls: [
                 {
-                    type: "variabletargetlistbox",
-                    name: "pairs",
-                    label: "Paired Variables",
+                    type:"variabletargetlistbox",
+                    name: "rows",
+                    label: "Rows",
                     showColumnHeaders: false,
-                    fullRowSelect: true,
+                    maxItemCount: 1,
                     columns: [
-                        { type: "listitem.variablelabel", name: "i1", label: "", format: FormatDef.variable, stretchFactor: 1 },
-                        { type: "listitem.variablelabel", name: "i2", label: "", format: FormatDef.variable, stretchFactor: 1 }
+                        { type: "listitem.variablelabel", name: 'column1', label: "", format: FormatDef.variable, stretchFactor: 1 },
                     ]
-                }
+                },
+                {
+                    type:"variabletargetlistbox",
+                    name: "cols",
+                    label: "Columns",
+                    showColumnHeaders: false,
+                    maxItemCount: 1,
+                    columns: [
+                        { type: "listitem.variablelabel", name: 'column1', label: "", format: FormatDef.variable, stretchFactor: 1 },
+                    ]
+                },
+                {
+                    type:"variabletargetlistbox",
+                    name: "counts",
+                    label: "Counts (optional)",
+                    showColumnHeaders: false,
+                    maxItemCount: 1,
+                    columns: [
+                        { type: "listitem.variablelabel", name: 'column1', label: "", format: FormatDef.variable, stretchFactor: 1 },
+                    ]
+                },
             ]
         },
         {
