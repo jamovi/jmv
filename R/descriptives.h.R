@@ -174,6 +174,74 @@ DescriptivesOptions <- R6::R6Class(
         ..pcNEqGr = NA)
 )
 
+DescriptivesResults <- R6::R6Class(
+    inherit = jmvcore::Group,
+    active = list(
+        descriptives = function() private$..descriptives,
+        frequencies = function() private$..frequencies,
+        freqPlots = function() private$..freqPlots),
+    private = list(
+        ..descriptives = NA,
+        ..frequencies = NA,
+        ..freqPlots = NA),
+    public=list(
+        initialize=function(options) {
+            super$initialize(options=options, name="", title="Descriptives")
+            private$..descriptives <- jmvcore::Table$new(
+                options=options,
+                name="descriptives",
+                title="Descriptives",
+                rows="(vars)",
+                swapRowsColumns=TRUE,
+                columns=list(
+                    list(`name`="name", `title`="", `content`="($key)", `type`="text"),
+                    list(`name`="n", `title`="N", `type`="integer"),
+                    list(`name`="missing", `title`="Missing", `type`="integer"),
+                    list(`name`="mean", `title`="Mean", `type`="number", `visible`="(mean)"),
+                    list(`name`="median", `title`="Median", `type`="number", `visible`="(median)"),
+                    list(`name`="mode", `title`="Mode", `type`="number", `visible`="(mode)"),
+                    list(`name`="sum", `title`="Sum", `type`="number", `visible`="(sum)"),
+                    list(`name`="sd", `title`="Standard deviation", `type`="number", `visible`="(sd)"),
+                    list(`name`="variance", `title`="Variance", `type`="number", `visible`="(variance)"),
+                    list(`name`="range", `title`="Range", `type`="number", `visible`="(range)"),
+                    list(`name`="min", `title`="Minimum", `type`="number", `visible`="(min)"),
+                    list(`name`="max", `title`="Maximum", `type`="number", `visible`="(max)"),
+                    list(`name`="se", `title`="Standard error", `type`="number", `visible`="(se)"),
+                    list(`name`="skew", `title`="Skewness", `type`="number", `visible`="(skew)"),
+                    list(`name`="kurt", `title`="Kurtosis", `type`="number", `visible`="(kurt)"),
+                    list(`name`="quart1", `title`="25th percentile", `type`="number", `visible`="(quart)"),
+                    list(`name`="quart2", `title`="50th percentile", `type`="number", `visible`="(quart)"),
+                    list(`name`="quart3", `title`="75th percentile", `type`="number", `visible`="(quart)")))
+            private$..frequencies <- jmvcore::Array$new(
+                options=options,
+                name="frequencies",
+                title="Frequencies",
+                visible="(freq)",
+                items="(vars)",
+                template=jmvcore::Table$new(
+                    options=options,
+                    title="Frequencies of $key",
+                    visible="(levels($key))",
+                    rows="(levels($key))",
+                    columns=list(
+                        list(`name`="level", `title`="Level", `type`="text", `content`="($key)"),
+                        list(`name`="counts", `title`="Counts", `type`="number"),
+                        list(`name`="percentage", `title`="%", `type`="number"),
+                        list(`name`="cumpercentage", `title`="Cumulative %", `type`="number"))))
+            private$..freqPlots <- jmvcore::Array$new(
+                options=options,
+                name="freqPlots",
+                title="Frequencies",
+                visible="(plots)",
+                items="(vars)",
+                template=jmvcore::Image$new(
+                    options=options,
+                    title="Frequencies of {$key}",
+                    renderFun=".plotFreq"))
+            self$add(private$..descriptives)
+            self$add(private$..frequencies)
+            self$add(private$..freqPlots)}))
+
 DescriptivesBase <- R6::R6Class(
     "DescriptivesBase",
     inherit = jmvcore::Analysis,
@@ -184,6 +252,7 @@ DescriptivesBase <- R6::R6Class(
                 name = 'Descriptives',
                 version = c(1,0,0),
                 options = options,
+                results = DescriptivesResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
@@ -234,6 +303,9 @@ Descriptives <- function(
         quart = quart,
         pcEqGr = pcEqGr,
         pcNEqGr = pcNEqGr)
+
+    results <- DescriptivesResults$new(
+        options = options)
 
     analysis <- DescriptivesClass$new(
         options = options,

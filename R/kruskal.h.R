@@ -46,6 +46,49 @@ KruskalOptions <- R6::R6Class(
         ..pairs = NA)
 )
 
+KruskalResults <- R6::R6Class(
+    inherit = jmvcore::Group,
+    active = list(
+        table = function() private$..table,
+        comparisons = function() private$..comparisons),
+    private = list(
+        ..table = NA,
+        ..comparisons = NA),
+    public=list(
+        initialize=function(options) {
+            super$initialize(options=options, name="", title="Kruskal-Wallis")
+            private$..table <- jmvcore::Table$new(
+                options=options,
+                name="table",
+                title="Kruskal-Wallis",
+                rows="(deps)",
+                clearWith=list(
+                    "group"),
+                columns=list(
+                    list(`name`="name", `title`="", `content`="($key)", `type`="text"),
+                    list(`name`="chiSq", `title`="Χ²", `type`="number"),
+                    list(`name`="df", `title`="df", `type`="integer"),
+                    list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue")))
+            private$..comparisons <- jmvcore::Array$new(
+                options=options,
+                name="comparisons",
+                title="Dwass-Steel-Critchlow-Fligner pairwise comparisons",
+                items="(deps)",
+                visible="(pairs)",
+                clearWith=list(
+                    "group"),
+                template=jmvcore::Table$new(
+                    options=options,
+                    title="Pairwise comparisons - $key",
+                    rows=0,
+                    columns=list(
+                        list(`name`="p1", `title`="", `content`=".", `type`="text"),
+                        list(`name`="p2", `title`="", `content`=".", `type`="text"),
+                        list(`name`="W", `type`="number"),
+                        list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue"))))
+            self$add(private$..table)
+            self$add(private$..comparisons)}))
+
 KruskalBase <- R6::R6Class(
     "KruskalBase",
     inherit = jmvcore::Analysis,
@@ -56,6 +99,7 @@ KruskalBase <- R6::R6Class(
                 name = 'Kruskal',
                 version = c(1,0,0),
                 options = options,
+                results = KruskalResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
@@ -72,6 +116,9 @@ Kruskal <- function(
         deps = deps,
         group = group,
         pairs = pairs)
+
+    results <- KruskalResults$new(
+        options = options)
 
     analysis <- KruskalClass$new(
         options = options,

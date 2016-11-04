@@ -193,6 +193,127 @@ ContTablesOptions <- R6::R6Class(
         ..colOrder = NA)
 )
 
+ContTablesResults <- R6::R6Class(
+    inherit = jmvcore::Group,
+    active = list(
+        freqs = function() private$..freqs,
+        chiSq = function() private$..chiSq,
+        odds = function() private$..odds,
+        nom = function() private$..nom,
+        gamma = function() private$..gamma,
+        taub = function() private$..taub),
+    private = list(
+        ..freqs = NA,
+        ..chiSq = NA,
+        ..odds = NA,
+        ..nom = NA,
+        ..gamma = NA,
+        ..taub = NA),
+    public=list(
+        initialize=function(options) {
+            super$initialize(options=options, name="", title="Contingency Tables")
+            private$..freqs <- jmvcore::Table$new(
+                options=options,
+                name="freqs",
+                title="Contingency Tables",
+                columns=list(),
+                clearWith=list(
+                    "rows",
+                    "cols",
+                    "counts",
+                    "layers"))
+            private$..chiSq <- jmvcore::Table$new(
+                options=options,
+                name="chiSq",
+                title="χ² Tests",
+                clearWith=list(
+                    "rows",
+                    "cols",
+                    "counts",
+                    "layers"),
+                columns=list(
+                    list(`name`="test[chiSq]", `title`="", `type`="text", `content`="χ²", `visible`="(chiSq)"),
+                    list(`name`="value[chiSq]", `title`="Value", `visible`="(chiSq)"),
+                    list(`name`="df[chiSq]", `title`="df", `type`="integer", `visible`="(chiSq)"),
+                    list(`name`="p[chiSq]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(chiSq)"),
+                    list(`name`="test[chiSqCorr]", `title`="", `type`="text", `content`="χ² continuity correction", `visible`="(chiSqCorr)"),
+                    list(`name`="value[chiSqCorr]", `title`="Value", `visible`="(chiSqCorr)"),
+                    list(`name`="df[chiSqCorr]", `title`="df", `type`="integer", `visible`="(chiSqCorr)"),
+                    list(`name`="p[chiSqCorr]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(chiSqCorr)"),
+                    list(`name`="test[likeRat]", `title`="", `type`="text", `content`="Likelihood ratio", `visible`="(likeRat)"),
+                    list(`name`="value[likeRat]", `title`="Value", `visible`="(likeRat)"),
+                    list(`name`="df[likeRat]", `title`="df", `type`="integer", `visible`="(likeRat)"),
+                    list(`name`="p[likeRat]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(likeRat)"),
+                    list(`name`="test[N]", `title`="", `type`="text", `content`="N"),
+                    list(`name`="value[N]", `title`="Value", `type`="integer")))
+            private$..odds <- jmvcore::Table$new(
+                options=options,
+                name="odds",
+                title="Log Odds Ratio",
+                visible="(logOdds)",
+                clearWith=list(
+                    "rows",
+                    "cols",
+                    "counts",
+                    "layers",
+                    "ciWidth"),
+                columns=list(
+                    list(`name`="t[lo]", `title`="", `type`="text", `content`="Log odds ratio"),
+                    list(`name`="v[lo]", `title`="Value"),
+                    list(`name`="cil[lo]", `title`="Lower", `superTitle`="Confidence Intervals"),
+                    list(`name`="ciu[lo]", `title`="Upper", `superTitle`="Confidence Intervals"),
+                    list(`name`="t[f]", `title`="", `type`="text", `content`="Fisher's exact test"),
+                    list(`name`="v[f]", `title`="Value"),
+                    list(`name`="cil[f]", `title`="Lower", `superTitle`="Confidence Intervals"),
+                    list(`name`="ciu[f]", `title`="Upper", `superTitle`="Confidence Intervals")))
+            private$..nom <- jmvcore::Table$new(
+                options=options,
+                name="nom",
+                title="Nominal",
+                visible="(contCoef || phiCra)",
+                columns=list(
+                    list(`name`="t[cont]", `title`="", `type`="text", `content`="Contingency coefficient", `visible`="(contCoef)"),
+                    list(`name`="v[cont]", `title`="Value", `visible`="(contCoef)"),
+                    list(`name`="t[phi]", `title`="", `type`="text", `content`="Phi-coefficient", `visible`="(phiCra)"),
+                    list(`name`="v[phi]", `title`="Value", `visible`="(phiCra)"),
+                    list(`name`="t[cra]", `title`="", `type`="text", `content`="Cramer's V", `visible`="(phiCra)"),
+                    list(`name`="v[cra]", `title`="Value", `visible`="(phiCra)")))
+            private$..gamma <- jmvcore::Table$new(
+                options=options,
+                name="gamma",
+                title="Gamma",
+                visible="(gamma)",
+                clearWith=list(
+                    "rows",
+                    "cols",
+                    "counts",
+                    "layers"),
+                columns=list(
+                    list(`name`="gamma", `title`="Gamma"),
+                    list(`name`="se", `title`="Standard Error"),
+                    list(`name`="cil", `title`="Lower", `superTitle`="Confidence Intervals"),
+                    list(`name`="ciu", `title`="Upper", `superTitle`="Confidence Intervals")))
+            private$..taub <- jmvcore::Table$new(
+                options=options,
+                name="taub",
+                title="Kendall's Tau-b",
+                visible="(taub)",
+                clearWith=list(
+                    "rows",
+                    "cols",
+                    "counts",
+                    "layers"),
+                columns=list(
+                    list(`name`="taub", `title`="Kendall's Tau-B"),
+                    list(`name`="t", `title`="t"),
+                    list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue")))
+            self$add(private$..freqs)
+            self$add(private$..chiSq)
+            self$add(private$..odds)
+            self$add(private$..nom)
+            self$add(private$..gamma)
+            self$add(private$..taub)}))
+
 ContTablesBase <- R6::R6Class(
     "ContTablesBase",
     inherit = jmvcore::Analysis,
@@ -203,6 +324,7 @@ ContTablesBase <- R6::R6Class(
                 name = 'ContTables',
                 version = c(1,0,0),
                 options = options,
+                results = ContTablesResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
@@ -253,6 +375,9 @@ ContTables <- function(
         pcTot = pcTot,
         rowOrder = rowOrder,
         colOrder = colOrder)
+
+    results <- ContTablesResults$new(
+        options = options)
 
     analysis <- ContTablesClass$new(
         options = options,

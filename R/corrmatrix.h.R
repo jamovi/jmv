@@ -123,6 +123,51 @@ CorrMatrixOptions <- R6::R6Class(
         ..hypothesis = NA)
 )
 
+CorrMatrixResults <- R6::R6Class(
+    inherit = jmvcore::Group,
+    active = list(
+        matrix = function() private$..matrix,
+        plot = function() private$..plot),
+    private = list(
+        ..matrix = NA,
+        ..plot = NA),
+    public=list(
+        initialize=function(options) {
+            super$initialize(options=options, name="", title="Correlation Matrix")
+            private$..matrix <- jmvcore::Table$new(
+                options=options,
+                name="matrix",
+                title="Correlation Matrix",
+                rows="(vars)",
+                clearWith=list(
+                    "ciWidth",
+                    "hypothesis"),
+                columns=list(
+                    list(`name`="", `content`="($key)", `type`="text", `title`=""),
+                    list(`name`=".stat[r]", `title`="", `type`="text", `content`="Pearson's r", `visible`="(pearson && (sig || spearman || kendall))"),
+                    list(`name`=".stat[rp]", `title`="", `type`="text", `content`="p-value", `visible`="(pearson && sig)"),
+                    list(`name`=".stat[rciu]", `title`="", `type`="text", `content`="CI Upper", `visible`="(pearson && ci)"),
+                    list(`name`=".stat[rcil]", `title`="", `type`="text", `content`="CI Lower", `visible`="(pearson && ci)"),
+                    list(`name`=".stat[rho]", `title`="", `type`="text", `content`="Spearman's rho", `visible`="(spearman && (sig || pearson || kendall))"),
+                    list(`name`=".stat[rhop]", `title`="", `type`="text", `content`="p-value", `visible`="(spearman && sig)"),
+                    list(`name`=".stat[tau]", `title`="", `type`="text", `content`="Kendall's Tau B", `visible`="(kendall && (sig || pearson || spearman))"),
+                    list(`name`=".stat[taup]", `title`="", `type`="text", `content`="p-value", `visible`="(kendall && sig)")))
+            private$..plot <- jmvcore::Image$new(
+                options=options,
+                name="plot",
+                title="Plot",
+                visible="(plots)",
+                width=500,
+                height=500,
+                renderFun=".plot",
+                requiresData=TRUE,
+                clearWith=list(
+                    "vars",
+                    "plotDens",
+                    "plotStats"))
+            self$add(private$..matrix)
+            self$add(private$..plot)}))
+
 CorrMatrixBase <- R6::R6Class(
     "CorrMatrixBase",
     inherit = jmvcore::Analysis,
@@ -133,6 +178,7 @@ CorrMatrixBase <- R6::R6Class(
                 name = 'CorrMatrix',
                 version = c(1,0,0),
                 options = options,
+                results = CorrMatrixResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
@@ -167,6 +213,9 @@ CorrMatrix <- function(
         plotDens = plotDens,
         plotStats = plotStats,
         hypothesis = hypothesis)
+
+    results <- CorrMatrixResults$new(
+        options = options)
 
     analysis <- CorrMatrixClass$new(
         options = options,

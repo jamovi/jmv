@@ -152,6 +152,95 @@ TTestOneSOptions <- R6::R6Class(
         ..miss = NA)
 )
 
+TTestOneSResults <- R6::R6Class(
+    inherit = jmvcore::Group,
+    active = list(
+        ttest = function() private$..ttest,
+        normality = function() private$..normality,
+        descriptives = function() private$..descriptives,
+        plots = function() private$..plots),
+    private = list(
+        ..ttest = NA,
+        ..normality = NA,
+        ..descriptives = NA,
+        ..plots = NA),
+    public=list(
+        initialize=function(options) {
+            super$initialize(options=options, name="", title="One Sample T-Test")
+            private$..ttest <- jmvcore::Table$new(
+                options=options,
+                name="ttest",
+                title="One Sample T-Test",
+                rows="(vars)",
+                clearWith=list(
+                    "hypothesis",
+                    "testValue"),
+                columns=list(
+                    list(`name`="var", `title`="", `content`="($key)", `type`="text"),
+                    list(`name`="name[stud]", `title`="", `content`="Student's t", `visible`="(students)"),
+                    list(`name`="stat[stud]", `title`="statistic", `type`="number", `visible`="(students)"),
+                    list(`name`="err[stud]", `title`="error %", `type`="number", `visible`="(students && bf)", `content`=""),
+                    list(`name`="df[stud]", `title`="df", `type`="number", `visible`="(students)"),
+                    list(`name`="p[stud]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(students)"),
+                    list(`name`="md[stud]", `title`="Mean difference", `type`="number", `visible`="(meanDiff && students)"),
+                    list(`name`="es[stud]", `title`="Cohen's d", `type`="number", `visible`="(effectSize && students)"),
+                    list(`name`="cil[stud]", `title`="Lower", `type`="number", `visible`="(ci && students)"),
+                    list(`name`="ciu[stud]", `title`="Upper", `type`="number", `visible`="(ci && students)"),
+                    list(`name`="name[bf]", `title`="", `type`="string", `content`="Bayes factor₁₀", `visible`="(bf)"),
+                    list(`name`="stat[bf]", `title`="statistic", `type`="number", `visible`="(bf)"),
+                    list(`name`="err[bf]", `title`="±%", `type`="number", `visible`="(bf)"),
+                    list(`name`="df[bf]", `title`="df", `type`="number", `visible`="(bf)", `content`=""),
+                    list(`name`="p[bf]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(bf)", `content`=""),
+                    list(`name`="md[bf]", `title`="Mean difference", `type`="number", `visible`="(meanDiff && bf)", `content`=""),
+                    list(`name`="sed[bf]", `title`="SE difference", `type`="number", `visible`="(meanDiff && bf)", `content`=""),
+                    list(`name`="es[bf]", `title`="Cohen's d", `type`="number", `visible`="(effectSize && bf)", `content`=""),
+                    list(`name`="cil[bf]", `title`="Lower", `type`="number", `visible`="(ci && bf)", `content`=""),
+                    list(`name`="ciu[bf]", `title`="Upper", `type`="number", `visible`="(ci && bf)", `content`=""),
+                    list(`name`="name[mann]", `title`="", `content`="Mann-Whitney U", `visible`="(mann)"),
+                    list(`name`="stat[mann]", `title`="stat", `type`="number", `visible`="(mann)"),
+                    list(`name`="err[mann]", `title`="±%", `type`="number", `visible`="(mann && bf)", `content`=""),
+                    list(`name`="p[mann]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(mann)"),
+                    list(`name`="md[mann]", `title`="Mean difference", `type`="number", `visible`="(meanDiff && mann)"),
+                    list(`name`="es[mann]", `title`="Cohen's d", `type`="number", `visible`="(effectSize && mann)"),
+                    list(`name`="cil[mann]", `title`="Lower", `type`="number", `visible`="(ci && mann)"),
+                    list(`name`="ciu[mann]", `title`="Upper", `type`="number", `visible`="(ci && mann)")))
+            private$..normality <- jmvcore::Table$new(
+                options=options,
+                name="normality",
+                title="Test of Normality (Shapiro-Wilk)",
+                visible="(norm)",
+                rows="(vars)",
+                notes=list(`p`="A low p-value suggests a violation of the assumption of normality"),
+                columns=list(
+                    list(`name`="name", `title`="", `content`="($key)", `type`="text"),
+                    list(`name`="w", `title`="W", `type`="number"),
+                    list(`name`="p", `type`="number", `format`="zto,pvalue")))
+            private$..descriptives <- jmvcore::Table$new(
+                options=options,
+                name="descriptives",
+                title="Descriptives",
+                visible="(desc)",
+                rows="(vars)",
+                columns=list(
+                    list(`name`="name", `title`="", `content`="($key)", `type`="text"),
+                    list(`name`="num", `title`="N", `type`="number"),
+                    list(`name`="mean", `title`="Mean", `type`="number"),
+                    list(`name`="median", `title`="Median", `type`="number"),
+                    list(`name`="sd", `title`="SD", `type`="number"),
+                    list(`name`="se", `title`="SE", `type`="number")))
+            private$..plots <- jmvcore::Image$new(
+                options=options,
+                name="plots",
+                title="Plots",
+                visible="(plots)",
+                renderFun=".plot",
+                clearWith=list(
+                    "vars"))
+            self$add(private$..ttest)
+            self$add(private$..normality)
+            self$add(private$..descriptives)
+            self$add(private$..plots)}))
+
 TTestOneSBase <- R6::R6Class(
     "TTestOneSBase",
     inherit = jmvcore::Analysis,
@@ -162,6 +251,7 @@ TTestOneSBase <- R6::R6Class(
                 name = 'TTestOneS',
                 version = c(1,0,0),
                 options = options,
+                results = TTestOneSResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
@@ -202,6 +292,9 @@ TTestOneS <- function(
         desc = desc,
         plots = plots,
         miss = miss)
+
+    results <- TTestOneSResults$new(
+        options = options)
 
     analysis <- TTestOneSClass$new(
         options = options,

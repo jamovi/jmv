@@ -6,21 +6,37 @@ ContTablesPairedOptions <- R6::R6Class(
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
-            pairs = NULL,
-            areCounts = FALSE,
+            rows = NULL,
+            cols = NULL,
+            counts = NULL,
             obs = TRUE,
             pcRow = FALSE,
             pcCol = FALSE, ...) {
 
             super$initialize(package='jmv', name='ContTablesPaired', ...)
         
-            private$..pairs <- jmvcore::OptionPairs$new(
-                "pairs",
-                pairs)
-            private$..areCounts <- jmvcore::OptionBool$new(
-                "areCounts",
-                areCounts,
-                default=FALSE)
+            private$..rows <- jmvcore::OptionVariable$new(
+                "rows",
+                rows,
+                suggested=list(
+                    "nominal",
+                    "ordinal"))
+            private$..cols <- jmvcore::OptionVariable$new(
+                "cols",
+                cols,
+                suggested=list(
+                    "nominal",
+                    "ordinal"))
+            private$..counts <- jmvcore::OptionVariable$new(
+                "counts",
+                counts,
+                suggested=list(
+                    "continuous"),
+                permitted=list(
+                    "continuous",
+                    "nominal",
+                    "ordinal"),
+                default=NULL)
             private$..obs <- jmvcore::OptionBool$new(
                 "obs",
                 obs,
@@ -34,25 +50,68 @@ ContTablesPairedOptions <- R6::R6Class(
                 pcCol,
                 default=FALSE)
         
-            self$.addOption(private$..pairs)
-            self$.addOption(private$..areCounts)
+            self$.addOption(private$..rows)
+            self$.addOption(private$..cols)
+            self$.addOption(private$..counts)
             self$.addOption(private$..obs)
             self$.addOption(private$..pcRow)
             self$.addOption(private$..pcCol)
         }),
     active = list(
-        pairs = function() private$..pairs$value,
-        areCounts = function() private$..areCounts$value,
+        rows = function() private$..rows$value,
+        cols = function() private$..cols$value,
+        counts = function() private$..counts$value,
         obs = function() private$..obs$value,
         pcRow = function() private$..pcRow$value,
         pcCol = function() private$..pcCol$value),
     private = list(
-        ..pairs = NA,
-        ..areCounts = NA,
+        ..rows = NA,
+        ..cols = NA,
+        ..counts = NA,
         ..obs = NA,
         ..pcRow = NA,
         ..pcCol = NA)
 )
+
+ContTablesPairedResults <- R6::R6Class(
+    inherit = jmvcore::Group,
+    active = list(
+        freqs = function() private$..freqs,
+        test = function() private$..test),
+    private = list(
+        ..freqs = NA,
+        ..test = NA),
+    public=list(
+        initialize=function(options) {
+            super$initialize(options=options, name="", title="Paired Samples Contingency Tables")
+            private$..freqs <- jmvcore::Table$new(
+                options=options,
+                name="freqs",
+                title="Contingency Tables",
+                columns=list(),
+                clearWith=list(
+                    "rows",
+                    "cols",
+                    "counts"))
+            private$..test <- jmvcore::Table$new(
+                options=options,
+                name="test",
+                title="McNemar Test",
+                clearWith=list(
+                    "rows",
+                    "cols",
+                    "counts"),
+                columns=list(
+                    list(`name`="name[mcn]", `title`="", `type`="text", `content`="χ²"),
+                    list(`name`="value[mcn]", `title`="Value"),
+                    list(`name`="df[mcn]", `title`="df", `type`="integer"),
+                    list(`name`="p[mcn]", `title`="p", `type`="number", `format`="zto,pvalue"),
+                    list(`name`="name[cor]", `title`="", `type`="text", `content`="χ² continuity correction"),
+                    list(`name`="value[cor]", `title`="Value"),
+                    list(`name`="df[cor]", `title`="df", `type`="integer"),
+                    list(`name`="p[cor]", `title`="p", `type`="number", `format`="zto,pvalue")))
+            self$add(private$..freqs)
+            self$add(private$..test)}))
 
 ContTablesPairedBase <- R6::R6Class(
     "ContTablesPairedBase",
@@ -64,6 +123,7 @@ ContTablesPairedBase <- R6::R6Class(
                 name = 'ContTablesPaired',
                 version = c(1,0,0),
                 options = options,
+                results = ContTablesPairedResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
@@ -72,18 +132,23 @@ ContTablesPairedBase <- R6::R6Class(
 
 ContTablesPaired <- function(
     data,
-    pairs,
-    areCounts = FALSE,
+    rows,
+    cols,
+    counts = NULL,
     obs = TRUE,
     pcRow = FALSE,
     pcCol = FALSE) {
 
     options <- ContTablesPairedOptions$new(
-        pairs = pairs,
-        areCounts = areCounts,
+        rows = rows,
+        cols = cols,
+        counts = counts,
         obs = obs,
         pcRow = pcRow,
         pcCol = pcCol)
+
+    results <- ContTablesPairedResults$new(
+        options = options)
 
     analysis <- ContTablesPairedClass$new(
         options = options,

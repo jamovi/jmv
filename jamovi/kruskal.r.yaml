@@ -49,12 +49,6 @@ items:
             content: .
             type: text
 
-          - name: sep
-            title: ""
-            content: '-'
-            type: text
-            format: sep
-
           - name: p2
             title: ""
             content: .

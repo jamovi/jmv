@@ -15,22 +15,22 @@ CorrMatrixClass <- R6::R6Class(
         for (i in seq_along(vars)) {
             var <- vars[[i]]
             
-            matrix$addColumn(paste0(var, '[r]'), def=list(
-                title=var, type='number', format='zto', visible='(pearson)'))
-            matrix$addColumn(paste0(var, '[rp]'), def=list(
-                title=var, type='number', format='zto,pvalue', visible='(pearson && sig)'))
-            matrix$addColumn(paste0(var, '[rciu]'), def=list(
-                title=var, type='number', format='zto', visible='(pearson && ci)'))
-            matrix$addColumn(paste0(var, '[rcil]'), def=list(
-                title=var, type='number', format='zto', visible='(pearson && ci)'))
-            matrix$addColumn(paste0(var, '[rho]'), def=list(
-                title=var, type='number', format='zto', visible='(spearman)'))
-            matrix$addColumn(paste0(var, '[rhop]'), def=list(
-                title=var, type='number', format='zto,pvalue', visible='(spearman && sig)'))
-            matrix$addColumn(paste0(var, '[tau]'), def=list(
-                title=var, type='number', format='zto', visible='(kendall)'))
-            matrix$addColumn(paste0(var, '[taup]'), def=list(
-                title=var, type='number', format='zto,pvalue', visible='(kendall && sig)'))
+            matrix$addColumn(name=paste0(var, '[r]'), title=var,
+                type='number', format='zto', visible='(pearson)')
+            matrix$addColumn(name=paste0(var, '[rp]'), title=var,
+                type='number', format='zto,pvalue', visible='(pearson && sig)')
+            matrix$addColumn(name=paste0(var, '[rciu]'), title=var,
+                type='number', format='zto', visible='(pearson && ci)')
+            matrix$addColumn(name=paste0(var, '[rcil]'), title=var,
+                type='number', format='zto', visible='(pearson && ci)')
+            matrix$addColumn(name=paste0(var, '[rho]'), title=var,
+                type='number', format='zto', visible='(spearman)')
+            matrix$addColumn(name=paste0(var, '[rhop]'), title=var,
+                type='number', format='zto,pvalue', visible='(spearman && sig)')
+            matrix$addColumn(name=paste0(var, '[tau]'), title=var,
+                type='number', format='zto', visible='(kendall)')
+            matrix$addColumn(name=paste0(var, '[taup]'), title=var,
+                type='number', format='zto,pvalue', visible='(kendall && sig)')
             
             values <- list()
             

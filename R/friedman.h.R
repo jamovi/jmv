@@ -63,6 +63,54 @@ FriedmanOptions <- R6::R6Class(
         ..plotType = NA)
 )
 
+FriedmanResults <- R6::R6Class(
+    inherit = jmvcore::Group,
+    active = list(
+        table = function() private$..table,
+        comp = function() private$..comp,
+        plot = function() private$..plot),
+    private = list(
+        ..table = NA,
+        ..comp = NA,
+        ..plot = NA),
+    public=list(
+        initialize=function(options) {
+            super$initialize(options=options, name="", title="Friedman Test")
+            private$..table <- jmvcore::Table$new(
+                options=options,
+                name="table",
+                title="Friedman Test",
+                rows=1,
+                clearWith=list(
+                    "measures"),
+                columns=list(
+                    list(`name`="stat", `title`="Χ²", `type`="number"),
+                    list(`name`="df", `title`="df", `type`="integer"),
+                    list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue")))
+            private$..comp <- jmvcore::Table$new(
+                options=options,
+                name="comp",
+                title="Pairwise Comparisons (Durbin-Conover)",
+                visible="(pairs)",
+                clearWith=list(
+                    "measures"),
+                columns=list(
+                    list(`name`="i1", `title`="", `type`="text"),
+                    list(`name`="sep", `title`="", `content`="-", `type`="text", `format`="sep"),
+                    list(`name`="i2", `title`="", `type`="text"),
+                    list(`name`="stat", `title`="Statistic", `type`="number"),
+                    list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue")))
+            private$..plot <- jmvcore::Image$new(
+                options=options,
+                name="plot",
+                title="Descriptive Plot",
+                visible="(plots)",
+                renderInitFun=".plot",
+                renderFun=".plot")
+            self$add(private$..table)
+            self$add(private$..comp)
+            self$add(private$..plot)}))
+
 FriedmanBase <- R6::R6Class(
     "FriedmanBase",
     inherit = jmvcore::Analysis,
@@ -73,6 +121,7 @@ FriedmanBase <- R6::R6Class(
                 name = 'Friedman',
                 version = c(1,0,0),
                 options = options,
+                results = FriedmanResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
@@ -93,6 +142,9 @@ Friedman <- function(
         desc = desc,
         plots = plots,
         plotType = plotType)
+
+    results <- FriedmanResults$new(
+        options = options)
 
     analysis <- FriedmanClass$new(
         options = options,

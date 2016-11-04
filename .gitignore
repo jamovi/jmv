@@ -1,6 +1,6 @@
 
-ui/*.options.js
-inst/jamovi/*.js
+jamovi/ui/*.options.js
 .Rproj.user
 .DS_Store
+npm-debug.log
 
