@@ -1,0 +1,68 @@
+---
+name: Reliability
+title: Reliability Analysis
+api: 1
+
+items:
+    - name: scale
+      title: Scale Reliability Statistics
+      type: Table
+      rows: 1
+      clearWith:
+        - vars
+
+      columns:
+        - name: name
+          title: ''
+          type: 'text'
+          content: scale
+
+        - name: mean
+          title: mean
+          visible: (meanScale)
+
+        - name: sd
+          title: sd
+          visible: (sdScale)
+
+        - name: alpha
+          title: Cronbach's α
+          visible: (alphaScale)
+
+        - name: omega
+          title: McDonald's ω
+          visible: (omegaScale)
+
+    - name: items
+      title: Item Reliability Statistics
+      type: Table
+      visible: (meanItems || sdItems || itemRestCor || alphaItems || omegaItems)
+      rows: (vars)
+      clearWith:
+        - vars
+
+      columns:
+        - name: name
+          title: ''
+          type: 'text'
+          content: ($key)
+
+        - name: mean
+          title: mean
+          visible: (meanItems)
+
+        - name: sd
+          title: sd
+          visible: (sdItems)
+
+        - name: itemRestCor
+          title: item-rest correlation
+          visible: (itemRestCor)
+
+        - name: alpha
+          title: Cronbach's α
+          visible: (alphaItems)
+
+        - name: omega
+          title: McDonald's ω
+          visible: (omegaItems)

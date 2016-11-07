@@ -1,0 +1,72 @@
+---
+name: Reliability
+title: Reliability Analysis
+version: "1.0.0"
+jmc: "1.0.0"
+engineType: R
+
+
+options:
+    - name: data
+      type: Data
+      description: >
+        The data set as a data frame
+
+    - name: vars
+      title: Variables
+      type: Variables
+      suggested:
+        - ordinal
+        - continuous
+      permitted:
+        - continuous
+        - nominal
+        - ordinal
+      rejectInf: false
+      description: >
+        The variables of interest
+
+    - name: alphaScale
+      title: Cronbach's α
+      type: Bool
+      default: true
+
+    - name: omegaScale
+      title: McDonald's ω
+      type: Bool
+      default: false
+
+    - name: meanScale
+      title: Mean
+      type: Bool
+      default: false
+
+    - name: sdScale
+      title: Standard deviation
+      type: Bool
+      default: false
+
+    - name: alphaItems
+      title: Cronbach's α (if item is dropped)
+      type: Bool
+      default: false
+
+    - name: omegaItems
+      title: McDonald's ω (if item is dropped)
+      type: Bool
+      default: false
+
+    - name: meanItems
+      title: Mean
+      type: Bool
+      default: false
+
+    - name: sdItems
+      title: Standard deviation
+      type: Bool
+      default: false
+
+    - name: itemRestCor
+      title: Item-rest correlation
+      type: Bool
+      default: false
