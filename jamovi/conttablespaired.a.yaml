@@ -1,9 +1,12 @@
 ---
-name:    ContTablesPaired
-title:   Paired Samples Contingency Tables
+name: ContTablesPaired
+title: Paired Samples
+subtitle: McNemar test
 version: "1.0.0"
 jmc: "1.0.0"
 engineType: R
+group: Frequencies
+subgroup: Contingency Tables
 
 options:
     - name: data

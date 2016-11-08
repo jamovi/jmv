@@ -4,6 +4,7 @@ title:   Log-Linear Regression
 version: "1.0.0"
 jmc: "1.0.0"
 engineType: R
+group: Frequencies
 
 options:
     - name: data

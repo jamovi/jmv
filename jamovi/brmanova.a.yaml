@@ -4,6 +4,8 @@ title:   Bayesian Repeated Measures ANOVA
 version: "1.0.0"
 jmc: "1.0.0"
 engineType: R
+group: ANOVA
+subgroup: Bayesian
 
 options:
     - name: data

@@ -1,9 +1,12 @@
 ---
-name:     Friedman
-title: Friedman
+name: Friedman
+title: Repeated Measures ANOVA
+subtitle: Friedman
 version: "1.0.0"
 jmc: "1.0.0"
 engineType: R
+group: ANOVA
+subgroup: Non-Parametric
 
 options:
     - name: data

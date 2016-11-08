@@ -1,9 +1,12 @@
 ---
-name:    Binomial
-title:   Binomial Test
+name: Binomial
+title: 2 Outcomes
+subtitle: Binomial test
 version: "1.0.0"
 jmc: "1.0.0"
 engineType: R
+group: Frequencies
+subgroup: One Sample Proportion Tests
 
 options:
     - name: data

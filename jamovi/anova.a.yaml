@@ -5,6 +5,7 @@ version: "1.0.0"
 jmc: "1.0.0"
 description: >
   Analysis of Variance
+group: ANOVA
 
 options:
     - name: data

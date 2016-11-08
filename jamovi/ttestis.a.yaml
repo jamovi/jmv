@@ -4,6 +4,7 @@ title: Independent Samples T-Test
 version: "1.0.0"
 jmc: "1.0.0"
 engineType: R
+group: T-Tests
 
 options:
     - name: data
