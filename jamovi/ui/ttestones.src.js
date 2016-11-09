@@ -121,15 +121,13 @@ var ttestonesLayout = ui.extend({
 
     actions: [
         {
-            onChange : "ci", execute : function(context) {
-                var disabled = context.getValue("ci") === false;
-                context.set("ciWidth", "disabled", disabled);
+            onChange : "ci", execute : function(ui) {
+                ui.ciWidth.setEnabled(ui.ci.value());
             }
         },
         {
-            onChange : "bf", execute : function(context) {
-                var disabled = context.getValue("bf") === false;
-                context.set("bfPrior", "disabled", disabled);
+            onChange : "bf", execute : function(ui) {
+                ui.bfPrior.setEnabled(ui.bf.value());
             }
         }
     ]

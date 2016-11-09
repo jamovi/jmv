@@ -58,9 +58,8 @@ var binomialTestLayout = ui.extend({
 
     actions : [
         {
-            onChange: "ci", execute: function(context) {
-                var disabled = context.getValue("ci") === false;
-                context.set("ciWidth", "disabled", disabled);
+            onChange: "ci", execute: function(ui) {
+                ui.ciWidth.setEnabled(ui.ci.value());
             }
         }
     ]

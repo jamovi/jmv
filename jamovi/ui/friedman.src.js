@@ -46,10 +46,10 @@ var friedmanLayout = ui.extend({
 
     actions: [
         {
-            onChange : "plots", execute : function(context) {
-                var disabled = context.getValue("plots") === false;
-                context.set("plotType_means", "disabled", disabled);
-                context.set("plotType_medians", "disabled", disabled);
+            onChange : "plots", execute : function(ui) {
+                var value = ui.plots.value();
+                ui.plotType_means.setEnabled(value);
+                ui.plotType_medians.setEnabled(value);
             }
         }
     ]

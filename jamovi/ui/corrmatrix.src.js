@@ -85,16 +85,16 @@ var binomialTestLayout = ui.extend({
 
     actions: [
         {
-            onChange : "plots", execute : function(context) {
-                var disabled = context.getValue("plots") === false;
-                context.set("plotDens",  "disabled", disabled);
-                context.set("plotStats", "disabled", disabled);
+            onChange : "plots", execute : function(ui) {
+                var value = ui.plots.value();
+                ui.plotDens.setEnabled(value);
+                ui.plotStats.setEnabled(value);
             }
         },
         {
-            onChange : "ci", execute : function(context) {
-                var disabled = context.getValue("ci") === false;
-                context.set("ciWidth", "disabled", disabled);
+            onChange : "ci", execute : function(ui) {
+                var value = ui.ci.value();
+                ui.ciWidth.setEnabled(value);
             }
         }
     ]

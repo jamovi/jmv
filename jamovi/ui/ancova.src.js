@@ -273,29 +273,27 @@ var ancovaLayout = ui.extend({
 
     actions: [
         {
-            onChange: "compMain", execute: function(context) {
-                var value = context.getValue("compMain") ;
-                context.set("compMainCorr", "disabled", value === false);
+            onChange: "compMain", execute: function(ui) {
+                ui.compMainCorr.setEnabled(ui.compMain.value());
             }
         },
         {
-            onChange: "plotError", execute: function(context) {
-                var disabled = context.getValue("plotError") !== "ci";
-                context.set("ciWidth", "disabled", disabled);
+            onChange: "plotError", execute: function(ui) {
+                ui.ciWidth.setEnabled(ui.plotError.value() === "ci");
             }
         },
         {
-            onChange: ["fixedFactors", "covariates"], execute: function(context) {
-                this.calcModelTerms(context);
+            onChange: ["fixedFactors", "covariates"], execute: function(ui) {
+                this.calcModelTerms(ui);
             }
         },
         {
-            onChange: "modelTerms", execute: function(context) {
-                this.filterModelTerms(context);
+            onChange: "modelTerms", execute: function(ui) {
+                this.filterModelTerms(ui);
             }
         },
         {
-            onEvent: "view.data-initialising", execute: function(context) {
+            onEvent: "view.data-initialising", execute: function(ui) {
                 this._lastVariableList = null;
                 this._lastCurrentList = null;
                 this._lastCombinedList = null;
@@ -304,24 +302,24 @@ var ancovaLayout = ui.extend({
             }
         },
         {
-            onEvent: "view.data-initialised", execute: function(context) {
+            onEvent: "view.data-initialised", execute: function(ui) {
                 if (this._lastVariableList === null || this._lastCombinedList === null || this._lastCovariatesList === null)
-                    this.calcModelTerms(context);
+                    this.calcModelTerms(ui);
 
                 if (this._lastCurrentList === null)
-                    this.filterModelTerms(context);
+                    this.filterModelTerms(ui);
 
                 this._initialising = false;
             }
         }
     ],
 
-    filterModelTerms: function(context) {
-        var currentList = this.clone(context.getValue("modelTerms"));
+    filterModelTerms: function(ui) {
+        var currentList = this.clone(ui.modelTerms.value());
         if (currentList === null)
             currentList = [];
 
-        var covariatesList = context.getValue("covariates");
+        var covariatesList = ui.covariates.value();
         if (covariatesList === null)
             covariatesList = [];
 
@@ -333,7 +331,7 @@ var ancovaLayout = ui.extend({
         }
 
         var list = this.convertArrayToSupplierList(covariateFreeList, FormatDef.variable);
-        context.setValue("marginalMeansSupplier", list);
+        ui.marginalMeansSupplier.setValue(list);
 
         var diff = null;
         if ( ! this._initialising)
@@ -365,11 +363,11 @@ var ancovaLayout = ui.extend({
             changed = true;
 
         if (changed)
-            context.setValue("modelTerms", currentList);
+            ui.modelTerms.setValue(currentList);
 
         if (diff.removed.length > 0) {
             itemsRemoved = false;
-            var margMeans = this.clone(context.getValue("margMeans"));
+            var margMeans = this.clone(ui.margMeans.value());
             if (margMeans === null)
                 margMeans = [];
 
@@ -385,25 +383,25 @@ var ancovaLayout = ui.extend({
             }
 
             if (itemsRemoved) {
-                context.setValue("margMeans", margMeans);
+                ui.margMeans.setValue(margMeans);
             }
         }
     },
 
-    calcModelTerms : function(context) {
-        var variableList = this.clone(context.getValue("fixedFactors"));
+    calcModelTerms : function(ui) {
+        var variableList = this.clone(ui.fixedFactors.value());
         if (variableList === null)
             variableList = [];
 
-        var covariatesList = this.clone(context.getValue("covariates"));
+        var covariatesList = this.clone(ui.covariates.value());
         if (covariatesList === null)
             covariatesList = [];
 
         var combinedList = variableList.concat(covariatesList);
 
-        context.setValue("modelSupplier", this.convertArrayToSupplierList(combinedList, FormatDef.variable));
-        context.setValue("plotsSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
-        context.setValue("postHocSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
+        ui.modelSupplier.setValue(this.convertArrayToSupplierList(combinedList, FormatDef.variable));
+        ui.plotsSupplier.setValue(this.convertArrayToSupplierList(variableList, FormatDef.variable));
+        ui.postHocSupplier.setValue(this.convertArrayToSupplierList(variableList, FormatDef.variable));
 
         var diff = { removed: [], added: [] };
         if (this._lastVariableList !== null)
@@ -423,7 +421,7 @@ var ancovaLayout = ui.extend({
         if (this._initialising)
             return;
 
-        var currentList = this.clone(context.getValue("modelTerms"));
+        var currentList = this.clone(ui.modelTerms.value());
         if (currentList === null)
             currentList = [];
 
@@ -458,13 +456,13 @@ var ancovaLayout = ui.extend({
         for (var i = 0; i < diff2.added.length; i++)
             currentList.push(diff2.added[i]);
 
-        context.setValue("modelTerms", currentList);
+        ui.modelTerms.setValue(currentList);
 
-        this.updateContrasts(context, variableList);
+        this.updateContrasts(ui, variableList);
     },
 
-    updateContrasts : function(context, variableList) {
-        var currentList = this.clone(context.getValue("contrasts"));
+    updateContrasts : function(ui, variableList) {
+        var currentList = this.clone(ui.contrasts.value());
         if (currentList === null)
             currentList = [];
 
@@ -472,7 +470,7 @@ var ancovaLayout = ui.extend({
         for (var i = 0; i < variableList.length; i++)
             list3.push({ var: variableList[i], type: "none" });
 
-        context.setValue("contrasts", list3);
+        ui.contrasts.setValue(list3);
     },
 
     sortByLength : function(list) {

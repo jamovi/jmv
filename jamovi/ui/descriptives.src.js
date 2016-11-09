@@ -108,9 +108,8 @@ var descriptivesLayout = ui.extend({
 
     actions: [
         {
-            onChange : "pcEqGr", execute : function(context) {
-                var disabled = context.getValue("pcEqGr") === false;
-                context.set("pcNEqGr", "disabled", disabled);
+            onChange : "pcEqGr", execute : function(ui) {
+                ui.pcNEqGr.setEnabled(ui.pcEqGr.value());
             }
         }
     ]

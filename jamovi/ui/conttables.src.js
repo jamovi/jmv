@@ -138,9 +138,8 @@ var layout = ui.extend({
 
     actions: [
         {
-            onChange : "logOdds", execute : function(context) {
-                var disabled = context.getValue("logOdds") === false;
-                context.set("ciWidth", "disabled", disabled);
+            onChange : "logOdds", execute : function(ui) {
+                ui.ciWidth.setEnabled(ui.logOdds.value());
             }
         }
     ]
