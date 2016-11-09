@@ -89,35 +89,34 @@ var layout = ui.extend({
 
     actions: [
         {
-            onChange: "ci", execute: function(context) {
-                var disabled = context.getValue("ci") === false;
-                context.set("ciWidth", "disabled", disabled);
+            onChange: "ci", execute: function(ui) {
+                ui.ciWidth.setEnabled(ui.ci.value());
             }
         },
         {
-            onEvent: "view.data-initialising", execute: function(context) {
+            onEvent: "view.data-initialising", execute: function(ui) {
                 this._lastVariableList = null;
                 this._lastCurrentList = null;
                 this._initialising = true;
             }
         },
         {
-            onChange: "factors", execute: function(context) {
-                this.calcModelTerms(context);
+            onChange: "factors", execute: function(ui) {
+                this.calcModelTerms(ui);
             }
         },
         {
-            onChange: "modelTerms", execute: function(context) {
-                this.filterModelTerms(context);
+            onChange: "modelTerms", execute: function(ui) {
+                this.filterModelTerms(ui);
             }
         },
         {
-            onEvent: "view.data-initialised", execute: function(context) {
+            onEvent: "view.data-initialised", execute: function(ui) {
                 if (this._lastVariableList === null)
-                    this.calcModelTerms(context);
+                    this.calcModelTerms(ui);
 
                 if (this._lastCurrentList === null)
-                    this.filterModelTerms(context);
+                    this.filterModelTerms(ui);
 
                 this._initialising = false;
             }
@@ -191,12 +190,12 @@ var layout = ui.extend({
         return changed;
     },
 
-    calcModelTerms: function(context) {
-        var variableList = this.clone(context.getValue("factors"));
+    calcModelTerms: function(ui) {
+        var variableList = this.clone(ui.factors.value());
         if (variableList === null)
             variableList = [];
 
-        context.setValue("modelSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
+        ui.modelSupplier.setValue(this.convertArrayToSupplierList(variableList, FormatDef.variable));
 
         var diff = { removed: [], added: [] };
         if (this._lastVariableList !== null)
@@ -206,7 +205,7 @@ var layout = ui.extend({
         if (this._initialising)
             return;
 
-        var currentList = this.clone(context.getValue("modelTerms"));
+        var currentList = this.clone(ui.modelTerms.value());
         if (currentList === null)
             currentList = [];
 
@@ -236,11 +235,11 @@ var layout = ui.extend({
             currentList.push(diff.added[i]);
         }
 
-        context.setValue("modelTerms", currentList);
+        ui.modelTerms.setValue(currentList);
     },
 
-    filterModelTerms : function(context) {
-        var currentList = this.clone(context.getValue("modelTerms"));
+    filterModelTerms : function(ui) {
+        var currentList = this.clone(ui.modelTerms.value());
         if (currentList === null)
             currentList = [];
 
@@ -274,7 +273,7 @@ var layout = ui.extend({
             changed = true;
 
         if (changed)
-            context.setValue("modelTerms", currentList);
+            ui.modelTerms.setValue(currentList);
     },
 
     convertArrayToSupplierList: function(array, format) {

@@ -232,45 +232,44 @@ var anovaLayout = ui.extend({
 
     actions: [
         {
-            onChange: "plotError", execute: function(context) {
-                var disabled = context.getValue("plotError") !== "ci";
-                context.set("ciWidth", "disabled", disabled);
+            onChange: "plotError", execute: function(ui) {
+                ui.ciWidth.setEnabled(ui.plotError.value() === "ci");
             }
         },
         {
-            onChange: "fixedFactors", execute: function(context) {
-                this.calcModelTerms(context);
+            onChange: "fixedFactors", execute: function(ui) {
+                this.calcModelTerms(ui);
             }
         },
         {
-            onChange: "modelTerms", execute: function(context) {
-                this.filterModelTerms(context);
+            onChange: "modelTerms", execute: function(ui) {
+                this.filterModelTerms(ui);
             }
         },
         {
-            onEvent: "modelTerms.preprocess", execute: function(context, data) {
+            onEvent: "modelTerms.preprocess", execute: function(ui, data) {
                 data.items = this._variableListInteractions(data.items);
             }
         },
         {
-            onEvent: "view.loaded", execute: function(context) {
+            onEvent: "view.loaded", execute: function(ui) {
                 this._loaded = true;
             }
         },
         {
-            onEvent: "view.data-initialising", execute: function(context) {
+            onEvent: "view.data-initialising", execute: function(ui) {
                 this._lastVariableList = null;
                 this._lastCurrentList = null;
                 this._initialising = true;
             }
         },
         {
-            onEvent: "view.data-initialised", execute: function(context) {
+            onEvent: "view.data-initialised", execute: function(ui) {
                 if (this._lastVariableList === null)
-                    this.calcModelTerms(context);
+                    this.calcModelTerms(ui);
 
                 if (this._lastCurrentList === null)
-                    this.filterModelTerms(context);
+                    this.filterModelTerms(ui);
 
                 this._initialising = false;
             }
@@ -367,13 +366,13 @@ var anovaLayout = ui.extend({
 
 
 
-    calcModelTerms: function(context) {
-        var variableList = this.clone(context.getValue("fixedFactors"));
+    calcModelTerms: function(ui) {
+        var variableList = this.clone(ui.fixedFactors.value());
         if (variableList === null)
             variableList = [];
 
-        context.setValue("modelSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
-        context.setValue("plotsSupplier", this.convertArrayToSupplierList(variableList, FormatDef.variable));
+        ui.modelSupplier.setValue(this.convertArrayToSupplierList(variableList, FormatDef.variable));
+        ui.plotsSupplier.setValue(this.convertArrayToSupplierList(variableList, FormatDef.variable));
 
         var varsDiff = { removed: [], added: [] };
         if (this._lastVariableList !== null)
@@ -383,7 +382,7 @@ var anovaLayout = ui.extend({
         if (this._initialising || !this._loaded)
             return;
 
-        var termsList = this.clone(context.getValue("modelTerms"));
+        var termsList = this.clone(ui.modelTerms.value());
         if (termsList === null)
             termsList = [];
 
@@ -411,19 +410,19 @@ var anovaLayout = ui.extend({
         }
 
         if (termsChanged)
-            context.setValue("modelTerms", termsList);
+            ui.modelTerms.setValue(termsList);
 
-        this.updateContrasts(context, variableList);
-        this.updateFactorDependents(context, variableList, termsList);
+        this.updateContrasts(ui, variableList);
+        this.updateFactorDependents(ui, variableList, termsList);
     },
 
-    filterModelTerms : function(context) {
-        var termsList = this.clone(context.getValue("modelTerms"));
+    filterModelTerms : function(ui) {
+        var termsList = this.clone(ui.modelTerms.value());
         if (termsList === null)
             termsList = [];
 
         var list = this.convertArrayToSupplierList(termsList, FormatDef.term);
-        context.setValue("postHocSupplier", list);
+        ui.postHocSupplier.setValue(list);
 
         var termsDiff = { removed: [], added: [] };
         if (this._lastCurrentList !== null)
@@ -455,11 +454,11 @@ var anovaLayout = ui.extend({
             changed = true;
 
         if (changed)
-            context.setValue("modelTerms", termsList);
+            ui.modelTerms.setValue(termsList);
 
         if (termsDiff.removed.length > 0) {
             itemsRemoved = false;
-            var postHoc = this.clone(context.getValue("postHoc"));
+            var postHoc = this.clone(ui.postHoc.value());
             if (postHoc === null)
                 postHoc = [];
 
@@ -475,24 +474,35 @@ var anovaLayout = ui.extend({
             }
 
             if (itemsRemoved)
-                context.setValue("postHoc", postHoc);
+                ui.postHoc.setValue(postHoc);
         }
     },
 
-    updateContrasts : function(context, variableList) {
-        var currentList = this.clone(context.getValue("contrasts"));
+    updateContrasts : function(ui, variableList) {
+        var currentList = this.clone(ui.contrasts.value());
         if (currentList === null)
             currentList = [];
 
         var list3 = [];
-        for (var i = 0; i < variableList.length; i++)
-            list3.push({ var: variableList[i], type: "none" });
+        for (let i = 0; i < variableList.length; i++) {
+            let found = null;
+            for (let j = 0; j < currentList.length; j++) {
+                if (currentList[j].var === variableList[i]) {
+                    found = currentList[j];
+                    break;
+                }
+            }
+            if (found === null)
+                list3.push({ var: variableList[i], type: "none" });
+            else
+                list3.push(found);
+        }
 
-        context.setValue("contrasts", list3);
+        ui.contrasts.setValue(list3);
     },
 
-    cleanDependentOption: function(context, sourceList, format, dependantName, dependantIsList) {
-        var dependantList = this.clone(context.getValue(dependantName));
+    cleanDependentOption: function(ui, sourceList, format, dependantName, dependantIsList) {
+        var dependantList = this.clone(ui[dependantName].value());
         if (dependantIsList && dependantList === null)
             dependantList = [];
 
@@ -513,14 +523,14 @@ var anovaLayout = ui.extend({
         }
 
         if (changed)
-            context.setValue(dependantName, dependantList);
+            ui[dependantName].value(dependantList);
     },
 
-    updateFactorDependents : function(context, factorList, modelList) {
-        this.cleanDependentOption(context, factorList, FormatDef.variable, "descPlotsHAxis", false);
-        this.cleanDependentOption(context, factorList, FormatDef.variable, "descPlotsSepLines", false);
-        this.cleanDependentOption(context, factorList, FormatDef.variable, "descPlotsSepPlots", false);
-        this.cleanDependentOption(context, modelList, FormatDef.term, "postHoc", true);
+    updateFactorDependents : function(ui, factorList, modelList) {
+        this.cleanDependentOption(ui, factorList, FormatDef.variable, "descPlotsHAxis", false);
+        this.cleanDependentOption(ui, factorList, FormatDef.variable, "descPlotsSepLines", false);
+        this.cleanDependentOption(ui, factorList, FormatDef.variable, "descPlotsSepPlots", false);
+        this.cleanDependentOption(ui, modelList, FormatDef.term, "postHoc", true);
     }
 
 });

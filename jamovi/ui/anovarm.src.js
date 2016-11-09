@@ -322,29 +322,28 @@ var anovarmLayout = ui.extend({
 
     actions: [
         {
-            onChange: "spherCorrs", execute: function(context) {
-                var disabled = context.getValue("spherCorrs") === false;
-                context.set("spherCorrNone", "disabled", disabled);
-                context.set("spherCorrGreenGsser", "disabled", disabled);
-                context.set("spherCorrHuyFdt", "disabled", disabled);
+            onChange: "spherCorrs", execute: function(ui) {
+                var value = ui.spherCorrs.value();
+                ui.spherCorrNone.setEnabled(value);
+                ui.spherCorrGreenGsser.setEnabled(value);
+                ui.spherCorrHuyFdt.setEnabled(value);
             }
         },
         {
-            onChange: "dispErrBars", execute: function(context) {
-                var disabled = context.getValue("dispErrBars") === false;
-                context.set("errBarDef_se", "disabled", disabled);
-                context.set("errBarDef_ci", "disabled", disabled);
+            onChange: "dispErrBars", execute: function(ui) {
+                var value = ui.dispErrBars.value();
+                ui.errBarDef_se.setEnabled(value);
+                ui.errBarDef_ci.setEnabled(value);
             }
         },
         {
-            onChange: ["dispErrBars", "errBarDef"], execute: function(context) {
-                var value = context.getValue("dispErrBars") === false || context.getValue("errBarDef") !== "ci";
-                context.set("ciWidth", "disabled", value);
+            onChange: ["dispErrBars", "errBarDef"], execute: function(ui) {
+                ui.ciWidth.setEnabled(ui.dispErrBars.value() && ui.errBarDef.value() === "ci");
             }
         },
         {
-            onChange: "rm", execute: function(context) {
-                var value = context.getValue("rm");
+            onChange: "rm", execute: function(ui) {
+                var value = ui.rm.value();
                 if (value === null)
                     return;
 
@@ -381,36 +380,36 @@ var anovarmLayout = ui.extend({
                 }
 
                 this._factorCells = data;
-                this.filterCells(context);
+                this.filterCells(ui);
             }
         },
         {
-            onChange: "rmCells", execute: function(context) {
-                this.filterCells(context);
+            onChange: "rmCells", execute: function(ui) {
+                this.filterCells(ui);
             }
         },
         {
-            onChange: ["bs", "cov", "rm"], execute: function(context) {
-                this.calcModelTerms(context);
+            onChange: ["bs", "cov", "rm"], execute: function(ui) {
+                this.calcModelTerms(ui);
             }
         },
         {
-            onChange: "bsTerms", execute: function(context) {
-                this.filterModelTerms(context);
+            onChange: "bsTerms", execute: function(ui) {
+                this.filterModelTerms(ui);
             }
         },
         {
-            onEvent: "bsTerms.preprocess", execute: function(context, data) {
+            onEvent: "bsTerms.preprocess", execute: function(ui, data) {
                 data.items = this._variableListInteractions(data.items);
             }
         },
         {
-            onEvent: "view.loaded", execute: function(context) {
+            onEvent: "view.loaded", execute: function(ui) {
                 this._loaded = true;
             }
         },
         {
-            onEvent: "view.data-initialising", execute: function(context) {
+            onEvent: "view.data-initialising", execute: function(ui) {
                 this._lastVariableList = null;
                 this._lastCombinedList = null;
                 this._lastCombinedList2 = null;
@@ -420,12 +419,12 @@ var anovarmLayout = ui.extend({
             }
         },
         {
-            onEvent: "view.data-initialised", execute: function(context) {
+            onEvent: "view.data-initialised", execute: function(ui) {
                 if (this._lastVariableList === null || this._lastCombinedList === null || this._lastCombinedList2 === null || this._lastCovariatesList === null)
-                    this.calcModelTerms(context);
+                    this.calcModelTerms(ui);
 
                 if (this._lastCurrentList === null)
-                    this.filterModelTerms(context);
+                    this.filterModelTerms(ui);
 
                 this._initialising = false;
             }
@@ -530,16 +529,16 @@ var anovarmLayout = ui.extend({
 
 
 
-    calcModelTerms : function(context) {
-        var variableList = this.clone(context.getValue("bs"));
+    calcModelTerms : function(ui) {
+        var variableList = this.clone(ui.bs.value());
         if (variableList === null)
             variableList = [];
 
-        var covariatesList = this.clone(context.getValue("cov"));
+        var covariatesList = this.clone(ui.cov.value());
         if (covariatesList === null)
             covariatesList = [];
 
-        var factorList = this.clone(context.getValue("rm"));
+        var factorList = this.clone(ui.rm.value());
         if (factorList === null)
             factorList = [];
         else {
@@ -551,10 +550,10 @@ var anovarmLayout = ui.extend({
 
         var combinedList2 = factorList.concat(variableList);
 
-        context.setValue("rmcModelSupplier", this.convertArrayToSupplierList(factorList, FormatDef.variable))
-        context.setValue("bscModelSupplier", this.convertArrayToSupplierList(combinedList, FormatDef.variable));
-        context.setValue("plotsSupplier", this.convertArrayToSupplierList(combinedList2, FormatDef.variable));
-        context.setValue("postHocSupplier", this.convertArrayToSupplierList(combinedList2, FormatDef.variable));
+        ui.rmcModelSupplier.setValue(this.convertArrayToSupplierList(factorList, FormatDef.variable))
+        ui.bscModelSupplier.setValue(this.convertArrayToSupplierList(combinedList, FormatDef.variable));
+        ui.plotsSupplier.setValue(this.convertArrayToSupplierList(combinedList2, FormatDef.variable));
+        ui.postHocSupplier.setValue(this.convertArrayToSupplierList(combinedList2, FormatDef.variable));
 
         var diff = { removed: [], added: [] };
         if (this._lastVariableList !== null)
@@ -575,7 +574,7 @@ var anovarmLayout = ui.extend({
         if (this._initialising || !this._loaded)
             return;
 
-        var termsList = this.clone(context.getValue("bsTerms"));
+        var termsList = this.clone(ui.bsTerms.value());
         if (termsList === null)
             termsList = [];
 
@@ -610,13 +609,13 @@ var anovarmLayout = ui.extend({
         }
 
         if (termsChanged)
-            context.setValue("bsTerms", termsList);
+            ui.bsTerms.setValue(termsList);
 
-        this.updateContrasts(context, combinedList2);
+        this.updateContrasts(ui, combinedList2);
     },
 
-    filterModelTerms: function(context) {
-        var termsList = this.clone(context.getValue("bsTerms"));
+    filterModelTerms: function(ui) {
+        var termsList = this.clone(ui.bsTerms.value());
         if (termsList === null)
             termsList = [];
 
@@ -650,7 +649,7 @@ var anovarmLayout = ui.extend({
             changed = true;
 
         if (changed)
-            context.setValue("bsTerms", termsList);
+            ui.bsTerms.setValue(termsList);
     },
 
     containsCovariate: function(value, covariates) {
@@ -662,8 +661,8 @@ var anovarmLayout = ui.extend({
         return false;
     },
 
-    updateContrasts : function(context, variableList) {
-        var currentList = this.clone(context.getValue("contrasts"));
+    updateContrasts : function(ui, variableList) {
+        var currentList = this.clone(ui.contrasts.value());
         if (currentList === null)
             currentList = [];
 
@@ -671,15 +670,15 @@ var anovarmLayout = ui.extend({
         for (var i = 0; i < variableList.length; i++)
             list3.push({ var: variableList[i], type: "none" });
 
-        context.setValue("contrasts", list3);
+        ui.contrasts.setValue(list3);
     },
 
-    filterCells: function(context) {
+    filterCells: function(ui) {
 
         if (this._factorCells === null)
             return;
 
-        var cells = this.clone(context.getValue("rmCells"));
+        var cells = this.clone(ui.rmCells.value());
         if (cells === null)
             cells = [];
 
@@ -705,8 +704,8 @@ var anovarmLayout = ui.extend({
         }
 
         if (changed) {
-            context.setValue("rmCells", cells);
-            context.set("rmCells", "maxItemCount", cells.length);
+            ui.rmCells.setValue(cells);
+            ui.rmCells.setPropertyValue("maxItemCount", cells.length);
         }
     },
 
