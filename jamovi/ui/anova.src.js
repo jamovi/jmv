@@ -484,8 +484,19 @@ var anovaLayout = ui.extend({
             currentList = [];
 
         var list3 = [];
-        for (var i = 0; i < variableList.length; i++)
-            list3.push({ var: variableList[i], type: "none" });
+        for (let i = 0; i < variableList.length; i++) {
+            let found = null;
+            for (let j = 0; j < currentList.length; j++) {
+                if (currentList[j].var === variableList[i]) {
+                    found = currentList[j];
+                    break;
+                }
+            }
+            if (found === null)
+                list3.push({ var: variableList[i], type: "none" });
+            else
+                list3.push(found);
+        }
 
         ui.contrasts.setValue(list3);
     },

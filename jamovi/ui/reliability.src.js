@@ -34,38 +34,26 @@ var layout = ui.extend({
             margin: "large",
             controls: [
                 {
-                    type: "layoutbox",
-                    name: "column1",
+                    type: "label",
+                    label: "Scale Statistics",
                     cell: [0, 0],
                     controls : [
-                        {
-                            type: "label",
-                            label: "Scale Statistics",
-                            controls : [
-                                { name: "alphaScale",   type:"checkbox", label: "Cronbach's α" },
-                                { name: "omegaScale",   type:"checkbox", label: "McDonald's ω" },
-                                { name: "meanScale",   type:"checkbox", label: "Mean" },
-                                { name: "sdScale",   type:"checkbox", label: "Standard deviation" }
-                            ]
-                        }
+                        { name: "alphaScale",   type:"checkbox", label: "Cronbach's α" },
+                        { name: "omegaScale",   type:"checkbox", label: "McDonald's ω" },
+                        { name: "meanScale",   type:"checkbox", label: "Mean" },
+                        { name: "sdScale",   type:"checkbox", label: "Standard deviation" }
                     ]
                 },
                 {
-                    type: "layoutbox",
-                    name: "column2",
+                    type: "label",
+                    label: "Item Statistics",
                     cell: [1, 0],
                     controls : [
-                        {
-                            type: "label",
-                            label: "Item Statistics",
-                            controls : [
-                                { name: "alphaItems",   type:"checkbox", label: "Cronbach's α (if item is dropped)" },
-                                { name: "omegaItems",   type:"checkbox", label: "McDonald's ω (if item is dropped)" },
-                                { name: "meanItems",   type:"checkbox", label: "Mean" },
-                                { name: "sdItems",   type:"checkbox", label: "Standard deviation" },
-                                { name: "itemRestCor",   type:"checkbox", label: "Item-rest correlation" }
-                            ]
-                        }
+                        { name: "alphaItems",   type:"checkbox", label: "Cronbach's α (if item is dropped)" },
+                        { name: "omegaItems",   type:"checkbox", label: "McDonald's ω (if item is dropped)" },
+                        { name: "meanItems",   type:"checkbox", label: "Mean" },
+                        { name: "sdItems",   type:"checkbox", label: "Standard deviation" },
+                        { name: "itemRestCor",   type:"checkbox", label: "Item-rest correlation" }
                     ]
                 }
             ]
