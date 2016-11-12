@@ -394,12 +394,29 @@ var anovarmLayout = ui.extend({
             }
         },
         {
+            onChange: "rmTerms", execute: function(ui) {
+                let value = ui.rmTerms.value();
+                /*if ((value === null || value.length === 0) && this._initialising) {
+                    ui.rmTerms.setValue([["RM Factor 1"]]);
+                    this._lastRMTerms = [["RM Factor 1"]];
+                    this._lastFactorsList = [["RM Factor 1"]];
+                }
+                else*/
+                    this.filterModelRMTerms(ui);
+            }
+        },
+        {
             onChange: "bsTerms", execute: function(ui) {
                 this.filterModelTerms(ui);
             }
         },
         {
             onEvent: "bsTerms.preprocess", execute: function(ui, data) {
+                data.items = this._variableListInteractions(data.items);
+            }
+        },
+        {
+            onEvent: "rmTerms.preprocess", execute: function(ui, data) {
                 data.items = this._variableListInteractions(data.items);
             }
         },
@@ -411,6 +428,11 @@ var anovarmLayout = ui.extend({
         {
             onEvent: "view.data-initialising", execute: function(ui) {
                 this._lastVariableList = null;
+                /*ui.rmTerms.setValue([["RM Factor 1"]]);
+                this._lastRMTerms = [["RM Factor 1"]];
+                this._lastFactorsList = [["RM Factor 1"]];*/
+                this._lastRMTerms = null;
+                this._lastFactorsList = null;
                 this._lastCombinedList = null;
                 this._lastCombinedList2 = null;
                 this._lastCovariatesList = null;
@@ -420,11 +442,14 @@ var anovarmLayout = ui.extend({
         },
         {
             onEvent: "view.data-initialised", execute: function(ui) {
-                if (this._lastVariableList === null || this._lastCombinedList === null || this._lastCombinedList2 === null || this._lastCovariatesList === null)
+                if (this._lastFactorsList === null || this._lastVariableList === null || this._lastCombinedList === null || this._lastCombinedList2 === null || this._lastCovariatesList === null)
                     this.calcModelTerms(ui);
 
                 if (this._lastCurrentList === null)
                     this.filterModelTerms(ui);
+
+                if (this._lastRMTerms === null)
+                    this.filterModelRMTerms(ui);
 
                 this._initialising = false;
             }
@@ -527,7 +552,46 @@ var anovarmLayout = ui.extend({
         return -1;
     },
 
+    calcRMTerms : function(ui, factorList) {
 
+        var diff = { removed: [], added: [] };
+        if (this._lastFactorsList !== null)
+            diff = this.findDifferences(FormatDef.variable, this._lastFactorsList, factorList);
+        this._lastFactorsList = factorList;
+
+        if (this._initialising || !this._loaded)
+            return;
+
+        var termsList = this.clone(ui.rmTerms.value());
+        if (termsList === null)
+            termsList = [];
+
+        var termsChanged = false;
+
+        for (var i = 0; i < diff.removed.length; i++) {
+            for (var j = 0; j < termsList.length; j++) {
+                if (FormatDef.term.contains(termsList[j], diff.removed[i])) {
+                    termsList.splice(j, 1);
+                    termsChanged = true;
+                    j -= 1;
+                }
+            }
+        }
+
+        for (var i = 0; i < diff.added.length; i++) {
+            var listLength = termsList.length;
+            for (var j = 0; j < listLength; j++) {
+                var newTerm = this.clone(termsList[j]);
+                newTerm.push(diff.added[i])
+                termsList.push(newTerm);
+            }
+            termsList.push([diff.added[i]]);
+            termsChanged = true;
+        }
+
+        if (termsChanged)
+            ui.rmTerms.setValue(termsList);
+    },
 
     calcModelTerms : function(ui) {
         var variableList = this.clone(ui.bs.value());
@@ -543,7 +607,7 @@ var anovarmLayout = ui.extend({
             factorList = [];
         else {
             for(let i = 0; i < factorList.length; i++)
-                factorList[i] = factorList[i].label;
+                factorList[i] = [factorList[i].label];
         }
 
         var combinedList = variableList.concat(covariatesList);
@@ -554,6 +618,8 @@ var anovarmLayout = ui.extend({
         ui.bscModelSupplier.setValue(this.convertArrayToSupplierList(combinedList, FormatDef.variable));
         ui.plotsSupplier.setValue(this.convertArrayToSupplierList(combinedList2, FormatDef.variable));
         ui.postHocSupplier.setValue(this.convertArrayToSupplierList(combinedList2, FormatDef.variable));
+
+        this.calcRMTerms(ui, factorList);
 
         var diff = { removed: [], added: [] };
         if (this._lastVariableList !== null)
@@ -651,6 +717,45 @@ var anovarmLayout = ui.extend({
         if (changed)
             ui.bsTerms.setValue(termsList);
     },
+
+    filterModelRMTerms: function(ui) {
+        var termsList = this.clone(ui.rmTerms.value());
+        if (termsList === null)
+            termsList = [];
+
+        var diff = null;
+        if ( ! this._initialising && this._loaded)
+            diff = this.findDifferences(FormatDef.term, this._lastRMTerms, termsList);
+        this._lastRMTerms = termsList;
+
+        if (this._initialising || !this._loaded)
+            return;
+
+        var changed = false;
+        if (diff.removed.length > 0) {
+            var itemsRemoved = false;
+            for (var i = 0; i < diff.removed.length; i++) {
+                var item = diff.removed[i];
+                for (var j = 0; j < termsList.length; j++) {
+                    if (FormatDef.term.contains(termsList[j], item)) {
+                        termsList.splice(j, 1);
+                        j -= 1;
+                        itemsRemoved = true;
+                    }
+                }
+            }
+
+            if (itemsRemoved)
+                changed = true;
+        }
+
+        if (this.sortByLength(termsList))
+            changed = true;
+
+        if (changed)
+            ui.rmTerms.setValue(termsList);
+    },
+
 
     containsCovariate: function(value, covariates) {
         for (var i = 0; i < covariates.length; i++) {
