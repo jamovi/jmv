@@ -46,6 +46,11 @@ options:
       type: Bool
       default: false
 
+    - name: corPlot
+      title: Correlation Plot
+      type: Bool
+      default: false
+
     - name: alphaItems
       title: Cronbach's α (if item is dropped)
       type: Bool

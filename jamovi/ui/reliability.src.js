@@ -41,7 +41,8 @@ var layout = ui.extend({
                         { name: "alphaScale",   type:"checkbox", label: "Cronbach's α" },
                         { name: "omegaScale",   type:"checkbox", label: "McDonald's ω" },
                         { name: "meanScale",   type:"checkbox", label: "Mean" },
-                        { name: "sdScale",   type:"checkbox", label: "Standard deviation" }
+                        { name: "sdScale",   type:"checkbox", label: "Standard deviation" },
+                        { name: "corPlot",   type:"checkbox", label: "Correlation plot" }
                     ]
                 },
                 {

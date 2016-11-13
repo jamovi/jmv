@@ -66,3 +66,13 @@ items:
         - name: omega
           title: McDonald's ω
           visible: (omegaItems)
+
+    - name: corPlot
+      title: Correlation Plot
+      visible: (corPlot)
+      type: Image
+      width: 400
+      height: 400
+      renderFun: .corPlot
+      clearWith:
+        - vars
