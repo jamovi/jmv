@@ -131,7 +131,7 @@ var anovarmLayout = ui.extend({
                             valueFilter: "unique",
                             showColumnHeaders: false,
                             columns: [
-                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.term, stretchFactor: 1 }
+                                { type: "listitem.termlabel", name: "column1", label: "", format: FormatDef.term, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -150,7 +150,7 @@ var anovarmLayout = ui.extend({
                             valueFilter: "unique",
                             showColumnHeaders: false,
                             columns: [
-                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.term, stretchFactor: 1 }
+                                { type: "listitem.termlabel", name: "column1", label: "", format: FormatDef.term, stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -395,14 +395,7 @@ var anovarmLayout = ui.extend({
         },
         {
             onChange: "rmTerms", execute: function(ui) {
-                let value = ui.rmTerms.value();
-                /*if ((value === null || value.length === 0) && this._initialising) {
-                    ui.rmTerms.setValue([["RM Factor 1"]]);
-                    this._lastRMTerms = [["RM Factor 1"]];
-                    this._lastFactorsList = [["RM Factor 1"]];
-                }
-                else*/
-                    this.filterModelRMTerms(ui);
+                this.filterModelRMTerms(ui);
             }
         },
         {
@@ -428,9 +421,6 @@ var anovarmLayout = ui.extend({
         {
             onEvent: "view.data-initialising", execute: function(ui) {
                 this._lastVariableList = null;
-                /*ui.rmTerms.setValue([["RM Factor 1"]]);
-                this._lastRMTerms = [["RM Factor 1"]];
-                this._lastFactorsList = [["RM Factor 1"]];*/
                 this._lastRMTerms = null;
                 this._lastFactorsList = null;
                 this._lastCombinedList = null;
@@ -450,6 +440,12 @@ var anovarmLayout = ui.extend({
 
                 if (this._lastRMTerms === null)
                     this.filterModelRMTerms(ui);
+
+                /*let value = ui.rmTerms.value();
+                if (value === null && this._lastFactorsList.length > 0) {
+                    ui.rmTerms.setValue(this.clone(this._lastFactorsList));
+                    this._lastRMTerms = this.clone(this._lastFactorsList);
+                }*/
 
                 this._initialising = false;
             }
@@ -556,7 +552,7 @@ var anovarmLayout = ui.extend({
 
         var diff = { removed: [], added: [] };
         if (this._lastFactorsList !== null)
-            diff = this.findDifferences(FormatDef.variable, this._lastFactorsList, factorList);
+            diff = this.findDifferences(FormatDef.term, this._lastFactorsList, factorList);
         this._lastFactorsList = factorList;
 
         if (this._initialising || !this._loaded)
@@ -603,18 +599,21 @@ var anovarmLayout = ui.extend({
             covariatesList = [];
 
         var factorList = this.clone(ui.rm.value());
+        var factorVarList = [];
         if (factorList === null)
             factorList = [];
         else {
-            for(let i = 0; i < factorList.length; i++)
+            for(let i = 0; i < factorList.length; i++) {
+                factorVarList[i] = factorList[i].label;
                 factorList[i] = [factorList[i].label];
+            }
         }
 
         var combinedList = variableList.concat(covariatesList);
 
-        var combinedList2 = factorList.concat(variableList);
+        var combinedList2 = factorVarList.concat(variableList);
 
-        ui.rmcModelSupplier.setValue(this.convertArrayToSupplierList(factorList, FormatDef.variable))
+        ui.rmcModelSupplier.setValue(this.convertArrayToSupplierList(factorVarList, FormatDef.variable))
         ui.bscModelSupplier.setValue(this.convertArrayToSupplierList(combinedList, FormatDef.variable));
         ui.plotsSupplier.setValue(this.convertArrayToSupplierList(combinedList2, FormatDef.variable));
         ui.postHocSupplier.setValue(this.convertArrayToSupplierList(combinedList2, FormatDef.variable));
@@ -772,8 +771,19 @@ var anovarmLayout = ui.extend({
             currentList = [];
 
         var list3 = [];
-        for (var i = 0; i < variableList.length; i++)
-            list3.push({ var: variableList[i], type: "none" });
+        for (let i = 0; i < variableList.length; i++) {
+            let found = null;
+            for (let j = 0; j < currentList.length; j++) {
+                if (currentList[j].var === variableList[i]) {
+                    found = currentList[j];
+                    break;
+                }
+            }
+            if (found === null)
+                list3.push({ var: variableList[i], type: "none" });
+            else
+                list3.push(found);
+        }
 
         ui.contrasts.setValue(list3);
     },
