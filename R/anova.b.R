@@ -530,7 +530,7 @@ AnovaClass <- R6::R6Class(
                 term <- modelTerms[[i]]
                 quoted <- grepl('^`.*`$', term)
                 term[quoted] <- substring(term[quoted], 2, nchar(term[quoted])-1)
-                modelTerms[[i]] <- as.list(term)
+                modelTerms[[i]] <- term
             }
             
             modelTerms

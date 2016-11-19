@@ -15,6 +15,10 @@ options:
       title: Repeated Measures Factors
       type: Array
       default:
+        - label: RM Factor 1
+          levels:
+          - Level 1
+          - Level 2
       template:
         type: Group
         elements:
