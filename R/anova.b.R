@@ -249,7 +249,7 @@ AnovaClass <- R6::R6Class(
             private$.populateContrasts(data)
             private$.populateLevenes(data)
             private$.prepareQQPlot(data)
-            #private$.populatePostHoc(data)
+            private$.populatePostHoc(data)
             private$.prepareDescPlots(data)
             private$.populateDescriptives(data)
             
