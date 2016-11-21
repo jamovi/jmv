@@ -312,7 +312,7 @@ AnovaResults <- R6::R6Class(
                         private$..qq <- jmvcore::Image$new(
                             options=options,
                             name="qq",
-                            title="QQ Plot",
+                            title="Q-Q Plot",
                             visible="(qq)",
                             width=300,
                             height=300,

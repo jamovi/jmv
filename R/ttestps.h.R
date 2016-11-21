@@ -228,7 +228,6 @@ TTestPSResults <- R6::R6Class(
                 items="(pairs)",
                 template=jmvcore::Image$new(
                     options=options,
-                    title=list(`$key`=NULL),
                     renderInitFun=".plot",
                     renderFun=".plot"))
             self$add(private$..ttest)

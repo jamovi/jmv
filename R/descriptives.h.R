@@ -231,12 +231,12 @@ DescriptivesResults <- R6::R6Class(
             private$..freqPlots <- jmvcore::Array$new(
                 options=options,
                 name="freqPlots",
-                title="Frequencies",
+                title="Plots",
                 visible="(plots)",
                 items="(vars)",
                 template=jmvcore::Image$new(
                     options=options,
-                    title="Frequencies of {$key}",
+                    title="$key",
                     renderFun=".plotFreq"))
             self$add(private$..descriptives)
             self$add(private$..frequencies)

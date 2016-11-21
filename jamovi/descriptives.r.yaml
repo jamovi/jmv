@@ -140,12 +140,12 @@ items:
 #      height: 300
 #
     - name: freqPlots
-      title: Frequencies
+      title: Plots
       type: Array
       visible: (plots)
       items: (vars)
 
       template:
-          title: Frequencies of {$key}
+          title: $key
           type: Image
           renderFun: .plotFreq

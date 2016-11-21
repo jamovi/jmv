@@ -248,7 +248,6 @@ items:
       type: Array
       items: (pairs)
       template:
-          title: {$key}
           type: Image
           renderInitFun: .plot
           renderFun: .plot

@@ -6,7 +6,10 @@ AnovaRMOptions <- R6::R6Class(
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
-            rm = NULL,
+            rm = list(
+                list(label="RM Factor 1", levels=list(
+                    "Level 1",
+                    "Level 2"))),
             rmCells = NULL,
             bs = NULL,
             cov = NULL,
@@ -42,7 +45,10 @@ AnovaRMOptions <- R6::R6Class(
             private$..rm <- jmvcore::OptionArray$new(
                 "rm",
                 rm,
-                default=NULL,
+                default=list(
+                    list(label="RM Factor 1", levels=list(
+                        "Level 1",
+                        "Level 2"))),
                 template=jmvcore::OptionGroup$new(
                     "rm",
                     NULL,
@@ -481,7 +487,10 @@ AnovaRMBase <- R6::R6Class(
 
 AnovaRM <- function(
     data,
-    rm = NULL,
+    rm = list(
+                list(label="RM Factor 1", levels=list(
+                    "Level 1",
+                    "Level 2"))),
     rmCells = NULL,
     bs = NULL,
     cov = NULL,

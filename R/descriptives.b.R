@@ -132,12 +132,11 @@ DescriptivesClass <- R6::R6Class("DescriptivesClass",
             
             plot <- ggplot(data=data, aes(x=x, y=y)) +
                 geom_bar(stat="identity") +
-                labs(list(title=image$key, x=NULL, y=ylab)) +
+                labs(list(x=NULL, y=ylab)) +
                 theme(
                     text=element_text(size=16, colour='#333333'),
                     plot.background=element_rect(fill='transparent', color=NA),
                     panel.background=element_rect(fill='#E8E8E8'),
-                    plot.title=element_text(margin=margin(10,0,20,0)),
                     axis.title.y=element_text(margin=margin(0,10,0,0)),
                     axis.text.y=axis.text.y)
             

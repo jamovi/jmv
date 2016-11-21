@@ -81,7 +81,7 @@ items:
               format: zto,pvalue
 
         - name: qq
-          title: QQ Plot
+          title: Q-Q Plot
           visible: (qq)
           type: Image
           width: 300

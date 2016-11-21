@@ -650,7 +650,6 @@ AnovaClass <- R6::R6Class(
             print(ggplot2::ggplot(data=image$state, aes(y=y, x=x)) +
                 geom_point(aes(x=x,y=y), colour='#333333') +
                 geom_abline(slope=1, intercept=0, colour='#333333') +
-                ggtitle("Q-Q Plot") +
                 xlab("Theoretical Quantiles") +
                 ylab("Standardized Residuals") +
                 the)

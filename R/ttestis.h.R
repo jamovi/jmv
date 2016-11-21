@@ -301,7 +301,7 @@ TTestISResults <- R6::R6Class(
                 items="(vars)",
                 template=jmvcore::Image$new(
                     options=options,
-                    title=list(`$key`=NULL),
+                    title="$key",
                     renderFun=".plot",
                     clearWith=list(
                         "group")))
