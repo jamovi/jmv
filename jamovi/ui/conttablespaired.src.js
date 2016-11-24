@@ -13,7 +13,6 @@ var layout = ui.extend({
             type: "variablesupplier",
             persistentItems: false,
             stretchFactor: 1,
-            suggested: ["continuous", "nominal", "ordinal"],
             controls: [
                 {
                     type:"variabletargetlistbox",
