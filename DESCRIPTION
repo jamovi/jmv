@@ -3,7 +3,7 @@ Type: Package
 Title: Rjamovi
 Version: 0.1
 Date: 2016-10-06
-Author: Jonathon Love
+Author: Jonathon Love, Ravi Selker
 Maintainer: Jonathon Love <jon@thon.cc>
 Description: jamovi is a rich graphical statistics package providing many
  common statistical tests (such as t-tests, ANOVAs, correlation matrices, etc).

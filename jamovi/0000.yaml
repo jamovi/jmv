@@ -89,7 +89,7 @@ analyses:
     subtitle: Binomial test
     subgroup: One Sample Proportion Tests
   - title: N Outcomes
-    name: GoFit
+    name: PropTestN
     ns: jmv
     group: Frequencies
     description: null

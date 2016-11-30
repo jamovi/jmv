@@ -1,0 +1,53 @@
+---
+name:  PropTestN
+title: Proportion Test (N Outcomes)
+api: 1
+
+items:
+    - name: props
+      title: Proportions
+      type: Table
+
+      columns:
+          - name: var
+            title: ""
+            type: text
+            combineBelow: true
+
+          - name: level
+            title: Level
+            type: text
+
+          - name: count
+            title: Count
+            type: integer
+
+          - name: prop
+            title: Proportion
+            type: number
+
+    - name: tests
+      title: χ² Goodness of Fit
+      type: Table
+      rows: (vars)
+      clearWith:
+          - areCounts
+
+      columns:
+          - name: var
+            title: ""
+            type: text
+            content: ($key)
+
+          - name: chi
+            title: χ²
+            type: number
+
+          - name: df
+            title: df
+            type: integer
+
+          - name: p
+            title: p
+            type: number
+            format: zto,pvalue
