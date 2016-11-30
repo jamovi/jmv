@@ -1,11 +1,11 @@
 ---
 name:  Friedman
-title: Friedman Test
+title: Repeated Measures ANOVA (Non-parametric)
 api: 1
 
 items:
     - name: table
-      title: Friedman Test
+      title: Friedman
       type: Table
       rows: 1
       clearWith:
@@ -13,7 +13,7 @@ items:
 
       columns:
         - name: stat
-          title: Χ²
+          title: χ²
           type: number
 
         - name: df

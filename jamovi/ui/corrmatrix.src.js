@@ -43,6 +43,7 @@ var binomialTestLayout = ui.extend({
                 },
                 {
                     type: "label",
+                    label: "Additional Options",
                     cell: [1, 0],
                     controls : [
                         { type:"checkbox", name: "sig", label: "Report significance" },

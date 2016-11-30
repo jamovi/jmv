@@ -6,7 +6,7 @@ var options = require('./kruskal.options')
 
 var kruskalLayout = ui.extend({
 
-    label: "Kruskal-Wallis",
+    label: "One-way ANOVA (Non-parametric)",
     type: "root",
     stage: 0,
     controls: [
@@ -41,7 +41,7 @@ var kruskalLayout = ui.extend({
             type: "layoutbox",
             margin: "large",
             controls: [
-                { type:"checkbox", name: "pairs", label: "DSCF Pairwise Comparisons" }
+                { type:"checkbox", name: "pairs", label: "DSCF pairwise comparisons" }
             ]
         }
     ]

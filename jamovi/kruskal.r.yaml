@@ -1,6 +1,6 @@
 ---
 name:  Kruskal
-title: Kruskal-Wallis
+title: One-way ANOVA (Non-parametric)
 api: 1
 
 items:
@@ -18,7 +18,7 @@ items:
           type: text
 
         - name: chiSq
-          title: Χ²
+          title: χ²
           type: number
 
         - name: df

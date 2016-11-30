@@ -71,10 +71,11 @@ var ttestpsLayout = ui.extend({
                         },
                         {
                             type: "label",
-                            label: "Assumption Checks",
+                            label: "Missing values",
                             level: "2",
                             controls : [
-                                { name: "norm", type:"checkbox", label: "Normality" }
+                                { name: "miss_perAnalysis", optionId: "miss", type:"radiobutton", checkedValue: "perAnalysis", label: "Exclude cases analysis by analysis" },
+                                { name: "miss_listwise", optionId: "miss", type:"radiobutton", checkedValue: "listwise", label: "Exclude cases listwise" }
                             ]
                         }
                     ]
@@ -104,11 +105,10 @@ var ttestpsLayout = ui.extend({
                         },
                         {
                             type: "label",
-                            label: "Missing values",
+                            label: "Assumption Checks",
                             level: "2",
                             controls : [
-                                { name: "miss_perAnalysis", optionId: "miss", type:"radiobutton", checkedValue: "perAnalysis", label: "Exclude cases analysis by analysis" },
-                                { name: "miss_listwise", optionId: "miss", type:"radiobutton", checkedValue: "listwise", label: "Exclude cases listwise" }
+                                { name: "norm", type:"checkbox", label: "Normality" }
                             ]
                         }
                     ]

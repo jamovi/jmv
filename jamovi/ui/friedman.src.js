@@ -6,7 +6,7 @@ var options = require('./friedman.options')
 
 var friedmanLayout = ui.extend({
 
-    label: "Friedman",
+    label: "Repeated Measures ANOVA (Non-parametric)",
     type: "root",
     stage: 0,
     controls: [
@@ -31,10 +31,10 @@ var friedmanLayout = ui.extend({
             type: "layoutbox",
             margin: "large",
             controls : [
-                { name: "pairs", type:"checkbox", label: "Pairwise Comparisons (Durbin-Conover)" },
+                { name: "pairs", type:"checkbox", label: "Pairwise comparisons (Durbin-Conover)" },
                 { name: "desc", type:"checkbox", label: "Descriptives" },
                 {
-                    name: "plots", type:"checkbox", label: "Descriptives Plot",
+                    name: "plots", type:"checkbox", label: "Descriptives plot",
                     controls: [
                         { name: "plotType_means", optionId: "plotType", type:"radiobutton", checkedValue: "means", label: "Means" },
                         { name: "plotType_medians", optionId: "plotType", type:"radiobutton", checkedValue: "medians", label: "Medians" }

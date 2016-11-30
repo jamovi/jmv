@@ -77,10 +77,10 @@ var ttestisLayout = ui.extend({
                         },
                         {
                             type: "label",
-                            label: "Assumption Checks",
+                            label: "Missing values",
                             controls : [
-                                { type:"checkbox", name: "norm", label: "Normality" },
-                                { type:"checkbox", name: "eqv", label: "Equality of variances" }
+                                { type:"radiobutton", name: "miss_perAnalysis", optionId: "miss", checkedValue: "perAnalysis", label: "Exclude cases analysis by analysis" },
+                                { type:"radiobutton", name: "miss_listwise", optionId: "miss", checkedValue: "listwise", label: "Exclude cases listwise" }
                             ]
                         }
                     ]
@@ -109,10 +109,10 @@ var ttestisLayout = ui.extend({
                         },
                         {
                             type: "label",
-                            label: "Missing values",
+                            label: "Assumption Checks",
                             controls : [
-                                { type:"radiobutton", name: "miss_perAnalysis", optionId: "miss", checkedValue: "perAnalysis", label: "Exclude cases analysis by analysis" },
-                                { type:"radiobutton", name: "miss_listwise", optionId: "miss", checkedValue: "listwise", label: "Exclude cases listwise" }
+                                { type:"checkbox", name: "norm", label: "Normality" },
+                                { type:"checkbox", name: "eqv", label: "Equality of variances" }
                             ]
                         }
                     ]

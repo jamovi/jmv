@@ -29,9 +29,8 @@ var descriptivesLayout = ui.extend({
             stretchFactor: 1,
             margin: "large",
             controls : [
-                {type:"checkbox",  name: "plots", label: "Display Plots" },
-                { type:"checkbox", name: "plotCorr", label: "Display Correlation Plot" },
-                { type:"checkbox", name: "freq", label: "Display Frequency Tables (nominal and ordinal variables)" }
+                { type:"checkbox",  name: "plots", label: "Bar plots and histograms" },
+                { type:"checkbox", name: "freq", label: "Frequency tables (nominal and ordinal variables only)" }
             ]
         },
         {

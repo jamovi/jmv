@@ -5,7 +5,7 @@ var options = require("./binomial.options");
 
 var binomialTestLayout = ui.extend({
 
-    label: "Binomial Test",
+    label: "Proportion Test (2 Outcomes)",
     type: "root",
     stage: 0,
     controls: [

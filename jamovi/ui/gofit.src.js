@@ -5,7 +5,7 @@ var options = require("./gofit.options");
 
 var layout = ui.extend({
 
-    label: "χ² Goodness of Fit",
+    label: "Proportion Test (N Outcomes)",
     type: "root",
     stage: 2,
     controls: [
