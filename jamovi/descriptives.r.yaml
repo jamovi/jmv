@@ -9,6 +9,7 @@ items:
       type: Table
       rows: (vars)
       swapRowsColumns: true
+      clearWith:
 
       columns:
         - name: name

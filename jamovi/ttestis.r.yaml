@@ -12,6 +12,7 @@ items:
         - group
         - hypothesis
         - ciWidth
+        - miss
 
       columns:
         - name: var
@@ -356,3 +357,4 @@ items:
           renderFun: .plot
           clearWith:
             - group
+            - miss

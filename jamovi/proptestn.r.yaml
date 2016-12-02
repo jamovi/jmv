@@ -8,6 +8,7 @@ items:
       title: Proportions
       type: Table
       rows: (levels(var))
+      clearWith:
 
       columns:
           - name: level

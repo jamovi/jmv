@@ -8,6 +8,10 @@ items:
       title: Paired Samples T-Test
       type: Table
       rows: (pairs)
+      clearWith:
+          - miss
+          - hypothesis
+          - ciWidth
 
       columns:
         - name: name1
@@ -184,7 +188,8 @@ items:
       visible: (norm)
       rows: (pairs)
       notes:
-              p: A low p-value suggests a violation of the assumption of normality
+          p: A low p-value suggests a violation of the assumption of normality
+      clearWith:
 
       columns:
         - name: name1
@@ -215,6 +220,7 @@ items:
       title: Descriptives
       type: Table
       visible: (desc)
+      clearWith:
 
       columns:
         - name: name
@@ -251,3 +257,5 @@ items:
           type: Image
           renderInitFun: .plot
           renderFun: .plot
+          clearWith:
+              - miss

@@ -11,6 +11,7 @@ items:
       clearWith:
         - hypothesis
         - testValue
+        - miss
 
       columns:
         - name: var
@@ -172,7 +173,8 @@ items:
       visible: (norm)
       rows: (vars)
       notes:
-              p: A low p-value suggests a violation of the assumption of normality
+          p: A low p-value suggests a violation of the assumption of normality
+      clearWith:
 
       columns:
         - name: name
@@ -193,6 +195,7 @@ items:
       type: Table
       visible: (desc)
       rows: (vars)
+      clearWith:
 
       columns:
         - name: name
@@ -227,3 +230,4 @@ items:
       renderFun: .plot
       clearWith:
         - vars
+        - miss
