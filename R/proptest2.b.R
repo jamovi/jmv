@@ -1,9 +1,7 @@
 
-# This file is a generated template, your changes will not be overwritten
-
-BinomialClass <- R6::R6Class(
-    "BinomialClass",
-    inherit = BinomialBase,
+PropTest2Class <- R6::R6Class(
+    "PropTest2Class",
+    inherit = PropTest2Base,
     private = list(
         .run = function() {
 

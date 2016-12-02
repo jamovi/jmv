@@ -1,12 +1,9 @@
 
-// This file is an automatically generated template, it will not be subsequently
-// overwritten by the compiler, and may be edited
-
 'use strict';
 
-var options = require("./reliability.options");
+const options = require("./reliability.options");
 
-var layout = ui.extend({
+const layout = ui.extend({
 
     label: "Reliability Analysis",
     type: "root",
@@ -42,7 +39,6 @@ var layout = ui.extend({
                         { name: "omegaScale",   type:"checkbox", label: "McDonald's ω" },
                         { name: "meanScale",   type:"checkbox", label: "Mean" },
                         { name: "sdScale",   type:"checkbox", label: "Standard deviation" },
-                        { name: "corPlot",   type:"checkbox", label: "Correlation plot" }
                     ]
                 },
                 {
@@ -55,6 +51,14 @@ var layout = ui.extend({
                         { name: "meanItems",   type:"checkbox", label: "Mean" },
                         { name: "sdItems",   type:"checkbox", label: "Standard deviation" },
                         { name: "itemRestCor",   type:"checkbox", label: "Item-rest correlation" }
+                    ]
+                },
+                {
+                    type: "label",
+                    label: "Additional Options",
+                    cell: [0, 1],
+                    controls : [
+                        { name: "corPlot",   type:"checkbox", label: "Correlation heat plot" },
                     ]
                 }
             ]

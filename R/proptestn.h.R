@@ -6,28 +6,27 @@ PropTestNOptions <- R6::R6Class(
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
-            vars = NULL,
-            areCounts = FALSE, ...) {
+            var = NULL,
+            counts = NULL, ...) {
 
             super$initialize(package='jmv', name='PropTestN', ...)
         
-            private$..vars <- jmvcore::OptionVariables$new(
-                "vars",
-                vars)
-            private$..areCounts <- jmvcore::OptionBool$new(
-                "areCounts",
-                areCounts,
-                default=FALSE)
+            private$..var <- jmvcore::OptionVariable$new(
+                "var",
+                var)
+            private$..counts <- jmvcore::OptionVariable$new(
+                "counts",
+                counts)
         
-            self$.addOption(private$..vars)
-            self$.addOption(private$..areCounts)
+            self$.addOption(private$..var)
+            self$.addOption(private$..counts)
         }),
     active = list(
-        vars = function() private$..vars$value,
-        areCounts = function() private$..areCounts$value),
+        var = function() private$..var$value,
+        counts = function() private$..counts$value),
     private = list(
-        ..vars = NA,
-        ..areCounts = NA)
+        ..var = NA,
+        ..counts = NA)
 )
 
 PropTestNResults <- R6::R6Class(
@@ -45,20 +44,17 @@ PropTestNResults <- R6::R6Class(
                 options=options,
                 name="props",
                 title="Proportions",
+                rows="(levels(var))",
                 columns=list(
-                    list(`name`="var", `title`="", `type`="text", `combineBelow`=TRUE),
-                    list(`name`="level", `title`="Level", `type`="text"),
+                    list(`name`="level", `title`="Level", `type`="text", `content`="($key)"),
                     list(`name`="count", `title`="Count", `type`="integer"),
                     list(`name`="prop", `title`="Proportion", `type`="number")))
             private$..tests <- jmvcore::Table$new(
                 options=options,
                 name="tests",
                 title="χ² Goodness of Fit",
-                rows="(vars)",
-                clearWith=list(
-                    "areCounts"),
+                rows=1,
                 columns=list(
-                    list(`name`="var", `title`="", `type`="text", `content`="($key)"),
                     list(`name`="chi", `title`="χ²", `type`="number"),
                     list(`name`="df", `title`="df", `type`="integer"),
                     list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue")))
@@ -84,12 +80,12 @@ PropTestNBase <- R6::R6Class(
 
 PropTestN <- function(
     data,
-    vars,
-    areCounts = FALSE) {
+    var,
+    counts) {
 
     options <- PropTestNOptions$new(
-        vars = vars,
-        areCounts = areCounts)
+        var = var,
+        counts = counts)
 
     results <- PropTestNResults$new(
         options = options)

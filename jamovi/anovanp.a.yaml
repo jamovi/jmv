@@ -1,11 +1,14 @@
 ---
-name:  Kruskal
-title: One Way ANOVA
-subtitle: Kruskal-Wallis
+name:  AnovaNP
+title: One Way ANOVA (Non-parametric)
+
+menuGroup: ANOVA
+menuSubgroup: Non-Parametric
+menuTitle: One Way ANOVA
+menuSubtitle: Kruskal-Wallis
+
 version: "1.0.0"
 jmc: "1.0.0"
-group: ANOVA
-subgroup: Non-Parametric
 
 options:
     - name: data

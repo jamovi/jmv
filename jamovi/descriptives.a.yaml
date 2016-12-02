@@ -1,10 +1,10 @@
 ---
 name:  Descriptives
 title: Descriptives
+menuGroup: Exploration
 version: "1.0.0"
 jmc: "1.0.0"
 engineType: R
-group: Exploration
 
 options:
     - name: data

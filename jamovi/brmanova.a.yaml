@@ -1,11 +1,13 @@
 ---
 name:    BRMAnova
 title:   Bayesian Repeated Measures ANOVA
+
+menuGroup: ANOVA
+menuSubgroup: Bayesian
+
 version: "1.0.0"
 jmc: "1.0.0"
 engineType: R
-group: ANOVA
-subgroup: Bayesian
 
 options:
     - name: data

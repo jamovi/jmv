@@ -1,10 +1,10 @@
 ---
 name:    LogLinear
 title:   Log-Linear Regression
+menuGroup: Frequencies
 version: "1.0.0"
 jmc: "1.0.0"
 engineType: R
-group: Frequencies
 
 options:
     - name: data

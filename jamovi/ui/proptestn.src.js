@@ -1,9 +1,9 @@
 
 'use strict';
 
-var options = require("./proptestn.options");
+const options = require("./proptestn.options");
 
-var layout = ui.extend({
+const layout = ui.extend({
 
     label: "Proportion Test (N Outcomes)",
     type: "root",
@@ -16,23 +16,27 @@ var layout = ui.extend({
            controls: [
                 {
                    type: "variabletargetlistbox",
-                   name: "vars",
-                   label: "Variables",
+                   name: "var",
+                   label: "Variable",
+                   maxItemCount: 1,
                    showColumnHeaders: false,
                    fullRowSelect: true,
                    columns: [
                        { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                    ]
-                }
-           ]
-       },
-       {
-           type: "layoutbox",
-           margin: "large",
-           controls : [
-               { type:"checkbox", name: "areCounts", label: "Values are counts" },
-           ]
-       }    ],
+                },
+                {
+                   type: "variabletargetlistbox",
+                   name: "counts",
+                   label: "Counts (optional)",
+                   maxItemCount: 1,
+                   showColumnHeaders: false,
+                   fullRowSelect: true,
+                   columns: [
+                       { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
+                   ]
+                }           ]
+        }   ],
 
     actions: []
 });

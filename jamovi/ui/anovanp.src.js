@@ -1,10 +1,9 @@
 
-// This file is an automatically generated template, it will not be subsequently
-// overwritten by the compiler, and may be edited
+'use strict';
 
-var options = require('./kruskal.options')
+const options = require('./anovanp.options');
 
-var kruskalLayout = ui.extend({
+const kruskalLayout = ui.extend({
 
     label: "One-way ANOVA (Non-parametric)",
     type: "root",

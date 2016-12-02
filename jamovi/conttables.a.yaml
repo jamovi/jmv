@@ -1,12 +1,15 @@
 ---
 name: ContTables
-title: Independent Samples
-subtitle: χ² test of association
+title: Contingency Tables
+
+menuGroup: Frequencies
+menuSubgroup: Contingency Tables
+menuTitle: Independent Samples
+menuSubtitle: χ² test of association
+
 version: "1.0.0"
 jmc: "1.0.0"
 engineType: R
-group: Frequencies
-subgroup: Contingency Tables
 
 options:
     - name: data

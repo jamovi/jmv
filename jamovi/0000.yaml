@@ -1,7 +1,9 @@
 title: Rjamovi
 name: jmv
 version: '0.1'
-author: Jonathon Love
+authors:
+    - Jonathon Love
+    - Ravi Selker
 maintainer: Jonathon Love <jon@thon.cc>
 date: '2016-10-06'
 type: R
@@ -14,103 +16,138 @@ analyses:
   - title: Descriptives
     name: Descriptives
     ns: jmv
-    group: Exploration
+    menuGroup: Exploration
+    menuTitle: Descriptives
     description: null
+
   - title: Reliability Analysis
     name: Reliability
     ns: jmv
-    group: Exploration
+    menuGroup: Exploration
+    menuTitle: Reliability Analysis
     description: null
+
   - title: Independent Samples T-Test
     name: TTestIS
     ns: jmv
-    group: T-Tests
+    menuGroup: T-Tests
+    menuTitle: Independent Samples T-Test
     description: null
+
   - title: Paired Samples T-Test
     name: TTestPS
     ns: jmv
-    group: T-Tests
+    menuGroup: T-Tests
+    menuTitle: Paired Samples T-Test
     description: null
+
   - title: One Sample T-Test
     name: TTestOneS
     ns: jmv
-    group: T-Tests
+    menuGroup: T-Tests
+    menuTitle: One Sample T-Test
     description: null
+
   - title: ANOVA
     name: Anova
     ns: jmv
-    group: ANOVA
+    menuGroup: ANOVA
+    menuTitle: ANOVA
     description: |
       Analysis of Variance
+
   - title: Repeated Measures ANOVA
     name: AnovaRM
     ns: jmv
-    group: ANOVA
+    menuGroup: ANOVA
+    menuTitle: Repeated Measures ANOVA
     description: null
+
   - title: ANCOVA
     name: Ancova
     ns: jmv
-    group: ANOVA
+    menuGroup: ANOVA
+    menuTitle: ANCOVA
     description: null
+
   - title: MANCOVA
     name: Mancova
     ns: jmv
-    group: ANOVA
+    menuGroup: ANOVA
+    menuTitle: MANCOVA
     description: null
-  - title: One Way ANOVA
-    name: Kruskal
+
+  - title: One Way ANOVA (Non-parametric)
+    name: AnovaNP
     ns: jmv
-    group: ANOVA
+    menuGroup: ANOVA
+    menuSubgroup: Non-Parametric
+    menuTitle: One Way ANOVA
+    menuSubtitle: Kruskal-Wallis
     description: null
-    subtitle: Kruskal-Wallis
-    subgroup: Non-Parametric
-  - title: Repeated Measures ANOVA
-    name: Friedman
+
+  - title: Repeated Measures ANOVA (Non-parametric)
+    name: AnovaRMNP
     ns: jmv
-    group: ANOVA
+    menuGroup: ANOVA
+    menuSubgroup: Non-Parametric
+    menuTitle: Repeated Measures ANOVA
+    menuSubtitle: Friedman
     description: null
-    subtitle: Friedman
-    subgroup: Non-Parametric
+
   - title: Correlation Matrix
     name: CorrMatrix
+    menuGroup: Regression
+    menuTitle: Correlation Matrix
     ns: jmv
-    group: Regression
     description: null
+
   - title: Linear Regression
     name: LinReg
     ns: jmv
-    group: Regression
+    menuGroup: Regression
+    menuTitle: Linear Regression
     description: null
-  - title: 2 Outcomes
-    name: Binomial
+
+  - title: Proportion Test (2 Outcomes)
+    name: PropTest2
     ns: jmv
-    group: Frequencies
+    menuGroup: Frequencies
+    menuSubgroup: One Sample Proportion Tests
+    menuTitle: 2 Outcomes
+    menuSubtitle: Binomial test
     description: null
-    subtitle: Binomial test
-    subgroup: One Sample Proportion Tests
-  - title: N Outcomes
+
+  - title: Proportion Test (N Outcomes)
     name: PropTestN
     ns: jmv
-    group: Frequencies
+    menuGroup: Frequencies
+    menuSubgroup: One Sample Proportion Tests
+    menuTitle: N Outcomes
+    menuSubtitle: χ² Goodness of fit
     description: null
-    subtitle: χ² Goodness of Fit
-    subgroup: One Sample Proportion Tests
-  - title: Independent Samples
+
+  - title: Contingency Tables
     name: ContTables
     ns: jmv
-    group: Frequencies
+    menuGroup: Frequencies
+    menuSubgroup: Contingency Tables
+    menuTitle: Independent Samples
+    menuSubtitle: χ² test of association
     description: null
-    subtitle: χ² test of association
-    subgroup: Contingency Tables
-  - title: Paired Samples
+
+  - title: Paired Samples Contingency Tables
     name: ContTablesPaired
     ns: jmv
-    group: Frequencies
+    menuGroup: Frequencies
+    menuSubgroup: Contingency Tables
+    menuTitle: Paired Samples
+    menuSubtitle: McNemar test
     description: null
-    subtitle: McNemar test
-    subgroup: Contingency Tables
+
   - title: Log-Linear Regression
     name: LogLinear
     ns: jmv
-    group: Frequencies
+    menuGroup: Frequencies
+    menuTitle: Log-Linear Regression
     description: null

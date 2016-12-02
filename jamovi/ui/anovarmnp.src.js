@@ -1,10 +1,9 @@
 
-// This file is an automatically generated template, it will not be subsequently
-// overwritten by the compiler, and may be edited
+'use strict';
 
-var options = require('./friedman.options')
+const options = require('./anovarmnp.options');
 
-var friedmanLayout = ui.extend({
+const friedmanLayout = ui.extend({
 
     label: "Repeated Measures ANOVA (Non-parametric)",
     type: "root",

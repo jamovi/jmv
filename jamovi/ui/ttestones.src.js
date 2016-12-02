@@ -1,10 +1,9 @@
 
-// This file is an automatically generated template, it will not be subsequently
-// overwritten by the compiler, and may be edited
+'use strict';
 
-var options = require('./ttestones.options')
+const options = require('./ttestones.options');
 
-var ttestonesLayout = ui.extend({
+const ttestonesLayout = ui.extend({
 
     label: "One Sample T-Test",
     type: "root",

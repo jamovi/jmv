@@ -1,12 +1,15 @@
 ---
 name: PropTestN
-title: N Outcomes
-subtitle: χ² Goodness of Fit
+title: Proportion Test (N Outcomes)
+
+menuGroup: Frequencies
+menuSubgroup: One Sample Proportion Tests
+menuTitle: N Outcomes
+menuSubtitle: χ² Goodness of Fit
+
 version: "1.0.0"
 jmc: "1.0.0"
 engineType: R
-group: Frequencies
-subgroup: One Sample Proportion Tests
 
 options:
     - name: data
@@ -14,12 +17,12 @@ options:
       description: >
         The data set as a data frame
 
-    - name: vars
-      title: Variables
-      type: Variables
+    - name: var
+      title: Variable
+      type: Variable
       description: >
-        The variables of interest
+        The variable of interest
 
-    - name: areCounts
-      type: Bool
-      default: false
+    - name: counts
+      title: Counts (optional)
+      type: Variable

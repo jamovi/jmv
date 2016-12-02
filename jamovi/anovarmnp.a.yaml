@@ -1,12 +1,15 @@
 ---
-name: Friedman
-title: Repeated Measures ANOVA
-subtitle: Friedman
+name: AnovaRMNP
+title: Repeated Measures ANOVA (Non-parametric)
+
+menuGroup: ANOVA
+menuSubgroup: Non-Parametric
+menuTitle: Repeated Measures ANOVA
+menuSubtitle: Friedman
+
 version: "1.0.0"
 jmc: "1.0.0"
 engineType: R
-group: ANOVA
-subgroup: Non-Parametric
 
 options:
     - name: data

@@ -1,10 +1,10 @@
 ---
 name:     TTestOneS
 title: One Sample T-Test
+menuGroup: T-Tests
 version: "1.0.0"
 jmc: "1.0.0"
 engineType: R
-group: T-Tests
 
 options:
     - name: data

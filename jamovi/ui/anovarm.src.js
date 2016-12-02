@@ -1,11 +1,9 @@
 
-// This file is an automatically generated template, it will not be subsequently
-// overwritten by the compiler, and may be edited
+'use strict';
 
-var options = require('./anovarm.options');
-//var _ = require('underscore');
+const options = require('./anovarm.options');
 
-var rma_cell =  {
+const rma_cell =  {
 
     name: 'rma_cell',
 

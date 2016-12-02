@@ -1,9 +1,8 @@
 'use strict';
 
-var options = require("./binomial.options");
+const options = require("./proptest2.options");
 
-
-var binomialTestLayout = ui.extend({
+const binomialTestLayout = ui.extend({
 
     label: "Proportion Test (2 Outcomes)",
     type: "root",

@@ -1,10 +1,10 @@
 ---
 name:    CorrMatrix
 title:   Correlation Matrix
+menuGroup: Regression
 version: "1.0.0"
 jmc: "1.0.0"
 engineType: R
-group: Regression
 
 options:
     - name: data

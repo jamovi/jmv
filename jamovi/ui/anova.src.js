@@ -1,12 +1,11 @@
 
-// This file is an automatically generated template, it will not be subsequently
-// overwritten by the compiler, and may be edited
+'use strict';
 
-var options = require('./anova.options');
+const options = require('./anova.options');
 
-var controls = new ControlManager();
+const controls = new ControlManager();
 
-var anovaLayout = ui.extend({
+const anovaLayout = ui.extend({
 
     label: "ANOVA",
     type: "root",
