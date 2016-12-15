@@ -30,6 +30,7 @@ const kruskalLayout = ui.extend({
                     label: "Grouping Variable",
                     showColumnHeaders: false,
                     maxItemCount: 1,
+                    itemDropBehaviour: "overwrite",
                     columns: [
                         { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
@@ -46,4 +47,10 @@ const kruskalLayout = ui.extend({
     ]
 });
 
-module.exports = { ui : kruskalLayout, options: options };
+var actions = Actions.extend({
+    events: [
+
+    ]
+});
+
+module.exports = { ui : kruskalLayout, actions: actions, options: options };

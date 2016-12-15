@@ -63,8 +63,13 @@ const layout = ui.extend({
                 }
             ]
         }
-    ],
-    actions: []
+    ]
 });
 
-module.exports = { ui : layout, options: options };
+var actions = Actions.extend({
+    actions: [
+
+    ]
+});
+
+module.exports = { ui : layout, actions: actions, options: options };

@@ -103,9 +103,11 @@ var descriptivesLayout = ui.extend({
                 }
             ]
         }
-    ],
+    ]
+});
 
-    actions: [
+var actions = Actions.extend({
+    events: [
         {
             onChange : "pcEqGr", execute : function(ui) {
                 ui.pcNEqGr.setEnabled(ui.pcEqGr.value());
@@ -114,4 +116,4 @@ var descriptivesLayout = ui.extend({
     ]
 });
 
-module.exports = { ui : descriptivesLayout, options: options };
+module.exports = { ui : descriptivesLayout, actions: actions, options: options };

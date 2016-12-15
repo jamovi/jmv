@@ -22,6 +22,7 @@ const ttestpsLayout = ui.extend({
                     label: "Paired Variables",
                     showColumnHeaders: false,
                     fullRowSelect: true,
+                    itemDropBehaviour: "overwrite",
                     columns: [
                         { type: "listitem.variablelabel", name: "i1", label: "", format: FormatDef.variable, stretchFactor: 1 },
                         { type: "listitem.variablelabel", name: "i2", label: "", format: FormatDef.variable, stretchFactor: 1 }
@@ -114,9 +115,11 @@ const ttestpsLayout = ui.extend({
                 }
             ]
         }
-    ],
+    ]
+});
 
-    actions: [
+var actions = Actions.extend({
+    events: [
         {
             onChange : "ci", execute : function(ui) {
                 ui.ciWidth.setEnabled(ui.ci.value());
@@ -130,4 +133,4 @@ const ttestpsLayout = ui.extend({
     ]
 });
 
-module.exports = { ui : ttestpsLayout, options: options };
+module.exports = { ui : ttestpsLayout, actions: actions, options: options };

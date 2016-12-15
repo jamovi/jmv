@@ -53,9 +53,11 @@ const binomialTestLayout = ui.extend({
                 }
             ]
         }
-    ],
+    ]
+});
 
-    actions : [
+var actions = Actions.extend({
+    events : [
         {
             onChange: "ci", execute: function(ui) {
                 ui.ciWidth.setEnabled(ui.ci.value());
@@ -64,4 +66,4 @@ const binomialTestLayout = ui.extend({
     ]
 });
 
-module.exports = { ui : binomialTestLayout, options: options };
+module.exports = { ui : binomialTestLayout, actions: actions, options: options };

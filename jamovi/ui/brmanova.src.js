@@ -9,11 +9,13 @@ var layout = ui.extend({
     stage: 2,
     controls: [
 
-    ],
+    ]
+});
 
-    actions: [
+var actions = Actions.extend({
+    events : [
 
     ]
 });
 
-module.exports = { ui : layout, options: options };
+module.exports = { ui : layout, actions: actions, options: options };

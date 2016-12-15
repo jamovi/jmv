@@ -82,9 +82,11 @@ var binomialTestLayout = ui.extend({
                 }
             ]
         }
-    ],
+    ]
+});
 
-    actions: [
+var actions = Actions.extend({
+    events: [
         {
             onChange : "plots", execute : function(ui) {
                 var value = ui.plots.value();
@@ -101,4 +103,4 @@ var binomialTestLayout = ui.extend({
     ]
 });
 
-module.exports = { ui : binomialTestLayout, options: options };
+module.exports = { ui : binomialTestLayout, actions: actions, options: options };

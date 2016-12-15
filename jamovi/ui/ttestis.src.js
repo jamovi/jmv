@@ -30,6 +30,7 @@ const ttestisLayout = ui.extend({
                     label: "Grouping Variable",
                     showColumnHeaders: false,
                     maxItemCount: 1,
+                    itemDropBehaviour: "overwrite",
                     columns: [
                         { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
                     ]
@@ -118,10 +119,11 @@ const ttestisLayout = ui.extend({
                 }
             ]
         }
-    ],
+    ]
+});
 
-
-    actions: [
+var actions = Actions.extend({
+    events: [
         {
             onChange : "ci", execute : function(ui) {
                 ui.ciWidth.setEnabled(ui.ci.value());
@@ -135,4 +137,4 @@ const ttestisLayout = ui.extend({
     ]
 });
 
-module.exports = { ui : ttestisLayout, options: options };
+module.exports = { ui : ttestisLayout, actions: actions, options: options };
