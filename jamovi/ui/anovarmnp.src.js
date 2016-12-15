@@ -41,9 +41,11 @@ const friedmanLayout = ui.extend({
                 }
             ]
         }
-    ],
+    ]
+});
 
-    actions: [
+var actions = Actions.extend({
+    events: [
         {
             onChange : "plots", execute : function(ui) {
                 var value = ui.plots.value();
@@ -54,4 +56,4 @@ const friedmanLayout = ui.extend({
     ]
 });
 
-module.exports = { ui : friedmanLayout, options: options };
+module.exports = { ui : friedmanLayout, actions: actions, options: options };

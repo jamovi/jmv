@@ -116,9 +116,11 @@ const ttestonesLayout = ui.extend({
                 }
             ]
         }
-    ],
+    ]
+});
 
-    actions: [
+var actions = Actions.extend({
+    events: [
         {
             onChange : "ci", execute : function(ui) {
                 ui.ciWidth.setEnabled(ui.ci.value());
@@ -132,4 +134,4 @@ const ttestonesLayout = ui.extend({
     ]
 });
 
-module.exports = { ui : ttestonesLayout, options: options };
+module.exports = { ui : ttestonesLayout, actions: actions, options: options };

@@ -20,6 +20,7 @@ var layout = ui.extend({
                     label: "Rows",
                     showColumnHeaders: false,
                     maxItemCount: 1,
+                    itemDropBehaviour: "overwrite",
                     columns: [
                         { type: "listitem.variablelabel", name: 'column1', label: "", format: FormatDef.variable, stretchFactor: 1 },
                     ]
@@ -30,6 +31,7 @@ var layout = ui.extend({
                     label: "Columns",
                     showColumnHeaders: false,
                     maxItemCount: 1,
+                    itemDropBehaviour: "overwrite",
                     columns: [
                         { type: "listitem.variablelabel", name: 'column1', label: "", format: FormatDef.variable, stretchFactor: 1 },
                     ]
@@ -40,6 +42,7 @@ var layout = ui.extend({
                     label: "Counts (optional)",
                     showColumnHeaders: false,
                     maxItemCount: 1,
+                    itemDropBehaviour: "overwrite",
                     columns: [
                         { type: "listitem.variablelabel", name: 'column1', label: "", format: FormatDef.variable, stretchFactor: 1 },
                     ]
@@ -134,9 +137,11 @@ var layout = ui.extend({
                 }
             ]
         }
-    ],
+    ]
+});
 
-    actions: [
+var actions = Actions.extend({
+    events: [
         {
             onChange : "logOdds", execute : function(ui) {
                 ui.ciWidth.setEnabled(ui.logOdds.value());
@@ -145,4 +150,4 @@ var layout = ui.extend({
     ]
 });
 
-module.exports = { ui : layout, options: options };
+module.exports = { ui : layout, actions: actions, options: options };
