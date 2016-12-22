@@ -5,10 +5,11 @@ AnovaRMClass <- R6::R6Class(
     private=list(
         .model=NA,
         .init=function() {
-            
+
             rmTable <- self$results$get('rmTable')
             
             rmTerms <- private$.rmTerms()
+            
             if (length(rmTerms) > 0) {
                 for (term in rmTerms)
                     rmTable$addRow(rowKey=term, list(name=stringifyTerm(term)))
@@ -18,6 +19,9 @@ AnovaRMClass <- R6::R6Class(
             }
             
             bsTable <- self$results$get('bsTable')
+            for (term in self$options$bsTerms)
+                bsTable$addRow(rowKey=term, list(name=stringifyTerm(term)))
+
             bsTable$addRow(rowKey='', list(name='Residual'))
             
             spher <- self$results$get('assump')$get('spher')
@@ -108,9 +112,9 @@ AnovaRMClass <- R6::R6Class(
         },
         .rmTerms=function() {
             
-            rmFactors <- self$options$get('rm')
-            bsFactors <- self$options$get('bs')
-            covariates <- self$options$get('cov')
+            rmFactors <- self$options$rm
+            bsFactors <- self$options$bs
+            covariates <- self$options$cov
             
             if (length(rmFactors) == 0)
                 rmFactors <- list(list(label="RM Factor 1"))
@@ -140,11 +144,14 @@ AnovaRMClass <- R6::R6Class(
                 for (j in seq_along(bsTerms))
                     terms[[length(terms)+1]] <- c(rmTerm, bsTerms[[j]])
                 
+                for (j in seq_along(covariates))
+                    terms[[length(terms)+1]] <- c(rmTerm, covariates[[j]])
+                
                 terms[[length(terms)+1]] <- "Residual"
                 
                 #groups[[length(groups)+1]] <- terms
             }
-
+            
             return(terms)
         })
 )
