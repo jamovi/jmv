@@ -3,7 +3,18 @@
 
 const options = require("./reliability.options");
 
-const layout = ui.extend({
+const view = View.extend({
+
+    initialize: function(ui) {
+
+    },
+
+    events: [
+
+    ]
+});
+
+view.layout = ui.extend({
 
     label: "Reliability Analysis",
     type: "root",
@@ -66,10 +77,4 @@ const layout = ui.extend({
     ]
 });
 
-var actions = Actions.extend({
-    actions: [
-
-    ]
-});
-
-module.exports = { ui : layout, actions: actions, options: options };
+module.exports = { view : view, options: options };

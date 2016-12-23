@@ -3,7 +3,26 @@
 
 const options = require('./anovarmnp.options');
 
-const friedmanLayout = ui.extend({
+const view = View.extend({
+
+    initialize: function(ui) {
+        var value = ui.plots.value();
+        ui.plotType_means.setEnabled(value);
+        ui.plotType_medians.setEnabled(value);
+    },
+
+    events: [
+        {
+            onChange : "plots", execute : function(ui) {
+                var value = ui.plots.value();
+                ui.plotType_means.setEnabled(value);
+                ui.plotType_medians.setEnabled(value);
+            }
+        }
+    ]
+});
+
+view.layout = ui.extend({
 
     label: "Repeated Measures ANOVA (Non-parametric)",
     type: "root",
@@ -44,16 +63,5 @@ const friedmanLayout = ui.extend({
     ]
 });
 
-var actions = Actions.extend({
-    events: [
-        {
-            onChange : "plots", execute : function(ui) {
-                var value = ui.plots.value();
-                ui.plotType_means.setEnabled(value);
-                ui.plotType_medians.setEnabled(value);
-            }
-        }
-    ]
-});
 
-module.exports = { ui : friedmanLayout, actions: actions, options: options };
+module.exports = { view : view, options: options };

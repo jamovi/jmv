@@ -3,7 +3,28 @@
 
 const options = require('./ttestps.options');
 
-const ttestpsLayout = ui.extend({
+const view = View.extend({
+
+    initialise: function(ui) {
+        ui.ciWidth.setEnabled(ui.ci.value());
+        ui.bfPrior.setEnabled(ui.bf.value());
+    },
+
+    events: [
+        {
+            onChange : "ci", execute : function(ui) {
+                ui.ciWidth.setEnabled(ui.ci.value());
+            }
+        },
+        {
+            onChange : "bf", execute : function(ui) {
+                ui.bfPrior.setEnabled(ui.bf.value());
+            }
+        }
+    ]
+});
+
+view.layout = ui.extend({
 
     label: "Paired Samples T-Test",
     type: "root",
@@ -118,19 +139,4 @@ const ttestpsLayout = ui.extend({
     ]
 });
 
-var actions = Actions.extend({
-    events: [
-        {
-            onChange : "ci", execute : function(ui) {
-                ui.ciWidth.setEnabled(ui.ci.value());
-            }
-        },
-        {
-            onChange : "bf", execute : function(ui) {
-                ui.bfPrior.setEnabled(ui.bf.value());
-            }
-        }
-    ]
-});
-
-module.exports = { ui : ttestpsLayout, actions: actions, options: options };
+module.exports = { view : view, options: options };

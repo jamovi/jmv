@@ -2,9 +2,9 @@
 'use strict';
 
 const options = require('./ancova.options');
-const actions = require('./ancova.actions');
+const view = require('./ancova.actions');
 
-const ancovaLayout = ui.extend({
+view.layout = ui.extend({
 
     label: "ANCOVA",
     type: "root",
@@ -249,4 +249,4 @@ const ancovaLayout = ui.extend({
     ],
 });
 
-module.exports = { ui : ancovaLayout, actions: actions, options: options };
+module.exports = { view : view, options: options };

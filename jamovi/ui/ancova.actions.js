@@ -2,7 +2,15 @@
 // This file is an automatically generated template, it will not be subsequently
 // overwritten by the compiler, and may be edited
 
-var actions = Actions.extend({
+var view = View.extend({
+
+    initialize: function(ui) {
+
+        ui.ciWidth.setEnabled(ui.plotError.value() === "ci");
+
+        this.calcModelTerms(ui);
+        this.filterModelTerms(ui);
+    },
 
     events : [
         {
@@ -25,42 +33,12 @@ var actions = Actions.extend({
             onChange: "modelTerms", execute: function(ui) {
                 this.filterModelTerms(ui);
             }
-        },
-        {
-            onEvent: "view.loaded", execute: function(ui) {
-                this._loaded = true;
-            }
-        },
-        {
-            onEvent: "view.data-initialising", execute: function(ui) {
-                this._lastVariableList = null;
-                this._lastCurrentList = null;
-                this._lastCombinedList = null;
-                this._lastCovariatesList = null;
-                this._initialising = true;
-            }
-        },
-        {
-            onEvent: "view.data-initialised", execute: function(ui) {
-                if (this._lastVariableList === null || this._lastCombinedList === null || this._lastCovariatesList === null)
-                    this.calcModelTerms(ui);
-
-                if (this._lastCurrentList === null)
-                    this.filterModelTerms(ui);
-
-                this._initialising = false;
-            }
         }
     ],
 
     calcModelTerms : function(ui) {
-        var variableList = this.clone(ui.fixedFactors.value());
-        if (variableList === null)
-            variableList = [];
-
-        var covariatesList = this.clone(ui.covariates.value());
-        if (covariatesList === null)
-            covariatesList = [];
+        var variableList = this.cloneArray(ui.fixedFactors.value(), []);
+        var covariatesList = this.cloneArray(ui.covariates.value(), []);
 
         var combinedList = variableList.concat(covariatesList);
 
@@ -68,30 +46,12 @@ var actions = Actions.extend({
         ui.plotsSupplier.setValue(this.valuesToItems(variableList, FormatDef.variable));
         ui.postHocSupplier.setValue(this.valuesToItems(variableList, FormatDef.variable));
 
-
-        var diff = { removed: [], added: [] };
-        if (this._lastVariableList !== null)
-            diff = this.findDifferences(this._lastVariableList, variableList, FormatDef.variable);
-        this._lastVariableList = variableList;
-
-        var diff2 = { removed: [], added: [] };
-        if (this._lastCovariatesList !== null)
-            diff2 = this.findDifferences(this._lastCovariatesList, covariatesList, FormatDef.variable);
-        this._lastCovariatesList = covariatesList;
-
-        var combinedDiff = { removed: [], added: [] };
-        if (this._lastCombinedList !== null)
-            combinedDiff = this.findDifferences(this._lastCombinedList, combinedList, FormatDef.variable);
-        this._lastCombinedList = combinedList;
+        var diff = this.findChanges("variableList", variableList, true, FormatDef.variable);
+        var diff2 = this.findChanges("covariatesList", covariatesList, true, FormatDef.variable);
+        var combinedDiff = this.findChanges("combinedList", combinedList, true, FormatDef.variable);
 
 
-        if (this._initialising || !this._loaded)
-            return;
-
-        var termsList = this.clone(ui.modelTerms.value());
-        if (termsList === null)
-            termsList = [];
-
+        var termsList = this.cloneArray(ui.modelTerms.value(), []);
         var termsChanged = false;
 
         for (var i = 0; i < combinedDiff.removed.length; i++) {
@@ -129,17 +89,8 @@ var actions = Actions.extend({
     },
 
     filterModelTerms: function(ui) {
-        var termsList = this.clone(ui.modelTerms.value());
-        if (termsList === null)
-            termsList = [];
-
-        var diff = null;
-        if ( ! this._initialising && this._loaded)
-            diff = this.findDifferences(this._lastCurrentList, termsList, FormatDef.term);
-        this._lastCurrentList = termsList;
-
-        if (this._initialising || !this._loaded)
-            return;
+        var termsList = this.cloneArray(ui.modelTerms.value(), []);
+        var diff = this.findChanges("termsList", termsList, true, FormatDef.term);
 
         var changed = false;
         if (diff.removed.length > 0) {
@@ -167,13 +118,22 @@ var actions = Actions.extend({
     },
 
     updateContrasts : function(ui, variableList) {
-        var currentList = this.clone(ui.contrasts.value());
-        if (currentList === null)
-            currentList = [];
+        var currentList = this.cloneArray(ui.contrasts.value(), []);
 
         var list3 = [];
-        for (var i = 0; i < variableList.length; i++)
-            list3.push({ var: variableList[i], type: "none" });
+        for (let i = 0; i < variableList.length; i++) {
+            let found = null;
+            for (let j = 0; j < currentList.length; j++) {
+                if (currentList[j].var === variableList[i]) {
+                    found = currentList[j];
+                    break;
+                }
+            }
+            if (found === null)
+                list3.push({ var: variableList[i], type: "none" });
+            else
+                list3.push(found);
+        }
 
         ui.contrasts.setValue(list3);
     },
@@ -189,4 +149,4 @@ var actions = Actions.extend({
 
 });
 
-module.exports = actions;
+module.exports = view;

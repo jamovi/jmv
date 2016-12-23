@@ -2,9 +2,9 @@
 'use strict';
 
 const options = require('./anova.options');
-const actions = require('./anova.actions');
+const view = require('./anova.actions');
 
-const anovaLayout = ui.extend({
+view.layout = ui.extend({
 
     label: "ANOVA",
     type: "root",
@@ -67,7 +67,6 @@ const anovaLayout = ui.extend({
                         {
                             type:"targetlistbox",
                             name: "modelTerms",
-                            format: FormatDef.term,
                             label: "Model Terms",
                             showColumnHeaders: false,
                             valueFilter: "unique",
@@ -235,4 +234,4 @@ const anovaLayout = ui.extend({
     ],
 });
 
-module.exports = { ui : anovaLayout, actions: actions, options: options };
+module.exports = { view : view, options: options };

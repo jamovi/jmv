@@ -2,8 +2,35 @@
 
 var options = require("./corrmatrix.options");
 
+const view = View.extend({
 
-var binomialTestLayout = ui.extend({
+    initialize: function(ui) {
+        var value = ui.plots.value();
+        ui.plotDens.setEnabled(value);
+        ui.plotStats.setEnabled(value);
+
+        var value = ui.ci.value();
+        ui.ciWidth.setEnabled(value);
+    },
+
+    events: [
+        {
+            onChange : "plots", execute : function(ui) {
+                var value = ui.plots.value();
+                ui.plotDens.setEnabled(value);
+                ui.plotStats.setEnabled(value);
+            }
+        },
+        {
+            onChange : "ci", execute : function(ui) {
+                var value = ui.ci.value();
+                ui.ciWidth.setEnabled(value);
+            }
+        }
+    ]
+});
+
+view.layout = ui.extend({
 
     label: "Correlation Matrix",
     type: "root",
@@ -85,22 +112,4 @@ var binomialTestLayout = ui.extend({
     ]
 });
 
-var actions = Actions.extend({
-    events: [
-        {
-            onChange : "plots", execute : function(ui) {
-                var value = ui.plots.value();
-                ui.plotDens.setEnabled(value);
-                ui.plotStats.setEnabled(value);
-            }
-        },
-        {
-            onChange : "ci", execute : function(ui) {
-                var value = ui.ci.value();
-                ui.ciWidth.setEnabled(value);
-            }
-        }
-    ]
-});
-
-module.exports = { ui : binomialTestLayout, actions: actions, options: options };
+module.exports = { view : view, options: options };

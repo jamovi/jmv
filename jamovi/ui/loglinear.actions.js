@@ -1,18 +1,16 @@
 
 'use strict';
 
-var actions = {
+var view = View.extend({
+    initialize: function(ui) {
+        ui.ciWidth.setEnabled(ui.ci.value());
+        this.calcModelTerms(ui);
+        this.filterModelTerms(ui);
+    },
     events: [
         {
             onChange: "ci", execute: function(ui) {
                 ui.ciWidth.setEnabled(ui.ci.value());
-            }
-        },
-        {
-            onEvent: "view.data-initialising", execute: function(ui) {
-                this._lastVariableList = null;
-                this._lastCurrentList = null;
-                this._initialising = true;
             }
         },
         {
@@ -26,41 +24,28 @@ var actions = {
             }
         },
         {
-            onEvent: "view.data-initialised", execute: function(ui) {
-                if (this._lastVariableList === null)
-                    this.calcModelTerms(ui);
-
-                if (this._lastCurrentList === null)
-                    this.filterModelTerms(ui);
-
-                this._initialising = false;
+            onEvent: "modelTerms.preprocess", execute: function(ui, data) {
+                if (data.intoSelf === false)
+                    data.items = this.getItemCombinations(data.items);
             }
         }
     ],
 
     calcModelTerms: function(ui) {
-        var variableList = this.clone(ui.factors.value());
-        if (variableList === null)
-            variableList = [];
+        var variableList = this.cloneArray(ui.factors.value(), []);
 
         ui.modelSupplier.setValue(this.valuesToItems(variableList, FormatDef.variable));
 
-        var diff = { removed: [], added: [] };
-        if (this._lastVariableList !== null)
-            diff = this.findDifferences(this._lastVariableList, variableList);
-        this._lastVariableList = variableList;
+        var diff = this.findChanges("variableList", variableList, true, FormatDef.variable);
 
-        if (this._initialising)
-            return;
+        var currentList = this.cloneArray(ui.modelTerms.value(), []);
 
-        var currentList = this.clone(ui.modelTerms.value());
-        if (currentList === null)
-            currentList = [];
-
+        var termsChanged = false;
         for (var i = 0; i < diff.removed.length; i++) {
             for (var j = 0; j < currentList.length; j++) {
-                if (FormatDef.variable.contains(currentList[j], diff.removed[i])) {
+                if (FormatDef.term.contains(currentList[j], diff.removed[i])) {
                     currentList.splice(j, 1);
+                    termsChanged = true;
                     j -= 1;
                 }
             }
@@ -69,35 +54,17 @@ var actions = {
         if (currentList === null)
             currentList = [];
 
-        for (var i = 0; i < diff.added.length; i++) {
-            var listLength = currentList.length;
-            for (var j = 0; j < listLength; j++) {
-                var newVar = currentList[j];
-                if (Array.isArray(newVar))
-                    newVar = this.clone(newVar);
-                else
-                    newVar = [newVar];
-                newVar.push(diff.added[i])
-                currentList.push(newVar);
-            }
-            currentList.push(diff.added[i]);
-        }
+        currentList = this.getCombinations(diff.added, currentList);
+        termsChanged = termsChanged || diff.added.length > 0;
 
-        ui.modelTerms.setValue(currentList);
+        if (termsChanged)
+            ui.modelTerms.setValue(currentList);
     },
 
     filterModelTerms : function(ui) {
-        var currentList = this.clone(ui.modelTerms.value());
-        if (currentList === null)
-            currentList = [];
+        var currentList = this.cloneArray(ui.modelTerms.value(), []);
 
-        var diff = { removed: [], added: [] };
-        if (this._lastCurrentList !== null)
-            diff = this.findDifferences(this._lastCurrentList, currentList);
-        this._lastCurrentList = currentList;
-
-        if (this._initialising)
-            return;
+        var diff = this.findChanges("currentList", currentList, true, FormatDef.term);
 
         var changed = false;
         if (diff.removed.length > 0 && currentList !== null) {
@@ -105,7 +72,7 @@ var actions = {
             for (var i = 0; i < diff.removed.length; i++) {
                 var item = diff.removed[i];
                 for (var j = 0; j < currentList.length; j++) {
-                    if (FormatDef.variable.contains(currentList[j], item)) {
+                    if (FormatDef.term.contains(currentList[j], item)) {
                         currentList.splice(j, 1);
                         j -= 1;
                         itemsRemoved = true;
@@ -123,6 +90,6 @@ var actions = {
         if (changed)
             ui.modelTerms.setValue(currentList);
     },
-}
+});
 
-module.exports = actions;
+module.exports = view;

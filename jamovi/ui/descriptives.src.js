@@ -3,7 +3,22 @@
 var options = require("./descriptives.options");
 
 
-var descriptivesLayout = ui.extend({
+const view = View.extend({
+
+    initialize: function(ui) {
+        ui.pcNEqGr.setEnabled(ui.pcEqGr.value());
+    },
+
+    events: [
+        {
+            onChange : "pcEqGr", execute : function(ui) {
+                ui.pcNEqGr.setEnabled(ui.pcEqGr.value());
+            }
+        }
+    ]
+});
+
+view.layout = ui.extend({
 
     label: "Descriptives",
     type: "root",
@@ -106,14 +121,5 @@ var descriptivesLayout = ui.extend({
     ]
 });
 
-var actions = Actions.extend({
-    events: [
-        {
-            onChange : "pcEqGr", execute : function(ui) {
-                ui.pcNEqGr.setEnabled(ui.pcEqGr.value());
-            }
-        }
-    ]
-});
 
-module.exports = { ui : descriptivesLayout, actions: actions, options: options };
+module.exports = { view : view, options: options };

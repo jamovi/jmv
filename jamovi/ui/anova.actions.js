@@ -2,7 +2,14 @@
 // This file is an automatically generated template, it will not be subsequently
 // overwritten by the compiler, and may be edited
 
-var actions = Actions.extend({
+var view = View.extend({
+
+    initialize: function(ui) {
+        ui.ciWidth.setEnabled(ui.plotError.value() === "ci");
+
+        this.calcModelTerms(ui);
+        this.filterModelTerms(ui);
+    },
 
     events: [
         {
@@ -25,54 +32,19 @@ var actions = Actions.extend({
                 if (data.intoSelf === false)
                     data.items = this.getItemCombinations(data.items);
             }
-        },
-        {
-            onEvent: "view.loaded", execute: function(ui) {
-                this._loaded = true;
-            }
-        },
-        {
-            onEvent: "view.data-initialising", execute: function(ui) {
-                this._lastVariableList = null;
-                this._lastCurrentList = null;
-                this._initialising = true;
-            }
-        },
-        {
-            onEvent: "view.data-initialised", execute: function(ui) {
-                if (this._lastVariableList === null)
-                    this.calcModelTerms(ui);
-
-                if (this._lastCurrentList === null)
-                    this.filterModelTerms(ui);
-
-                this._initialising = false;
-            }
         }
     ],
 
     calcModelTerms: function(ui) {
-        var variableList = this.clone(ui.fixedFactors.value());
-        if (variableList === null)
-            variableList = [];
+        var variableList = this.cloneArray(ui.fixedFactors.value(), []);
 
         ui.modelSupplier.setValue(this.valuesToItems(variableList, FormatDef.variable));
         ui.plotsSupplier.setValue(this.valuesToItems(variableList, FormatDef.variable));
 
-        var varsDiff = { removed: [], added: [] };
-        if (this._lastVariableList !== null)
-            varsDiff = this.findDifferences(this._lastVariableList, variableList, FormatDef.variable);
-        this._lastVariableList = variableList;
-
-        if (this._initialising || !this._loaded)
-            return;
-
-        var termsList = this.clone(ui.modelTerms.value());
-        if (termsList === null)
-            termsList = [];
+        var varsDiff = this.findChanges("variableList", variableList, true, FormatDef.variable);
+        var termsList = this.cloneArray(ui.modelTerms.value(), []);
 
         var termsChanged = false;
-
         for (var i = 0; i < varsDiff.removed.length; i++) {
             for (var j = 0; j < termsList.length; j++) {
                 if (FormatDef.term.contains(termsList[j], varsDiff.removed[i])) {
@@ -83,16 +55,8 @@ var actions = Actions.extend({
             }
         }
 
-        for (var i = 0; i < varsDiff.added.length; i++) {
-            var listLength = termsList.length;
-            for (var j = 0; j < listLength; j++) {
-                var newTerm = this.clone(termsList[j]);
-                newTerm.push(varsDiff.added[i]);
-                termsList.push(newTerm);
-            }
-            termsList.push([varsDiff.added[i]]);
-            termsChanged = true;
-        }
+        termsList = this.getCombinations(varsDiff.added, termsList);
+        termsChanged = termsChanged || varsDiff.added.length > 0;
 
         if (termsChanged)
             ui.modelTerms.setValue(termsList);
@@ -102,20 +66,12 @@ var actions = Actions.extend({
     },
 
     filterModelTerms : function(ui) {
-        var termsList = this.clone(ui.modelTerms.value());
-        if (termsList === null)
-            termsList = [];
+        var termsList = this.cloneArray(ui.modelTerms.value(), []);
 
         var list = this.valuesToItems(termsList, FormatDef.term);
         ui.postHocSupplier.setValue(list);
 
-        var termsDiff = { removed: [], added: [] };
-        if (this._lastCurrentList !== null)
-            termsDiff = this.findDifferences(this._lastCurrentList, termsList, FormatDef.term);
-        this._lastCurrentList = termsList;
-
-        if (this._initialising || !this._loaded)
-            return;
+        var termsDiff = this.findChanges("currentList", termsList, true, FormatDef.term);
 
         var changed = false;
         if (termsDiff.removed.length > 0 && termsList !== null) {
@@ -143,10 +99,7 @@ var actions = Actions.extend({
 
         if (termsDiff.removed.length > 0) {
             itemsRemoved = false;
-            var postHoc = this.clone(ui.postHoc.value());
-            if (postHoc === null)
-                postHoc = [];
-
+            var postHoc = this.cloneArray(ui.postHoc.value(), []);
             for (var i = 0; i < termsDiff.removed.length; i++) {
                 var item = termsDiff.removed[i];
                 for (var j = 0; j < postHoc.length; j++) {
@@ -164,9 +117,7 @@ var actions = Actions.extend({
     },
 
     updateContrasts : function(ui, variableList) {
-        var currentList = this.clone(ui.contrasts.value());
-        if (currentList === null)
-            currentList = [];
+        var currentList = this.cloneArray(ui.contrasts.value(), []);
 
         var list3 = [];
         for (let i = 0; i < variableList.length; i++) {
@@ -219,4 +170,4 @@ var actions = Actions.extend({
     }
 });
 
-module.exports = actions;
+module.exports = view;
