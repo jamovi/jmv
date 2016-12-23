@@ -2,7 +2,18 @@
 
 var options = require("./bancova.options");
 
-var layout = ui.extend({
+const view = View.extend({
+
+    initialize: function(ui) {
+
+    },
+
+    events: [
+
+    ]
+});
+
+view.layout = ui.extend({
 
     label: "Bayesian ANCOVA",
     type: "root",
@@ -12,10 +23,5 @@ var layout = ui.extend({
     ]
 });
 
-var actions = Actions.extend({
-    events: [
 
-    ]
-});
-
-module.exports = { ui : layout, actions: actions, options: options };
+module.exports = { view : view, options: options };

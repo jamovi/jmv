@@ -3,7 +3,18 @@
 
 const options = require("./proptestn.options");
 
-const layout = ui.extend({
+const view = View.extend({
+
+    initialize: function(ui) {
+
+    },
+
+    events: [
+
+    ]
+});
+
+view.layout = ui.extend({
 
     label: "Proportion Test (N Outcomes)",
     type: "root",
@@ -41,4 +52,4 @@ const layout = ui.extend({
     actions: []
 });
 
-module.exports = { ui : layout, options: options };
+module.exports = { view : view, options: options };

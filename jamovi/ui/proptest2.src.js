@@ -2,7 +2,22 @@
 
 const options = require("./proptest2.options");
 
-const binomialTestLayout = ui.extend({
+const view = View.extend({
+
+    initialize: function(ui) {
+        ui.ciWidth.setEnabled(ui.ci.value());
+    },
+
+    events: [
+        {
+            onChange: "ci", execute: function(ui) {
+                ui.ciWidth.setEnabled(ui.ci.value());
+            }
+        }
+    ]
+});
+
+view.layout = ui.extend({
 
     label: "Proportion Test (2 Outcomes)",
     type: "root",
@@ -56,14 +71,5 @@ const binomialTestLayout = ui.extend({
     ]
 });
 
-var actions = Actions.extend({
-    events : [
-        {
-            onChange: "ci", execute: function(ui) {
-                ui.ciWidth.setEnabled(ui.ci.value());
-            }
-        }
-    ]
-});
 
-module.exports = { ui : binomialTestLayout, actions: actions, options: options };
+module.exports = { view : view,  options: options };

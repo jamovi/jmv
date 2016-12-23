@@ -3,7 +3,28 @@
 
 const options = require('./ttestis.options');
 
-const ttestisLayout = ui.extend({
+const view = View.extend({
+
+    initialize: function(ui) {
+        ui.ciWidth.setEnabled(ui.ci.value());
+        ui.bfPrior.setEnabled(ui.bf.value());
+    },
+
+    events: [
+        {
+            onChange : "ci", execute : function(ui) {
+                ui.ciWidth.setEnabled(ui.ci.value());
+            }
+        },
+        {
+            onChange : "bf", execute : function(ui) {
+                ui.bfPrior.setEnabled(ui.bf.value());
+            }
+        }
+    ]
+});
+
+view.layout = ui.extend({
 
     label: "Independent Samples T-Test",
     type: "root",
@@ -122,19 +143,5 @@ const ttestisLayout = ui.extend({
     ]
 });
 
-var actions = Actions.extend({
-    events: [
-        {
-            onChange : "ci", execute : function(ui) {
-                ui.ciWidth.setEnabled(ui.ci.value());
-            }
-        },
-        {
-            onChange : "bf", execute : function(ui) {
-                ui.bfPrior.setEnabled(ui.bf.value());
-            }
-        }
-    ]
-});
 
-module.exports = { ui : ttestisLayout, actions: actions, options: options };
+module.exports = { view : view, options: options };

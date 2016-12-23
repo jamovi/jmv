@@ -2,7 +2,7 @@
 'use strict';
 
 const options = require('./anovarm.options');
-const actions = require('./anovarm.actions');
+const view = require('./anovarm.actions');
 const rma_cell = require('./rmacell');
 const rma_cellMeasure = require('./rmacellmeasure');
 const rmaCellMeasureCtrl =  require('./rmacellmeasurectrl');
@@ -10,7 +10,7 @@ const rmaCellMeasureCtrl =  require('./rmacellmeasurectrl');
 const customControls = new ControlManager();
 customControls.registerControl("listitem.rma_cellMeasure", rmaCellMeasureCtrl);
 
-var anovarmLayout = ui.extend({
+view.layout = ui.extend({
 
     label: "Repeated Measures ANOVA",
     type: "root",
@@ -292,4 +292,6 @@ var anovarmLayout = ui.extend({
     ]
 });
 
-module.exports = { ui : anovarmLayout, options: options, actions: actions, customControls: customControls };
+
+
+module.exports = { view : view, options: options, customControls: customControls };

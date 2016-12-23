@@ -1,7 +1,27 @@
 
 var rma_cell = require('./rmacell');
 
-var actions = Actions.extend({
+var view = View.extend({
+
+    initialize: function(ui) {
+        this.initializeValue(ui.rmTerms, [["RM Factor 1"]]);
+
+        var value = ui.dispErrBars.value();
+        ui.errBarDef_se.setEnabled(value);
+        ui.errBarDef_ci.setEnabled(value);
+
+        var value = ui.spherCorrs.value();
+        ui.spherCorrNone.setEnabled(value);
+        ui.spherCorrGreenGsser.setEnabled(value);
+        ui.spherCorrHuyFdt.setEnabled(value);
+
+        ui.ciWidth.setEnabled(ui.dispErrBars.value() && ui.errBarDef.value() === "ci");
+
+        this.updateFactorCells(ui);
+        this.updateModelTerms(ui);
+        this.filterModelRMTerms(ui);
+        this.filterModelTerms(ui);
+    },
 
     events: [
         {
@@ -26,44 +46,7 @@ var actions = Actions.extend({
         },
         {
             onChange: "rm", execute: function(ui) {
-                var value = ui.rm.value();
-                if (value === null)
-                    return;
-
-                var data = []
-                var indices = []
-                for (var i = 0; i < value.length; i++) {
-                    indices[i] = 0;
-                }
-
-                var end = false;
-                var pos = 0;
-                while (end === false) {
-                    var cell = []
-                    for (var k = 0; k < indices.length; k++) {
-                        cell.push(value[k].levels[indices[k]])
-                    }
-                    data.push(cell);
-                    pos += 1;
-                    var zeroCount = 0;
-
-                    var r = indices.length - 1;
-                    if (r < 0)
-                        end = true;
-                    while (r >= 0) {
-                        indices[r] = (indices[r] + 1) % value[r].levels.length;
-                        if (indices[r] === 0)
-                            r -= 1;
-                        else
-                            break;
-
-                        if (r === -1)
-                            end = true;
-                    }
-                }
-
-                this._factorCells = data;
-                this.filterCells(ui);
+                this.updateFactorCells(ui);
             }
         },
         {
@@ -73,7 +56,7 @@ var actions = Actions.extend({
         },
         {
             onChange: ["bs", "cov", "rm"], execute: function(ui) {
-                this.calcModelTerms(ui);
+                this.updateModelTerms(ui);
             }
         },
         {
@@ -106,54 +89,56 @@ var actions = Actions.extend({
                 if (data.intoSelf === false)
                     data.items = this.getItemCombinations(data.items);
             }
-        },
-        {
-            onEvent: "view.loaded", execute: function(ui) {
-                this._loaded = true;
-            }
-        },
-        {
-            onEvent: "view.data-initialising", execute: function(ui) {
-                this._lastVariableList = null;
-                this._lastRMTerms = null;
-                this._lastFactorsList = null;
-                this._lastCombinedList = null;
-                this._lastCombinedList2 = null;
-                this._lastCovariatesList = null;
-                this._lastCurrentList = null;
-                this._initialising = true;
-            }
-        },
-        {
-            onEvent: "view.data-initialised", execute: function(ui) {
-                if (this._lastFactorsList === null || this._lastVariableList === null || this._lastCombinedList === null || this._lastCombinedList2 === null || this._lastCovariatesList === null)
-                    this.calcModelTerms(ui);
-
-                if (this._lastCurrentList === null)
-                    this.filterModelTerms(ui);
-
-                if (this._lastRMTerms === null)
-                    this.filterModelRMTerms(ui);
-
-                this._initialising = false;
-            }
         }
     ],
 
-    calcRMTerms : function(ui, factorList) {
-
-        var diff = { removed: [], added: [] };
-        if (this._lastFactorsList !== null)
-            diff = this.findDifferences(this._lastFactorsList, factorList, FormatDef.term);
-        this._lastFactorsList = factorList;
-
-        if (this._initialising || !this._loaded)
+    updateFactorCells : function(ui) {
+        var value = ui.rm.value();
+        if (value === null)
             return;
 
-        var termsList = this.clone(ui.rmTerms.value());
-        if (termsList === null)
-            termsList = [];
+        var data = []
+        var indices = []
+        for (var i = 0; i < value.length; i++) {
+            indices[i] = 0;
+        }
 
+        var end = false;
+        var pos = 0;
+        while (end === false) {
+            var cell = []
+            for (var k = 0; k < indices.length; k++) {
+                cell.push(value[k].levels[indices[k]])
+            }
+            data.push(cell);
+            pos += 1;
+            var zeroCount = 0;
+
+            var r = indices.length - 1;
+            if (r < 0)
+                end = true;
+            while (r >= 0) {
+                indices[r] = (indices[r] + 1) % value[r].levels.length;
+                if (indices[r] === 0)
+                    r -= 1;
+                else
+                    break;
+
+                if (r === -1)
+                    end = true;
+            }
+        }
+
+        this._factorCells = data;
+        this.filterCells(ui);
+    },
+
+    calcRMTerms : function(ui, factorList) {
+
+        var diff = this.findChanges("factorList", factorList, true, FormatDef.term);
+
+        var termsList = ui.rmTerms.value();
+        termsList = this.clone(termsList);
         var termsChanged = false;
 
         for (var i = 0; i < diff.removed.length; i++) {
@@ -166,43 +151,25 @@ var actions = Actions.extend({
             }
         }
 
-        for (var i = 0; i < diff.added.length; i++) {
-            var listLength = termsList.length;
-            for (var j = 0; j < listLength; j++) {
-                var newTerm = this.clone(termsList[j]);
-                newTerm.push(diff.added[i])
-                termsList.push(newTerm);
-            }
-            termsList.push([diff.added[i]]);
-            termsChanged = true;
-        }
+        termsList = this.getCombinations(diff.added, termsList);
+        termsChanged = termsChanged || diff.added.length > 0;
 
         if (termsChanged)
             ui.rmTerms.setValue(termsList);
     },
 
-    calcModelTerms : function(ui) {
-        var variableList = this.clone(ui.bs.value());
-        if (variableList === null)
-            variableList = [];
+    updateModelTerms : function(ui) {
+        var variableList = this.cloneArray(ui.bs.value(), []);
+        var covariatesList = this.cloneArray(ui.cov.value(), []);
 
-        var covariatesList = this.clone(ui.cov.value());
-        if (covariatesList === null)
-            covariatesList = [];
-
-        var factorList = this.clone(ui.rm.value());
+        var factorList = this.cloneArray(ui.rm.value(), []);
         var factorVarList = [];
-        if (factorList === null)
-            factorList = [];
-        else {
-            for(let i = 0; i < factorList.length; i++) {
-                factorVarList[i] = factorList[i].label;
-                factorList[i] = [factorList[i].label];
-            }
+        for(let i = 0; i < factorList.length; i++) {
+            factorVarList[i] = factorList[i].label;
+            factorList[i] = [factorList[i].label];
         }
 
         var combinedList = variableList.concat(covariatesList);
-
         var combinedList2 = factorVarList.concat(variableList);
 
         ui.rmcModelSupplier.setValue(this.valuesToItems(factorVarList, FormatDef.variable))
@@ -212,31 +179,13 @@ var actions = Actions.extend({
 
         this.calcRMTerms(ui, factorList);
 
-        var diff = { removed: [], added: [] };
-        if (this._lastVariableList !== null)
-            diff = this.findDifferences(this._lastVariableList, variableList, FormatDef.variable);
-        this._lastVariableList = variableList;
-
-        var diff2 = { removed: [], added: [] };
-        if (this._lastCovariatesList !== null)
-            diff2 = this.findDifferences(this._lastCovariatesList, covariatesList, FormatDef.variable);
-        this._lastCovariatesList = covariatesList;
-
-        var combinedDiff = { removed: [], added: [] };
-        if (this._lastCombinedList !== null)
-            combinedDiff = this.findDifferences(this._lastCombinedList, combinedList, FormatDef.variable);
-        this._lastCombinedList = combinedList;
+        var diff = this.findChanges("variableList", variableList, true, FormatDef.variable);
+        var diff2 = this.findChanges("covariatesList", covariatesList, true, FormatDef.variable);
+        var combinedDiff = this.findChanges("combinedList", combinedList, true, FormatDef.variable);
 
 
-        if (this._initialising || !this._loaded)
-            return;
-
-        var termsList = this.clone(ui.bsTerms.value());
-        if (termsList === null)
-            termsList = [];
-
+        var termsList = this.cloneArray(ui.bsTerms.value(), []);
         var termsChanged = false;
-
         for (var i = 0; i < combinedDiff.removed.length; i++) {
             for (var j = 0; j < termsList.length; j++) {
                 if (FormatDef.term.contains(termsList[j], combinedDiff.removed[i])) {
@@ -272,17 +221,8 @@ var actions = Actions.extend({
     },
 
     filterModelTerms: function(ui) {
-        var termsList = this.clone(ui.bsTerms.value());
-        if (termsList === null)
-            termsList = [];
-
-        var diff = null;
-        if ( ! this._initialising && this._loaded)
-            diff = this.findDifferences(this._lastCurrentList, termsList, FormatDef.term);
-        this._lastCurrentList = termsList;
-
-        if (this._initialising || !this._loaded)
-            return;
+        var termsList = this.cloneArray(ui.bsTerms.value(), []);
+        var diff = this.findChanges("bsTerms", termsList, true, FormatDef.term);
 
         var changed = false;
         if (diff.removed.length > 0) {
@@ -311,16 +251,7 @@ var actions = Actions.extend({
 
     filterModelRMTerms: function(ui) {
         var termsList = this.clone(ui.rmTerms.value());
-        if (termsList === null)
-            termsList = [];
-
-        var diff = null;
-        if ( ! this._initialising && this._loaded)
-            diff = this.findDifferences(this._lastRMTerms, termsList, FormatDef.term);
-        this._lastRMTerms = termsList;
-
-        if (this._initialising || !this._loaded)
-            return;
+        var diff = this.findChanges("rmTerms", termsList, true, FormatDef.term);
 
         var changed = false;
         if (diff.removed.length > 0) {
@@ -357,9 +288,7 @@ var actions = Actions.extend({
     },
 
     updateContrasts : function(ui, variableList) {
-        var currentList = this.clone(ui.contrasts.value());
-        if (currentList === null)
-            currentList = [];
+        var currentList = this.cloneArray(ui.contrasts.value(), []);
 
         var list3 = [];
         for (let i = 0; i < variableList.length; i++) {
@@ -384,9 +313,7 @@ var actions = Actions.extend({
         if (this._factorCells === null)
             return;
 
-        var cells = this.clone(ui.rmCells.value());
-        if (cells === null)
-            cells = [];
+        var cells = this.cloneArray(ui.rmCells.value(), []);
 
         var factorCells = this.clone(this._factorCells);
 
@@ -420,4 +347,4 @@ var actions = Actions.extend({
 
 
 
-module.exports = actions;
+module.exports = view;

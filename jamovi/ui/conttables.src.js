@@ -3,7 +3,22 @@
 var options = require("./conttables.options");
 
 
-var layout = ui.extend({
+const view = View.extend({
+
+    initialize: function(ui) {
+        ui.ciWidth.setEnabled(ui.logOdds.value());
+    },
+
+    events: [
+        {
+            onChange : "logOdds", execute : function(ui) {
+                ui.ciWidth.setEnabled(ui.logOdds.value());
+            }
+        }
+    ]
+});
+
+view.layout = ui.extend({
 
     label: "Contingency Tables",
     type: "root",
@@ -140,14 +155,5 @@ var layout = ui.extend({
     ]
 });
 
-var actions = Actions.extend({
-    events: [
-        {
-            onChange : "logOdds", execute : function(ui) {
-                ui.ciWidth.setEnabled(ui.logOdds.value());
-            }
-        }
-    ]
-});
 
-module.exports = { ui : layout, actions: actions, options: options };
+module.exports = { view : view, options: options };

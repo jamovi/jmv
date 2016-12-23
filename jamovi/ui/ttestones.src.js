@@ -3,7 +3,28 @@
 
 const options = require('./ttestones.options');
 
-const ttestonesLayout = ui.extend({
+const view = View.extend({
+
+    initialize: function(ui) {
+        ui.ciWidth.setEnabled(ui.ci.value());
+        ui.bfPrior.setEnabled(ui.bf.value());
+    },
+
+    events: [
+        {
+            onChange : "ci", execute : function(ui) {
+                ui.ciWidth.setEnabled(ui.ci.value());
+            }
+        },
+        {
+            onChange : "bf", execute : function(ui) {
+                ui.bfPrior.setEnabled(ui.bf.value());
+            }
+        }
+    ]
+});
+
+view.layout = ui.extend({
 
     label: "One Sample T-Test",
     type: "root",
@@ -119,19 +140,5 @@ const ttestonesLayout = ui.extend({
     ]
 });
 
-var actions = Actions.extend({
-    events: [
-        {
-            onChange : "ci", execute : function(ui) {
-                ui.ciWidth.setEnabled(ui.ci.value());
-            }
-        },
-        {
-            onChange : "bf", execute : function(ui) {
-                ui.bfPrior.setEnabled(ui.bf.value());
-            }
-        }
-    ]
-});
 
-module.exports = { ui : ttestonesLayout, actions: actions, options: options };
+module.exports = { view : view, options: options };

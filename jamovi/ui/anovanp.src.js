@@ -3,7 +3,18 @@
 
 const options = require('./anovanp.options');
 
-const kruskalLayout = ui.extend({
+const view = View.extend({
+
+    initialize: function(ui) {
+
+    },
+
+    events: [
+
+    ]
+});
+
+view.layout = ui.extend({
 
     label: "One-way ANOVA (Non-parametric)",
     type: "root",
@@ -47,10 +58,5 @@ const kruskalLayout = ui.extend({
     ]
 });
 
-var actions = Actions.extend({
-    events: [
 
-    ]
-});
-
-module.exports = { ui : kruskalLayout, actions: actions, options: options };
+module.exports = { view : view, options: options };

@@ -2,9 +2,9 @@
 'use strict';
 
 var options = require("./loglinear.options");
-var actions = require("./loglinear.actions");
+var view = require("./loglinear.actions");
 
-var layout = ui.extend({
+view.layout = ui.extend({
 
     label: "Log-Linear Regression",
     type: "root",
@@ -25,7 +25,7 @@ var layout = ui.extend({
                     maxItemCount: 1,
                     itemDropBehaviour: "overwrite",
                     columns: [
-                        { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
+                        { type: "listitem.variablelabel", name: "column1", label: "", stretchFactor: 1 }
                     ]
                 },
                 {
@@ -34,7 +34,7 @@ var layout = ui.extend({
                     label: "Factors",
                     showColumnHeaders: false,
                     columns: [
-                        { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
+                        { type: "listitem.variablelabel", name: "column1", label: "", stretchFactor: 1 }
                     ]
                 }
             ]
@@ -59,8 +59,9 @@ var layout = ui.extend({
                             label: "Model Terms",
                             showColumnHeaders: false,
                             valueFilter: "unique",
+                            itemDropBehaviour: "empty_space",
                             columns: [
-                                { type: "listitem.variablelabel", name: "column1", label: "", format: FormatDef.variable, stretchFactor: 1 }
+                                { type: "listitem.termlabel", name: "column1", label: "", stretchFactor: 1 }
                             ]
                         }
                     ]
@@ -91,4 +92,4 @@ var layout = ui.extend({
 
 });
 
-module.exports = { ui : layout, actions: actions, options: options };
+module.exports = { view : view, options: options };
