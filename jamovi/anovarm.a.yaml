@@ -59,7 +59,7 @@ options:
 
     - name: cov
       title: Covariates
-      type: Variable
+      type: Variables
       suggested:
         - continuous
       permitted:
