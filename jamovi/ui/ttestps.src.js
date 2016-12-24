@@ -5,7 +5,7 @@ const options = require('./ttestps.options');
 
 const view = View.extend({
 
-    initialise: function(ui) {
+    initialize: function(ui) {
         ui.ciWidth.setEnabled(ui.ci.value());
         ui.bfPrior.setEnabled(ui.bf.value());
     },

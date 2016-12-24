@@ -5,7 +5,7 @@ const options = require("./proptestn.options");
 
 const view = View.extend({
 
-    initialise: function(ui) {
+    initialize: function(ui) {
 
     },
 
