@@ -1,0 +1,11 @@
+{
+  "name": "jmv",
+  "version": "0.1.0",
+  "scripts": {
+    "prepublish": "mkdir -p jmv && jmc . --install-to jmv"
+  },
+  "devDependencies": {
+    "jamovi-compiler": "jamovi/jamovi-compiler"
+  }
+}
+
