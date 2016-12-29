@@ -163,16 +163,13 @@ var view = View.extend({
         var covariatesList = this.cloneArray(ui.cov.value(), []);
 
         var factorList = this.cloneArray(ui.rm.value(), []);
-        var factorVarList = [];
-        for(let i = 0; i < factorList.length; i++) {
-            factorVarList[i] = factorList[i].label;
-            factorList[i] = [factorList[i].label];
-        }
+        for(let i = 0; i < factorList.length; i++)
+            factorList[i] = factorList[i].label;
 
         var combinedList = variableList.concat(covariatesList);
-        var combinedList2 = factorVarList.concat(variableList);
+        var combinedList2 = factorList.concat(variableList);
 
-        ui.rmcModelSupplier.setValue(this.valuesToItems(factorVarList, FormatDef.variable))
+        ui.rmcModelSupplier.setValue(this.valuesToItems(factorList, FormatDef.variable))
         ui.bscModelSupplier.setValue(this.valuesToItems(combinedList, FormatDef.variable));
         ui.plotsSupplier.setValue(this.valuesToItems(combinedList2, FormatDef.variable));
         ui.postHocSupplier.setValue(this.valuesToItems(combinedList2, FormatDef.variable));
