@@ -193,6 +193,7 @@ DescriptivesResults <- R6::R6Class(
                 title="Descriptives",
                 rows="(vars)",
                 swapRowsColumns=TRUE,
+                clearWith=NULL,
                 columns=list(
                     list(`name`="name", `title`="", `content`="($key)", `type`="text"),
                     list(`name`="n", `title`="N", `type`="integer"),

@@ -12,4 +12,4 @@ Description: jamovi is a rich graphical statistics package providing many
 License: GPL2+
 Depends: R (>= 3.2)
 Imports: jmvcore, car, multcomp, ggplot2, PMCMR, lsmeans, lsr, vcd, vcdExtra,
- GGally, BayesFactor, psych, GPArotation,
+ GGally, BayesFactor, psych, GPArotation

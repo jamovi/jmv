@@ -1,10 +1,11 @@
 title: jamovi
 name: jmv
 version: '0.1'
+jms: '1.0'
 authors:
-    - Jonathon Love
-    - Damian Dropmann
-    - Ravi Selker
+  - Jonathon Love
+  - Damian Dropmann
+  - Ravi Selker
 maintainer: Jonathon Love <jon@thon.cc>
 date: '2016-10-06'
 type: R
@@ -20,35 +21,30 @@ analyses:
     menuGroup: Exploration
     menuTitle: Descriptives
     description: null
-
   - title: Reliability Analysis
     name: Reliability
     ns: jmv
     menuGroup: Exploration
     menuTitle: Reliability Analysis
     description: null
-
   - title: Independent Samples T-Test
     name: TTestIS
     ns: jmv
     menuGroup: T-Tests
     menuTitle: Independent Samples T-Test
     description: null
-
   - title: Paired Samples T-Test
     name: TTestPS
     ns: jmv
     menuGroup: T-Tests
     menuTitle: Paired Samples T-Test
     description: null
-
   - title: One Sample T-Test
     name: TTestOneS
     ns: jmv
     menuGroup: T-Tests
     menuTitle: One Sample T-Test
     description: null
-
   - title: ANOVA
     name: Anova
     ns: jmv
@@ -56,28 +52,24 @@ analyses:
     menuTitle: ANOVA
     description: |
       Analysis of Variance
-
   - title: Repeated Measures ANOVA
     name: AnovaRM
     ns: jmv
     menuGroup: ANOVA
     menuTitle: Repeated Measures ANOVA
     description: null
-
   - title: ANCOVA
     name: Ancova
     ns: jmv
     menuGroup: ANOVA
     menuTitle: ANCOVA
     description: null
-
   - title: MANCOVA
     name: Mancova
     ns: jmv
     menuGroup: ANOVA
     menuTitle: MANCOVA
     description: null
-
   - title: One Way ANOVA (Non-parametric)
     name: AnovaNP
     ns: jmv
@@ -86,7 +78,6 @@ analyses:
     menuTitle: One Way ANOVA
     menuSubtitle: Kruskal-Wallis
     description: null
-
   - title: Repeated Measures ANOVA (Non-parametric)
     name: AnovaRMNP
     ns: jmv
@@ -95,21 +86,18 @@ analyses:
     menuTitle: Repeated Measures ANOVA
     menuSubtitle: Friedman
     description: null
-
   - title: Correlation Matrix
     name: CorrMatrix
     menuGroup: Regression
     menuTitle: Correlation Matrix
     ns: jmv
     description: null
-
   - title: Linear Regression
     name: LinReg
     ns: jmv
     menuGroup: Regression
     menuTitle: Linear Regression
     description: null
-
   - title: Proportion Test (2 Outcomes)
     name: PropTest2
     ns: jmv
@@ -118,16 +106,14 @@ analyses:
     menuTitle: 2 Outcomes
     menuSubtitle: Binomial test
     description: null
-
   - title: Proportion Test (N Outcomes)
     name: PropTestN
     ns: jmv
     menuGroup: Frequencies
     menuSubgroup: One Sample Proportion Tests
     menuTitle: N Outcomes
-    menuSubtitle: χ² Goodness of fit
+    menuSubtitle: χ² Goodness of Fit
     description: null
-
   - title: Contingency Tables
     name: ContTables
     ns: jmv
@@ -136,7 +122,6 @@ analyses:
     menuTitle: Independent Samples
     menuSubtitle: χ² test of association
     description: null
-
   - title: Paired Samples Contingency Tables
     name: ContTablesPaired
     ns: jmv
@@ -145,10 +130,30 @@ analyses:
     menuTitle: Paired Samples
     menuSubtitle: McNemar test
     description: null
-
   - title: Log-Linear Regression
     name: LogLinear
     ns: jmv
     menuGroup: Frequencies
     menuTitle: Log-Linear Regression
     description: null
+  - title: Bayesian ANOVA
+    name: BAnova
+    ns: jmv
+    menuGroup: ANOVA
+    menuTitle: Bayesian ANOVA
+    menuSubgroup: Bayesian
+    hidden: true
+  - title: Bayesian Repeated Measures ANOVA
+    name: BRMAnova
+    ns: jmv
+    menuGroup: ANOVA
+    menuTitle: Bayesian Repeated Measures ANOVA
+    menuSubgroup: Bayesian
+    hidden: true
+  - title: Bayesian ANCOVA
+    name: BAncova
+    ns: jmv
+    menuGroup: ANOVA
+    menuTitle: Bayesian ANCOVA
+    menuSubgroup: Bayesian
+    hidden: true

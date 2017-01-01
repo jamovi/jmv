@@ -82,6 +82,11 @@ PropTest2Results <- R6::R6Class(
                 options=options,
                 name="table",
                 title="Binomial Test",
+                clearWith=list(
+                    "areCounts",
+                    "testValue",
+                    "hypothesis",
+                    "ciWidth"),
                 columns=list(
                     list(`name`="var", `title`="", `type`="text", `combineBelow`=TRUE),
                     list(`name`="level", `title`="Level", `type`="text"),

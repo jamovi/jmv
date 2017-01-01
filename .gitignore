@@ -1,6 +1,6 @@
 
 jamovi/ui/*.options.js
+build/
 .Rproj.user
 .DS_Store
 npm-debug.log
-

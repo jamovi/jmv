@@ -174,7 +174,8 @@ TTestOneSResults <- R6::R6Class(
                 rows="(vars)",
                 clearWith=list(
                     "hypothesis",
-                    "testValue"),
+                    "testValue",
+                    "miss"),
                 columns=list(
                     list(`name`="var", `title`="", `content`="($key)", `type`="text"),
                     list(`name`="name[stud]", `title`="", `content`="Student's t", `visible`="(students)"),
@@ -211,6 +212,7 @@ TTestOneSResults <- R6::R6Class(
                 visible="(norm)",
                 rows="(vars)",
                 notes=list(`p`="A low p-value suggests a violation of the assumption of normality"),
+                clearWith=NULL,
                 columns=list(
                     list(`name`="name", `title`="", `content`="($key)", `type`="text"),
                     list(`name`="w", `title`="W", `type`="number"),
@@ -221,6 +223,7 @@ TTestOneSResults <- R6::R6Class(
                 title="Descriptives",
                 visible="(desc)",
                 rows="(vars)",
+                clearWith=NULL,
                 columns=list(
                     list(`name`="name", `title`="", `content`="($key)", `type`="text"),
                     list(`name`="num", `title`="N", `type`="number"),
@@ -235,7 +238,8 @@ TTestOneSResults <- R6::R6Class(
                 visible="(plots)",
                 renderFun=".plot",
                 clearWith=list(
-                    "vars"))
+                    "vars",
+                    "miss"))
             self$add(private$..ttest)
             self$add(private$..normality)
             self$add(private$..descriptives)

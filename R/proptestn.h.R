@@ -45,6 +45,7 @@ PropTestNResults <- R6::R6Class(
                 name="props",
                 title="Proportions",
                 rows="(levels(var))",
+                clearWith=NULL,
                 columns=list(
                     list(`name`="level", `title`="Level", `type`="text", `content`="($key)"),
                     list(`name`="count", `title`="Count", `type`="integer"),

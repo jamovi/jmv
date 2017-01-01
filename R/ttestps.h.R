@@ -163,6 +163,10 @@ TTestPSResults <- R6::R6Class(
                 name="ttest",
                 title="Paired Samples T-Test",
                 rows="(pairs)",
+                clearWith=list(
+                    "miss",
+                    "hypothesis",
+                    "ciWidth"),
                 columns=list(
                     list(`name`="name1", `title`="", `type`="text"),
                     list(`name`="name2", `title`="", `type`="text"),
@@ -202,6 +206,7 @@ TTestPSResults <- R6::R6Class(
                 visible="(norm)",
                 rows="(pairs)",
                 notes=list(`p`="A low p-value suggests a violation of the assumption of normality"),
+                clearWith=NULL,
                 columns=list(
                     list(`name`="name1", `title`="", `type`="text", `content`="."),
                     list(`name`="sep", `title`="", `type`="text", `content`="-", `format`="sep"),
@@ -213,6 +218,7 @@ TTestPSResults <- R6::R6Class(
                 name="desc",
                 title="Descriptives",
                 visible="(desc)",
+                clearWith=NULL,
                 columns=list(
                     list(`name`="name", `title`="", `content`=".", `type`="text"),
                     list(`name`="num", `title`="N", `type`="integer"),
@@ -229,7 +235,9 @@ TTestPSResults <- R6::R6Class(
                 template=jmvcore::Image$new(
                     options=options,
                     renderInitFun=".plot",
-                    renderFun=".plot"))
+                    renderFun=".plot",
+                    clearWith=list(
+                        "miss")))
             self$add(private$..ttest)
             self$add(private$..norm)
             self$add(private$..desc)

@@ -86,7 +86,7 @@ AnovaRMOptions <- R6::R6Class(
                     "nominal",
                     "ordinal"),
                 default=NULL)
-            private$..cov <- jmvcore::OptionVariable$new(
+            private$..cov <- jmvcore::OptionVariables$new(
                 "cov",
                 cov,
                 suggested=list(

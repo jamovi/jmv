@@ -5,7 +5,7 @@ title: Proportion Test (N Outcomes)
 menuGroup: Frequencies
 menuSubgroup: One Sample Proportion Tests
 menuTitle: N Outcomes
-menuSubtitle: χ² Goodness of Fit
+menuSubtitle: χ² Goodness of fit
 
 version: "1.0.0"
 jmc: "1.0.0"

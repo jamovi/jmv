@@ -193,7 +193,8 @@ TTestISResults <- R6::R6Class(
                 clearWith=list(
                     "group",
                     "hypothesis",
-                    "ciWidth"),
+                    "ciWidth",
+                    "miss"),
                 columns=list(
                     list(`name`="var", `title`="", `content`="($key)", `type`="text"),
                     list(`name`="name[stud]", `title`="", `type`="text", `content`="Student's t", `visible`="(students)"),
@@ -304,7 +305,8 @@ TTestISResults <- R6::R6Class(
                     title="$key",
                     renderFun=".plot",
                     clearWith=list(
-                        "group")))
+                        "group",
+                        "miss")))
             self$add(private$..ttest)
             self$add(private$..assum)
             self$add(private$..desc)
