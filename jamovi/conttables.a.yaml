@@ -136,23 +136,3 @@ options:
       title: Total
       type: Bool
       default: false
-
-    - name: rowOrder
-      title: Row Order
-      type: List
-      options:
-        - asc
-        - desc
-      default: asc
-      description: >
-        Stuff
-
-    - name: colOrder
-      title: Column Order
-      type: List
-      options:
-        - asc
-        - desc
-      default: asc
-      description: >
-        Stuff

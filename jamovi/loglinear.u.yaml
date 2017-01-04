@@ -1,0 +1,90 @@
+name:  LogLinear
+title: Log-Linear Regression
+jus:   '1.0'
+
+update: ./loglinear.events::update
+
+children:
+  - type: VariableSupplier
+    name: variablesupplier
+    suggested:
+      - continuous
+      - nominal
+      - ordinal
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - name: counts
+        type: VariableTargetListBox
+        label: Counts (optional)
+        showColumnHeaders: false
+        maxItemCount: 1
+        itemDropBehaviour: overwrite
+        columns:
+          - type: ListItem.VariableLabel
+            name: column1
+            label:
+            stretchFactor: 1
+
+      - type: VariableTargetListBox
+        name: factors
+        label: Factors
+        showColumnHeaders: false
+        events:
+            change: ./loglinear.events::onChange_factors
+        columns:
+          - type: ListItem.VariableLabel
+            name: column1
+            label:
+            stretchFactor: 1
+
+  - type: CollapseBox
+    label: Model
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: Supplier
+        name: modelSupplier
+        label: Componets
+        persistentItems: true
+        stretchFactor: 1
+        children:
+          - type: TargetListBox
+            name: modelTerms
+            label: Model Terms
+            valueFilter: unique
+            showColumnHeaders: false
+            itemDropBehaviour: emptyspace
+            events:
+                change: ./loglinear.events::onChange_modelTerms
+                preprocess: ./loglinear.events::onEvent_modelTerms_preprocess
+            columns:
+              - type: ListItem.TermLabel
+                name: column1
+                label:
+                stretchFactor: 1
+
+  - type: CollapseBox
+    label: Statistics
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: Label
+        label: Regression Coefficients
+        children:
+          - type: CheckBox
+            name: est
+            label: Estimates
+
+          - type: CheckBox
+            name: ci
+            label: Confidence intervals
+            events:
+                change: ./loglinear.events::onChange_ci
+            children:
+              - type: TextBox
+                name: ciWidth
+                label: Interval
+                suffix: "%"
+                format: number
+                inputPattern: "[0-9]+"

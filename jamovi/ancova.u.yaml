@@ -1,0 +1,265 @@
+name: Ancova
+title: ANCOVA
+jus: '1.0'
+stage: 1
+update: './ancova.events::update'
+children:
+  - type: VariableSupplier
+    name: variablesupplier
+    suggested:
+      - continuous
+      - nominal
+      - ordinal
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - name: dependent
+        type: VariableTargetListBox
+        label: Dependent Variable
+        showColumnHeaders: false
+        maxItemCount: 1
+        itemDropBehaviour: overwrite
+        columns:
+          - type: ListItem.VariableLabel
+            name: column1
+            label: null
+            stretchFactor: 1
+      - type: VariableTargetListBox
+        name: fixedFactors
+        label: Fixed Factors
+        showColumnHeaders: false
+        events:
+          change: './ancova.events::onChange_fixedFactors'
+        columns:
+          - type: ListItem.VariableLabel
+            name: column1
+            label: null
+            stretchFactor: 1
+      - type: VariableTargetListBox
+        name: covariates
+        label: Covariates
+        showColumnHeaders: false
+        events:
+          change: './ancova.events::onChange_covariates'
+        columns:
+          - type: ListItem.VariableLabel
+            name: column1
+            label: null
+            stretchFactor: 1
+  - type: Label
+    label: Effect Size
+    margin: large
+    style: list-inline
+    children:
+      - type: CheckBox
+        name: etaSq
+        label: η²
+      - type: CheckBox
+        name: etaSqP
+        label: partial η²
+      - type: CheckBox
+        name: omegaSq
+        label: ω²
+  - type: CollapseBox
+    label: Model
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: Supplier
+        name: modelSupplier
+        label: Componets
+        persistentItems: true
+        stretchFactor: 1
+        children:
+          - type: TargetListBox
+            name: modelTerms
+            label: Model Terms
+            valueFilter: unique
+            showColumnHeaders: false
+            itemDropBehaviour: emptyspace
+            events:
+              change: './ancova.events::onChange_modelTerms'
+              preprocess: './ancova.events::onEvent_modelTerms_preprocess'
+            columns:
+              - type: ListItem.TermLabel
+                name: column1
+                label: null
+                stretchFactor: 1
+      - type: LayoutBox
+        children:
+          - type: ComboBox
+            name: ss
+            label: Sum of squares
+            options:
+              - label: Type 1
+                value: '1'
+              - label: Type 2
+                value: '2'
+              - label: Type 3
+                value: '3'
+  - type: CollapseBox
+    label: Assumption Checks
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: CheckBox
+        name: homo
+        label: Homogeneity tests
+      - type: CheckBox
+        name: qq
+        label: Q-Q plot of residuals
+  - type: CollapseBox
+    label: Contrasts
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: ListBox
+        name: contrasts
+        label: Factors
+        showColumnHeaders: false
+        columns:
+          - type: ListItem.VariableLabel
+            name: var
+            label: null
+            selectable: false
+            stretchFactor: 0.5
+          - type: ListItem.ComboBox
+            name: type
+            label: null
+            selectable: false
+            stretchFactor: 0.5
+            options:
+              - none
+              - deviation
+              - simple
+              - difference
+              - helmert
+              - repeated
+              - polynomial
+  - type: CollapseBox
+    label: Post Hoc Tests
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: Supplier
+        name: postHocSupplier
+        persistentItems: false
+        stretchFactor: 1
+        children:
+          - type: TargetListBox
+            name: postHoc
+            showColumnHeaders: false
+            columns:
+              - type: ListItem.TermLabel
+                name: column1
+                label: null
+                stretchFactor: 1
+      - type: Label
+        label: Correction
+        children:
+          - type: CheckBox
+            name: corrTukey
+            label: Tukey
+          - type: CheckBox
+            name: corrScheffe
+            label: Scheffe
+          - type: CheckBox
+            name: corrBonf
+            label: Bonferroni
+          - type: CheckBox
+            name: corrHolm
+            label: Holm
+  - type: CollapseBox
+    label: Descriptive Plots
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: Supplier
+        name: plotsSupplier
+        stretchFactor: 1
+        persistentItems: false
+        children:
+          - type: TargetListBox
+            name: descPlotsHAxis
+            label: Horizontal axis
+            showColumnHeaders: false
+            maxItemCount: 1
+            itemDropBehaviour: overwrite
+            columns:
+              - type: ListItem.VariableLabel
+                name: column1
+                label: null
+                stretchFactor: 1
+          - type: TargetListBox
+            name: descPlotsSepLines
+            label: Separate lines
+            showColumnHeaders: false
+            maxItemCount: 1
+            itemDropBehaviour: overwrite
+            columns:
+              - type: ListItem.VariableLabel
+                name: column1
+                label: null
+                stretchFactor: 1
+          - type: TargetListBox
+            name: descPlotsSepPlots
+            label: Separate plots
+            showColumnHeaders: false
+            maxItemCount: 1
+            itemDropBehaviour: overwrite
+            columns:
+              - type: ListItem.VariableLabel
+                name: column1
+                label: null
+                stretchFactor: 1
+      - type: Label
+        label: Display
+        children:
+          - type: RadioButton
+            name: errBarDef_ci
+            optionId: plotError
+            checkedValue: ci
+            label: Confidence interval
+            events:
+              change: './ancova.events::onChange_errBarDef_ci'
+            children:
+              - type: TextBox
+                name: ciWidth
+                label: Interval
+                suffix: '%'
+                format: number
+                inputPattern: '[0-9]+'
+          - type: RadioButton
+            name: errBarDef_se
+            optionId: plotError
+            checkedValue: se
+            label: Standard Error
+  - type: CollapseBox
+    label: Additional Options
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: CheckBox
+        name: compMain
+        label: Compare main effects
+        children:
+          - type: ComboBox
+            name: compMainCorr
+            label: Correction
+            options:
+              - label: None
+                value: none
+              - label: Tukey
+                value: tukey
+              - label: Bonferroni
+                value: bonferroni
+              - label: Scheffe
+                value: scheffe
+              - label: Sidak
+                value: sidak
+      - type: Label
+        label: Display
+        children:
+          - type: CheckBox
+            name: descStats
+            label: Descriptive statistics
