@@ -1,0 +1,32 @@
+name:  PropTestN
+title: Proportion Test (N Outcomes)
+jus:   '1.0'
+
+children:
+  - type: variablesupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: variabletargetlistbox
+        name: vars
+        label: Variable
+        maxItemCount: 1
+        fullRowSelect: true
+        showColumnHeaders: false
+        columns:
+          - type: listitem.variablelabel
+            name: column1
+            label:
+            stretchFactor: 1
+
+      - type: variabletargetlistbox
+        name: counts
+        label: Counts (optional)
+        maxItemCount: 1
+        fullRowSelect: true
+        showColumnHeaders: false
+        columns:
+          - type: listitem.variablelabel
+            name: column1
+            label:
+            stretchFactor: 1

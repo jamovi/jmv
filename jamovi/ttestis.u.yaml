@@ -1,0 +1,153 @@
+name:  TTestIS
+title: Independent Samples T-Test
+jus:   '1.0'
+
+update: ./ttestis.events::update
+
+children:
+  - type: variablesupplier
+    suggested:
+      - continuous
+      - nominal
+      - ordinal
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: variabletargetlistbox
+        name: vars
+        label: Dependent Variables
+        showColumnHeaders: false
+        columns:
+          - type: listitem.variablelabel
+            name: column1
+            label:
+            stretchFactor: 1
+
+      - type: variabletargetlistbox
+        name: group
+        label: Grouping Variable
+        showColumnHeaders: false
+        maxItemCount: 1
+        columns:
+          - type: listitem.variablelabel
+            name: column1
+            label:
+            stretchFactor: 1
+
+  - type: layoutbox
+    margin: large
+    stretchFactor: 1
+    children:
+      - type: layoutbox
+        cell: [0, 0]
+        stretchFactor: 1
+        children:
+          - type: label
+            label: Tests
+            children:
+              - type: checkbox
+                name: students
+                label: Student's
+                children:
+                  - type: checkbox
+                    name: bf
+                    label: Bayes factor
+                    events:
+                        change: ./ttestis.events::onChange_bf
+                    children:
+                      - type: textbox
+                        name: bfPrior
+                        label: Prior
+                        format: number
+                        inputPattern: "[0-9]+"
+
+              - type: checkbox
+                name: welchs
+                label: Welch's
+
+              - type: checkbox
+                name: mann
+                label: Mann-Whitney U
+
+          - type: label
+            label: Hypothesis
+            children:
+              - type: radiobutton
+                name: hypothesis_different
+                optionId: hypothesis
+                checkedValue: different
+                label: "Group 1 ≠ Group 2"
+
+              - type: radiobutton
+                name: hypothesis_oneGreater
+                optionId: hypothesis
+                checkedValue: oneGreater
+                label: "Group 1 > Group 2"
+
+              - type: radiobutton
+                name: hypothesis_twoGreater
+                optionId: hypothesis
+                checkedValue: twoGreater
+                label: "Group 1 < Group 2"
+
+          - type: label
+            label: Missing values
+            children:
+              - type: radiobutton
+                name: miss_perAnalysis
+                optionId: miss
+                checkedValue: perAnalysis
+                label: Exclude cases analysis by analysis
+
+              - type: radiobutton
+                name: miss_listwise
+                optionId: miss
+                checkedValue: listwise
+                label: Exclude cases listwise
+
+      - type: layoutbox
+        cell: [1, 0]
+        stretchFactor: 1
+        children:
+          - type: label
+            label: Additional Statistics
+            children:
+              - type: checkbox
+                name: meanDiff
+                label: Mean difference
+
+              - type: checkbox
+                name: effectSize
+                label: Effect size
+
+              - type: checkbox
+                name: ci
+                label: Confidence interval
+                events:
+                    change: ./ttestis.events::onChange_ci
+                children:
+                  - type: textbox
+                    name: ciWidth
+                    label: Interval
+                    suffix: "%"
+                    format: number
+                    inputPattern: "[0-9]+"
+
+              - type: checkbox
+                name: desc
+                label: Descriptives
+
+              - type: checkbox
+                name: plots
+                label: Descriptives plots
+
+          - type: label
+            label: Assumption Checks
+            children:
+              - type: checkbox
+                name: norm
+                label: Normality
+
+              - type: checkbox
+                name: eqv
+                label: Equality of variances

@@ -1,0 +1,25 @@
+
+# This file is an automatically generated template. It will NOT be subsequently
+# overwritten by the compiler and may be edited
+
+name:  Mancova
+title: MANCOVA
+jus:   '1.0'
+
+stage: 1
+
+children:
+  - type: variablesupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: variabletargetlistbox
+        name: "vars"
+        label: ""
+        showColumnHeaders: false
+        fullRowSelect: true
+        columns:
+          - type: listitem.variablelabel
+            name: column1
+            label: ""
+            stretchFactor: 1

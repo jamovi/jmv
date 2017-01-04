@@ -1,0 +1,150 @@
+name:  ContTables
+title: Contingency Tables
+jus:   '1.0'
+
+update: ui.ciWidth.setEnabled(ui.logOdds.value());
+
+children:
+  - type: variablesupplier
+    name: variablesupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: variabletargetlistbox
+        name: rows
+        label: Rows
+        showColumnHeaders: false
+        maxItemCount: 1
+        columns:
+          - type: listitem.variablelabel
+            name: column1
+            label:
+            stretchFactor: 1
+
+      - type: variabletargetlistbox
+        name: cols
+        label: Columns
+        showColumnHeaders: false
+        maxItemCount: 1
+        columns:
+          - type: listitem.variablelabel
+            name: column1
+            label:
+            stretchFactor: 1
+
+      - type: variabletargetlistbox
+        name: counts
+        label: Counts (optional)
+        showColumnHeaders: false
+        maxItemCount: 1
+        columns:
+          - type: listitem.variablelabel
+            name: column1
+            label:
+            stretchFactor: 1
+
+      - type: variabletargetlistbox
+        name: layers
+        label: Layers
+        showColumnHeaders: false
+        columns:
+          - type: listitem.variablelabel
+            name: column1
+            label:
+            stretchFactor: 1
+
+  - type: layoutbox
+    stretchFactor: 1
+    margin: large
+    children:
+      - type: collapsebox
+        label: Statistics
+        stretchFactor: 1
+        collapsed: true
+        children:
+          - type: label
+            cell: [0, 0]
+            children:
+              - type: checkbox
+                name: chiSq
+                label: χ²
+
+              - type: checkbox
+                name: chiSqCorr
+                label: χ² continuity correction
+
+              - type: checkbox
+                name: likeRat
+                label: Likelihood ratio
+
+          - type: label
+            cell: [1, 0]
+            children:
+              - type: checkbox
+                name: logOdds
+                label: Log odds ratio (2x2 only)
+                events:
+                    change: ui.ciWidth.setEnabled(ui.logOdds.value());
+                children:
+                  - type: textbox
+                    name: ciWidth
+                    label: Confidence level
+                    suffix: "%"
+                    format: number
+                    inputPattern: "[0-9]+"
+
+          - type: label
+            label: Nominal
+            cell: [0, 1]
+            children:
+              - type: checkbox
+                name: contCoef
+                label: Contingency coefficient
+
+              - type: checkbox
+                name: phiCra
+                label: Phi and Cramer's V
+
+          - type: label
+            label: Ordinal
+            cell: [1, 1]
+            children:
+              - type: checkbox
+                name: gamma
+                label: Gamma
+
+              - type: checkbox
+                name: taub
+                label: Kendall's tau-b
+
+      - type: collapsebox
+        label: Cells
+        stretchFactor: 1
+        collapsed: true
+        children:
+          - type: label
+            label: Counts
+            children:
+              - type: checkbox
+                name: obs
+                label: Observed
+
+              - type: checkbox
+                name: exp
+                label: Expected
+
+          - type: label
+            label: Percentages
+            cell: [1, 0]
+            children:
+              - type: checkbox
+                name: pcRow
+                label: Row
+
+              - type: checkbox
+                name: pcCol
+                label: Column
+
+              - type: checkbox
+                name: pcTot
+                label: Total

@@ -1,0 +1,112 @@
+name:  CorrMatrix
+title: Correlation Matrix
+jus:   '1.0'
+
+update: ./corrmatrix.events::update
+
+children:
+  - type: variablesupplier
+    name: variablesupplier
+    suggested:
+      - continuous
+      - ordinal
+    permitted:
+      - continuous
+      - ordinal
+      - nominal
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: variabletargetlistbox
+        name: vars
+        showColumnHeaders: false
+        columns:
+          - type: listitem.variablelabel
+            name: column1
+            label:
+            stretchFactor: 1
+
+  - type: layoutbox
+    stretchFactor: 1
+    margin: large
+    children:
+      - type: label
+        label: Correlation Coefficients
+        cell: [0, 0]
+        children:
+          - type: checkbox
+            name: pearson
+            label: Pearson
+
+          - type: checkbox
+            name: spearman
+            label: Spearman
+
+          - type: checkbox
+            name: kendall
+            label: Kendall's tau-b
+
+      - type: label
+        label: Additional Options
+        cell: [1, 0]
+        children:
+          - type: checkbox
+            name: sig
+            label: Report significance
+
+          - type: checkbox
+            name: flag
+            label: Flag significant correlations
+
+          - type: checkbox
+            name: ci
+            label: Confidence intervals
+            events:
+                change: ./corrmatrix.events::onChange_ci
+            children:
+              - type: textbox
+                name: ciWidth
+                label: Interval
+                suffix: "%"
+                format: number
+                inputPattern: "[0-9]+"
+
+      - type: label
+        label: Hypothesis
+        cell: [0, 1]
+        children:
+          - type: radiobutton
+            name: hypothesis_corr
+            label: Correlated
+            optionId: hypothesis
+            checkedValue: corr
+
+          - type: radiobutton
+            name: hypothesis_pos
+            label: Correlated positively
+            optionId: hypothesis
+            checkedValue: pos
+
+          - type: radiobutton
+            name: hypothesis_neg
+            label: Correlated negatively
+            optionId: hypothesis
+            checkedValue: neg
+
+      - type: label
+        label: Plot
+        cell: [1, 1]
+        children:
+          - type: checkbox
+            name: plots
+            label: Correlation matrix
+            events:
+                change: ./corrmatrix.events::onChange_plots
+            children:
+              - type: checkbox
+                name: plotDens
+                label: Densities for variables
+
+              - type: checkbox
+                name: plotStats
+                label: Statistics

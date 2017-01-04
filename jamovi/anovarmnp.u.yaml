@@ -1,0 +1,57 @@
+name:  AnovaRMNP
+title: Repeated Measures ANOVA (Non-parametric)
+jus:   '1.0'
+
+update: ./anovarmnp.events::update
+
+children:
+  - type: variablesupplier
+    name: variablesupplier
+    suggested:
+      - continuous
+    permitted:
+      - continuous
+      - nominal
+      - ordinal
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: variabletargetlistbox
+        name: measures
+        label: Measures
+        showColumnHeaders: false
+        columns:
+          - type: listitem.variablelabel
+            name: column1
+            label:
+            stretchFactor: 1
+
+  - type: layoutbox
+    stretchFactor: 1
+    margin: large
+    children:
+      - type: checkbox
+        name: pairs
+        label: Pairwise comparisons (Durbin-Conover)
+
+      - type: checkbox
+        name: desc
+        label: Descriptives
+
+      - type: checkbox
+        name: plots
+        label: Descriptives plot
+        events:
+            change: ./anovarmnp.events::onChange_plots
+        children:
+          - type: radiobutton
+            name: plotType_means
+            optionId: plotType
+            checkedValue: means
+            label: Means
+
+          - type: radiobutton
+            name: plotType_medians
+            optionId: plotType
+            checkedValue: medians
+            label: Medians

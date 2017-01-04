@@ -1,0 +1,42 @@
+name:  AnovaNP
+title: One-way ANOVA (Non-parametric)
+jus:   '1.0'
+
+children:
+  - type: variablesupplier
+    name: variablesupplier
+    suggested:
+      - continuous
+      - nominal
+      - ordinal
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: variabletargetlistbox
+        name: deps
+        label: Dependent Variables
+        showColumnHeaders: false
+        columns:
+          - type: listitem.variablelabel
+            name: column1
+            label:
+            stretchFactor: 1
+
+      - type: variabletargetlistbox
+        name: group
+        label: Grouping Variable
+        showColumnHeaders: false
+        maxItemCount: 1
+        columns:
+          - type: listitem.variablelabel
+            name: column1
+            label:
+            stretchFactor: 1
+
+  - type: layoutbox
+    stretchFactor: 1
+    margin: large
+    children:
+      - type: checkbox
+        name: pairs
+        label: DSCF pairwise comparisons

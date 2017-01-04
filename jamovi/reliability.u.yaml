@@ -1,0 +1,74 @@
+name:  Reliability
+title: Reliability Analysis
+jus:   '1.0'
+
+children:
+  - type: variablesupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: variabletargetlistbox
+        name: vars
+        label: Variable
+        fullRowSelect: true
+        showColumnHeaders: false
+        columns:
+          - type: listitem.variablelabel
+            name: column1
+            label:
+            stretchFactor: 1
+
+  - type: layoutbox
+    margin: large
+    children:
+      - type: label
+        label: Scale Statistics
+        cell: [0, 0]
+        children:
+          - type: checkbox
+            name: alphaScale
+            label: Cronbach's α
+
+          - type: checkbox
+            name: omegaScale
+            label: McDonald's ω
+
+          - type: checkbox
+            name: meanScale
+            label: Mean
+
+          - type: checkbox
+            name: sdScale
+            label: Standard deviation
+
+      - type: label
+        label: Item Statistics
+        cell: [1, 0]
+        children:
+          - type: checkbox
+            name: alphaItems
+            label: Cronbach's α (if item is dropped)
+
+          - type: checkbox
+            name: omegaItems
+            label: McDonald's ω (if item is dropped)
+
+          - type: checkbox
+            name: meanItems
+            label: Mean
+
+          - type: checkbox
+            name: sdItems
+            label: Standard deviation
+
+          - type: checkbox
+            name: itemRestCor
+            label: Item-rest correlation
+
+      - type: label
+        label: Additional Options
+        cell: [0, 1]
+        children:
+          - type: checkbox
+            name: corPlot
+            label: Correlation heat plot
