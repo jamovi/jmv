@@ -112,7 +112,7 @@ analyses:
     menuGroup: Frequencies
     menuSubgroup: One Sample Proportion Tests
     menuTitle: N Outcomes
-    menuSubtitle: χ² Goodness of Fit
+    menuSubtitle: χ² Goodness of fit
     description: null
   - title: Contingency Tables
     name: ContTables

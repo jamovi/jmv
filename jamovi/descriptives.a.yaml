@@ -99,12 +99,12 @@ options:
 
     - name: plotW
       title: Plot width
-      type: Int
+      type: Integer
       default: 480
 
     - name: plotH
       title: Plot height
-      type: Int
+      type: Integer
       default: 320
 
     - name: quart
@@ -119,5 +119,5 @@ options:
 
     - name: pcNEqGr
       title: Cut point values
-      type: Int
+      type: Integer
       default: 4
