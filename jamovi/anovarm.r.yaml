@@ -41,6 +41,24 @@ items:
           type: number
           format: zto,pvalue
 
+        - name: eta
+          title: η²
+          type: number
+          format: number
+          visible: (effSizeN2)
+
+        - name: partEta
+          title: partial η²
+          type: number
+          format: number
+          visible: (partEffSizeN2)
+
+        - name: omega
+          title: ω²
+          type: number
+          format: number
+          visible: (effSizeW2)
+
     - name: bsTable
       title: Between Subjects
       type: Table
@@ -77,6 +95,24 @@ items:
           title: p
           type: number
           format: zto,pvalue
+
+        - name: eta
+          title: η²
+          type: number
+          format: number
+          visible: (effSizeN2)
+
+        - name: partEta
+          title: partial η²
+          type: number
+          format: number
+          visible: (partEffSizeN2)
+
+        - name: omega
+          title: ω²
+          type: number
+          format: number
+          visible: (effSizeW2)
 
     - name: assump
       title: Assumptions
