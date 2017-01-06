@@ -15,7 +15,7 @@ AnovaRMOptions <- R6::R6Class(
             cov = NULL,
             rmTerms = NULL,
             bsTerms = NULL,
-            sumOfSqu = "Type I",
+            ss = "3",
             spherTests = FALSE,
             spherCorrs = FALSE,
             spherCorrNone = FALSE,
@@ -104,14 +104,14 @@ AnovaRMOptions <- R6::R6Class(
                 "bsTerms",
                 bsTerms,
                 default=NULL)
-            private$..sumOfSqu <- jmvcore::OptionList$new(
-                "sumOfSqu",
-                sumOfSqu,
+            private$..ss <- jmvcore::OptionList$new(
+                "ss",
+                ss,
                 options=list(
-                    "Type I",
-                    "Type II",
-                    "Type III"),
-                default="Type I")
+                    "1",
+                    "2",
+                    "3"),
+                default="3")
             private$..spherTests <- jmvcore::OptionBool$new(
                 "spherTests",
                 spherTests,
@@ -236,7 +236,7 @@ AnovaRMOptions <- R6::R6Class(
             self$.addOption(private$..cov)
             self$.addOption(private$..rmTerms)
             self$.addOption(private$..bsTerms)
-            self$.addOption(private$..sumOfSqu)
+            self$.addOption(private$..ss)
             self$.addOption(private$..spherTests)
             self$.addOption(private$..spherCorrs)
             self$.addOption(private$..spherCorrNone)
@@ -268,7 +268,7 @@ AnovaRMOptions <- R6::R6Class(
         cov = function() private$..cov$value,
         rmTerms = function() private$..rmTerms$value,
         bsTerms = function() private$..bsTerms$value,
-        sumOfSqu = function() private$..sumOfSqu$value,
+        ss = function() private$..ss$value,
         spherTests = function() private$..spherTests$value,
         spherCorrs = function() private$..spherCorrs$value,
         spherCorrNone = function() private$..spherCorrNone$value,
@@ -299,7 +299,7 @@ AnovaRMOptions <- R6::R6Class(
         ..cov = NA,
         ..rmTerms = NA,
         ..bsTerms = NA,
-        ..sumOfSqu = NA,
+        ..ss = NA,
         ..spherTests = NA,
         ..spherCorrs = NA,
         ..spherCorrNone = NA,
@@ -333,51 +333,67 @@ AnovaRMResults <- R6::R6Class(
         assump = function() private$..assump,
         contrasts = function() private$..contrasts,
         postHoc = function() private$..postHoc,
-        plots = function() private$..plots),
+        descPlot = function() private$..descPlot),
     private = list(
         ..rmTable = NA,
         ..bsTable = NA,
         ..assump = NA,
         ..contrasts = NA,
         ..postHoc = NA,
-        ..plots = NA),
+        ..descPlot = NA),
     public=list(
         initialize=function(options) {
             super$initialize(options=options, name="", title="Repeated Measures ANOVA")
             private$..rmTable <- jmvcore::Table$new(
                 options=options,
                 name="rmTable",
-                title="Within Subjects",
+                title="Within Subjects Effects",
                 clearWith=list(
                     "dependent",
-                    "sumOfSqu",
+                    "ss",
                     "rmCells",
                     "rmcModelTerms",
-                    "bscModelTerms"),
+                    "bscModelTerms",
+                    "bs",
+                    "rm",
+                    "cov",
+                    "rmTerms",
+                    "bsTerms"),
                 columns=list(
                     list(`name`="name", `title`="", `content`=".", `type`="text"),
                     list(`name`="ss", `title`="Sum of Squares", `type`="number"),
                     list(`name`="df", `title`="df", `type`="integer"),
                     list(`name`="ms", `title`="Mean Square", `type`="number"),
                     list(`name`="F", `title`="F", `type`="number"),
-                    list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue")))
+                    list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue"),
+                    list(`name`="eta", `title`="η²", `type`="number", `format`="number", `visible`="(effSizeN2)"),
+                    list(`name`="partEta", `title`="partial η²", `type`="number", `format`="number", `visible`="(partEffSizeN2)"),
+                    list(`name`="omega", `title`="ω²", `type`="number", `format`="number", `visible`="(effSizeW2)")))
             private$..bsTable <- jmvcore::Table$new(
                 options=options,
                 name="bsTable",
-                title="Between Subjects",
+                title="Between Subjects Effects",
                 clearWith=list(
                     "dependent",
-                    "sumOfSqu",
+                    "ss",
                     "rmCells",
                     "rmcModelTerms",
-                    "bscModelTerms"),
+                    "bscModelTerms",
+                    "bs",
+                    "rm",
+                    "cov",
+                    "rmTerms",
+                    "bsTerms"),
                 columns=list(
                     list(`name`="name", `title`="", `content`=".", `type`="text"),
                     list(`name`="ss", `title`="Sum of Squares", `type`="number"),
                     list(`name`="df", `title`="df", `type`="integer"),
                     list(`name`="ms", `title`="Mean Square", `type`="number"),
                     list(`name`="F", `title`="F", `type`="number"),
-                    list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue")))
+                    list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue"),
+                    list(`name`="eta", `title`="η²", `type`="number", `format`="number", `visible`="(effSizeN2)"),
+                    list(`name`="partEta", `title`="partial η²", `type`="number", `format`="number", `visible`="(partEffSizeN2)"),
+                    list(`name`="omega", `title`="ω²", `type`="number", `format`="number", `visible`="(effSizeW2)")))
             private$..assump <- R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
@@ -448,25 +464,29 @@ AnovaRMResults <- R6::R6Class(
                         list(`name`="pscheffe", `title`="p<sub>scheffe</p>", `visible`="(corrScheffe)", `type`="number", `format`="zto,pvalue"),
                         list(`name`="pbonferroni", `title`="p<sub>bonferoni</p>", `visible`="(corrBonf)", `type`="number", `format`="zto,pvalue"),
                         list(`name`="pholm", `title`="p<sub>holm</p>", `visible`="(corrHolm)", `type`="number", `format`="zto,pvalue"))))
-            private$..plots <- jmvcore::Image$new(
+            private$..descPlot <- jmvcore::Image$new(
                 options=options,
-                name="plots",
-                title="Plots",
+                name="descPlot",
+                title="Descriptive Plot",
                 visible="(descPlotsHAxis)",
                 width=500,
                 height=300,
-                renderInitFun=".plot",
-                renderFun=".plot",
+                renderInitFun=".descPlot",
+                renderFun=".descPlot",
                 clearWith=list(
                     "descPlotsHAxis",
                     "descPlotsSepLines",
-                    "descPlotsSepPlots"))
+                    "descPlotsSepPlots",
+                    "rm",
+                    "dispErrBars",
+                    "errBarDef",
+                    "ciWidth"))
             self$add(private$..rmTable)
             self$add(private$..bsTable)
             self$add(private$..assump)
             self$add(private$..contrasts)
             self$add(private$..postHoc)
-            self$add(private$..plots)}))
+            self$add(private$..descPlot)}))
 
 AnovaRMBase <- R6::R6Class(
     "AnovaRMBase",
@@ -496,7 +516,7 @@ AnovaRM <- function(
     cov = NULL,
     rmTerms = NULL,
     bsTerms = NULL,
-    sumOfSqu = "Type I",
+    ss = "3",
     spherTests = FALSE,
     spherCorrs = FALSE,
     spherCorrNone = FALSE,
@@ -528,7 +548,7 @@ AnovaRM <- function(
         cov = cov,
         rmTerms = rmTerms,
         bsTerms = bsTerms,
-        sumOfSqu = sumOfSqu,
+        ss = ss,
         spherTests = spherTests,
         spherCorrs = spherCorrs,
         spherCorrNone = spherCorrNone,

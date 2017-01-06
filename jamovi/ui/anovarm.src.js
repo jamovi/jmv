@@ -14,7 +14,7 @@ view.layout = ui.extend({
 
     label: "Repeated Measures ANOVA",
     type: "root",
-    stage: 1,
+    stage: 0,
     controls: [
         {
             type: "variablesupplier",
@@ -126,10 +126,10 @@ view.layout = ui.extend({
                 {
                     type: "layoutbox",
                     controls: [
-                        { name: "sumOfSqu", type:"combobox", label: "Sum of squares", options: [
-                            {label: 'Type I', value:'Type I'},
-                            {label: 'Type II', value:'Type II'},
-                            {label: 'Type III', value:'Type III'}
+                        { name: "ss", type:"combobox", label: "Sum of squares", options: [
+                            {label: 'Type I', value:'1'},
+                            {label: 'Type II', value:'2'},
+                            {label: 'Type III', value:'3'}
                         ] }
                     ]
                 }

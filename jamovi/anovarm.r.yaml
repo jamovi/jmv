@@ -5,14 +5,19 @@ jmc: "1.0.0"
 
 items:
     - name: rmTable
-      title: Within Subjects
+      title: Within Subjects Effects
       type: Table
       clearWith:
         - dependent
-        - sumOfSqu
+        - ss
         - rmCells
         - rmcModelTerms
         - bscModelTerms
+        - bs
+        - rm
+        - cov
+        - rmTerms
+        - bsTerms
 
       columns:
         - name: name
@@ -60,14 +65,19 @@ items:
           visible: (effSizeW2)
 
     - name: bsTable
-      title: Between Subjects
+      title: Between Subjects Effects
       type: Table
       clearWith:
         - dependent
-        - sumOfSqu
+        - ss
         - rmCells
         - rmcModelTerms
         - bscModelTerms
+        - bs
+        - rm
+        - cov
+        - rmTerms
+        - bsTerms
 
       columns:
         - name: name
@@ -249,15 +259,19 @@ items:
             type: number
             format: zto,pvalue
 
-    - name: plots
-      title: Plots
+    - name: descPlot
+      title: Descriptive Plot
       visible: (descPlotsHAxis)
       type: Image
       width: 500
       height: 300
-      renderInitFun: .plot
-      renderFun: .plot
+      renderInitFun: .descPlot
+      renderFun: .descPlot
       clearWith:
         - descPlotsHAxis
         - descPlotsSepLines
         - descPlotsSepPlots
+        - rm
+        - dispErrBars
+        - errBarDef
+        - ciWidth
