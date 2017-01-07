@@ -2,7 +2,7 @@ name:  AnovaRM
 title: Repeated Measures ANOVA
 jus:   '1.0'
 
-stage: 1
+stage: 0
 
 update: ./anovarm.events::update
 
@@ -131,15 +131,15 @@ children:
       - type: layoutbox
         children:
           - type: combobox
-            name: sumOfSqu
+            name: ss
             label: Sum of squares
             options:
-              - label: Type I
-                value: Type I
-              - label: Type II
-                value: Type II
-              - label: Type III
-                value: Type III
+              - label: Type 1
+                value: Type 1
+              - label: Type 2
+                value: Type 2
+              - label: Type 3
+                value: Type 3
 
   - type: collapsebox
     label: Assumption Checks
