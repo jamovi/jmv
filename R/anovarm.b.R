@@ -522,7 +522,7 @@ AnovaRMClass <- R6::R6Class(
             }
             
             return(datac)
-        }
+        },
         
         .normDataWithin=function(data=NULL, idvar, measurevar, betweenvars=NULL, na.rm=FALSE, .drop=TRUE) {
             
@@ -549,7 +549,7 @@ AnovaRMClass <- R6::R6Class(
             data$subjMean <- NULL
             
             return(data)
-        }
+        },
         
         .summarySEwithin=function(data=NULL, measurevar, betweenvars=NULL, withinvars=NULL, idvar=NULL, na.rm=FALSE, conf.interval=.95, .drop=TRUE, errorBarType="confidenceInterval") {
             

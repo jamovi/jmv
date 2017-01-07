@@ -88,11 +88,11 @@ DescriptivesOptions <- R6::R6Class(
                 "plots",
                 plots,
                 default=FALSE)
-            private$..plotW <- jmvcore::OptionInt$new(
+            private$..plotW <- jmvcore::OptionInteger$new(
                 "plotW",
                 plotW,
                 default=480)
-            private$..plotH <- jmvcore::OptionInt$new(
+            private$..plotH <- jmvcore::OptionInteger$new(
                 "plotH",
                 plotH,
                 default=320)
@@ -104,7 +104,7 @@ DescriptivesOptions <- R6::R6Class(
                 "pcEqGr",
                 pcEqGr,
                 default=FALSE)
-            private$..pcNEqGr <- jmvcore::OptionInt$new(
+            private$..pcNEqGr <- jmvcore::OptionInteger$new(
                 "pcNEqGr",
                 pcNEqGr,
                 default=4)
