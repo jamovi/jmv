@@ -64,9 +64,6 @@ AnovaRMClass <- R6::R6Class(
                 data <- private$.wideToLong()
                 modelFormula <- private$.modelFormula()
                 
-                print(head(data))
-                print(modelFormula)
-                
                 suppressWarnings({
                     
                     result <- try(afex::aov_car(modelFormula, data, type=self$options$ss), silent=TRUE)
@@ -74,10 +71,12 @@ AnovaRMClass <- R6::R6Class(
                 }) # suppressWarnings
                 
                 if (isError(result)) {
-                    print(extractErrorMessage(result))
+                    jmvcore::reject(extractErrorMessage(result), code="error")
                 } else {
                     private$.populateTables(result)
                 }
+                
+                private$.prepareDescPlots(data)
             }
         },
         .rmTerms=function() {
@@ -358,6 +357,245 @@ AnovaRMClass <- R6::R6Class(
             row[["p"]] <- ""
             
             bsTable$setRow(rowKey="Residual", values=row)
+        },
+        .prepareDescPlots=function(data) {
+            
+            depName <- "dependent"
+            groupName <- self$options$descPlotsHAxis
+            linesName <- self$options$descPlotsSepLines
+            plotsName <- self$options$descPlotsSepPlots
+            
+            ciWidth   <- self$options$ciWidth
+            errorBarType <- self$options$errBarDef
+            
+            # rm <- sapply(self$options$rm, function(x) return(x$label))
+            # bs <- self$options$bs
+            # 
+            # rmVars <- c()
+            # bsVars <- c()
+            # if (groupName %in% rm)
+            #     rmVars[length(rmVars)+1] <- groupName
+            # else
+            #     bsVars[length(bsVars)+1] <- groupName
+            #     
+            # 
+            # if (length(rm) == 0)
+            #     summaryStat <- .summarySE(data, measurevar = "dependent", groupvars = bs,
+            #                               conf.interval = ciWidth, na.rm = TRUE, .drop = FALSE, errorBarType = errorBarType)
+            # else
+            #     summaryStat <- .summarySEwithin(data, measurevar="dependent", betweenvars=bs, withinvars=rm,
+            #                                     idvar="subject", conf.interval=ciWidth, na.rm=TRUE, .drop=FALSE, errorBarType=errorBarType)
+            # 
+            if (length(depName) == 0 || length(groupName) == 0)
+                return()
+            
+            by <- list()
+            by[['group']] <- data[[groupName]]
+            
+            if ( ! is.null(linesName))
+                by[['lines']] <- data[[linesName]]
+            
+            if ( ! is.null(plotsName))
+                by[['plots']] <- data[[plotsName]]
+            
+            dep <- data[[depName]]
+            
+            ciMult <- qt(ciWidth / 200 + .5, nrow(data)-1)
+            
+            means <- aggregate(dep, by=by, mean, simplify=FALSE)
+            ses   <- aggregate(dep, by=by, function(x) { sd(x) / sqrt(length(x)) }, simplify=FALSE)
+            cis   <- aggregate(dep, by=by, function(x) { sd(x) / sqrt(length(x)) * ciMult }, simplify=FALSE)
+            
+            plotData <- data.frame(group=means$group)
+            if ( ! is.null(linesName))
+                plotData <- cbind(plotData, lines=means$lines)
+            if ( ! is.null(plotsName))
+                plotData <- cbind(plotData, plots=means$plots)
+            
+            plotData <- cbind(plotData, mean=unlist(means$x))
+            
+            if (self$options$errBarDef == 'ci')
+                plotData <- cbind(plotData, err=unlist(cis$x))
+            else
+                plotData <- cbind(plotData, err=unlist(ses$x))
+            
+            image <- self$results$get('descPlot')
+            image$setState(plotData)
+            
+        },
+        .descPlot=function(image, ...) {
+            
+            if (is.null(image$state))
+                return(FALSE)
+            
+            depName <- "dependent"
+            groupName <- self$options$descPlotsHAxis
+            linesName <- self$options$descPlotsSepLines
+            plotsName <- self$options$descPlotsSepPlots
+            
+            the <- theme(
+                text=element_text(size=16, colour='#333333'),
+                plot.background=element_rect(fill='transparent', color=NA),
+                legend.background=element_rect(fill='transparent', colour=NA),
+                panel.background=element_rect(fill='#E8E8E8'),
+                plot.margin=margin(15, 15, 15, 15),
+                axis.text.x=element_text(margin=margin(5,0,0,0)),
+                axis.text.y=element_text(margin=margin(0,5,0,0)),
+                axis.title.x=element_text(margin=margin(10,0,0,0)),
+                axis.title.y=element_text(margin=margin(0,10,0,0)))
+            
+            dodge <- position_dodge(0.1)
+            
+            if (self$options$dispErrBars == 'ci') {
+                ciWidth <- self$options$ciWidth
+                errorType <- paste0('(', ciWidth, '% CI)')
+            } else {
+                errorType <- '(SE)'
+            }
+            
+            if ( ! is.null(linesName)) {
+                
+                print(ggplot(data=image$state, aes(x=group, y=mean, group=lines, colour=lines)) +
+                          geom_errorbar(aes(x=group, ymin=mean-err, ymax=mean+err, width=.1, group=lines), size=.8, position=dodge) +
+                          geom_line(size=.8, position=dodge) +
+                          geom_point(shape=21, fill='white', size=3, position=dodge) +
+                          labs(x=groupName, y=depName, colour=paste(linesName, errorType)) +
+                          the)
+                
+            } else {
+                
+                print(ggplot(data=image$state) +
+                          geom_errorbar(aes(x=group, ymin=mean-err, ymax=mean+err, colour='colour', width=.1), size=.8) +
+                          geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill='white', size=3) +
+                          labs(x=groupName, y=depName, colour=paste(depName, errorType)) +
+                          scale_colour_manual(name=paste(depName, errorType), values=c(colour='#333333'), labels='') +
+                          the
+                )
+            }
+            
+            TRUE
+        },
+        .summarySE=function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE, conf.interval=.95, .drop=TRUE, errorBarType="confidenceInterval") {
+            
+            # New version of length which can handle NA's: if na.rm==T, don't count them
+            length2 <- function (x, na.rm=FALSE) {
+                if (na.rm) {
+                    sum(!is.na(x))
+                } else {
+                    length(x)
+                }
+            }
+            
+            # This does the summary. For each group's data frame, return a vector with
+            # N, mean, and sd
+            datac <- plyr::ddply(data, groupvars, .drop=.drop,
+                                 .fun = function(xx, col) {
+                                     c(N    = length2(xx[[col]], na.rm=na.rm),
+                                       mean = mean   (xx[[col]], na.rm=na.rm),
+                                       sd   = sd     (xx[[col]], na.rm=na.rm)
+                                     )
+                                 },
+                                 measurevar
+            )
+            
+            # Rename the "mean" column
+            datac <- plyr::rename(datac, c("mean" = measurevar))
+            
+            datac$se <- datac$sd / sqrt(datac$N)  # Calculate standard error of the mean
+            
+            # Confidence interval multiplier for standard error
+            # Calculate t-statistic for confidence interval:
+            # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
+            ciMult <- qt(conf.interval/2 + .5, datac$N-1)
+            datac$ci <- datac$se * ciMult
+            
+            if (errorBarType == "confidenceInterval") {
+                
+                datac$ciLower <- datac[,measurevar] - datac[,"ci"]
+                datac$ciUpper <- datac[,measurevar] + datac[,"ci"]
+                
+            } else {
+                
+                datac$ciLower <- datac[,measurevar] - datac[,"se"]
+                datac$ciUpper <- datac[,measurevar] + datac[,"se"]
+                
+            }
+            
+            return(datac)
+        }
+        
+        .normDataWithin=function(data=NULL, idvar, measurevar, betweenvars=NULL, na.rm=FALSE, .drop=TRUE) {
+            
+            # Measure var on left, idvar + between vars on right of formula.
+            data.subjMean <- plyr::ddply(data, c(idvar, betweenvars), .drop=.drop,
+                                         .fun = function(xx, col, na.rm) {
+                                             c(subjMean = mean(xx[,col], na.rm=na.rm))
+                                         },
+                                         measurevar,
+                                         na.rm
+            )
+            
+            
+            
+            # Put the subject means with original data
+            data <- base::merge(data, data.subjMean)
+            
+            # Get the normalized data in a new column
+            measureNormedVar <- paste(measurevar, "_norm", sep="")
+            data[,measureNormedVar] <- data[,measurevar] - data[,"subjMean"] +
+                mean(data[,measurevar], na.rm=na.rm)
+            
+            # Remove this subject mean column
+            data$subjMean <- NULL
+            
+            return(data)
+        }
+        
+        .summarySEwithin=function(data=NULL, measurevar, betweenvars=NULL, withinvars=NULL, idvar=NULL, na.rm=FALSE, conf.interval=.95, .drop=TRUE, errorBarType="confidenceInterval") {
+            
+            # Get the means from the un-normed data
+            datac <- .summarySE(data, measurevar, groupvars=c(betweenvars, withinvars), na.rm=na.rm, conf.interval=conf.interval, .drop=.drop, errorBarType=errorBarType)
+            
+            # Drop all the unused columns (these will be calculated with normed data)
+            datac$sd <- NULL
+            datac$se <- NULL
+            datac$ci <- NULL
+            datac$ciLower <- NULL
+            datac$ciUpper <- NULL
+            
+            # Norm each subject's data
+            ndata <- .normDataWithin(data, idvar, measurevar, betweenvars, na.rm, .drop=.drop)
+            
+            # This is the name of the new column
+            measurevar_n <- paste(measurevar, "_norm", sep="")
+            
+            # Collapse the normed data - now we can treat between and within vars the same
+            ndatac <- .summarySE(ndata, measurevar_n, groupvars=c(betweenvars, withinvars), na.rm=na.rm, conf.interval=conf.interval, .drop=.drop, errorBarType=errorBarType)
+            
+            # Apply correction from Morey (2008) to the standard error and confidence interval
+            # Get the product of the number of conditions of within-S variables
+            nWithinGroups    <- prod(vapply(ndatac[,withinvars, drop=FALSE], FUN=nlevels, FUN.VALUE=numeric(1)))
+            correctionFactor <- sqrt( nWithinGroups / (nWithinGroups-1) )
+            
+            # Apply the correction factor
+            ndatac$sd <- ndatac$sd * correctionFactor
+            ndatac$se <- ndatac$se * correctionFactor
+            ndatac$ci <- ndatac$ci * correctionFactor
+            
+            if (errorBarType == "confidenceInterval") {
+                
+                ndatac$ciLower <- datac[,measurevar] - ndatac[,"ci"]
+                ndatac$ciUpper <- datac[,measurevar] + ndatac[,"ci"]
+                
+            } else {
+                
+                ndatac$ciLower <- datac[,measurevar] - ndatac[,"se"]
+                ndatac$ciUpper <- datac[,measurevar] + ndatac[,"se"]
+                
+            }
+            
+            # Combine the un-normed means with the normed results
+            merge(datac, ndatac)
         })
 )
 

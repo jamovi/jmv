@@ -84,14 +84,14 @@ options:
       description: >
         The Between Subjects model terms
 
-    - name: sumOfSqu
+    - name: ss
       title: Sum of squares
       type: List
       options:
-        - Type I
-        - Type II
-        - Type III
-      default: Type I
+        - '1'
+        - '2'
+        - '3'
+      default: '3'
       description: >
         Sum of squares
 
