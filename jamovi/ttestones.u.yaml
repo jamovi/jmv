@@ -5,7 +5,7 @@ jus:   '1.0'
 update: ./ttestones.events::update
 
 children:
-  - type: variablesupplier
+  - type: VariableSupplier
     suggested:
       - continuous
     permitted:
@@ -15,130 +15,130 @@ children:
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: variabletargetlistbox
+      - type: VariableTargetListBox
         name: vars
         label: Dependent Variables
         showColumnHeaders: false
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: column1
             label:
             stretchFactor: 1
 
-  - type: layoutbox
+  - type: LayoutBox
     margin: large
     stretchFactor: 1
     children:
-      - type: layoutbox
+      - type: LayoutBox
         cell: [0, 0]
         stretchFactor: 1
         children:
-          - type: label
+          - type: Label
             label: Tests
             children:
-              - type: checkbox
+              - type: CheckBox
                 name: students
                 label: Student's
                 children:
-                  - type: checkbox
+                  - type: CheckBox
                     name: bf
                     label: Bayes factor
                     events:
                         change: ./ttestones.events::onChange_bf
                     children:
-                      - type: textbox
+                      - type: TextBox
                         name: bfPrior
                         label: Prior
                         format: number
                         inputPattern: "[0-9]+"
 
-              - type: checkbox
+              - type: CheckBox
                 name: mann
                 label: Mann-Whitney U
 
-          - type: label
+          - type: Label
             label: Hypothesis
             children:
-              - type: layoutbox
+              - type: LayoutBox
                 children:
-                  - type: textbox
+                  - type: TextBox
                     name: testValue
                     label: Test value
                     format: number
                     inputPattern: "[0-9]+"
 
-              - type: radiobutton
+              - type: RadioButton
                 name: hypothesis_dt
                 optionId: hypothesis
                 checkedValue: dt
                 label: "≠ Test value"
 
-              - type: radiobutton
+              - type: RadioButton
                 name: hypothesis_gt
                 optionId: hypothesis
                 checkedValue: gt
                 label: "> Test value"
 
-              - type: radiobutton
+              - type: RadioButton
                 name: hypothesis_lt
                 optionId: hypothesis
                 checkedValue: lt
                 label: "< Test value"
 
-          - type: label
+          - type: Label
             label: Missing values
             children:
-              - type: radiobutton
+              - type: RadioButton
                 name: miss_perAnalysis
                 optionId: miss
                 checkedValue: perAnalysis
                 label: Exclude cases analysis by analysis
 
-              - type: radiobutton
+              - type: RadioButton
                 name: miss_listwise
                 optionId: miss
                 checkedValue: listwise
                 label: Exclude cases listwise
 
-      - type: layoutbox
+      - type: LayoutBox
         cell: [1, 0]
         stretchFactor: 1
         children:
-          - type: label
+          - type: Label
             label: Additional Statistics
             children:
-              - type: checkbox
+              - type: CheckBox
                 name: meanDiff
                 label: Mean difference
 
-              - type: checkbox
+              - type: CheckBox
                 name: effectSize
                 label: Effect size
 
-              - type: checkbox
+              - type: CheckBox
                 name: ci
                 label: Confidence interval
                 events:
                     change: ./ttestones.events::onChange_ci
                 children:
-                  - type: textbox
+                  - type: TextBox
                     name: ciWidth
                     label: Interval
                     suffix: "%"
                     format: number
                     inputPattern: "[0-9]+"
 
-              - type: checkbox
+              - type: CheckBox
                 name: desc
                 label: Descriptives
 
-              - type: checkbox
+              - type: CheckBox
                 name: plots
                 label: Descriptives plots
 
-          - type: label
+          - type: Label
             label: Assumption Checks
             children:
-              - type: checkbox
+              - type: CheckBox
                 name: norm
                 label: Normality

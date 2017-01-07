@@ -5,7 +5,7 @@ jus:   '1.0'
 update: ui.ciWidth.setEnabled(ui.ci.value());
 
 children:
-  - type: variablesupplier
+  - type: VariableSupplier
     suggested:
       - continuous
       - nominal
@@ -13,62 +13,62 @@ children:
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: variabletargetlistbox
+      - type: VariableTargetListBox
         name: vars
         showColumnHeaders: false
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: column1
             label:
             stretchFactor: 1
 
-  - type: layoutbox
+  - type: LayoutBox
     stretchFactor: 1
     margin: large
     children:
-      - type: checkbox
+      - type: CheckBox
         name: areCounts
         label: Values are counts
 
-      - type: layoutbox
+      - type: LayoutBox
         children:
-          - type: textbox
+          - type: TextBox
             name: testValue
             label: Test value
             format: number
             inputPattern: "[0-9]+"
 
-  - type: label
+  - type: Label
     label: Hypothesis
     children:
-      - type: radiobutton
+      - type: RadioButton
         name: hypothesis_notequal
         label: "≠ Test value"
         optionId: hypothesis
         checkedValue: notequal
 
-      - type: radiobutton
+      - type: RadioButton
         name: hypothesis_greater
         label: "> Test value"
         optionId: hypothesis
         checkedValue: greater
 
-      - type: radiobutton
+      - type: RadioButton
         name: hypothesis_less
         label: "< Test value"
         optionId: hypothesis
         checkedValue: less
 
-  - type: label
+  - type: Label
     label: Additional Statistics
     children:
-      - type: checkbox
+      - type: CheckBox
         name: ci
         label: Confidence intervals
         events:
             change: ui.ciWidth.setEnabled(ui.ci.value());
         children:
-          - type: textbox
+          - type: TextBox
             name: ciWidth
             label: Interval
             suffix: "%"

@@ -5,146 +5,146 @@ jus:   '1.0'
 update: ui.ciWidth.setEnabled(ui.logOdds.value());
 
 children:
-  - type: variablesupplier
+  - type: VariableSupplier
     name: variablesupplier
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: variabletargetlistbox
+      - type: VariableTargetListBox
         name: rows
         label: Rows
         showColumnHeaders: false
         maxItemCount: 1
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: column1
             label:
             stretchFactor: 1
 
-      - type: variabletargetlistbox
+      - type: VariableTargetListBox
         name: cols
         label: Columns
         showColumnHeaders: false
         maxItemCount: 1
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: column1
             label:
             stretchFactor: 1
 
-      - type: variabletargetlistbox
+      - type: VariableTargetListBox
         name: counts
         label: Counts (optional)
         showColumnHeaders: false
         maxItemCount: 1
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: column1
             label:
             stretchFactor: 1
 
-      - type: variabletargetlistbox
+      - type: VariableTargetListBox
         name: layers
         label: Layers
         showColumnHeaders: false
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: column1
             label:
             stretchFactor: 1
 
-  - type: layoutbox
+  - type: LayoutBox
     stretchFactor: 1
     margin: large
     children:
-      - type: collapsebox
+      - type: CollapseBox
         label: Statistics
         stretchFactor: 1
         collapsed: true
         children:
-          - type: label
+          - type: Label
             cell: [0, 0]
             children:
-              - type: checkbox
+              - type: CheckBox
                 name: chiSq
                 label: χ²
 
-              - type: checkbox
+              - type: CheckBox
                 name: chiSqCorr
                 label: χ² continuity correction
 
-              - type: checkbox
+              - type: CheckBox
                 name: likeRat
                 label: Likelihood ratio
 
-          - type: label
+          - type: Label
             cell: [1, 0]
             children:
-              - type: checkbox
+              - type: CheckBox
                 name: logOdds
                 label: Log odds ratio (2x2 only)
                 events:
                     change: ui.ciWidth.setEnabled(ui.logOdds.value());
                 children:
-                  - type: textbox
+                  - type: TextBox
                     name: ciWidth
                     label: Confidence level
                     suffix: "%"
                     format: number
                     inputPattern: "[0-9]+"
 
-          - type: label
+          - type: Label
             label: Nominal
             cell: [0, 1]
             children:
-              - type: checkbox
+              - type: CheckBox
                 name: contCoef
                 label: Contingency coefficient
 
-              - type: checkbox
+              - type: CheckBox
                 name: phiCra
                 label: Phi and Cramer's V
 
-          - type: label
+          - type: Label
             label: Ordinal
             cell: [1, 1]
             children:
-              - type: checkbox
+              - type: CheckBox
                 name: gamma
                 label: Gamma
 
-              - type: checkbox
+              - type: CheckBox
                 name: taub
                 label: Kendall's tau-b
 
-      - type: collapsebox
+      - type: CollapseBox
         label: Cells
         stretchFactor: 1
         collapsed: true
         children:
-          - type: label
+          - type: Label
             label: Counts
             children:
-              - type: checkbox
+              - type: CheckBox
                 name: obs
                 label: Observed
 
-              - type: checkbox
+              - type: CheckBox
                 name: exp
                 label: Expected
 
-          - type: label
+          - type: Label
             label: Percentages
             cell: [1, 0]
             children:
-              - type: checkbox
+              - type: CheckBox
                 name: pcRow
                 label: Row
 
-              - type: checkbox
+              - type: CheckBox
                 name: pcCol
                 label: Column
 
-              - type: checkbox
+              - type: CheckBox
                 name: pcTot
                 label: Total

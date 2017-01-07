@@ -7,7 +7,7 @@ stage: 0
 update: ./anovarm.events::update
 
 children:
-  - type: variablesupplier
+  - type: VariableSupplier
     name: variablesupplier
     suggested:
       - continuous
@@ -16,13 +16,13 @@ children:
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: rmanovafactorsbox
+      - type: RMAnovaFactorsBox
         name: rm
         label: Repeated Measures Factors
         events:
             change: ./anovarm.events::onChange_rm
 
-      - type: variabletargetlistbox
+      - type: VariableTargetListBox
         name: rmCells
         label: Repeated Measures Cells
         showColumnHeaders: false
@@ -38,7 +38,7 @@ children:
             label: Measure
             stretchFactor: 1
 
-      - type: variabletargetlistbox
+      - type: VariableTargetListBox
         name: bs
         label: Between Subject Factors
         showColumnHeaders: false
@@ -47,12 +47,12 @@ children:
         events:
             change: ./anovarm.events::onChange_bs
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: column1
             label:
             stretchFactor: 1
 
-      - type: variabletargetlistbox
+      - type: VariableTargetListBox
         name: cov
         label: Covariates
         showColumnHeaders: false
@@ -61,38 +61,38 @@ children:
         events:
             change: ./anovarm.events::onChange_cov
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: column1
             label:
             stretchFactor: 1
 
-  - type:  label
+  - type: Label
     label: Effect Size
     margin: large
     style: list-inline
     children:
-      - type: checkbox
+      - type: CheckBox
         name: effSizeN2
         label: η²
-      - type: checkbox
+      - type: CheckBox
         name: partEffSizeN2
         label: partial η²
-      - type: checkbox
+      - type: CheckBox
         name: effSizeW2
         label: ω²
 
-  - type: collapsebox
+  - type: CollapseBox
     label: Model
     collapsed: true
     stretchFactor: 1
     children:
-      - type: supplier
+      - type: Supplier
         name: rmcModelSupplier
         label: Repeated Measures Components
         persistentItems: true
         stretchFactor: 1
         children:
-          - type: targetlistbox
+          - type: TargetListBox
             name: rmTerms
             label: Model Terms
             valueFilter: unique
@@ -102,18 +102,18 @@ children:
                 change: ./anovarm.events::onChange_rmTerms
                 preprocess: ./anovarm.events::onEvent_rmTerms_preprocess
             columns:
-              - type: listitem.termlabel
+              - type: ListItem.TermLabel
                 name: column1
                 label:
                 stretchFactor: 1
 
-      - type: supplier
+      - type: Supplier
         name: bscModelSupplier
         label: Between Subjects Components
         persistentItems: true
         stretchFactor: 1
         children:
-          - type: targetlistbox
+          - type: TargetListBox
             name: bsTerms
             label: Model Terms
             valueFilter: unique
@@ -123,72 +123,72 @@ children:
                 change: ./anovarm.events::onChange_bsTerms
                 preprocess: ./anovarm.events::onEvent_bsTerms_preprocess
             columns:
-              - type: listitem.termlabel
+              - type: ListItem.TermLabel
                 name: column1
                 label:
                 stretchFactor: 1
 
-      - type: layoutbox
+      - type: LayoutBox
         children:
-          - type: combobox
+          - type: ComboBox
             name: ss
             label: Sum of squares
             options:
               - label: Type 1
-                value: Type 1
+                value: '1'
               - label: Type 2
-                value: Type 2
+                value: '2'
               - label: Type 3
-                value: Type 3
+                value: '3'
 
-  - type: collapsebox
+  - type: CollapseBox
     label: Assumption Checks
     collapsed: true
     stretchFactor: 1
     children:
-      - type: checkbox
+      - type: CheckBox
         name: spherTests
         label: Sphericity tests
 
-      - type: checkbox
+      - type: CheckBox
         name: spherCorrs
         label: Sphericity corrections
         style: list-inline
         events:
             change: ./anovarm.events::onChange_spherCorrs
         children:
-          - type: checkbox
+          - type: CheckBox
             name: spherCorrNone
             label: None
 
-          - type: checkbox
+          - type: CheckBox
             name: spherCorrGreenGsser
             label: Greenhouse-Geisser
 
-          - type: checkbox
+          - type: CheckBox
             name: spherCorrHuyFdt
             label: Huynh-Feldt
 
-      - type: checkbox
+      - type: CheckBox
         name: homoTests
         label: Homogeneity tests
 
-  - type: collapsebox
+  - type: CollapseBox
     label: Contrasts
     collapsed: true
     stretchFactor: 1
     children:
-      - type: listbox
+      - type: ListBox
         name: contrasts
         label: Factors
         showColumnHeaders: false
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: var
             label:
             selectable: false
             stretchFactor: 0.5
-          - type: listitem.combobox
+          - type: ListItem.ComboBox
             name: type
             label:
             selectable: false
@@ -202,101 +202,101 @@ children:
                 - repeated
                 - polynomial
 
-  - type: collapsebox
+  - type: CollapseBox
     label: Post Hoc Tests
     collapsed: true
     stretchFactor: 1
     children:
-      - type: supplier
+      - type: Supplier
         name: postHocSupplier
         persistentItems: false
         stretchFactor: 1
         children:
-          - type: targetlistbox
+          - type: TargetListBox
             name: postHoc
             label:
             showColumnHeaders: false
             columns:
-              - type: listitem.termlabel
+              - type: ListItem.TermLabel
                 name: column1
                 label:
                 stretchFactor: 1
 
-      - type: label
+      - type: Label
         label: Correction
         children:
-          - type: checkbox
+          - type: CheckBox
             name: corrTukey
             label: Tukey
 
-          - type: checkbox
+          - type: CheckBox
             name: corrScheffe
             label: Scheffe
 
-          - type: checkbox
+          - type: CheckBox
             name: corrBonf
             label: Bonferroni
 
-          - type: checkbox
+          - type: CheckBox
             name: corrHolm
             label: Holm
 
-  - type: collapsebox
+  - type: CollapseBox
     label: Descriptive Plots
     collapsed: true
     stretchFactor: 1
     children:
-      - type: supplier
+      - type: Supplier
         name: plotsSupplier
         stretchFactor: 1
         persistentItems: false
         children:
-          - type: targetlistbox
+          - type: TargetListBox
             name: descPlotsHAxis
             label: Horizontal axis
             showColumnHeaders: false
             maxItemCount: 1
             itemDropBehaviour: overwite
             columns:
-              - type: listitem.variablelabel
+              - type: ListItem.VariableLabel
                 name: column1
                 label:
                 stretchFactor: 1
 
-          - type: targetlistbox
+          - type: TargetListBox
             name: descPlotsSepLines
             label: Separate lines
             showColumnHeaders: false
             maxItemCount: 1
             itemDropBehaviour: overwite
             columns:
-              - type: listitem.variablelabel
+              - type: ListItem.VariableLabel
                 name: column1
                 label:
                 stretchFactor: 1
 
-          - type: targetlistbox
+          - type: TargetListBox
             name: descPlotsSepPlots
             label: Separate plots
             showColumnHeaders: false
             maxItemCount: 1
             itemDropBehaviour: overwite
             columns:
-              - type: listitem.variablelabel
+              - type: ListItem.VariableLabel
                 name: column1
                 label:
                 stretchFactor: 1
 
-      - type: label
+      - type: Label
         label: Display
         children:
-          - type: checkbox
+          - type: CheckBox
             name: dispErrBars
             label: Error bars displaying
             events:
                 change: ./anovarm.events::onChange_dispErrBars
             children:
-              - type: radiobutton
+              - type: RadioButton
                 name: errBarDef_ci
                 optionId: errBarDef
                 checkedValue: ci
@@ -304,27 +304,27 @@ children:
                 events:
                     change: ./anovarm.events::onChange_errBarDef_ci
                 children:
-                  - type: textbox
+                  - type: TextBox
                     name: ciWidth
                     label: Interval
                     suffix: "%"
                     format: number
                     inputPattern: "[0-9]+"
 
-              - type: radiobutton
+              - type: RadioButton
                 name: errBarDef_se
                 optionId: errBarDef
                 checkedValue: se
                 label: Standard Error
 
-  - type: collapsebox
+  - type: CollapseBox
     label: Additional Options
     collapsed: true
     stretchFactor: 1
     children:
-      - type: label
+      - type: Label
         label: Display
         children:
-          - type: checkbox
+          - type: CheckBox
             name: dispDescStats
             label: Descriptive statistics

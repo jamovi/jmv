@@ -5,7 +5,7 @@ jus:   '1.0'
 update: ./anovarmnp.events::update
 
 children:
-  - type: variablesupplier
+  - type: VariableSupplier
     name: variablesupplier
     suggested:
       - continuous
@@ -16,41 +16,41 @@ children:
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: variabletargetlistbox
+      - type: VariableTargetListBox
         name: measures
         label: Measures
         showColumnHeaders: false
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: column1
             label:
             stretchFactor: 1
 
-  - type: layoutbox
+  - type: LayoutBox
     stretchFactor: 1
     margin: large
     children:
-      - type: checkbox
+      - type: CheckBox
         name: pairs
         label: Pairwise comparisons (Durbin-Conover)
 
-      - type: checkbox
+      - type: CheckBox
         name: desc
         label: Descriptives
 
-      - type: checkbox
+      - type: CheckBox
         name: plots
         label: Descriptives plot
         events:
             change: ./anovarmnp.events::onChange_plots
         children:
-          - type: radiobutton
+          - type: RadioButton
             name: plotType_means
             optionId: plotType
             checkedValue: means
             label: Means
 
-          - type: radiobutton
+          - type: RadioButton
             name: plotType_medians
             optionId: plotType
             checkedValue: medians

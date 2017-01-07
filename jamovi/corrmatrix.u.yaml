@@ -5,7 +5,7 @@ jus:   '1.0'
 update: ./corrmatrix.events::update
 
 children:
-  - type: variablesupplier
+  - type: VariableSupplier
     name: variablesupplier
     suggested:
       - continuous
@@ -17,96 +17,96 @@ children:
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: variabletargetlistbox
+      - type: VariableTargetListBox
         name: vars
         showColumnHeaders: false
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: column1
             label:
             stretchFactor: 1
 
-  - type: layoutbox
+  - type: LayoutBox
     stretchFactor: 1
     margin: large
     children:
-      - type: label
+      - type: Label
         label: Correlation Coefficients
         cell: [0, 0]
         children:
-          - type: checkbox
+          - type: CheckBox
             name: pearson
             label: Pearson
 
-          - type: checkbox
+          - type: CheckBox
             name: spearman
             label: Spearman
 
-          - type: checkbox
+          - type: CheckBox
             name: kendall
             label: Kendall's tau-b
 
-      - type: label
+      - type: Label
         label: Additional Options
         cell: [1, 0]
         children:
-          - type: checkbox
+          - type: CheckBox
             name: sig
             label: Report significance
 
-          - type: checkbox
+          - type: CheckBox
             name: flag
             label: Flag significant correlations
 
-          - type: checkbox
+          - type: CheckBox
             name: ci
             label: Confidence intervals
             events:
                 change: ./corrmatrix.events::onChange_ci
             children:
-              - type: textbox
+              - type: TextBox
                 name: ciWidth
                 label: Interval
                 suffix: "%"
                 format: number
                 inputPattern: "[0-9]+"
 
-      - type: label
+      - type: Label
         label: Hypothesis
         cell: [0, 1]
         children:
-          - type: radiobutton
+          - type: RadioButton
             name: hypothesis_corr
             label: Correlated
             optionId: hypothesis
             checkedValue: corr
 
-          - type: radiobutton
+          - type: RadioButton
             name: hypothesis_pos
             label: Correlated positively
             optionId: hypothesis
             checkedValue: pos
 
-          - type: radiobutton
+          - type: RadioButton
             name: hypothesis_neg
             label: Correlated negatively
             optionId: hypothesis
             checkedValue: neg
 
-      - type: label
+      - type: Label
         label: Plot
         cell: [1, 1]
         children:
-          - type: checkbox
+          - type: CheckBox
             name: plots
             label: Correlation matrix
             events:
                 change: ./corrmatrix.events::onChange_plots
             children:
-              - type: checkbox
+              - type: CheckBox
                 name: plotDens
                 label: Densities for variables
 
-              - type: checkbox
+              - type: CheckBox
                 name: plotStats
                 label: Statistics

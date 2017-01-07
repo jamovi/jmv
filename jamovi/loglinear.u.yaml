@@ -5,7 +5,7 @@ jus:   '1.0'
 update: ./loglinear.events::update
 
 children:
-  - type: variablesupplier
+  - type: VariableSupplier
     name: variablesupplier
     suggested:
       - continuous
@@ -15,41 +15,41 @@ children:
     stretchFactor: 1
     children:
       - name: counts
-        type: variabletargetlistbox
+        type: VariableTargetListBox
         label: Counts (optional)
         showColumnHeaders: false
         maxItemCount: 1
         itemDropBehaviour: overwrite
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: column1
             label:
             stretchFactor: 1
 
-      - type: variabletargetlistbox
+      - type: VariableTargetListBox
         name: factors
         label: Factors
         showColumnHeaders: false
         events:
             change: ./loglinear.events::onChange_factors
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: column1
             label:
             stretchFactor: 1
 
-  - type: collapsebox
+  - type: CollapseBox
     label: Model
     collapsed: true
     stretchFactor: 1
     children:
-      - type: supplier
+      - type: Supplier
         name: modelSupplier
         label: Componets
         persistentItems: true
         stretchFactor: 1
         children:
-          - type: targetlistbox
+          - type: TargetListBox
             name: modelTerms
             label: Model Terms
             valueFilter: unique
@@ -59,30 +59,30 @@ children:
                 change: ./loglinear.events::onChange_modelTerms
                 preprocess: ./loglinear.events::onEvent_modelTerms_preprocess
             columns:
-              - type: listitem.termlabel
+              - type: ListItem.TermLabel
                 name: column1
                 label:
                 stretchFactor: 1
 
-  - type: collapsebox
+  - type: CollapseBox
     label: Statistics
     collapsed: true
     stretchFactor: 1
     children:
-      - type: label
+      - type: Label
         label: Regression Coefficients
         children:
-          - type: checkbox
+          - type: CheckBox
             name: est
             label: Estimates
 
-          - type: checkbox
+          - type: CheckBox
             name: ci
             label: Confidence intervals
             events:
                 change: ./loglinear.events::onChange_ci
             children:
-              - type: textbox
+              - type: TextBox
                 name: ciWidth
                 label: Interval
                 suffix: "%"

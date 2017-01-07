@@ -3,72 +3,72 @@ title: Reliability Analysis
 jus:   '1.0'
 
 children:
-  - type: variablesupplier
+  - type: VariableSupplier
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: variabletargetlistbox
+      - type: VariableTargetListBox
         name: vars
         label: Variable
         fullRowSelect: true
         showColumnHeaders: false
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: column1
             label:
             stretchFactor: 1
 
-  - type: layoutbox
+  - type: LayoutBox
     margin: large
     children:
-      - type: label
+      - type: Label
         label: Scale Statistics
         cell: [0, 0]
         children:
-          - type: checkbox
+          - type: CheckBox
             name: alphaScale
             label: Cronbach's α
 
-          - type: checkbox
+          - type: CheckBox
             name: omegaScale
             label: McDonald's ω
 
-          - type: checkbox
+          - type: CheckBox
             name: meanScale
             label: Mean
 
-          - type: checkbox
+          - type: CheckBox
             name: sdScale
             label: Standard deviation
 
-      - type: label
+      - type: Label
         label: Item Statistics
         cell: [1, 0]
         children:
-          - type: checkbox
+          - type: CheckBox
             name: alphaItems
             label: Cronbach's α (if item is dropped)
 
-          - type: checkbox
+          - type: CheckBox
             name: omegaItems
             label: McDonald's ω (if item is dropped)
 
-          - type: checkbox
+          - type: CheckBox
             name: meanItems
             label: Mean
 
-          - type: checkbox
+          - type: CheckBox
             name: sdItems
             label: Standard deviation
 
-          - type: checkbox
+          - type: CheckBox
             name: itemRestCor
             label: Item-rest correlation
 
-      - type: label
+      - type: Label
         label: Additional Options
         cell: [0, 1]
         children:
-          - type: checkbox
+          - type: CheckBox
             name: corPlot
             label: Correlation heat plot

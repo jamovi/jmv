@@ -3,55 +3,55 @@ title: Paired Samples Contingency Tables
 jus:   '1.0'
 
 children:
-  - type: variablesupplier
+  - type: VariableSupplier
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: variabletargetlistbox
+      - type: VariableTargetListBox
         name: rows
         label: Rows
         showColumnHeaders: false
         maxItemCount: 1
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: column1
             label:
             stretchFactor: 1
 
-      - type: variabletargetlistbox
+      - type: VariableTargetListBox
         name: cols
         label: Columns
         showColumnHeaders: false
         maxItemCount: 1
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: column1
             label:
             stretchFactor: 1
 
-      - type: variabletargetlistbox
+      - type: VariableTargetListBox
         name: counts
         label: Counts (optional)
         showColumnHeaders: false
         maxItemCount: 1
         columns:
-          - type: listitem.variablelabel
+          - type: ListItem.VariableLabel
             name: column1
             label:
             stretchFactor: 1
 
-  - type: layoutbox
+  - type: LayoutBox
     label: Cells
     stretchFactor: 1
     margin: large
     children:
-      - type: label
+      - type: Label
         label: Percentages
         children:
-          - type: checkbox
+          - type: CheckBox
             name: pcRow
             label: Row
 
-          - type: checkbox
+          - type: CheckBox
             name: pcCol
             label: Column
