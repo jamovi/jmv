@@ -48,11 +48,6 @@ options:
       description: >
         The variables of interest
 
-    - name: obs
-      title: Observed
-      type: Bool
-      default: true
-
     - name: pcRow
       title: Row
       type: Bool

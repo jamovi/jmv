@@ -246,13 +246,6 @@ options:
       description: >
         Display Descriptive statistics
 
-    - name: estEffSize
-      title: Estimates of effect size
-      type: Bool
-      default: false
-      description: >
-        Display Estimates of effect size
-
     - name: effSizeN2
       title: n2
       type: Bool

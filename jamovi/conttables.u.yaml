@@ -1,9 +1,7 @@
-name:  ContTables
+name: ContTables
 title: Contingency Tables
-jus:   '1.0'
-
+jus: '1.0'
 update: ui.ciWidth.setEnabled(ui.logOdds.value());
-
 children:
   - type: VariableSupplier
     name: variablesupplier
@@ -18,9 +16,8 @@ children:
         columns:
           - type: ListItem.VariableLabel
             name: column1
-            label:
+            label: null
             stretchFactor: 1
-
       - type: VariableTargetListBox
         name: cols
         label: Columns
@@ -29,9 +26,8 @@ children:
         columns:
           - type: ListItem.VariableLabel
             name: column1
-            label:
+            label: null
             stretchFactor: 1
-
       - type: VariableTargetListBox
         name: counts
         label: Counts (optional)
@@ -40,9 +36,8 @@ children:
         columns:
           - type: ListItem.VariableLabel
             name: column1
-            label:
+            label: null
             stretchFactor: 1
-
       - type: VariableTargetListBox
         name: layers
         label: Layers
@@ -50,9 +45,8 @@ children:
         columns:
           - type: ListItem.VariableLabel
             name: column1
-            label:
+            label: null
             stretchFactor: 1
-
   - type: LayoutBox
     stretchFactor: 1
     margin: large
@@ -68,15 +62,12 @@ children:
               - type: CheckBox
                 name: chiSq
                 label: χ²
-
               - type: CheckBox
                 name: chiSqCorr
                 label: χ² continuity correction
-
               - type: CheckBox
                 name: likeRat
                 label: Likelihood ratio
-
           - type: Label
             cell: [1, 0]
             children:
@@ -84,15 +75,14 @@ children:
                 name: logOdds
                 label: Log odds ratio (2x2 only)
                 events:
-                    change: ui.ciWidth.setEnabled(ui.logOdds.value());
+                  change: ui.ciWidth.setEnabled(ui.logOdds.value());
                 children:
                   - type: TextBox
                     name: ciWidth
                     label: Confidence level
-                    suffix: "%"
+                    suffix: '%'
                     format: number
-                    inputPattern: "[0-9]+"
-
+                    inputPattern: '[0-9]+'
           - type: Label
             label: Nominal
             cell: [0, 1]
@@ -100,11 +90,9 @@ children:
               - type: CheckBox
                 name: contCoef
                 label: Contingency coefficient
-
               - type: CheckBox
                 name: phiCra
                 label: Phi and Cramer's V
-
           - type: Label
             label: Ordinal
             cell: [1, 1]
@@ -112,11 +100,9 @@ children:
               - type: CheckBox
                 name: gamma
                 label: Gamma
-
               - type: CheckBox
                 name: taub
                 label: Kendall's tau-b
-
       - type: CollapseBox
         label: Cells
         stretchFactor: 1
@@ -128,11 +114,9 @@ children:
               - type: CheckBox
                 name: obs
                 label: Observed
-
               - type: CheckBox
                 name: exp
                 label: Expected
-
           - type: Label
             label: Percentages
             cell: [1, 0]
@@ -140,11 +124,9 @@ children:
               - type: CheckBox
                 name: pcRow
                 label: Row
-
               - type: CheckBox
                 name: pcCol
                 label: Column
-
               - type: CheckBox
                 name: pcTot
                 label: Total

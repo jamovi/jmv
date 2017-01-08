@@ -1,11 +1,8 @@
-name:  Ancova
+name: Ancova
 title: ANCOVA
-jus:   '1.0'
-
+jus: '1.0'
 stage: 1
-
-update: ./ancova.events::update
-
+update: './ancova.events::update'
 children:
   - type: VariableSupplier
     name: variablesupplier
@@ -25,33 +22,30 @@ children:
         columns:
           - type: ListItem.VariableLabel
             name: column1
-            label:
+            label: null
             stretchFactor: 1
-
       - type: VariableTargetListBox
         name: fixedFactors
         label: Fixed Factors
         showColumnHeaders: false
         events:
-            change: ./ancova.events::onChange_fixedFactors
+          change: './ancova.events::onChange_fixedFactors'
         columns:
           - type: ListItem.VariableLabel
             name: column1
-            label:
+            label: null
             stretchFactor: 1
-
       - type: VariableTargetListBox
         name: covariates
         label: Covariates
         showColumnHeaders: false
         events:
-            change: ./ancova.events::onChange_covariates
+          change: './ancova.events::onChange_covariates'
         columns:
           - type: ListItem.VariableLabel
             name: column1
-            label:
+            label: null
             stretchFactor: 1
-
   - type: Label
     label: Effect Size
     margin: large
@@ -66,7 +60,6 @@ children:
       - type: CheckBox
         name: omegaSq
         label: ω²
-
   - type: CollapseBox
     label: Model
     collapsed: true
@@ -85,14 +78,13 @@ children:
             showColumnHeaders: false
             itemDropBehaviour: emptyspace
             events:
-                change: ./ancova.events::onChange_modelTerms
-                preprocess: ./ancova.events::onEvent_modelTerms_preprocess
+              change: './ancova.events::onChange_modelTerms'
+              preprocess: './ancova.events::onEvent_modelTerms_preprocess'
             columns:
               - type: ListItem.TermLabel
                 name: column1
-                label:
+                label: null
                 stretchFactor: 1
-
       - type: LayoutBox
         children:
           - type: ComboBox
@@ -105,7 +97,6 @@ children:
                 value: '2'
               - label: Type 3
                 value: '3'
-
   - type: CollapseBox
     label: Assumption Checks
     collapsed: true
@@ -114,11 +105,9 @@ children:
       - type: CheckBox
         name: homo
         label: Homogeneity tests
-
       - type: CheckBox
         name: qq
         label: Q-Q plot of residuals
-
   - type: CollapseBox
     label: Contrasts
     collapsed: true
@@ -131,23 +120,22 @@ children:
         columns:
           - type: ListItem.VariableLabel
             name: var
-            label:
+            label: null
             selectable: false
             stretchFactor: 0.5
           - type: ListItem.ComboBox
             name: type
-            label:
+            label: null
             selectable: false
             stretchFactor: 0.5
             options:
-                - none
-                - deviation
-                - simple
-                - difference
-                - helmert
-                - repeated
-                - polynomial
-
+              - none
+              - deviation
+              - simple
+              - difference
+              - helmert
+              - repeated
+              - polynomial
   - type: CollapseBox
     label: Post Hoc Tests
     collapsed: true
@@ -164,28 +152,23 @@ children:
             columns:
               - type: ListItem.TermLabel
                 name: column1
-                label:
+                label: null
                 stretchFactor: 1
-
       - type: Label
         label: Correction
         children:
           - type: CheckBox
             name: corrTukey
             label: Tukey
-
           - type: CheckBox
             name: corrScheffe
             label: Scheffe
-
           - type: CheckBox
             name: corrBonf
             label: Bonferroni
-
           - type: CheckBox
             name: corrHolm
             label: Holm
-
   - type: CollapseBox
     label: Descriptive Plots
     collapsed: true
@@ -205,9 +188,8 @@ children:
             columns:
               - type: ListItem.VariableLabel
                 name: column1
-                label:
+                label: null
                 stretchFactor: 1
-
           - type: TargetListBox
             name: descPlotsSepLines
             label: Separate lines
@@ -217,9 +199,8 @@ children:
             columns:
               - type: ListItem.VariableLabel
                 name: column1
-                label:
+                label: null
                 stretchFactor: 1
-
           - type: TargetListBox
             name: descPlotsSepPlots
             label: Separate plots
@@ -229,9 +210,8 @@ children:
             columns:
               - type: ListItem.VariableLabel
                 name: column1
-                label:
+                label: null
                 stretchFactor: 1
-
       - type: Label
         label: Display
         children:
@@ -241,21 +221,19 @@ children:
             checkedValue: ci
             label: Confidence interval
             events:
-                change: ./ancova.events::onChange_errBarDef_ci
+              change: './ancova.events::onChange_errBarDef_ci'
             children:
               - type: TextBox
                 name: ciWidth
                 label: Interval
-                suffix: "%"
+                suffix: '%'
                 format: number
-                inputPattern: "[0-9]+"
-
+                inputPattern: '[0-9]+'
           - type: RadioButton
             name: errBarDef_se
             optionId: plotError
             checkedValue: se
             label: Standard Error
-
   - type: CollapseBox
     label: Additional Options
     collapsed: true

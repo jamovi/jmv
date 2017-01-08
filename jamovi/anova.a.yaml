@@ -35,11 +35,6 @@ options:
       description: >
         The fixed factors
 
-    - name: wlsWeights
-      title: WLS Weights
-      type: Variable
-      default:
-
     - name: modelTerms
       title: Model Terms
       type: Terms
@@ -126,26 +121,6 @@ options:
       default: false
       description: >
         Post Hoc Tests Holm Correction
-
-    - name: compMain
-      title: Compare main effects
-      type: Bool
-      default: false
-      description: >
-        Compare main effects
-
-    - name: compMainCorr
-      title: Correction
-      type: List
-      options:
-        - none
-        - tukey
-        - bonferroni
-        - scheffe
-        - sidak
-      default: none
-      description: >
-        Confidence interval adjustment
 
     - name: descStats
       title: Descriptive statistics

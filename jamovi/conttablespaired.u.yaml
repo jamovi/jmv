@@ -1,7 +1,6 @@
-name:  ContTablesPaired
+name: ContTablesPaired
 title: Paired Samples Contingency Tables
-jus:   '1.0'
-
+jus: '1.0'
 children:
   - type: VariableSupplier
     persistentItems: false
@@ -15,9 +14,8 @@ children:
         columns:
           - type: ListItem.VariableLabel
             name: column1
-            label:
+            label: null
             stretchFactor: 1
-
       - type: VariableTargetListBox
         name: cols
         label: Columns
@@ -26,9 +24,8 @@ children:
         columns:
           - type: ListItem.VariableLabel
             name: column1
-            label:
+            label: null
             stretchFactor: 1
-
       - type: VariableTargetListBox
         name: counts
         label: Counts (optional)
@@ -37,9 +34,8 @@ children:
         columns:
           - type: ListItem.VariableLabel
             name: column1
-            label:
+            label: null
             stretchFactor: 1
-
   - type: LayoutBox
     label: Cells
     stretchFactor: 1
@@ -51,7 +47,6 @@ children:
           - type: CheckBox
             name: pcRow
             label: Row
-
           - type: CheckBox
             name: pcCol
             label: Column

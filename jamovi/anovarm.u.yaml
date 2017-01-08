@@ -1,11 +1,8 @@
-name:  AnovaRM
+name: AnovaRM
 title: Repeated Measures ANOVA
-jus:   '1.0'
-
+jus: '1.0'
 stage: 0
-
-update: ./anovarm.events::update
-
+update: './anovarm.events::update'
 children:
   - type: VariableSupplier
     name: variablesupplier
@@ -20,8 +17,7 @@ children:
         name: rm
         label: Repeated Measures Factors
         events:
-            change: ./anovarm.events::onChange_rm
-
+          change: './anovarm.events::onChange_rm'
       - type: VariableTargetListBox
         name: rmCells
         label: Repeated Measures Cells
@@ -30,14 +26,13 @@ children:
         height: large
         itemDropBehaviour: overwrite
         events:
-            change: ./anovarm.events::onChange_rmCells
-            changing: ./anovarm.events::onEvent_rmCells_changing
+          change: './anovarm.events::onChange_rmCells'
+          changing: './anovarm.events::onEvent_rmCells_changing'
         columns:
           - type: ./rmacellmeasurectrl
             name: measure
             label: Measure
             stretchFactor: 1
-
       - type: VariableTargetListBox
         name: bs
         label: Between Subject Factors
@@ -45,13 +40,12 @@ children:
         height: small
         itemDropBehaviour: insert
         events:
-            change: ./anovarm.events::onChange_bs
+          change: './anovarm.events::onChange_bs'
         columns:
           - type: ListItem.VariableLabel
             name: column1
-            label:
+            label: null
             stretchFactor: 1
-
       - type: VariableTargetListBox
         name: cov
         label: Covariates
@@ -59,13 +53,12 @@ children:
         height: small
         itemDropBehaviour: insert
         events:
-            change: ./anovarm.events::onChange_cov
+          change: './anovarm.events::onChange_cov'
         columns:
           - type: ListItem.VariableLabel
             name: column1
-            label:
+            label: null
             stretchFactor: 1
-
   - type: Label
     label: Effect Size
     margin: large
@@ -80,7 +73,6 @@ children:
       - type: CheckBox
         name: effSizeW2
         label: ω²
-
   - type: CollapseBox
     label: Model
     collapsed: true
@@ -99,14 +91,13 @@ children:
             showColumnHeaders: false
             itemDropBehaviour: emptyspace
             events:
-                change: ./anovarm.events::onChange_rmTerms
-                preprocess: ./anovarm.events::onEvent_rmTerms_preprocess
+              change: './anovarm.events::onChange_rmTerms'
+              preprocess: './anovarm.events::onEvent_rmTerms_preprocess'
             columns:
               - type: ListItem.TermLabel
                 name: column1
-                label:
+                label: null
                 stretchFactor: 1
-
       - type: Supplier
         name: bscModelSupplier
         label: Between Subjects Components
@@ -120,14 +111,13 @@ children:
             showColumnHeaders: false
             itemDropBehaviour: emptyspace
             events:
-                change: ./anovarm.events::onChange_bsTerms
-                preprocess: ./anovarm.events::onEvent_bsTerms_preprocess
+              change: './anovarm.events::onChange_bsTerms'
+              preprocess: './anovarm.events::onEvent_bsTerms_preprocess'
             columns:
               - type: ListItem.TermLabel
                 name: column1
-                label:
+                label: null
                 stretchFactor: 1
-
       - type: LayoutBox
         children:
           - type: ComboBox
@@ -140,7 +130,6 @@ children:
                 value: '2'
               - label: Type 3
                 value: '3'
-
   - type: CollapseBox
     label: Assumption Checks
     collapsed: true
@@ -149,30 +138,25 @@ children:
       - type: CheckBox
         name: spherTests
         label: Sphericity tests
-
       - type: CheckBox
         name: spherCorrs
         label: Sphericity corrections
         style: list-inline
         events:
-            change: ./anovarm.events::onChange_spherCorrs
+          change: './anovarm.events::onChange_spherCorrs'
         children:
           - type: CheckBox
             name: spherCorrNone
             label: None
-
           - type: CheckBox
             name: spherCorrGreenGsser
             label: Greenhouse-Geisser
-
           - type: CheckBox
             name: spherCorrHuyFdt
             label: Huynh-Feldt
-
       - type: CheckBox
         name: homoTests
         label: Homogeneity tests
-
   - type: CollapseBox
     label: Contrasts
     collapsed: true
@@ -185,23 +169,22 @@ children:
         columns:
           - type: ListItem.VariableLabel
             name: var
-            label:
+            label: null
             selectable: false
             stretchFactor: 0.5
           - type: ListItem.ComboBox
             name: type
-            label:
+            label: null
             selectable: false
             stretchFactor: 0.5
             options:
-                - none
-                - deviation
-                - simple
-                - difference
-                - helmert
-                - repeated
-                - polynomial
-
+              - none
+              - deviation
+              - simple
+              - difference
+              - helmert
+              - repeated
+              - polynomial
   - type: CollapseBox
     label: Post Hoc Tests
     collapsed: true
@@ -214,33 +197,28 @@ children:
         children:
           - type: TargetListBox
             name: postHoc
-            label:
+            label: null
             showColumnHeaders: false
             columns:
               - type: ListItem.TermLabel
                 name: column1
-                label:
+                label: null
                 stretchFactor: 1
-
       - type: Label
         label: Correction
         children:
           - type: CheckBox
             name: corrTukey
             label: Tukey
-
           - type: CheckBox
             name: corrScheffe
             label: Scheffe
-
           - type: CheckBox
             name: corrBonf
             label: Bonferroni
-
           - type: CheckBox
             name: corrHolm
             label: Holm
-
   - type: CollapseBox
     label: Descriptive Plots
     collapsed: true
@@ -260,9 +238,8 @@ children:
             columns:
               - type: ListItem.VariableLabel
                 name: column1
-                label:
+                label: null
                 stretchFactor: 1
-
           - type: TargetListBox
             name: descPlotsSepLines
             label: Separate lines
@@ -272,9 +249,8 @@ children:
             columns:
               - type: ListItem.VariableLabel
                 name: column1
-                label:
+                label: null
                 stretchFactor: 1
-
           - type: TargetListBox
             name: descPlotsSepPlots
             label: Separate plots
@@ -284,9 +260,8 @@ children:
             columns:
               - type: ListItem.VariableLabel
                 name: column1
-                label:
+                label: null
                 stretchFactor: 1
-
       - type: Label
         label: Display
         children:
@@ -294,7 +269,7 @@ children:
             name: dispErrBars
             label: Error bars displaying
             events:
-                change: ./anovarm.events::onChange_dispErrBars
+              change: './anovarm.events::onChange_dispErrBars'
             children:
               - type: RadioButton
                 name: errBarDef_ci
@@ -302,21 +277,19 @@ children:
                 checkedValue: ci
                 label: Confidence interval
                 events:
-                    change: ./anovarm.events::onChange_errBarDef_ci
+                  change: './anovarm.events::onChange_errBarDef_ci'
                 children:
                   - type: TextBox
                     name: ciWidth
                     label: Interval
-                    suffix: "%"
+                    suffix: '%'
                     format: number
-                    inputPattern: "[0-9]+"
-
+                    inputPattern: '[0-9]+'
               - type: RadioButton
                 name: errBarDef_se
                 optionId: errBarDef
                 checkedValue: se
                 label: Standard Error
-
   - type: CollapseBox
     label: Additional Options
     collapsed: true
