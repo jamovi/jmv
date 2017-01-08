@@ -201,7 +201,7 @@ children:
             label: Horizontal axis
             showColumnHeaders: false
             maxItemCount: 1
-            itemDropBehaviour: overwite
+            itemDropBehaviour: overwrite
             columns:
               - type: ListItem.VariableLabel
                 name: column1
@@ -213,7 +213,7 @@ children:
             label: Separate lines
             showColumnHeaders: false
             maxItemCount: 1
-            itemDropBehaviour: overwite
+            itemDropBehaviour: overwrite
             columns:
               - type: ListItem.VariableLabel
                 name: column1
@@ -225,7 +225,7 @@ children:
             label: Separate plots
             showColumnHeaders: false
             maxItemCount: 1
-            itemDropBehaviour: overwite
+            itemDropBehaviour: overwrite
             columns:
               - type: ListItem.VariableLabel
                 name: column1
