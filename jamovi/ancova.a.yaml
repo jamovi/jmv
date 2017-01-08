@@ -46,11 +46,6 @@ options:
       description: >
         The covariates
 
-    - name: wlsWeights
-      title: WLS Weights
-      type: Variable
-      default:
-
     - name: modelTerms
       title: Model Terms
       type: Terms
@@ -138,13 +133,6 @@ options:
       description: >
         Post Hoc Tests Holm Correction
 
-    - name: margMeans
-      title: Marginal means
-      type: Terms
-      default:
-      description: >
-        The Marginal Means
-
     - name: compMain
       title: Compare main effects
       type: Bool
@@ -206,13 +194,6 @@ options:
       default: false
       description: >
         Effect size w2
-
-    - name: factors
-      title: Factors
-      type: Variables
-      default:
-      description: >
-        Factors
 
     - name: plotError
       title: Error Bar Definition

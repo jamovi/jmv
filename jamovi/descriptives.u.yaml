@@ -1,0 +1,135 @@
+name:  Descriptives
+title: Descriptives
+jus:   '1.0'
+
+update: ui.pcNEqGr.setEnabled(ui.pcEqGr.value());
+
+children:
+  - type: VariableSupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: VariableTargetListBox
+        name: vars
+        showColumnHeaders: false
+        columns:
+          - type: ListItem.VariableLabel
+            name: column1
+            label:
+            stretchFactor: 1
+
+  - type: LayoutBox
+    stretchFactor: 1
+    margin: large
+    children:
+      - type: CheckBox
+        name: plots
+        label: Bar plots and histograms
+
+      - type: CheckBox
+        name: freq
+        label: Frequency tables (nominal and ordinal variables only)
+
+  - type: CollapseBox
+    label: Statistics
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: Label
+        label: Percentile Values
+        cell:
+            column: 0
+            row: 0
+        children:
+          - type: CheckBox
+            name: quart
+            label: Quartiles
+
+          - type: LayoutBox
+            children:
+              - type: CheckBox
+                name: pcEqGr
+                label: Cut points for
+                style: inline
+                events:
+                    change: ui.pcNEqGr.setEnabled(ui.pcEqGr.value());
+                children:
+                  - type: TextBox
+                    name: pcNEqGr
+                    label: ""
+                    suffix: equal groups
+                    format: number
+                    inputPattern: "[0-9]+"
+
+      - type: Label
+        label: Central Tendency
+        cell:
+            column: 1
+            row: 0
+        children:
+          - type: CheckBox
+            name: mean
+            label: Mean
+
+          - type: CheckBox
+            name: median
+            label: Median
+
+          - type: CheckBox
+            name: mode
+            label: Mode
+
+          - type: CheckBox
+            name: sum
+            label: Sum
+
+      - type: Label
+        label: Dispersion
+        cell:
+            column: 0
+            row: 1
+        style: list-inline,
+        children:
+          - type: LayoutBox
+            margin: normal
+            children:
+              - type: CheckBox
+                name: sd
+                label: Std. deviation
+
+              - type: CheckBox
+                name: variance
+                label: Variance
+
+              - type: CheckBox
+                name: range
+                label: Range
+
+          - type: LayoutBox
+            margin: normal
+            children:
+              - type: CheckBox
+                name: min
+                label: Minimum
+
+              - type: CheckBox
+                name: max
+                label: Maximum
+
+              - type: CheckBox
+                name: se
+                label: S. E. Mean
+
+      - type: Label
+        label: Distribution
+        cell:
+            column: 1
+            row: 1
+        children:
+          - type: CheckBox
+            name: skew
+            label: Skewness
+
+          - type: CheckBox
+            name: kurt
+            label: Kurtosis
