@@ -30,7 +30,9 @@ children:
     stretchFactor: 1
     children:
       - type: LayoutBox
-        cell: [0, 0]
+        cell:
+            column: 0
+            row: 0
         stretchFactor: 1
         children:
           - type: Label
@@ -101,7 +103,9 @@ children:
                 label: Exclude cases listwise
 
       - type: LayoutBox
-        cell: [1, 0]
+        cell:
+            column: 1
+            row: 0
         stretchFactor: 1
         children:
           - type: Label

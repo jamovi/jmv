@@ -23,7 +23,9 @@ children:
     children:
       - type: Label
         label: Scale Statistics
-        cell: [0, 0]
+        cell:
+            column: 0
+            row: 0
         children:
           - type: CheckBox
             name: alphaScale
@@ -43,7 +45,9 @@ children:
 
       - type: Label
         label: Item Statistics
-        cell: [1, 0]
+        cell:
+            column: 1
+            row: 0
         children:
           - type: CheckBox
             name: alphaItems
@@ -67,7 +71,9 @@ children:
 
       - type: Label
         label: Additional Options
-        cell: [0, 1]
+        cell:
+            column: 0
+            row: 1
         children:
           - type: CheckBox
             name: corPlot

@@ -32,7 +32,9 @@ children:
     children:
       - type: Label
         label: Correlation Coefficients
-        cell: [0, 0]
+        cell:
+            column: 0
+            row: 0
         children:
           - type: CheckBox
             name: pearson
@@ -48,7 +50,9 @@ children:
 
       - type: Label
         label: Additional Options
-        cell: [1, 0]
+        cell:
+            column: 1
+            row: 0
         children:
           - type: CheckBox
             name: sig
@@ -73,7 +77,9 @@ children:
 
       - type: Label
         label: Hypothesis
-        cell: [0, 1]
+        cell:
+            column: 0
+            row: 1
         children:
           - type: RadioButton
             name: hypothesis_corr
@@ -95,7 +101,9 @@ children:
 
       - type: Label
         label: Plot
-        cell: [1, 1]
+        cell:
+            column: 1
+            row: 1
         children:
           - type: CheckBox
             name: plots

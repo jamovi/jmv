@@ -57,7 +57,9 @@ children:
         collapsed: true
         children:
           - type: Label
-            cell: [0, 0]
+            cell:
+              row: 0
+              column: 0
             children:
               - type: CheckBox
                 name: chiSq
@@ -69,7 +71,9 @@ children:
                 name: likeRat
                 label: Likelihood ratio
           - type: Label
-            cell: [1, 0]
+            cell:
+              column: 1
+              row: 0
             children:
               - type: CheckBox
                 name: logOdds
@@ -85,7 +89,9 @@ children:
                     inputPattern: '[0-9]+'
           - type: Label
             label: Nominal
-            cell: [0, 1]
+            cell:
+              column: 0
+              row: 1
             children:
               - type: CheckBox
                 name: contCoef
@@ -95,7 +101,9 @@ children:
                 label: Phi and Cramer's V
           - type: Label
             label: Ordinal
-            cell: [1, 1]
+            cell:
+              column: 1
+              row: 1
             children:
               - type: CheckBox
                 name: gamma
@@ -119,7 +127,9 @@ children:
                 label: Expected
           - type: Label
             label: Percentages
-            cell: [1, 0]
+            cell:
+              column: 1
+              row: 0
             children:
               - type: CheckBox
                 name: pcRow

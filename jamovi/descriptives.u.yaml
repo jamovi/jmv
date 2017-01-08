@@ -37,7 +37,9 @@ children:
     children:
       - type: Label
         label: Percentile Values
-        cell: [0, 0]
+        cell:
+            column: 0
+            row: 0
         children:
           - type: CheckBox
             name: quart
@@ -61,7 +63,9 @@ children:
 
       - type: Label
         label: Central Tendency
-        cell: [1, 0]
+        cell:
+            column: 1
+            row: 0
         children:
           - type: CheckBox
             name: mean
@@ -81,7 +85,9 @@ children:
 
       - type: Label
         label: Dispersion
-        cell: [0, 1]
+        cell:
+            column: 0
+            row: 1
         style: list-inline,
         children:
           - type: LayoutBox
@@ -116,7 +122,9 @@ children:
 
       - type: Label
         label: Distribution
-        cell: [1, 1]
+        cell:
+            column: 1
+            row: 1
         children:
           - type: CheckBox
             name: skew
