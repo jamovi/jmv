@@ -132,9 +132,21 @@ items:
             title: Tests of Sphericity
             type: Table
             visible: (spherTests)
+            clearWith:
+                - dependent
+                - ss
+                - rmCells
+                - rmcModelTerms
+                - bscModelTerms
+                - bs
+                - rm
+                - cov
+                - rmTerms
+                - bsTerms
             columns:
                 - name: name
                   title: ''
+                  type: text
                 - name: mauch
                   title: Mauchly's W
                   type: number
@@ -275,3 +287,21 @@ items:
         - dispErrBars
         - errBarDef
         - ciWidth
+
+    - name: descPlots
+      title: Descriptive Plots
+      visible: (descPlotsSepPlots)
+      type: Array
+      template:
+          title: $key
+          type: Image
+          renderInitFun: .descPlot
+          renderFun: .descPlot
+          clearWith:
+              - descPlotsHAxis
+              - descPlotsSepLines
+              - descPlotsSepPlots
+              - rm
+              - dispErrBars
+              - errBarDef
+              - ciWidth

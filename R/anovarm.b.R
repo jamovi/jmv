@@ -278,29 +278,26 @@ AnovaRMClass <- R6::R6Class(
                 
             } else {
                 
-                bsTerms <- lapply(self$options$bsTerms, function(x) gsub('`', '\\`', x, fixed=TRUE))
-                rmTerms <- lapply(self$options$rmTerms, function(x) gsub('`', '\\`', x, fixed=TRUE))
+                bsTerms <- self$options$bsTerms
+                rmTerms <- self$options$rmTerms
                 
-                bsItems <- list()
-                for (i in seq_along(bsTerms))
-                    bsItems[[length(bsItems)+1]] <- paste0('`', bsTerms[[i]], '`', collapse=":")
+                bsItems <- composeTerms(bsTerms)
                 bsTerm <- paste0("(", paste0(bsItems, collapse = " + "), ")")
                 
-                rmItems <- list()
-                for (i in seq_along(rmTerms))
-                    rmItems[[length(rmItems)+1]] <- paste0('`', rmTerms[[i]], '`', collapse=":")
+                rmItems <- composeTerms(rmTerms)
                 rmTerm <- paste0("Error(", paste0("subject/(", rmItems, ")", collapse=" + "),")")
                 
-                allItems <- c(bsItems, rmItems)
-                for (i in seq_along(rmItems)) {
-                    for (j in seq_along(bsItems)) {
-                        allItems[[length(allItems) + 1]] <- paste0(unlist(c(rmItems[[i]], bsItems[[j]])), collapse=":")
+                allTerms <- c(bsTerms, rmTerms)
+                for (term1 in rmTerms) {
+                    for (term2 in bsTerms) {
+                        allTerms[[length(allTerms) + 1]] <- unlist(c(term1, term2))
                     }
                 }
                 
+                allItems <- composeTerms(allTerms)
                 mainTerm <- paste0("(", paste0(allItems, collapse = " + "), ")")
                 
-                if (length(bsTerms) == 0) {
+                if (length(self$options$bsTerms) == 0) {
                     formula <- as.formula(paste("dependent", "~", paste(mainTerm, rmTerm, sep=" + ")))
                 } else {
                     formula <- as.formula(paste("dependent", "~", paste(mainTerm, rmTerm, bsTerm, sep=" + ")))
@@ -634,7 +631,6 @@ AnovaRMClass <- R6::R6Class(
             
             return(datac)
         },
-        
         .normDataWithin=function(data=NULL, idvar, measurevar, betweenvars=NULL, na.rm=FALSE, .drop=TRUE) {
             
             # Measure var on left, idvar + between vars on right of formula.
@@ -661,7 +657,6 @@ AnovaRMClass <- R6::R6Class(
             
             return(data)
         },
-        
         .summarySEwithin=function(data=NULL, measurevar, betweenvars=NULL, withinvars=NULL, idvar=NULL, na.rm=FALSE, conf.interval=.95, .drop=TRUE, errorBarType="confidenceInterval") {
             
             # Get the means from the un-normed data
