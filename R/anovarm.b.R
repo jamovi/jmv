@@ -48,8 +48,9 @@ AnovaRMClass <- R6::R6Class(
             }
             
             spher <- self$results$get('assump')$get('spher')
-            term <- stringifyTerm(rmTerms[[1]])
-            spher$addRow(rowKey='', list(name=term))
+            for (term in self$options$rmTerms)
+                spher$addRow(rowKey=term, list(name=stringifyTerm(term)))
+                
         },
         .run=function() {
             
@@ -66,16 +67,17 @@ AnovaRMClass <- R6::R6Class(
                 
                 suppressWarnings({
                     
-                    result <- try(afex::aov_car(modelFormula, data, type=self$options$ss), silent=TRUE)
+                    result <- try(afex::aov_car(modelFormula, data, type=self$options$ss, factorize = FALSE), silent=TRUE)
                     
                 }) # suppressWarnings
                 
                 if (isError(result)) {
-                    jmvcore::reject(extractErrorMessage(result), code="error")
+                    jmvcore::reject(format('\n{}', extractErrorMessage(result)), code="error")
                 } else {
                     private$.populateTables(result)
                 }
                 
+                private$.populateSpher(result)
                 private$.prepareDescPlots(data)
             }
         },
@@ -357,6 +359,59 @@ AnovaRMClass <- R6::R6Class(
             row[["p"]] <- ""
             
             bsTable$setRow(rowKey="Residual", values=row)
+        },
+        .populateSpher=function(result) {
+            
+            spher <- self$results$get('assump')$get('spher')
+            summaryResult <- summary(result)
+            epsilon <- summaryResult$pval.adjustments
+            mauchly <- summaryResult$sphericity.tests
+            
+            nLevels <- sapply(self$options$rm, function(x) return(length(x$levels)))
+            
+            if (any(nLevels > 2)) {
+                
+                resultRows <- decomposeTerms(rownames(mauchly))
+                
+                for (term in self$options$rmTerms) {
+                    
+                    index <- which(sapply(as.list(resultRows), function(x) setequal(x, term)))
+                    
+                    if (length(index) == 0) {
+                        
+                        row <- list()
+                        row[["mauch"]] <- 1
+                        row[["p"]] <- NaN
+                        row[["gg"]] <- 1
+                        row[["hf"]] <- 1
+                        
+                        spher$setRow(rowKey=term, values=row)
+                        spher$addFootnote(rowKey=term, "name", "The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels")
+                        
+                    } else {
+                        
+                        row <- list()
+                        row[["mauch"]] <- mauchly[index,"Test statistic"]
+                        row[["p"]] <- mauchly[index,"p-value"]
+                        row[["gg"]] <- epsilon[index, "GG eps"]
+                        row[["hf"]] <- if (epsilon[index, "HF eps"] > 1) 1 else epsilon[index, "HF eps"]
+                        
+                        spher$setRow(rowKey=term, values=row)
+                    }
+                }
+            } else {
+                
+                for (term in self$options$rmTerms) {
+                    row <- list()
+                    row[["mauch"]] <- 1
+                    row[["p"]] <- NaN
+                    row[["gg"]] <- 1
+                    row[["hf"]] <- 1
+                    
+                    spher$setRow(rowKey=term, values=row)
+                    spher$addFootnote(rowKey=term, "name", "The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels")
+                }
+            }
         },
         .prepareDescPlots=function(data) {
             
