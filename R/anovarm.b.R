@@ -47,6 +47,31 @@ AnovaRMClass <- R6::R6Class(
                 bsTable$addRow(rowKey='', list(name='Residual'))
             }
             
+            isAxis <- ! is.null(self$options$descPlotsHAxis)
+            isMulti <- ! is.null(self$options$descPlotsSepPlots)
+            
+            self$results$get('descPlot')$setVisible( ! isMulti && isAxis)
+            self$results$get('descPlots')$setVisible(isMulti)
+            
+            if (isMulti) {
+
+                sepPlotsName <- self$options$descPlotsSepPlots
+                
+                if (sepPlotsName %in% self$options$bs) {
+                    sepPlotsVar <- self$data[[sepPlotsName]]
+                    sepPlotsLevels <- levels(sepPlotsVar)
+                } else  {
+                    rmLabels <- sapply(self$options$rm, function(x) return(x$label))
+                    rmLevels <- lapply(self$options$rm, function(x) return(x$levels))
+                    sepPlotsLevels <- rmLevels[[which(rmLabels %in% sepPlotsName)]]
+                }
+                
+                array <- self$results$descPlots
+
+                for (level in sepPlotsLevels)
+                    array$addItem(level)
+            }
+            
             spher <- self$results$get('assump')$get('spher')
             for (term in self$options$rmTerms)
                 spher$addRow(rowKey=term, list(name=stringifyTerm(term)))
@@ -469,14 +494,32 @@ AnovaRMClass <- R6::R6Class(
             
             plotData <- cbind(plotData, mean=unlist(means$x))
             
-            if (self$options$errBarDef == 'ci')
+            if (errorBarType == 'ci')
                 plotData <- cbind(plotData, err=unlist(cis$x))
             else
                 plotData <- cbind(plotData, err=unlist(ses$x))
             
-            image <- self$results$get('descPlot')
-            image$setState(plotData)
+            plotData <- cbind(plotData, lower=plotData$mean-plotData$err, upper=plotData$mean+plotData$err)
             
+            if (self$options$dispErrBars) {
+                yAxisRange <- pretty(c(plotData$lower, plotData$upper))
+            } else {
+                yAxisRange <- plotData$mean
+            }
+            
+            if (is.null(plotsName)) {
+                
+                image <- self$results$get('descPlot')
+                image$setState(list(data=plotData, range=yAxisRange))
+                
+            } else {
+                
+                images <- self$results$descPlots
+                for (level in images$itemKeys) {
+                    image <- images$get(key=level)
+                    image$setState(list(data=subset(plotData, plots == level), range=yAxisRange))
+                }
+            }
         },
         .descPlot=function(image, ...) {
             
@@ -499,33 +542,46 @@ AnovaRMClass <- R6::R6Class(
                 axis.title.x=element_text(margin=margin(10,0,0,0)),
                 axis.title.y=element_text(margin=margin(0,10,0,0)))
             
-            dodge <- position_dodge(0.1)
+            dodge <- position_dodge(0.2)
             
-            if (self$options$dispErrBars == 'ci') {
-                ciWidth <- self$options$ciWidth
-                errorType <- paste0('(', ciWidth, '% CI)')
-            } else {
-                errorType <- '(SE)'
+            
+            errorType <- ''
+            if (self$options$dispErrBars) {
+                if (self$options$errBarDef == 'ci') {
+                    ciWidth <- self$options$ciWidth
+                    errorType <- paste0('(', ciWidth, '% CI)')
+                } else {
+                    errorType <- '(SE)'
+                }
             }
             
             if ( ! is.null(linesName)) {
                 
-                print(ggplot(data=image$state, aes(x=group, y=mean, group=lines, colour=lines)) +
-                          geom_errorbar(aes(x=group, ymin=mean-err, ymax=mean+err, width=.1, group=lines), size=.8, position=dodge) +
-                          geom_line(size=.8, position=dodge) +
-                          geom_point(shape=21, fill='white', size=3, position=dodge) +
-                          labs(x=groupName, y=depName, colour=paste(linesName, errorType)) +
-                          the)
+                p <- ggplot(data=image$state$data, aes(x=group, y=mean, group=lines, colour=lines)) +
+                    geom_line(size=.8, position=dodge) +
+                    geom_point(shape=21, fill='white', size=3, position=dodge) +
+                    labs(x=groupName, y=depName, colour=paste(linesName, errorType)) +
+                    scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
+                    the
+                
+                if (self$options$dispErrBars)
+                    p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, width=.1, group=lines), size=.8, position=dodge)
+                
+                print(p)
                 
             } else {
                 
-                print(ggplot(data=image$state) +
-                          geom_errorbar(aes(x=group, ymin=mean-err, ymax=mean+err, colour='colour', width=.1), size=.8) +
-                          geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill='white', size=3) +
-                          labs(x=groupName, y=depName, colour=paste(depName, errorType)) +
-                          scale_colour_manual(name=paste(depName, errorType), values=c(colour='#333333'), labels='') +
-                          the
-                )
+                p <- ggplot(data=image$state$data) +
+                    geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill='white', size=3) +
+                    labs(x=groupName, y=depName, colour=paste(depName, errorType)) +
+                    scale_colour_manual(name=paste(depName, errorType), values=c(colour='#333333'), labels='') +
+                    scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
+                    the
+                
+                if (self$options$dispErrBars)
+                    p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, colour='colour', width=.1), size=.8)
+                
+                print(p)
             }
             
             TRUE
