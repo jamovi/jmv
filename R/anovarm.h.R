@@ -35,7 +35,6 @@ AnovaRMOptions <- R6::R6Class(
             errBarDef = "ci",
             ciWidth = 95,
             dispDescStats = FALSE,
-            estEffSize = FALSE,
             effSizeN2 = FALSE,
             partEffSizeN2 = FALSE,
             effSizeW2 = FALSE, ...) {
@@ -213,10 +212,6 @@ AnovaRMOptions <- R6::R6Class(
                 "dispDescStats",
                 dispDescStats,
                 default=FALSE)
-            private$..estEffSize <- jmvcore::OptionBool$new(
-                "estEffSize",
-                estEffSize,
-                default=FALSE)
             private$..effSizeN2 <- jmvcore::OptionBool$new(
                 "effSizeN2",
                 effSizeN2,
@@ -256,7 +251,6 @@ AnovaRMOptions <- R6::R6Class(
             self$.addOption(private$..errBarDef)
             self$.addOption(private$..ciWidth)
             self$.addOption(private$..dispDescStats)
-            self$.addOption(private$..estEffSize)
             self$.addOption(private$..effSizeN2)
             self$.addOption(private$..partEffSizeN2)
             self$.addOption(private$..effSizeW2)
@@ -288,7 +282,6 @@ AnovaRMOptions <- R6::R6Class(
         errBarDef = function() private$..errBarDef$value,
         ciWidth = function() private$..ciWidth$value,
         dispDescStats = function() private$..dispDescStats$value,
-        estEffSize = function() private$..estEffSize$value,
         effSizeN2 = function() private$..effSizeN2$value,
         partEffSizeN2 = function() private$..partEffSizeN2$value,
         effSizeW2 = function() private$..effSizeW2$value),
@@ -319,7 +312,6 @@ AnovaRMOptions <- R6::R6Class(
         ..errBarDef = NA,
         ..ciWidth = NA,
         ..dispDescStats = NA,
-        ..estEffSize = NA,
         ..effSizeN2 = NA,
         ..partEffSizeN2 = NA,
         ..effSizeW2 = NA)
@@ -333,14 +325,16 @@ AnovaRMResults <- R6::R6Class(
         assump = function() private$..assump,
         contrasts = function() private$..contrasts,
         postHoc = function() private$..postHoc,
-        descPlot = function() private$..descPlot),
+        descPlot = function() private$..descPlot,
+        descPlots = function() private$..descPlots),
     private = list(
         ..rmTable = NA,
         ..bsTable = NA,
         ..assump = NA,
         ..contrasts = NA,
         ..postHoc = NA,
-        ..descPlot = NA),
+        ..descPlot = NA,
+        ..descPlots = NA),
     public=list(
         initialize=function(options) {
             super$initialize(options=options, name="", title="Repeated Measures ANOVA")
@@ -410,8 +404,19 @@ AnovaRMResults <- R6::R6Class(
                             name="spher",
                             title="Tests of Sphericity",
                             visible="(spherTests)",
+                            clearWith=list(
+                                "dependent",
+                                "ss",
+                                "rmCells",
+                                "rmcModelTerms",
+                                "bscModelTerms",
+                                "bs",
+                                "rm",
+                                "cov",
+                                "rmTerms",
+                                "bsTerms"),
                             columns=list(
-                                list(`name`="name", `title`=""),
+                                list(`name`="name", `title`="", `type`="text"),
                                 list(`name`="mauch", `title`="Mauchly's W", `type`="number"),
                                 list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue"),
                                 list(`name`="gg", `title`="Greenhouse-Geisser ε", `type`="number"),
@@ -481,12 +486,31 @@ AnovaRMResults <- R6::R6Class(
                     "dispErrBars",
                     "errBarDef",
                     "ciWidth"))
+            private$..descPlots <- jmvcore::Array$new(
+                options=options,
+                name="descPlots",
+                title="Descriptive Plots",
+                visible="(descPlotsSepPlots)",
+                template=jmvcore::Image$new(
+                    options=options,
+                    title="$key",
+                    renderInitFun=".descPlot",
+                    renderFun=".descPlot",
+                    clearWith=list(
+                        "descPlotsHAxis",
+                        "descPlotsSepLines",
+                        "descPlotsSepPlots",
+                        "rm",
+                        "dispErrBars",
+                        "errBarDef",
+                        "ciWidth")))
             self$add(private$..rmTable)
             self$add(private$..bsTable)
             self$add(private$..assump)
             self$add(private$..contrasts)
             self$add(private$..postHoc)
-            self$add(private$..descPlot)}))
+            self$add(private$..descPlot)
+            self$add(private$..descPlots)}))
 
 AnovaRMBase <- R6::R6Class(
     "AnovaRMBase",
@@ -536,7 +560,6 @@ AnovaRM <- function(
     errBarDef = "ci",
     ciWidth = 95,
     dispDescStats = FALSE,
-    estEffSize = FALSE,
     effSizeN2 = FALSE,
     partEffSizeN2 = FALSE,
     effSizeW2 = FALSE) {
@@ -568,7 +591,6 @@ AnovaRM <- function(
         errBarDef = errBarDef,
         ciWidth = ciWidth,
         dispDescStats = dispDescStats,
-        estEffSize = estEffSize,
         effSizeN2 = effSizeN2,
         partEffSizeN2 = partEffSizeN2,
         effSizeW2 = effSizeW2)

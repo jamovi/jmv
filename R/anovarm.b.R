@@ -47,9 +47,35 @@ AnovaRMClass <- R6::R6Class(
                 bsTable$addRow(rowKey='', list(name='Residual'))
             }
             
+            isAxis <- ! is.null(self$options$descPlotsHAxis)
+            isMulti <- ! is.null(self$options$descPlotsSepPlots)
+            
+            self$results$get('descPlot')$setVisible( ! isMulti && isAxis)
+            self$results$get('descPlots')$setVisible(isMulti)
+            
+            if (isMulti) {
+
+                sepPlotsName <- self$options$descPlotsSepPlots
+                
+                if (sepPlotsName %in% self$options$bs) {
+                    sepPlotsVar <- self$data[[sepPlotsName]]
+                    sepPlotsLevels <- levels(sepPlotsVar)
+                } else  {
+                    rmLabels <- sapply(self$options$rm, function(x) return(x$label))
+                    rmLevels <- lapply(self$options$rm, function(x) return(x$levels))
+                    sepPlotsLevels <- rmLevels[[which(rmLabels %in% sepPlotsName)]]
+                }
+                
+                array <- self$results$descPlots
+
+                for (level in sepPlotsLevels)
+                    array$addItem(level)
+            }
+            
             spher <- self$results$get('assump')$get('spher')
-            term <- stringifyTerm(rmTerms[[1]])
-            spher$addRow(rowKey='', list(name=term))
+            for (term in self$options$rmTerms)
+                spher$addRow(rowKey=term, list(name=stringifyTerm(term)))
+                
         },
         .run=function() {
             
@@ -66,16 +92,17 @@ AnovaRMClass <- R6::R6Class(
                 
                 suppressWarnings({
                     
-                    result <- try(afex::aov_car(modelFormula, data, type=self$options$ss), silent=TRUE)
+                    result <- try(afex::aov_car(modelFormula, data, type=self$options$ss, factorize = FALSE), silent=TRUE)
                     
                 }) # suppressWarnings
                 
                 if (isError(result)) {
-                    jmvcore::reject(extractErrorMessage(result), code="error")
+                    jmvcore::reject(format('\n{}', extractErrorMessage(result)), code="error")
                 } else {
                     private$.populateTables(result)
                 }
                 
+                private$.populateSpher(result)
                 private$.prepareDescPlots(data)
             }
         },
@@ -251,29 +278,26 @@ AnovaRMClass <- R6::R6Class(
                 
             } else {
                 
-                bsTerms <- lapply(self$options$bsTerms, function(x) gsub('`', '\\`', x, fixed=TRUE))
-                rmTerms <- lapply(self$options$rmTerms, function(x) gsub('`', '\\`', x, fixed=TRUE))
+                bsTerms <- self$options$bsTerms
+                rmTerms <- self$options$rmTerms
                 
-                bsItems <- list()
-                for (i in seq_along(bsTerms))
-                    bsItems[[length(bsItems)+1]] <- paste0('`', bsTerms[[i]], '`', collapse=":")
+                bsItems <- composeTerms(bsTerms)
                 bsTerm <- paste0("(", paste0(bsItems, collapse = " + "), ")")
                 
-                rmItems <- list()
-                for (i in seq_along(rmTerms))
-                    rmItems[[length(rmItems)+1]] <- paste0('`', rmTerms[[i]], '`', collapse=":")
+                rmItems <- composeTerms(rmTerms)
                 rmTerm <- paste0("Error(", paste0("subject/(", rmItems, ")", collapse=" + "),")")
                 
-                allItems <- c(bsItems, rmItems)
-                for (i in seq_along(rmItems)) {
-                    for (j in seq_along(bsItems)) {
-                        allItems[[length(allItems) + 1]] <- paste0(unlist(c(rmItems[[i]], bsItems[[j]])), collapse=":")
+                allTerms <- c(bsTerms, rmTerms)
+                for (term1 in rmTerms) {
+                    for (term2 in bsTerms) {
+                        allTerms[[length(allTerms) + 1]] <- unlist(c(term1, term2))
                     }
                 }
                 
+                allItems <- composeTerms(allTerms)
                 mainTerm <- paste0("(", paste0(allItems, collapse = " + "), ")")
                 
-                if (length(bsTerms) == 0) {
+                if (length(self$options$bsTerms) == 0) {
                     formula <- as.formula(paste("dependent", "~", paste(mainTerm, rmTerm, sep=" + ")))
                 } else {
                     formula <- as.formula(paste("dependent", "~", paste(mainTerm, rmTerm, bsTerm, sep=" + ")))
@@ -358,6 +382,59 @@ AnovaRMClass <- R6::R6Class(
             
             bsTable$setRow(rowKey="Residual", values=row)
         },
+        .populateSpher=function(result) {
+            
+            spher <- self$results$get('assump')$get('spher')
+            summaryResult <- summary(result)
+            epsilon <- summaryResult$pval.adjustments
+            mauchly <- summaryResult$sphericity.tests
+            
+            nLevels <- sapply(self$options$rm, function(x) return(length(x$levels)))
+            
+            if (any(nLevels > 2)) {
+                
+                resultRows <- decomposeTerms(rownames(mauchly))
+                
+                for (term in self$options$rmTerms) {
+                    
+                    index <- which(sapply(as.list(resultRows), function(x) setequal(x, term)))
+                    
+                    if (length(index) == 0) {
+                        
+                        row <- list()
+                        row[["mauch"]] <- 1
+                        row[["p"]] <- NaN
+                        row[["gg"]] <- 1
+                        row[["hf"]] <- 1
+                        
+                        spher$setRow(rowKey=term, values=row)
+                        spher$addFootnote(rowKey=term, "name", "The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels")
+                        
+                    } else {
+                        
+                        row <- list()
+                        row[["mauch"]] <- mauchly[index,"Test statistic"]
+                        row[["p"]] <- mauchly[index,"p-value"]
+                        row[["gg"]] <- epsilon[index, "GG eps"]
+                        row[["hf"]] <- if (epsilon[index, "HF eps"] > 1) 1 else epsilon[index, "HF eps"]
+                        
+                        spher$setRow(rowKey=term, values=row)
+                    }
+                }
+            } else {
+                
+                for (term in self$options$rmTerms) {
+                    row <- list()
+                    row[["mauch"]] <- 1
+                    row[["p"]] <- NaN
+                    row[["gg"]] <- 1
+                    row[["hf"]] <- 1
+                    
+                    spher$setRow(rowKey=term, values=row)
+                    spher$addFootnote(rowKey=term, "name", "The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels")
+                }
+            }
+        },
         .prepareDescPlots=function(data) {
             
             depName <- "dependent"
@@ -414,14 +491,32 @@ AnovaRMClass <- R6::R6Class(
             
             plotData <- cbind(plotData, mean=unlist(means$x))
             
-            if (self$options$errBarDef == 'ci')
+            if (errorBarType == 'ci')
                 plotData <- cbind(plotData, err=unlist(cis$x))
             else
                 plotData <- cbind(plotData, err=unlist(ses$x))
             
-            image <- self$results$get('descPlot')
-            image$setState(plotData)
+            plotData <- cbind(plotData, lower=plotData$mean-plotData$err, upper=plotData$mean+plotData$err)
             
+            if (self$options$dispErrBars) {
+                yAxisRange <- pretty(c(plotData$lower, plotData$upper))
+            } else {
+                yAxisRange <- plotData$mean
+            }
+            
+            if (is.null(plotsName)) {
+                
+                image <- self$results$get('descPlot')
+                image$setState(list(data=plotData, range=yAxisRange))
+                
+            } else {
+                
+                images <- self$results$descPlots
+                for (level in images$itemKeys) {
+                    image <- images$get(key=level)
+                    image$setState(list(data=subset(plotData, plots == level), range=yAxisRange))
+                }
+            }
         },
         .descPlot=function(image, ...) {
             
@@ -444,33 +539,46 @@ AnovaRMClass <- R6::R6Class(
                 axis.title.x=element_text(margin=margin(10,0,0,0)),
                 axis.title.y=element_text(margin=margin(0,10,0,0)))
             
-            dodge <- position_dodge(0.1)
+            dodge <- position_dodge(0.2)
             
-            if (self$options$dispErrBars == 'ci') {
-                ciWidth <- self$options$ciWidth
-                errorType <- paste0('(', ciWidth, '% CI)')
-            } else {
-                errorType <- '(SE)'
+            
+            errorType <- ''
+            if (self$options$dispErrBars) {
+                if (self$options$errBarDef == 'ci') {
+                    ciWidth <- self$options$ciWidth
+                    errorType <- paste0('(', ciWidth, '% CI)')
+                } else {
+                    errorType <- '(SE)'
+                }
             }
             
             if ( ! is.null(linesName)) {
                 
-                print(ggplot(data=image$state, aes(x=group, y=mean, group=lines, colour=lines)) +
-                          geom_errorbar(aes(x=group, ymin=mean-err, ymax=mean+err, width=.1, group=lines), size=.8, position=dodge) +
-                          geom_line(size=.8, position=dodge) +
-                          geom_point(shape=21, fill='white', size=3, position=dodge) +
-                          labs(x=groupName, y=depName, colour=paste(linesName, errorType)) +
-                          the)
+                p <- ggplot(data=image$state$data, aes(x=group, y=mean, group=lines, colour=lines)) +
+                    geom_line(size=.8, position=dodge) +
+                    geom_point(shape=21, fill='white', size=3, position=dodge) +
+                    labs(x=groupName, y=depName, colour=paste(linesName, errorType)) +
+                    scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
+                    the
+                
+                if (self$options$dispErrBars)
+                    p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, width=.1, group=lines), size=.8, position=dodge)
+                
+                print(p)
                 
             } else {
                 
-                print(ggplot(data=image$state) +
-                          geom_errorbar(aes(x=group, ymin=mean-err, ymax=mean+err, colour='colour', width=.1), size=.8) +
-                          geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill='white', size=3) +
-                          labs(x=groupName, y=depName, colour=paste(depName, errorType)) +
-                          scale_colour_manual(name=paste(depName, errorType), values=c(colour='#333333'), labels='') +
-                          the
-                )
+                p <- ggplot(data=image$state$data) +
+                    geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill='white', size=3) +
+                    labs(x=groupName, y=depName, colour=paste(depName, errorType)) +
+                    scale_colour_manual(name=paste(depName, errorType), values=c(colour='#333333'), labels='') +
+                    scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
+                    the
+                
+                if (self$options$dispErrBars)
+                    p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, colour='colour', width=.1), size=.8)
+                
+                print(p)
             }
             
             TRUE
@@ -523,7 +631,6 @@ AnovaRMClass <- R6::R6Class(
             
             return(datac)
         },
-        
         .normDataWithin=function(data=NULL, idvar, measurevar, betweenvars=NULL, na.rm=FALSE, .drop=TRUE) {
             
             # Measure var on left, idvar + between vars on right of formula.
@@ -550,7 +657,6 @@ AnovaRMClass <- R6::R6Class(
             
             return(data)
         },
-        
         .summarySEwithin=function(data=NULL, measurevar, betweenvars=NULL, withinvars=NULL, idvar=NULL, na.rm=FALSE, conf.interval=.95, .drop=TRUE, errorBarType="confidenceInterval") {
             
             # Get the means from the un-normed data
