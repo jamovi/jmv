@@ -1,4 +1,8 @@
 
+#' @rdname jamovi
+#' @importFrom BayesFactor ttestBF extractBF
+#' @importFrom ggplot2 ggplot position_dodge
+#' @export
 TTestOneSClass <- R6::R6Class("TTestOneSClass",
     inherit=TTestOneSBase,
     private=list(

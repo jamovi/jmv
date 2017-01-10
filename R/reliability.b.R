@@ -1,6 +1,9 @@
 
-# This file is a generated template, your changes will not be overwritten
-
+#' @rdname jamovi
+#' @importFrom psych alpha omega
+#' @importFrom ggplot2 ggplot
+#' @import GPArotation
+#' @export
 ReliabilityClass <- R6::R6Class(
     "ReliabilityClass",
     inherit = ReliabilityBase,

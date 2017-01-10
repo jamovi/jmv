@@ -1,4 +1,6 @@
 
+#' @rdname jamovi
+#' @export
 ContTablesPairedClass <- R6::R6Class(
     "ContTablesPairedClass",
     inherit = ContTablesPairedBase,
@@ -164,7 +166,7 @@ ContTablesPairedClass <- R6::R6Class(
 
             subNames  <- c('[count]', '[pcRow]', '[pcCol]')
             subTitles <- c('Count', '% within row', '% within column')
-            visible   <- c('(obs)', '(pcRow)', '(pcCol)')
+            visible   <- c('TRUE', '(pcRow)', '(pcCol)')
             types     <- c('integer', 'number', 'number')
             formats   <- c('', 'pc', 'pc')
 
@@ -173,7 +175,7 @@ ContTablesPairedClass <- R6::R6Class(
             for (j in seq_along(subNames)) {
                 subName <- subNames[[j]]
                 if (j == 1)
-                    v <- '(obs && (pcRow || pcCol))'
+                    v <- '(pcRow || pcCol)'
                 else
                     v <- visible[j]
 

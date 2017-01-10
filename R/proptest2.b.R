@@ -1,4 +1,6 @@
 
+#' @rdname jamovi
+#' @export
 PropTest2Class <- R6::R6Class(
     "PropTest2Class",
     inherit = PropTest2Base,
@@ -89,9 +91,9 @@ PropTest2Class <- R6::R6Class(
             else if (hyp == 'less')
                 op <- '<'
             else
-                op <- '≠'
+                op <- '\u2260'
 
-            table$setNote('hyp', jmvcore::format('Hₐ is proportion {} {}', op, self$options$testValue))
+            table$setNote('hyp', jmvcore::format('H\u2090 is proportion {} {}', op, self$options$testValue))
             table$getColumn('cil')$setSuperTitle(paste0(self$options$ciWidth, '% Confidence Interval'))
             table$getColumn('ciu')$setSuperTitle(paste0(self$options$ciWidth, '% Confidence Interval'))
 
@@ -105,14 +107,14 @@ PropTest2Class <- R6::R6Class(
                     else if (length(varData) > 0)
                         levels <- paste(1:length(varData))
                     else
-                        levels <- c('…', '… ')
+                        levels <- c('\u2026', '\u2026 ')
                 } else {
                     levels <- base::levels(varData)
                     if (length(levels) == 0) {
                         if (initing)
-                            levels <- c('…', '… ')
+                            levels <- c('\u2026', '\u2026 ')
                         else if (length(varData) == 0)
-                            levels <- c('…', '… ')
+                            levels <- c('\u2026', '\u2026 ')
                         else
                             levels <- paste(sort(unique(varData)))
                     }

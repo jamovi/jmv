@@ -1,4 +1,10 @@
 
+#' @rdname jamovi
+#' @importFrom car Anova leveneTest
+#' @importFrom ggplot2 ggplot
+#' @importFrom lsr etaSquared
+#' @importFrom multcomp adjusted mcp glht
+#' @export
 AnovaClass <- R6::R6Class(
     "AnovaClass",
     inherit=AnovaBase,

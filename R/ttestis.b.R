@@ -1,5 +1,10 @@
 
-TTestISClass <- R6Class("TTestISClass",
+#' @rdname jamovi
+#' @importFrom car leveneTest
+#' @importFrom ggplot2 ggplot position_dodge
+#' @importFrom BayesFactor ttestBF extractBF
+#' @export
+TTestISClass <- R6::R6Class("TTestISClass",
     inherit=TTestISBase,
     private=list(
         .run=function() {

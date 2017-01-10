@@ -1,4 +1,8 @@
 
+#' @rdname jamovi
+#' @importFrom afex aov_car
+#' @importFrom ggplot2 ggplot position_dodge
+#' @export
 AnovaRMClass <- R6::R6Class(
     "AnovaRMClass",
     inherit=AnovaRMBase,

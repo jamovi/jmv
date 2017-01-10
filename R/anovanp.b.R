@@ -1,4 +1,6 @@
 
+#' @rdname jamovi
+#' @export
 AnovaNPClass <- R6::R6Class(
     "AnovaNPClass",
     inherit=AnovaNPBase,
@@ -100,6 +102,27 @@ AnovaNPClass <- R6::R6Class(
 # the following is borrowed from NSM3
 # we should talk to them and cite them somehow, send them a pizza
 
+#' @importFrom stats pnorm integrate
+pRangeNor<-function(x,k){
+    r<-function(x,n){
+        inner.int<-function(s){
+            exp(-s^2)*(pnorm(s+x/2)-pnorm(s-x/2))^(n-2)
+        }
+        return(n*(n-1)*exp(-x^2/4)/(2*pi)*integrate(inner.int,-Inf,Inf)$value)
+    }
+
+    approx.dens<-test.grid<-seq(0,10,.001)
+    test.grid<-round(test.grid,3)
+    for(i in 1:length(test.grid)){
+        approx.dens[i]<-r(test.grid[i],k)*.001
+    }
+    approx.dens=approx.dens/sum(approx.dens)
+
+    upper.tails<-rev(cumsum(rev(approx.dens)))
+    upper.tails[test.grid==round(x,3)]
+}
+
+#' @importFrom stats complete.cases
 pSDCFlig<-function(x,g=NA,method=NA,n.mc=10000){
     outp<-list()
     outp$stat.name<-"Dwass, Steel, Critchlow-Fligner W"
@@ -185,17 +208,17 @@ pSDCFlig<-function(x,g=NA,method=NA,n.mc=10000){
 
     outp$obs.stat<-W.star.all(x);
 
-    if(method=="Exact"){
-        possible.combs<-multComb(l)
-        if(outp$ties){
-            possible.ranks<-as.numeric(rank(x))
-            possible.combs<-t(apply(possible.combs,1,function(x) possible.ranks[x]))
-        }
-        exact.dist<-apply(possible.combs,1,function(x) max(abs(W.star.all(x))))
-        for(i in 1:num.comp){
-            outp$p.val[i]<-mean(exact.dist>=abs(outp$obs.stat[i]))
-        }
-    }
+    # if(method=="Exact"){
+    #     possible.combs<-multComb(l)
+    #     if(outp$ties){
+    #         possible.ranks<-as.numeric(rank(x))
+    #         possible.combs<-t(apply(possible.combs,1,function(x) possible.ranks[x]))
+    #     }
+    #     exact.dist<-apply(possible.combs,1,function(x) max(abs(W.star.all(x))))
+    #     for(i in 1:num.comp){
+    #         outp$p.val[i]<-mean(exact.dist>=abs(outp$obs.stat[i]))
+    #     }
+    # }
 
 
     if(method=="Monte Carlo"){
@@ -217,23 +240,4 @@ pSDCFlig<-function(x,g=NA,method=NA,n.mc=10000){
 
     class(outp)<-"NSM3Ch6MCp"
     outp
-}
-
-pRangeNor<-function(x,k){
-    r<-function(x,n){
-        inner.int<-function(s){
-            exp(-s^2)*(pnorm(s+x/2)-pnorm(s-x/2))^(n-2)
-        }
-        return(n*(n-1)*exp(-x^2/4)/(2*pi)*integrate(inner.int,-Inf,Inf)$value)
-    }
-
-    approx.dens<-test.grid<-seq(0,10,.001)
-    test.grid<-round(test.grid,3)
-    for(i in 1:length(test.grid)){
-        approx.dens[i]<-r(test.grid[i],k)*.001
-    }
-    approx.dens=approx.dens/sum(approx.dens)
-
-    upper.tails<-rev(cumsum(rev(approx.dens)))
-    upper.tails[test.grid==round(x,3)]
 }
