@@ -133,6 +133,8 @@ children:
         name: postHocSupplier
         persistentItems: false
         stretchFactor: 1
+        events:
+            change: './anova.events::onChange_postHocSupplier'
         children:
           - type: TargetListBox
             name: postHoc
@@ -166,6 +168,8 @@ children:
         name: plotsSupplier
         stretchFactor: 1
         persistentItems: false
+        events:
+            change: './anova.events::onChange_plotsSupplier'
         children:
           - type: TargetListBox
             name: descPlotsHAxis

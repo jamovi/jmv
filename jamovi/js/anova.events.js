@@ -19,6 +19,18 @@ const events = {
         filterModelTerms(ui, this);
     },
 
+    onChange_plotsSupplier: function(ui) {
+        let values = this.itemsToValues(ui.plotsSupplier.value());
+        this.checkValue(ui.descPlotsHAxis, false, values, FormatDef.variable);
+        this.checkValue(ui.descPlotsSepLines, false, values, FormatDef.variable);
+        this.checkValue(ui.descPlotsSepPlots, false, values, FormatDef.variable);
+    },
+
+    onChange_postHocSupplier: function(ui) {
+        let values = this.itemsToValues(ui.postHocSupplier.value());
+        this.checkValue(ui.postHoc, true, values, FormatDef.term);
+    },
+
     onEvent_modelTerms_preprocess: function(ui, data) {
         if (data.intoSelf === false)
             data.items = this.getItemCombinations(data.items);
@@ -52,14 +64,10 @@ var calcModelTerms = function(ui, context) {
         ui.modelTerms.setValue(termsList);
 
     updateContrasts(ui, variableList, context);
-    updateFactorDependents(ui, variableList, termsList, context);
 };
 
 var filterModelTerms = function(ui, context) {
     var termsList = context.cloneArray(ui.modelTerms.value(), []);
-
-    var list = context.valuesToItems(termsList, FormatDef.term);
-    ui.postHocSupplier.setValue(list);
 
     var termsDiff = context.findChanges("currentList", termsList, true, FormatDef.term);
 
@@ -87,23 +95,7 @@ var filterModelTerms = function(ui, context) {
     if (changed)
         ui.modelTerms.setValue(termsList);
 
-    if (termsDiff.removed.length > 0) {
-        itemsRemoved = false;
-        var postHoc = context.cloneArray(ui.postHoc.value(), []);
-        for (var i = 0; i < termsDiff.removed.length; i++) {
-            var item = termsDiff.removed[i];
-            for (var j = 0; j < postHoc.length; j++) {
-                if (FormatDef.term.contains(postHoc[j], item)) {
-                    postHoc.splice(j, 1);
-                    j -= 1;
-                    itemsRemoved = true;
-                }
-            }
-        }
-
-        if (itemsRemoved)
-            ui.postHoc.setValue(postHoc);
-    }
+    ui.postHocSupplier.setValue(context.valuesToItems(termsList, FormatDef.term));
 };
 
 var updateContrasts = function(ui, variableList, context) {
@@ -125,38 +117,6 @@ var updateContrasts = function(ui, variableList, context) {
     }
 
     ui.contrasts.setValue(list3);
-};
-
-var cleanDependentOption = function(ui, sourceList, dependantName, dependantIsList, format, context) {
-    var dependantList = context.clone(ui[dependantName].value());
-    if (dependantIsList && dependantList === null)
-        dependantList = [];
-
-    var changed = false;
-
-    if (dependantIsList) {
-        for (var i = 0; i < dependantList.length; i++) {
-            if (context.listContains(sourceList, dependantList[i], format) === false) {
-                dependantList.splice(i, 1);
-                i -= 1;
-                changed = true;
-            }
-        }
-    }
-    else if (context.listContains(sourceList, dependantList, format) === false) {
-        dependantList = null;
-        changed = true;
-    }
-
-    if (changed)
-        ui[dependantName].setValue(dependantList);
-};
-
-var updateFactorDependents = function(ui, factorList, modelList, context) {
-    cleanDependentOption(ui, factorList, "descPlotsHAxis", false, FormatDef.variable, context);
-    cleanDependentOption(ui, factorList, "descPlotsSepLines", false, FormatDef.variable, context);
-    cleanDependentOption(ui, factorList, "descPlotsSepPlots", false, FormatDef.variable, context);
-    cleanDependentOption(ui, modelList, "postHoc", true, FormatDef.term, context);
 };
 
 module.exports = events;
