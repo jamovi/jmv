@@ -67,6 +67,18 @@ const events = {
         filterModelTerms(ui, this);
     },
 
+    onChange_plotsSupplier: function(ui) {
+        let values = this.itemsToValues(ui.plotsSupplier.value());
+        this.checkValue(ui.descPlotsHAxis, false, values, FormatDef.variable);
+        this.checkValue(ui.descPlotsSepLines, false, values, FormatDef.variable);
+        this.checkValue(ui.descPlotsSepPlots, false, values, FormatDef.variable);
+    },
+
+    onChange_postHocSupplier: function(ui) {
+        let values = this.itemsToValues(ui.postHocSupplier.value());
+        this.checkValue(ui.postHoc, true, values, FormatDef.term);
+    },
+
     onEvent_rmCells_changing: function(ui, data) {
         if (data.key.length === 1 && data.value === null) {
             let oldValue = this.clone(ui.rmCells.value(data.key));
@@ -166,7 +178,6 @@ var updateModelTerms = function(ui, context) {
     ui.rmcModelSupplier.setValue(context.valuesToItems(factorList, FormatDef.variable))
     ui.bscModelSupplier.setValue(context.valuesToItems(combinedList, FormatDef.variable));
     ui.plotsSupplier.setValue(context.valuesToItems(combinedList2, FormatDef.variable));
-    ui.postHocSupplier.setValue(context.valuesToItems(combinedList2, FormatDef.variable));
 
     calcRMTerms(ui, factorList, context);
 
@@ -211,6 +222,14 @@ var updateModelTerms = function(ui, context) {
     updateContrasts(ui, combinedList2, context);
 };
 
+var updatePostHocSupplier = function(ui, context) {
+    var bsTerms = context.cloneArray(ui.bsTerms.value(), []);
+    var rmTerms = context.cloneArray(ui.rmTerms.value(), []);
+    var combinedTermsList = rmTerms.concat(bsTerms);
+
+    ui.postHocSupplier.setValue(context.valuesToItems(combinedTermsList, FormatDef.term));
+};
+
 var filterModelTerms = function(ui, context) {
     var termsList = context.cloneArray(ui.bsTerms.value(), []);
     var diff = context.findChanges("bsTerms", termsList, true, FormatDef.term);
@@ -238,6 +257,8 @@ var filterModelTerms = function(ui, context) {
 
     if (changed)
         ui.bsTerms.setValue(termsList);
+
+    updatePostHocSupplier(ui, context);
 };
 
 var filterModelRMTerms = function(ui, context) {
@@ -267,6 +288,8 @@ var filterModelRMTerms = function(ui, context) {
 
     if (changed)
         ui.rmTerms.setValue(termsList);
+
+    updatePostHocSupplier(ui, context);
 };
 
 var containsCovariate = function(value, covariates) {

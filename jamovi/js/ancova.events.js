@@ -21,6 +21,19 @@ const events = {
 
     onChange_modelTerms: function(ui) {
         filterModelTerms(ui, this);
+        updatePostHocSupplier(ui, this);
+    },
+
+    onChange_plotsSupplier: function(ui) {
+        let values = this.itemsToValues(ui.plotsSupplier.value());
+        this.checkValue(ui.descPlotsHAxis, false, values, FormatDef.variable);
+        this.checkValue(ui.descPlotsSepLines, false, values, FormatDef.variable);
+        this.checkValue(ui.descPlotsSepPlots, false, values, FormatDef.variable);
+    },
+
+    onChange_postHocSupplier: function(ui) {
+        let values = this.itemsToValues(ui.postHocSupplier.value());
+        this.checkValue(ui.postHoc, true, values, FormatDef.term);
     },
 
     onEvent_modelTerms_preprocess: function(ui, data) {
@@ -37,7 +50,6 @@ var calcModelTerms = function(ui, context) {
 
     ui.modelSupplier.setValue(context.valuesToItems(combinedList, FormatDef.variable));
     ui.plotsSupplier.setValue(context.valuesToItems(variableList, FormatDef.variable));
-    ui.postHocSupplier.setValue(context.valuesToItems(variableList, FormatDef.variable));
 
     var diff = context.findChanges("variableList", variableList, true, FormatDef.variable);
     var diff2 = context.findChanges("covariatesList", covariatesList, true, FormatDef.variable);
@@ -79,6 +91,18 @@ var calcModelTerms = function(ui, context) {
         ui.modelTerms.setValue(termsList);
 
     updateContrasts(ui, variableList, context);
+};
+
+var updatePostHocSupplier = function(ui, context) {
+    var termsList = context.cloneArray(ui.modelTerms.value(), []);
+    var covariatesList = context.cloneArray(ui.covariates.value(), []);
+    var list = [];
+    for (var j = 0; j < termsList.length; j++) {
+        var term = termsList[j];
+        if (containsCovariate(term, covariatesList) === false)
+            list.push(term)
+    }
+    ui.postHocSupplier.setValue(context.valuesToItems(list, FormatDef.term));
 };
 
 var filterModelTerms = function(ui, context) {
