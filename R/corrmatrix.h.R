@@ -199,6 +199,20 @@ CorrMatrixBase <- R6::R6Class(
 
 #' CorrMatrix
 #'
+#' 
+#' @param data The data set as a data frame 
+#' @param vars The variables of interest 
+#' @param pearson The pearson 
+#' @param spearman The spearman 
+#' @param kendall The Kendall's tau-b 
+#' @param sig The Report Significance 
+#' @param flag The Report Significance 
+#' @param ci .
+#' @param ciWidth .
+#' @param plots .
+#' @param plotDens .
+#' @param plotStats .
+#' @param hypothesis Stuff 
 #' @export
 CorrMatrix <- function(
     data,

@@ -28,4 +28,5 @@ Imports:
     psych,
     GPArotation,
     afex
+Encoding: UTF-8
 RoxygenNote: 5.0.1

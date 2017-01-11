@@ -129,6 +129,14 @@ PropTest2Base <- R6::R6Class(
 
 #' PropTest2
 #'
+#' 
+#' @param data The data set as a data frame 
+#' @param vars The variables of interest 
+#' @param areCounts .
+#' @param testValue The test value 
+#' @param hypothesis Stuff 
+#' @param ci .
+#' @param ciWidth .
 #' @export
 PropTest2 <- function(
     data,

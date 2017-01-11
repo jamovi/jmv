@@ -398,6 +398,39 @@ AnovaBase <- R6::R6Class(
 
 #' Anova
 #'
+#' Analysis of Variance
+#'
+#' 
+#' @param data the data as a data frame
+#' @param dependent a string naming the dependent variable from \code{data} 
+#'   variable must be numeric 
+#' @param fixedFactors a vector of strings naming the fixed factors from 
+#'   \code{data}
+#' @param modelTerms a list of character vectors describing the terms to go 
+#'   into the model 
+#' @param contrasts contrasts
+#' @param descPlotsHAxis the variable placed on the horizontal axis of the 
+#'   plot
+#' @param descPlotsSepLines the variable represented as separate lines on the 
+#'   plot
+#' @param descPlotsSepPlots the variable to separate over to form multiple 
+#'   plots
+#' @param postHoc a list of terms to perform post-hoc tests on
+#' @param corrTukey perform Tukey correction in post-hoc tests
+#' @param corrScheffe perform Scheffe correction in post-hoc tests
+#' @param corrBonf perform Bonferroni correction in post-hoc tests
+#' @param corrHolm perform Holm correction in post-hoc tests
+#' @param descStats provide descriptive statistics
+#' @param homo perform homogeneity tests
+#' @param qq provide a Q-Q plot of residuals
+#' @param etaSq provide η² (effect size)
+#' @param etaSqP provide partial η² (effect size)
+#' @param omegaSq provide ω² (effect size)
+#' @param plotError \code{'ci'} or \code{'se'} - use confidence intervals or 
+#'   standard errors on the plot 
+#' @param ciWidth value between 50 and 99.9 specifying the confidence interval 
+#'   width 
+#' @param ss '1', '2' or '3' - the sum of squares to use, defaults to type 3
 #' @export
 Anova <- function(
     data,

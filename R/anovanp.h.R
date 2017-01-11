@@ -120,6 +120,11 @@ AnovaNPBase <- R6::R6Class(
 
 #' AnovaNP
 #'
+#' 
+#' @param data The data set as a data frame 
+#' @param deps The dependent variables 
+#' @param group The independent, or grouping variable 
+#' @param pairs Pairwise Comparisons 
 #' @export
 AnovaNP <- function(
     data,

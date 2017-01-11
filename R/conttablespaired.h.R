@@ -136,6 +136,13 @@ ContTablesPairedBase <- R6::R6Class(
 
 #' ContTablesPaired
 #'
+#' 
+#' @param data The data set as a data frame 
+#' @param rows The variables of interest 
+#' @param cols The variables of interest 
+#' @param counts The variables of interest 
+#' @param pcRow .
+#' @param pcCol .
 #' @export
 ContTablesPaired <- function(
     data,

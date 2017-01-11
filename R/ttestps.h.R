@@ -274,6 +274,25 @@ TTestPSBase <- R6::R6Class(
 
 #' TTestPS
 #'
+#' 
+#' @param data The data set as a data frame 
+#' @param pairs .
+#' @param students .
+#' @param bf .
+#' @param bfPrior .
+#' @param wilcoxon .
+#' @param hypothesis Specifies the alternative hypothesis as either 
+#'   "oneGreater", "twoGreater" or "different"(default) 
+#' @param norm .
+#' @param meanDiff .
+#' @param effectSize .
+#' @param ci .
+#' @param ciWidth .
+#' @param desc .
+#' @param plots .
+#' @param miss Specifies how to deal with missing values. "perAnalysis" 
+#'   excludes missing values for individual dependent variables, "listwise" 
+#'   excludes an entire observation if one of its entries is missing. 
 #' @export
 TTestPS <- function(
     data,

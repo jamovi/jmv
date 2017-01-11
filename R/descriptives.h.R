@@ -274,6 +274,28 @@ DescriptivesBase <- R6::R6Class(
 
 #' Descriptives
 #'
+#' 
+#' @param data The data set as a data frame 
+#' @param vars The variables of interest 
+#' @param mean The mean of the variables 
+#' @param median The median of the variables 
+#' @param mode .
+#' @param sum .
+#' @param sd .
+#' @param variance .
+#' @param range .
+#' @param min .
+#' @param max .
+#' @param se .
+#' @param skew .
+#' @param kurt .
+#' @param freq .
+#' @param plots .
+#' @param plotW .
+#' @param plotH .
+#' @param quart .
+#' @param pcEqGr .
+#' @param pcNEqGr .
 #' @export
 Descriptives <- function(
     data,

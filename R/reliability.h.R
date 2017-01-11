@@ -196,6 +196,19 @@ ReliabilityBase <- R6::R6Class(
 
 #' Reliability
 #'
+#' 
+#' @param data The data set as a data frame 
+#' @param vars The variables of interest 
+#' @param alphaScale .
+#' @param omegaScale .
+#' @param meanScale .
+#' @param sdScale .
+#' @param corPlot .
+#' @param alphaItems .
+#' @param omegaItems .
+#' @param meanItems .
+#' @param sdItems .
+#' @param itemRestCor .
 #' @export
 Reliability <- function(
     data,

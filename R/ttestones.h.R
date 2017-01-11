@@ -276,6 +276,26 @@ TTestOneSBase <- R6::R6Class(
 
 #' TTestOneS
 #'
+#' 
+#' @param data The data set as a data frame 
+#' @param vars The variables of interest 
+#' @param students .
+#' @param bf .
+#' @param bfPrior .
+#' @param mann .
+#' @param testValue .
+#' @param hypothesis Specifies the alternative hypothesis as either "different 
+#'   to", "greater than" or "less than" 
+#' @param norm .
+#' @param meanDiff .
+#' @param effectSize .
+#' @param ci .
+#' @param ciWidth .
+#' @param desc .
+#' @param plots .
+#' @param miss Specifies how to deal with missing values. "perAnalysis" 
+#'   excludes missing values for individual dependent variables, "listwise" 
+#'   excludes an entire observation if one of its entries is missing. 
 #' @export
 TTestOneS <- function(
     data,

@@ -93,6 +93,10 @@ PropTestNBase <- R6::R6Class(
 
 #' PropTestN
 #'
+#' 
+#' @param data The data set as a data frame 
+#' @param var The variable of interest 
+#' @param counts .
 #' @export
 PropTestN <- function(
     data,

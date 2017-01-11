@@ -543,6 +543,38 @@ AnovaRMBase <- R6::R6Class(
 
 #' AnovaRM
 #'
+#' 
+#' @param data The data set as a data frame 
+#' @param rm The Repeated Measures Factors 
+#' @param rmCells The Repeated Measures Cells 
+#' @param bs The Between Subject Factors 
+#' @param cov The Covariates 
+#' @param rmTerms The Repeated Measures model terms 
+#' @param bsTerms The Between Subjects model terms 
+#' @param ss Sum of squares 
+#' @param spherTests Sphericity tests 
+#' @param spherCorrs Sphericity corrections 
+#' @param spherCorrNone No Sphericity corrections 
+#' @param spherCorrGreenGsser Greenhouse-Geisser Sphericity corrections 
+#' @param spherCorrHuyFdt Huynh-Feldt Sphericity corrections 
+#' @param homoTests Display Homogeneity tests 
+#' @param contrasts .
+#' @param postHoc Post Hoc Tests 
+#' @param corrTukey Post Hoc Tests Tukey Correction 
+#' @param corrScheffe Post Hoc Tests Scheffe Correction 
+#' @param corrBonf Post Hoc Tests Bonferroni Correction 
+#' @param corrHolm Post Hoc Tests Holm Correction 
+#' @param descPlotsHAxis The Horizontal axis variable 
+#' @param descPlotsSepLines The Separate lines variable 
+#' @param descPlotsSepPlots The Separate plots variable 
+#' @param dispErrBars Error bars displaying 
+#' @param errBarDef Specifies the Error Bar definition as either "Confidence 
+#'   interval"(default) or "Standard Error" 
+#' @param ciWidth .
+#' @param dispDescStats Display Descriptive statistics 
+#' @param effSizeN2 Effect size n2 
+#' @param partEffSizeN2 Effect size partial n2 
+#' @param effSizeW2 Effect size w2 
 #' @export
 AnovaRM <- function(
     data,

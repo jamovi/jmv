@@ -142,6 +142,13 @@ AnovaRMNPBase <- R6::R6Class(
 
 #' AnovaRMNP
 #'
+#' 
+#' @param data The data set as a data frame 
+#' @param measures The variables of interest 
+#' @param pairs .
+#' @param desc .
+#' @param plots .
+#' @param plotType stuff 
 #' @export
 AnovaRMNP <- function(
     data,

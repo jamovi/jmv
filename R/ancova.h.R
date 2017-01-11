@@ -447,6 +447,33 @@ AncovaBase <- R6::R6Class(
 
 #' Ancova
 #'
+#' 
+#' @param data The data set as a data frame 
+#' @param dependent The dependent variable 
+#' @param fixedFactors The fixed factors 
+#' @param covariates The covariates 
+#' @param modelTerms The model terms 
+#' @param contrasts .
+#' @param descPlotsHAxis The Horizontal axis variable 
+#' @param descPlotsSepLines The Separate lines variable 
+#' @param descPlotsSepPlots The Separate plots variable 
+#' @param postHoc Post Hoc Tests 
+#' @param corrTukey Post Hoc Tests Tukey Correction 
+#' @param corrScheffe Post Hoc Tests Scheffe Correction 
+#' @param corrBonf Post Hoc Tests Bonferroni Correction 
+#' @param corrHolm Post Hoc Tests Holm Correction 
+#' @param compMain Compare main effects 
+#' @param compMainCorr Confidence interval adjustment 
+#' @param descStats Descriptive statistics 
+#' @param homo Display Homogeneity tests 
+#' @param qq Display Q-Q plot of residuals 
+#' @param etaSq Effect size n2 
+#' @param etaSqP Effect size partial n2 
+#' @param omegaSq Effect size w2 
+#' @param plotError Specifies the Error Bar definition as either "Confidence 
+#'   interval"(default) or "Standard Error" 
+#' @param ciWidth .
+#' @param ss Sum of squares 
 #' @export
 Ancova <- function(
     data,

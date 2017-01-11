@@ -5,13 +5,13 @@ menuGroup: ANOVA
 version: "1.0.0"
 jmc: "1.0.0"
 description: >
-  Analysis of Variance
+    Analysis of Variance
 
 options:
     - name: data
       type: Data
-      description: >
-        The data set as a data frame
+      description:
+          R: the data as a data frame
 
     - name: dependent
       title: Dependent
@@ -22,8 +22,10 @@ options:
         - continuous
         - nominal
         - ordinal
-      description: >
-        The dependent variable
+      description:
+          R: >
+            a string naming the dependent variable from \code{data} variable
+            must be numeric
 
     - name: fixedFactors
       title: Fixed factors
@@ -32,15 +34,17 @@ options:
         - nominal
         - ordinal
       default:
-      description: >
-        The fixed factors
+      description:
+          R: a vector of strings naming the fixed factors from \code{data}
 
     - name: modelTerms
       title: Model Terms
       type: Terms
       default:
-      description: >
-        The model terms
+      description:
+          R: >
+            a list of character vectors describing the terms to go into the
+            model
 
     - name: contrasts
       title: Contrasts
@@ -65,104 +69,91 @@ options:
                   - helmert
                   - repeated
                   - polynomial
+      description: contrasts
 
     - name: descPlotsHAxis
       title: Horizontal axis
       type: Variable
       default:
-      description: >
-        The Horizontal axis variable
+      description: the variable placed on the horizontal axis of the plot
 
     - name: descPlotsSepLines
       title: Separate lines
       type: Variable
       default:
-      description: >
-        The Separate lines variable
+      description: the variable represented as separate lines on the plot
 
     - name: descPlotsSepPlots
       title: Separate plots
       type: Variable
       default:
-      description: >
-        The Separate plots variable
+      description: the variable to separate over to form multiple plots
 
     - name: postHoc
       title: Post Hoc Tests
       type: Terms
       default:
-      description: >
-        Post Hoc Tests
+      description: a list of terms to perform post-hoc tests on
 
     - name: corrTukey
       title: Tukey
       type: Bool
       default: false
-      description: >
-        Post Hoc Tests Tukey Correction
+      description: perform Tukey correction in post-hoc tests
 
     - name: corrScheffe
       title: Scheffe
       type: Bool
       default: false
-      description: >
-        Post Hoc Tests Scheffe Correction
+      description: perform Scheffe correction in post-hoc tests
 
     - name: corrBonf
       title: Bonferroni
       type: Bool
       default: false
-      description: >
-        Post Hoc Tests Bonferroni Correction
+      description: perform Bonferroni correction in post-hoc tests
 
     - name: corrHolm
       title: Holm
       type: Bool
       default: false
-      description: >
-        Post Hoc Tests Holm Correction
+      description: perform Holm correction in post-hoc tests
 
     - name: descStats
       title: Descriptive statistics
       type: Bool
       default: false
-      description: >
-        Descriptive statistics
+      description: provide descriptive statistics
 
     - name: homo
       title: Homogeneity tests
       type: Bool
       default: false
-      description: >
-        Display Homogeneity tests
+      description: perform homogeneity tests
 
     - name: qq
       title: Q-Q plot of residuals
       type: Bool
       default: false
-      description: >
-        Display Q-Q plot of residuals
+      description: provide a Q-Q plot of residuals
 
     - name: etaSq
-      title: n2
+      title: η²
       type: Bool
       default: false
-      description: >
-        Effect size n2
+      description: provide η² (effect size)
 
     - name: etaSqP
-      title: partial n2
+      title: partial η²
       type: Bool
       default: false
-      description: >
-        Effect size partial n2
+      description: provide partial η² (effect size)
 
     - name: omegaSq
-      title: w2
+      title: ω²
       type: Bool
       default: false
-      description: >
-        Effect size w2
+      description: provide ω² (effect size)
 
     - name: plotError
       title: Error Bar Definition
@@ -171,8 +162,10 @@ options:
         - ci
         - se
       default: ci
-      description: >
-        Specifies the Error Bar definition as either "Confidence interval"(default) or "Standard Error"
+      description:
+          R: >
+            \code{'ci'} or \code{'se'} - use confidence intervals or standard
+            errors on the plot
 
     - name: ciWidth
       title: Confidence level
@@ -180,6 +173,8 @@ options:
       min: 50
       max: 99.9
       default: 95
+      description: >
+        value between 50 and 99.9 specifying the confidence interval width
 
     - name: ss
       title: Sum of squares
@@ -189,5 +184,5 @@ options:
         - '2'
         - '3'
       default: '3'
-      description: >
-        Sum of squares
+      description:
+          R: "'1', '2' or '3' - the sum of squares to use, defaults to type 3"

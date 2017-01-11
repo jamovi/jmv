@@ -323,6 +323,26 @@ ContTablesBase <- R6::R6Class(
 
 #' ContTables
 #'
+#' 
+#' @param data The data set as a data frame 
+#' @param rows The variables of interest 
+#' @param cols The variables of interest 
+#' @param counts The variables of interest 
+#' @param layers The variables of interest 
+#' @param chiSq The phi 
+#' @param chiSqCorr The 
+#' @param likeRat The 
+#' @param contCoef The Contingency coefficient 
+#' @param phiCra Phi and Cramer's V 
+#' @param logOdds .
+#' @param ciWidth .
+#' @param gamma .
+#' @param taub .
+#' @param obs .
+#' @param exp .
+#' @param pcRow .
+#' @param pcCol .
+#' @param pcTot .
 #' @export
 ContTables <- function(
     data,
