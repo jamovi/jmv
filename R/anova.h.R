@@ -5,8 +5,8 @@
 #' @importFrom jmvcore Options
 #' @importFrom R6 R6Class
 #' @export
-AnovaOptions <- R6::R6Class(
-    "AnovaOptions",
+anovaOptions <- R6::R6Class(
+    "anovaOptions",
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
@@ -34,7 +34,7 @@ AnovaOptions <- R6::R6Class(
 
             super$initialize(
                 package='jmv',
-                name='Anova',
+                name='anova',
                 requiresData=TRUE,
                 ...)
         
@@ -230,7 +230,7 @@ AnovaOptions <- R6::R6Class(
 
 #' @import jmvcore
 #' @importFrom R6 R6Class
-AnovaResults <- R6::R6Class(
+anovaResults <- R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         main = function() private$..main,
@@ -379,24 +379,24 @@ AnovaResults <- R6::R6Class(
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
-AnovaBase <- R6::R6Class(
-    "AnovaBase",
+anovaBase <- R6::R6Class(
+    "anovaBase",
     inherit = jmvcore::Analysis,
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
-                name = 'Anova',
+                name = 'anova',
                 version = c(1,0,0),
                 options = options,
-                results = AnovaResults$new(options=options),
+                results = anovaResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision)
         }))
 
-#' Anova
+#' ANOVA
 #'
 #' Analysis of Variance
 #'
@@ -432,7 +432,7 @@ AnovaBase <- R6::R6Class(
 #'   width 
 #' @param ss '1', '2' or '3' - the sum of squares to use, defaults to type 3
 #' @export
-Anova <- function(
+anova <- function(
     data,
     dependent,
     fixedFactors = NULL,
@@ -456,7 +456,7 @@ Anova <- function(
     ciWidth = 95,
     ss = "3") {
 
-    options <- AnovaOptions$new(
+    options <- anovaOptions$new(
         dependent = dependent,
         fixedFactors = fixedFactors,
         modelTerms = modelTerms,
@@ -479,10 +479,10 @@ Anova <- function(
         ciWidth = ciWidth,
         ss = ss)
 
-    results <- AnovaResults$new(
+    results <- anovaResults$new(
         options = options)
 
-    analysis <- AnovaClass$new(
+    analysis <- anovaClass$new(
         options = options,
         data = data)
 

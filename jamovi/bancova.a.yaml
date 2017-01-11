@@ -1,5 +1,5 @@
 ---
-name:    BAncova
+name:    bAncova
 title:   Bayesian ANCOVA
 
 menuGroup: ANOVA
@@ -12,8 +12,8 @@ engineType: R
 options:
     - name: data
       type: Data
-      description: >
-        The data set as a data frame
+      description:
+          R: the data as a data frame
 
     - name: vars
       type: Variables

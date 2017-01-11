@@ -1,18 +1,17 @@
 ---
-name: Reliability
+name: reliability
 title: Reliability Analysis
 
 menuGroup: Exploration
 
 version: "1.0.0"
-jmc: "1.0.0"
 engineType: R
 
 options:
     - name: data
       type: Data
-      description: >
-        The data set as a data frame
+      description:
+          R: the data as a data frame
 
     - name: vars
       title: Variables
@@ -25,8 +24,8 @@ options:
         - nominal
         - ordinal
       rejectInf: false
-      description: >
-        The variables of interest
+      description:
+          R: a vector of strings naming the variables of interest in \code{data}
 
     - name: alphaScale
       title: Cronbach's α

@@ -5,9 +5,9 @@
 #' @importFrom lsr etaSquared
 #' @importFrom multcomp adjusted mcp glht
 #' @export
-AnovaClass <- R6::R6Class(
-    "AnovaClass",
-    inherit=AnovaBase,
+anovaClass <- R6::R6Class(
+    "anovaClass",
+    inherit=anovaBase,
     private=list(
         .model=NA,
         .init=function() {

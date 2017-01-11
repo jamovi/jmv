@@ -4,9 +4,9 @@
 #' @importFrom ggplot2 ggplot
 #' @import GPArotation
 #' @export
-ReliabilityClass <- R6::R6Class(
-    "ReliabilityClass",
-    inherit = ReliabilityBase,
+reliabilityClass <- R6::R6Class(
+    "reliabilityClass",
+    inherit = reliabilityBase,
     private = list(
         .run = function() {
             

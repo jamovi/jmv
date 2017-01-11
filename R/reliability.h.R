@@ -5,8 +5,8 @@
 #' @importFrom jmvcore Options
 #' @importFrom R6 R6Class
 #' @export
-ReliabilityOptions <- R6::R6Class(
-    "ReliabilityOptions",
+reliabilityOptions <- R6::R6Class(
+    "reliabilityOptions",
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
@@ -24,7 +24,7 @@ ReliabilityOptions <- R6::R6Class(
 
             super$initialize(
                 package='jmv',
-                name='Reliability',
+                name='reliability',
                 requiresData=TRUE,
                 ...)
         
@@ -120,7 +120,7 @@ ReliabilityOptions <- R6::R6Class(
 
 #' @import jmvcore
 #' @importFrom R6 R6Class
-ReliabilityResults <- R6::R6Class(
+reliabilityResults <- R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         scale = function() private$..scale,
@@ -177,28 +177,29 @@ ReliabilityResults <- R6::R6Class(
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
-ReliabilityBase <- R6::R6Class(
-    "ReliabilityBase",
+reliabilityBase <- R6::R6Class(
+    "reliabilityBase",
     inherit = jmvcore::Analysis,
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
-                name = 'Reliability',
+                name = 'reliability',
                 version = c(1,0,0),
                 options = options,
-                results = ReliabilityResults$new(options=options),
+                results = reliabilityResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision)
         }))
 
-#' Reliability
+#' Reliability Analysis
 #'
 #' 
-#' @param data The data set as a data frame 
-#' @param vars The variables of interest 
+#' @param data the data as a data frame
+#' @param vars a vector of strings naming the variables of interest in 
+#'   \code{data}
 #' @param alphaScale .
 #' @param omegaScale .
 #' @param meanScale .
@@ -210,7 +211,7 @@ ReliabilityBase <- R6::R6Class(
 #' @param sdItems .
 #' @param itemRestCor .
 #' @export
-Reliability <- function(
+reliability <- function(
     data,
     vars,
     alphaScale = TRUE,
@@ -224,7 +225,7 @@ Reliability <- function(
     sdItems = FALSE,
     itemRestCor = FALSE) {
 
-    options <- ReliabilityOptions$new(
+    options <- reliabilityOptions$new(
         vars = vars,
         alphaScale = alphaScale,
         omegaScale = omegaScale,
@@ -237,10 +238,10 @@ Reliability <- function(
         sdItems = sdItems,
         itemRestCor = itemRestCor)
 
-    results <- ReliabilityResults$new(
+    results <- reliabilityResults$new(
         options = options)
 
-    analysis <- ReliabilityClass$new(
+    analysis <- reliabilityClass$new(
         options = options,
         data = data)
 

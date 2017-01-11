@@ -3,9 +3,9 @@
 #' @importFrom vcd assocstats loddsratio
 #' @importFrom vcdExtra GKgamma
 #' @export
-ContTablesClass <- R6::R6Class(
-  "ContTablesClass",
-  inherit=ContTablesBase,
+contTablesClass <- R6::R6Class(
+  "contTablesClass",
+  inherit=contTablesBase,
   private=list(
     .init=function() {
 

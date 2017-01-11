@@ -4,8 +4,9 @@
 #' @importFrom ggplot2 ggplot position_dodge
 #' @importFrom BayesFactor ttestBF extractBF
 #' @export
-TTestISClass <- R6::R6Class("TTestISClass",
-    inherit=TTestISBase,
+ttestISClass <- R6::R6Class(
+    "ttestISClass",
+    inherit=ttestISBase,
     private=list(
         .run=function() {
         

@@ -5,8 +5,8 @@
 #' @importFrom jmvcore Options
 #' @importFrom R6 R6Class
 #' @export
-AnovaRMOptions <- R6::R6Class(
-    "AnovaRMOptions",
+anovaRMOptions <- R6::R6Class(
+    "anovaRMOptions",
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
@@ -45,7 +45,7 @@ AnovaRMOptions <- R6::R6Class(
 
             super$initialize(
                 package='jmv',
-                name='AnovaRM',
+                name='anovaRM',
                 requiresData=TRUE,
                 ...)
         
@@ -327,7 +327,7 @@ AnovaRMOptions <- R6::R6Class(
 
 #' @import jmvcore
 #' @importFrom R6 R6Class
-AnovaRMResults <- R6::R6Class(
+anovaRMResults <- R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         rmTable = function() private$..rmTable,
@@ -524,27 +524,27 @@ AnovaRMResults <- R6::R6Class(
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
-AnovaRMBase <- R6::R6Class(
-    "AnovaRMBase",
+anovaRMBase <- R6::R6Class(
+    "anovaRMBase",
     inherit = jmvcore::Analysis,
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
-                name = 'AnovaRM',
+                name = 'anovaRM',
                 version = c(1,0,0),
                 options = options,
-                results = AnovaRMResults$new(options=options),
+                results = anovaRMResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision)
         }))
 
-#' AnovaRM
+#' Repeated Measures ANOVA
 #'
 #' 
-#' @param data The data set as a data frame 
+#' @param data the data as a data frame
 #' @param rm The Repeated Measures Factors 
 #' @param rmCells The Repeated Measures Cells 
 #' @param bs The Between Subject Factors 
@@ -576,7 +576,7 @@ AnovaRMBase <- R6::R6Class(
 #' @param partEffSizeN2 Effect size partial n2 
 #' @param effSizeW2 Effect size w2 
 #' @export
-AnovaRM <- function(
+anovaRM <- function(
     data,
     rm = list(
                 list(label="RM Factor 1", levels=list(
@@ -611,7 +611,7 @@ AnovaRM <- function(
     partEffSizeN2 = FALSE,
     effSizeW2 = FALSE) {
 
-    options <- AnovaRMOptions$new(
+    options <- anovaRMOptions$new(
         rm = rm,
         rmCells = rmCells,
         bs = bs,
@@ -642,10 +642,10 @@ AnovaRM <- function(
         partEffSizeN2 = partEffSizeN2,
         effSizeW2 = effSizeW2)
 
-    results <- AnovaRMResults$new(
+    results <- anovaRMResults$new(
         options = options)
 
-    analysis <- AnovaRMClass$new(
+    analysis <- anovaRMClass$new(
         options = options,
         data = data)
 

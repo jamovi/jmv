@@ -1,7 +1,6 @@
 ---
-name:  Anova
+name:  anova
 title: ANOVA
-jmc: "1.0.0"
 
 items:
     - name: main

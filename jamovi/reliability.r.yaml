@@ -1,7 +1,6 @@
 ---
-name: Reliability
+name: reliability
 title: Reliability Analysis
-api: 1
 
 items:
     - name: scale

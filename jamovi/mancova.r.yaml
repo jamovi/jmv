@@ -1,7 +1,6 @@
 ---
-name:  Mancova
+name:  mancova
 title: MANCOVA
-api: 1
 
 items:
     - name: table

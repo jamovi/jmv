@@ -1,5 +1,5 @@
 ---
-name:    AnovaRM
+name:    anovaRM
 title:   Repeated Measures ANOVA
 menuGroup: ANOVA
 version: "1.0.0"
@@ -8,8 +8,8 @@ jmc: "1.0.0"
 options:
     - name: data
       type: Data
-      description: >
-        The data set as a data frame
+      description:
+          R: the data as a data frame
 
     - name: rm
       title: Repeated Measures Factors

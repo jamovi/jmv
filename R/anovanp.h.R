@@ -5,8 +5,8 @@
 #' @importFrom jmvcore Options
 #' @importFrom R6 R6Class
 #' @export
-AnovaNPOptions <- R6::R6Class(
-    "AnovaNPOptions",
+anovaNPOptions <- R6::R6Class(
+    "anovaNPOptions",
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
@@ -16,7 +16,7 @@ AnovaNPOptions <- R6::R6Class(
 
             super$initialize(
                 package='jmv',
-                name='AnovaNP',
+                name='anovaNP',
                 requiresData=TRUE,
                 ...)
         
@@ -56,7 +56,7 @@ AnovaNPOptions <- R6::R6Class(
 
 #' @import jmvcore
 #' @importFrom R6 R6Class
-AnovaNPResults <- R6::R6Class(
+anovaNPResults <- R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         table = function() private$..table,
@@ -101,46 +101,47 @@ AnovaNPResults <- R6::R6Class(
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
-AnovaNPBase <- R6::R6Class(
-    "AnovaNPBase",
+anovaNPBase <- R6::R6Class(
+    "anovaNPBase",
     inherit = jmvcore::Analysis,
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
-                name = 'AnovaNP',
+                name = 'anovaNP',
                 version = c(1,0,0),
                 options = options,
-                results = AnovaNPResults$new(options=options),
+                results = anovaNPResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision)
         }))
 
-#' AnovaNP
+#' One Way ANOVA (Non-parametric)
 #'
 #' 
-#' @param data The data set as a data frame 
-#' @param deps The dependent variables 
-#' @param group The independent, or grouping variable 
+#' @param data the data as a data frame
+#' @param deps a string naming the dependent variable in \code{data}
+#' @param group a string naming the grouping or independent variable in 
+#'   \code{data}
 #' @param pairs Pairwise Comparisons 
 #' @export
-AnovaNP <- function(
+anovaNP <- function(
     data,
     deps,
     group,
     pairs = FALSE) {
 
-    options <- AnovaNPOptions$new(
+    options <- anovaNPOptions$new(
         deps = deps,
         group = group,
         pairs = pairs)
 
-    results <- AnovaNPResults$new(
+    results <- anovaNPResults$new(
         options = options)
 
-    analysis <- AnovaNPClass$new(
+    analysis <- anovaNPClass$new(
         options = options,
         data = data)
 

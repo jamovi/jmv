@@ -2,8 +2,9 @@
 #' @rdname jamovi
 #' @importFrom ggplot2 ggplot position_dodge
 #' @export
-TTestPSClass <- R6::R6Class("TTestPSClass",
-    inherit=TTestPSBase,
+ttestPSClass <- R6::R6Class(
+    "ttestPSClass",
+    inherit=ttestPSBase,
     private=list(
         .run=function() {
             

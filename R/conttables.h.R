@@ -5,8 +5,8 @@
 #' @importFrom jmvcore Options
 #' @importFrom R6 R6Class
 #' @export
-ContTablesOptions <- R6::R6Class(
-    "ContTablesOptions",
+contTablesOptions <- R6::R6Class(
+    "contTablesOptions",
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
@@ -31,7 +31,7 @@ ContTablesOptions <- R6::R6Class(
 
             super$initialize(
                 package='jmv',
-                name='ContTables',
+                name='contTables',
                 requiresData=TRUE,
                 ...)
         
@@ -181,7 +181,7 @@ ContTablesOptions <- R6::R6Class(
 
 #' @import jmvcore
 #' @importFrom R6 R6Class
-ContTablesResults <- R6::R6Class(
+contTablesResults <- R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         freqs = function() private$..freqs,
@@ -304,27 +304,27 @@ ContTablesResults <- R6::R6Class(
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
-ContTablesBase <- R6::R6Class(
-    "ContTablesBase",
+contTablesBase <- R6::R6Class(
+    "contTablesBase",
     inherit = jmvcore::Analysis,
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
-                name = 'ContTables',
+                name = 'contTables',
                 version = c(1,0,0),
                 options = options,
-                results = ContTablesResults$new(options=options),
+                results = contTablesResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision)
         }))
 
-#' ContTables
+#' Contingency Tables
 #'
 #' 
-#' @param data The data set as a data frame 
+#' @param data the data as a data frame
 #' @param rows The variables of interest 
 #' @param cols The variables of interest 
 #' @param counts The variables of interest 
@@ -344,7 +344,7 @@ ContTablesBase <- R6::R6Class(
 #' @param pcCol .
 #' @param pcTot .
 #' @export
-ContTables <- function(
+contTables <- function(
     data,
     rows,
     cols,
@@ -365,7 +365,7 @@ ContTables <- function(
     pcCol = FALSE,
     pcTot = FALSE) {
 
-    options <- ContTablesOptions$new(
+    options <- contTablesOptions$new(
         rows = rows,
         cols = cols,
         counts = counts,
@@ -385,10 +385,10 @@ ContTables <- function(
         pcCol = pcCol,
         pcTot = pcTot)
 
-    results <- ContTablesResults$new(
+    results <- contTablesResults$new(
         options = options)
 
-    analysis <- ContTablesClass$new(
+    analysis <- contTablesClass$new(
         options = options,
         data = data)
 

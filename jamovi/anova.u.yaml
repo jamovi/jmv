@@ -1,5 +1,5 @@
-name: Ancova
-title: ANCOVA
+name: anova
+title: ANOVA
 jus: '1.0'
 update: './anova.events::update'
 children:

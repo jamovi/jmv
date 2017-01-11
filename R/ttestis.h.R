@@ -5,8 +5,8 @@
 #' @importFrom jmvcore Options
 #' @importFrom R6 R6Class
 #' @export
-TTestISOptions <- R6::R6Class(
-    "TTestISOptions",
+ttestISOptions <- R6::R6Class(
+    "ttestISOptions",
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
@@ -30,7 +30,7 @@ TTestISOptions <- R6::R6Class(
 
             super$initialize(
                 package='jmv',
-                name='TTestIS',
+                name='ttestIS',
                 requiresData=TRUE,
                 ...)
         
@@ -180,7 +180,7 @@ TTestISOptions <- R6::R6Class(
 
 #' @import jmvcore
 #' @importFrom R6 R6Class
-TTestISResults <- R6::R6Class(
+ttestISResults <- R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         ttest = function() private$..ttest,
@@ -324,28 +324,29 @@ TTestISResults <- R6::R6Class(
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
-TTestISBase <- R6::R6Class(
-    "TTestISBase",
+ttestISBase <- R6::R6Class(
+    "ttestISBase",
     inherit = jmvcore::Analysis,
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
-                name = 'TTestIS',
+                name = 'ttestIS',
                 version = c(1,0,0),
                 options = options,
-                results = TTestISResults$new(options=options),
+                results = ttestISResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision)
         }))
 
-#' TTestIS
+#' Independent Samples T-Test
 #'
 #' 
-#' @param data The data set as a data frame 
-#' @param vars The variables of interest 
+#' @param data the data as a data frame
+#' @param vars a vector of strings naming the variables of interest in 
+#'   \code{data}
 #' @param group The grouping variable 
 #' @param students .
 #' @param bf .
@@ -366,7 +367,7 @@ TTestISBase <- R6::R6Class(
 #'   excludes missing values for individual dependent variables, "listwise" 
 #'   excludes an entire observation if one of its entries is missing. 
 #' @export
-TTestIS <- function(
+ttestIS <- function(
     data,
     vars,
     group,
@@ -386,7 +387,7 @@ TTestIS <- function(
     plots = FALSE,
     miss = "perAnalysis") {
 
-    options <- TTestISOptions$new(
+    options <- ttestISOptions$new(
         vars = vars,
         group = group,
         students = students,
@@ -405,10 +406,10 @@ TTestIS <- function(
         plots = plots,
         miss = miss)
 
-    results <- TTestISResults$new(
+    results <- ttestISResults$new(
         options = options)
 
-    analysis <- TTestISClass$new(
+    analysis <- ttestISClass$new(
         options = options,
         data = data)
 

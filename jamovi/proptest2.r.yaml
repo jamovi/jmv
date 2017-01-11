@@ -1,7 +1,6 @@
 ---
-name:  PropTest2
+name:  propTest2
 title: Proportion Test (2 Outcomes)
-jmc: "1.0.0"
 
 items:
     - name: table

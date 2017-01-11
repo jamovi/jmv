@@ -5,8 +5,8 @@
 #' @importFrom jmvcore Options
 #' @importFrom R6 R6Class
 #' @export
-ContTablesPairedOptions <- R6::R6Class(
-    "ContTablesPairedOptions",
+contTablesPairedOptions <- R6::R6Class(
+    "contTablesPairedOptions",
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
@@ -18,7 +18,7 @@ ContTablesPairedOptions <- R6::R6Class(
 
             super$initialize(
                 package='jmv',
-                name='ContTablesPaired',
+                name='contTablesPaired',
                 requiresData=TRUE,
                 ...)
         
@@ -75,7 +75,7 @@ ContTablesPairedOptions <- R6::R6Class(
 
 #' @import jmvcore
 #' @importFrom R6 R6Class
-ContTablesPairedResults <- R6::R6Class(
+contTablesPairedResults <- R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         freqs = function() private$..freqs,
@@ -117,24 +117,24 @@ ContTablesPairedResults <- R6::R6Class(
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
-ContTablesPairedBase <- R6::R6Class(
-    "ContTablesPairedBase",
+contTablesPairedBase <- R6::R6Class(
+    "contTablesPairedBase",
     inherit = jmvcore::Analysis,
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
-                name = 'ContTablesPaired',
+                name = 'contTablesPaired',
                 version = c(1,0,0),
                 options = options,
-                results = ContTablesPairedResults$new(options=options),
+                results = contTablesPairedResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision)
         }))
 
-#' ContTablesPaired
+#' Paired Samples Contingency Tables
 #'
 #' 
 #' @param data The data set as a data frame 
@@ -144,7 +144,7 @@ ContTablesPairedBase <- R6::R6Class(
 #' @param pcRow .
 #' @param pcCol .
 #' @export
-ContTablesPaired <- function(
+contTablesPaired <- function(
     data,
     rows,
     cols,
@@ -152,17 +152,17 @@ ContTablesPaired <- function(
     pcRow = FALSE,
     pcCol = FALSE) {
 
-    options <- ContTablesPairedOptions$new(
+    options <- contTablesPairedOptions$new(
         rows = rows,
         cols = cols,
         counts = counts,
         pcRow = pcRow,
         pcCol = pcCol)
 
-    results <- ContTablesPairedResults$new(
+    results <- contTablesPairedResults$new(
         options = options)
 
-    analysis <- ContTablesPairedClass$new(
+    analysis <- contTablesPairedClass$new(
         options = options,
         data = data)
 

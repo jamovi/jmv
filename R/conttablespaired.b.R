@@ -1,9 +1,9 @@
 
 #' @rdname jamovi
 #' @export
-ContTablesPairedClass <- R6::R6Class(
-    "ContTablesPairedClass",
-    inherit = ContTablesPairedBase,
+contTablesPairedClass <- R6::R6Class(
+    "contTablesPairedClass",
+    inherit = contTablesPairedBase,
     private = list(
         .run = function() {
 

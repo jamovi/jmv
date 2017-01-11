@@ -1,7 +1,6 @@
 ---
-name: TTestOneS
+name: ttestOneS
 title: One Sample T-Test
-api: 1
 
 items:
     - name: ttest

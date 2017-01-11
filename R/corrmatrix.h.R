@@ -5,8 +5,8 @@
 #' @importFrom jmvcore Options
 #' @importFrom R6 R6Class
 #' @export
-CorrMatrixOptions <- R6::R6Class(
-    "CorrMatrixOptions",
+corrMatrixOptions <- R6::R6Class(
+    "corrMatrixOptions",
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
@@ -25,7 +25,7 @@ CorrMatrixOptions <- R6::R6Class(
 
             super$initialize(
                 package='jmv',
-                name='CorrMatrix',
+                name='corrMatrix',
                 requiresData=TRUE,
                 ...)
         
@@ -133,7 +133,7 @@ CorrMatrixOptions <- R6::R6Class(
 
 #' @import jmvcore
 #' @importFrom R6 R6Class
-CorrMatrixResults <- R6::R6Class(
+corrMatrixResults <- R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         matrix = function() private$..matrix,
@@ -180,28 +180,29 @@ CorrMatrixResults <- R6::R6Class(
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
-CorrMatrixBase <- R6::R6Class(
-    "CorrMatrixBase",
+corrMatrixBase <- R6::R6Class(
+    "corrMatrixBase",
     inherit = jmvcore::Analysis,
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
-                name = 'CorrMatrix',
+                name = 'corrMatrix',
                 version = c(1,0,0),
                 options = options,
-                results = CorrMatrixResults$new(options=options),
+                results = corrMatrixResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision)
         }))
 
-#' CorrMatrix
+#' Correlation Matrix
 #'
 #' 
-#' @param data The data set as a data frame 
-#' @param vars The variables of interest 
+#' @param data the data as a data frame
+#' @param vars a vector of strings naming the variables to correlate in 
+#'   \code{data} 
 #' @param pearson The pearson 
 #' @param spearman The spearman 
 #' @param kendall The Kendall's tau-b 
@@ -214,7 +215,7 @@ CorrMatrixBase <- R6::R6Class(
 #' @param plotStats .
 #' @param hypothesis Stuff 
 #' @export
-CorrMatrix <- function(
+corrMatrix <- function(
     data,
     vars,
     pearson = TRUE,
@@ -229,7 +230,7 @@ CorrMatrix <- function(
     plotStats = FALSE,
     hypothesis = "corr") {
 
-    options <- CorrMatrixOptions$new(
+    options <- corrMatrixOptions$new(
         vars = vars,
         pearson = pearson,
         spearman = spearman,
@@ -243,10 +244,10 @@ CorrMatrix <- function(
         plotStats = plotStats,
         hypothesis = hypothesis)
 
-    results <- CorrMatrixResults$new(
+    results <- corrMatrixResults$new(
         options = options)
 
-    analysis <- CorrMatrixClass$new(
+    analysis <- corrMatrixClass$new(
         options = options,
         data = data)
 

@@ -1,7 +1,6 @@
 ---
-name: TTestPS
+name: ttestPS
 title: Paired Samples T-Test
-api: 1
 
 items:
     - name: ttest

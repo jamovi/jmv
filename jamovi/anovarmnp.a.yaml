@@ -1,5 +1,5 @@
 ---
-name: AnovaRMNP
+name: anovaRMNP
 title: Repeated Measures ANOVA (Non-parametric)
 
 menuGroup: ANOVA
@@ -14,8 +14,8 @@ engineType: R
 options:
     - name: data
       type: Data
-      description: >
-        The data set as a data frame
+      description:
+          R: the data as a data frame
 
     - name: measures
       title: Measures
@@ -26,8 +26,6 @@ options:
         - continuous
         - nominal
         - ordinal
-      description: >
-        The variables of interest
 
     - name: pairs
       title: Pairwise comparisons - Durbin-Conover

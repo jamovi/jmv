@@ -1,5 +1,5 @@
 ---
-name: PropTest2
+name: propTest2
 title: Proportion Test (2 Outcomes)
 
 menuGroup: Frequencies
@@ -8,14 +8,13 @@ menuTitle: 2 Outcomes
 menuSubtitle: Binomial test
 
 version: "1.0.0"
-jmc: "1.0.0"
 engineType: R
 
 options:
     - name: data
       type: Data
-      description: >
-        The data set as a data frame
+      description:
+          R: the data as a data frame
 
     - name: vars
       title: Variables
@@ -23,8 +22,8 @@ options:
       suggested:
         - nominal
         - ordinal
-      description: >
-        The variables of interest
+      description:
+          R: a vector of strings naming the variables of interest in \code{data}
 
     - name: areCounts
       type: Bool

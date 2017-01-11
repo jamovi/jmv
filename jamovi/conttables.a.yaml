@@ -1,5 +1,5 @@
 ---
-name: ContTables
+name: contTables
 title: Contingency Tables
 
 menuGroup: Frequencies
@@ -8,14 +8,13 @@ menuTitle: Independent Samples
 menuSubtitle: χ² test of association
 
 version: "1.0.0"
-jmc: "1.0.0"
 engineType: R
 
 options:
     - name: data
       type: Data
-      description: >
-        The data set as a data frame
+      description:
+          R: the data as a data frame
 
     - name: rows
       title: Rows

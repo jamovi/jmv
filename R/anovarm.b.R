@@ -3,9 +3,9 @@
 #' @importFrom afex aov_car
 #' @importFrom ggplot2 ggplot position_dodge
 #' @export
-AnovaRMClass <- R6::R6Class(
-    "AnovaRMClass",
-    inherit=AnovaRMBase,
+anovaRMClass <- R6::R6Class(
+    "anovaRMClass",
+    inherit=anovaRMBase,
     private=list(
         .model=NA,
         .init=function() {

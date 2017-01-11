@@ -5,8 +5,8 @@
 #' @importFrom jmvcore Options
 #' @importFrom R6 R6Class
 #' @export
-AnovaRMNPOptions <- R6::R6Class(
-    "AnovaRMNPOptions",
+anovaRMNPOptions <- R6::R6Class(
+    "anovaRMNPOptions",
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
@@ -18,7 +18,7 @@ AnovaRMNPOptions <- R6::R6Class(
 
             super$initialize(
                 package='jmv',
-                name='AnovaRMNP',
+                name='anovaRMNP',
                 requiresData=TRUE,
                 ...)
         
@@ -73,7 +73,7 @@ AnovaRMNPOptions <- R6::R6Class(
 
 #' @import jmvcore
 #' @importFrom R6 R6Class
-AnovaRMNPResults <- R6::R6Class(
+anovaRMNPResults <- R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         table = function() private$..table,
@@ -123,34 +123,34 @@ AnovaRMNPResults <- R6::R6Class(
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
-AnovaRMNPBase <- R6::R6Class(
-    "AnovaRMNPBase",
+anovaRMNPBase <- R6::R6Class(
+    "anovaRMNPBase",
     inherit = jmvcore::Analysis,
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
-                name = 'AnovaRMNP',
+                name = 'anovaRMNP',
                 version = c(1,0,0),
                 options = options,
-                results = AnovaRMNPResults$new(options=options),
+                results = anovaRMNPResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision)
         }))
 
-#' AnovaRMNP
+#' Repeated Measures ANOVA (Non-parametric)
 #'
 #' 
-#' @param data The data set as a data frame 
-#' @param measures The variables of interest 
+#' @param data the data as a data frame
+#' @param measures .
 #' @param pairs .
 #' @param desc .
 #' @param plots .
 #' @param plotType stuff 
 #' @export
-AnovaRMNP <- function(
+anovaRMNP <- function(
     data,
     measures,
     pairs = FALSE,
@@ -158,17 +158,17 @@ AnovaRMNP <- function(
     plots = FALSE,
     plotType = "means") {
 
-    options <- AnovaRMNPOptions$new(
+    options <- anovaRMNPOptions$new(
         measures = measures,
         pairs = pairs,
         desc = desc,
         plots = plots,
         plotType = plotType)
 
-    results <- AnovaRMNPResults$new(
+    results <- anovaRMNPResults$new(
         options = options)
 
-    analysis <- AnovaRMNPClass$new(
+    analysis <- anovaRMNPClass$new(
         options = options,
         data = data)
 

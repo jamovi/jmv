@@ -1,5 +1,5 @@
 ---
-name: PropTestN
+name: propTestN
 title: Proportion Test (N Outcomes)
 
 menuGroup: Frequencies
@@ -14,14 +14,14 @@ engineType: R
 options:
     - name: data
       type: Data
-      description: >
-        The data set as a data frame
+      description:
+          R: the data as a data frame
 
     - name: var
       title: Variable
       type: Variable
-      description: >
-        The variable of interest
+      description:
+          R: a string naming the variable of interest in \code{data}
 
     - name: counts
       title: Counts (optional)

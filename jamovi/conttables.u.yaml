@@ -1,4 +1,4 @@
-name: ContTables
+name: contTables
 title: Contingency Tables
 jus: '1.0'
 update: ui.ciWidth.setEnabled(ui.logOdds.value());

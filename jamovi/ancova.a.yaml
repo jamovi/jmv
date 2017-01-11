@@ -1,15 +1,14 @@
 ---
-name: Ancova
+name: ancova
 title: ANCOVA
 menuGroup: ANOVA
 version: "1.0.0"
-jmc: "1.0.0"
 
 options:
     - name: data
       type: Data
-      description: >
-        The data set as a data frame
+      description:
+          R: the data as a data frame
 
     - name: dependent
       title: Dependent
@@ -20,8 +19,8 @@ options:
         - continuous
         - nominal
         - ordinal
-      description: >
-        The dependent variable
+      description:
+          R: a string naming the dependent variable in \code{data}
 
     - name: fixedFactors
       title: Fixed factors

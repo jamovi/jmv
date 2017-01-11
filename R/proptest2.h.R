@@ -5,8 +5,8 @@
 #' @importFrom jmvcore Options
 #' @importFrom R6 R6Class
 #' @export
-PropTest2Options <- R6::R6Class(
-    "PropTest2Options",
+propTest2Options <- R6::R6Class(
+    "propTest2Options",
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
@@ -19,7 +19,7 @@ PropTest2Options <- R6::R6Class(
 
             super$initialize(
                 package='jmv',
-                name='PropTest2',
+                name='propTest2',
                 requiresData=TRUE,
                 ...)
         
@@ -79,7 +79,7 @@ PropTest2Options <- R6::R6Class(
 
 #' @import jmvcore
 #' @importFrom R6 R6Class
-PropTest2Results <- R6::R6Class(
+propTest2Results <- R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         table = function() private$..table),
@@ -110,35 +110,36 @@ PropTest2Results <- R6::R6Class(
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
-PropTest2Base <- R6::R6Class(
-    "PropTest2Base",
+propTest2Base <- R6::R6Class(
+    "propTest2Base",
     inherit = jmvcore::Analysis,
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
-                name = 'PropTest2',
+                name = 'propTest2',
                 version = c(1,0,0),
                 options = options,
-                results = PropTest2Results$new(options=options),
+                results = propTest2Results$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision)
         }))
 
-#' PropTest2
+#' Proportion Test (2 Outcomes)
 #'
 #' 
-#' @param data The data set as a data frame 
-#' @param vars The variables of interest 
+#' @param data the data as a data frame
+#' @param vars a vector of strings naming the variables of interest in 
+#'   \code{data}
 #' @param areCounts .
 #' @param testValue The test value 
 #' @param hypothesis Stuff 
 #' @param ci .
 #' @param ciWidth .
 #' @export
-PropTest2 <- function(
+propTest2 <- function(
     data,
     vars,
     areCounts = FALSE,
@@ -147,7 +148,7 @@ PropTest2 <- function(
     ci = FALSE,
     ciWidth = 95) {
 
-    options <- PropTest2Options$new(
+    options <- propTest2Options$new(
         vars = vars,
         areCounts = areCounts,
         testValue = testValue,
@@ -155,10 +156,10 @@ PropTest2 <- function(
         ci = ci,
         ciWidth = ciWidth)
 
-    results <- PropTest2Results$new(
+    results <- propTest2Results$new(
         options = options)
 
-    analysis <- PropTest2Class$new(
+    analysis <- propTest2Class$new(
         options = options,
         data = data)
 

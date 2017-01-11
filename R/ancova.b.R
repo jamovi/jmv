@@ -3,9 +3,9 @@
 
 #' @rdname jamovi
 #' @export
-AncovaClass <- R6::R6Class(
-    "AncovaClass",
-    inherit = AncovaBase,
+ancovaClass <- R6::R6Class(
+    "ancovaClass",
+    inherit = ancovaBase,
     private = list(
         .run = function() {
 

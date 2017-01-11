@@ -1,7 +1,6 @@
 ---
-name:  ContTablesPaired
+name:  contTablesPaired
 title: Paired Samples Contingency Tables
-api: 1
 
 items:
     - name: freqs

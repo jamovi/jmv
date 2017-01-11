@@ -1,9 +1,9 @@
 
 #' @rdname jamovi
 #' @export
-AnovaNPClass <- R6::R6Class(
-    "AnovaNPClass",
-    inherit=AnovaNPBase,
+anovaNPClass <- R6::R6Class(
+    "anovaNPClass",
+    inherit=anovaNPBase,
     private=list(
         .run=function() {
             deps  <- self$options$get('deps')

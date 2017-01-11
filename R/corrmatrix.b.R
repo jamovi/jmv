@@ -2,9 +2,9 @@
 #' @rdname jamovi
 #' @importFrom GGally wrap ggally_smooth ggpairs
 #' @export
-CorrMatrixClass <- R6::R6Class(
-  "CorrMatrixClass",
-  inherit=CorrMatrixBase,
+corrMatrixClass <- R6::R6Class(
+  "corrMatrixClass",
+  inherit=corrMatrixBase,
   private=list(
     .init=function() {
         matrix <- self$results$get('matrix')

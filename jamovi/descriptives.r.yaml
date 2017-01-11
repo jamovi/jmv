@@ -1,7 +1,6 @@
 ---
-name: Descriptives
+name: descriptives
 title: Descriptives
-api: 1
 
 items:
     - name: descriptives

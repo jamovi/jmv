@@ -16,62 +16,62 @@ description: >-
 jmc: 1.0.0
 analyses:
   - title: Descriptives
-    name: Descriptives
+    name: descriptives
     ns: jmv
     menuGroup: Exploration
     menuTitle: Descriptives
     description: null
   - title: Reliability Analysis
-    name: Reliability
+    name: reliability
     ns: jmv
     menuGroup: Exploration
     menuTitle: Reliability Analysis
     description: null
   - title: Independent Samples T-Test
-    name: TTestIS
+    name: ttestIS
     ns: jmv
     menuGroup: T-Tests
     menuTitle: Independent Samples T-Test
     description: null
   - title: Paired Samples T-Test
-    name: TTestPS
+    name: ttestPS
     ns: jmv
     menuGroup: T-Tests
     menuTitle: Paired Samples T-Test
     description: null
   - title: One Sample T-Test
-    name: TTestOneS
+    name: ttestOneS
     ns: jmv
     menuGroup: T-Tests
     menuTitle: One Sample T-Test
     description: null
   - title: ANOVA
-    name: Anova
+    name: anova
     ns: jmv
     menuGroup: ANOVA
     menuTitle: ANOVA
     description: |
       Analysis of Variance
   - title: Repeated Measures ANOVA
-    name: AnovaRM
+    name: anovaRM
     ns: jmv
     menuGroup: ANOVA
     menuTitle: Repeated Measures ANOVA
     description: null
   - title: ANCOVA
-    name: Ancova
+    name: ancova
     ns: jmv
     menuGroup: ANOVA
     menuTitle: ANCOVA
     description: null
   - title: MANCOVA
-    name: Mancova
+    name: mancova
     ns: jmv
     menuGroup: ANOVA
     menuTitle: MANCOVA
     description: null
   - title: One Way ANOVA (Non-parametric)
-    name: AnovaNP
+    name: anovaNP
     ns: jmv
     menuGroup: ANOVA
     menuSubgroup: Non-Parametric
@@ -79,7 +79,7 @@ analyses:
     menuSubtitle: Kruskal-Wallis
     description: null
   - title: Repeated Measures ANOVA (Non-parametric)
-    name: AnovaRMNP
+    name: anovaRMNP
     ns: jmv
     menuGroup: ANOVA
     menuSubgroup: Non-Parametric
@@ -87,19 +87,19 @@ analyses:
     menuSubtitle: Friedman
     description: null
   - title: Correlation Matrix
-    name: CorrMatrix
+    name: corrMatrix
     menuGroup: Regression
     menuTitle: Correlation Matrix
     ns: jmv
     description: null
   - title: Linear Regression
-    name: LinReg
+    name: linReg
     ns: jmv
     menuGroup: Regression
     menuTitle: Linear Regression
     description: null
   - title: Proportion Test (2 Outcomes)
-    name: PropTest2
+    name: propTest2
     ns: jmv
     menuGroup: Frequencies
     menuSubgroup: One Sample Proportion Tests
@@ -107,7 +107,7 @@ analyses:
     menuSubtitle: Binomial test
     description: null
   - title: Proportion Test (N Outcomes)
-    name: PropTestN
+    name: propTestN
     ns: jmv
     menuGroup: Frequencies
     menuSubgroup: One Sample Proportion Tests
@@ -115,7 +115,7 @@ analyses:
     menuSubtitle: χ² Goodness of fit
     description: null
   - title: Contingency Tables
-    name: ContTables
+    name: contTables
     ns: jmv
     menuGroup: Frequencies
     menuSubgroup: Contingency Tables
@@ -123,7 +123,7 @@ analyses:
     menuSubtitle: χ² test of association
     description: null
   - title: Paired Samples Contingency Tables
-    name: ContTablesPaired
+    name: contTablesPaired
     ns: jmv
     menuGroup: Frequencies
     menuSubgroup: Contingency Tables
@@ -131,27 +131,27 @@ analyses:
     menuSubtitle: McNemar test
     description: null
   - title: Log-Linear Regression
-    name: LogLinear
+    name: logLinear
     ns: jmv
     menuGroup: Frequencies
     menuTitle: Log-Linear Regression
     description: null
   - title: Bayesian ANOVA
-    name: BAnova
+    name: bAnova
     ns: jmv
     menuGroup: ANOVA
     menuTitle: Bayesian ANOVA
     menuSubgroup: Bayesian
     hidden: true
   - title: Bayesian Repeated Measures ANOVA
-    name: BRMAnova
+    name: bAnovaRM
     ns: jmv
     menuGroup: ANOVA
     menuTitle: Bayesian Repeated Measures ANOVA
     menuSubgroup: Bayesian
     hidden: true
   - title: Bayesian ANCOVA
-    name: BAncova
+    name: bAncova
     ns: jmv
     menuGroup: ANOVA
     menuTitle: Bayesian ANCOVA

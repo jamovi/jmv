@@ -2,8 +2,9 @@
 #' @rdname jamovi
 #' @importFrom ggplot2 ggplot position_dodge
 #' @export
-DescriptivesClass <- R6::R6Class("DescriptivesClass",
-    inherit=DescriptivesBase,
+descriptivesClass <- R6::R6Class(
+    "descriptivesClass",
+    inherit=descriptivesBase,
     private=list(
         .run=function() {
             

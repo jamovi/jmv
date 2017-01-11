@@ -5,8 +5,8 @@
 #' @importFrom jmvcore Options
 #' @importFrom R6 R6Class
 #' @export
-DescriptivesOptions <- R6::R6Class(
-    "DescriptivesOptions",
+descriptivesOptions <- R6::R6Class(
+    "descriptivesOptions",
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
@@ -33,7 +33,7 @@ DescriptivesOptions <- R6::R6Class(
 
             super$initialize(
                 package='jmv',
-                name='Descriptives',
+                name='descriptives',
                 requiresData=TRUE,
                 ...)
         
@@ -184,7 +184,7 @@ DescriptivesOptions <- R6::R6Class(
 
 #' @import jmvcore
 #' @importFrom R6 R6Class
-DescriptivesResults <- R6::R6Class(
+descriptivesResults <- R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         descriptives = function() private$..descriptives,
@@ -255,17 +255,17 @@ DescriptivesResults <- R6::R6Class(
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
-DescriptivesBase <- R6::R6Class(
-    "DescriptivesBase",
+descriptivesBase <- R6::R6Class(
+    "descriptivesBase",
     inherit = jmvcore::Analysis,
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
-                name = 'Descriptives',
+                name = 'descriptives',
                 version = c(1,0,0),
                 options = options,
-                results = DescriptivesResults$new(options=options),
+                results = descriptivesResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
@@ -275,8 +275,9 @@ DescriptivesBase <- R6::R6Class(
 #' Descriptives
 #'
 #' 
-#' @param data The data set as a data frame 
-#' @param vars The variables of interest 
+#' @param data the data as a data frame
+#' @param vars a vector of strings naming the variables of interest in 
+#'   \code{data}
 #' @param mean The mean of the variables 
 #' @param median The median of the variables 
 #' @param mode .
@@ -297,7 +298,7 @@ DescriptivesBase <- R6::R6Class(
 #' @param pcEqGr .
 #' @param pcNEqGr .
 #' @export
-Descriptives <- function(
+descriptives <- function(
     data,
     vars,
     mean = TRUE,
@@ -320,7 +321,7 @@ Descriptives <- function(
     pcEqGr = FALSE,
     pcNEqGr = 4) {
 
-    options <- DescriptivesOptions$new(
+    options <- descriptivesOptions$new(
         vars = vars,
         mean = mean,
         median = median,
@@ -342,10 +343,10 @@ Descriptives <- function(
         pcEqGr = pcEqGr,
         pcNEqGr = pcNEqGr)
 
-    results <- DescriptivesResults$new(
+    results <- descriptivesResults$new(
         options = options)
 
-    analysis <- DescriptivesClass$new(
+    analysis <- descriptivesClass$new(
         options = options,
         data = data)
 

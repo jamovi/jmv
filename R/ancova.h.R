@@ -5,8 +5,8 @@
 #' @importFrom jmvcore Options
 #' @importFrom R6 R6Class
 #' @export
-AncovaOptions <- R6::R6Class(
-    "AncovaOptions",
+ancovaOptions <- R6::R6Class(
+    "ancovaOptions",
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
@@ -37,7 +37,7 @@ AncovaOptions <- R6::R6Class(
 
             super$initialize(
                 package='jmv',
-                name='Ancova',
+                name='ancova',
                 requiresData=TRUE,
                 ...)
         
@@ -266,7 +266,7 @@ AncovaOptions <- R6::R6Class(
 
 #' @import jmvcore
 #' @importFrom R6 R6Class
-AncovaResults <- R6::R6Class(
+ancovaResults <- R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         main = function() private$..main,
@@ -428,28 +428,28 @@ AncovaResults <- R6::R6Class(
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
-AncovaBase <- R6::R6Class(
-    "AncovaBase",
+ancovaBase <- R6::R6Class(
+    "ancovaBase",
     inherit = jmvcore::Analysis,
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
-                name = 'Ancova',
+                name = 'ancova',
                 version = c(1,0,0),
                 options = options,
-                results = AncovaResults$new(options=options),
+                results = ancovaResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision)
         }))
 
-#' Ancova
+#' ANCOVA
 #'
 #' 
-#' @param data The data set as a data frame 
-#' @param dependent The dependent variable 
+#' @param data the data as a data frame
+#' @param dependent a string naming the dependent variable in \code{data}
 #' @param fixedFactors The fixed factors 
 #' @param covariates The covariates 
 #' @param modelTerms The model terms 
@@ -475,7 +475,7 @@ AncovaBase <- R6::R6Class(
 #' @param ciWidth .
 #' @param ss Sum of squares 
 #' @export
-Ancova <- function(
+ancova <- function(
     data,
     dependent,
     fixedFactors = NULL,
@@ -502,7 +502,7 @@ Ancova <- function(
     ciWidth = 95,
     ss = "3") {
 
-    options <- AncovaOptions$new(
+    options <- ancovaOptions$new(
         dependent = dependent,
         fixedFactors = fixedFactors,
         covariates = covariates,
@@ -528,10 +528,10 @@ Ancova <- function(
         ciWidth = ciWidth,
         ss = ss)
 
-    results <- AncovaResults$new(
+    results <- ancovaResults$new(
         options = options)
 
-    analysis <- AncovaClass$new(
+    analysis <- ancovaClass$new(
         options = options,
         data = data)
 

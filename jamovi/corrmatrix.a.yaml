@@ -1,16 +1,16 @@
 ---
-name:    CorrMatrix
+name:    corrMatrix
 title:   Correlation Matrix
 menuGroup: Regression
 version: "1.0.0"
-jmc: "1.0.0"
+jas: '1.0'
 engineType: R
 
 options:
     - name: data
       type: Data
-      description: >
-        The data set as a data frame
+      description:
+          R: the data as a data frame
 
     - name: vars
       title: Variables
@@ -22,8 +22,9 @@ options:
         - continuous
         - ordinal
         - nominal
-      description: >
-        The variables of interest
+      description:
+          R: >
+            a vector of strings naming the variables to correlate in \code{data}
 
     - name: pearson
       title: Pearson

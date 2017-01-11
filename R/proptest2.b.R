@@ -1,9 +1,9 @@
 
 #' @rdname jamovi
 #' @export
-PropTest2Class <- R6::R6Class(
-    "PropTest2Class",
-    inherit = PropTest2Base,
+propTest2Class <- R6::R6Class(
+    "propTest2Class",
+    inherit = propTest2Base,
     private = list(
         .run = function() {
 

@@ -5,8 +5,8 @@
 #' @importFrom jmvcore Options
 #' @importFrom R6 R6Class
 #' @export
-TTestPSOptions <- R6::R6Class(
-    "TTestPSOptions",
+ttestPSOptions <- R6::R6Class(
+    "ttestPSOptions",
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
@@ -27,7 +27,7 @@ TTestPSOptions <- R6::R6Class(
 
             super$initialize(
                 package='jmv',
-                name='TTestPS',
+                name='ttestPS',
                 requiresData=TRUE,
                 ...)
         
@@ -153,7 +153,7 @@ TTestPSOptions <- R6::R6Class(
 
 #' @import jmvcore
 #' @importFrom R6 R6Class
-TTestPSResults <- R6::R6Class(
+ttestPSResults <- R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         ttest = function() private$..ttest,
@@ -255,27 +255,27 @@ TTestPSResults <- R6::R6Class(
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
-TTestPSBase <- R6::R6Class(
-    "TTestPSBase",
+ttestPSBase <- R6::R6Class(
+    "ttestPSBase",
     inherit = jmvcore::Analysis,
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
-                name = 'TTestPS',
+                name = 'ttestPS',
                 version = c(1,0,0),
                 options = options,
-                results = TTestPSResults$new(options=options),
+                results = ttestPSResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision)
         }))
 
-#' TTestPS
+#' Paired Samples T-Test
 #'
 #' 
-#' @param data The data set as a data frame 
+#' @param data the data as a data frame
 #' @param pairs .
 #' @param students .
 #' @param bf .
@@ -294,7 +294,7 @@ TTestPSBase <- R6::R6Class(
 #'   excludes missing values for individual dependent variables, "listwise" 
 #'   excludes an entire observation if one of its entries is missing. 
 #' @export
-TTestPS <- function(
+ttestPS <- function(
     data,
     pairs,
     students = TRUE,
@@ -311,7 +311,7 @@ TTestPS <- function(
     plots = FALSE,
     miss = "perAnalysis") {
 
-    options <- TTestPSOptions$new(
+    options <- ttestPSOptions$new(
         pairs = pairs,
         students = students,
         bf = bf,
@@ -327,10 +327,10 @@ TTestPS <- function(
         plots = plots,
         miss = miss)
 
-    results <- TTestPSResults$new(
+    results <- ttestPSResults$new(
         options = options)
 
-    analysis <- TTestPSClass$new(
+    analysis <- ttestPSClass$new(
         options = options,
         data = data)
 

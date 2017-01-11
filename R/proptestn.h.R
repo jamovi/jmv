@@ -5,8 +5,8 @@
 #' @importFrom jmvcore Options
 #' @importFrom R6 R6Class
 #' @export
-PropTestNOptions <- R6::R6Class(
-    "PropTestNOptions",
+propTestNOptions <- R6::R6Class(
+    "propTestNOptions",
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
@@ -15,7 +15,7 @@ PropTestNOptions <- R6::R6Class(
 
             super$initialize(
                 package='jmv',
-                name='PropTestN',
+                name='propTestN',
                 requiresData=TRUE,
                 ...)
         
@@ -39,7 +39,7 @@ PropTestNOptions <- R6::R6Class(
 
 #' @import jmvcore
 #' @importFrom R6 R6Class
-PropTestNResults <- R6::R6Class(
+propTestNResults <- R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         props = function() private$..props,
@@ -74,43 +74,43 @@ PropTestNResults <- R6::R6Class(
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
-PropTestNBase <- R6::R6Class(
-    "PropTestNBase",
+propTestNBase <- R6::R6Class(
+    "propTestNBase",
     inherit = jmvcore::Analysis,
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
                 package = 'jmv',
-                name = 'PropTestN',
+                name = 'propTestN',
                 version = c(1,0,0),
                 options = options,
-                results = PropTestNResults$new(options=options),
+                results = propTestNResults$new(options=options),
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision)
         }))
 
-#' PropTestN
+#' Proportion Test (N Outcomes)
 #'
 #' 
-#' @param data The data set as a data frame 
-#' @param var The variable of interest 
+#' @param data the data as a data frame
+#' @param var a string naming the variable of interest in \code{data}
 #' @param counts .
 #' @export
-PropTestN <- function(
+propTestN <- function(
     data,
     var,
     counts) {
 
-    options <- PropTestNOptions$new(
+    options <- propTestNOptions$new(
         var = var,
         counts = counts)
 
-    results <- PropTestNResults$new(
+    results <- propTestNResults$new(
         options = options)
 
-    analysis <- PropTestNClass$new(
+    analysis <- propTestNClass$new(
         options = options,
         data = data)
 
