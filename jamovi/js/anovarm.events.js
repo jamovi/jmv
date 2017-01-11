@@ -227,6 +227,11 @@ var updatePostHocSupplier = function(ui, context) {
     var rmTerms = context.cloneArray(ui.rmTerms.value(), []);
     var combinedTermsList = rmTerms.concat(bsTerms);
 
+    for (let i = 0; i < rmTerms.length; i++) {
+        for (let j = 0; j < bsTerms.length; j++)
+            combinedTermsList.push(rmTerms[i].concat(bsTerms[j]))
+    }
+
     ui.postHocSupplier.setValue(context.valuesToItems(combinedTermsList, FormatDef.term));
 };
 
