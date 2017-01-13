@@ -137,7 +137,7 @@ contTablesPairedBase <- R6::R6Class(
 #' Paired Samples Contingency Tables
 #'
 #' 
-#' @param data The data set as a data frame 
+#' @param data the data as a data frame
 #' @param rows The variables of interest 
 #' @param cols The variables of interest 
 #' @param counts The variables of interest 

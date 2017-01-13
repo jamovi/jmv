@@ -13,8 +13,8 @@ engineType: R
 options:
     - name: data
       type: Data
-      description: >
-        The data set as a data frame
+      description:
+          R: the data as a data frame
 
     - name: rows
       title: Rows
