@@ -1,7 +1,7 @@
 name: anovaRM
 title: Repeated Measures ANOVA
 jus: '1.0'
-stage: 0
+stage: 1
 update: './anovarm.events::update'
 children:
   - type: VariableSupplier
