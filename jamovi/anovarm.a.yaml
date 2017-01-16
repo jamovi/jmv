@@ -161,7 +161,11 @@ options:
 
     - name: postHoc
       title: Post Hoc Tests
-      type: Variables
+      type: Array
+      template:
+          type: Array
+          template:
+              type: String
       default:
       description: >
         Post Hoc Tests

@@ -2,12 +2,14 @@
 #' @rdname jamovi
 #' @importFrom afex aov_car
 #' @importFrom ggplot2 ggplot position_dodge
+#' @importFrom lsmeans lsmeans
 #' @export
 anovaRMClass <- R6::R6Class(
     "anovaRMClass",
     inherit=anovaRMBase,
     private=list(
         .model=NA,
+        .postHocRows=NA,
         .init=function() {
             
             rmTable <- self$results$get('rmTable')
@@ -39,7 +41,7 @@ anovaRMClass <- R6::R6Class(
                         rmTable$addFormat(rowNo=i, col=1, Cell.END_GROUP)    
                 }
             }
-
+            
             bsTable <- self$results$get('bsTable')
             bsTable$setNote("Note", jmvcore::format("Type {} Sums of Squares", self$options$ss))
             
@@ -79,7 +81,101 @@ anovaRMClass <- R6::R6Class(
             spher <- self$results$get('assump')$get('spher')
             for (term in self$options$rmTerms)
                 spher$addRow(rowKey=term, list(name=stringifyTerm(term)))
+            
+            levene <- self$results$get('assump')$get('eqVar')
+            rmVars <- sapply(self$options$rmCells, function(x) return(x$measure))
+            for (var in rmVars)
+                levene$addRow(rowKey=var, list(name=var))
+            
+            private$.initPostHoc()
                 
+        },
+        .initPostHoc=function() {
+            
+            bs <- self$options$bs
+            rm <- self$options$rm
+            phTerms <- self$options$postHoc
+            
+            bsLevels <- list()
+            for (i in seq_along(bs))
+                bsLevels[[bs[i]]] <- levels(self$data[[bs[i]]])
+            
+            rmVars <- sapply(rm, function(x) return(x$label))
+            rmLevels <- list()
+            for (i in seq_along(rmVars))
+                rmLevels[[rmVars[i]]] <- rm[[i]]$levels
+            
+            allLevels <- c(bsLevels, rmLevels)
+            tables <- self$results$postHoc
+            
+            postHocRows <- list()
+            
+            for (ph in phTerms) {
+                
+                table <- tables$get(key=ph)
+                
+                table$setTitle(paste0("Post Hoc Comparisons - ", stringifyTerm(ph)))
+                
+                for (i in seq_along(ph))
+                    table$addColumn(name=paste0(ph[i],"1"), title=ph[i], type='text', superTitle='Comparison', combineBelow=TRUE)
+                
+                table$addColumn(name="sep", title="", type='text', superTitle='Comparison')
+                
+                for (i in seq_along(ph))
+                    table$addColumn(name=paste0(ph[i],"2"), title=ph[i], type='text', superTitle='Comparison')
+                
+                table$addColumn(name="md", title="Mean Difference", type="number")
+                table$addColumn(name="se", title="SE", type="number")
+                table$addColumn(name="df", title="df", type="number")
+                table$addColumn(name="t", title="t", type="number")
+
+                if (self$options$corrTukey)
+                    table$addColumn(name="ptukey", title="p<sub>tukey</p>", type="number", format="zto,pvalue")
+                if (self$options$corrScheffe)
+                    table$addColumn(name="pscheffe", title="p<sub>sheffe</p>", type="number", format="zto,pvalue")
+                if (self$options$corrBonf)
+                    table$addColumn(name="pbonferroni", title="p<sub>bonferoni</p>", type="number", format="zto,pvalue")
+                if (self$options$corrHolm)
+                    table$addColumn(name="pholm", title="p<sub>holm</p>", type="number", format="zto,pvalue")
+                
+                combin <- expand.grid(allLevels[rev(ph)])
+                combin <- sapply(combin, as.character, simplify = "matrix")
+                if (length(ph) > 1)
+                    combin <- combin[,rev(1:length(combin[1,]))]
+
+                comp <- list()
+                iter <- 1
+                for (i in 1:(length(combin[,1]) - 1)) {
+                    for (j in (i+1):length(combin[,1])) {
+                        comp[[iter]] <- list()
+                        comp[[iter]][[1]] <- combin[i,]
+                        comp[[iter]][[2]] <- combin[j,]
+                        
+                        if (j == length(combin[,1]))
+                            comp[[iter]][[3]] <- TRUE
+                        else 
+                            comp[[iter]][[3]] <- FALSE
+                        
+                        iter <- iter + 1
+                    }
+                }
+                
+                postHocRows[[composeTerm(ph)]] <- comp
+                
+                for (i in seq_along(comp)) {
+                    row <- list()
+                    for (c in seq_along(comp[[i]][[1]]))
+                        row[[paste0(names(comp[[i]][[1]][c]),"1")]] <- as.character(comp[[i]][[1]][c])
+                    row[["sep"]] <- "–"
+                    for (c in seq_along(comp[[i]][[2]]))
+                        row[[paste0(names(comp[[i]][[2]][c]),"2")]] <- as.character(comp[[i]][[2]][c])
+                    
+                    table$setRow(rowNo=i, row)
+                    if (comp[[i]][[3]] == TRUE)
+                        table$addFormat(rowNo=i, col=1, Cell.END_GROUP)
+                }
+            }
+            private$.postHocRows <- postHocRows
         },
         .run=function() {
             
@@ -97,7 +193,7 @@ anovaRMClass <- R6::R6Class(
                 suppressWarnings({
                     
                     result <- try(afex::aov_car(modelFormula, data, type=self$options$ss, factorize = FALSE), silent=TRUE)
-                    
+
                 }) # suppressWarnings
                 
                 if (isError(result)) {
@@ -107,6 +203,7 @@ anovaRMClass <- R6::R6Class(
                 }
                 
                 private$.populateSpher(result)
+                private$.postHocTest(result)
                 private$.prepareDescPlots(data)
             }
         },
@@ -405,13 +502,7 @@ anovaRMClass <- R6::R6Class(
                     
                     if (length(index) == 0) {
                         
-                        row <- list()
-                        row[["mauch"]] <- 1
-                        row[["p"]] <- NaN
-                        row[["gg"]] <- 1
-                        row[["hf"]] <- 1
-                        
-                        spher$setRow(rowKey=term, values=row)
+                        spher$setRow(rowKey=term, values=list("mauch"=1, "p"=NaN, "gg"=1, "hf"=1))
                         spher$addFootnote(rowKey=term, "name", "The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels")
                         
                     } else {
@@ -428,14 +519,100 @@ anovaRMClass <- R6::R6Class(
             } else {
                 
                 for (term in self$options$rmTerms) {
-                    row <- list()
-                    row[["mauch"]] <- 1
-                    row[["p"]] <- NaN
-                    row[["gg"]] <- 1
-                    row[["hf"]] <- 1
                     
-                    spher$setRow(rowKey=term, values=row)
+                    spher$setRow(rowKey=term, values=list("mauch"=1, "p"=NaN, "gg"=1, "hf"=1))
                     spher$addFootnote(rowKey=term, "name", "The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels")
+                }
+            }
+        },
+        .levene=function () {
+            
+            # leveneTable <- self$results$get('assump')$get('eqVar')
+            # rmVars <- sapply(self$options$rmCells, function(x) return(x$measure))
+            # bsTerm <- paste0(composeTerms(self$options$bsTerms), collapse = "+")
+            # 
+            # for (var in rmVars) {
+            #     
+            #     formula <- as.formula(paste0(composeTerm(var),"~", bsTerm)
+            #     
+            #     myaov_t1 <- aov(formula, data=self$data)
+            #     summary(aov(abs(myaov_t1$residuals) ~ Group, data=subset(ldf, Time==1)))}
+            #     
+            # }
+            #     levene$addRow(rowKey=var, list(name=var))
+            # 
+            # 
+            # myaov_t1 <- aov(DV ~ Group + Cov, data=subset(ldf, Time==1))
+            # summary(aov(abs(myaov_t1$residuals) ~ Group, data=subset(ldf, Time==1)))}
+            
+        },
+        .postHocTest=function (result) {
+            
+            terms <- self$options$postHoc
+            
+            if (length(terms) == 0)
+                return()
+            
+            tables <- self$results$postHoc
+            
+            postHocRows <- list()
+            
+            for (ph in terms) {
+                
+                table <- tables$get(key=ph)
+                
+                var <- jmvcore::composeTerm(ph)
+                
+                formula <- as.formula(paste("~", var))
+                
+                suppressWarnings({
+                    
+                    referenceGrid <- lsmeans::lsmeans(result, formula)
+                    tukey <- summary(pairs(referenceGrid, adjust="tukey"))
+
+                    if (self$options$corrScheffe)
+                        scheffe <- summary(pairs(referenceGrid, adjust="scheffe"))
+                    if (self$options$corrBonf)
+                        bonferroni <- summary(pairs(referenceGrid, adjust="bonferroni"))
+                    if (self$options$corrHolm)
+                        holm <- summary(pairs(referenceGrid, adjust="holm"))
+
+                }) # suppressWarnings
+                
+                resultRows <- lapply(strsplit(as.character(tukey$contrast), " - "), function(x) strsplit(x, ","))
+                tableRows <- private$.postHocRows[[var]]
+                
+                for (i in seq_along(tableRows)) {
+                    
+                    index <- which(sapply(resultRows, function(x) {
+                        c1 <- setequal(x[[1]], tableRows[[i]][[1]])
+                        c2 <- setequal(x[[1]], tableRows[[i]][[2]])
+                        c3 <- setequal(x[[2]], tableRows[[i]][[1]])
+                        c4 <- setequal(x[[2]], tableRows[[i]][[2]])
+                        
+                        if ((c1 && c4) || (c2 && c3))
+                            return(TRUE)
+                        else 
+                            return(FALSE)
+                    }))
+                    
+                    row <- list()
+                    row[["md"]] <- tukey[index,"estimate"]
+                    row[["se"]] <- tukey[index,"SE"]
+                    row[["df"]] <- tukey[index,"df"]
+                    row[["t"]] <- tukey[index,"t.ratio"]
+                    
+                    if (self$options$corrTukey)
+                        row[["ptukey"]] <- tukey[index,"p.value"]
+                    if (self$options$corrScheffe)
+                        row[["pscheffe"]] <- scheffe[index,"p.value"]
+                    if (self$options$corrBonf)
+                        row[["pbonferroni"]] <- bonferroni[index,"p.value"]
+                    if (self$options$corrHolm)
+                        row[["pholm"]] <- holm[index,"p.value"]
+                    
+                    table$setRow(rowNo=i, values=row)
+                    private$.checkpoint()
                 }
             }
         },
