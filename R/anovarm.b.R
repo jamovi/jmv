@@ -134,7 +134,7 @@ anovaRMClass <- R6::R6Class(
                 if (self$options$corrScheffe)
                     table$addColumn(name="pscheffe", title="p<sub>sheffe</p>", type="number", format="zto,pvalue")
                 if (self$options$corrBonf)
-                    table$addColumn(name="pbonferroni", title="p<sub>bonferoni</p>", type="number", format="zto,pvalue")
+                    table$addColumn(name="pbonferroni", title="p<sub>bonferroni</p>", type="number", format="zto,pvalue")
                 if (self$options$corrHolm)
                     table$addColumn(name="pholm", title="p<sub>holm</p>", type="number", format="zto,pvalue")
                 
