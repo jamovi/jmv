@@ -167,9 +167,15 @@ anovaRMOptions <- R6::R6Class(
                                 "helmert",
                                 "repeated",
                                 "polynomial")))))
-            private$..postHoc <- jmvcore::OptionVariables$new(
+            private$..postHoc <- jmvcore::OptionArray$new(
                 "postHoc",
                 postHoc,
+                template=jmvcore::OptionArray$new(
+                    "postHoc",
+                    NULL,
+                    template=jmvcore::OptionString$new(
+                        "postHoc",
+                        NULL)),
                 default=NULL)
             private$..corrTukey <- jmvcore::OptionBool$new(
                 "corrTukey",
@@ -467,18 +473,7 @@ anovaRMResults <- R6::R6Class(
                 items="(postHoc)",
                 template=jmvcore::Table$new(
                     options=options,
-                    title="Post Hoc Comparisons - $key",
-                    columns=list(
-                        list(`name`="var1", `title`="", `type`="text"),
-                        list(`name`="var2", `title`="", `type`="text"),
-                        list(`name`="md", `title`="Mean Difference", `type`="number"),
-                        list(`name`="se", `title`="SE", `type`="number"),
-                        list(`name`="t", `title`="t", `type`="number"),
-                        list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue"),
-                        list(`name`="ptukey", `title`="p<sub>tukey</p>", `visible`="(corrTukey)", `type`="number", `format`="zto,pvalue"),
-                        list(`name`="pscheffe", `title`="p<sub>scheffe</p>", `visible`="(corrScheffe)", `type`="number", `format`="zto,pvalue"),
-                        list(`name`="pbonferroni", `title`="p<sub>bonferoni</p>", `visible`="(corrBonf)", `type`="number", `format`="zto,pvalue"),
-                        list(`name`="pholm", `title`="p<sub>holm</p>", `visible`="(corrHolm)", `type`="number", `format`="zto,pvalue"))))
+                    title=""))
             private$..descPlot <- jmvcore::Image$new(
                 options=options,
                 name="descPlot",
@@ -541,7 +536,7 @@ anovaRMBase <- R6::R6Class(
                 revision = revision)
         }))
 
-#' Repeated Measures ANOVA
+#' anovaRM
 #'
 #' 
 #' @param data the data as a data frame
