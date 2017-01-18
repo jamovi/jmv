@@ -573,7 +573,7 @@ anovaRMClass <- R6::R6Class(
                     
                     referenceGrid <- lsmeans::lsmeans(result, formula)
                     tukey <- summary(pairs(referenceGrid, adjust="tukey"))
-
+                    
                     if (self$options$corrScheffe)
                         scheffe <- summary(pairs(referenceGrid, adjust="scheffe"))
                     if (self$options$corrBonf)
@@ -587,12 +587,12 @@ anovaRMClass <- R6::R6Class(
                 tableRows <- private$.postHocRows[[term]]
                 
                 for (i in seq_along(tableRows)) {
-                    
                     index <- which(sapply(resultRows, function(x) {
-                        c1 <- setequal(x[[1]], toB64(tableRows[[i]][[1]]))
-                        c2 <- setequal(x[[1]], toB64(tableRows[[i]][[2]]))
-                        c3 <- setequal(x[[2]], toB64(tableRows[[i]][[1]]))
-                        c4 <- setequal(x[[2]], toB64(tableRows[[i]][[2]]))
+                        
+                        c1 <- identical(x[[1]], toB64(as.character(tableRows[[i]][[1]])))
+                        c2 <- identical(x[[1]], toB64(as.character(tableRows[[i]][[2]])))
+                        c3 <- identical(x[[2]], toB64(as.character(tableRows[[i]][[1]])))
+                        c4 <- identical(x[[2]], toB64(as.character(tableRows[[i]][[2]])))
                         
                         if ((c1 && c4) || (c2 && c3))
                             return(TRUE)

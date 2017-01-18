@@ -28,7 +28,7 @@ anovaRMOptions <- R6::R6Class(
             homoTests = FALSE,
             contrasts = NULL,
             postHoc = NULL,
-            corrTukey = FALSE,
+            corrTukey = TRUE,
             corrScheffe = FALSE,
             corrBonf = FALSE,
             corrHolm = FALSE,
@@ -180,7 +180,7 @@ anovaRMOptions <- R6::R6Class(
             private$..corrTukey <- jmvcore::OptionBool$new(
                 "corrTukey",
                 corrTukey,
-                default=FALSE)
+                default=TRUE)
             private$..corrScheffe <- jmvcore::OptionBool$new(
                 "corrScheffe",
                 corrScheffe,
@@ -591,7 +591,7 @@ anovaRM <- function(
     homoTests = FALSE,
     contrasts = NULL,
     postHoc = NULL,
-    corrTukey = FALSE,
+    corrTukey = TRUE,
     corrScheffe = FALSE,
     corrBonf = FALSE,
     corrHolm = FALSE,
