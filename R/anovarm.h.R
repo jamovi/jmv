@@ -376,9 +376,9 @@ anovaRMResults <- R6::R6Class(
                     list(`name`="ms", `title`="Mean Square", `type`="number"),
                     list(`name`="F", `title`="F", `type`="number"),
                     list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue"),
-                    list(`name`="eta", `title`="\u03B7\u00B2", `type`="number", `format`="number", `visible`="(effSizeN2)"),
-                    list(`name`="partEta", `title`="partial \u03B7\u00B2", `type`="number", `format`="number", `visible`="(partEffSizeN2)"),
-                    list(`name`="omega", `title`="\u03C9\u00B2", `type`="number", `format`="number", `visible`="(effSizeW2)")))
+                    list(`name`="eta", `title`="\u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effSizeN2)"),
+                    list(`name`="partEta", `title`="partial \u03B7\u00B2", `type`="number", `format`="zto", `visible`="(partEffSizeN2)"),
+                    list(`name`="omega", `title`="\u03C9\u00B2", `type`="number", `format`="zto", `visible`="(effSizeW2)")))
             private$..bsTable <- jmvcore::Table$new(
                 options=options,
                 name="bsTable",
@@ -401,9 +401,9 @@ anovaRMResults <- R6::R6Class(
                     list(`name`="ms", `title`="Mean Square", `type`="number"),
                     list(`name`="F", `title`="F", `type`="number"),
                     list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue"),
-                    list(`name`="eta", `title`="\u03B7\u00B2", `type`="number", `format`="number", `visible`="(effSizeN2)"),
-                    list(`name`="partEta", `title`="partial \u03B7\u00B2", `type`="number", `format`="number", `visible`="(partEffSizeN2)"),
-                    list(`name`="omega", `title`="\u03C9\u00B2", `type`="number", `format`="number", `visible`="(effSizeW2)")))
+                    list(`name`="eta", `title`="\u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effSizeN2)"),
+                    list(`name`="partEta", `title`="partial \u03B7\u00B2", `type`="number", `format`="zto", `visible`="(partEffSizeN2)"),
+                    list(`name`="omega", `title`="\u03C9\u00B2", `type`="number", `format`="zto", `visible`="(effSizeW2)")))
             private$..assump <- R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(

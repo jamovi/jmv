@@ -49,19 +49,19 @@ items:
         - name: eta
           title: η²
           type: number
-          format: number
+          format: zto
           visible: (effSizeN2)
 
         - name: partEta
           title: partial η²
           type: number
-          format: number
+          format: zto
           visible: (partEffSizeN2)
 
         - name: omega
           title: ω²
           type: number
-          format: number
+          format: zto
           visible: (effSizeW2)
 
     - name: bsTable
@@ -109,19 +109,19 @@ items:
         - name: eta
           title: η²
           type: number
-          format: number
+          format: zto
           visible: (effSizeN2)
 
         - name: partEta
           title: partial η²
           type: number
-          format: number
+          format: zto
           visible: (partEffSizeN2)
 
         - name: omega
           title: ω²
           type: number
-          format: number
+          format: zto
           visible: (effSizeW2)
 
     - name: assump

@@ -26,7 +26,7 @@ anovaRMClass <- R6::R6Class(
                 suppressWarnings({
                     
                     result <- try(afex::aov_car(modelFormula, data, type=self$options$ss, factorize = FALSE), silent=TRUE)
-                    
+
                 }) # suppressWarnings
                 
                 if (isError(result)) {
@@ -428,6 +428,7 @@ anovaRMClass <- R6::R6Class(
             bsRowKeys <- bsTable$rowKeys
             
             resultRows <- jmvcore::decomposeTerms(as.list(rownames(model)))
+            resIndices <- which(sapply(rmRowKeys, function(x) ".RES" %in% x))
             
             for (i in seq_along(resultRows)) {
                 
@@ -442,15 +443,24 @@ anovaRMClass <- R6::R6Class(
                     row[["ms"]] <- row[["ss"]] / row[["df"]]
                     row[["F"]] <- model[i,"F"]
                     row[["p"]] <- model[i,"Pr(>F)"]
+
+                    if (length(rmIndex) > 0) {
+                        termsTotal <- private$.getSSt(rmIndex,rmRowKeys,resIndices)
+                        indicesTotal <- sapply(termsTotal, function(x) which(sapply(resultRows, function(y) setequal(y,x))))
+                    } else {
+                        termsTotal <- lapply(self$options$bsTerms, toB64)
+                        indicesTotal <- sapply(termsTotal, function(x) which(sapply(resultRows, function(y) setequal(y,x))))
+                    }
                     
-                    # SSr <- model[i,"Error SS"]
-                    # # SSt <- sum(model[indices,"SS"]) + SSr
-                    # SSt <- 10
-                    # MSr <- SSr/model[i,"den Df"]
-                    # 
-                    # row[["eta"]] <- row[["ss"]] / SSt
-                    # row[["partEta"]] <- row[["ss"]] / (row[["ss"]] + SSr)
-                    # row[["omega"]] <- (row[["ss"]] - (row[["df"]] * MSr)) / (SSt + MSr)
+                    SSr <- model[i,"Error SS"]
+                    SSt <- sum(model[indicesTotal,"SS"]) + SSr
+                    MSr <- SSr/model[i,"den Df"]
+                    row[["eta"]] <- row[["ss"]] / SSt
+                    row[["partEta"]] <- row[["ss"]] / (row[["ss"]] + SSr)
+                    
+                    omega <- (row[["ss"]] - (row[["df"]] * MSr)) / (SSt + MSr)
+                    
+                    row[["omega"]] <- if (omega < 0) 0 else omega
                     
                     if (length(rmIndex) > 0) {
                         rmTable$setRow(rowNo=rmIndex, values=row)
@@ -460,7 +470,7 @@ anovaRMClass <- R6::R6Class(
                 }
             }
             
-            resRowKeys <- rmRowKeys[which(sapply(rmRowKeys, function(x) ".RES" %in% x))]
+            resRowKeys <- rmRowKeys[resIndices]
 
             for (i in seq_along(resRowKeys)) {
 
@@ -473,6 +483,9 @@ anovaRMClass <- R6::R6Class(
                 row[["ms"]] <- row[["ss"]] / row[["df"]]
                 row[["F"]] <- ""
                 row[["p"]] <- ""
+                row[["eta"]] <- ""
+                row[["partEta"]] <- ""
+                row[["omega"]] <- ""
 
                 rmTable$setRow(rowKey=resRowKeys[[i]], values=row)
             }
@@ -483,6 +496,9 @@ anovaRMClass <- R6::R6Class(
             row[["ms"]] <- row[["ss"]] / row[["df"]]
             row[["F"]] <- ""
             row[["p"]] <- ""
+            row[["eta"]] <- ""
+            row[["partEta"]] <- ""
+            row[["omega"]] <- ""
             
             bsTable$setRow(rowKey="Residual", values=row)
         },
@@ -893,6 +909,27 @@ anovaRMClass <- R6::R6Class(
             
             # Combine the un-normed means with the normed results
             merge(datac, ndatac)
+        },
+        .getSSt=function (x, y, z) {
+            for(i in x:1) {
+                if (i %in% z) {
+                    lower <- i + 1
+                    break
+                } else if (i == 1) {
+                    lower <- i
+                    break
+                }
+            }
+            for(i in x:length(y)) {
+                if (i %in% z) {
+                    upper <- i - 1
+                    break
+                } else if (i == length(y)) {
+                    upper <- i
+                    break
+                }
+            }
+            return(lapply(y[lower:upper], toB64))
         })
 )
 
