@@ -10,6 +10,36 @@ anovaRMClass <- R6::R6Class(
     private=list(
         .model=NA,
         .postHocRows=NA,
+        .run=function() {
+            
+            bs <- self$options$bs
+            cov <- self$options$cov
+            
+            dataSelected <- ! sapply(lapply(self$options$rmCells, function(x) return(x$measure)), is.null)
+            ready <- sum(dataSelected) == length(self$options$rmCells)
+            
+            if (ready) {
+                
+                data <- private$.wideToLong()
+                modelFormula <- private$.modelFormula()
+                
+                suppressWarnings({
+                    
+                    result <- try(afex::aov_car(modelFormula, data, type=self$options$ss, factorize = FALSE), silent=TRUE)
+                    
+                }) # suppressWarnings
+                
+                if (isError(result)) {
+                    jmvcore::reject(format('\n{}', extractErrorMessage(result)), code="error")
+                } else {
+                    private$.populateTables(result)
+                }
+
+                private$.populateSpher(result)
+                private$.postHocTest(result)
+                private$.prepareDescPlots(data)
+            }
+        },
         .init=function() {
             
             rmTable <- self$results$get('rmTable')
@@ -177,36 +207,6 @@ anovaRMClass <- R6::R6Class(
             }
             private$.postHocRows <- postHocRows
         },
-        .run=function() {
-            
-            bs <- self$options$bs
-            cov <- self$options$cov
-            
-            dataSelected <- ! sapply(lapply(self$options$rmCells, function(x) return(x$measure)), is.null)
-            ready <- sum(dataSelected) == length(self$options$rmCells)
-            
-            if (ready) {
-                
-                data <- private$.wideToLong()
-                modelFormula <- private$.modelFormula()
-                
-                suppressWarnings({
-                    
-                    result <- try(afex::aov_car(modelFormula, data, type=self$options$ss, factorize = FALSE), silent=TRUE)
-
-                }) # suppressWarnings
-                
-                if (isError(result)) {
-                    jmvcore::reject(format('\n{}', extractErrorMessage(result)), code="error")
-                } else {
-                    private$.populateTables(result)
-                }
-                
-                private$.populateSpher(result)
-                private$.postHocTest(result)
-                private$.prepareDescPlots(data)
-            }
-        },
         .rmTerms=function() {
             
             if (length(self$options$rmTerms) == 0) { # if no specific model is specified
@@ -328,16 +328,13 @@ anovaRMClass <- R6::R6Class(
         },
         .wideToLong=function() {
             
-            rmFactors <- self$options$rm
-            rmCells <- self$options$rmCells
-            
-            rmVars <- sapply(rmCells, function(x) return(x$measure)) 
+            rmVars <- sapply(self$options$rmCells, function(x) return(x$measure)) 
             bsVars <- self$options$bs
             covVars <- self$options$cov
             
-            labels <- sapply(rmFactors, function(x) return(x$label))
-            levels <- lapply(rmFactors, function(x) return(x$levels))
-            rmCells <- lapply(rmCells, function(x) return(x$cell))
+            labels <- sapply(self$options$rm, function(x) return(x$label))
+            levels <- lapply(self$options$rm, function(x) return(x$levels))
+            rmCells <- lapply(self$options$rmCells, function(x) return(x$cell))
             
             data <- list()
             for (var in c(rmVars, covVars))
@@ -350,9 +347,9 @@ anovaRMClass <- R6::R6Class(
             attr(data, 'class') <- 'data.frame'
             data <- jmvcore::naOmit(data)
             
-            data <- cbind(data, "subject" = factor(1:nrow(data)))
+            data <- cbind(data, ".SUBJECT"=1:nrow(data))
             
-            data_long <- as.list(reshape2::melt(data, id.vars=c(bsVars, covVars, "subject"), measure.vars=rmVars, value.name="dependent"))
+            data_long <- as.list(reshape2::melt(data, id.vars=c(bsVars, covVars, ".SUBJECT"), measure.vars=rmVars, value.name=".DEPENDENT"))
             
             col <- data_long[["variable"]]
             temp <- numeric(length(col))
@@ -360,15 +357,22 @@ anovaRMClass <- R6::R6Class(
                 temp[j] <- which(rmVars %in% col[j])
             
             for (i in seq_along(labels)) {
-                data_long[[labels[[i]]]] <- sapply(rmCells[temp], function(x) x[i])
+                data_long[[labels[[i]]]] <- factor(sapply(rmCells[temp], function(x) x[i]))
                 levels(data_long[[labels[[i]]]]) <- levels[[i]]
             }
             data_long[["variable"]] <- NULL
             
+            data_long <- lapply(data_long, function(x) {
+                if (is.factor(x)) 
+                    levels(x) <- toB64(levels(x))
+                return(x)
+            })
+            
             attr(data_long, 'row.names') <- seq_len(length(data_long[[1]]))
+            attr(data_long, 'names') <- toB64(names(data_long))
             attr(data_long, 'class') <- 'data.frame'
             data_long <- jmvcore::naOmit(data_long)
-
+            
             return(data_long)
         },
         .modelFormula=function() {
@@ -379,14 +383,14 @@ anovaRMClass <- R6::R6Class(
                 
             } else {
                 
-                bsTerms <- self$options$bsTerms
-                rmTerms <- self$options$rmTerms
+                bsTerms <- lapply(self$options$bsTerms, function(x) toB64(x))
+                rmTerms <- lapply(self$options$rmTerms, function(x) toB64(x))
                 
                 bsItems <- composeTerms(bsTerms)
                 bsTerm <- paste0("(", paste0(bsItems, collapse = " + "), ")")
                 
                 rmItems <- composeTerms(rmTerms)
-                rmTerm <- paste0("Error(", paste0("subject/(", rmItems, ")", collapse=" + "),")")
+                rmTerm <- paste0("Error(", paste0(toB64(".SUBJECT"),"/(", rmItems, ")", collapse=" + "),")")
                 
                 allTerms <- c(bsTerms, rmTerms)
                 for (term1 in rmTerms) {
@@ -399,9 +403,9 @@ anovaRMClass <- R6::R6Class(
                 mainTerm <- paste0("(", paste0(allItems, collapse = " + "), ")")
                 
                 if (length(self$options$bsTerms) == 0) {
-                    formula <- as.formula(paste("dependent", "~", paste(mainTerm, rmTerm, sep=" + ")))
+                    formula <- as.formula(paste(toB64(".DEPENDENT"), "~", paste(mainTerm, rmTerm, sep=" + ")))
                 } else {
-                    formula <- as.formula(paste("dependent", "~", paste(mainTerm, rmTerm, bsTerm, sep=" + ")))
+                    formula <- as.formula(paste(toB64(".DEPENDENT"), "~", paste(mainTerm, rmTerm, bsTerm, sep=" + ")))
                 }
                 
                 return(formula)
@@ -419,8 +423,7 @@ anovaRMClass <- R6::R6Class(
             summaryResult <- summary(result)
             model <- summaryResult$univariate.tests
             epsilon <- summaryResult$pval.adjustments
-            mauchly <- summaryResult$sphericity.tests
-            
+
             rmRowKeys <- rmTable$rowKeys
             bsRowKeys <- bsTable$rowKeys
             
@@ -428,8 +431,8 @@ anovaRMClass <- R6::R6Class(
             
             for (i in seq_along(resultRows)) {
                 
-                rmIndex <- which(sapply(rmRowKeys, function(x) setequal(resultRows[[i]], x)))
-                bsIndex <- which(sapply(bsRowKeys, function(x) setequal(resultRows[[i]], x)))
+                rmIndex <- which(sapply(lapply(rmRowKeys, toB64), function(x) setequal(resultRows[[i]], x)))
+                bsIndex <- which(sapply(lapply(bsRowKeys, toB64), function(x) setequal(resultRows[[i]], x)))
                 
                 if (length(rmIndex) > 0 || length(bsIndex) > 0) {
                     
@@ -458,11 +461,11 @@ anovaRMClass <- R6::R6Class(
             }
             
             resRowKeys <- rmRowKeys[which(sapply(rmRowKeys, function(x) ".RES" %in% x))]
-            
+
             for (i in seq_along(resRowKeys)) {
-                
+
                 resid <- resRowKeys[[i]][ ! resRowKeys[[i]] %in% ".RES"]
-                index <- which(sapply(as.list(resultRows), function(x) setequal(x, resid)))
+                index <- which(sapply(lapply(as.list(resultRows), fromB64), function(x) setequal(x, resid)))
                 
                 row <- list()
                 row[["ss"]] <- model[index,"Error SS"]
@@ -470,7 +473,7 @@ anovaRMClass <- R6::R6Class(
                 row[["ms"]] <- row[["ss"]] / row[["df"]]
                 row[["F"]] <- ""
                 row[["p"]] <- ""
-                
+
                 rmTable$setRow(rowKey=resRowKeys[[i]], values=row)
             }
             
@@ -498,7 +501,7 @@ anovaRMClass <- R6::R6Class(
                 
                 for (term in self$options$rmTerms) {
                     
-                    index <- which(sapply(as.list(resultRows), function(x) setequal(x, term)))
+                    index <- which(sapply(as.list(resultRows), function(x) setequal(x, toB64(term))))
                     
                     if (length(index) == 0) {
                         
@@ -561,9 +564,10 @@ anovaRMClass <- R6::R6Class(
                 
                 table <- tables$get(key=ph)
                 
-                var <- jmvcore::composeTerm(ph)
+                term <- jmvcore::composeTerm(ph)
+                termB64 <- jmvcore::composeTerm(toB64(ph))
                 
-                formula <- as.formula(paste("~", var))
+                formula <- as.formula(paste("~", termB64))
                 
                 suppressWarnings({
                     
@@ -580,15 +584,15 @@ anovaRMClass <- R6::R6Class(
                 }) # suppressWarnings
                 
                 resultRows <- lapply(strsplit(as.character(tukey$contrast), " - "), function(x) strsplit(x, ","))
-                tableRows <- private$.postHocRows[[var]]
+                tableRows <- private$.postHocRows[[term]]
                 
                 for (i in seq_along(tableRows)) {
                     
                     index <- which(sapply(resultRows, function(x) {
-                        c1 <- setequal(x[[1]], tableRows[[i]][[1]])
-                        c2 <- setequal(x[[1]], tableRows[[i]][[2]])
-                        c3 <- setequal(x[[2]], tableRows[[i]][[1]])
-                        c4 <- setequal(x[[2]], tableRows[[i]][[2]])
+                        c1 <- setequal(x[[1]], toB64(tableRows[[i]][[1]]))
+                        c2 <- setequal(x[[1]], toB64(tableRows[[i]][[2]]))
+                        c3 <- setequal(x[[2]], toB64(tableRows[[i]][[1]]))
+                        c4 <- setequal(x[[2]], toB64(tableRows[[i]][[2]]))
                         
                         if ((c1 && c4) || (c2 && c3))
                             return(TRUE)
@@ -618,7 +622,7 @@ anovaRMClass <- R6::R6Class(
         },
         .prepareDescPlots=function(data) {
             
-            depName <- "dependent"
+            depName <- ".DEPENDENT"
             groupName <- self$options$descPlotsHAxis
             linesName <- self$options$descPlotsSepLines
             plotsName <- self$options$descPlotsSepPlots
@@ -648,15 +652,21 @@ anovaRMClass <- R6::R6Class(
                 return()
             
             by <- list()
-            by[['group']] <- data[[groupName]]
+            by[['group']] <- data[[toB64(groupName)]]
+            levels(by[['group']]) <- fromB64(levels(by[['group']]))
             
-            if ( ! is.null(linesName))
-                by[['lines']] <- data[[linesName]]
+            if ( ! is.null(linesName)) {
+                by[['lines']] <- data[[toB64(linesName)]]
+                levels(by[['lines']]) <- fromB64(levels(by[['lines']]))
+            }
             
-            if ( ! is.null(plotsName))
-                by[['plots']] <- data[[plotsName]]
+            if ( ! is.null(plotsName)) {
+                by[['plots']] <- data[[toB64(plotsName)]]
+                levels(by[['plots']]) <- fromB64(levels(by[['plots']]))
+            }
+                
             
-            dep <- data[[depName]]
+            dep <- data[[toB64(depName)]]
             
             ciMult <- qt(ciWidth / 200 + .5, nrow(data)-1)
             
