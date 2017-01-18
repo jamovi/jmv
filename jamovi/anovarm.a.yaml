@@ -173,7 +173,7 @@ options:
     - name: corrTukey
       title: Tukey
       type: Bool
-      default: false
+      default: true
       description: >
         Post Hoc Tests Tukey Correction
 
