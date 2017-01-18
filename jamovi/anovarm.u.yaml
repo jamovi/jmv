@@ -1,7 +1,7 @@
 name: anovaRM
 title: Repeated Measures ANOVA
 jus: '1.0'
-stage: 1
+stage: 0
 update: './anovarm.events::update'
 children:
   - type: VariableSupplier
@@ -159,6 +159,7 @@ children:
         label: Homogeneity tests
   - type: CollapseBox
     label: Contrasts
+    stage: 2
     collapsed: true
     stretchFactor: 1
     children:
@@ -296,6 +297,7 @@ children:
                 label: Standard Error
   - type: CollapseBox
     label: Additional Options
+    stage: 2
     collapsed: true
     stretchFactor: 1
     children:
