@@ -36,6 +36,7 @@ anovaRMClass <- R6::R6Class(
                 }
 
                 private$.populateSpher(result)
+                private$.leveneTest()
                 private$.postHocTest(result)
                 private$.prepareDescPlots(data)
             }
@@ -112,10 +113,15 @@ anovaRMClass <- R6::R6Class(
             for (term in self$options$rmTerms)
                 spher$addRow(rowKey=term, list(name=stringifyTerm(term)))
             
-            levene <- self$results$get('assump')$get('eqVar')
+            leveneTable <- self$results$get('assump')$get('eqVar')
             rmVars <- sapply(self$options$rmCells, function(x) return(x$measure))
             for (var in rmVars)
-                levene$addRow(rowKey=var, list(name=var))
+                leveneTable$addRow(rowKey=var, list(name=var))
+            
+            if (length(self$options$bs) == 0) {
+                for (var in rmVars)
+                    leveneTable$addFootnote(rowKey=var, "name", "Because there are no between subjects factors specified this assumption is always met.")
+            }
             
             private$.initPostHoc()
                 
@@ -544,26 +550,43 @@ anovaRMClass <- R6::R6Class(
                 }
             }
         },
-        .levene=function () {
+        .leveneTest=function () {
             
-            # leveneTable <- self$results$get('assump')$get('eqVar')
-            # rmVars <- sapply(self$options$rmCells, function(x) return(x$measure))
-            # bsTerm <- paste0(composeTerms(self$options$bsTerms), collapse = "+")
-            # 
-            # for (var in rmVars) {
-            #     
-            #     formula <- as.formula(paste0(composeTerm(var),"~", bsTerm)
-            #     
-            #     myaov_t1 <- aov(formula, data=self$data)
-            #     summary(aov(abs(myaov_t1$residuals) ~ Group, data=subset(ldf, Time==1)))}
-            #     
-            # }
-            #     levene$addRow(rowKey=var, list(name=var))
-            # 
-            # 
-            # myaov_t1 <- aov(DV ~ Group + Cov, data=subset(ldf, Time==1))
-            # summary(aov(abs(myaov_t1$residuals) ~ Group, data=subset(ldf, Time==1)))}
+            if (length(self$options$rmCells) == 0 || length(self$options$bs) == 0)
+                return()
             
+            leveneTable <- self$results$get('assump')$get('eqVar')
+            rmVars <- sapply(self$options$rmCells, function(x) return(x$measure))
+            covVars <- self$options$cov
+            bsVars <- self$options$bs[which(sapply(self$options$bs, function(x) length(x) == 1))]
+            
+            data <- list()
+            for (rm in c(rmVars,covVars))
+                data[[rm]] <- jmvcore::toNumeric(self$data[[rm]])
+            
+            for (bs in bsVars)
+                data[[bs]] <- factor(self$data[[bs]])
+            
+            attr(data, 'row.names') <- seq_len(length(data[[1]]))
+            attr(data, 'class') <- 'data.frame'
+            data <- jmvcore::naOmit(data)
+            
+            group <- interaction(data[bsVars])
+            data <- cbind(data, .GROUP=group)
+            
+            for (var in rmVars) {
+                
+                if (length(covVars) > 0)
+                    formula <- as.formula(paste0(composeTerm(var),"~ .GROUP +", paste0(composeTerm(covVars), collapse="+")))
+                else 
+                    formula <- as.formula(paste0(composeTerm(var),"~ .GROUP"))
+                
+                res <- abs(aov(formula, data=data)$residuals)
+                r <- summary(aov(res ~ group))[[1]]
+
+                row <- list(F=r[1,"F value"], df1=r[1,"Df"], df2=r[2,"Df"], p=r[1,"Pr(>F)"])
+                leveneTable$setRow(rowKey=var, values=row)
+            }
         },
         .postHocTest=function (result) {
             
@@ -589,7 +612,7 @@ anovaRMClass <- R6::R6Class(
                     
                     referenceGrid <- lsmeans::lsmeans(result, formula)
                     tukey <- summary(pairs(referenceGrid, adjust="tukey"))
-                    
+                
                     if (self$options$corrScheffe)
                         scheffe <- summary(pairs(referenceGrid, adjust="scheffe"))
                     if (self$options$corrBonf)

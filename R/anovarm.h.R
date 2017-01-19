@@ -22,9 +22,9 @@ anovaRMOptions <- R6::R6Class(
             ss = "3",
             spherTests = FALSE,
             spherCorrs = FALSE,
-            spherCorrNone = FALSE,
-            spherCorrGreenGsser = FALSE,
-            spherCorrHuyFdt = FALSE,
+            spherCorrNone = TRUE,
+            spherCorrGreenGsser = TRUE,
+            spherCorrHuyFdt = TRUE,
             homoTests = FALSE,
             contrasts = NULL,
             postHoc = NULL,
@@ -130,15 +130,15 @@ anovaRMOptions <- R6::R6Class(
             private$..spherCorrNone <- jmvcore::OptionBool$new(
                 "spherCorrNone",
                 spherCorrNone,
-                default=FALSE)
+                default=TRUE)
             private$..spherCorrGreenGsser <- jmvcore::OptionBool$new(
                 "spherCorrGreenGsser",
                 spherCorrGreenGsser,
-                default=FALSE)
+                default=TRUE)
             private$..spherCorrHuyFdt <- jmvcore::OptionBool$new(
                 "spherCorrHuyFdt",
                 spherCorrHuyFdt,
-                default=FALSE)
+                default=TRUE)
             private$..homoTests <- jmvcore::OptionBool$new(
                 "homoTests",
                 homoTests,
@@ -371,14 +371,33 @@ anovaRMResults <- R6::R6Class(
                     "bsTerms"),
                 columns=list(
                     list(`name`="name", `title`="", `content`=".", `type`="text"),
-                    list(`name`="ss", `title`="Sum of Squares", `type`="number"),
-                    list(`name`="df", `title`="df", `type`="integer"),
-                    list(`name`="ms", `title`="Mean Square", `type`="number"),
-                    list(`name`="F", `title`="F", `type`="number"),
-                    list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue"),
-                    list(`name`="eta", `title`="\u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effSizeN2)"),
-                    list(`name`="partEta", `title`="partial \u03B7\u00B2", `type`="number", `format`="zto", `visible`="(partEffSizeN2)"),
-                    list(`name`="omega", `title`="\u03C9\u00B2", `type`="number", `format`="zto", `visible`="(effSizeW2)")))
+                    list(`name`="correction[none]", `title`="Sphericity Correction", `content`="None", `visible`="(spherCorrs && spherCorrNone)"),
+                    list(`name`="ss[none]", `title`="Sum of Squares", `type`="number", `visible`="(!spherCorrs || (spherCorrs && spherCorrNone))"),
+                    list(`name`="df[none]", `title`="df", `type`="integer", `visible`="(!spherCorrs || (spherCorrs && spherCorrNone))"),
+                    list(`name`="ms[none]", `title`="Mean Square", `type`="number", `visible`="(!spherCorrs || (spherCorrs && spherCorrNone))"),
+                    list(`name`="F[none]", `title`="F", `type`="number", `visible`="(!spherCorrs || (spherCorrs && spherCorrNone))"),
+                    list(`name`="p[none]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(!spherCorrs || (spherCorrs && spherCorrNone))"),
+                    list(`name`="eta[none]", `title`="\u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effSizeN2 && (!spherCorrs || (spherCorrs && spherCorrNone)))"),
+                    list(`name`="partEta[none]", `title`="partial \u03B7\u00B2", `type`="number", `format`="zto", `visible`="(partEffSizeN2 && (!spherCorrs || (spherCorrs && spherCorrNone)))"),
+                    list(`name`="omega[none]", `title`="\u03C9\u00B2", `type`="number", `format`="zto", `visible`="(effSizeW2 && (!spherCorrs || (spherCorrs && spherCorrNone)))"),
+                    list(`name`="correction[GG]", `title`="Sphericity Correction", `content`="Greenhouse-Geisser", `visible`="(spherCorrs && spherCorrGreenGsser)"),
+                    list(`name`="ss[GG]", `title`="Sum of Squares", `type`="number", `visible`="(spherCorrs && spherCorrGreenGsser)"),
+                    list(`name`="df[GG]", `title`="df", `type`="number", `visible`="(spherCorrs && spherCorrGreenGsser)"),
+                    list(`name`="ms[GG]", `title`="Mean Square", `type`="number", `visible`="(spherCorrs && spherCorrGreenGsser)"),
+                    list(`name`="F[GG]", `title`="F", `type`="number", `visible`="(spherCorrs && spherCorrGreenGsser)"),
+                    list(`name`="p[GG]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(spherCorrs && spherCorrGreenGsser)"),
+                    list(`name`="eta[GG]", `title`="\u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effSizeN2 && spherCorrs && spherCorrGreenGsser)"),
+                    list(`name`="partEta[GG]", `title`="partial \u03B7\u00B2", `type`="number", `format`="zto", `visible`="(partEffSizeN2 && spherCorrs && spherCorrGreenGsser)"),
+                    list(`name`="omega[GG]", `title`="\u03C9\u00B2", `type`="number", `format`="zto", `visible`="(effSizeW2 && spherCorrs && spherCorrGreenGsser)"),
+                    list(`name`="correction[HF]", `title`="Sphericity Correction", `content`="Huynh-Feldt", `visible`="(spherCorrs && spherCorrHuyFdt)"),
+                    list(`name`="ss[HF]", `title`="Sum of Squares", `type`="number", `visible`="(spherCorrs && spherCorrHuyFdt)"),
+                    list(`name`="df[HF]", `title`="df", `type`="number", `visible`="(spherCorrs && spherCorrHuyFdt)"),
+                    list(`name`="ms[HF]", `title`="Mean Square", `type`="number", `visible`="(spherCorrs && spherCorrHuyFdt)"),
+                    list(`name`="F[HF]", `title`="F", `type`="number", `visible`="(spherCorrs && spherCorrHuyFdt)"),
+                    list(`name`="p[HF]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(spherCorrs && spherCorrHuyFdt)"),
+                    list(`name`="eta[HF]", `title`="\u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effSizeN2 && spherCorrs && spherCorrHuyFdt)"),
+                    list(`name`="partEta[HF]", `title`="partial \u03B7\u00B2", `type`="number", `format`="zto", `visible`="(partEffSizeN2 && spherCorrs && spherCorrHuyFdt)"),
+                    list(`name`="omega[HF]", `title`="\u03C9\u00B2", `type`="number", `format`="zto", `visible`="(effSizeW2 && spherCorrs && spherCorrHuyFdt)")))
             private$..bsTable <- jmvcore::Table$new(
                 options=options,
                 name="bsTable",
@@ -441,9 +460,13 @@ anovaRMResults <- R6::R6Class(
                             options=options,
                             name="eqVar",
                             title="Test for Equality of Variances (Levene's)",
-                            visible=FALSE,
-                            rows=1,
+                            visible="(homoTests)",
+                            clearWith=list(
+                                "bs",
+                                "rmCells",
+                                "cov"),
                             columns=list(
+                                list(`name`="name", `title`="", `type`="text"),
                                 list(`name`="F", `type`="number"),
                                 list(`name`="df1", `type`="integer"),
                                 list(`name`="df2", `type`="integer"),
@@ -473,7 +496,18 @@ anovaRMResults <- R6::R6Class(
                 items="(postHoc)",
                 template=jmvcore::Table$new(
                     options=options,
-                    title=""))
+                    title="",
+                    clearWith=list(
+                        "dependent",
+                        "ss",
+                        "rmCells",
+                        "rmcModelTerms",
+                        "bscModelTerms",
+                        "bs",
+                        "rm",
+                        "cov",
+                        "rmTerms",
+                        "bsTerms")))
             private$..descPlot <- jmvcore::Image$new(
                 options=options,
                 name="descPlot",
@@ -585,9 +619,9 @@ anovaRM <- function(
     ss = "3",
     spherTests = FALSE,
     spherCorrs = FALSE,
-    spherCorrNone = FALSE,
-    spherCorrGreenGsser = FALSE,
-    spherCorrHuyFdt = FALSE,
+    spherCorrNone = TRUE,
+    spherCorrGreenGsser = TRUE,
+    spherCorrHuyFdt = TRUE,
     homoTests = FALSE,
     contrasts = NULL,
     postHoc = NULL,
