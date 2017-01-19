@@ -25,44 +25,152 @@ items:
           content: .
           type: text
 
-        - name: ss
+        - name: correction[none]
+          title: 'Sphericity Correction'
+          content: 'None'
+          visible: (spherCorrs && spherCorrNone)
+
+        - name: ss[none]
           title: Sum of Squares
           type: number
+          visible: (!spherCorrs || (spherCorrs && spherCorrNone))
 
-        - name: df
+        - name: df[none]
           title: df
           type: integer
+          visible: (!spherCorrs || (spherCorrs && spherCorrNone))
 
-        - name: ms
+        - name: ms[none]
           title: Mean Square
           type: number
+          visible: (!spherCorrs || (spherCorrs && spherCorrNone))
 
-        - name: F
+        - name: F[none]
           title: F
           type: number
+          visible: (!spherCorrs || (spherCorrs && spherCorrNone))
 
-        - name: p
+        - name: p[none]
           title: p
           type: number
           format: zto,pvalue
+          visible: (!spherCorrs || (spherCorrs && spherCorrNone))
 
-        - name: eta
+        - name: eta[none]
           title: η²
           type: number
           format: zto
-          visible: (effSizeN2)
+          visible: (effSizeN2 && (!spherCorrs || (spherCorrs && spherCorrNone)))
 
-        - name: partEta
+        - name: partEta[none]
           title: partial η²
           type: number
           format: zto
-          visible: (partEffSizeN2)
+          visible: (partEffSizeN2 && (!spherCorrs || (spherCorrs && spherCorrNone)))
 
-        - name: omega
+        - name: omega[none]
           title: ω²
           type: number
           format: zto
-          visible: (effSizeW2)
+          visible: (effSizeW2 && (!spherCorrs || (spherCorrs && spherCorrNone)))
+
+        - name: correction[GG]
+          title: 'Sphericity Correction'
+          content: 'Greenhouse-Geisser'
+          visible: (spherCorrs && spherCorrGreenGsser)
+
+        - name: ss[GG]
+          title: Sum of Squares
+          type: number
+          visible: (spherCorrs && spherCorrGreenGsser)
+
+        - name: df[GG]
+          title: df
+          type: number
+          visible: (spherCorrs && spherCorrGreenGsser)
+
+        - name: ms[GG]
+          title: Mean Square
+          type: number
+          visible: (spherCorrs && spherCorrGreenGsser)
+
+        - name: F[GG]
+          title: F
+          type: number
+          visible: (spherCorrs && spherCorrGreenGsser)
+
+        - name: p[GG]
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (spherCorrs && spherCorrGreenGsser)
+
+        - name: eta[GG]
+          title: η²
+          type: number
+          format: zto
+          visible: (effSizeN2 && spherCorrs && spherCorrGreenGsser)
+
+        - name: partEta[GG]
+          title: partial η²
+          type: number
+          format: zto
+          visible: (partEffSizeN2 && spherCorrs && spherCorrGreenGsser)
+
+        - name: omega[GG]
+          title: ω²
+          type: number
+          format: zto
+          visible: (effSizeW2 && spherCorrs && spherCorrGreenGsser)
+
+        - name: correction[HF]
+          title: 'Sphericity Correction'
+          content: 'Huynh-Feldt'
+          visible: (spherCorrs && spherCorrHuyFdt)
+
+        - name: ss[HF]
+          title: Sum of Squares
+          type: number
+          visible: (spherCorrs && spherCorrHuyFdt)
+
+        - name: df[HF]
+          title: df
+          type: number
+          visible: (spherCorrs && spherCorrHuyFdt)
+
+        - name: ms[HF]
+          title: Mean Square
+          type: number
+          visible: (spherCorrs && spherCorrHuyFdt)
+
+        - name: F[HF]
+          title: F
+          type: number
+          visible: (spherCorrs && spherCorrHuyFdt)
+
+        - name: p[HF]
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (spherCorrs && spherCorrHuyFdt)
+
+        - name: eta[HF]
+          title: η²
+          type: number
+          format: zto
+          visible: (effSizeN2 && spherCorrs && spherCorrHuyFdt)
+
+        - name: partEta[HF]
+          title: partial η²
+          type: number
+          format: zto
+          visible: (partEffSizeN2 && spherCorrs && spherCorrHuyFdt)
+
+        - name: omega[HF]
+          title: ω²
+          type: number
+          format: zto
+          visible: (effSizeW2 && spherCorrs && spherCorrHuyFdt)
 
     - name: bsTable
       title: Between Subjects Effects

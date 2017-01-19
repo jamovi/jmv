@@ -112,21 +112,21 @@ options:
     - name: spherCorrNone
       title: None
       type: Bool
-      default: false
+      default: true
       description: >
         No Sphericity corrections
 
     - name: spherCorrGreenGsser
       title: Greenhouse-Geisser
       type: Bool
-      default: false
+      default: true
       description: >
         Greenhouse-Geisser Sphericity corrections
 
     - name: spherCorrHuyFdt
       title: Huynh-Feldt
       type: Bool
-      default: false
+      default: true
       description: >
         Huynh-Feldt Sphericity corrections
 

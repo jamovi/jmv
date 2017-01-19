@@ -423,90 +423,143 @@ anovaRMClass <- R6::R6Class(
             rmTable <- self$results$get('rmTable')
             bsTable <- self$results$get('bsTable')
             
-            rmTerms <- private$.rmTerms()$terms
-            bsTerms <- private$.bsTerms()
-            
             summaryResult <- summary(result)
             model <- summaryResult$univariate.tests
             epsilon <- summaryResult$pval.adjustments
 
-            rmRowKeys <- rmTable$rowKeys
-            bsRowKeys <- bsTable$rowKeys
+            rmRows <- rmTable$rowKeys
+            bsRows <- bsTable$rowKeys
+            modelRows <- jmvcore::decomposeTerms(as.list(rownames(model)))
+            epsilonRows <- jmvcore::decomposeTerms(as.list(rownames(epsilon)))
+            resIndices <- which(sapply(rmRows, function(x) ".RES" %in% x))
             
-            resultRows <- jmvcore::decomposeTerms(as.list(rownames(model)))
-            resIndices <- which(sapply(rmRowKeys, function(x) ".RES" %in% x))
-            
-            for (i in seq_along(resultRows)) {
+            # Populate RM table
+            for (i in seq_along(rmRows)) {
                 
-                rmIndex <- which(sapply(lapply(rmRowKeys, toB64), function(x) setequal(resultRows[[i]], x)))
-                bsIndex <- which(sapply(lapply(bsRowKeys, toB64), function(x) setequal(resultRows[[i]], x)))
-                
-                if (length(rmIndex) > 0 || length(bsIndex) > 0) {
+                if (! ".RES" %in% rmRows[[i]]) { # if the row is not a residual
+                    
+                    index <- which(sapply(modelRows, function(x) setequal(toB64(rmRows[[i]]), x)))
                     
                     row <- list()
-                    row[["ss"]] <- model[i,"SS"]
-                    row[["df"]] <- model[i,"num Df"]
-                    row[["ms"]] <- row[["ss"]] / row[["df"]]
-                    row[["F"]] <- model[i,"F"]
-                    row[["p"]] <- model[i,"Pr(>F)"]
-
-                    if (length(rmIndex) > 0) {
-                        termsTotal <- private$.getSSt(rmIndex,rmRowKeys,resIndices)
-                        indicesTotal <- sapply(termsTotal, function(x) which(sapply(resultRows, function(y) setequal(y,x))))
+                    row[["ss[none]"]] <- row[["ss[GG]"]] <- row[["ss[HF]"]] <- model[index,"SS"]
+                    row[["F[none]"]] <- row[["F[GG]"]] <- row[["F[HF]"]] <- model[index,"F"]
+                    
+                    row[["df[none]"]] <- model[index,"num Df"]
+                    row[["ms[none]"]] <- row[["ss[none]"]] / row[["df[none]"]]
+                    row[["p[none]"]] <- model[index,"Pr(>F)"]
+                    
+                    # Add sphericity corrected values
+                    indexEps <- which(sapply(epsilonRows, function(x) setequal(toB64(rmRows[[i]]), x)))
+                    dfRes <- model[index,"den Df"]
+                    
+                    if (length(indexEps) == 0) {
+                        GG <- 1
+                        HF <- 1
                     } else {
-                        termsTotal <- lapply(self$options$bsTerms, toB64)
-                        indicesTotal <- sapply(termsTotal, function(x) which(sapply(resultRows, function(y) setequal(y,x))))
+                        GG <- if (is.na(epsilon[indexEps,"GG eps"])) 1 else epsilon[indexEps,"GG eps"]
+                        HF <- if (is.na(epsilon[indexEps,"HF eps"])) 1 else epsilon[indexEps,"HF eps"]
                     }
                     
-                    SSr <- model[i,"Error SS"]
-                    SSt <- sum(model[indicesTotal,"SS"]) + SSr
-                    MSr <- SSr/model[i,"den Df"]
-                    row[["eta"]] <- row[["ss"]] / SSt
-                    row[["partEta"]] <- row[["ss"]] / (row[["ss"]] + SSr)
+                    row[["df[GG]"]] <- row[["df[none]"]] * GG
+                    row[["ms[GG]"]] <- row[["ss[GG]"]] / row[["df[GG]"]]
+                    dfResGG <- dfRes * GG
+                    row[["p[GG]"]] <- pf(row[["F[GG]"]], row[["df[GG]"]], dfResGG, lower.tail=FALSE)
                     
-                    omega <- (row[["ss"]] - (row[["df"]] * MSr)) / (SSt + MSr)
+                    row[["df[HF]"]] <- row[["df[none]"]] * HF
+                    row[["ms[HF]"]] <- row[["ss[HF]"]] / row[["df[HF]"]]
+                    dfResHF <- dfRes * HF
+                    row[["p[HF]"]] <- pf(row[["F[HF]"]], row[["df[HF]"]], dfResHF, lower.tail=FALSE)
                     
-                    row[["omega"]] <- if (omega < 0) 0 else omega
+                    # Add effect sizes
+                    termsTotal <- private$.getTermsTotal(i, rmRows, resIndices, model)
+                    SSr <- model[index,"Error SS"]
+                    SSt <- termsTotal + SSr
+                    MSr <- SSr/dfRes
+                    row[["eta[none]"]] <- row[["eta[GG]"]] <- row[["eta[HF]"]] <- row[["ss[none]"]] / SSt
+                    row[["partEta[none]"]] <- row[["partEta[GG]"]] <- row[["partEta[HF]"]] <- row[["ss[none]"]] / (row[["ss[none]"]] + SSr)
                     
-                    if (length(rmIndex) > 0) {
-                        rmTable$setRow(rowNo=rmIndex, values=row)
+                    omega <- (row[["ss[none]"]] - (row[["df[none]"]] * MSr)) / (SSt + MSr)
+                    
+                    row[["omega[none]"]] <- row[["omega[GG]"]] <- row[["omega[HF]"]] <- if (omega < 0) 0 else omega
+                    
+                    rmTable$setRow(rowNo=i, values=row)
+                    
+                } else { # if the row is a residual
+                    
+                    term <- rmRows[[i]][-length(rmRows[[i]])]
+                    index <- which(sapply(modelRows, function(x) setequal(toB64(term), x)))
+                    
+                    row <- list()
+                    row[["ss[none]"]] <- row[["ss[GG]"]] <- row[["ss[HF]"]] <- model[index,"Error SS"]
+                    row[["df[none]"]] <- model[index,"den Df"]
+                    row[["ms[none]"]] <- row[["ss[none]"]] / row[["df[none]"]]
+                    row[["F[none]"]] <- row[["F[GG]"]]  <- row[["F[HF]"]] <- ""
+                    row[["p[none]"]] <- row[["p[GG]"]] <- row[["p[HF]"]] <- ""
+                    row[["eta[none]"]] <- row[["eta[GG]"]] <- row[["eta[HF]"]] <- ""
+                    row[["partEta[none]"]] <- row[["partEta[GG]"]] <- row[["partEta[HF]"]] <- ""
+                    row[["omega[none]"]] <- row[["omega[GG]"]] <- row[["omega[HF]"]] <- ""
+                    
+                    # Add sphericity corrected values
+                    indexEps <- which(sapply(epsilonRows, function(x) setequal(toB64(term), x)))
+                    dfRes <- model[index,"den Df"]
+                    
+                    if (length(indexEps) == 0) {
+                        GG <- 1
+                        HF <- 1
                     } else {
-                        bsTable$setRow(rowNo=bsIndex, values=row)
+                        GG <- if (is.na(epsilon[indexEps,"GG eps"])) 1 else epsilon[indexEps,"GG eps"]
+                        HF <- if (is.na(epsilon[indexEps,"HF eps"])) 1 else epsilon[indexEps,"HF eps"]
                     }
+                    
+                    row[["df[GG]"]] <- row[["df[none]"]] * GG
+                    row[["ms[GG]"]] <- row[["ss[GG]"]] / row[["df[GG]"]]
+                    row[["df[HF]"]] <- row[["df[none]"]] * HF
+                    row[["ms[HF]"]] <- row[["ss[HF]"]] / row[["df[HF]"]]
+                    
+                    rmTable$setRow(rowNo=i, values=row)
                 }
             }
             
-            resRowKeys <- rmRowKeys[resIndices]
-
-            for (i in seq_along(resRowKeys)) {
-
-                resid <- resRowKeys[[i]][ ! resRowKeys[[i]] %in% ".RES"]
-                index <- which(sapply(lapply(as.list(resultRows), fromB64), function(x) setequal(x, resid)))
+            # Populate BS table
+            bsTerms <- lapply(bsRows[which( ! sapply(bsRows, function(x) x[1] == "Residual"))], toB64)
+            if (length(bsTerms) > 0)
+                bsIndices <- sapply(bsTerms, function(x) which(sapply(modelRows, function(y) setequal(x,y))))
+            
+            for (i in seq_along(bsRows)) {
                 
-                row <- list()
-                row[["ss"]] <- model[index,"Error SS"]
-                row[["df"]] <- model[index,"den Df"]
-                row[["ms"]] <- row[["ss"]] / row[["df"]]
-                row[["F"]] <- ""
-                row[["p"]] <- ""
-                row[["eta"]] <- ""
-                row[["partEta"]] <- ""
-                row[["omega"]] <- ""
-
-                rmTable$setRow(rowKey=resRowKeys[[i]], values=row)
+                if (! bsRows[[i]][1] == "Residual") { # if the row is not a residual
+                    
+                    index <- which(sapply(modelRows, function(x) setequal(toB64(bsRows[[i]]), x)))
+                    
+                    row <- list()
+                    row[["ss"]] <- model[index,"SS"]
+                    row[["df"]] <- model[index,"num Df"]
+                    row[["ms"]] <- row[["ss"]] / row[["df"]]
+                    row[["F"]] <- model[index,"F"]
+                    row[["p"]] <- model[index,"Pr(>F)"]
+                    
+                    # Add effect sizes
+                    SSr <- model[index,"Error SS"]
+                    SSt <- sum(model[bsIndices,"SS"]) + SSr
+                    MSr <- SSr/model[index,"den Df"]
+                    row[["eta"]] <- row[["ss"]] / SSt
+                    row[["partEta"]] <- row[["ss"]] / (row[["ss"]] + SSr)
+                    omega <- (row[["ss"]] - (row[["df"]] * MSr)) / (SSt + MSr)
+                    row[["omega"]] <- if (omega < 0) 0 else omega
+                        
+                    bsTable$setRow(rowNo=i, values=row)
+                    
+                } else { # if the row is a residual
+                    
+                    row <- list()
+                    row[["ss"]] <- model["(Intercept)","Error SS"]
+                    row[["df"]] <- model["(Intercept)","den Df"]
+                    row[["ms"]] <- row[["ss"]] / row[["df"]]
+                    row[["F"]] <- row[["p"]] <- row[["eta"]] <- row[["partEta"]] <- row[["omega"]] <-""
+                    
+                    bsTable$setRow(rowNo=i, values=row)
+                }
             }
-            
-            row <- list()
-            row[["ss"]] <- model["(Intercept)","Error SS"]
-            row[["df"]] <- model["(Intercept)","den Df"]
-            row[["ms"]] <- row[["ss"]] / row[["df"]]
-            row[["F"]] <- ""
-            row[["p"]] <- ""
-            row[["eta"]] <- ""
-            row[["partEta"]] <- ""
-            row[["omega"]] <- ""
-            
-            bsTable$setRow(rowKey="Residual", values=row)
         },
         .populateSpher=function(result) {
             
@@ -933,7 +986,7 @@ anovaRMClass <- R6::R6Class(
             # Combine the un-normed means with the normed results
             merge(datac, ndatac)
         },
-        .getSSt=function (x, y, z) {
+        .getTermsTotal=function (x, y, z, model) {
             for(i in x:1) {
                 if (i %in% z) {
                     lower <- i + 1
@@ -952,7 +1005,12 @@ anovaRMClass <- R6::R6Class(
                     break
                 }
             }
-            return(lapply(y[lower:upper], toB64))
+            termsIndex <- lapply(y[lower:upper], toB64)
+            modelRows <- jmvcore::decomposeTerms(as.list(rownames(model)))
+            indicesTotal <- sapply(termsIndex, function(x) which(sapply(modelRows, function(y) setequal(y,x))))
+            
+            termsTotal <- sum(model[indicesTotal,"SS"])
+            
+            return(termsTotal)
         })
 )
-
