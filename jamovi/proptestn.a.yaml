@@ -25,4 +25,18 @@ options:
 
     - name: counts
       title: Counts (optional)
+      permitted:
+        - continuous
+        - nominal
+        - ordinal
       type: Variable
+
+    - name: ratio
+      title: Expected Proportions
+      type: Array
+      template:
+          type: Number
+          min: 50
+          max: 99.9
+      default:
+      description: contrasts

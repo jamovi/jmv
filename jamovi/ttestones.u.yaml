@@ -2,7 +2,8 @@ name:  ttestOneS
 title: One Sample T-Test
 jus:   '1.0'
 
-update: ./ttestones.events::update
+events:
+    update: ./ttestones.events::update
 
 children:
   - type: VariableSupplier

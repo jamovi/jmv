@@ -2,7 +2,8 @@ name:  ttestIS
 title: Independent Samples T-Test
 jus:   '1.0'
 
-update: ./ttestis.events::update
+events:
+    update: ./ttestis.events::update
 
 children:
   - type: VariableSupplier

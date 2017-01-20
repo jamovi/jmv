@@ -2,7 +2,8 @@ name:  corrMatrix
 title: Correlation Matrix
 jus:   '1.0'
 
-update: ./corrmatrix.events::update
+events:
+    update: ./corrmatrix.events::update
 
 children:
   - type: VariableSupplier

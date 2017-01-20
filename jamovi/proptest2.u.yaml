@@ -2,7 +2,8 @@ name:  propTest2
 title: Proportion Test (2 Outcomes)
 jus:   '1.0'
 
-update: ui.ciWidth.setEnabled(ui.ci.value());
+events:
+    update: ui.ciWidth.setEnabled(ui.ci.value());
 
 children:
   - type: VariableSupplier

@@ -1,7 +1,9 @@
-name:  propTestN
+name: propTestN
 title: Proportion Test (N Outcomes)
-jus:   '1.0'
-
+jus: '1.0'
+events:
+    update: './proptestn.events::update'
+    remoteDataChanged: './proptestn.events::onRemoteDataChanged'
 children:
   - type: VariableSupplier
     persistentItems: false
@@ -13,20 +15,64 @@ children:
         maxItemCount: 1
         fullRowSelect: true
         showColumnHeaders: false
+        events:
+          change: './proptestn.events::onChange_var'
         columns:
           - type: ListItem.VariableLabel
             name: column1
-            label:
+            label: null
             stretchFactor: 1
-
       - type: VariableTargetListBox
         name: counts
         label: Counts (optional)
+        permitted:
+          - continuous
+          - nominal
+          - ordinal
         maxItemCount: 1
         fullRowSelect: true
         showColumnHeaders: false
         columns:
           - type: ListItem.VariableLabel
             name: column1
-            label:
+            label: null
             stretchFactor: 1
+  - type: CollapseBox
+    label: Expected Proportions
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: ListBox
+        name: ratio
+        showColumnHeaders: true
+        fullRowSelect: true
+        height: large
+        stretchFactor: 1
+        events:
+          change: './proptestn.events::onChange_ratio'
+        columns:
+          - type: ListItem.Label
+            name: level
+            label: Level
+            headerAlign: left
+            stretchFactor: 1
+            isVirtual: true
+            maxWidth: 300
+            selectable: false
+          - type: ListItem.TextBox
+            name: ratio
+            label: Ratio
+            format: number
+            maxWidth: 50
+            inputPattern: '[0-9]+'
+            stretchFactor: 0.25
+            selectable: false
+          - type: ListItem.Label
+            name: proportion
+            label: Proportion
+            maxWidth: 100
+            headerAlign: right
+            horizontalAlignment: right
+            isVirtual: true
+            stretchFactor: 0.5
+            selectable: false
