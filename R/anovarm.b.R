@@ -468,6 +468,8 @@ anovaRMClass <- R6::R6Class(
                 
                 suppressWarnings({
                     
+                    table$setStatus('running')
+                    
                     referenceGrid <- lsmeans::lsmeans(result, formula)
                     tukey <- summary(pairs(referenceGrid, adjust='tukey'))
                 
@@ -520,6 +522,7 @@ anovaRMClass <- R6::R6Class(
                     table$setRow(rowNo=i, values=row)
                     private$.checkpoint()
                 }
+                table$setStatus('complete')
             }
         },
         .prepareDescPlots=function(data) {
@@ -532,24 +535,6 @@ anovaRMClass <- R6::R6Class(
             ciWidth   <- self$options$ciWidth
             errorBarType <- self$options$errBarDef
             
-            # rm <- sapply(self$options$rm, function(x) return(x$label))
-            # bs <- self$options$bs
-            # 
-            # rmVars <- c()
-            # bsVars <- c()
-            # if (groupName %in% rm)
-            #     rmVars[length(rmVars)+1] <- groupName
-            # else
-            #     bsVars[length(bsVars)+1] <- groupName
-            #     
-            # 
-            # if (length(rm) == 0)
-            #     summaryStat <- .summarySE(data, measurevar = 'dependent', groupvars = bs,
-            #                               conf.interval = ciWidth, na.rm = TRUE, .drop = FALSE, errorBarType = errorBarType)
-            # else
-            #     summaryStat <- .summarySEwithin(data, measurevar='dependent', betweenvars=bs, withinvars=rm,
-            #                                     idvar='subject', conf.interval=ciWidth, na.rm=TRUE, .drop=FALSE, errorBarType=errorBarType)
-            # 
             if (length(depName) == 0 || length(groupName) == 0)
                 return()
             
