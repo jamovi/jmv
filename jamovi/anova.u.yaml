@@ -1,7 +1,8 @@
 name: anova
 title: ANOVA
 jus: '1.0'
-update: './anova.events::update'
+events:
+    update: './anova.events::update'
 children:
   - type: VariableSupplier
     name: variablesupplier
@@ -104,13 +105,15 @@ children:
       - type: ListBox
         name: contrasts
         label: Factors
+        stretchFactor: 1
         showColumnHeaders: false
         columns:
           - type: ListItem.VariableLabel
             name: var
             label: null
             selectable: false
-            stretchFactor: 0.5
+            stretchFactor: 1
+            maxWidth: 300
           - type: ListItem.ComboBox
             name: type
             label: null

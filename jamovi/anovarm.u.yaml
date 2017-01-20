@@ -2,7 +2,8 @@ name: anovaRM
 title: Repeated Measures ANOVA
 jus: '1.0'
 stage: 1
-update: './anovarm.events::update'
+events:
+    update: './anovarm.events::update'
 children:
   - type: VariableSupplier
     name: variablesupplier
@@ -166,12 +167,14 @@ children:
         name: contrasts
         label: Factors
         showColumnHeaders: false
+        stretchFactor: 1
         columns:
           - type: ListItem.VariableLabel
             name: var
             label: null
             selectable: false
-            stretchFactor: 0.5
+            stretchFactor: 1
+            maxWidth: 300
           - type: ListItem.ComboBox
             name: type
             label: null

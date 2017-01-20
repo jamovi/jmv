@@ -2,7 +2,8 @@ name:  anovaRMNP
 title: Repeated Measures ANOVA (Non-parametric)
 jus:   '1.0'
 
-update: ./anovarmnp.events::update
+events:
+    update: ./anovarmnp.events::update
 
 children:
   - type: VariableSupplier
