@@ -20,12 +20,12 @@ reliabilityClass <- R6::R6Class(
                 data <- list()
                 for (item in items)
                     data[[item]] <- jmvcore::toNumeric(self$data[[item]])
-                
-                data <- as.data.frame(data)
+        
+                attr(data, 'row.names') <- seq_len(length(data[[1]]))
+                attr(data, 'class') <- 'data.frame'
+                data <- jmvcore::naOmit(data)
                 
                 private$.errorCheck(data)
-                
-                data <- jmvcore::naOmit(data)
                 
                 # Fill scale statistics table
                 
