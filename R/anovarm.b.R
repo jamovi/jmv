@@ -23,7 +23,8 @@ anovaRMClass <- R6::R6Class(
         .run=function() {
 
             dataSelected <- ! sapply(lapply(self$options$rmCells, function(x) return(x$measure)), is.null)
-            ready <- sum(dataSelected) == length(self$options$rmCells)
+            
+            ready <- sum(dataSelected) == length(self$options$rmCells) && length(self$options$rmTerms) > 0
             
             if (ready) {
                 
@@ -102,11 +103,6 @@ anovaRMClass <- R6::R6Class(
             rmVars <- sapply(self$options$rmCells, function(x) return(x$measure))
             for (var in rmVars)
                 leveneTable$addRow(rowKey=var, list(name=var))
-            
-            if (length(self$options$bs) == 0) {
-                for (var in rmVars)
-                    leveneTable$addFootnote(rowKey=var, 'name', 'As there are no between subjects factors specified this assumption is always met.')
-            }
         },
         .initPostHocTables=function() {
             
@@ -148,11 +144,11 @@ anovaRMClass <- R6::R6Class(
                 table$addColumn(name='t', title='t', type='number')
 
                 if (self$options$corrTukey)
-                    table$addColumn(name='ptukey', title='p<sub>tukey</p>', type='number', format='zto,pvalue')
+                    table$addColumn(name='ptukey', title='p<sub>tukey</sub>', type='number', format='zto,pvalue')
                 if (self$options$corrScheffe)
-                    table$addColumn(name='pscheffe', title='p<sub>sheffe</p>', type='number', format='zto,pvalue')
+                    table$addColumn(name='pscheffe', title='p<sub>sheffe</sub>', type='number', format='zto,pvalue')
                 if (self$options$corrBonf)
-                    table$addColumn(name='pbonferroni', title='p<sub>bonferroni</p>', type='number', format='zto,pvalue')
+                    table$addColumn(name='pbonferroni', title='p<sub>bonferroni</sub>', type='number', format='zto,pvalue')
                 if (self$options$corrHolm)
                     table$addColumn(name='pholm', title='p<sub>holm</p>', type='number', format='zto,pvalue')
                 
@@ -184,7 +180,6 @@ anovaRMClass <- R6::R6Class(
                     row <- list()
                     for (c in seq_along(comp[[i]][[1]]))
                         row[[paste0(names(comp[[i]][[1]][c]),'1')]] <- as.character(comp[[i]][[1]][c])
-                    row[['sep']] <- '–'
                     for (c in seq_along(comp[[i]][[2]]))
                         row[[paste0(names(comp[[i]][[2]][c]),'2')]] <- as.character(comp[[i]][[2]][c])
                     
@@ -386,7 +381,8 @@ anovaRMClass <- R6::R6Class(
                     if (length(index) == 0) {
                         
                         spher$setRow(rowKey=term, values=list('mauch'=1, 'p'=NaN, 'gg'=1, 'hf'=1))
-                        spher$addFootnote(rowKey=term, 'name', 'The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels')
+                        if (length(spher$getRow(rowKey=term)$name$footnotes) == 0)
+                            spher$addFootnote(rowKey=term, 'name', 'The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels')
                         
                     } else {
                         
@@ -404,19 +400,29 @@ anovaRMClass <- R6::R6Class(
                 for (term in self$options$rmTerms) {
                     
                     spher$setRow(rowKey=term, values=list('mauch'=1, 'p'=NaN, 'gg'=1, 'hf'=1))
-                    spher$addFootnote(rowKey=term, 'name', 'The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels')
+                    if (length(spher$getRow(rowKey=term)$name$footnotes) == 0)
+                        spher$addFootnote(rowKey=term, 'name', 'The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels')
                 }
             }
         },
         .populateLeveneTable=function () {
             
-            if (length(self$options$rmCells) == 0 || length(self$options$bs) == 0)
+            if (length(self$options$rmCells) == 0)
                 return()
             
             leveneTable <- self$results$get('assump')$get('eqVar')
+            
             rmVars <- sapply(self$options$rmCells, function(x) return(x$measure))
             covVars <- self$options$cov
-            bsVars <- self$options$bs[which(sapply(self$options$bs, function(x) length(x) == 1))]
+            bsVars <- self$options$bs
+            
+            if (length(bsVars) == 0) {
+                for (var in rmVars) {
+                    leveneTable$setRow(rowKey=var, values=list('F'=NaN, 'df1'='', 'df2'='', 'p'=''))
+                    leveneTable$addFootnote(rowKey=var, 'F', 'As there are no between subjects factors specified this assumption is always met.')
+                }
+                return()
+            }
             
             data <- list()
             for (rm in c(rmVars,covVars))
@@ -601,7 +607,6 @@ anovaRMClass <- R6::R6Class(
             if (is.null(image$state))
                 return(FALSE)
             
-            depName <- 'dependent'
             groupName <- self$options$descPlotsHAxis
             linesName <- self$options$descPlotsSepLines
             plotsName <- self$options$descPlotsSepPlots
@@ -637,27 +642,29 @@ anovaRMClass <- R6::R6Class(
                 
                 p <- ggplot(data=image$state$data, aes(x=group, y=mean, group=lines, colour=lines)) +
                     geom_line(size=.8, position=dodge) +
-                    geom_point(shape=21, fill='white', size=3, position=dodge) +
-                    labs(x=groupName, y=depName, colour=paste(linesName, errorType)) +
+                    labs(x=groupName, y="", colour=paste(linesName, errorType)) +
                     scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
                     the
                 
                 if (self$options$dispErrBars)
                     p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, width=.1, group=lines), size=.8, position=dodge)
                 
+                p <- p + geom_point(shape=21, fill='white', size=3, position=dodge)
+                
                 print(p)
                 
             } else {
                 
                 p <- ggplot(data=image$state$data) +
-                    geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill='white', size=3) +
-                    labs(x=groupName, y=depName, colour=paste(depName, errorType)) +
-                    scale_colour_manual(name=paste(depName, errorType), values=c(colour='#333333'), labels='') +
+                    labs(x=groupName, y="", colour=paste("", errorType)) +
+                    scale_colour_manual(name=paste("", errorType), values=c(colour='#333333'), labels='') +
                     scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
                     the
                 
                 if (self$options$dispErrBars)
                     p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, colour='colour', width=.1), size=.8)
+                
+                p <- p + geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill='white', size=3)
                 
                 print(p)
             }
@@ -769,7 +776,7 @@ anovaRMClass <- R6::R6Class(
         },
         .bsTerms=function() {
             
-            if (length(self$options$bsTerms) == 0) { # if no specific model is specified
+            if (length(self$options$bsTerms) == 0 && length(self$options$rmTerms) == 0) { # if no specific model is specified
                 
                 bsFactors <- self$options$bs
                 covariates <- self$options$cov

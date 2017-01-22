@@ -125,8 +125,6 @@ children:
             name: ss
             label: Sum of squares
             options:
-              - label: Type 1
-                value: '1'
               - label: Type 2
                 value: '2'
               - label: Type 3
