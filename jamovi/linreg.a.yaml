@@ -11,5 +11,26 @@ options:
       description:
           R: the data as a data frame
 
-    - name: vars
+    - name: dep
+      type: Variable
+      title: Dependent Variable
+      suggested:
+        - continuous
+      permitted:
+        - continuous
+        - nominal
+        - ordinal
+      description:
+          R: a string naming the dependent variable
+
+    - name: cov
       type: Variables
+      title: Covariates
+      suggested:
+        - continuous
+      permitted:
+        - continuous
+        - nominal
+        - ordinal
+      description:
+          R: a vector of strings naming the covariates
