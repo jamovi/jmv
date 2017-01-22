@@ -2,7 +2,8 @@ name:  descriptives
 title: Descriptives
 jus:   '1.0'
 
-update: ui.pcNEqGr.setEnabled(ui.pcEqGr.value());
+events:
+    update: ui.pcNEqGr.setEnabled(ui.pcEqGr.value());
 
 children:
   - type: VariableSupplier

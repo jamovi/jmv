@@ -1,7 +1,8 @@
 name: contTables
 title: Contingency Tables
 jus: '1.0'
-update: ui.ciWidth.setEnabled(ui.logOdds.value());
+events:
+    update: ui.ciWidth.setEnabled(ui.logOdds.value());
 children:
   - type: VariableSupplier
     name: variablesupplier
