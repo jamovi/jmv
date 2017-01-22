@@ -136,9 +136,9 @@ anovaRMClass <- R6::R6Class(
                 
                 for (i in seq_along(ph))
                     table$addColumn(name=paste0(ph[i],'1'), title=ph[i], type='text', superTitle='Comparison', combineBelow=TRUE)
-                
-                table$addColumn(name='sep', title='', type='text', superTitle='Comparison')
-                
+
+                table$addColumn(name='sep', title='', type='text', content='-', superTitle='Comparison', format='narrow')
+
                 for (i in seq_along(ph))
                     table$addColumn(name=paste0(ph[i],'2'), title=ph[i], type='text', superTitle='Comparison')
                 
