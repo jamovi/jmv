@@ -52,6 +52,8 @@ propTest2Options <- R6::R6Class(
             private$..ciWidth <- jmvcore::OptionNumber$new(
                 "ciWidth",
                 ciWidth,
+                min=50,
+                max=99.9,
                 default=95)
         
             self$.addOption(private$..vars)
@@ -133,11 +135,13 @@ propTest2Base <- R6::R6Class(
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}
-#' @param areCounts .
-#' @param testValue The test value 
-#' @param hypothesis Stuff 
-#' @param ci .
-#' @param ciWidth .
+#' @param areCounts TRUE or FALSE (default), the variables are counts
+#' @param testValue a number (default: 0.5), the value for the null hypothesis 
+#' @param hypothesis \code{'notequal'} (default), \code{'greater'} or 
+#'   \code{'less'}, the alternative hypothesis 
+#' @param ci TRUE or FALSE (default), provide confidence intervals
+#' @param ciWidth a number between 50 and 99.9 (default: 95), the confidence 
+#'   interval width 
 #' @export
 propTest2 <- function(
     data,

@@ -274,6 +274,9 @@ ttestISResults <- R6::R6Class(
                             title="Test of Equality of Variances (Levene's)",
                             visible="(eqv)",
                             rows="(vars)",
+                            clearWith=list(
+                                "group",
+                                "miss"),
                             notes=list(`p`="A low p-value suggests a violation of the assumption of equal variances"),
                             columns=list(
                                 list(`name`="name", `title`="", `content`="($key)", `type`="text"),
@@ -289,7 +292,8 @@ ttestISResults <- R6::R6Class(
                 visible="(desc)",
                 rows="(vars)",
                 clearWith=list(
-                    "group"),
+                    "group",
+                    "miss"),
                 columns=list(
                     list(`name`="dep", `title`="", `content`="($key)", `type`="text"),
                     list(`name`="group[1]", `title`="Group", `type`="text"),
@@ -345,27 +349,32 @@ ttestISBase <- R6::R6Class(
 #'
 #' 
 #' @param data the data as a data frame
-#' @param vars a vector of strings naming the variables of interest in 
-#'   \code{data}
-#' @param group The grouping variable 
-#' @param students .
-#' @param bf .
-#' @param bfPrior .
-#' @param welchs .
-#' @param mann .
-#' @param hypothesis Specifies the alternative hypothesis as either 
-#'   "oneGreater", "twoGreater" or "different"(default) 
-#' @param norm .
-#' @param eqv .
-#' @param meanDiff .
-#' @param effectSize .
-#' @param ci .
-#' @param ciWidth .
-#' @param desc .
-#' @param plots .
-#' @param miss Specifies how to deal with missing values. "perAnalysis" 
-#'   excludes missing values for individual dependent variables, "listwise" 
-#'   excludes an entire observation if one of its entries is missing. 
+#' @param vars a vector of strings naming the dependent variables
+#' @param group a string naming the grouping variable, must have 2 levels
+#' @param students TRUE (default) or FALSE, perform Student's t-tests
+#' @param bf TRUE or FALSE (default), provide Bayes factors
+#' @param bfPrior a number between 0.5 and 2 (default 0.707), the prior width 
+#'   to use in calculating Bayes factors 
+#' @param welchs TRUE or FALSE (default), perform Welch's t-tests
+#' @param mann TRUE or FALSE (default), perform Mann-Whitney U tests
+#' @param hypothesis \code{'different'} (default), \code{'oneGreater'} or 
+#'   \code{'twoGreater'}, the alternative hypothesis; group 1 different to group 
+#'   2, group 1 greater than group 2, and group 2 greater than group 1 
+#'   respectively 
+#' @param norm TRUE or FALSE (default), perform Shapiro-Wilk test of normality
+#' @param eqv TRUE or FALSE (default), perform Levene's test for equality of 
+#'   variances 
+#' @param meanDiff TRUE or FALSE (default), provide means and standard errors
+#' @param effectSize TRUE or FALSE (default), provide effect sizes
+#' @param ci TRUE or FALSE (default), provide confidence intervals
+#' @param ciWidth a number between 50 and 99.9 (default: 95), the width of 
+#'   confidence intervals 
+#' @param desc TRUE or FALSE (default), provide descriptive statistics
+#' @param plots TRUE or FALSE (default), provide descriptive plots
+#' @param miss \code{'perAnalysis'} or \code{'listwise'}, how to handle 
+#'   missing values; \code{'perAnalysis'} excludes missing values for individual 
+#'   dependent variables, \code{'listwise'} excludes a row from all analyses if 
+#'   one of its entries is missing. 
 #' @export
 ttestIS <- function(
     data,

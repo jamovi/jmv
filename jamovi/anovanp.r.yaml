@@ -41,6 +41,7 @@ items:
         title: Pairwise comparisons - $key
         type: Table
         rows: 0
+        clearWith:
 
         columns:
           - name: p1

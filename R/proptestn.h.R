@@ -11,7 +11,9 @@ propTestNOptions <- R6::R6Class(
     public = list(
         initialize = function(
             var = NULL,
-            counts = NULL, ...) {
+            counts = NULL,
+            expected = NULL,
+            ratio = NULL, ...) {
 
             super$initialize(
                 package='jmv',
@@ -21,20 +23,49 @@ propTestNOptions <- R6::R6Class(
         
             private$..var <- jmvcore::OptionVariable$new(
                 "var",
-                var)
+                var,
+                suggested=list(
+                    "nominal",
+                    "ordinal"),
+                permitted=list(
+                    "nominal",
+                    "ordinal",
+                    "nominaltext"))
             private$..counts <- jmvcore::OptionVariable$new(
                 "counts",
-                counts)
+                counts,
+                permitted=list(
+                    "continuous",
+                    "nominal",
+                    "ordinal"))
+            private$..expected <- jmvcore::OptionBool$new(
+                "expected",
+                expected)
+            private$..ratio <- jmvcore::OptionArray$new(
+                "ratio",
+                ratio,
+                template=jmvcore::OptionNumber$new(
+                    "ratio",
+                    NULL,
+                    min=0,
+                    default=1),
+                default=NULL)
         
             self$.addOption(private$..var)
             self$.addOption(private$..counts)
+            self$.addOption(private$..expected)
+            self$.addOption(private$..ratio)
         }),
     active = list(
         var = function() private$..var$value,
-        counts = function() private$..counts$value),
+        counts = function() private$..counts$value,
+        expected = function() private$..expected$value,
+        ratio = function() private$..ratio$value),
     private = list(
         ..var = NA,
-        ..counts = NA)
+        ..counts = NA,
+        ..expected = NA,
+        ..ratio = NA)
 )
 
 #' @import jmvcore
@@ -55,16 +86,23 @@ propTestNResults <- R6::R6Class(
                 name="props",
                 title="Proportions",
                 rows="(levels(var))",
-                clearWith=NULL,
+                clearWith=list(
+                    "var"),
                 columns=list(
                     list(`name`="level", `title`="Level", `type`="text", `content`="($key)"),
-                    list(`name`="count", `title`="Count", `type`="integer"),
-                    list(`name`="prop", `title`="Proportion", `type`="number")))
+                    list(`name`="name[obs]", `title`="", `type`="text", `content`="Observed", `visible`="(expected)"),
+                    list(`name`="count[obs]", `title`="Count", `type`="integer"),
+                    list(`name`="prop[obs]", `title`="Proportion", `type`="number"),
+                    list(`name`="name[exp]", `title`="", `type`="text", `content`="Expected", `visible`="(expected)"),
+                    list(`name`="count[exp]", `title`="Count", `type`="integer", `visible`="(expected)"),
+                    list(`name`="prop[exp]", `title`="Proportion", `type`="number", `visible`="(expected)")))
             private$..tests <- jmvcore::Table$new(
                 options=options,
                 name="tests",
                 title="\u03C7\u00B2 Goodness of Fit",
                 rows=1,
+                clearWith=list(
+                    "var"),
                 columns=list(
                     list(`name`="chi", `title`="\u03C7\u00B2", `type`="number"),
                     list(`name`="df", `title`="df", `type`="integer"),
@@ -97,15 +135,23 @@ propTestNBase <- R6::R6Class(
 #' @param data the data as a data frame
 #' @param var a string naming the variable of interest in \code{data}
 #' @param counts .
+#' @param expected TRUE or FALSE (default), whether expected counts should be 
+#'   displayed
+#' @param ratio a string naming the variable representing counts, or NULL if 
+#'   each row represents a single observation 
 #' @export
 propTestN <- function(
     data,
     var,
-    counts) {
+    counts,
+    expected,
+    ratio = NULL) {
 
     options <- propTestNOptions$new(
         var = var,
-        counts = counts)
+        counts = counts,
+        expected = expected,
+        ratio = ratio)
 
     results <- propTestNResults$new(
         options = options)

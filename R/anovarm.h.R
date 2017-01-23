@@ -570,7 +570,7 @@ anovaRMBase <- R6::R6Class(
                 revision = revision)
         }))
 
-#' anovaRM
+#' Repeated Measures ANOVA
 #'
 #' 
 #' @param data the data as a data frame

@@ -22,8 +22,10 @@ options:
       suggested:
         - nominal
         - ordinal
-      description: >
-        The variables of interest
+      description:
+          R: >
+              a string naming the variable to use as the rows in the
+              contingency table
 
     - name: cols
       title: Columns
@@ -31,8 +33,10 @@ options:
       suggested:
         - nominal
         - ordinal
-      description: >
-        The variables of interest
+      description:
+          R: >
+            a string naming the variable to use as the columns in the
+            contingency table
 
     - name: counts
       title: Counts (optional)
@@ -44,15 +48,21 @@ options:
         - nominal
         - ordinal
       default:
-      description: >
-        The variables of interest
+      description:
+          R: >
+            a string naming the variable to use as counts, or NULL if each row
+            represents a single observation
 
     - name: pcRow
       title: Row
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide row percentages
 
     - name: pcCol
       title: Column
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide column percentages

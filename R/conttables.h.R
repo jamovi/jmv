@@ -325,24 +325,32 @@ contTablesBase <- R6::R6Class(
 #'
 #' 
 #' @param data the data as a data frame
-#' @param rows The variables of interest 
-#' @param cols The variables of interest 
-#' @param counts The variables of interest 
-#' @param layers The variables of interest 
-#' @param chiSq The phi 
-#' @param chiSqCorr The 
-#' @param likeRat The 
-#' @param contCoef The Contingency coefficient 
-#' @param phiCra Phi and Cramer's V 
-#' @param logOdds .
-#' @param ciWidth .
-#' @param gamma .
-#' @param taub .
-#' @param obs .
-#' @param exp .
-#' @param pcRow .
-#' @param pcCol .
-#' @param pcTot .
+#' @param rows a string naming the variable to use as the rows in the 
+#'   contingency table 
+#' @param cols a string naming the variable to use as the columns in the 
+#'   contingency table 
+#' @param counts a string naming the variable to use as counts, or NULL if 
+#'   each row represents a single observation 
+#' @param layers a character vector naming variables to split the contingency 
+#'   table across 
+#' @param chiSq TRUE (default) or FALSE, provide χ²
+#' @param chiSqCorr TRUE or FALSE (default), provide χ² with continuity 
+#'   correction
+#' @param likeRat TRUE or FALSE (default), provide the likelihood ratio
+#' @param contCoef TRUE or FALSE (default), provide the contingency 
+#'   coefficient
+#' @param phiCra TRUE or FALSE (default), provide Phi and Cramer's V
+#' @param logOdds TRUE or FALSE (default), provide the log odds ratio (only 
+#'   available for 2x2 tables) 
+#' @param ciWidth a number between 50 and 99.9 (default: 95), width of the 
+#'   confidence intervals to provide 
+#' @param gamma TRUE or FALSE (default), provide gamma
+#' @param taub TRUE or FALSE (default), provide Kendall's tau-b
+#' @param obs TRUE (default) or FALSE, provide the observed counts
+#' @param exp TRUE or FALSE (default), provide the expected counts
+#' @param pcRow TRUE or FALSE (default), provide row percentages
+#' @param pcCol TRUE or FALSE (default), provide column percentages
+#' @param pcTot TRUE or FALSE (default), provide total percentages
 #' @export
 contTables <- function(
     data,

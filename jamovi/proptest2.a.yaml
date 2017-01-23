@@ -8,6 +8,7 @@ menuTitle: 2 Outcomes
 menuSubtitle: Binomial test
 
 version: "1.0.0"
+jas: "1.0"
 engineType: R
 
 options:
@@ -28,13 +29,16 @@ options:
     - name: areCounts
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), the variables are counts
 
     - name: testValue
       title: Test value
       type: Number
       default: 0.5
-      description: >
-        The test value
+      description:
+          R: >
+            a number (default: 0.5), the value for the null hypothesis
 
     - name: hypothesis
       title: Hypothesis
@@ -44,13 +48,23 @@ options:
         - greater
         - less
       default: notequal
-      description: >
-        Stuff
+      description:
+          R: >
+            \code{'notequal'} (default), \code{'greater'} or \code{'less'}, the
+            alternative hypothesis
 
     - name: ci
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide confidence intervals
 
     - name: ciWidth
       type: Number
+      min: 50
+      max: 99.9
       default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95), the confidence interval
+            width

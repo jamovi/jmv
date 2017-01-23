@@ -200,16 +200,18 @@ reliabilityBase <- R6::R6Class(
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}
-#' @param alphaScale .
-#' @param omegaScale .
-#' @param meanScale .
-#' @param sdScale .
-#' @param corPlot .
-#' @param alphaItems .
-#' @param omegaItems .
-#' @param meanItems .
-#' @param sdItems .
-#' @param itemRestCor .
+#' @param alphaScale TRUE (default) or FALSE, provide Cronbach's α
+#' @param omegaScale TRUE or FALSE (default), provide McDonald's ω
+#' @param meanScale TRUE or FALSE (default), provide the mean
+#' @param sdScale TRUE or FALSE (default), provide the standard deviation
+#' @param corPlot TRUE or FALSE (default), provide a correlation plot
+#' @param alphaItems TRUE or FALSE (default), provide what the Cronbach's α 
+#'   would be if the item was dropped 
+#' @param omegaItems TRUE or FALSE (default), provide what the McDonald's ω 
+#'   would be if the item was dropped 
+#' @param meanItems TRUE or FALSE (default), provide item means
+#' @param sdItems TRUE or FALSE (default), provide item standard deviations
+#' @param itemRestCor TRUE or FALSE (default), provide item-rest correlations
 #' @export
 reliability <- function(
     data,

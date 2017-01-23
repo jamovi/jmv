@@ -13,7 +13,7 @@ children:
       - continuous
       - nominal
       - ordinal
-    persistentItems: false
+    persistentItems: true
     stretchFactor: 1
     children:
       - type: VariableTargetListBox

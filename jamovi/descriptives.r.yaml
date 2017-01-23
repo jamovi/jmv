@@ -13,7 +13,7 @@ items:
       columns:
         - name: name
           title: ""
-          content: ($key)
+          content: $key
           type: text
 
         - name: 'n'
@@ -110,6 +110,7 @@ items:
           title: Frequencies of $key
           type: Table
           visible: (levels($key))
+          clearWith:
 
           rows: (levels($key))
 
@@ -149,3 +150,4 @@ items:
           title: $key
           type: Image
           renderFun: .plotFreq
+          clearWith:

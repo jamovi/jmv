@@ -74,19 +74,27 @@ options:
       title: Horizontal axis
       type: Variable
       default:
-      description: the variable placed on the horizontal axis of the plot
+      description:
+          R: >
+            a string naming the variable placed on the horizontal axis of the
+            plot
 
     - name: descPlotsSepLines
       title: Separate lines
       type: Variable
       default:
-      description: the variable represented as separate lines on the plot
+      description:
+          R: >
+            a string naming the variable represented as separate lines on the
+            plot
 
     - name: descPlotsSepPlots
       title: Separate plots
       type: Variable
       default:
-      description: the variable to separate over to form multiple plots
+      description:
+          R: >
+            a string naming the variable to separate over to form multiple plots
 
     - name: postHoc
       title: Post Hoc Tests
@@ -98,61 +106,76 @@ options:
       title: Tukey
       type: Bool
       default: false
-      description: perform Tukey correction in post-hoc tests
+      description:
+          R: TRUE or FALSE (default), perform Tukey correction in post-hoc tests
 
     - name: corrScheffe
       title: Scheffe
       type: Bool
       default: false
-      description: perform Scheffe correction in post-hoc tests
+      description:
+          R: >
+            TRUE or FALSE (default), perform Scheffe correction in post-hoc
+            tests
 
     - name: corrBonf
       title: Bonferroni
       type: Bool
       default: false
-      description: perform Bonferroni correction in post-hoc tests
+      description:
+          R: >
+            TRUE or FALSE (default), perform Bonferroni correction in post-hoc
+            tests
 
     - name: corrHolm
       title: Holm
       type: Bool
       default: false
-      description: perform Holm correction in post-hoc tests
+      description:
+          R: >
+            TRUE or FALSE (default), perform Holm correction in post-hoc tests
 
     - name: descStats
       title: Descriptive statistics
       type: Bool
       default: false
-      description: provide descriptive statistics
+      description:
+          R: TRUE or FALSE (default), provide descriptive statistics
 
     - name: homo
       title: Homogeneity tests
       type: Bool
       default: false
-      description: perform homogeneity tests
+      description:
+          R: TRUE or FALSE (default), perform homogeneity tests
 
     - name: qq
       title: Q-Q plot of residuals
       type: Bool
       default: false
-      description: provide a Q-Q plot of residuals
+      description:
+          R: TRUE or FALSE (default), provide a Q-Q plot of residuals
 
     - name: etaSq
       title: η²
       type: Bool
       default: false
-      description: provide η² (effect size)
+      description:
+          R: TRUE or FALSE (default), provide η² (effect size)
 
     - name: etaSqP
       title: partial η²
       type: Bool
       default: false
-      description: provide partial η² (effect size)
+      description:
+          R: TRUE or FALSE (default), provide partial η² (effect size)
 
     - name: omegaSq
       title: ω²
       type: Bool
       default: false
-      description: provide ω² (effect size)
+      description:
+          R: TRUE or FALSE (default), provide ω² (effect size)
 
     - name: plotError
       title: Error Bar Definition
@@ -173,7 +196,8 @@ options:
       max: 99.9
       default: 95
       description: >
-        value between 50 and 99.9 specifying the confidence interval width
+        a number between 50 and 99.9 (default: 95) specifying the confidence
+        interval width
 
     - name: ss
       title: Sum of squares
@@ -184,4 +208,6 @@ options:
         - '3'
       default: '3'
       description:
-          R: "'1', '2' or '3' - the sum of squares to use, defaults to type 3"
+          R: >
+            \code{'1'}, \code{'2'} or \code{'3'} (default) - the sum of squares
+            to use

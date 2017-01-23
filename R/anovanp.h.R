@@ -91,6 +91,7 @@ anovaNPResults <- R6::R6Class(
                     options=options,
                     title="Pairwise comparisons - $key",
                     rows=0,
+                    clearWith=NULL,
                     columns=list(
                         list(`name`="p1", `title`="", `content`=".", `type`="text"),
                         list(`name`="p2", `title`="", `content`=".", `type`="text"),
@@ -125,7 +126,7 @@ anovaNPBase <- R6::R6Class(
 #' @param deps a string naming the dependent variable in \code{data}
 #' @param group a string naming the grouping or independent variable in 
 #'   \code{data}
-#' @param pairs Pairwise Comparisons 
+#' @param pairs TRUE or FALSE (default), perform pairwise comparisons
 #' @export
 anovaNP <- function(
     data,

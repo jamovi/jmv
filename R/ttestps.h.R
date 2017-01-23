@@ -216,11 +216,12 @@ ttestPSResults <- R6::R6Class(
                 visible="(norm)",
                 rows="(pairs)",
                 notes=list(`p`="A low p-value suggests a violation of the assumption of normality"),
-                clearWith=NULL,
+                clearWith=list(
+                    "miss"),
                 columns=list(
-                    list(`name`="name1", `title`="", `type`="text", `content`="."),
-                    list(`name`="sep", `title`="", `type`="text", `content`="-", `format`="sep"),
-                    list(`name`="name2", `title`="", `type`="text", `content`="."),
+                    list(`name`="name1", `title`="", `type`="text"),
+                    list(`name`="sep", `title`="", `type`="text", `content`="-", `format`="narrow"),
+                    list(`name`="name2", `title`="", `type`="text"),
                     list(`name`="w", `title`="W", `type`="number"),
                     list(`name`="p", `type`="number", `format`="zto,pvalue")))
             private$..desc <- jmvcore::Table$new(
@@ -228,7 +229,8 @@ ttestPSResults <- R6::R6Class(
                 name="desc",
                 title="Descriptives",
                 visible="(desc)",
-                clearWith=NULL,
+                clearWith=list(
+                    "miss"),
                 columns=list(
                     list(`name`="name", `title`="", `content`=".", `type`="text"),
                     list(`name`="num", `title`="N", `type`="integer"),
@@ -276,23 +278,28 @@ ttestPSBase <- R6::R6Class(
 #'
 #' 
 #' @param data the data as a data frame
-#' @param pairs .
-#' @param students .
-#' @param bf .
-#' @param bfPrior .
-#' @param wilcoxon .
-#' @param hypothesis Specifies the alternative hypothesis as either 
-#'   "oneGreater", "twoGreater" or "different"(default) 
-#' @param norm .
-#' @param meanDiff .
-#' @param effectSize .
-#' @param ci .
-#' @param ciWidth .
-#' @param desc .
-#' @param plots .
-#' @param miss Specifies how to deal with missing values. "perAnalysis" 
-#'   excludes missing values for individual dependent variables, "listwise" 
-#'   excludes an entire observation if one of its entries is missing. 
+#' @param pairs the variables of interest in \code{data}
+#' @param students TRUE (default) or FALSE, perform Student's t-tests
+#' @param bf TRUE or FALSE (default), provide Bayes factors
+#' @param bfPrior a number between 0.5 and 2 (default 0.707), the prior width 
+#'   to use in calculating Bayes factors 
+#' @param wilcoxon TRUE or FALSE (default), perform Wilcoxon signed rank tests
+#' @param hypothesis \code{'different'} (default), \code{'oneGreater'} or 
+#'   \code{'twoGreater'}, the alternative hypothesis; group 1 different to group 
+#'   2, group 1 greater than group 2, and group 2 greater than group 1 
+#'   respectively 
+#' @param norm TRUE or FALSE (default), perform Shapiro-wilk normality tests
+#' @param meanDiff TRUE or FALSE (default), provide means and standard errors
+#' @param effectSize TRUE or FALSE (default), provide effect sizes
+#' @param ci TRUE or FALSE (default), provide confidence intervals
+#' @param ciWidth a number between 50 and 99.9 (default: 95), the width of 
+#'   confidence intervals 
+#' @param desc TRUE or FALSE (default), provide descriptive statistics
+#' @param plots TRUE or FALSE (default), provide descriptive plots
+#' @param miss \code{'perAnalysis'} or \code{'listwise'}, how to handle 
+#'   missing values; \code{'perAnalysis'} excludes missing values for individual 
+#'   dependent variables, \code{'listwise'} excludes a row from all analyses if 
+#'   one of its entries is missing. 
 #' @export
 ttestPS <- function(
     data,

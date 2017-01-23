@@ -5,6 +5,7 @@ title: Reliability Analysis
 menuGroup: Exploration
 
 version: "1.0.0"
+jas: "1.0"
 engineType: R
 
 options:
@@ -31,48 +32,72 @@ options:
       title: Cronbach's α
       type: Bool
       default: true
+      description:
+          R: TRUE (default) or FALSE, provide Cronbach's α
 
     - name: omegaScale
       title: McDonald's ω
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide McDonald's ω
 
     - name: meanScale
       title: Mean
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide the mean
 
     - name: sdScale
       title: Standard deviation
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide the standard deviation
 
     - name: corPlot
       title: Correlation Plot
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide a correlation plot
 
     - name: alphaItems
       title: Cronbach's α (if item is dropped)
       type: Bool
       default: false
+      description:
+          R: >
+            TRUE or FALSE (default), provide what the Cronbach's α would be if
+            the item was dropped
 
     - name: omegaItems
       title: McDonald's ω (if item is dropped)
       type: Bool
       default: false
+      description:
+          R: >
+            TRUE or FALSE (default), provide what the McDonald's ω would be if
+            the item was dropped
 
     - name: meanItems
       title: Mean
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide item means
 
     - name: sdItems
       title: Standard deviation
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide item standard deviations
 
     - name: itemRestCor
       title: Item-rest correlation
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide item-rest correlations

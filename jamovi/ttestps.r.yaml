@@ -189,23 +189,22 @@ items:
       notes:
           p: A low p-value suggests a violation of the assumption of normality
       clearWith:
+          - miss
 
       columns:
         - name: name1
           title: ""
           type: text
-          content: .
 
         - name: sep
           title: ""
           type: text
           content: '-'
-          format: sep
+          format: narrow
 
         - name: name2
           title: ""
           type: text
-          content: .
 
         - name: w
           title: "W"
@@ -220,6 +219,7 @@ items:
       type: Table
       visible: (desc)
       clearWith:
+          - miss
 
       columns:
         - name: name

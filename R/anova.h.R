@@ -258,7 +258,7 @@ anovaResults <- R6::R6Class(
                     "modelTerms",
                     "ss"),
                 columns=list(
-                    list(`name`="name", `title`="", `content`=".", `type`="text"),
+                    list(`name`="name", `title`="", `type`="text"),
                     list(`name`="ss", `title`="Sum of Squares", `type`="number"),
                     list(`name`="df", `title`="df", `type`="integer"),
                     list(`name`="ms", `title`="Mean Square", `type`="number"),
@@ -409,28 +409,33 @@ anovaBase <- R6::R6Class(
 #' @param modelTerms a list of character vectors describing the terms to go 
 #'   into the model 
 #' @param contrasts contrasts
-#' @param descPlotsHAxis the variable placed on the horizontal axis of the 
-#'   plot
-#' @param descPlotsSepLines the variable represented as separate lines on the 
-#'   plot
-#' @param descPlotsSepPlots the variable to separate over to form multiple 
-#'   plots
+#' @param descPlotsHAxis a string naming the variable placed on the horizontal 
+#'   axis of the plot 
+#' @param descPlotsSepLines a string naming the variable represented as 
+#'   separate lines on the plot 
+#' @param descPlotsSepPlots a string naming the variable to separate over to 
+#'   form multiple plots 
 #' @param postHoc a list of terms to perform post-hoc tests on
-#' @param corrTukey perform Tukey correction in post-hoc tests
-#' @param corrScheffe perform Scheffe correction in post-hoc tests
-#' @param corrBonf perform Bonferroni correction in post-hoc tests
-#' @param corrHolm perform Holm correction in post-hoc tests
-#' @param descStats provide descriptive statistics
-#' @param homo perform homogeneity tests
-#' @param qq provide a Q-Q plot of residuals
-#' @param etaSq provide η² (effect size)
-#' @param etaSqP provide partial η² (effect size)
-#' @param omegaSq provide ω² (effect size)
+#' @param corrTukey TRUE or FALSE (default), perform Tukey correction in 
+#'   post-hoc tests
+#' @param corrScheffe TRUE or FALSE (default), perform Scheffe correction in 
+#'   post-hoc tests 
+#' @param corrBonf TRUE or FALSE (default), perform Bonferroni correction in 
+#'   post-hoc tests 
+#' @param corrHolm TRUE or FALSE (default), perform Holm correction in 
+#'   post-hoc tests 
+#' @param descStats TRUE or FALSE (default), provide descriptive statistics
+#' @param homo TRUE or FALSE (default), perform homogeneity tests
+#' @param qq TRUE or FALSE (default), provide a Q-Q plot of residuals
+#' @param etaSq TRUE or FALSE (default), provide η² (effect size)
+#' @param etaSqP TRUE or FALSE (default), provide partial η² (effect size)
+#' @param omegaSq TRUE or FALSE (default), provide ω² (effect size)
 #' @param plotError \code{'ci'} or \code{'se'} - use confidence intervals or 
 #'   standard errors on the plot 
-#' @param ciWidth value between 50 and 99.9 specifying the confidence interval 
-#'   width 
-#' @param ss '1', '2' or '3' - the sum of squares to use, defaults to type 3
+#' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the 
+#'   confidence interval width 
+#' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default) - the sum of 
+#'   squares to use 
 #' @export
 anova <- function(
     data,

@@ -8,7 +8,7 @@ propTest2Class <- R6::R6Class(
         .run = function() {
 
             table <- self$results$get('table')
-            table$clearRows()
+            table$deleteRows()
             private$.setup()
 
             rowNo <- 1

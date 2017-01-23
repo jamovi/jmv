@@ -27,19 +27,34 @@ propTestNClass <- R6::R6Class(
                 counts <- table(var)
             }
 
+            ratio <- self$options$ratio
+            if (is.null(ratio))
+                expProps <- rep(1/length(counts), length(counts))
+            else
+                expProps <- ratio / sum(ratio)
+
             total <- sum(counts)
 
-            table <- self$results$get('props')
+            table <- self$results$props
 
-            for (key in table$rowKeys) {
+            keys <- table$rowKeys
+            for (i in seq_along(keys)) {
+                key <- keys[[i]]
                 if (key %in% names(counts)) {
                     count <- counts[[key]]
-                    table$setRow(rowKey=key, values=list(count=count, prop=count/total))
+                    expProp <- expProps[i]
+                    values <- list(
+                        `count[obs]`=count,
+                        `prop[obs]`=count / total,
+                        `count[exp]`=expProp * total,
+                        `prop[exp]`=expProp)
+                    table$setRow(rowKey=key, values=values)
                 }
             }
 
-            tests <- self$results$get('tests')
-            result <- try(chisq.test(counts))
+            tests <- self$results$tests
+
+            result <- try(chisq.test(counts, p=expProps))
 
             if ( ! base::inherits(result, 'try-error')) {
                 tests$setRow(rowNo=1, values=list(

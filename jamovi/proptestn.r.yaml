@@ -1,7 +1,7 @@
 ---
 name:  propTestN
 title: Proportion Test (N Outcomes)
-api: 1
+jrs:   '1.0'
 
 items:
     - name: props
@@ -9,6 +9,7 @@ items:
       type: Table
       rows: (levels(var))
       clearWith:
+          - var
 
       columns:
           - name: level
@@ -16,18 +17,42 @@ items:
             type: text
             content: ($key)
 
-          - name: count
+          - name: name[obs]
+            title: ''
+            type: text
+            content: Observed
+            visible: (expected)
+
+          - name: count[obs]
             title: Count
             type: integer
 
-          - name: prop
+          - name: prop[obs]
             title: Proportion
             type: number
+
+          - name: name[exp]
+            title: ''
+            type: text
+            content: Expected
+            visible: (expected)
+
+          - name: count[exp]
+            title: Count
+            type: integer
+            visible: (expected)
+
+          - name: prop[exp]
+            title: Proportion
+            type: number
+            visible: (expected)
 
     - name: tests
       title: χ² Goodness of Fit
       type: Table
       rows: 1
+      clearWith:
+          - var
 
       columns:
           - name: chi

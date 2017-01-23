@@ -26,21 +26,29 @@ options:
         - continuous
         - nominal
         - ordinal
+      description:
+          R: a vector of strings naming the repeated measures variables
 
     - name: pairs
       title: Pairwise comparisons - Durbin-Conover
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), perform pairwise comparisons
 
     - name: desc
       title: Descriptives
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide descriptive statistics
 
     - name: plots
       title: Descriptive plot
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide a descriptive plot
 
     - name: plotType
       title: Plot Type
@@ -49,5 +57,7 @@ options:
         - means
         - medians
       default: means
-      description: >
-        stuff
+      description:
+          R: >
+            \code{'means'} (default) or \code{'medians'}, the error bars to use
+            in the plot

@@ -205,7 +205,7 @@ descriptivesResults <- R6::R6Class(
                 swapRowsColumns=TRUE,
                 clearWith=NULL,
                 columns=list(
-                    list(`name`="name", `title`="", `content`="($key)", `type`="text"),
+                    list(`name`="name", `title`="", `content`="$key", `type`="text"),
                     list(`name`="n", `title`="N", `type`="integer"),
                     list(`name`="missing", `title`="Missing", `type`="integer"),
                     list(`name`="mean", `title`="Mean", `type`="number", `visible`="(mean)"),
@@ -233,6 +233,7 @@ descriptivesResults <- R6::R6Class(
                     options=options,
                     title="Frequencies of $key",
                     visible="(levels($key))",
+                    clearWith=NULL,
                     rows="(levels($key))",
                     columns=list(
                         list(`name`="level", `title`="Level", `type`="text", `content`="($key)"),
@@ -248,7 +249,8 @@ descriptivesResults <- R6::R6Class(
                 template=jmvcore::Image$new(
                     options=options,
                     title="$key",
-                    renderFun=".plotFreq"))
+                    renderFun=".plotFreq",
+                    clearWith=NULL))
             self$add(private$..descriptives)
             self$add(private$..frequencies)
             self$add(private$..freqPlots)}))
@@ -278,25 +280,28 @@ descriptivesBase <- R6::R6Class(
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}
-#' @param mean The mean of the variables 
-#' @param median The median of the variables 
-#' @param mode .
-#' @param sum .
-#' @param sd .
-#' @param variance .
-#' @param range .
-#' @param min .
-#' @param max .
-#' @param se .
-#' @param skew .
-#' @param kurt .
-#' @param freq .
-#' @param plots .
-#' @param plotW .
-#' @param plotH .
-#' @param quart .
-#' @param pcEqGr .
-#' @param pcNEqGr .
+#' @param mean TRUE (default) or FALSE, provide the mean
+#' @param median TRUE (default) or FALSE, provide the median
+#' @param mode TRUE or FALSE (default), provide the mode
+#' @param sum TRUE or FALSE (default), provide the sum
+#' @param sd TRUE or FALSE (default), provide the standard deviation
+#' @param variance TRUE or FALSE (default), provide the variance
+#' @param range TRUE or FALSE (default), provide the range
+#' @param min TRUE or FALSE (default), provide the minimum
+#' @param max TRUE or FALSE (default), provide the maximum
+#' @param se TRUE or FALSE (default), provide the standard error
+#' @param skew TRUE or FALSE (default), provide the skewness
+#' @param kurt TRUE or FALSE (default), provide the kurtosis
+#' @param freq TRUE or FALSE (default), provide frequency tables (nominal, 
+#'   ordinal variables only) 
+#' @param plots TRUE or FALSE (default), provide frequency tables (nominal, 
+#'   ordinal variables only) 
+#' @param plotW an integer (default: 480) specifying the width of the plots 
+#' @param plotH an integer (default: 320) specifying the height of the plots 
+#' @param quart TRUE or FALSE (default), provide quartiles
+#' @param pcEqGr TRUE or FALSE (default), provide quantiles
+#' @param pcNEqGr an integer (default: 4) specifying the number of equal 
+#'   groups 
 #' @export
 descriptives <- function(
     data,

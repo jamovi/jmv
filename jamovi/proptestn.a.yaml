@@ -8,7 +8,7 @@ menuTitle: N Outcomes
 menuSubtitle: χ² Goodness of fit
 
 version: "1.0.0"
-jmc: "1.0.0"
+jas: "1.0"
 engineType: R
 
 options:
@@ -20,23 +20,39 @@ options:
     - name: var
       title: Variable
       type: Variable
+      suggested:
+        - nominal
+        - ordinal
+      permitted:
+        - nominal
+        - ordinal
+        - nominaltext
       description:
           R: a string naming the variable of interest in \code{data}
 
     - name: counts
       title: Counts (optional)
+      type: Variable
       permitted:
         - continuous
         - nominal
         - ordinal
-      type: Variable
+
+    - name: expected
+      title: Expected counts
+      type: Bool
+      description:
+          R: TRUE or FALSE (default), whether expected counts should be displayed
 
     - name: ratio
       title: Expected Proportions
       type: Array
       template:
           type: Number
-          min: 50
-          max: 99.9
+          min: 0
+          default: 1
       default:
-      description: contrasts
+      description:
+          R: >
+            a string naming the variable representing counts, or NULL if each
+            row represents a single observation

@@ -264,6 +264,9 @@ items:
           type: Table
           visible: (eqv)
           rows: (vars)
+          clearWith:
+            - group
+            - miss
           notes:
               p: A low p-value suggests a violation of the assumption of equal variances
 
@@ -291,6 +294,7 @@ items:
       rows: (vars)
       clearWith:
         - group
+        - miss
 
       columns:
         - name: dep

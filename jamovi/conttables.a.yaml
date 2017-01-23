@@ -22,8 +22,10 @@ options:
       suggested:
         - nominal
         - ordinal
-      description: >
-        The variables of interest
+      description:
+          R: >
+              a string naming the variable to use as the rows in the
+              contingency table
 
     - name: cols
       title: Columns
@@ -31,11 +33,13 @@ options:
       suggested:
         - nominal
         - ordinal
-      description: >
-        The variables of interest
+      description:
+          R: >
+            a string naming the variable to use as the columns in the
+            contingency table
 
     - name: counts
-      title: Counts
+      title: Counts (optional)
       type: Variable
       suggested:
         - continuous
@@ -44,55 +48,63 @@ options:
         - nominal
         - ordinal
       default:
-      description: >
-        The variables of interest
+      description:
+          R: >
+            a string naming the variable to use as counts, or NULL if each row
+            represents a single observation
 
     - name: layers
       title: Layers
       type: Variables
       default: []
-      description: >
-        The variables of interest
+      description:
+          R: >
+            a character vector naming variables to split the contingency table
+            across
 
     - name: chiSq
-      title: X2
+      title: χ²
       type: Bool
       default: true
-      description: >
-        The phi
+      description:
+          R: TRUE (default) or FALSE, provide χ²
 
     - name: chiSqCorr
-      title: X2 continuity correction
+      title: χ² continuity correction
       type: Bool
       default: false
-      description: >
-        The
+      description:
+          R: TRUE or FALSE (default), provide χ² with continuity correction
 
     - name: likeRat
       title: Likelihood ratio
       type: Bool
       default: false
-      description: >
-        The
+      description:
+          R: TRUE or FALSE (default), provide the likelihood ratio
 
     - name: contCoef
       title: Contingency coefficient
       type: Bool
       default: false
-      description: >
-        The Contingency coefficient
+      description:
+          R: TRUE or FALSE (default), provide the contingency coefficient
 
     - name: phiCra
       title: Phi and Cramer's V
       type: Bool
       default: false
-      description: >
-        Phi and Cramer's V
+      description:
+          R: TRUE or FALSE (default), provide Phi and Cramer's V
 
     - name: logOdds
       title: Log odds ratio (2x2 only)
       type: Bool
       default: false
+      description:
+          R: >
+            TRUE or FALSE (default), provide the log odds ratio (only available
+            for 2x2 tables)
 
     - name: ciWidth
       title: Confidence level
@@ -100,38 +112,56 @@ options:
       min: 50
       max: 99.9
       default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95), width of the confidence
+            intervals to provide
 
     - name: gamma
       title: Gamma
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide gamma
 
     - name: taub
       title: Kendall's tau-b
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide Kendall's tau-b
 
     - name: obs
       title: Observed
       type: Bool
       default: true
+      description:
+          R: TRUE (default) or FALSE, provide the observed counts
 
     - name: exp
       title: Expected
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide the expected counts
 
     - name: pcRow
       title: Row
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide row percentages
 
     - name: pcCol
       title: Column
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide column percentages
 
     - name: pcTot
       title: Total
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide total percentages

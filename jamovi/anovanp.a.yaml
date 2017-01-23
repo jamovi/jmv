@@ -40,5 +40,5 @@ options:
       title: DSCF Pairwise Comparisons
       type: Bool
       default: false
-      description: >
-        Pairwise Comparisons
+      description:
+          R: TRUE or FALSE (default), perform pairwise comparisons

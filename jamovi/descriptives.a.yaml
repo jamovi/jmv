@@ -21,102 +21,138 @@ options:
       title: Mean
       type: Bool
       default: true
-      description: >
-        The mean of the variables
+      description:
+          R: TRUE (default) or FALSE, provide the mean
 
     - name: median
       title: Median
       type: Bool
       default: true
-      description: >
-        The median of the variables
+      description:
+          R: TRUE (default) or FALSE, provide the median
 
     - name: mode
       title: Mode
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide the mode
 
     - name: sum
       title: Sum
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide the sum
 
     - name: sd
       title: Standard deviation
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide the standard deviation
 
     - name: variance
       title: Variance
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide the variance
 
     - name: range
       title: Range
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide the range
 
     - name: min
       title: Minimum
       type: Bool
       default: true
+      description:
+          R: TRUE or FALSE (default), provide the minimum
 
     - name: max
       title: Maximum
       type: Bool
       default: true
+      description:
+          R: TRUE or FALSE (default), provide the maximum
 
     - name: se
       title: Standard error
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide the standard error
 
     - name: skew
       title: Skewness
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide the skewness
 
     - name: kurt
       title: Kurtosis
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide the kurtosis
 
     - name: freq
       title: Frequency tables
       type: Bool
       default: false
+      description:
+          R: >
+            TRUE or FALSE (default), provide frequency tables (nominal, ordinal
+            variables only)
 
     - name: plots
       title: Frequency plots
       type: Bool
       default: false
-
-#    - name: plotCorr
-#      title: Correlation plot
-#      type: Bool
-#      default: false
+      description:
+          R: >
+            TRUE or FALSE (default), provide frequency tables (nominal, ordinal
+            variables only)
 
     - name: plotW
       title: Plot width
       type: Integer
       default: 480
+      description:
+          R: >
+            an integer (default: 480) specifying the width of the plots
 
     - name: plotH
       title: Plot height
       type: Integer
       default: 320
+      description:
+          R: >
+            an integer (default: 320) specifying the height of the plots
 
     - name: quart
       title: Quartiles
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide quartiles
 
     - name: pcEqGr
       title: Cut points for
       type: Bool
       default: false
+      description:
+          R: TRUE or FALSE (default), provide quantiles
 
     - name: pcNEqGr
       title: Cut point values
       type: Integer
       default: 4
+      description:
+          R: >
+            an integer (default: 4) specifying the number of equal groups

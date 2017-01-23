@@ -203,17 +203,22 @@ corrMatrixBase <- R6::R6Class(
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables to correlate in 
 #'   \code{data} 
-#' @param pearson The pearson 
-#' @param spearman The spearman 
-#' @param kendall The Kendall's tau-b 
-#' @param sig The Report Significance 
-#' @param flag The Report Significance 
-#' @param ci .
-#' @param ciWidth .
-#' @param plots .
-#' @param plotDens .
-#' @param plotStats .
-#' @param hypothesis Stuff 
+#' @param pearson TRUE (default) or FALSE, provide Pearson's R
+#' @param spearman TRUE or FALSE (default), provide Spearman's rho
+#' @param kendall TRUE or FALSE (default), provide Kendall's tau-b
+#' @param sig TRUE (default) or FALSE, provide significance levels
+#' @param flag TRUE or FALSE (default), flag significant correlations
+#' @param ci TRUE or FALSE (default), provide confidence intervals
+#' @param ciWidth a number between 50 and 99.9 (default: 95), the width of 
+#'   confidence intervals to provide 
+#' @param plots TRUE or FALSE (default), provide a correlation matrix plot
+#' @param plotDens TRUE or FALSE (default), provide densities in the 
+#'   correlation matrix plot 
+#' @param plotStats TRUE or FALSE (default), provide statistics in the 
+#'   correlation matrix plot 
+#' @param hypothesis one of \code{'corr'} (default), \code{'pos'}, 
+#'   \code{'neg'} specifying the alernative hypothesis; correlated, correlated 
+#'   positively, correlated negatively respectively. 
 #' @export
 corrMatrix <- function(
     data,

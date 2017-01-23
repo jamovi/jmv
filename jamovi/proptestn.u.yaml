@@ -2,8 +2,8 @@ name: propTestN
 title: Proportion Test (N Outcomes)
 jus: '1.0'
 events:
-    update: './proptestn.events::update'
-    remoteDataChanged: './proptestn.events::onRemoteDataChanged'
+  update: './proptestn.events::update'
+  remoteDataChanged: './proptestn.events::onRemoteDataChanged'
 children:
   - type: VariableSupplier
     persistentItems: false
@@ -37,6 +37,12 @@ children:
             name: column1
             label: null
             stretchFactor: 1
+  - type: LayoutBox
+    margin: large
+    children:
+      - name: expected
+        type: CheckBox
+        label: Expected counts
   - type: CollapseBox
     label: Expected Proportions
     collapsed: true
