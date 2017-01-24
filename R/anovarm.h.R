@@ -21,17 +21,13 @@ anovaRMOptions <- R6::R6Class(
             bsTerms = NULL,
             ss = "3",
             spherTests = FALSE,
-            spherCorrs = FALSE,
-            spherCorrNone = TRUE,
-            spherCorrGreenGsser = TRUE,
-            spherCorrHuyFdt = TRUE,
+            spherCorr = list(
+                "none"),
             homoTests = FALSE,
             contrasts = NULL,
             postHoc = NULL,
-            corrTukey = TRUE,
-            corrScheffe = FALSE,
-            corrBonf = FALSE,
-            corrHolm = FALSE,
+            postHocCorr = list(
+                "tukey"),
             descPlotsHAxis = NULL,
             descPlotsSepLines = NULL,
             descPlotsSepPlots = NULL,
@@ -39,9 +35,7 @@ anovaRMOptions <- R6::R6Class(
             errBarDef = "ci",
             ciWidth = 95,
             dispDescStats = FALSE,
-            effSizeN2 = FALSE,
-            partEffSizeN2 = FALSE,
-            effSizeW2 = FALSE, ...) {
+            effectSize = NULL, ...) {
 
             super$initialize(
                 package='jmv',
@@ -123,22 +117,15 @@ anovaRMOptions <- R6::R6Class(
                 "spherTests",
                 spherTests,
                 default=FALSE)
-            private$..spherCorrs <- jmvcore::OptionBool$new(
-                "spherCorrs",
-                spherCorrs,
-                default=FALSE)
-            private$..spherCorrNone <- jmvcore::OptionBool$new(
-                "spherCorrNone",
-                spherCorrNone,
-                default=TRUE)
-            private$..spherCorrGreenGsser <- jmvcore::OptionBool$new(
-                "spherCorrGreenGsser",
-                spherCorrGreenGsser,
-                default=TRUE)
-            private$..spherCorrHuyFdt <- jmvcore::OptionBool$new(
-                "spherCorrHuyFdt",
-                spherCorrHuyFdt,
-                default=TRUE)
+            private$..spherCorr <- jmvcore::OptionNMXList$new(
+                "spherCorr",
+                spherCorr,
+                options=list(
+                    list(name="none", title="None"),
+                    list(name="GG", title="Greenhouse-Geisser"),
+                    list(name="HF", title="Huynh-Feldt")),
+                default=list(
+                    "none"))
             private$..homoTests <- jmvcore::OptionBool$new(
                 "homoTests",
                 homoTests,
@@ -177,22 +164,16 @@ anovaRMOptions <- R6::R6Class(
                         "postHoc",
                         NULL)),
                 default=NULL)
-            private$..corrTukey <- jmvcore::OptionBool$new(
-                "corrTukey",
-                corrTukey,
-                default=TRUE)
-            private$..corrScheffe <- jmvcore::OptionBool$new(
-                "corrScheffe",
-                corrScheffe,
-                default=FALSE)
-            private$..corrBonf <- jmvcore::OptionBool$new(
-                "corrBonf",
-                corrBonf,
-                default=FALSE)
-            private$..corrHolm <- jmvcore::OptionBool$new(
-                "corrHolm",
-                corrHolm,
-                default=FALSE)
+            private$..postHocCorr <- jmvcore::OptionNMXList$new(
+                "postHocCorr",
+                postHocCorr,
+                options=list(
+                    list(name="tukey", title="Tukey"),
+                    list(name="scheffe", title="Scheffe"),
+                    list(name="bonf", title="Bonferroni"),
+                    list(name="holm", title="Holm")),
+                default=list(
+                    "tukey"))
             private$..descPlotsHAxis <- jmvcore::OptionVariable$new(
                 "descPlotsHAxis",
                 descPlotsHAxis,
@@ -226,18 +207,13 @@ anovaRMOptions <- R6::R6Class(
                 "dispDescStats",
                 dispDescStats,
                 default=FALSE)
-            private$..effSizeN2 <- jmvcore::OptionBool$new(
-                "effSizeN2",
-                effSizeN2,
-                default=FALSE)
-            private$..partEffSizeN2 <- jmvcore::OptionBool$new(
-                "partEffSizeN2",
-                partEffSizeN2,
-                default=FALSE)
-            private$..effSizeW2 <- jmvcore::OptionBool$new(
-                "effSizeW2",
-                effSizeW2,
-                default=FALSE)
+            private$..effectSize <- jmvcore::OptionNMXList$new(
+                "effectSize",
+                effectSize,
+                options=list(
+                    list(name="eta", title="\u03B7\u00B2"),
+                    list(name="partEta", title="partial \u03B7\u00B2"),
+                    list(name="omega", title="\u03C9\u00B2")))
         
             self$.addOption(private$..rm)
             self$.addOption(private$..rmCells)
@@ -247,17 +223,11 @@ anovaRMOptions <- R6::R6Class(
             self$.addOption(private$..bsTerms)
             self$.addOption(private$..ss)
             self$.addOption(private$..spherTests)
-            self$.addOption(private$..spherCorrs)
-            self$.addOption(private$..spherCorrNone)
-            self$.addOption(private$..spherCorrGreenGsser)
-            self$.addOption(private$..spherCorrHuyFdt)
+            self$.addOption(private$..spherCorr)
             self$.addOption(private$..homoTests)
             self$.addOption(private$..contrasts)
             self$.addOption(private$..postHoc)
-            self$.addOption(private$..corrTukey)
-            self$.addOption(private$..corrScheffe)
-            self$.addOption(private$..corrBonf)
-            self$.addOption(private$..corrHolm)
+            self$.addOption(private$..postHocCorr)
             self$.addOption(private$..descPlotsHAxis)
             self$.addOption(private$..descPlotsSepLines)
             self$.addOption(private$..descPlotsSepPlots)
@@ -265,9 +235,7 @@ anovaRMOptions <- R6::R6Class(
             self$.addOption(private$..errBarDef)
             self$.addOption(private$..ciWidth)
             self$.addOption(private$..dispDescStats)
-            self$.addOption(private$..effSizeN2)
-            self$.addOption(private$..partEffSizeN2)
-            self$.addOption(private$..effSizeW2)
+            self$.addOption(private$..effectSize)
         }),
     active = list(
         rm = function() private$..rm$value,
@@ -278,17 +246,11 @@ anovaRMOptions <- R6::R6Class(
         bsTerms = function() private$..bsTerms$value,
         ss = function() private$..ss$value,
         spherTests = function() private$..spherTests$value,
-        spherCorrs = function() private$..spherCorrs$value,
-        spherCorrNone = function() private$..spherCorrNone$value,
-        spherCorrGreenGsser = function() private$..spherCorrGreenGsser$value,
-        spherCorrHuyFdt = function() private$..spherCorrHuyFdt$value,
+        spherCorr = function() private$..spherCorr$value,
         homoTests = function() private$..homoTests$value,
         contrasts = function() private$..contrasts$value,
         postHoc = function() private$..postHoc$value,
-        corrTukey = function() private$..corrTukey$value,
-        corrScheffe = function() private$..corrScheffe$value,
-        corrBonf = function() private$..corrBonf$value,
-        corrHolm = function() private$..corrHolm$value,
+        postHocCorr = function() private$..postHocCorr$value,
         descPlotsHAxis = function() private$..descPlotsHAxis$value,
         descPlotsSepLines = function() private$..descPlotsSepLines$value,
         descPlotsSepPlots = function() private$..descPlotsSepPlots$value,
@@ -296,9 +258,7 @@ anovaRMOptions <- R6::R6Class(
         errBarDef = function() private$..errBarDef$value,
         ciWidth = function() private$..ciWidth$value,
         dispDescStats = function() private$..dispDescStats$value,
-        effSizeN2 = function() private$..effSizeN2$value,
-        partEffSizeN2 = function() private$..partEffSizeN2$value,
-        effSizeW2 = function() private$..effSizeW2$value),
+        effectSize = function() private$..effectSize$value),
     private = list(
         ..rm = NA,
         ..rmCells = NA,
@@ -308,17 +268,11 @@ anovaRMOptions <- R6::R6Class(
         ..bsTerms = NA,
         ..ss = NA,
         ..spherTests = NA,
-        ..spherCorrs = NA,
-        ..spherCorrNone = NA,
-        ..spherCorrGreenGsser = NA,
-        ..spherCorrHuyFdt = NA,
+        ..spherCorr = NA,
         ..homoTests = NA,
         ..contrasts = NA,
         ..postHoc = NA,
-        ..corrTukey = NA,
-        ..corrScheffe = NA,
-        ..corrBonf = NA,
-        ..corrHolm = NA,
+        ..postHocCorr = NA,
         ..descPlotsHAxis = NA,
         ..descPlotsSepLines = NA,
         ..descPlotsSepPlots = NA,
@@ -326,9 +280,7 @@ anovaRMOptions <- R6::R6Class(
         ..errBarDef = NA,
         ..ciWidth = NA,
         ..dispDescStats = NA,
-        ..effSizeN2 = NA,
-        ..partEffSizeN2 = NA,
-        ..effSizeW2 = NA)
+        ..effectSize = NA)
 )
 
 #' @import jmvcore
@@ -371,33 +323,33 @@ anovaRMResults <- R6::R6Class(
                     "bsTerms"),
                 columns=list(
                     list(`name`="name", `title`="", `content`=".", `type`="text"),
-                    list(`name`="correction[none]", `title`="Sphericity Correction", `content`="None", `visible`="(spherCorrs && spherCorrNone)"),
-                    list(`name`="ss[none]", `title`="Sum of Squares", `type`="number", `visible`="(!spherCorrs || (spherCorrs && spherCorrNone))"),
-                    list(`name`="df[none]", `title`="df", `type`="integer", `visible`="(!spherCorrs || (spherCorrs && spherCorrNone))"),
-                    list(`name`="ms[none]", `title`="Mean Square", `type`="number", `visible`="(!spherCorrs || (spherCorrs && spherCorrNone))"),
-                    list(`name`="F[none]", `title`="F", `type`="number", `visible`="(!spherCorrs || (spherCorrs && spherCorrNone))"),
-                    list(`name`="p[none]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(!spherCorrs || (spherCorrs && spherCorrNone))"),
-                    list(`name`="eta[none]", `title`="\u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effSizeN2 && (!spherCorrs || (spherCorrs && spherCorrNone)))"),
-                    list(`name`="partEta[none]", `title`="partial \u03B7\u00B2", `type`="number", `format`="zto", `visible`="(partEffSizeN2 && (!spherCorrs || (spherCorrs && spherCorrNone)))"),
-                    list(`name`="omega[none]", `title`="\u03C9\u00B2", `type`="number", `format`="zto", `visible`="(effSizeW2 && (!spherCorrs || (spherCorrs && spherCorrNone)))"),
-                    list(`name`="correction[GG]", `title`="Sphericity Correction", `content`="Greenhouse-Geisser", `visible`="(spherCorrs && spherCorrGreenGsser)"),
-                    list(`name`="ss[GG]", `title`="Sum of Squares", `type`="number", `visible`="(spherCorrs && spherCorrGreenGsser)"),
-                    list(`name`="df[GG]", `title`="df", `type`="number", `visible`="(spherCorrs && spherCorrGreenGsser)"),
-                    list(`name`="ms[GG]", `title`="Mean Square", `type`="number", `visible`="(spherCorrs && spherCorrGreenGsser)"),
-                    list(`name`="F[GG]", `title`="F", `type`="number", `visible`="(spherCorrs && spherCorrGreenGsser)"),
-                    list(`name`="p[GG]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(spherCorrs && spherCorrGreenGsser)"),
-                    list(`name`="eta[GG]", `title`="\u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effSizeN2 && spherCorrs && spherCorrGreenGsser)"),
-                    list(`name`="partEta[GG]", `title`="partial \u03B7\u00B2", `type`="number", `format`="zto", `visible`="(partEffSizeN2 && spherCorrs && spherCorrGreenGsser)"),
-                    list(`name`="omega[GG]", `title`="\u03C9\u00B2", `type`="number", `format`="zto", `visible`="(effSizeW2 && spherCorrs && spherCorrGreenGsser)"),
-                    list(`name`="correction[HF]", `title`="Sphericity Correction", `content`="Huynh-Feldt", `visible`="(spherCorrs && spherCorrHuyFdt)"),
-                    list(`name`="ss[HF]", `title`="Sum of Squares", `type`="number", `visible`="(spherCorrs && spherCorrHuyFdt)"),
-                    list(`name`="df[HF]", `title`="df", `type`="number", `visible`="(spherCorrs && spherCorrHuyFdt)"),
-                    list(`name`="ms[HF]", `title`="Mean Square", `type`="number", `visible`="(spherCorrs && spherCorrHuyFdt)"),
-                    list(`name`="F[HF]", `title`="F", `type`="number", `visible`="(spherCorrs && spherCorrHuyFdt)"),
-                    list(`name`="p[HF]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(spherCorrs && spherCorrHuyFdt)"),
-                    list(`name`="eta[HF]", `title`="\u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effSizeN2 && spherCorrs && spherCorrHuyFdt)"),
-                    list(`name`="partEta[HF]", `title`="partial \u03B7\u00B2", `type`="number", `format`="zto", `visible`="(partEffSizeN2 && spherCorrs && spherCorrHuyFdt)"),
-                    list(`name`="omega[HF]", `title`="\u03C9\u00B2", `type`="number", `format`="zto", `visible`="(effSizeW2 && spherCorrs && spherCorrHuyFdt)")))
+                    list(`name`="correction[none]", `title`="Sphericity Correction", `content`="None", `visible`="(spherCorr:none && (spherCorr:GG || spherCorr:HF))"),
+                    list(`name`="ss[none]", `title`="Sum of Squares", `type`="number", `visible`="(spherCorr:none)"),
+                    list(`name`="df[none]", `title`="df", `type`="integer", `visible`="(spherCorr:none)"),
+                    list(`name`="ms[none]", `title`="Mean Square", `type`="number", `visible`="(spherCorr:none)"),
+                    list(`name`="F[none]", `title`="F", `type`="number", `visible`="(spherCorr:none)"),
+                    list(`name`="p[none]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(spherCorr:none)"),
+                    list(`name`="eta[none]", `title`="\u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:eta && spherCorr:none)"),
+                    list(`name`="partEta[none]", `title`="partial \u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:partEta && spherCorr:none)"),
+                    list(`name`="omega[none]", `title`="\u03C9\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:omega && spherCorr:none)"),
+                    list(`name`="correction[GG]", `title`="Sphericity Correction", `content`="Greenhouse-Geisser", `visible`="(spherCorr:GG)"),
+                    list(`name`="ss[GG]", `title`="Sum of Squares", `type`="number", `visible`="(spherCorr:GG)"),
+                    list(`name`="df[GG]", `title`="df", `type`="number", `visible`="(spherCorr:GG)"),
+                    list(`name`="ms[GG]", `title`="Mean Square", `type`="number", `visible`="(spherCorr:GG)"),
+                    list(`name`="F[GG]", `title`="F", `type`="number", `visible`="(spherCorr:GG)"),
+                    list(`name`="p[GG]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(spherCorr:GG)"),
+                    list(`name`="eta[GG]", `title`="\u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:eta && spherCorr:GG)"),
+                    list(`name`="partEta[GG]", `title`="partial \u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:partEta && spherCorr:GG)"),
+                    list(`name`="omega[GG]", `title`="\u03C9\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:omega && spherCorr:GG)"),
+                    list(`name`="correction[HF]", `title`="Sphericity Correction", `content`="Huynh-Feldt", `visible`="(spherCorr:HF)"),
+                    list(`name`="ss[HF]", `title`="Sum of Squares", `type`="number", `visible`="(spherCorr:HF)"),
+                    list(`name`="df[HF]", `title`="df", `type`="number", `visible`="(spherCorr:HF)"),
+                    list(`name`="ms[HF]", `title`="Mean Square", `type`="number", `visible`="(spherCorr:HF)"),
+                    list(`name`="F[HF]", `title`="F", `type`="number", `visible`="(spherCorr:HF)"),
+                    list(`name`="p[HF]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(spherCorr:HF)"),
+                    list(`name`="eta[HF]", `title`="\u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:eta && spherCorr:HF)"),
+                    list(`name`="partEta[HF]", `title`="partial \u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:partEta && spherCorr:HF)"),
+                    list(`name`="omega[HF]", `title`="\u03C9\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:omega && spherCorr:HF)")))
             private$..bsTable <- jmvcore::Table$new(
                 options=options,
                 name="bsTable",
@@ -420,9 +372,9 @@ anovaRMResults <- R6::R6Class(
                     list(`name`="ms", `title`="Mean Square", `type`="number"),
                     list(`name`="F", `title`="F", `type`="number"),
                     list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue"),
-                    list(`name`="eta", `title`="\u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effSizeN2)"),
-                    list(`name`="partEta", `title`="partial \u03B7\u00B2", `type`="number", `format`="zto", `visible`="(partEffSizeN2)"),
-                    list(`name`="omega", `title`="\u03C9\u00B2", `type`="number", `format`="zto", `visible`="(effSizeW2)")))
+                    list(`name`="eta", `title`="\u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:eta)"),
+                    list(`name`="partEta", `title`="partial \u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:partEta)"),
+                    list(`name`="omega", `title`="\u03C9\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:omega)")))
             private$..assump <- R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
@@ -582,17 +534,11 @@ anovaRMBase <- R6::R6Class(
 #' @param bsTerms The Between Subjects model terms 
 #' @param ss Sum of squares 
 #' @param spherTests Sphericity tests 
-#' @param spherCorrs Sphericity corrections 
-#' @param spherCorrNone No Sphericity corrections 
-#' @param spherCorrGreenGsser Greenhouse-Geisser Sphericity corrections 
-#' @param spherCorrHuyFdt Huynh-Feldt Sphericity corrections 
+#' @param spherCorr Sphericity corrections 
 #' @param homoTests Display Homogeneity tests 
 #' @param contrasts .
 #' @param postHoc Post Hoc Tests 
-#' @param corrTukey Post Hoc Tests Tukey Correction 
-#' @param corrScheffe Post Hoc Tests Scheffe Correction 
-#' @param corrBonf Post Hoc Tests Bonferroni Correction 
-#' @param corrHolm Post Hoc Tests Holm Correction 
+#' @param postHocCorr Post Hoc Tests Corrections 
 #' @param descPlotsHAxis The Horizontal axis variable 
 #' @param descPlotsSepLines The Separate lines variable 
 #' @param descPlotsSepPlots The Separate plots variable 
@@ -601,9 +547,7 @@ anovaRMBase <- R6::R6Class(
 #'   interval"(default) or "Standard Error" 
 #' @param ciWidth .
 #' @param dispDescStats Display Descriptive statistics 
-#' @param effSizeN2 Effect size n2 
-#' @param partEffSizeN2 Effect size partial n2 
-#' @param effSizeW2 Effect size w2 
+#' @param effectSize Effect size 
 #' @export
 anovaRM <- function(
     data,
@@ -618,17 +562,13 @@ anovaRM <- function(
     bsTerms = NULL,
     ss = "3",
     spherTests = FALSE,
-    spherCorrs = FALSE,
-    spherCorrNone = TRUE,
-    spherCorrGreenGsser = TRUE,
-    spherCorrHuyFdt = TRUE,
+    spherCorr = list(
+                "none"),
     homoTests = FALSE,
     contrasts = NULL,
     postHoc = NULL,
-    corrTukey = TRUE,
-    corrScheffe = FALSE,
-    corrBonf = FALSE,
-    corrHolm = FALSE,
+    postHocCorr = list(
+                "tukey"),
     descPlotsHAxis = NULL,
     descPlotsSepLines = NULL,
     descPlotsSepPlots = NULL,
@@ -636,9 +576,7 @@ anovaRM <- function(
     errBarDef = "ci",
     ciWidth = 95,
     dispDescStats = FALSE,
-    effSizeN2 = FALSE,
-    partEffSizeN2 = FALSE,
-    effSizeW2 = FALSE) {
+    effectSize) {
 
     options <- anovaRMOptions$new(
         rm = rm,
@@ -649,17 +587,11 @@ anovaRM <- function(
         bsTerms = bsTerms,
         ss = ss,
         spherTests = spherTests,
-        spherCorrs = spherCorrs,
-        spherCorrNone = spherCorrNone,
-        spherCorrGreenGsser = spherCorrGreenGsser,
-        spherCorrHuyFdt = spherCorrHuyFdt,
+        spherCorr = spherCorr,
         homoTests = homoTests,
         contrasts = contrasts,
         postHoc = postHoc,
-        corrTukey = corrTukey,
-        corrScheffe = corrScheffe,
-        corrBonf = corrBonf,
-        corrHolm = corrHolm,
+        postHocCorr = postHocCorr,
         descPlotsHAxis = descPlotsHAxis,
         descPlotsSepLines = descPlotsSepLines,
         descPlotsSepPlots = descPlotsSepPlots,
@@ -667,9 +599,7 @@ anovaRM <- function(
         errBarDef = errBarDef,
         ciWidth = ciWidth,
         dispDescStats = dispDescStats,
-        effSizeN2 = effSizeN2,
-        partEffSizeN2 = partEffSizeN2,
-        effSizeW2 = effSizeW2)
+        effectSize = effectSize)
 
     results <- anovaRMResults$new(
         options = options)

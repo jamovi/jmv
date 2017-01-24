@@ -28,149 +28,149 @@ items:
         - name: correction[none]
           title: 'Sphericity Correction'
           content: 'None'
-          visible: (spherCorrs && spherCorrNone)
+          visible: (spherCorr:none && (spherCorr:GG || spherCorr:HF))
 
         - name: ss[none]
           title: Sum of Squares
           type: number
-          visible: (!spherCorrs || (spherCorrs && spherCorrNone))
+          visible: (spherCorr:none)
 
         - name: df[none]
           title: df
           type: integer
-          visible: (!spherCorrs || (spherCorrs && spherCorrNone))
+          visible: (spherCorr:none)
 
         - name: ms[none]
           title: Mean Square
           type: number
-          visible: (!spherCorrs || (spherCorrs && spherCorrNone))
+          visible: (spherCorr:none)
 
         - name: F[none]
           title: F
           type: number
-          visible: (!spherCorrs || (spherCorrs && spherCorrNone))
+          visible: (spherCorr:none)
 
         - name: p[none]
           title: p
           type: number
           format: zto,pvalue
-          visible: (!spherCorrs || (spherCorrs && spherCorrNone))
+          visible: (spherCorr:none)
 
         - name: eta[none]
           title: η²
           type: number
           format: zto
-          visible: (effSizeN2 && (!spherCorrs || (spherCorrs && spherCorrNone)))
+          visible: (effectSize:eta && spherCorr:none)
 
         - name: partEta[none]
           title: partial η²
           type: number
           format: zto
-          visible: (partEffSizeN2 && (!spherCorrs || (spherCorrs && spherCorrNone)))
+          visible: (effectSize:partEta && spherCorr:none)
 
         - name: omega[none]
           title: ω²
           type: number
           format: zto
-          visible: (effSizeW2 && (!spherCorrs || (spherCorrs && spherCorrNone)))
+          visible: (effectSize:omega && spherCorr:none)
 
         - name: correction[GG]
           title: 'Sphericity Correction'
           content: 'Greenhouse-Geisser'
-          visible: (spherCorrs && spherCorrGreenGsser)
+          visible: (spherCorr:GG)
 
         - name: ss[GG]
           title: Sum of Squares
           type: number
-          visible: (spherCorrs && spherCorrGreenGsser)
+          visible: (spherCorr:GG)
 
         - name: df[GG]
           title: df
           type: number
-          visible: (spherCorrs && spherCorrGreenGsser)
+          visible: (spherCorr:GG)
 
         - name: ms[GG]
           title: Mean Square
           type: number
-          visible: (spherCorrs && spherCorrGreenGsser)
+          visible: (spherCorr:GG)
 
         - name: F[GG]
           title: F
           type: number
-          visible: (spherCorrs && spherCorrGreenGsser)
+          visible: (spherCorr:GG)
 
         - name: p[GG]
           title: p
           type: number
           format: zto,pvalue
-          visible: (spherCorrs && spherCorrGreenGsser)
+          visible: (spherCorr:GG)
 
         - name: eta[GG]
           title: η²
           type: number
           format: zto
-          visible: (effSizeN2 && spherCorrs && spherCorrGreenGsser)
+          visible: (effectSize:eta && spherCorr:GG)
 
         - name: partEta[GG]
           title: partial η²
           type: number
           format: zto
-          visible: (partEffSizeN2 && spherCorrs && spherCorrGreenGsser)
+          visible: (effectSize:partEta && spherCorr:GG)
 
         - name: omega[GG]
           title: ω²
           type: number
           format: zto
-          visible: (effSizeW2 && spherCorrs && spherCorrGreenGsser)
+          visible: (effectSize:omega && spherCorr:GG)
 
         - name: correction[HF]
           title: 'Sphericity Correction'
           content: 'Huynh-Feldt'
-          visible: (spherCorrs && spherCorrHuyFdt)
+          visible: (spherCorr:HF)
 
         - name: ss[HF]
           title: Sum of Squares
           type: number
-          visible: (spherCorrs && spherCorrHuyFdt)
+          visible: (spherCorr:HF)
 
         - name: df[HF]
           title: df
           type: number
-          visible: (spherCorrs && spherCorrHuyFdt)
+          visible: (spherCorr:HF)
 
         - name: ms[HF]
           title: Mean Square
           type: number
-          visible: (spherCorrs && spherCorrHuyFdt)
+          visible: (spherCorr:HF)
 
         - name: F[HF]
           title: F
           type: number
-          visible: (spherCorrs && spherCorrHuyFdt)
+          visible: (spherCorr:HF)
 
         - name: p[HF]
           title: p
           type: number
           format: zto,pvalue
-          visible: (spherCorrs && spherCorrHuyFdt)
+          visible: (spherCorr:HF)
 
         - name: eta[HF]
           title: η²
           type: number
           format: zto
-          visible: (effSizeN2 && spherCorrs && spherCorrHuyFdt)
+          visible: (effectSize:eta && spherCorr:HF)
 
         - name: partEta[HF]
           title: partial η²
           type: number
           format: zto
-          visible: (partEffSizeN2 && spherCorrs && spherCorrHuyFdt)
+          visible: (effectSize:partEta && spherCorr:HF)
 
         - name: omega[HF]
           title: ω²
           type: number
           format: zto
-          visible: (effSizeW2 && spherCorrs && spherCorrHuyFdt)
+          visible: (effectSize:omega && spherCorr:HF)
 
     - name: bsTable
       title: Between Subjects Effects
@@ -218,19 +218,19 @@ items:
           title: η²
           type: number
           format: zto
-          visible: (effSizeN2)
+          visible: (effectSize:eta)
 
         - name: partEta
           title: partial η²
           type: number
           format: zto
-          visible: (partEffSizeN2)
+          visible: (effectSize:partEta)
 
         - name: omega
           title: ω²
           type: number
           format: zto
-          visible: (effSizeW2)
+          visible: (effectSize:omega)
 
     - name: assump
       title: Assumptions

@@ -102,33 +102,20 @@ options:
       description: >
         Sphericity tests
 
-    - name: spherCorrs
+    - name: spherCorr
       title: Sphericity corrections
-      type: Bool
-      default: false
+      type: NMXList
+      options:
+          - name: none
+            title: None
+          - name: GG
+            title: Greenhouse-Geisser
+          - name: HF
+            title: Huynh-Feldt
+      default:
+          - none
       description: >
         Sphericity corrections
-
-    - name: spherCorrNone
-      title: None
-      type: Bool
-      default: true
-      description: >
-        No Sphericity corrections
-
-    - name: spherCorrGreenGsser
-      title: Greenhouse-Geisser
-      type: Bool
-      default: true
-      description: >
-        Greenhouse-Geisser Sphericity corrections
-
-    - name: spherCorrHuyFdt
-      title: Huynh-Feldt
-      type: Bool
-      default: true
-      description: >
-        Huynh-Feldt Sphericity corrections
 
     - name: homoTests
       title: Homogeneity tests
@@ -170,33 +157,22 @@ options:
       description: >
         Post Hoc Tests
 
-    - name: corrTukey
-      title: Tukey
-      type: Bool
-      default: true
+    - name: postHocCorr
+      title: Corrections
+      type: NMXList
+      options:
+          - name: tukey
+            title: Tukey
+          - name: scheffe
+            title: Scheffe
+          - name: bonf
+            title: Bonferroni
+          - name: holm
+            title: Holm
+      default:
+          - tukey
       description: >
-        Post Hoc Tests Tukey Correction
-
-    - name: corrScheffe
-      title: Scheffe
-      type: Bool
-      default: false
-      description: >
-        Post Hoc Tests Scheffe Correction
-
-    - name: corrBonf
-      title: Bonferroni
-      type: Bool
-      default: false
-      description: >
-        Post Hoc Tests Bonferroni Correction
-
-    - name: corrHolm
-      title: Holm
-      type: Bool
-      default: false
-      description: >
-        Post Hoc Tests Holm Correction
+        Post Hoc Tests Corrections
 
     - name: descPlotsHAxis
       title: Horizontal axis
@@ -250,23 +226,15 @@ options:
       description: >
         Display Descriptive statistics
 
-    - name: effSizeN2
-      title: n2
-      type: Bool
-      default: false
+    - name: effectSize
+      title: Effect Size
+      type: NMXList
+      options:
+          - name: eta
+            title: η²
+          - name: partEta
+            title: partial η²
+          - name: omega
+            title: ω²
       description: >
-        Effect size n2
-
-    - name: partEffSizeN2
-      title: partial n2
-      type: Bool
-      default: false
-      description: >
-        Effect size partial n2
-
-    - name: effSizeW2
-      title: w2
-      type: Bool
-      default: false
-      description: >
-        Effect size w2
+        Effect size

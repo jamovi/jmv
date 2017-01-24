@@ -11,24 +11,12 @@ const events = {
         ui.errBarDef_se.setEnabled(value);
         ui.errBarDef_ci.setEnabled(value);
 
-        var value = ui.spherCorrs.value();
-        ui.spherCorrNone.setEnabled(value);
-        ui.spherCorrGreenGsser.setEnabled(value);
-        ui.spherCorrHuyFdt.setEnabled(value);
-
         ui.ciWidth.setEnabled(ui.dispErrBars.value() && ui.errBarDef.value() === "ci");
 
         updateFactorCells(ui, this);
         updateModelTerms(ui, this);
         filterModelRMTerms(ui, this);
         filterModelTerms(ui, this);
-    },
-
-    onChange_spherCorrs: function(ui) {
-        var value = ui.spherCorrs.value();
-        ui.spherCorrNone.setEnabled(value);
-        ui.spherCorrGreenGsser.setEnabled(value);
-        ui.spherCorrHuyFdt.setEnabled(value);
     },
 
     onChange_dispErrBars: function(ui) {
