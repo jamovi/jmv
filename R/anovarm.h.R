@@ -20,10 +20,11 @@ anovaRMOptions <- R6::R6Class(
             rmTerms = NULL,
             bsTerms = NULL,
             ss = "3",
+            effectSize = NULL,
             spherTests = FALSE,
             spherCorr = list(
                 "none"),
-            homoTests = FALSE,
+            leveneTest = FALSE,
             contrasts = NULL,
             postHoc = NULL,
             postHocCorr = list(
@@ -31,11 +32,9 @@ anovaRMOptions <- R6::R6Class(
             descPlotsHAxis = NULL,
             descPlotsSepLines = NULL,
             descPlotsSepPlots = NULL,
-            dispErrBars = FALSE,
-            errBarDef = "ci",
-            ciWidth = 95,
-            dispDescStats = FALSE,
-            effectSize = NULL, ...) {
+            descPlotsErrBar = "ci",
+            descPlotsCIWidth = 95,
+            dispDescStats = FALSE, ...) {
 
             super$initialize(
                 package='jmv',
@@ -113,6 +112,13 @@ anovaRMOptions <- R6::R6Class(
                     "2",
                     "3"),
                 default="3")
+            private$..effectSize <- jmvcore::OptionNMXList$new(
+                "effectSize",
+                effectSize,
+                options=list(
+                    list(name="eta", title="\u03B7\u00B2"),
+                    list(name="partEta", title="partial \u03B7\u00B2"),
+                    list(name="omega", title="\u03C9\u00B2")))
             private$..spherTests <- jmvcore::OptionBool$new(
                 "spherTests",
                 spherTests,
@@ -126,9 +132,9 @@ anovaRMOptions <- R6::R6Class(
                     list(name="HF", title="Huynh-Feldt")),
                 default=list(
                     "none"))
-            private$..homoTests <- jmvcore::OptionBool$new(
-                "homoTests",
-                homoTests,
+            private$..leveneTest <- jmvcore::OptionBool$new(
+                "leveneTest",
+                leveneTest,
                 default=FALSE)
             private$..contrasts <- jmvcore::OptionArray$new(
                 "contrasts",
@@ -186,20 +192,17 @@ anovaRMOptions <- R6::R6Class(
                 "descPlotsSepPlots",
                 descPlotsSepPlots,
                 default=NULL)
-            private$..dispErrBars <- jmvcore::OptionBool$new(
-                "dispErrBars",
-                dispErrBars,
-                default=FALSE)
-            private$..errBarDef <- jmvcore::OptionList$new(
-                "errBarDef",
-                errBarDef,
+            private$..descPlotsErrBar <- jmvcore::OptionList$new(
+                "descPlotsErrBar",
+                descPlotsErrBar,
                 options=list(
+                    "none",
                     "ci",
                     "se"),
                 default="ci")
-            private$..ciWidth <- jmvcore::OptionNumber$new(
-                "ciWidth",
-                ciWidth,
+            private$..descPlotsCIWidth <- jmvcore::OptionNumber$new(
+                "descPlotsCIWidth",
+                descPlotsCIWidth,
                 min=50,
                 max=99.9,
                 default=95)
@@ -207,13 +210,6 @@ anovaRMOptions <- R6::R6Class(
                 "dispDescStats",
                 dispDescStats,
                 default=FALSE)
-            private$..effectSize <- jmvcore::OptionNMXList$new(
-                "effectSize",
-                effectSize,
-                options=list(
-                    list(name="eta", title="\u03B7\u00B2"),
-                    list(name="partEta", title="partial \u03B7\u00B2"),
-                    list(name="omega", title="\u03C9\u00B2")))
         
             self$.addOption(private$..rm)
             self$.addOption(private$..rmCells)
@@ -222,20 +218,19 @@ anovaRMOptions <- R6::R6Class(
             self$.addOption(private$..rmTerms)
             self$.addOption(private$..bsTerms)
             self$.addOption(private$..ss)
+            self$.addOption(private$..effectSize)
             self$.addOption(private$..spherTests)
             self$.addOption(private$..spherCorr)
-            self$.addOption(private$..homoTests)
+            self$.addOption(private$..leveneTest)
             self$.addOption(private$..contrasts)
             self$.addOption(private$..postHoc)
             self$.addOption(private$..postHocCorr)
             self$.addOption(private$..descPlotsHAxis)
             self$.addOption(private$..descPlotsSepLines)
             self$.addOption(private$..descPlotsSepPlots)
-            self$.addOption(private$..dispErrBars)
-            self$.addOption(private$..errBarDef)
-            self$.addOption(private$..ciWidth)
+            self$.addOption(private$..descPlotsErrBar)
+            self$.addOption(private$..descPlotsCIWidth)
             self$.addOption(private$..dispDescStats)
-            self$.addOption(private$..effectSize)
         }),
     active = list(
         rm = function() private$..rm$value,
@@ -245,20 +240,19 @@ anovaRMOptions <- R6::R6Class(
         rmTerms = function() private$..rmTerms$value,
         bsTerms = function() private$..bsTerms$value,
         ss = function() private$..ss$value,
+        effectSize = function() private$..effectSize$value,
         spherTests = function() private$..spherTests$value,
         spherCorr = function() private$..spherCorr$value,
-        homoTests = function() private$..homoTests$value,
+        leveneTest = function() private$..leveneTest$value,
         contrasts = function() private$..contrasts$value,
         postHoc = function() private$..postHoc$value,
         postHocCorr = function() private$..postHocCorr$value,
         descPlotsHAxis = function() private$..descPlotsHAxis$value,
         descPlotsSepLines = function() private$..descPlotsSepLines$value,
         descPlotsSepPlots = function() private$..descPlotsSepPlots$value,
-        dispErrBars = function() private$..dispErrBars$value,
-        errBarDef = function() private$..errBarDef$value,
-        ciWidth = function() private$..ciWidth$value,
-        dispDescStats = function() private$..dispDescStats$value,
-        effectSize = function() private$..effectSize$value),
+        descPlotsErrBar = function() private$..descPlotsErrBar$value,
+        descPlotsCIWidth = function() private$..descPlotsCIWidth$value,
+        dispDescStats = function() private$..dispDescStats$value),
     private = list(
         ..rm = NA,
         ..rmCells = NA,
@@ -267,20 +261,19 @@ anovaRMOptions <- R6::R6Class(
         ..rmTerms = NA,
         ..bsTerms = NA,
         ..ss = NA,
+        ..effectSize = NA,
         ..spherTests = NA,
         ..spherCorr = NA,
-        ..homoTests = NA,
+        ..leveneTest = NA,
         ..contrasts = NA,
         ..postHoc = NA,
         ..postHocCorr = NA,
         ..descPlotsHAxis = NA,
         ..descPlotsSepLines = NA,
         ..descPlotsSepPlots = NA,
-        ..dispErrBars = NA,
-        ..errBarDef = NA,
-        ..ciWidth = NA,
-        ..dispDescStats = NA,
-        ..effectSize = NA)
+        ..descPlotsErrBar = NA,
+        ..descPlotsCIWidth = NA,
+        ..dispDescStats = NA)
 )
 
 #' @import jmvcore
@@ -378,17 +371,17 @@ anovaRMResults <- R6::R6Class(
             private$..assump <- R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
-                    spher = function() private$..spher,
-                    eqVar = function() private$..eqVar),
+                    spherTable = function() private$..spherTable,
+                    leveneTable = function() private$..leveneTable),
                 private = list(
-                    ..spher = NA,
-                    ..eqVar = NA),
+                    ..spherTable = NA,
+                    ..leveneTable = NA),
                 public=list(
                     initialize=function(options) {
                         super$initialize(options=options, name="assump", title="Assumptions")
-                        private$..spher <- jmvcore::Table$new(
+                        private$..spherTable <- jmvcore::Table$new(
                             options=options,
-                            name="spher",
+                            name="spherTable",
                             title="Tests of Sphericity",
                             visible="(spherTests)",
                             clearWith=list(
@@ -408,11 +401,11 @@ anovaRMResults <- R6::R6Class(
                                 list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue"),
                                 list(`name`="gg", `title`="Greenhouse-Geisser \u03B5", `type`="number"),
                                 list(`name`="hf", `title`="Huynh-Feldt \u03B5", `type`="number")))
-                        private$..eqVar <- jmvcore::Table$new(
+                        private$..leveneTable <- jmvcore::Table$new(
                             options=options,
-                            name="eqVar",
-                            title="Test for Equality of Variances (Levene's)",
-                            visible="(homoTests)",
+                            name="leveneTable",
+                            title="Equality of variances test (Levene's)",
+                            visible="(leveneTest)",
                             clearWith=list(
                                 "bs",
                                 "rmCells",
@@ -423,8 +416,8 @@ anovaRMResults <- R6::R6Class(
                                 list(`name`="df1", `type`="integer"),
                                 list(`name`="df2", `type`="integer"),
                                 list(`name`="p", `type`="number", `format`="zto,pvalue")))
-                        self$add(private$..spher)
-                        self$add(private$..eqVar)}))$new(options=options)
+                        self$add(private$..spherTable)
+                        self$add(private$..leveneTable)}))$new(options=options)
             private$..contrasts <- jmvcore::Array$new(
                 options=options,
                 name="contrasts",
@@ -474,9 +467,8 @@ anovaRMResults <- R6::R6Class(
                     "descPlotsSepLines",
                     "descPlotsSepPlots",
                     "rm",
-                    "dispErrBars",
-                    "errBarDef",
-                    "ciWidth"))
+                    "descPlotsErrBar",
+                    "descPlotsCIWidth"))
             private$..descPlots <- jmvcore::Array$new(
                 options=options,
                 name="descPlots",
@@ -492,9 +484,8 @@ anovaRMResults <- R6::R6Class(
                         "descPlotsSepLines",
                         "descPlotsSepPlots",
                         "rm",
-                        "dispErrBars",
-                        "errBarDef",
-                        "ciWidth")))
+                        "descPlotsErrBar",
+                        "descPlotsCIWidth")))
             self$add(private$..rmTable)
             self$add(private$..bsTable)
             self$add(private$..assump)
@@ -526,28 +517,51 @@ anovaRMBase <- R6::R6Class(
 #'
 #' 
 #' @param data the data as a data frame
-#' @param rm The Repeated Measures Factors 
-#' @param rmCells The Repeated Measures Cells 
-#' @param bs The Between Subject Factors 
-#' @param cov The Covariates 
-#' @param rmTerms The Repeated Measures model terms 
-#' @param bsTerms The Between Subjects model terms 
-#' @param ss Sum of squares 
-#' @param spherTests Sphericity tests 
-#' @param spherCorr Sphericity corrections 
-#' @param homoTests Display Homogeneity tests 
+#' @param rm a list of lists, where each list describes the \code{label} (as a 
+#'   string) and the \code{levels} (as vector of strings) of a particular 
+#'   repeated measures factor 
+#' @param rmCells a list of lists, where each list decribes a repeated measure 
+#'   (as a string) from \code{data} defined as \code{measure} and the particular 
+#'   combination of levels from \code{rm} that it belongs to (as a vector of 
+#'   strings) defined as \code{cell} 
+#' @param bs a vector of strings naming the between subjects factors from 
+#'   \code{data} 
+#' @param cov a vector of strings naming the covariates from \code{data}. 
+#'   Variables must be numeric 
+#' @param rmTerms a list of character vectors describing the repeated measures 
+#'   terms to go into the model 
+#' @param bsTerms a list of character vectors describing the between subjects 
+#'   terms to go into the model 
+#' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default) - the sum of 
+#'   squares to use 
+#' @param effectSize a vector of strings indicating which effect size is to be 
+#'   computed. One (or more) of \code{'eta'}, \code{'partEta'}, or 
+#'   \code{`omega`} can be chosen 
+#' @param spherTests TRUE or FALSE (default), perform sphericity tests
+#' @param spherCorr a vector of strings indicating whether any sphericity 
+#'   corrections are to be computed. One (or more) of \code{'none'}, \code{'GG'} 
+#'   (Greenhouse-Geisser), or \code{`HF`} (Huynh-Feldt) can be chosen 
+#' @param leveneTest TRUE or FALSE (default), test for equality of variances 
+#'   (i.e., Levene's test) 
 #' @param contrasts .
-#' @param postHoc Post Hoc Tests 
-#' @param postHocCorr Post Hoc Tests Corrections 
-#' @param descPlotsHAxis The Horizontal axis variable 
-#' @param descPlotsSepLines The Separate lines variable 
-#' @param descPlotsSepPlots The Separate plots variable 
-#' @param dispErrBars Error bars displaying 
-#' @param errBarDef Specifies the Error Bar definition as either "Confidence 
-#'   interval"(default) or "Standard Error" 
-#' @param ciWidth .
+#' @param postHoc a list of character vectors describing the post-hoc tests 
+#'   that need to be computed 
+#' @param postHocCorr a vector of strings indicating which p-value correction 
+#'   should be used for the post-hoc tests. One (or more) of \code{'tukey'} 
+#'   (default), \code{'scheffe'}, \code{'bonf'} (Bonferroni), or \code{'holm'} 
+#'   can be chosen 
+#' @param descPlotsHAxis a string naming the variable placed on the horizontal 
+#'   axis of the plot 
+#' @param descPlotsSepLines a string naming the variable represented as 
+#'   separate lines on the plot 
+#' @param descPlotsSepPlots a string naming the variable to separate over to 
+#'   form multiple plots 
+#' @param descPlotsErrBar \code ('none'), \code{'ci'} (default), or 
+#'   \code{'se'}. Use no error bars, confidence intervals, or standard errors on 
+#'   the plots 
+#' @param descPlotsCIWidth a number between 50 and 99.9 (default: 95) 
+#'   specifying the confidence interval width 
 #' @param dispDescStats Display Descriptive statistics 
-#' @param effectSize Effect size 
 #' @export
 anovaRM <- function(
     data,
@@ -561,10 +575,11 @@ anovaRM <- function(
     rmTerms = NULL,
     bsTerms = NULL,
     ss = "3",
+    effectSize,
     spherTests = FALSE,
     spherCorr = list(
                 "none"),
-    homoTests = FALSE,
+    leveneTest = FALSE,
     contrasts = NULL,
     postHoc = NULL,
     postHocCorr = list(
@@ -572,11 +587,9 @@ anovaRM <- function(
     descPlotsHAxis = NULL,
     descPlotsSepLines = NULL,
     descPlotsSepPlots = NULL,
-    dispErrBars = FALSE,
-    errBarDef = "ci",
-    ciWidth = 95,
-    dispDescStats = FALSE,
-    effectSize) {
+    descPlotsErrBar = "ci",
+    descPlotsCIWidth = 95,
+    dispDescStats = FALSE) {
 
     options <- anovaRMOptions$new(
         rm = rm,
@@ -586,20 +599,19 @@ anovaRM <- function(
         rmTerms = rmTerms,
         bsTerms = bsTerms,
         ss = ss,
+        effectSize = effectSize,
         spherTests = spherTests,
         spherCorr = spherCorr,
-        homoTests = homoTests,
+        leveneTest = leveneTest,
         contrasts = contrasts,
         postHoc = postHoc,
         postHocCorr = postHocCorr,
         descPlotsHAxis = descPlotsHAxis,
         descPlotsSepLines = descPlotsSepLines,
         descPlotsSepPlots = descPlotsSepPlots,
-        dispErrBars = dispErrBars,
-        errBarDef = errBarDef,
-        ciWidth = ciWidth,
-        dispDescStats = dispDescStats,
-        effectSize = effectSize)
+        descPlotsErrBar = descPlotsErrBar,
+        descPlotsCIWidth = descPlotsCIWidth,
+        dispDescStats = dispDescStats)
 
     results <- anovaRMResults$new(
         options = options)

@@ -40,7 +40,7 @@ anovaRMClass <- R6::R6Class(
                 
                 if (isError(result))
                     jmvcore::reject(extractErrorMessage(result), code='error')
-
+                
                 private$.populateEffectsTables(result)
                 private$.populateSpericityTable(result)
                 private$.populateLeveneTable()
@@ -94,12 +94,12 @@ anovaRMClass <- R6::R6Class(
             }       
         },
         .initSpericityTable=function() {
-            spher <- self$results$get('assump')$get('spher')
+            spherTable <- self$results$get('assump')$get('spherTable')
             for (term in self$options$rmTerms)
-                spher$addRow(rowKey=term, list(name=stringifyTerm(term)))
+                spherTable$addRow(rowKey=term, list(name=stringifyTerm(term)))
         },
         .initLeveneTable=function() {
-            leveneTable <- self$results$get('assump')$get('eqVar')
+            leveneTable <- self$results$get('assump')$get('leveneTable')
             rmVars <- sapply(self$options$rmCells, function(x) return(x$measure))
             for (var in rmVars)
                 leveneTable$addRow(rowKey=var, list(name=var))
@@ -283,10 +283,10 @@ anovaRMClass <- R6::R6Class(
                     MSr <- SSr/dfRes
                     row[['eta[none]']] <- row[['eta[GG]']] <- row[['eta[HF]']] <- row[['ss[none]']] / SSt
                     row[['partEta[none]']] <- row[['partEta[GG]']] <- row[['partEta[HF]']] <- row[['ss[none]']] / (row[['ss[none]']] + SSr)
-                    
+
                     omega <- (row[['ss[none]']] - (row[['df[none]']] * MSr)) / (SSt + MSr)
                     
-                    row[['omega[none]']] <- row[['omega[GG]']] <- row[['omega[HF]']] <- if (omega < 0) 0 else omega
+                    row[['omega[none]']] <- row[['omega[GG]']] <- row[['omega[HF]']] <- if (!is.na(omega) && omega < 0) 0 else omega
                     
                     rmTable$setRow(rowNo=i, values=row)
                     
@@ -351,7 +351,7 @@ anovaRMClass <- R6::R6Class(
                     row[['eta']] <- row[['ss']] / SSt
                     row[['partEta']] <- row[['ss']] / (row[['ss']] + SSr)
                     omega <- (row[['ss']] - (row[['df']] * MSr)) / (SSt + MSr)
-                    row[['omega']] <- if (omega < 0) 0 else omega
+                    row[['omega']] <- if (!is.na(omega) && omega < 0) 0 else omega
                         
                     bsTable$setRow(rowNo=i, values=row)
                     
@@ -369,26 +369,25 @@ anovaRMClass <- R6::R6Class(
         },
         .populateSpericityTable=function(result) {
             
-            spher <- self$results$get('assump')$get('spher')
+            spherTable <- self$results$get('assump')$get('spherTable')
             summaryResult <- summary(result)
             epsilon <- summaryResult$pval.adjustments
             mauchly <- summaryResult$sphericity.tests
             
             nLevels <- sapply(self$options$rm, function(x) return(length(x$levels)))
+            resultRows <- decomposeTerms(rownames(mauchly))
             
-            if (any(nLevels > 2)) {
-                
-                resultRows <- decomposeTerms(rownames(mauchly))
+            if (any(nLevels > 2) && length(resultRows) > 0) {
                 
                 for (term in self$options$rmTerms) {
                     
                     index <- which(sapply(as.list(resultRows), function(x) setequal(x, toB64(term))))
-                    
+
                     if (length(index) == 0) {
                         
-                        spher$setRow(rowKey=term, values=list('mauch'=1, 'p'=NaN, 'gg'=1, 'hf'=1))
-                        if (length(spher$getRow(rowKey=term)$name$footnotes) == 0)
-                            spher$addFootnote(rowKey=term, 'name', 'The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels')
+                        spherTable$setRow(rowKey=term, values=list('mauch'=1, 'p'=NaN, 'gg'=1, 'hf'=1))
+                        if (length(spherTable$getRow(rowKey=term)$name$footnotes) == 0)
+                            spherTable$addFootnote(rowKey=term, 'p', 'The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels')
                         
                     } else {
                         
@@ -398,16 +397,16 @@ anovaRMClass <- R6::R6Class(
                         row[['gg']] <- epsilon[index, 'GG eps']
                         row[['hf']] <- if (epsilon[index, 'HF eps'] > 1) 1 else epsilon[index, 'HF eps']
                         
-                        spher$setRow(rowKey=term, values=row)
+                        spherTable$setRow(rowKey=term, values=row)
                     }
                 }
             } else {
                 
                 for (term in self$options$rmTerms) {
                     
-                    spher$setRow(rowKey=term, values=list('mauch'=1, 'p'=NaN, 'gg'=1, 'hf'=1))
-                    if (length(spher$getRow(rowKey=term)$name$footnotes) == 0)
-                        spher$addFootnote(rowKey=term, 'name', 'The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels')
+                    spherTable$setRow(rowKey=term, values=list('mauch'=1, 'p'=NaN, 'gg'=1, 'hf'=1))
+                    if (length(spherTable$getRow(rowKey=term)$name$footnotes) == 0)
+                        spherTable$addFootnote(rowKey=term, 'p', 'The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels')
                 }
             }
         },
@@ -416,7 +415,7 @@ anovaRMClass <- R6::R6Class(
             if (length(self$options$rmCells) == 0)
                 return()
             
-            leveneTable <- self$results$get('assump')$get('eqVar')
+            leveneTable <- self$results$get('assump')$get('leveneTable')
             
             rmVars <- sapply(self$options$rmCells, function(x) return(x$measure))
             covVars <- self$options$cov
@@ -550,8 +549,8 @@ anovaRMClass <- R6::R6Class(
             linesName <- self$options$descPlotsSepLines
             plotsName <- self$options$descPlotsSepPlots
             
-            ciWidth   <- self$options$ciWidth
-            errorBarType <- self$options$errBarDef
+            ciWidth   <- self$options$descPlotsCIWidth
+            errorBarType <- self$options$descPlotsErrBar
             
             if (length(depName) == 0 || length(groupName) == 0)
                 return()
@@ -594,7 +593,7 @@ anovaRMClass <- R6::R6Class(
             
             plotData <- cbind(plotData, lower=plotData$mean-plotData$err, upper=plotData$mean+plotData$err)
             
-            if (self$options$dispErrBars) {
+            if (self$options$descPlotsErrBar != 'none') {
                 yAxisRange <- pretty(c(plotData$lower, plotData$upper))
             } else {
                 yAxisRange <- plotData$mean
@@ -634,16 +633,16 @@ anovaRMClass <- R6::R6Class(
                 axis.title.x=element_text(margin=margin(10,0,0,0)),
                 axis.title.y=element_text(margin=margin(0,10,0,0)))
             
-            if (self$options$dispErrBars)
+            if (self$options$descPlotsErrBar != 'none')
                 dodge <- position_dodge(0.2)
             else
                 dodge <- position_dodge(0)
             
             
             errorType <- ''
-            if (self$options$dispErrBars) {
-                if (self$options$errBarDef == 'ci') {
-                    ciWidth <- self$options$ciWidth
+            if (self$options$descPlotsErrBar != 'none') {
+                if (self$options$descPlotsErrBar == 'ci') {
+                    ciWidth <- self$options$descPlotsCIWidth
                     errorType <- paste0('(', ciWidth, '% CI)')
                 } else {
                     errorType <- '(SE)'
@@ -658,7 +657,7 @@ anovaRMClass <- R6::R6Class(
                     scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
                     the
                 
-                if (self$options$dispErrBars)
+                if (self$options$descPlotsErrBar != 'none')
                     p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, width=.1, group=lines), size=.8, position=dodge)
                 
                 p <- p + geom_point(shape=21, fill='white', size=3, position=dodge)
@@ -673,7 +672,7 @@ anovaRMClass <- R6::R6Class(
                     scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
                     the
                 
-                if (self$options$dispErrBars)
+                if (self$options$descPlotsErrBar != 'none')
                     p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, colour='colour', width=.1), size=.8)
                 
                 p <- p + geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill='white', size=3)
@@ -712,10 +711,13 @@ anovaRMClass <- R6::R6Class(
             singleLevelItems <- sapply(dataFactors, function(x) length(levels(x)) == 1)
             if (any(singleLevelItems))
                 jmvcore::reject("Item '{}' consists of one level only", code='error', bs[singleLevelItems])
-
+            
             # Check numeric values
+            factorItems <- sapply(dataNumeric, function(x) class(jmvcore::toNumeric(x)) == "factor")
             infItems <- sapply(dataNumeric, function(x) any(is.infinite(x)))
             noVarItems <- sapply(dataNumeric, function(x) var(x, na.rm = TRUE) == 0)
+            if (any(factorItems))
+                jmvcore::reject("Item '{}' needs to be numeric", code='error', varsNumeric[factorItems])
             if (any(infItems))
                 jmvcore::reject("Item '{}' contains infinite values", code='error', varsNumeric[infItems])
             if (any(noVarItems))
