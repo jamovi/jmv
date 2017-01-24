@@ -109,7 +109,7 @@ options:
       default: '3'
       description:
           R: >
-            \code{'1'}, \code{'2'} or \code{'3'} (default) - the sum of squares
+            \code{'1'}, \code{'2'} or \code{'3'} (default); the sum of squares
             to use
 
     - name: effectSize
@@ -124,9 +124,8 @@ options:
             title: ω²
       description:
           R: >
-            a vector of strings indicating which effect size is to be computed.
-            One (or more) of \code{'eta'}, \code{'partEta'}, or \code{`omega`}
-            can be chosen
+            one or more of \code{'eta'}, \code{'partEta'}, or \code{`omega`};
+            use η², partial η², and ω² effect sizes, respectively
 
     - name: spherTests
       title: Sphericity tests
@@ -149,10 +148,10 @@ options:
           - none
       description:
           R: >
-            a vector of strings indicating whether any sphericity corrections
-            are to be computed. One (or more) of \code{'none'}, \code{'GG'}
-            (Greenhouse-Geisser), or \code{`HF`} (Huynh-Feldt) can be chosen
-
+            one or more of \code{'none'} (default), \code{'GG'}, or \code{`HF`};
+            use no p-value correction, the Greenhouse-Geisser p-value
+            correction, and the Huynh-Feldt p-value correction for shericity,
+            respectively
 
     - name: leveneTest
       title: Levene's test (test for equality of variances)
@@ -214,10 +213,9 @@ options:
           - tukey
       description:
           R: >
-            a vector of strings indicating which p-value correction should be
-            used for the post-hoc tests. One (or more) of \code{'tukey'}
-            (default), \code{'scheffe'}, \code{'bonf'} (Bonferroni), or
-            \code{'holm'} can be chosen
+            one or more of \code{'tukey'} (default), \code{'scheffe'},
+            \code{'bonf'}, or \code{'holm'}; use Tukey, Scheffe, Bonferroni and
+            Holm posthoc corrections, respectively
 
     - name: descPlotsHAxis
       title: Horizontal axis
@@ -255,8 +253,9 @@ options:
       default: ci
       description:
           R: >
-            \code ('none'), \code{'ci'} (default), or \code{'se'}. Use no error
-            bars, confidence intervals, or standard errors on the plots
+            \code{'none'}, \code{'ci'} (default), or \code{'se'}. Use no error
+            bars, use confidence intervals, or use standard errors on the
+            plots, respectively
 
     - name: descPlotsCIWidth
       title: Confidence level

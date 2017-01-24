@@ -286,7 +286,7 @@ anovaRMClass <- R6::R6Class(
 
                     omega <- (row[['ss[none]']] - (row[['df[none]']] * MSr)) / (SSt + MSr)
                     
-                    row[['omega[none]']] <- row[['omega[GG]']] <- row[['omega[HF]']] <- if (!is.na(omega) && omega < 0) 0 else omega
+                    row[['omega[none]']] <- row[['omega[GG]']] <- row[['omega[HF]']] <- if ( ! is.na(omega) && omega < 0) 0 else omega
                     
                     rmTable$setRow(rowNo=i, values=row)
                     
@@ -351,7 +351,7 @@ anovaRMClass <- R6::R6Class(
                     row[['eta']] <- row[['ss']] / SSt
                     row[['partEta']] <- row[['ss']] / (row[['ss']] + SSr)
                     omega <- (row[['ss']] - (row[['df']] * MSr)) / (SSt + MSr)
-                    row[['omega']] <- if (!is.na(omega) && omega < 0) 0 else omega
+                    row[['omega']] <- if ( ! is.na(omega) && omega < 0) 0 else omega
                         
                     bsTable$setRow(rowNo=i, values=row)
                     
