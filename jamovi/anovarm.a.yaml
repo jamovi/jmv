@@ -28,8 +28,11 @@ options:
             type: Array
             template:
               type: String
-      description: >
-        The Repeated Measures Factors
+      description:
+          R: >
+            a list of lists, where each list describes the \code{label} (as a
+            string) and the \code{levels} (as vector of strings) of a particular
+            repeated measures factor
 
     - name: rmCells
       title: Repeated Measures Cells
@@ -44,8 +47,12 @@ options:
             type: Array
             template:
               type: String
-      description: >
-        The Repeated Measures Cells
+      description:
+          R: >
+            a list of lists, where each list decribes a repeated measure (as a
+            string) from \code{data} defined as \code{measure} and the
+            particular combination of levels from \code{rm} that it belongs to
+            (as a vector of strings) defined as \code{cell}
 
     - name: bs
       title: Between Subject Factors
@@ -54,8 +61,10 @@ options:
         - nominal
         - ordinal
       default:
-      description: >
-        The Between Subject Factors
+      description:
+          R: >
+            a vector of strings naming the between subjects factors from
+            \code{data}
 
     - name: cov
       title: Covariates
@@ -67,22 +76,28 @@ options:
         - nominal
         - ordinal
       default:
-      description: >
-        The Covariates
+      description:
+          R: >
+            a vector of strings naming the covariates from \code{data}.
+            Variables must be numeric
 
     - name: rmTerms
       title: Model Terms
       type: Terms
       default:
-      description: >
-        The Repeated Measures model terms
+      description:
+          R: >
+            a list of character vectors describing the repeated measures terms
+            to go into the model
 
     - name: bsTerms
       title: Model Terms
       type: Terms
       default:
-      description: >
-        The Between Subjects model terms
+      description:
+          R: >
+            a list of character vectors describing the between subjects terms to
+            go into the model
 
     - name: ss
       title: Sum of squares
@@ -92,15 +107,32 @@ options:
         - '2'
         - '3'
       default: '3'
-      description: >
-        Sum of squares
+      description:
+          R: >
+            \code{'1'}, \code{'2'} or \code{'3'} (default); the sum of squares
+            to use
+
+    - name: effectSize
+      title: Effect Size
+      type: NMXList
+      options:
+          - name: eta
+            title: η²
+          - name: partEta
+            title: partial η²
+          - name: omega
+            title: ω²
+      description:
+          R: >
+            one or more of \code{'eta'}, \code{'partEta'}, or \code{`omega`};
+            use η², partial η², and ω² effect sizes, respectively
 
     - name: spherTests
       title: Sphericity tests
       type: Bool
       default: false
-      description: >
-        Sphericity tests
+      description:
+          R: TRUE or FALSE (default), perform sphericity tests
 
     - name: spherCorr
       title: Sphericity corrections
@@ -114,15 +146,21 @@ options:
             title: Huynh-Feldt
       default:
           - none
-      description: >
-        Sphericity corrections
+      description:
+          R: >
+            one or more of \code{'none'} (default), \code{'GG'}, or \code{`HF`};
+            use no p-value correction, the Greenhouse-Geisser p-value
+            correction, and the Huynh-Feldt p-value correction for shericity,
+            respectively
 
-    - name: homoTests
-      title: Homogeneity tests
+    - name: leveneTest
+      title: Levene's test (test for equality of variances)
       type: Bool
       default: false
-      description: >
-        Display Homogeneity tests
+      description:
+          R: >
+            TRUE or FALSE (default), test for equality of variances (i.e.,
+            Levene's test)
 
     - name: contrasts
       title: Contrasts
@@ -154,8 +192,10 @@ options:
           template:
               type: String
       default:
-      description: >
-        Post Hoc Tests
+      description:
+          R: >
+            a list of character vectors describing the post-hoc tests that
+            need to be computed
 
     - name: postHocCorr
       title: Corrections
@@ -171,53 +211,62 @@ options:
             title: Holm
       default:
           - tukey
-      description: >
-        Post Hoc Tests Corrections
+      description:
+          R: >
+            one or more of \code{'tukey'} (default), \code{'scheffe'},
+            \code{'bonf'}, or \code{'holm'}; use Tukey, Scheffe, Bonferroni and
+            Holm posthoc corrections, respectively
 
     - name: descPlotsHAxis
       title: Horizontal axis
       type: Variable
       default:
-      description: >
-        The Horizontal axis variable
+      description:
+          R: >
+            a string naming the variable placed on the horizontal axis of the
+            plot
 
     - name: descPlotsSepLines
       title: Separate lines
       type: Variable
       default:
-      description: >
-        The Separate lines variable
+      description:
+          R: >
+            a string naming the variable represented as separate lines on the
+            plot
 
     - name: descPlotsSepPlots
       title: Separate plots
       type: Variable
       default:
-      description: >
-        The Separate plots variable
+      description:
+          R: >
+            a string naming the variable to separate over to form multiple plots
 
-    - name: dispErrBars
-      title: Error bars displaying
-      type: Bool
-      default: false
-      description: >
-        Error bars displaying
-
-    - name: errBarDef
+    - name: descPlotsErrBar
       title: Error Bar Definition
       type: List
       options:
+        - none
         - ci
         - se
       default: ci
-      description: >
-        Specifies the Error Bar definition as either "Confidence interval"(default) or "Standard Error"
+      description:
+          R: >
+            \code{'none'}, \code{'ci'} (default), or \code{'se'}. Use no error
+            bars, use confidence intervals, or use standard errors on the
+            plots, respectively
 
-    - name: ciWidth
+    - name: descPlotsCIWidth
       title: Confidence level
       type: Number
       min: 50
       max: 99.9
       default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width
 
     - name: dispDescStats
       title: Descriptive statistics
@@ -225,16 +274,3 @@ options:
       default: false
       description: >
         Display Descriptive statistics
-
-    - name: effectSize
-      title: Effect Size
-      type: NMXList
-      options:
-          - name: eta
-            title: η²
-          - name: partEta
-            title: partial η²
-          - name: omega
-            title: ω²
-      description: >
-        Effect size

@@ -7,11 +7,7 @@ const events = {
 
         this.initializeValue(ui.rmTerms, [["RM Factor 1"]]);
 
-        var value = ui.dispErrBars.value();
-        ui.errBarDef_se.setEnabled(value);
-        ui.errBarDef_ci.setEnabled(value);
-
-        ui.ciWidth.setEnabled(ui.dispErrBars.value() && ui.errBarDef.value() === "ci");
+        ui.descPlotsCIWidth.setEnabled(ui.descPlotsErrBar.value() === "ci");
 
         updateFactorCells(ui, this);
         updateModelTerms(ui, this);
@@ -19,15 +15,8 @@ const events = {
         filterModelTerms(ui, this);
     },
 
-    onChange_dispErrBars: function(ui) {
-        var value = ui.dispErrBars.value();
-        ui.errBarDef_se.setEnabled(value);
-        ui.errBarDef_ci.setEnabled(value);
-        ui.ciWidth.setEnabled(value && ui.errBarDef_ci.value());
-    },
-
-    onChange_errBarDef_ci: function(ui) {
-        ui.ciWidth.setEnabled(ui.dispErrBars.value() && ui.errBarDef_ci.value());
+    onChange_descPlotsErrBar_ci: function(ui) {
+        ui.descPlotsCIWidth.setEnabled(ui.descPlotsErrBar_ci.value());
     },
 
     onChange_rm: function(ui) {

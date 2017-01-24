@@ -143,12 +143,9 @@ children:
     collapsed: true
     stretchFactor: 1
     children:
-      - type: CheckBox
-        name: spherTests
+      - name: spherTests
+        type: CheckBox
         label: Sphericity tests
-      - type: CheckBox
-        name: homoTests
-        label: Homogeneity tests
       - type: LayoutBox
         margin: large
         children:
@@ -172,6 +169,9 @@ children:
                 label: Huynh-Feldt
                 checkedValue: HF
                 optionId: spherCorr
+      - type: CheckBox
+        name: leveneTest
+        label: Equality of variances test (Levene's)
   - type: CollapseBox
     label: Contrasts
     stage: 2
@@ -296,33 +296,32 @@ children:
                 label: null
                 stretchFactor: 1
       - type: Label
-        label: Display
+        label: Error bars
         children:
-          - type: CheckBox
-            name: dispErrBars
-            label: Error bars displaying
+          - type: RadioButton
+            name: descPlotsErrBar_none
+            optionId: descPlotsErrBar
+            checkedValue: none
+            label: None
+          - type: RadioButton
+            name: descPlotsErrBar_ci
+            optionId: descPlotsErrBar
+            checkedValue: ci
+            label: Confidence interval
             events:
-              change: './anovarm.events::onChange_dispErrBars'
+              change: './anovarm.events::onChange_descPlotsErrBar_ci'
             children:
-              - type: RadioButton
-                name: errBarDef_ci
-                optionId: errBarDef
-                checkedValue: ci
-                label: Confidence interval
-                events:
-                  change: './anovarm.events::onChange_errBarDef_ci'
-                children:
-                  - type: TextBox
-                    name: ciWidth
-                    label: Interval
-                    suffix: '%'
-                    format: number
-                    inputPattern: '[0-9]+'
-              - type: RadioButton
-                name: errBarDef_se
-                optionId: errBarDef
-                checkedValue: se
-                label: Standard Error
+              - type: TextBox
+                name: descPlotsCIWidth
+                label: Interval
+                suffix: '%'
+                format: number
+                inputPattern: '[0-9]+'
+          - type: RadioButton
+            name: descPlotsErrBar_se
+            optionId: descPlotsErrBar
+            checkedValue: se
+            label: Standard Error
   - type: CollapseBox
     label: Additional Options
     stage: 2

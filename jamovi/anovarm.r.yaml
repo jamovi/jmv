@@ -236,7 +236,7 @@ items:
       title: Assumptions
       type: Group
       items:
-          - name: spher
+          - name: spherTable
             title: Tests of Sphericity
             type: Table
             visible: (spherTests)
@@ -269,10 +269,10 @@ items:
                   title: Huynh-Feldt ε
                   type: number
 
-          - name: eqVar
-            title: Test for Equality of Variances (Levene's)
+          - name: leveneTable
+            title: Equality of variances test (Levene's)
             type: Table
-            visible: (homoTests)
+            visible: (leveneTest)
             clearWith:
                 - bs
                 - rmCells
@@ -361,9 +361,8 @@ items:
         - descPlotsSepLines
         - descPlotsSepPlots
         - rm
-        - dispErrBars
-        - errBarDef
-        - ciWidth
+        - descPlotsErrBar
+        - descPlotsCIWidth
 
     - name: descPlots
       title: Descriptive Plots
@@ -379,6 +378,5 @@ items:
               - descPlotsSepLines
               - descPlotsSepPlots
               - rm
-              - dispErrBars
-              - errBarDef
-              - ciWidth
+              - descPlotsErrBar
+              - descPlotsCIWidth
