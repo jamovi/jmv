@@ -199,8 +199,8 @@ anovaRMClass <- R6::R6Class(
                         row[[paste0(names(comp[[i]][[1]][c]),'1')]] <- as.character(comp[[i]][[1]][c])
                     for (c in seq_along(comp[[i]][[2]]))
                         row[[paste0(names(comp[[i]][[2]][c]),'2')]] <- as.character(comp[[i]][[2]][c])
-                    
-                    table$setRow(rowNo=i, row)
+
+                    table$addRow(rowKey=i, row)
                     if (comp[[i]][[3]] == TRUE)
                         table$addFormat(rowNo=i, col=1, Cell.END_GROUP)
                 }
