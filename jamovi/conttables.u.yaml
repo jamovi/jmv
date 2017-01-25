@@ -2,7 +2,7 @@ name: contTables
 title: Contingency Tables
 jus: '1.0'
 events:
-    update: ui.ciWidth.setEnabled(ui.logOdds.value());
+  update: ui.ciWidth.setEnabled(ui.logOdds.value());
 children:
   - type: VariableSupplier
     name: variablesupplier
@@ -120,9 +120,6 @@ children:
           - type: Label
             label: Counts
             children:
-              - type: CheckBox
-                name: obs
-                label: Observed
               - type: CheckBox
                 name: exp
                 label: Expected

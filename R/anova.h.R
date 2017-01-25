@@ -313,6 +313,7 @@ anovaResults <- R6::R6Class(
                 template=jmvcore::Table$new(
                     options=options,
                     title="Contrasts - $key",
+                    clearWith=NULL,
                     columns=list(
                         list(`name`="contrast", `title`="", `type`="text"),
                         list(`name`="est", `title`="Estimate", `type`="number"),
@@ -330,6 +331,7 @@ anovaResults <- R6::R6Class(
                 template=jmvcore::Table$new(
                     options=options,
                     title="Post Hoc Comparisons - $key",
+                    clearWith=NULL,
                     columns=list(
                         list(`name`="var1", `title`="", `type`="text", `combineBelow`=TRUE),
                         list(`name`="var2", `title`="", `type`="text"),
@@ -430,11 +432,11 @@ anovaBase <- R6::R6Class(
 #' @param etaSq TRUE or FALSE (default), provide η² (effect size)
 #' @param etaSqP TRUE or FALSE (default), provide partial η² (effect size)
 #' @param omegaSq TRUE or FALSE (default), provide ω² (effect size)
-#' @param plotError \code{'ci'} or \code{'se'} - use confidence intervals or 
+#' @param plotError \code{'ci'} or \code{'se'}, use confidence intervals or 
 #'   standard errors on the plot 
 #' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the 
 #'   confidence interval width 
-#' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default) - the sum of 
+#' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default), the sum of 
 #'   squares to use 
 #' @export
 anova <- function(

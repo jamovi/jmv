@@ -100,6 +100,7 @@ items:
       template:
         title: Contrasts - $key
         type: Table
+        clearWith:
 
         columns:
           - name: contrast
@@ -133,6 +134,7 @@ items:
       template:
         title: Post Hoc Comparisons - $key
         type: Table
+        clearWith:
 
         columns:
           - name: var1

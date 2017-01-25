@@ -62,8 +62,8 @@ contTablesClass <- R6::R6Class(
                           self$options$get('pcTot')) > 0
 
         subNames  <- c('[count]', '[expected]', '[pcRow]', '[pcCol]', '[pcTot]')
-        subTitles <- c('Count', 'Expected count', '% within row', '% within column', '% of total')
-        visible   <- c('(obs)', '(exp)', '(pcRow)', '(pcCol)', '(pcTot)')
+        subTitles <- c('Observed', 'Expected', '% within row', '% within column', '% of total')
+        visible   <- c('TRUE', '(exp)', '(pcRow)', '(pcCol)', '(pcTot)')
         types     <- c('integer', 'number', 'number', 'number', 'number')
         formats   <- c('', '', 'pc', 'pc', 'pc')
 
@@ -72,7 +72,7 @@ contTablesClass <- R6::R6Class(
         for (j in seq_along(subNames)) {
             subName <- subNames[[j]]
             if (j == 1)
-                v <- '(obs && (exp || pcRow || pcCol || pcTot))'
+                v <- '(exp || pcRow || pcCol || pcTot)'
             else
                 v <- visible[j]
 

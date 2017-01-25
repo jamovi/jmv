@@ -151,16 +151,24 @@ corrMatrixResults <- R6::R6Class(
                 rows="(vars)",
                 clearWith=list(
                     "ciWidth",
-                    "hypothesis"),
+                    "hypothesis",
+                    "flag"),
                 columns=list(
-                    list(`name`="", `content`="($key)", `type`="text", `title`=""),
-                    list(`name`=".stat[r]", `title`="", `type`="text", `content`="Pearson's r", `visible`="(pearson && (sig || spearman || kendall))"),
+                    list(`name`=".name[r]", `title`="", `type`="text", `content`="($key)", `combineBelow`=TRUE, `visible`="(pearson)"),
+                    list(`name`=".stat[r]", `title`="", `type`="text", `content`="Pearson's r", `visible`="(pearson && (sig || spearman || kendall || ci))"),
+                    list(`name`=".name[rp]", `title`="", `type`="text", `content`="($key)", `combineBelow`=TRUE, `visible`="(pearson && sig)"),
                     list(`name`=".stat[rp]", `title`="", `type`="text", `content`="p-value", `visible`="(pearson && sig)"),
+                    list(`name`=".name[rciu]", `title`="", `type`="text", `content`="($key)", `combineBelow`=TRUE, `visible`="(pearson && ci)"),
                     list(`name`=".stat[rciu]", `title`="", `type`="text", `content`="CI Upper", `visible`="(pearson && ci)"),
+                    list(`name`=".name[rcil]", `title`="", `type`="text", `content`="($key)", `combineBelow`=TRUE, `visible`="(pearson && ci)"),
                     list(`name`=".stat[rcil]", `title`="", `type`="text", `content`="CI Lower", `visible`="(pearson && ci)"),
+                    list(`name`=".name[rho]", `title`="", `type`="text", `content`="($key)", `combineBelow`=TRUE, `visible`="(spearman)"),
                     list(`name`=".stat[rho]", `title`="", `type`="text", `content`="Spearman's rho", `visible`="(spearman && (sig || pearson || kendall))"),
+                    list(`name`=".name[rhop]", `title`="", `type`="text", `content`="($key)", `combineBelow`=TRUE, `visible`="(spearman && sig)"),
                     list(`name`=".stat[rhop]", `title`="", `type`="text", `content`="p-value", `visible`="(spearman && sig)"),
+                    list(`name`=".name[tau]", `title`="", `type`="text", `content`="($key)", `combineBelow`=TRUE, `visible`="(kendall)"),
                     list(`name`=".stat[tau]", `title`="", `type`="text", `content`="Kendall's Tau B", `visible`="(kendall && (sig || pearson || spearman))"),
+                    list(`name`=".name[taup]", `title`="", `type`="text", `content`="($key)", `combineBelow`=TRUE, `visible`="(kendall && sig)"),
                     list(`name`=".stat[taup]", `title`="", `type`="text", `content`="p-value", `visible`="(kendall && sig)")))
             private$..plot <- jmvcore::Image$new(
                 options=options,

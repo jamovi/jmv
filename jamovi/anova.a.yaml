@@ -186,7 +186,7 @@ options:
       default: ci
       description:
           R: >
-            \code{'ci'} or \code{'se'} - use confidence intervals or standard
+            \code{'ci'} or \code{'se'}, use confidence intervals or standard
             errors on the plot
 
     - name: ciWidth
@@ -209,5 +209,5 @@ options:
       default: '3'
       description:
           R: >
-            \code{'1'}, \code{'2'} or \code{'3'} (default) - the sum of squares
+            \code{'1'}, \code{'2'} or \code{'3'} (default), the sum of squares
             to use

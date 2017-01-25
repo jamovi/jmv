@@ -13,10 +13,12 @@ items:
         - miss
 
       columns:
-        - name: var
+        - name: var[stud]
           title: ""
           content: ($key)
           type: text
+          combineBelow: true
+          visible: (students)
 
         - name: name[stud]
           title: ''
@@ -64,6 +66,13 @@ items:
           title: Upper
           type: number
           visible: (ci && students)
+
+        - name: var[bf]
+          title: ""
+          content: ($key)
+          type: text
+          combineBelow: true
+          visible: (bf)
 
         - name: name[bf]
           title: ''
@@ -123,6 +132,13 @@ items:
           type: number
           visible: (ci && bf)
           content: ''
+
+        - name: var[mann]
+          title: ""
+          content: ($key)
+          type: text
+          combineBelow: true
+          visible: (mann)
 
         - name: name[mann]
           title: ''

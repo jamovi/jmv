@@ -23,7 +23,6 @@ contTablesOptions <- R6::R6Class(
             ciWidth = 95,
             gamma = FALSE,
             taub = FALSE,
-            obs = TRUE,
             exp = FALSE,
             pcRow = FALSE,
             pcCol = FALSE,
@@ -99,10 +98,6 @@ contTablesOptions <- R6::R6Class(
                 "taub",
                 taub,
                 default=FALSE)
-            private$..obs <- jmvcore::OptionBool$new(
-                "obs",
-                obs,
-                default=TRUE)
             private$..exp <- jmvcore::OptionBool$new(
                 "exp",
                 exp,
@@ -133,7 +128,6 @@ contTablesOptions <- R6::R6Class(
             self$.addOption(private$..ciWidth)
             self$.addOption(private$..gamma)
             self$.addOption(private$..taub)
-            self$.addOption(private$..obs)
             self$.addOption(private$..exp)
             self$.addOption(private$..pcRow)
             self$.addOption(private$..pcCol)
@@ -153,7 +147,6 @@ contTablesOptions <- R6::R6Class(
         ciWidth = function() private$..ciWidth$value,
         gamma = function() private$..gamma$value,
         taub = function() private$..taub$value,
-        obs = function() private$..obs$value,
         exp = function() private$..exp$value,
         pcRow = function() private$..pcRow$value,
         pcCol = function() private$..pcCol$value,
@@ -172,7 +165,6 @@ contTablesOptions <- R6::R6Class(
         ..ciWidth = NA,
         ..gamma = NA,
         ..taub = NA,
-        ..obs = NA,
         ..exp = NA,
         ..pcRow = NA,
         ..pcCol = NA,
@@ -346,7 +338,6 @@ contTablesBase <- R6::R6Class(
 #'   confidence intervals to provide 
 #' @param gamma TRUE or FALSE (default), provide gamma
 #' @param taub TRUE or FALSE (default), provide Kendall's tau-b
-#' @param obs TRUE (default) or FALSE, provide the observed counts
 #' @param exp TRUE or FALSE (default), provide the expected counts
 #' @param pcRow TRUE or FALSE (default), provide row percentages
 #' @param pcCol TRUE or FALSE (default), provide column percentages
@@ -367,7 +358,6 @@ contTables <- function(
     ciWidth = 95,
     gamma = FALSE,
     taub = FALSE,
-    obs = TRUE,
     exp = FALSE,
     pcRow = FALSE,
     pcCol = FALSE,
@@ -387,7 +377,6 @@ contTables <- function(
         ciWidth = ciWidth,
         gamma = gamma,
         taub = taub,
-        obs = obs,
         exp = exp,
         pcRow = pcRow,
         pcCol = pcCol,

@@ -20,13 +20,15 @@ items:
         - bsTerms
 
       columns:
-        - name: name
+        - name: name[none]
           title: ""
-          content: .
           type: text
+          combineBelow: true
+          visible: (spherCorr:none)
 
         - name: correction[none]
           title: 'Sphericity Correction'
+          type: text
           content: 'None'
           visible: (spherCorr:none && (spherCorr:GG || spherCorr:HF))
 
@@ -74,8 +76,15 @@ items:
           format: zto
           visible: (effectSize:omega && spherCorr:none)
 
+        - name: name[GG]
+          title: ""
+          type: text
+          combineBelow: true
+          visible: (spherCorr:GG)
+
         - name: correction[GG]
           title: 'Sphericity Correction'
+          type: text
           content: 'Greenhouse-Geisser'
           visible: (spherCorr:GG)
 
@@ -123,8 +132,15 @@ items:
           format: zto
           visible: (effectSize:omega && spherCorr:GG)
 
+        - name: name[HF]
+          title: ""
+          type: text
+          combineBelow: true
+          visible: (spherCorr:HF)
+
         - name: correction[HF]
           title: 'Sphericity Correction'
+          type: text
           content: 'Huynh-Feldt'
           visible: (spherCorr:HF)
 

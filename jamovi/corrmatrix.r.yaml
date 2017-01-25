@@ -11,18 +11,28 @@ items:
       clearWith:
           - ciWidth
           - hypothesis
+          - flag
 
       columns:
-          - name: ""
-            content: ($key)
-            type: text
+          - name: .name[r]
             title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (pearson)
 
           - name: .stat[r]
             title: ""
             type: text
             content: Pearson's r
-            visible: (pearson && (sig || spearman || kendall))
+            visible: (pearson && (sig || spearman || kendall || ci))
+
+          - name: .name[rp]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (pearson && sig)
 
           - name: .stat[rp]
             title: ""
@@ -30,10 +40,24 @@ items:
             content: p-value
             visible: (pearson && sig)
 
+          - name: .name[rciu]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (pearson && ci)
+
           - name: .stat[rciu]
             title: ""
             type: text
             content: CI Upper
+            visible: (pearson && ci)
+
+          - name: .name[rcil]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
             visible: (pearson && ci)
 
           - name: .stat[rcil]
@@ -42,11 +66,25 @@ items:
             content: CI Lower
             visible: (pearson && ci)
 
+          - name: .name[rho]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (spearman)
+
           - name: .stat[rho]
             title: ""
             type: text
             content: Spearman's rho
             visible: (spearman && (sig || pearson || kendall))
+
+          - name: .name[rhop]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (spearman && sig)
 
           - name: .stat[rhop]
             title: ""
@@ -54,11 +92,25 @@ items:
             content: p-value
             visible: (spearman && sig)
 
+          - name: .name[tau]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (kendall)
+
           - name: .stat[tau]
             title: ""
             type: text
             content: Kendall's Tau B
             visible: (kendall && (sig || pearson || spearman))
+
+          - name: .name[taup]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (kendall && sig)
 
           - name: .stat[taup]
             title: ""

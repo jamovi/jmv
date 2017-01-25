@@ -15,16 +15,17 @@ items:
         - miss
 
       columns:
-        - name: var
+        - name: var[stud]
           title: ""
           content: ($key)
           type: text
+          combineBelow: true
+          visible: (students)
 
         - name: name[stud]
           title: ''
           type: text
           content: Student's t
-          visible: (students)
 
         - name: stat[stud]
           title: statistic
@@ -72,6 +73,13 @@ items:
           title: Upper
           type: number
           visible: (ci && students)
+
+        - name: var[bf]
+          title: ""
+          content: ($key)
+          type: text
+          combineBelow: true
+          visible: (bf)
 
         - name: name[bf]
           title: ''
@@ -132,6 +140,13 @@ items:
           visible: (ci && bf)
           content: ''
 
+        - name: var[welc]
+          title: ""
+          content: ($key)
+          type: text
+          combineBelow: true
+          visible: (welchs)
+
         - name: name[welc]
           title: ''
           type: text
@@ -183,6 +198,13 @@ items:
           title: Upper
           type: number
           visible: (ci && welchs)
+
+        - name: var[mann]
+          title: ""
+          content: ($key)
+          type: text
+          combineBelow: true
+          visible: (mann)
 
         - name: name[mann]
           title: ''

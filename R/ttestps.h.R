@@ -178,8 +178,8 @@ ttestPSResults <- R6::R6Class(
                     "hypothesis",
                     "ciWidth"),
                 columns=list(
-                    list(`name`="name1", `title`="", `type`="text"),
-                    list(`name`="name2", `title`="", `type`="text"),
+                    list(`name`="var1[stud]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(students)"),
+                    list(`name`="var2[stud]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(students)"),
                     list(`name`="test[stud]", `title`="", `type`="text", `content`="Student's t", `visible`="(students)"),
                     list(`name`="stat[stud]", `title`="statistic", `type`="number", `visible`="(students)"),
                     list(`name`="err[stud]", `title`="error %", `type`="number", `visible`="(students && bf)", `content`=""),
@@ -190,6 +190,8 @@ ttestPSResults <- R6::R6Class(
                     list(`name`="es[stud]", `title`="Cohen's d", `type`="number", `visible`="(effectSize && students)"),
                     list(`name`="cil[stud]", `title`="Lower", `type`="number", `visible`="(ci && students)"),
                     list(`name`="ciu[stud]", `title`="Upper", `type`="number", `visible`="(ci && students)"),
+                    list(`name`="var1[bf]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(bf)"),
+                    list(`name`="var2[bf]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(bf)"),
                     list(`name`="test[bf]", `title`="", `type`="text", `content`="Bayes factor\u2081\u2080", `visible`="(bf)"),
                     list(`name`="stat[bf]", `title`="statistic", `type`="number", `visible`="(bf)"),
                     list(`name`="err[bf]", `title`="\u00B1%", `type`="number", `visible`="(bf)"),
@@ -200,6 +202,8 @@ ttestPSResults <- R6::R6Class(
                     list(`name`="es[bf]", `title`="Cohen's d", `type`="number", `visible`="(effectSize && bf)", `content`=""),
                     list(`name`="cil[bf]", `title`="Lower", `type`="number", `visible`="(ci && bf)", `content`=""),
                     list(`name`="ciu[bf]", `title`="Upper", `type`="number", `visible`="(ci && bf)", `content`=""),
+                    list(`name`="var1[wilc]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(wilcoxon)"),
+                    list(`name`="var2[wilc]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(wilcoxon)"),
                     list(`name`="test[wilc]", `type`="text", `title`="", `content`="Wilcoxon W", `visible`="(wilcoxon)"),
                     list(`name`="stat[wilc]", `title`="statistic", `type`="number", `visible`="(wilcoxon)"),
                     list(`name`="err[wilc]", `title`="\u00B1%", `type`="number", `visible`="(wilcoxon && bf)", `content`=""),
@@ -219,9 +223,9 @@ ttestPSResults <- R6::R6Class(
                 clearWith=list(
                     "miss"),
                 columns=list(
-                    list(`name`="name1", `title`="", `type`="text"),
+                    list(`name`="var1", `title`="", `type`="text"),
                     list(`name`="sep", `title`="", `type`="text", `content`="-", `format`="narrow"),
-                    list(`name`="name2", `title`="", `type`="text"),
+                    list(`name`="var2", `title`="", `type`="text"),
                     list(`name`="w", `title`="W", `type`="number"),
                     list(`name`="p", `type`="number", `format`="zto,pvalue")))
             private$..desc <- jmvcore::Table$new(
