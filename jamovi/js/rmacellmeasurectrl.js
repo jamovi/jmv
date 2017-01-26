@@ -46,6 +46,7 @@ var rmaCellMeasureCtrl = function(params) {
             if (data !== null && data.cell !== null)
                 $cell.append(rma_cell.toString(data.cell));
         });
+        return promise;
     };
 
     this.onRender = function(data, format, properties) {
@@ -79,6 +80,7 @@ var rmaCellMeasureCtrl = function(params) {
 
             this.$el.append($item);
         });
+        return promise;
     };
 };
 
