@@ -7,7 +7,7 @@ items:
     - name: main
       title: ANCOVA
       type: Table
-      rows: (terms)
+      rows: (modelTerms)
       clearWith:
         - dependent
         - modelTerms
@@ -180,43 +180,6 @@ items:
             visible: (corrHolm)
             type: number
             format: zto,pvalue
-
-    - name: margMeans
-      title: Marginal Means
-      type: Array
-      items: (margMeans)
-
-      template:
-        title: Marginal Means
-        type: Table
-        clearWith:
-          - compMainCorr
-
-        columns:
-          - name: mm
-            title: Marginal Mean
-            type: number
-
-          - name: se
-            title: SE
-            type: number
-
-          - name: lci
-            title: Lower CI
-            type: number
-
-          - name: uci
-            title: Upper CI
-            type: number
-
-          - name: t
-            type: number
-            visible: (compMain)
-
-          - name: p
-            type: number
-            format: zto,pvalue
-            visible: (compMain)
 
     - name: desc
       title: Descriptives

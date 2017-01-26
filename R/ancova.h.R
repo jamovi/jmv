@@ -273,7 +273,6 @@ ancovaResults <- R6::R6Class(
         assump = function() private$..assump,
         contrasts = function() private$..contrasts,
         postHoc = function() private$..postHoc,
-        margMeans = function() private$..margMeans,
         desc = function() private$..desc,
         plots = function() private$..plots),
     private = list(
@@ -281,7 +280,6 @@ ancovaResults <- R6::R6Class(
         ..assump = NA,
         ..contrasts = NA,
         ..postHoc = NA,
-        ..margMeans = NA,
         ..desc = NA,
         ..plots = NA),
     public=list(
@@ -291,7 +289,7 @@ ancovaResults <- R6::R6Class(
                 options=options,
                 name="main",
                 title="ANCOVA",
-                rows="(terms)",
+                rows="(modelTerms)",
                 clearWith=list(
                     "dependent",
                     "modelTerms",
@@ -374,23 +372,6 @@ ancovaResults <- R6::R6Class(
                         list(`name`="pscheffe", `title`="p<sub>scheffe</p>", `visible`="(corrScheffe)", `type`="number", `format`="zto,pvalue"),
                         list(`name`="pbonferroni", `title`="p<sub>bonferoni</p>", `visible`="(corrBonf)", `type`="number", `format`="zto,pvalue"),
                         list(`name`="pholm", `title`="p<sub>holm</p>", `visible`="(corrHolm)", `type`="number", `format`="zto,pvalue"))))
-            private$..margMeans <- jmvcore::Array$new(
-                options=options,
-                name="margMeans",
-                title="Marginal Means",
-                items="(margMeans)",
-                template=jmvcore::Table$new(
-                    options=options,
-                    title="Marginal Means",
-                    clearWith=list(
-                        "compMainCorr"),
-                    columns=list(
-                        list(`name`="mm", `title`="Marginal Mean", `type`="number"),
-                        list(`name`="se", `title`="SE", `type`="number"),
-                        list(`name`="lci", `title`="Lower CI", `type`="number"),
-                        list(`name`="uci", `title`="Upper CI", `type`="number"),
-                        list(`name`="t", `type`="number", `visible`="(compMain)"),
-                        list(`name`="p", `type`="number", `format`="zto,pvalue", `visible`="(compMain)"))))
             private$..desc <- jmvcore::Table$new(
                 options=options,
                 name="desc",
@@ -422,7 +403,6 @@ ancovaResults <- R6::R6Class(
             self$add(private$..assump)
             self$add(private$..contrasts)
             self$add(private$..postHoc)
-            self$add(private$..margMeans)
             self$add(private$..desc)
             self$add(private$..plots)}))
 
