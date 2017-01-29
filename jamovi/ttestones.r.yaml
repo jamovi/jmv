@@ -1,6 +1,7 @@
 ---
 name: ttestOneS
 title: One Sample T-Test
+jrs: '1.0'
 
 items:
     - name: ttest
@@ -76,7 +77,7 @@ items:
 
         - name: name[bf]
           title: ''
-          type: string
+          type: text
           content: Bayes factor₁₀
           visible: (bf)
 

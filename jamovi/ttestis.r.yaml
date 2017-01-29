@@ -1,7 +1,7 @@
 ---
 name: ttestIS
 title: Independent Samples T-Test
-api: 1
+jrs: '1.0'
 
 items:
     - name: ttest

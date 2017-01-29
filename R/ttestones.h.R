@@ -198,7 +198,7 @@ ttestOneSResults <- R6::R6Class(
                     list(`name`="cil[stud]", `title`="Lower", `type`="number", `visible`="(ci && students)"),
                     list(`name`="ciu[stud]", `title`="Upper", `type`="number", `visible`="(ci && students)"),
                     list(`name`="var[bf]", `title`="", `content`="($key)", `type`="text", `combineBelow`=TRUE, `visible`="(bf)"),
-                    list(`name`="name[bf]", `title`="", `type`="string", `content`="Bayes factor\u2081\u2080", `visible`="(bf)"),
+                    list(`name`="name[bf]", `title`="", `type`="text", `content`="Bayes factor\u2081\u2080", `visible`="(bf)"),
                     list(`name`="stat[bf]", `title`="statistic", `type`="number", `visible`="(bf)"),
                     list(`name`="err[bf]", `title`="\u00B1%", `type`="number", `visible`="(bf)"),
                     list(`name`="df[bf]", `title`="df", `type`="number", `visible`="(bf)", `content`=""),
@@ -275,7 +275,8 @@ ttestOneSBase <- R6::R6Class(
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
-                revision = revision)
+                revision = revision,
+                pause = NULL)
         }))
 
 #' One Sample T-Test

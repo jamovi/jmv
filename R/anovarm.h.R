@@ -315,8 +315,8 @@ anovaRMResults <- R6::R6Class(
                     "rmTerms",
                     "bsTerms"),
                 columns=list(
-                    list(`name`="name", `title`="", `content`=".", `type`="text"),
-                    list(`name`="correction[none]", `title`="Sphericity Correction", `content`="None", `visible`="(spherCorr:none && (spherCorr:GG || spherCorr:HF))"),
+                    list(`name`="name[none]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(spherCorr:none)"),
+                    list(`name`="correction[none]", `title`="Sphericity Correction", `type`="text", `content`="None", `visible`="(spherCorr:none && (spherCorr:GG || spherCorr:HF))"),
                     list(`name`="ss[none]", `title`="Sum of Squares", `type`="number", `visible`="(spherCorr:none)"),
                     list(`name`="df[none]", `title`="df", `type`="integer", `visible`="(spherCorr:none)"),
                     list(`name`="ms[none]", `title`="Mean Square", `type`="number", `visible`="(spherCorr:none)"),
@@ -325,7 +325,8 @@ anovaRMResults <- R6::R6Class(
                     list(`name`="eta[none]", `title`="\u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:eta && spherCorr:none)"),
                     list(`name`="partEta[none]", `title`="partial \u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:partEta && spherCorr:none)"),
                     list(`name`="omega[none]", `title`="\u03C9\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:omega && spherCorr:none)"),
-                    list(`name`="correction[GG]", `title`="Sphericity Correction", `content`="Greenhouse-Geisser", `visible`="(spherCorr:GG)"),
+                    list(`name`="name[GG]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(spherCorr:GG)"),
+                    list(`name`="correction[GG]", `title`="Sphericity Correction", `type`="text", `content`="Greenhouse-Geisser", `visible`="(spherCorr:GG)"),
                     list(`name`="ss[GG]", `title`="Sum of Squares", `type`="number", `visible`="(spherCorr:GG)"),
                     list(`name`="df[GG]", `title`="df", `type`="number", `visible`="(spherCorr:GG)"),
                     list(`name`="ms[GG]", `title`="Mean Square", `type`="number", `visible`="(spherCorr:GG)"),
@@ -334,7 +335,8 @@ anovaRMResults <- R6::R6Class(
                     list(`name`="eta[GG]", `title`="\u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:eta && spherCorr:GG)"),
                     list(`name`="partEta[GG]", `title`="partial \u03B7\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:partEta && spherCorr:GG)"),
                     list(`name`="omega[GG]", `title`="\u03C9\u00B2", `type`="number", `format`="zto", `visible`="(effectSize:omega && spherCorr:GG)"),
-                    list(`name`="correction[HF]", `title`="Sphericity Correction", `content`="Huynh-Feldt", `visible`="(spherCorr:HF)"),
+                    list(`name`="name[HF]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(spherCorr:HF)"),
+                    list(`name`="correction[HF]", `title`="Sphericity Correction", `type`="text", `content`="Huynh-Feldt", `visible`="(spherCorr:HF)"),
                     list(`name`="ss[HF]", `title`="Sum of Squares", `type`="number", `visible`="(spherCorr:HF)"),
                     list(`name`="df[HF]", `title`="df", `type`="number", `visible`="(spherCorr:HF)"),
                     list(`name`="ms[HF]", `title`="Mean Square", `type`="number", `visible`="(spherCorr:HF)"),
@@ -442,6 +444,7 @@ anovaRMResults <- R6::R6Class(
                 template=jmvcore::Table$new(
                     options=options,
                     title="",
+                    columns=list(),
                     clearWith=list(
                         "dependent",
                         "ss",
@@ -460,7 +463,6 @@ anovaRMResults <- R6::R6Class(
                 visible="(descPlotsHAxis)",
                 width=500,
                 height=300,
-                renderInitFun=".descPlot",
                 renderFun=".descPlot",
                 clearWith=list(
                     "descPlotsHAxis",
@@ -477,7 +479,6 @@ anovaRMResults <- R6::R6Class(
                 template=jmvcore::Image$new(
                     options=options,
                     title="$key",
-                    renderInitFun=".descPlot",
                     renderFun=".descPlot",
                     clearWith=list(
                         "descPlotsHAxis",
@@ -510,7 +511,8 @@ anovaRMBase <- R6::R6Class(
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
-                revision = revision)
+                revision = revision,
+                pause = NULL)
         }))
 
 #' Repeated Measures ANOVA
@@ -532,33 +534,32 @@ anovaRMBase <- R6::R6Class(
 #'   terms to go into the model 
 #' @param bsTerms a list of character vectors describing the between subjects 
 #'   terms to go into the model 
-#' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default) - the sum of 
+#' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default); the sum of 
 #'   squares to use 
-#' @param effectSize a vector of strings indicating which effect size is to be 
-#'   computed. One (or more) of \code{'eta'}, \code{'partEta'}, or 
-#'   \code{`omega`} can be chosen 
+#' @param effectSize one or more of \code{'eta'}, \code{'partEta'}, or 
+#'   \code{`omega`}; use η², partial η², and ω² effect sizes, respectively 
 #' @param spherTests TRUE or FALSE (default), perform sphericity tests
-#' @param spherCorr a vector of strings indicating whether any sphericity 
-#'   corrections are to be computed. One (or more) of \code{'none'}, \code{'GG'} 
-#'   (Greenhouse-Geisser), or \code{`HF`} (Huynh-Feldt) can be chosen 
+#' @param spherCorr one or more of \code{'none'} (default), \code{'GG'}, or 
+#'   \code{`HF`}; use no p-value correction, the Greenhouse-Geisser p-value 
+#'   correction, and the Huynh-Feldt p-value correction for shericity, 
+#'   respectively 
 #' @param leveneTest TRUE or FALSE (default), test for equality of variances 
 #'   (i.e., Levene's test) 
 #' @param contrasts .
 #' @param postHoc a list of character vectors describing the post-hoc tests 
 #'   that need to be computed 
-#' @param postHocCorr a vector of strings indicating which p-value correction 
-#'   should be used for the post-hoc tests. One (or more) of \code{'tukey'} 
-#'   (default), \code{'scheffe'}, \code{'bonf'} (Bonferroni), or \code{'holm'} 
-#'   can be chosen 
+#' @param postHocCorr one or more of \code{'tukey'} (default), 
+#'   \code{'scheffe'}, \code{'bonf'}, or \code{'holm'}; use Tukey, Scheffe, 
+#'   Bonferroni and Holm posthoc corrections, respectively 
 #' @param descPlotsHAxis a string naming the variable placed on the horizontal 
 #'   axis of the plot 
 #' @param descPlotsSepLines a string naming the variable represented as 
 #'   separate lines on the plot 
 #' @param descPlotsSepPlots a string naming the variable to separate over to 
 #'   form multiple plots 
-#' @param descPlotsErrBar \code ('none'), \code{'ci'} (default), or 
-#'   \code{'se'}. Use no error bars, confidence intervals, or standard errors on 
-#'   the plots 
+#' @param descPlotsErrBar \code{'none'}, \code{'ci'} (default), or 
+#'   \code{'se'}. Use no error bars, use confidence intervals, or use standard 
+#'   errors on the plots, respectively 
 #' @param descPlotsCIWidth a number between 50 and 99.9 (default: 95) 
 #'   specifying the confidence interval width 
 #' @param dispDescStats Display Descriptive statistics 

@@ -1,6 +1,7 @@
 ---
 name:  logLinear
 title: Log-Linear Regression
+jrs: '1.0'
 
 items:
     - name: table

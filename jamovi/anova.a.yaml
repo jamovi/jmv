@@ -2,7 +2,8 @@
 name: anova
 title: ANOVA
 menuGroup: ANOVA
-version: "1.0.0"
+version: '1.0.0'
+jas: '1.0'
 description: >
     Analysis of Variance
 

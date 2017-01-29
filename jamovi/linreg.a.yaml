@@ -2,8 +2,8 @@
 name:    linReg
 title:   Linear Regression
 menuGroup: Regression
-version: "1.0.0"
-engineType: R
+version: '1.0.0'
+jas: '1.0'
 
 options:
     - name: data

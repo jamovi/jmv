@@ -250,7 +250,6 @@ ttestPSResults <- R6::R6Class(
                 items="(pairs)",
                 template=jmvcore::Image$new(
                     options=options,
-                    renderInitFun=".plot",
                     renderFun=".plot",
                     clearWith=list(
                         "miss")))
@@ -275,7 +274,8 @@ ttestPSBase <- R6::R6Class(
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
-                revision = revision)
+                revision = revision,
+                pause = NULL)
         }))
 
 #' Paired Samples T-Test

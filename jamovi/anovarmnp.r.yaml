@@ -1,7 +1,7 @@
 ---
 name:  anovaRMNP
 title: Repeated Measures ANOVA (Non-parametric)
-api: 1
+jrs: '1.0'
 
 items:
     - name: table
@@ -60,5 +60,4 @@ items:
       title: Descriptive Plot
       visible: (plots)
       type: Image
-      renderInitFun: .plot
       renderFun: .plot

@@ -115,7 +115,6 @@ anovaRMNPResults <- R6::R6Class(
                 name="plot",
                 title="Descriptive Plot",
                 visible="(plots)",
-                renderInitFun=".plot",
                 renderFun=".plot")
             self$add(private$..table)
             self$add(private$..comp)
@@ -137,7 +136,8 @@ anovaRMNPBase <- R6::R6Class(
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
-                revision = revision)
+                revision = revision,
+                pause = NULL)
         }))
 
 #' Repeated Measures ANOVA (Non-parametric)

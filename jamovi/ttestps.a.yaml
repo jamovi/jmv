@@ -2,8 +2,8 @@
 name: ttestPS
 title: Paired Samples T-Test
 menuGroup: T-Tests
-version: "1.0.0"
-engineType: R
+version: '1.0.0'
+jas: '1.0'
 
 options:
     - name: data

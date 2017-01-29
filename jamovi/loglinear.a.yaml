@@ -2,8 +2,8 @@
 name:    logLinear
 title:   Log-Linear Regression
 menuGroup: Frequencies
-version: "1.0.0"
-engineType: R
+version: '1.0.0'
+jas: '1.0'
 
 options:
     - name: data

@@ -4,9 +4,8 @@ title: Reliability Analysis
 
 menuGroup: Exploration
 
-version: "1.0.0"
-jas: "1.0"
-engineType: R
+version: '1.0.0'
+jas: '1.0'
 
 options:
     - name: data

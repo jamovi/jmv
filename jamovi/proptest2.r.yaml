@@ -1,6 +1,7 @@
 ---
 name:  propTest2
 title: Proportion Test (2 Outcomes)
+jrs: '1.0'
 
 items:
     - name: table

@@ -1,6 +1,7 @@
 ---
 name:  anova
 title: ANOVA
+jrs: '1.0'
 
 items:
     - name: main

@@ -1,6 +1,7 @@
 ---
 name: descriptives
 title: Descriptives
+jrs: '1.0'
 
 items:
     - name: descriptives

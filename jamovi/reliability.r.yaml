@@ -1,6 +1,7 @@
 ---
 name: reliability
 title: Reliability Analysis
+jrs: '1.0'
 
 items:
     - name: scale

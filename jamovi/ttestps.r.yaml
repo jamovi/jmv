@@ -1,6 +1,7 @@
 ---
 name: ttestPS
 title: Paired Samples T-Test
+jrs: '1.0'
 
 items:
     - name: ttest
@@ -282,7 +283,6 @@ items:
       items: (pairs)
       template:
           type: Image
-          renderInitFun: .plot
           renderFun: .plot
           clearWith:
               - miss

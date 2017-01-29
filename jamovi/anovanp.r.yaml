@@ -1,6 +1,7 @@
 ---
 name:  anovaNP
 title: One-way ANOVA (Non-parametric)
+jrs: '1.0'
 
 items:
     - name: table

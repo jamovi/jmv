@@ -7,7 +7,9 @@ menuSubgroup: Non-Parametric
 menuTitle: One Way ANOVA
 menuSubtitle: Kruskal-Wallis
 
-version: "1.0.0"
+version: '1.0.0'
+jas: '1.0'
+
 
 options:
     - name: data

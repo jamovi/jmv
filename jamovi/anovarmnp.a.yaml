@@ -7,9 +7,8 @@ menuSubgroup: Non-Parametric
 menuTitle: Repeated Measures ANOVA
 menuSubtitle: Friedman
 
-version: "1.0.0"
-jmc: "1.0.0"
-engineType: R
+version: '1.0.0'
+jas: '1.0'
 
 options:
     - name: data

@@ -1,6 +1,7 @@
 ---
 name:  mancova
 title: MANCOVA
+jrs: '1.0'
 
 items:
     - name: table

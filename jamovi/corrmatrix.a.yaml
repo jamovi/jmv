@@ -2,9 +2,8 @@
 name:    corrMatrix
 title:   Correlation Matrix
 menuGroup: Regression
-version: "1.0.0"
+version: '1.0.0'
 jas: '1.0'
-engineType: R
 
 options:
     - name: data

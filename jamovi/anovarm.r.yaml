@@ -1,7 +1,7 @@
 ---
 name:  anovaRM
 title: Repeated Measures ANOVA
-jmc: "1.0.0"
+jrs: '1.0'
 
 items:
     - name: rmTable
@@ -352,6 +352,7 @@ items:
       template:
         title: ""
         type: Table
+        columns: []
         clearWith:
             - dependent
             - ss
@@ -370,7 +371,6 @@ items:
       type: Image
       width: 500
       height: 300
-      renderInitFun: .descPlot
       renderFun: .descPlot
       clearWith:
         - descPlotsHAxis
@@ -387,7 +387,6 @@ items:
       template:
           title: $key
           type: Image
-          renderInitFun: .descPlot
           renderFun: .descPlot
           clearWith:
               - descPlotsHAxis

@@ -116,7 +116,10 @@ anovaNPBase <- R6::R6Class(
                 data = data,
                 datasetId = datasetId,
                 analysisId = analysisId,
-                revision = revision)
+                revision = revision,
+                pause = list(
+                    list(`when`="(age)", `with`=list(
+                                "thing"))))
         }))
 
 #' One Way ANOVA (Non-parametric)
