@@ -21,7 +21,11 @@ analyses:
     ns: jmv
     menuGroup: Exploration
     menuTitle: Descriptives
-    description: null
+    description:
+      main: Descriptives
+      R:
+        usage: |
+          descriptives(data, vars=c('x', 'y', 'z'), min=TRUE, max=TRUE)
   - title: Reliability Analysis
     name: reliability
     ns: jmv
@@ -64,12 +68,14 @@ analyses:
     ns: jmv
     menuGroup: ANOVA
     menuTitle: ANCOVA
+    stage: 1
     description: null
   - title: MANCOVA
     name: mancova
     ns: jmv
     menuGroup: ANOVA
     menuTitle: MANCOVA
+    stage: 1
     description: null
   - title: One Way ANOVA (Non-parametric)
     name: anovaNP
@@ -101,6 +107,7 @@ analyses:
     ns: jmv
     menuGroup: Regression
     menuTitle: Linear Regression
+    stage: 1
     description: null
   - title: Proportion Test (2 Outcomes)
     name: propTest2
@@ -139,6 +146,7 @@ analyses:
     ns: jmv
     menuGroup: Frequencies
     menuTitle: Log-Linear Regression
+    stage: 1
     description: null
 
 ...

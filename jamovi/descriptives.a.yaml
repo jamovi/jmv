@@ -5,6 +5,12 @@ menuGroup: Exploration
 version: '1.0.0'
 jas: '1.0'
 
+description:
+    main: Descriptives
+    R:
+        usage: |
+            descriptives(data, vars=c('x', 'y', 'z'), min=TRUE, max=TRUE)
+
 options:
     - name: data
       type: Data

@@ -152,3 +152,4 @@ options:
             values; `'perAnalysis'` excludes missing values for individual
             dependent variables, `'listwise'` excludes a row from all
             analyses if one of its entries is missing.
+...
