@@ -145,8 +145,9 @@ contTablesPairedBase <- R6::R6Class(
 #'   contingency table 
 #' @param counts a string naming the variable to use as counts, or NULL if 
 #'   each row represents a single observation 
-#' @param pcRow TRUE or FALSE (default), provide row percentages
-#' @param pcCol TRUE or FALSE (default), provide column percentages
+#' @param pcRow \code{TRUE} or \code{FALSE} (default), provide row percentages 
+#' @param pcCol \code{TRUE} or \code{FALSE} (default), provide column 
+#'   percentages 
 #' @export
 contTablesPaired <- function(
     data,

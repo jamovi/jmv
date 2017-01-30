@@ -4,8 +4,9 @@ title: ANOVA
 menuGroup: ANOVA
 version: '1.0.0'
 jas: '1.0'
-description: >
-    Analysis of Variance
+
+description:
+    main: Analysis of Variance
 
 options:
     - name: data
@@ -24,7 +25,7 @@ options:
         - ordinal
       description:
           R: >
-            a string naming the dependent variable from \code{data} variable
+            a string naming the dependent variable from `data`, variable
             must be numeric
 
     - name: fixedFactors
@@ -35,7 +36,7 @@ options:
         - ordinal
       default:
       description:
-          R: a vector of strings naming the fixed factors from \code{data}
+          R: a vector of strings naming the fixed factors from `data`
 
     - name: modelTerms
       title: Model Terms
@@ -108,7 +109,9 @@ options:
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), perform Tukey correction in post-hoc tests
+          R: >
+            `TRUE` or `FALSE` (default), perform Tukey correction in post-hoc
+            tests
 
     - name: corrScheffe
       title: Scheffe
@@ -116,7 +119,7 @@ options:
       default: false
       description:
           R: >
-            TRUE or FALSE (default), perform Scheffe correction in post-hoc
+            `TRUE` or `FALSE` (default), perform Scheffe correction in post-hoc
             tests
 
     - name: corrBonf
@@ -125,7 +128,7 @@ options:
       default: false
       description:
           R: >
-            TRUE or FALSE (default), perform Bonferroni correction in post-hoc
+            `TRUE` or `FALSE` (default), perform Bonferroni correction in post-hoc
             tests
 
     - name: corrHolm
@@ -134,49 +137,55 @@ options:
       default: false
       description:
           R: >
-            TRUE or FALSE (default), perform Holm correction in post-hoc tests
+            `TRUE` or `FALSE` (default), perform Holm correction in post-hoc tests
 
     - name: descStats
       title: Descriptive statistics
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide descriptive statistics
+          R: >
+            `TRUE` or `FALSE` (default), provide descriptive statistics
 
     - name: homo
       title: Homogeneity tests
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), perform homogeneity tests
+          R: >
+            `TRUE` or `FALSE` (default), perform homogeneity tests
 
     - name: qq
       title: Q-Q plot of residuals
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide a Q-Q plot of residuals
+          R: >
+            `TRUE` or `FALSE` (default), provide a Q-Q plot of residuals
 
     - name: etaSq
       title: η²
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide η² (effect size)
+          R: >
+            `TRUE` or `FALSE` (default), provide η² (effect size)
 
     - name: etaSqP
       title: partial η²
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide partial η² (effect size)
+          R: >
+            `TRUE` or `FALSE` (default), provide partial η² (effect size)
 
     - name: omegaSq
       title: ω²
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide ω² (effect size)
+          R: >
+            `TRUE` or `FALSE` (default), provide ω² (effect size)
 
     - name: plotError
       title: Error Bar Definition
@@ -187,7 +196,7 @@ options:
       default: ci
       description:
           R: >
-            \code{'ci'} or \code{'se'}, use confidence intervals or standard
+            `'ci'` or `'se'`, use confidence intervals or standard
             errors on the plot
 
     - name: ciWidth
@@ -210,5 +219,6 @@ options:
       default: '3'
       description:
           R: >
-            \code{'1'}, \code{'2'} or \code{'3'} (default), the sum of squares
+            `'1'`, `'2'` or `'3'` (default), the sum of squares
             to use
+...

@@ -15,91 +15,103 @@ options:
       title: Variables
       type: Variables
       description:
-          R: a vector of strings naming the variables of interest in \code{data}
+          R: a vector of strings naming the variables of interest in `data`
 
     - name: mean
       title: Mean
       type: Bool
       default: true
       description:
-          R: TRUE (default) or FALSE, provide the mean
+          R: >
+            `TRUE` (default) or `FALSE`, provide the mean
 
     - name: median
       title: Median
       type: Bool
       default: true
       description:
-          R: TRUE (default) or FALSE, provide the median
+          R: >
+            `TRUE` (default) or `FALSE`, provide the median
 
     - name: mode
       title: Mode
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide the mode
+          R: >
+            `TRUE` or `FALSE` (default), provide the mode
 
     - name: sum
       title: Sum
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide the sum
+          R: >
+            `TRUE` or `FALSE` (default), provide the sum
 
     - name: sd
       title: Standard deviation
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide the standard deviation
+          R: >
+            `TRUE` or `FALSE` (default), provide the standard deviation
 
     - name: variance
       title: Variance
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide the variance
+          R: >
+            `TRUE` or `FALSE` (default), provide the variance
 
     - name: range
       title: Range
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide the range
+          R: >
+            `TRUE` or `FALSE` (default), provide the range
 
     - name: min
       title: Minimum
       type: Bool
       default: true
       description:
-          R: TRUE or FALSE (default), provide the minimum
+          R: >
+            `TRUE` or `FALSE` (default), provide the minimum
 
     - name: max
       title: Maximum
       type: Bool
       default: true
       description:
-          R: TRUE or FALSE (default), provide the maximum
+          R: >
+            `TRUE` or `FALSE` (default), provide the maximum
 
     - name: se
       title: Standard error
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide the standard error
+          R: >
+            `TRUE` or `FALSE` (default), provide the standard error
 
     - name: skew
       title: Skewness
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide the skewness
+          R: >
+            `TRUE` or `FALSE` (default), provide the skewness
 
     - name: kurt
       title: Kurtosis
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide the kurtosis
+          R: >
+            `TRUE` or `FALSE` (default), provide the kurtosis
 
     - name: freq
       title: Frequency tables
@@ -107,7 +119,7 @@ options:
       default: false
       description:
           R: >
-            TRUE or FALSE (default), provide frequency tables (nominal, ordinal
+            `TRUE` or `FALSE` (default), provide frequency tables (nominal, ordinal
             variables only)
 
     - name: plots
@@ -116,7 +128,7 @@ options:
       default: false
       description:
           R: >
-            TRUE or FALSE (default), provide frequency tables (nominal, ordinal
+            `TRUE` or `FALSE` (default), provide frequency tables (nominal, ordinal
             variables only)
 
     - name: plotW
@@ -140,14 +152,16 @@ options:
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide quartiles
+          R: >
+            `TRUE` or `FALSE` (default), provide quartiles
 
     - name: pcEqGr
       title: Cut points for
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide quantiles
+          R: >
+            `TRUE` or `FALSE` (default), provide quantiles
 
     - name: pcNEqGr
       title: Cut point values
@@ -156,3 +170,4 @@ options:
       description:
           R: >
             an integer (default: 4) specifying the number of equal groups
+...

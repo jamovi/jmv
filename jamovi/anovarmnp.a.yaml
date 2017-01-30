@@ -33,21 +33,24 @@ options:
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), perform pairwise comparisons
+          R: >
+            `TRUE` or `FALSE` (default), perform pairwise comparisons
 
     - name: desc
       title: Descriptives
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide descriptive statistics
+          R: >
+            `TRUE` or `FALSE` (default), provide descriptive statistics
 
     - name: plots
       title: Descriptive plot
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide a descriptive plot
+          R: >
+            `TRUE` or `FALSE` (default), provide a descriptive plot
 
     - name: plotType
       title: Plot Type
@@ -58,5 +61,6 @@ options:
       default: means
       description:
           R: >
-            \code{'means'} (default) or \code{'medians'}, the error bars to use
+            `'means'` (default) or `'medians'`, the error bars to use
             in the plot
+...

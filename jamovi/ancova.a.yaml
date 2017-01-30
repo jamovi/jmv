@@ -22,7 +22,7 @@ options:
         - nominal
         - ordinal
       description:
-          R: a string naming the dependent variable in \code{data}
+          R: a string naming the dependent variable in `data`
 
     - name: fixedFactors
       title: Fixed factors
@@ -223,3 +223,4 @@ options:
       default: '3'
       description: >
         Sum of squares
+...

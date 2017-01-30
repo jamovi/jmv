@@ -136,8 +136,8 @@ propTestNBase <- R6::R6Class(
 #' @param data the data as a data frame
 #' @param var a string naming the variable of interest in \code{data}
 #' @param counts .
-#' @param expected TRUE or FALSE (default), whether expected counts should be 
-#'   displayed
+#' @param expected \code{TRUE} or \code{FALSE} (default), whether expected 
+#'   counts should be displayed 
 #' @param ratio a string naming the variable representing counts, or NULL if 
 #'   each row represents a single observation 
 #' @export

@@ -537,14 +537,15 @@ anovaRMBase <- R6::R6Class(
 #' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default); the sum of 
 #'   squares to use 
 #' @param effectSize one or more of \code{'eta'}, \code{'partEta'}, or 
-#'   \code{`omega`}; use η², partial η², and ω² effect sizes, respectively 
-#' @param spherTests TRUE or FALSE (default), perform sphericity tests
+#'   \code{}omega\code{}; use η², partial η², and ω² effect sizes, respectively 
+#' @param spherTests \code{TRUE} or \code{FALSE} (default), perform sphericity 
+#'   tests 
 #' @param spherCorr one or more of \code{'none'} (default), \code{'GG'}, or 
-#'   \code{`HF`}; use no p-value correction, the Greenhouse-Geisser p-value 
+#'   \code{}HF\code{}; use no p-value correction, the Greenhouse-Geisser p-value 
 #'   correction, and the Huynh-Feldt p-value correction for shericity, 
 #'   respectively 
-#' @param leveneTest TRUE or FALSE (default), test for equality of variances 
-#'   (i.e., Levene's test) 
+#' @param leveneTest \code{TRUE} or \code{FALSE} (default), test for equality 
+#'   of variances (i.e., Levene's test) 
 #' @param contrasts .
 #' @param postHoc a list of character vectors describing the post-hoc tests 
 #'   that need to be computed 
@@ -562,7 +563,8 @@ anovaRMBase <- R6::R6Class(
 #'   errors on the plots, respectively 
 #' @param descPlotsCIWidth a number between 50 and 99.9 (default: 95) 
 #'   specifying the confidence interval width 
-#' @param dispDescStats Display Descriptive statistics 
+#' @param dispDescStats \code{TRUE} or \code{FALSE} (default), provide 
+#'   descriptive statistics 
 #' @export
 anovaRM <- function(
     data,

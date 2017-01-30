@@ -201,18 +201,24 @@ reliabilityBase <- R6::R6Class(
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}
-#' @param alphaScale TRUE (default) or FALSE, provide Cronbach's α
-#' @param omegaScale TRUE or FALSE (default), provide McDonald's ω
-#' @param meanScale TRUE or FALSE (default), provide the mean
-#' @param sdScale TRUE or FALSE (default), provide the standard deviation
-#' @param corPlot TRUE or FALSE (default), provide a correlation plot
-#' @param alphaItems TRUE or FALSE (default), provide what the Cronbach's α 
-#'   would be if the item was dropped 
-#' @param omegaItems TRUE or FALSE (default), provide what the McDonald's ω 
-#'   would be if the item was dropped 
-#' @param meanItems TRUE or FALSE (default), provide item means
-#' @param sdItems TRUE or FALSE (default), provide item standard deviations
-#' @param itemRestCor TRUE or FALSE (default), provide item-rest correlations
+#' @param alphaScale \code{TRUE} (default) or \code{FALSE}, provide Cronbach's 
+#'   α 
+#' @param omegaScale \code{TRUE} or \code{FALSE} (default), provide McDonald's 
+#'   ω 
+#' @param meanScale \code{TRUE} or \code{FALSE} (default), provide the mean 
+#' @param sdScale \code{TRUE} or \code{FALSE} (default), provide the standard 
+#'   deviation 
+#' @param corPlot \code{TRUE} or \code{FALSE} (default), provide a correlation 
+#'   plot 
+#' @param alphaItems \code{TRUE} or \code{FALSE} (default), provide what the 
+#'   Cronbach's α would be if the item was dropped 
+#' @param omegaItems \code{TRUE} or \code{FALSE} (default), provide what the 
+#'   McDonald's ω would be if the item was dropped 
+#' @param meanItems \code{TRUE} or \code{FALSE} (default), provide item means 
+#' @param sdItems \code{TRUE} or \code{FALSE} (default), provide item standard 
+#'   deviations 
+#' @param itemRestCor \code{TRUE} or \code{FALSE} (default), provide item-rest 
+#'   correlations 
 #' @export
 reliability <- function(
     data,

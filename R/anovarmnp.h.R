@@ -145,9 +145,12 @@ anovaRMNPBase <- R6::R6Class(
 #' 
 #' @param data the data as a data frame
 #' @param measures a vector of strings naming the repeated measures variables
-#' @param pairs TRUE or FALSE (default), perform pairwise comparisons
-#' @param desc TRUE or FALSE (default), provide descriptive statistics
-#' @param plots TRUE or FALSE (default), provide a descriptive plot
+#' @param pairs \code{TRUE} or \code{FALSE} (default), perform pairwise 
+#'   comparisons 
+#' @param desc \code{TRUE} or \code{FALSE} (default), provide descriptive 
+#'   statistics 
+#' @param plots \code{TRUE} or \code{FALSE} (default), provide a descriptive 
+#'   plot 
 #' @param plotType \code{'means'} (default) or \code{'medians'}, the error 
 #'   bars to use in the plot 
 #' @export

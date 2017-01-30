@@ -58,11 +58,14 @@ options:
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide row percentages
+          R: >
+            `TRUE` or `FALSE` (default), provide row percentages
 
     - name: pcCol
       title: Column
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide column percentages
+          R: >
+            `TRUE` or `FALSE` (default), provide column percentages
+...

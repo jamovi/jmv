@@ -23,13 +23,14 @@ options:
         - nominal
         - ordinal
       description:
-          R: a vector of strings naming the variables of interest in \code{data}
+          R: a vector of strings naming the variables of interest in `data`
 
     - name: areCounts
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), the variables are counts
+          R: >
+            `TRUE` or `FALSE` (default), the variables are counts
 
     - name: testValue
       title: Test value
@@ -49,14 +50,15 @@ options:
       default: notequal
       description:
           R: >
-            \code{'notequal'} (default), \code{'greater'} or \code{'less'}, the
+            `'notequal'` (default), `'greater'` or `'less'`, the
             alternative hypothesis
 
     - name: ci
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide confidence intervals
+          R: >
+            `TRUE` or `FALSE` (default), provide confidence intervals
 
     - name: ciWidth
       type: Number
@@ -67,3 +69,4 @@ options:
           R: >
             a number between 50 and 99.9 (default: 95), the confidence interval
             width
+...

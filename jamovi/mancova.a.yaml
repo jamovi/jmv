@@ -14,3 +14,4 @@ options:
 
     - name: vars
       type: Variables
+...

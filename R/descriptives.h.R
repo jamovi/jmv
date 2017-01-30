@@ -281,26 +281,27 @@ descriptivesBase <- R6::R6Class(
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}
-#' @param mean TRUE (default) or FALSE, provide the mean
-#' @param median TRUE (default) or FALSE, provide the median
-#' @param mode TRUE or FALSE (default), provide the mode
-#' @param sum TRUE or FALSE (default), provide the sum
-#' @param sd TRUE or FALSE (default), provide the standard deviation
-#' @param variance TRUE or FALSE (default), provide the variance
-#' @param range TRUE or FALSE (default), provide the range
-#' @param min TRUE or FALSE (default), provide the minimum
-#' @param max TRUE or FALSE (default), provide the maximum
-#' @param se TRUE or FALSE (default), provide the standard error
-#' @param skew TRUE or FALSE (default), provide the skewness
-#' @param kurt TRUE or FALSE (default), provide the kurtosis
-#' @param freq TRUE or FALSE (default), provide frequency tables (nominal, 
-#'   ordinal variables only) 
-#' @param plots TRUE or FALSE (default), provide frequency tables (nominal, 
-#'   ordinal variables only) 
+#' @param mean \code{TRUE} (default) or \code{FALSE}, provide the mean 
+#' @param median \code{TRUE} (default) or \code{FALSE}, provide the median 
+#' @param mode \code{TRUE} or \code{FALSE} (default), provide the mode 
+#' @param sum \code{TRUE} or \code{FALSE} (default), provide the sum 
+#' @param sd \code{TRUE} or \code{FALSE} (default), provide the standard 
+#'   deviation 
+#' @param variance \code{TRUE} or \code{FALSE} (default), provide the variance 
+#' @param range \code{TRUE} or \code{FALSE} (default), provide the range 
+#' @param min \code{TRUE} or \code{FALSE} (default), provide the minimum 
+#' @param max \code{TRUE} or \code{FALSE} (default), provide the maximum 
+#' @param se \code{TRUE} or \code{FALSE} (default), provide the standard error 
+#' @param skew \code{TRUE} or \code{FALSE} (default), provide the skewness 
+#' @param kurt \code{TRUE} or \code{FALSE} (default), provide the kurtosis 
+#' @param freq \code{TRUE} or \code{FALSE} (default), provide frequency tables 
+#'   (nominal, ordinal variables only) 
+#' @param plots \code{TRUE} or \code{FALSE} (default), provide frequency 
+#'   tables (nominal, ordinal variables only) 
 #' @param plotW an integer (default: 480) specifying the width of the plots 
 #' @param plotH an integer (default: 320) specifying the height of the plots 
-#' @param quart TRUE or FALSE (default), provide quartiles
-#' @param pcEqGr TRUE or FALSE (default), provide quantiles
+#' @param quart \code{TRUE} or \code{FALSE} (default), provide quartiles 
+#' @param pcEqGr \code{TRUE} or \code{FALSE} (default), provide quantiles 
 #' @param pcNEqGr an integer (default: 4) specifying the number of equal 
 #'   groups 
 #' @export

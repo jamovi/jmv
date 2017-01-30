@@ -326,23 +326,28 @@ contTablesBase <- R6::R6Class(
 #'   each row represents a single observation 
 #' @param layers a character vector naming variables to split the contingency 
 #'   table across 
-#' @param chiSq TRUE (default) or FALSE, provide χ²
-#' @param chiSqCorr TRUE or FALSE (default), provide χ² with continuity 
-#'   correction
-#' @param likeRat TRUE or FALSE (default), provide the likelihood ratio
-#' @param contCoef TRUE or FALSE (default), provide the contingency 
-#'   coefficient
-#' @param phiCra TRUE or FALSE (default), provide Phi and Cramer's V
-#' @param logOdds TRUE or FALSE (default), provide the log odds ratio (only 
-#'   available for 2x2 tables) 
+#' @param chiSq \code{TRUE} (default) or \code{FALSE}, provide χ² 
+#' @param chiSqCorr \code{TRUE} or \code{FALSE} (default), provide χ² with 
+#'   continuity correction 
+#' @param likeRat \code{TRUE} or \code{FALSE} (default), provide the 
+#'   likelihood ratio 
+#' @param contCoef \code{TRUE} or \code{FALSE} (default), provide the 
+#'   contingency coefficient 
+#' @param phiCra \code{TRUE} or \code{FALSE} (default), provide Phi and 
+#'   Cramer's V 
+#' @param logOdds \code{TRUE} or \code{FALSE} (default), provide the log odds 
+#'   ratio (only available for 2x2 tables) 
 #' @param ciWidth a number between 50 and 99.9 (default: 95), width of the 
 #'   confidence intervals to provide 
-#' @param gamma TRUE or FALSE (default), provide gamma
-#' @param taub TRUE or FALSE (default), provide Kendall's tau-b
-#' @param exp TRUE or FALSE (default), provide the expected counts
-#' @param pcRow TRUE or FALSE (default), provide row percentages
-#' @param pcCol TRUE or FALSE (default), provide column percentages
-#' @param pcTot TRUE or FALSE (default), provide total percentages
+#' @param gamma \code{TRUE} or \code{FALSE} (default), provide gamma 
+#' @param taub \code{TRUE} or \code{FALSE} (default), provide Kendall's tau-b 
+#' @param exp \code{TRUE} or \code{FALSE} (default), provide the expected 
+#'   counts 
+#' @param pcRow \code{TRUE} or \code{FALSE} (default), provide row percentages 
+#' @param pcCol \code{TRUE} or \code{FALSE} (default), provide column 
+#'   percentages 
+#' @param pcTot \code{TRUE} or \code{FALSE} (default), provide total 
+#'   percentages 
 #' @export
 contTables <- function(
     data,

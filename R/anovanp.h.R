@@ -117,19 +117,22 @@ anovaNPBase <- R6::R6Class(
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision,
-                pause = list(
-                    list(`when`="(age)", `with`=list(
-                                "thing"))))
+                pause = NULL)
         }))
 
 #' One Way ANOVA (Non-parametric)
 #'
 #' 
+#'
+#' @examples
+#' anovaNP(data, deps='len', group='dose')
+#' 
 #' @param data the data as a data frame
 #' @param deps a string naming the dependent variable in \code{data}
 #' @param group a string naming the grouping or independent variable in 
 #'   \code{data}
-#' @param pairs TRUE or FALSE (default), perform pairwise comparisons
+#' @param pairs \code{TRUE} or \code{FALSE} (default), perform pairwise 
+#'   comparisons 
 #' @export
 anovaNP <- function(
     data,

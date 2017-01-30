@@ -23,49 +23,55 @@ options:
         - nominal
       description:
           R: >
-            a vector of strings naming the variables to correlate in \code{data}
+            a vector of strings naming the variables to correlate in `data`
 
     - name: pearson
       title: Pearson's R
       type: Bool
       default: true
       description:
-          R: TRUE (default) or FALSE, provide Pearson's R
+          R: >
+            `TRUE` (default) or `FALSE`, provide Pearson's R
 
     - name: spearman
       title: Spearman's rho
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide Spearman's rho
+          R: >
+            `TRUE` or `FALSE` (default), provide Spearman's rho
 
     - name: kendall
       title: Kendall's tau-b
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide Kendall's tau-b
+          R: >
+            `TRUE` or `FALSE` (default), provide Kendall's tau-b
 
     - name: sig
       title: Report Significance
       type: Bool
       default: true
       description:
-          R: TRUE (default) or FALSE, provide significance levels
+          R: >
+            `TRUE` (default) or `FALSE`, provide significance levels
 
     - name: flag
       title: Flag significant correlations
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), flag significant correlations
+          R: >
+            `TRUE` or `FALSE` (default), flag significant correlations
 
     - name: ci
       title: Confidence Intervals
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide confidence intervals
+          R: >
+            `TRUE` or `FALSE` (default), provide confidence intervals
 
     - name: ciWidth
       title: Confidence level
@@ -83,7 +89,8 @@ options:
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide a correlation matrix plot
+          R: >
+            `TRUE` or `FALSE` (default), provide a correlation matrix plot
 
     - name: plotDens
       title: Densities for variables
@@ -91,7 +98,7 @@ options:
       default: false
       description:
           R: >
-            TRUE or FALSE (default), provide densities in the correlation
+            `TRUE` or `FALSE` (default), provide densities in the correlation
             matrix plot
 
     - name: plotStats
@@ -100,7 +107,7 @@ options:
       default: false
       description:
           R: >
-            TRUE or FALSE (default), provide statistics in the correlation
+            `TRUE` or `FALSE` (default), provide statistics in the correlation
             matrix plot
 
     - name: hypothesis
@@ -113,6 +120,7 @@ options:
       default: corr
       description:
         R: >
-            one of \code{'corr'} (default), \code{'pos'}, \code{'neg'}
+            one of `'corr'` (default), `'pos'`, `'neg'`
             specifying the alernative hypothesis; correlated, correlated
             positively, correlated negatively respectively.
+...

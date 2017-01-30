@@ -67,35 +67,40 @@ options:
       type: Bool
       default: true
       description:
-          R: TRUE (default) or FALSE, provide χ²
+          R: >
+            `TRUE` (default) or `FALSE`, provide χ²
 
     - name: chiSqCorr
       title: χ² continuity correction
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide χ² with continuity correction
+          R: >
+            `TRUE` or `FALSE` (default), provide χ² with continuity correction
 
     - name: likeRat
       title: Likelihood ratio
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide the likelihood ratio
+          R: >
+            `TRUE` or `FALSE` (default), provide the likelihood ratio
 
     - name: contCoef
       title: Contingency coefficient
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide the contingency coefficient
+          R: >
+            `TRUE` or `FALSE` (default), provide the contingency coefficient
 
     - name: phiCra
       title: Phi and Cramer's V
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide Phi and Cramer's V
+          R: >
+            `TRUE` or `FALSE` (default), provide Phi and Cramer's V
 
     - name: logOdds
       title: Log odds ratio (2x2 only)
@@ -103,7 +108,7 @@ options:
       default: false
       description:
           R: >
-            TRUE or FALSE (default), provide the log odds ratio (only available
+            `TRUE` or `FALSE` (default), provide the log odds ratio (only available
             for 2x2 tables)
 
     - name: ciWidth
@@ -122,39 +127,46 @@ options:
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide gamma
+          R: >
+            `TRUE` or `FALSE` (default), provide gamma
 
     - name: taub
       title: Kendall's tau-b
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide Kendall's tau-b
+          R: >
+            `TRUE` or `FALSE` (default), provide Kendall's tau-b
 
     - name: exp
       title: Expected
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide the expected counts
+          R: >
+            `TRUE` or `FALSE` (default), provide the expected counts
 
     - name: pcRow
       title: Row
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide row percentages
+          R: >
+            `TRUE` or `FALSE` (default), provide row percentages
 
     - name: pcCol
       title: Column
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide column percentages
+          R: >
+            `TRUE` or `FALSE` (default), provide column percentages
 
     - name: pcTot
       title: Total
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide total percentages
+          R: >
+            `TRUE` or `FALSE` (default), provide total percentages
+...

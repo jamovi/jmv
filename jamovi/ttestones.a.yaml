@@ -22,21 +22,23 @@ options:
         - ordinal
       rejectInf: false
       description:
-          R: a vector of strings naming the variables of interest in \code{data}
+          R: a vector of strings naming the variables of interest in `data`
 
     - name: students
       title: Student's test
       type: Bool
       default: true
       description:
-          R: TRUE (default) or FALSE, perform Student's t-tests
+          R: >
+            `TRUE` (default) or `FALSE`, perform Student's t-tests
 
     - name: bf
       title: Bayes factor
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide Bayes factors
+          R: >
+            `TRUE` or `FALSE` (default), provide Bayes factors
 
     - name: bfPrior
       title: Prior width
@@ -54,7 +56,8 @@ options:
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), perform Mann-Whitney U test
+          R: >
+            `TRUE` or `FALSE` (default), perform Mann-Whitney U test
 
     - name: testValue
       title: Test Value
@@ -73,37 +76,41 @@ options:
       default: dt
       description:
           R: >
-            \code{'dt'} (default), \code{'gt'} or \code{'lt'}, the alternative
-            hypothesis; different to \code{testValue}, greater than
-            \code{testValue}, and less than \code{testValue} respectively
+            `'dt'` (default), `'gt'` or `'lt'`, the alternative
+            hypothesis; different to `testValue`, greater than
+            `testValue`, and less than `testValue` respectively
 
     - name: norm
       title: Normality assumption check
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), perform Shapiro-wilk tests of normality
+          R: >
+            `TRUE` or `FALSE` (default), perform Shapiro-wilk tests of normality
 
     - name: meanDiff
       title: Mean and standard error difference
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide means and standard deviations
+          R: >
+            `TRUE` or `FALSE` (default), provide means and standard deviations
 
     - name: effectSize
       title: Effect size
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide effect sizes
+          R: >
+            `TRUE` or `FALSE` (default), provide effect sizes
 
     - name: ci
       title: Confidence Interval
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide confidence intervals
+          R: >
+            `TRUE` or `FALSE` (default), provide confidence intervals
 
     - name: ciWidth
       title: Confidence level
@@ -121,14 +128,16 @@ options:
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide descriptive statistics
+          R: >
+            `TRUE` or `FALSE` (default), provide descriptive statistics
 
     - name: plots
       title: Descriptives Plots
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), provide descriptive plots
+          R: >
+            `TRUE` or `FALSE` (default), provide descriptive plots
 
     - name: miss
       title: Missing values exclusion method
@@ -139,7 +148,7 @@ options:
       default: perAnalysis
       description:
           R: >
-            \code{'perAnalysis'} or \code{'listwise'}, how to handle missing
-            values; \code{'perAnalysis'} excludes missing values for individual
-            dependent variables, \code{'listwise'} excludes a row from all
+            `'perAnalysis'` or `'listwise'`, how to handle missing
+            values; `'perAnalysis'` excludes missing values for individual
+            dependent variables, `'listwise'` excludes a row from all
             analyses if one of its entries is missing.

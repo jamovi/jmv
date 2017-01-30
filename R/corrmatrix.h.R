@@ -212,19 +212,25 @@ corrMatrixBase <- R6::R6Class(
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables to correlate in 
 #'   \code{data} 
-#' @param pearson TRUE (default) or FALSE, provide Pearson's R
-#' @param spearman TRUE or FALSE (default), provide Spearman's rho
-#' @param kendall TRUE or FALSE (default), provide Kendall's tau-b
-#' @param sig TRUE (default) or FALSE, provide significance levels
-#' @param flag TRUE or FALSE (default), flag significant correlations
-#' @param ci TRUE or FALSE (default), provide confidence intervals
+#' @param pearson \code{TRUE} (default) or \code{FALSE}, provide Pearson's R 
+#' @param spearman \code{TRUE} or \code{FALSE} (default), provide Spearman's 
+#'   rho 
+#' @param kendall \code{TRUE} or \code{FALSE} (default), provide Kendall's 
+#'   tau-b 
+#' @param sig \code{TRUE} (default) or \code{FALSE}, provide significance 
+#'   levels 
+#' @param flag \code{TRUE} or \code{FALSE} (default), flag significant 
+#'   correlations 
+#' @param ci \code{TRUE} or \code{FALSE} (default), provide confidence 
+#'   intervals 
 #' @param ciWidth a number between 50 and 99.9 (default: 95), the width of 
 #'   confidence intervals to provide 
-#' @param plots TRUE or FALSE (default), provide a correlation matrix plot
-#' @param plotDens TRUE or FALSE (default), provide densities in the 
-#'   correlation matrix plot 
-#' @param plotStats TRUE or FALSE (default), provide statistics in the 
-#'   correlation matrix plot 
+#' @param plots \code{TRUE} or \code{FALSE} (default), provide a correlation 
+#'   matrix plot 
+#' @param plotDens \code{TRUE} or \code{FALSE} (default), provide densities in 
+#'   the correlation matrix plot 
+#' @param plotStats \code{TRUE} or \code{FALSE} (default), provide statistics 
+#'   in the correlation matrix plot 
 #' @param hypothesis one of \code{'corr'} (default), \code{'pos'}, 
 #'   \code{'neg'} specifying the alernative hypothesis; correlated, correlated 
 #'   positively, correlated negatively respectively. 

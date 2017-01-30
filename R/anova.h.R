@@ -402,10 +402,8 @@ anovaBase <- R6::R6Class(
 #' ANOVA
 #'
 #' Analysis of Variance
-#'
-#' 
 #' @param data the data as a data frame
-#' @param dependent a string naming the dependent variable from \code{data} 
+#' @param dependent a string naming the dependent variable from \code{data}, 
 #'   variable must be numeric 
 #' @param fixedFactors a vector of strings naming the fixed factors from 
 #'   \code{data}
@@ -419,20 +417,26 @@ anovaBase <- R6::R6Class(
 #' @param descPlotsSepPlots a string naming the variable to separate over to 
 #'   form multiple plots 
 #' @param postHoc a list of terms to perform post-hoc tests on
-#' @param corrTukey TRUE or FALSE (default), perform Tukey correction in 
-#'   post-hoc tests
-#' @param corrScheffe TRUE or FALSE (default), perform Scheffe correction in 
-#'   post-hoc tests 
-#' @param corrBonf TRUE or FALSE (default), perform Bonferroni correction in 
-#'   post-hoc tests 
-#' @param corrHolm TRUE or FALSE (default), perform Holm correction in 
-#'   post-hoc tests 
-#' @param descStats TRUE or FALSE (default), provide descriptive statistics
-#' @param homo TRUE or FALSE (default), perform homogeneity tests
-#' @param qq TRUE or FALSE (default), provide a Q-Q plot of residuals
-#' @param etaSq TRUE or FALSE (default), provide η² (effect size)
-#' @param etaSqP TRUE or FALSE (default), provide partial η² (effect size)
-#' @param omegaSq TRUE or FALSE (default), provide ω² (effect size)
+#' @param corrTukey \code{TRUE} or \code{FALSE} (default), perform Tukey 
+#'   correction in post-hoc tests 
+#' @param corrScheffe \code{TRUE} or \code{FALSE} (default), perform Scheffe 
+#'   correction in post-hoc tests 
+#' @param corrBonf \code{TRUE} or \code{FALSE} (default), perform Bonferroni 
+#'   correction in post-hoc tests 
+#' @param corrHolm \code{TRUE} or \code{FALSE} (default), perform Holm 
+#'   correction in post-hoc tests 
+#' @param descStats \code{TRUE} or \code{FALSE} (default), provide descriptive 
+#'   statistics 
+#' @param homo \code{TRUE} or \code{FALSE} (default), perform homogeneity 
+#'   tests 
+#' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of 
+#'   residuals 
+#' @param etaSq \code{TRUE} or \code{FALSE} (default), provide η² (effect 
+#'   size) 
+#' @param etaSqP \code{TRUE} or \code{FALSE} (default), provide partial η² 
+#'   (effect size) 
+#' @param omegaSq \code{TRUE} or \code{FALSE} (default), provide ω² (effect 
+#'   size) 
 #' @param plotError \code{'ci'} or \code{'se'}, use confidence intervals or 
 #'   standard errors on the plot 
 #' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the 

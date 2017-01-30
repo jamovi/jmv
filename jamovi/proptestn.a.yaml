@@ -27,7 +27,7 @@ options:
         - ordinal
         - nominaltext
       description:
-          R: a string naming the variable of interest in \code{data}
+          R: a string naming the variable of interest in `data`
 
     - name: counts
       title: Counts (optional)
@@ -41,7 +41,8 @@ options:
       title: Expected counts
       type: Bool
       description:
-          R: TRUE or FALSE (default), whether expected counts should be displayed
+          R: >
+            `TRUE` or `FALSE` (default), whether expected counts should be displayed
 
     - name: ratio
       title: Expected Proportions
@@ -55,3 +56,4 @@ options:
           R: >
             a string naming the variable representing counts, or NULL if each
             row represents a single observation
+...

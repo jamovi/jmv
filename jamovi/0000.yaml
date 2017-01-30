@@ -1,3 +1,4 @@
+---
 title: jamovi
 name: jmv
 version: '0.1'
@@ -50,8 +51,8 @@ analyses:
     ns: jmv
     menuGroup: ANOVA
     menuTitle: ANOVA
-    description: |
-      Analysis of Variance
+    description:
+      main: Analysis of Variance
   - title: Repeated Measures ANOVA
     name: anovaRM
     ns: jmv
@@ -77,7 +78,10 @@ analyses:
     menuSubgroup: Non-Parametric
     menuTitle: One Way ANOVA
     menuSubtitle: Kruskal-Wallis
-    description: null
+    description:
+      R:
+        usage: |
+          anovaNP(data, deps='len', group='dose')
   - title: Repeated Measures ANOVA (Non-parametric)
     name: anovaRMNP
     ns: jmv
@@ -136,24 +140,5 @@ analyses:
     menuGroup: Frequencies
     menuTitle: Log-Linear Regression
     description: null
-  - title: Bayesian ANOVA
-    name: bAnova
-    ns: jmv
-    menuGroup: ANOVA
-    menuTitle: Bayesian ANOVA
-    menuSubgroup: Bayesian
-    hidden: true
-  - title: Bayesian Repeated Measures ANOVA
-    name: bAnovaRM
-    ns: jmv
-    menuGroup: ANOVA
-    menuTitle: Bayesian Repeated Measures ANOVA
-    menuSubgroup: Bayesian
-    hidden: true
-  - title: Bayesian ANCOVA
-    name: bAncova
-    ns: jmv
-    menuGroup: ANOVA
-    menuTitle: Bayesian ANCOVA
-    menuSubgroup: Bayesian
-    hidden: true
+
+...

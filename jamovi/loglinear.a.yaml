@@ -60,3 +60,4 @@ options:
       min: 50
       max: 99.9
       default: 95
+...

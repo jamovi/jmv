@@ -10,6 +10,10 @@ menuSubtitle: Kruskal-Wallis
 version: '1.0.0'
 jas: '1.0'
 
+description:
+    R:
+        usage: |
+            anovaNP(data, deps='len', group='dose')
 
 options:
     - name: data
@@ -27,7 +31,7 @@ options:
         - nominal
         - ordinal
       description:
-          R: a string naming the dependent variable in \code{data}
+          R: a string naming the dependent variable in `data`
 
     - name: group
       title: Grouping variable
@@ -36,11 +40,13 @@ options:
         - nominal
         - ordinal
       description:
-          R: a string naming the grouping or independent variable in \code{data}
+          R: a string naming the grouping or independent variable in `data`
 
     - name: pairs
       title: DSCF Pairwise Comparisons
       type: Bool
       default: false
       description:
-          R: TRUE or FALSE (default), perform pairwise comparisons
+          R: >
+            `TRUE` or `FALSE` (default), perform pairwise comparisons
+...

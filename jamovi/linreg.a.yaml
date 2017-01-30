@@ -34,3 +34,4 @@ options:
         - ordinal
       description:
           R: a vector of strings naming the covariates
+...

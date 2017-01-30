@@ -285,25 +285,31 @@ ttestOneSBase <- R6::R6Class(
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}
-#' @param students TRUE (default) or FALSE, perform Student's t-tests
-#' @param bf TRUE or FALSE (default), provide Bayes factors
+#' @param students \code{TRUE} (default) or \code{FALSE}, perform Student's 
+#'   t-tests 
+#' @param bf \code{TRUE} or \code{FALSE} (default), provide Bayes factors 
 #' @param bfPrior a number between 0.5 and 2 (default 0.707), the prior width 
 #'   to use in calculating Bayes factors 
-#' @param mann TRUE or FALSE (default), perform Mann-Whitney U test
+#' @param mann \code{TRUE} or \code{FALSE} (default), perform Mann-Whitney U 
+#'   test 
 #' @param testValue a number specifying the value of the null hypothesis
 #' @param hypothesis \code{'dt'} (default), \code{'gt'} or \code{'lt'}, the 
 #'   alternative hypothesis; different to \code{testValue}, greater than 
 #'   \code{testValue}, and less than \code{testValue} respectively 
-#' @param norm TRUE or FALSE (default), perform Shapiro-wilk tests of 
-#'   normality
-#' @param meanDiff TRUE or FALSE (default), provide means and standard 
-#'   deviations
-#' @param effectSize TRUE or FALSE (default), provide effect sizes
-#' @param ci TRUE or FALSE (default), provide confidence intervals
+#' @param norm \code{TRUE} or \code{FALSE} (default), perform Shapiro-wilk 
+#'   tests of normality 
+#' @param meanDiff \code{TRUE} or \code{FALSE} (default), provide means and 
+#'   standard deviations 
+#' @param effectSize \code{TRUE} or \code{FALSE} (default), provide effect 
+#'   sizes 
+#' @param ci \code{TRUE} or \code{FALSE} (default), provide confidence 
+#'   intervals 
 #' @param ciWidth a number between 50 and 99.9 (default: 95), the width of 
 #'   confidence intervals 
-#' @param desc TRUE or FALSE (default), provide descriptive statistics
-#' @param plots TRUE or FALSE (default), provide descriptive plots
+#' @param desc \code{TRUE} or \code{FALSE} (default), provide descriptive 
+#'   statistics 
+#' @param plots \code{TRUE} or \code{FALSE} (default), provide descriptive 
+#'   plots 
 #' @param miss \code{'perAnalysis'} or \code{'listwise'}, how to handle 
 #'   missing values; \code{'perAnalysis'} excludes missing values for individual 
 #'   dependent variables, \code{'listwise'} excludes a row from all analyses if 
