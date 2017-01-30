@@ -883,10 +883,9 @@ anovaRMClass <- R6::R6Class(
             for (j in seq_along(col))
                 temp[j] <- which(rmVars %in% col[j])
             
-            for (i in seq_along(labels)) {
-                data_long[[labels[[i]]]] <- factor(sapply(rmCells[temp], function(x) x[i]))
-                levels(data_long[[labels[[i]]]]) <- levels[[i]]
-            }
+            for (i in seq_along(labels))
+                data_long[[labels[[i]]]] <- factor(sapply(rmCells[temp], function(x) x[i]), levels[[i]])
+
             data_long[['variable']] <- NULL
             
             data_long <- lapply(data_long, function(x) {
