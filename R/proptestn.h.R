@@ -87,7 +87,9 @@ propTestNResults <- R6::R6Class(
                 title="Proportions",
                 rows="(levels(var))",
                 clearWith=list(
-                    "var"),
+                    "var",
+                    "ratio",
+                    "counts"),
                 columns=list(
                     list(`name`="level", `title`="Level", `type`="text", `content`="($key)"),
                     list(`name`="name[obs]", `title`="", `type`="text", `content`="Observed", `visible`="(expected)"),
@@ -102,7 +104,9 @@ propTestNResults <- R6::R6Class(
                 title="\u03C7\u00B2 Goodness of Fit",
                 rows=1,
                 clearWith=list(
-                    "var"),
+                    "var",
+                    "ratio",
+                    "counts"),
                 columns=list(
                     list(`name`="chi", `title`="\u03C7\u00B2", `type`="number"),
                     list(`name`="df", `title`="df", `type`="integer"),

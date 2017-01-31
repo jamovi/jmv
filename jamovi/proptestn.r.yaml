@@ -10,6 +10,8 @@ items:
       rows: (levels(var))
       clearWith:
           - var
+          - ratio
+          - counts
 
       columns:
           - name: level
@@ -53,6 +55,8 @@ items:
       rows: 1
       clearWith:
           - var
+          - ratio
+          - counts
 
       columns:
           - name: chi
