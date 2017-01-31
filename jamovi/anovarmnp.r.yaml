@@ -41,7 +41,7 @@ items:
           title: ""
           content: '-'
           type: text
-          format: sep
+          format: narrow
 
         - name: i2
           title: ""

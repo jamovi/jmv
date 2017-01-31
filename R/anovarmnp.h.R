@@ -106,7 +106,7 @@ anovaRMNPResults <- R6::R6Class(
                     "measures"),
                 columns=list(
                     list(`name`="i1", `title`="", `type`="text"),
-                    list(`name`="sep", `title`="", `content`="-", `type`="text", `format`="sep"),
+                    list(`name`="sep", `title`="", `content`="-", `type`="text", `format`="narrow"),
                     list(`name`="i2", `title`="", `type`="text"),
                     list(`name`="stat", `title`="Statistic", `type`="number"),
                     list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue")))
