@@ -1,6 +1,6 @@
 
 #' @rdname jamovi
-#' @importFrom ggplot2 ggplot position_dodge
+#' @importFrom ggplot2 ggplot aes theme position_dodge element_text element_rect margin geom_point geom_abline geom_errorbar labs xlab ylab scale_colour_manual
 #' @export
 ttestPSClass <- R6::R6Class(
     "ttestPSClass",
@@ -326,7 +326,7 @@ ttestPSClass <- R6::R6Class(
             groupName <- self$options$get('group')
             ciw <- self$options$get('ciWidth')
 
-            pd <- ggplot2::position_dodge(0.2)
+            pd <- position_dodge(0.2)
 
             plot <- ggplot(data=image$state, aes(x=group, y=stat, shape=type)) +
                 geom_errorbar(aes(x=group, ymin=stat-cie, ymax=stat+cie, shape=type, width=.2), size=.8, colour='#333333', position=pd) +
