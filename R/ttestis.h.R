@@ -266,6 +266,9 @@ ttestISResults <- R6::R6Class(
                             title="Test of Normality (Shapiro-Wilk)",
                             visible="(norm)",
                             rows="(vars)",
+                            clearWith=list(
+                                "miss",
+                                "group"),
                             notes=list(`p`="A low p-value suggests a violation of the assumption of normality"),
                             columns=list(
                                 list(`name`="name", `title`="", `content`="($key)", `type`="text"),

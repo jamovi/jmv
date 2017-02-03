@@ -263,6 +263,9 @@ items:
           type: Table
           visible: (norm)
           rows: (vars)
+          clearWith:
+            - miss
+            - group
           notes:
               p: A low p-value suggests a violation of the assumption of normality
 
