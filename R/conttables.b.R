@@ -56,11 +56,6 @@ contTablesClass <- R6::R6Class(
             levels <- c('.', '.')
         }
 
-        hasSubRows <- sum(self$options$get('exp'),
-                          self$options$get('pcRow'),
-                          self$options$get('pcCol'),
-                          self$options$get('pcTot')) > 0
-
         subNames  <- c('[count]', '[expected]', '[pcRow]', '[pcCol]', '[pcTot]')
         subTitles <- c('Observed', 'Expected', '% within row', '% within column', '% of total')
         visible   <- c('TRUE', '(exp)', '(pcRow)', '(pcCol)', '(pcTot)')
@@ -123,7 +118,11 @@ contTablesClass <- R6::R6Class(
             key <- paste0(rows[i,], collapse='`')
             freqs$addRow(rowKey=key, values=values)
 
-            if (hasSubRows == FALSE && rows[i, ncol(rows)] == '.total')
+            if (i == 1)
+                freqs$addFormat(rowNo=i, 1, Cell.BEGIN_GROUP)
+            else if (i == nrow(rows) - 1)
+                freqs$addFormat(rowNo=i, 1, Cell.END_GROUP)
+            else if (i == nrow(rows))
                 freqs$addFormat(rowNo=i, 1, Cell.BEGIN_END_GROUP)
         }
 
