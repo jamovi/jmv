@@ -1,7 +1,7 @@
 
 #' @rdname jamovi
 #' @importFrom car Anova leveneTest
-#' @importFrom ggplot2 ggplot aes theme position_dodge element_text element_rect margin geom_point geom_abline geom_errorbar labs xlab ylab scale_colour_manual
+#' @importFrom ggplot2 ggplot aes theme position_dodge element_text element_rect margin geom_point geom_line geom_abline geom_errorbar labs xlab ylab scale_colour_manual
 #' @importFrom lsr etaSquared
 #' @importFrom multcomp adjusted mcp glht
 #' @export
