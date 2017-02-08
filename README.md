@@ -8,7 +8,7 @@ analyses available to the R user.
 `jmv` can be installed with:
 
 ```
-install.packages('jmv', repos='https://repo.jamovi.org');
+install.packages('jmv', repos=c('https://repo.jamovi.org', 'https://cran.r-project.org'))
 ```
 
 Documentation for `jmv` can be found at the jamovi website:
