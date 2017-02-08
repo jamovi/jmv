@@ -18,7 +18,8 @@ anovaOptions <- R6::R6Class(
             descPlotsSepLines = NULL,
             descPlotsSepPlots = NULL,
             postHoc = NULL,
-            corrTukey = FALSE,
+            corrNone = FALSE,
+            corrTukey = TRUE,
             corrScheffe = FALSE,
             corrBonf = FALSE,
             corrHolm = FALSE,
@@ -98,10 +99,14 @@ anovaOptions <- R6::R6Class(
                 "postHoc",
                 postHoc,
                 default=NULL)
+            private$..corrNone <- jmvcore::OptionBool$new(
+                "corrNone",
+                corrNone,
+                default=FALSE)
             private$..corrTukey <- jmvcore::OptionBool$new(
                 "corrTukey",
                 corrTukey,
-                default=FALSE)
+                default=TRUE)
             private$..corrScheffe <- jmvcore::OptionBool$new(
                 "corrScheffe",
                 corrScheffe,
@@ -168,6 +173,7 @@ anovaOptions <- R6::R6Class(
             self$.addOption(private$..descPlotsSepLines)
             self$.addOption(private$..descPlotsSepPlots)
             self$.addOption(private$..postHoc)
+            self$.addOption(private$..corrNone)
             self$.addOption(private$..corrTukey)
             self$.addOption(private$..corrScheffe)
             self$.addOption(private$..corrBonf)
@@ -191,6 +197,7 @@ anovaOptions <- R6::R6Class(
         descPlotsSepLines = function() private$..descPlotsSepLines$value,
         descPlotsSepPlots = function() private$..descPlotsSepPlots$value,
         postHoc = function() private$..postHoc$value,
+        corrNone = function() private$..corrNone$value,
         corrTukey = function() private$..corrTukey$value,
         corrScheffe = function() private$..corrScheffe$value,
         corrBonf = function() private$..corrBonf$value,
@@ -213,6 +220,7 @@ anovaOptions <- R6::R6Class(
         ..descPlotsSepLines = NA,
         ..descPlotsSepPlots = NA,
         ..postHoc = NA,
+        ..corrNone = NA,
         ..corrTukey = NA,
         ..corrScheffe = NA,
         ..corrBonf = NA,
@@ -338,7 +346,7 @@ anovaResults <- R6::R6Class(
                         list(`name`="md", `title`="Mean Difference", `type`="number"),
                         list(`name`="se", `title`="SE", `type`="number"),
                         list(`name`="t", `title`="t", `type`="number"),
-                        list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue"),
+                        list(`name`="p", `title`="p", `visible`="(corrNone)", `type`="number", `format`="zto,pvalue"),
                         list(`name`="ptukey", `title`="p<sub>tukey</sub>", `visible`="(corrTukey)", `type`="number", `format`="zto,pvalue"),
                         list(`name`="pscheffe", `title`="p<sub>scheffe</sub>", `visible`="(corrScheffe)", `type`="number", `format`="zto,pvalue"),
                         list(`name`="pbonf", `title`="p<sub>bonferoni</sub>", `visible`="(corrBonf)", `type`="number", `format`="zto,pvalue"),
@@ -417,7 +425,9 @@ anovaBase <- R6::R6Class(
 #' @param descPlotsSepPlots a string naming the variable to separate over to 
 #'   form multiple plots 
 #' @param postHoc a list of terms to perform post-hoc tests on
-#' @param corrTukey \code{TRUE} or \code{FALSE} (default), perform Tukey 
+#' @param corrNone \code{TRUE} or \code{FALSE} (default), provide uncorrected 
+#'   p-values in post-hoc tests 
+#' @param corrTukey \code{TRUE} (default) or \code{FALSE}, perform Tukey 
 #'   correction in post-hoc tests 
 #' @param corrScheffe \code{TRUE} or \code{FALSE} (default), perform Scheffe 
 #'   correction in post-hoc tests 
@@ -454,7 +464,8 @@ anova <- function(
     descPlotsSepLines = NULL,
     descPlotsSepPlots = NULL,
     postHoc = NULL,
-    corrTukey = FALSE,
+    corrNone = FALSE,
+    corrTukey = TRUE,
     corrScheffe = FALSE,
     corrBonf = FALSE,
     corrHolm = FALSE,
@@ -477,6 +488,7 @@ anova <- function(
         descPlotsSepLines = descPlotsSepLines,
         descPlotsSepPlots = descPlotsSepPlots,
         postHoc = postHoc,
+        corrNone = corrNone,
         corrTukey = corrTukey,
         corrScheffe = corrScheffe,
         corrBonf = corrBonf,

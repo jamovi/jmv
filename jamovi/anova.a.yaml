@@ -104,13 +104,22 @@ options:
       default:
       description: a list of terms to perform post-hoc tests on
 
-    - name: corrTukey
-      title: Tukey
+    - name: corrNone
+      title: No correction
       type: Bool
       default: false
       description:
           R: >
-            `TRUE` or `FALSE` (default), perform Tukey correction in post-hoc
+            `TRUE` or `FALSE` (default), provide uncorrected p-values in
+            post-hoc tests
+
+    - name: corrTukey
+      title: Tukey
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, perform Tukey correction in post-hoc
             tests
 
     - name: corrScheffe

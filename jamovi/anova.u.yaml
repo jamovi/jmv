@@ -151,6 +151,9 @@ children:
         label: Correction
         children:
           - type: CheckBox
+            name: corrNone
+            label: None
+          - type: CheckBox
             name: corrTukey
             label: Tukey
           - type: CheckBox
