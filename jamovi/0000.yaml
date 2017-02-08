@@ -1,14 +1,14 @@
 ---
 title: jamovi
 name: jmv
-version: '0.1'
+version: 0.4.2
 jms: '1.0'
 authors:
   - Jonathon Love
   - Damian Dropmann
   - Ravi Selker
 maintainer: Jonathon Love <jon@thon.cc>
-date: '2016-10-06'
+date: '2017-02-08'
 type: R
 description: >-
   jamovi is a rich graphical statistics package providing many common
