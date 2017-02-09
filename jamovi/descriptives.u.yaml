@@ -89,7 +89,7 @@ children:
         cell:
             column: 0
             row: 1
-        style: list-inline,
+        style: list-inline
         children:
           - type: LayoutBox
             margin: normal
