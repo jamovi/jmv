@@ -1,9 +1,10 @@
 # jmv
 
-'jamovi' is a rich graphical statistics package providing many
+This module represents the analyses included with jamovi. It contains many
 common statistical tests (such as t-tests, ANOVAs, correlation matrices,
-contingency tables, etc). This package makes all of the included jamovi
-analyses available to the R user.
+proportion tests, contingency tables, etc).
+
+As with all jamovi modules, this can also be installed as an R package.
 
 `jmv` can be installed with:
 

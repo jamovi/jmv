@@ -1,20 +1,18 @@
 ---
 title: jamovi
 name: jmv
-version: 0.4.2
+version: 1.0.0
 jms: '1.0'
 authors:
   - Jonathon Love
   - Damian Dropmann
   - Ravi Selker
 maintainer: Jonathon Love <jon@thon.cc>
-date: '2017-02-08'
-type: R
-description: >-
-  jamovi is a rich graphical statistics package providing many common
-  statistical tests (such as t-tests, ANOVAs, correlation matrices, etc). This
-  package makes all of the jamovi analyses available to the R user.
-jmc: 1.0.0
+date: '2017-02-09'
+description: >
+  This module represents the analyses included with jamovi. It contains many
+  common statistical tests (such as t-tests, ANOVAs, correlation matrices,
+  proportion tests, contingency tables, etc).
 analyses:
   - title: Descriptives
     name: descriptives
