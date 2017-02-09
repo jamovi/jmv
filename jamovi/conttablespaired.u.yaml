@@ -37,7 +37,6 @@ children:
             label: null
             stretchFactor: 1
   - type: LayoutBox
-    label: Cells
     stretchFactor: 1
     margin: large
     children:
