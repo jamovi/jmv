@@ -141,6 +141,7 @@ options:
       title: Plot width
       type: Integer
       default: 480
+      hidden: true
       description:
           R: >
             an integer (default: 480) specifying the width of the plots
@@ -149,6 +150,7 @@ options:
       title: Plot height
       type: Integer
       default: 320
+      hidden: true
       description:
           R: >
             an integer (default: 320) specifying the height of the plots
