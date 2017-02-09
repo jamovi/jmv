@@ -1,7 +1,6 @@
 title: Linear Regression
 name: linReg
 jus:   '1.0'
-version: '1.0'
 stage: 1
 children:
   - type: VariableSupplier

@@ -99,11 +99,13 @@ descriptivesOptions <- R6::R6Class(
             private$..plotW <- jmvcore::OptionInteger$new(
                 "plotW",
                 plotW,
-                default=480)
+                default=480,
+                hidden=TRUE)
             private$..plotH <- jmvcore::OptionInteger$new(
                 "plotH",
                 plotH,
-                default=320)
+                default=320,
+                hidden=TRUE)
             private$..quart <- jmvcore::OptionBool$new(
                 "quart",
                 quart,
