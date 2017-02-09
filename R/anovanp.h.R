@@ -125,8 +125,9 @@ anovaNPBase <- R6::R6Class(
 #' 
 #'
 #' @examples
+#' \dontrun{
 #' anovaNP(data, deps='len', group='dose')
-#' 
+#' }
 #' @param data the data as a data frame
 #' @param deps a string naming the dependent variable in \code{data}
 #' @param group a string naming the grouping or independent variable in 

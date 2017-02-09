@@ -280,8 +280,9 @@ descriptivesBase <- R6::R6Class(
 #' Descriptives
 #'
 #' @examples
+#' \dontrun{
 #' descriptives(data, vars=c('x', 'y', 'z'), min=TRUE, max=TRUE)
-#' 
+#' }
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}
