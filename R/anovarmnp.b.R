@@ -1,7 +1,4 @@
 
-#' @rdname jamovi
-#' @importFrom PMCMR posthoc.durbin.test
-#' @export
 anovaRMNPClass <- R6::R6Class(
   "anovaRMNPClass",
   inherit=anovaRMNPBase,

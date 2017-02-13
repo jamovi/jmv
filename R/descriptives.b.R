@@ -1,7 +1,4 @@
 
-#' @rdname jamovi
-#' @importFrom ggplot2 ggplot aes theme position_dodge element_text element_rect margin geom_point geom_abline geom_errorbar labs xlab ylab scale_colour_manual
-#' @export
 descriptivesClass <- R6::R6Class(
     "descriptivesClass",
     inherit=descriptivesBase,
@@ -150,4 +147,3 @@ descriptivesClass <- R6::R6Class(
         }
     )
 )
-

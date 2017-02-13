@@ -1,7 +1,4 @@
 
-#' @rdname jamovi
-#' @importFrom ggplot2 ggplot aes theme position_dodge element_text element_rect margin geom_point geom_abline geom_errorbar labs xlab ylab scale_colour_manual
-#' @export
 ttestPSClass <- R6::R6Class(
     "ttestPSClass",
     inherit=ttestPSBase,
@@ -348,4 +345,3 @@ ttestPSClass <- R6::R6Class(
         }
     )
 )
-

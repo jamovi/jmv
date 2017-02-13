@@ -1,7 +1,4 @@
 
-#' @rdname jamovi
-#' @importFrom GGally wrap ggally_smooth ggpairs
-#' @export
 corrMatrixClass <- R6::R6Class(
   "corrMatrixClass",
   inherit=corrMatrixBase,

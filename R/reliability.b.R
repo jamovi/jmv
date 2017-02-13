@@ -1,9 +1,4 @@
 
-#' @rdname jamovi
-#' @importFrom psych alpha omega
-#' @importFrom ggplot2 ggplot aes element_blank geom_tile scale_fill_gradient2 theme_minimal theme element_text coord_fixed geom_text guides guide_colorbar
-#' @import GPArotation
-#' @export
 reliabilityClass <- R6::R6Class(
     "reliabilityClass",
     inherit = reliabilityBase,

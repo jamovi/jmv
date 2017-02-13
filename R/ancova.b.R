@@ -1,8 +1,6 @@
 
 # This file is a generated template, your changes will not be overwritten
 
-#' @rdname jamovi
-#' @export
 ancovaClass <- R6::R6Class(
     "ancovaClass",
     inherit = ancovaBase,

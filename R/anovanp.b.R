@@ -1,6 +1,4 @@
 
-#' @rdname jamovi
-#' @export
 anovaNPClass <- R6::R6Class(
     "anovaNPClass",
     inherit=anovaNPBase,

@@ -1,6 +1,4 @@
 
-#' @rdname jamovi
-#' @export
 propTestNClass <- R6::R6Class(
     "propTestNClass",
     inherit = propTestNBase,

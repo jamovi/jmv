@@ -1,8 +1,4 @@
 
-#' @rdname jamovi
-#' @importFrom vcd assocstats loddsratio
-#' @importFrom vcdExtra GKgamma
-#' @export
 contTablesClass <- R6::R6Class(
   "contTablesClass",
   inherit=contTablesBase,

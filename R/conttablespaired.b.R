@@ -1,6 +1,4 @@
 
-#' @rdname jamovi
-#' @export
 contTablesPairedClass <- R6::R6Class(
     "contTablesPairedClass",
     inherit = contTablesPairedBase,

@@ -1,9 +1,4 @@
 
-#' @rdname jamovi
-#' @importFrom afex aov_car
-#' @importFrom ggplot2 ggplot aes theme position_dodge element_text element_rect margin geom_point geom_abline geom_errorbar labs xlab ylab scale_colour_manual
-#' @importFrom lsmeans lsmeans
-#' @export
 anovaRMClass <- R6::R6Class(
     "anovaRMClass",
     inherit=anovaRMBase,
