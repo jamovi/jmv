@@ -8,13 +8,14 @@ anovaOptions <- R6::R6Class(
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
-            dependent = NULL,
-            fixedFactors = NULL,
+            dep = NULL,
+            factors = NULL,
             modelTerms = NULL,
+            ss = "3",
             contrasts = NULL,
-            descPlotsHAxis = NULL,
-            descPlotsSepLines = NULL,
-            descPlotsSepPlots = NULL,
+            plotHAxis = NULL,
+            plotSepLines = NULL,
+            plotSepPlots = NULL,
             postHoc = NULL,
             corrNone = FALSE,
             corrTukey = TRUE,
@@ -28,8 +29,7 @@ anovaOptions <- R6::R6Class(
             etaSqP = FALSE,
             omegaSq = FALSE,
             plotError = "ci",
-            ciWidth = 95,
-            ss = "3", ...) {
+            ciWidth = 95, ...) {
 
             super$initialize(
                 package='jmv',
@@ -37,18 +37,18 @@ anovaOptions <- R6::R6Class(
                 requiresData=TRUE,
                 ...)
         
-            private$..dependent <- jmvcore::OptionVariable$new(
-                "dependent",
-                dependent,
+            private$..dep <- jmvcore::OptionVariable$new(
+                "dep",
+                dep,
                 suggested=list(
                     "continuous"),
                 permitted=list(
                     "continuous",
                     "nominal",
                     "ordinal"))
-            private$..fixedFactors <- jmvcore::OptionVariables$new(
-                "fixedFactors",
-                fixedFactors,
+            private$..factors <- jmvcore::OptionVariables$new(
+                "factors",
+                factors,
                 suggested=list(
                     "nominal",
                     "ordinal"),
@@ -57,10 +57,18 @@ anovaOptions <- R6::R6Class(
                 "modelTerms",
                 modelTerms,
                 default=NULL)
+            private$..ss <- jmvcore::OptionList$new(
+                "ss",
+                ss,
+                options=list(
+                    "1",
+                    "2",
+                    "3"),
+                default="3")
             private$..contrasts <- jmvcore::OptionArray$new(
                 "contrasts",
                 contrasts,
-                items="(fixedFactors)",
+                items="(factors)",
                 default=NULL,
                 template=jmvcore::OptionGroup$new(
                     "contrasts",
@@ -81,17 +89,17 @@ anovaOptions <- R6::R6Class(
                                 "helmert",
                                 "repeated",
                                 "polynomial")))))
-            private$..descPlotsHAxis <- jmvcore::OptionVariable$new(
-                "descPlotsHAxis",
-                descPlotsHAxis,
+            private$..plotHAxis <- jmvcore::OptionVariable$new(
+                "plotHAxis",
+                plotHAxis,
                 default=NULL)
-            private$..descPlotsSepLines <- jmvcore::OptionVariable$new(
-                "descPlotsSepLines",
-                descPlotsSepLines,
+            private$..plotSepLines <- jmvcore::OptionVariable$new(
+                "plotSepLines",
+                plotSepLines,
                 default=NULL)
-            private$..descPlotsSepPlots <- jmvcore::OptionVariable$new(
-                "descPlotsSepPlots",
-                descPlotsSepPlots,
+            private$..plotSepPlots <- jmvcore::OptionVariable$new(
+                "plotSepPlots",
+                plotSepPlots,
                 default=NULL)
             private$..postHoc <- jmvcore::OptionTerms$new(
                 "postHoc",
@@ -154,22 +162,15 @@ anovaOptions <- R6::R6Class(
                 min=50,
                 max=99.9,
                 default=95)
-            private$..ss <- jmvcore::OptionList$new(
-                "ss",
-                ss,
-                options=list(
-                    "1",
-                    "2",
-                    "3"),
-                default="3")
         
-            self$.addOption(private$..dependent)
-            self$.addOption(private$..fixedFactors)
+            self$.addOption(private$..dep)
+            self$.addOption(private$..factors)
             self$.addOption(private$..modelTerms)
+            self$.addOption(private$..ss)
             self$.addOption(private$..contrasts)
-            self$.addOption(private$..descPlotsHAxis)
-            self$.addOption(private$..descPlotsSepLines)
-            self$.addOption(private$..descPlotsSepPlots)
+            self$.addOption(private$..plotHAxis)
+            self$.addOption(private$..plotSepLines)
+            self$.addOption(private$..plotSepPlots)
             self$.addOption(private$..postHoc)
             self$.addOption(private$..corrNone)
             self$.addOption(private$..corrTukey)
@@ -184,16 +185,16 @@ anovaOptions <- R6::R6Class(
             self$.addOption(private$..omegaSq)
             self$.addOption(private$..plotError)
             self$.addOption(private$..ciWidth)
-            self$.addOption(private$..ss)
         }),
     active = list(
-        dependent = function() private$..dependent$value,
-        fixedFactors = function() private$..fixedFactors$value,
+        dep = function() private$..dep$value,
+        factors = function() private$..factors$value,
         modelTerms = function() private$..modelTerms$value,
+        ss = function() private$..ss$value,
         contrasts = function() private$..contrasts$value,
-        descPlotsHAxis = function() private$..descPlotsHAxis$value,
-        descPlotsSepLines = function() private$..descPlotsSepLines$value,
-        descPlotsSepPlots = function() private$..descPlotsSepPlots$value,
+        plotHAxis = function() private$..plotHAxis$value,
+        plotSepLines = function() private$..plotSepLines$value,
+        plotSepPlots = function() private$..plotSepPlots$value,
         postHoc = function() private$..postHoc$value,
         corrNone = function() private$..corrNone$value,
         corrTukey = function() private$..corrTukey$value,
@@ -207,16 +208,16 @@ anovaOptions <- R6::R6Class(
         etaSqP = function() private$..etaSqP$value,
         omegaSq = function() private$..omegaSq$value,
         plotError = function() private$..plotError$value,
-        ciWidth = function() private$..ciWidth$value,
-        ss = function() private$..ss$value),
+        ciWidth = function() private$..ciWidth$value),
     private = list(
-        ..dependent = NA,
-        ..fixedFactors = NA,
+        ..dep = NA,
+        ..factors = NA,
         ..modelTerms = NA,
+        ..ss = NA,
         ..contrasts = NA,
-        ..descPlotsHAxis = NA,
-        ..descPlotsSepLines = NA,
-        ..descPlotsSepPlots = NA,
+        ..plotHAxis = NA,
+        ..plotSepLines = NA,
+        ..plotSepPlots = NA,
         ..postHoc = NA,
         ..corrNone = NA,
         ..corrTukey = NA,
@@ -230,8 +231,7 @@ anovaOptions <- R6::R6Class(
         ..etaSqP = NA,
         ..omegaSq = NA,
         ..plotError = NA,
-        ..ciWidth = NA,
-        ..ss = NA)
+        ..ciWidth = NA)
 )
 
 #' @import jmvcore
@@ -260,7 +260,7 @@ anovaResults <- R6::R6Class(
                 name="main",
                 title="ANOVA",
                 clearWith=list(
-                    "dependent",
+                    "dep",
                     "modelTerms",
                     "ss"),
                 columns=list(
@@ -304,7 +304,7 @@ anovaResults <- R6::R6Class(
                             height=300,
                             renderFun=".qqPlot",
                             clearWith=list(
-                                "dependent",
+                                "dep",
                                 "modelTerms"))
                         self$add(private$..homo)
                         self$add(private$..qq)}))$new(options=options)
@@ -314,7 +314,7 @@ anovaResults <- R6::R6Class(
                 title="Contrasts",
                 visible="(contrasts)",
                 clearWith=list(
-                    "dependent",
+                    "dep",
                     "modelTerms"),
                 template=jmvcore::Table$new(
                     options=options,
@@ -332,7 +332,7 @@ anovaResults <- R6::R6Class(
                 title="Post Hoc Tests",
                 items="(postHoc)",
                 clearWith=list(
-                    "dependent",
+                    "dep",
                     "modelTerms"),
                 template=jmvcore::Table$new(
                     options=options,
@@ -355,7 +355,7 @@ anovaResults <- R6::R6Class(
                 title="Descriptives",
                 visible="(descStats)",
                 clearWith=list(
-                    "dependent",
+                    "dep",
                     "modelTerms",
                     "ss"),
                 columns=list(
@@ -366,16 +366,16 @@ anovaResults <- R6::R6Class(
                 options=options,
                 name="plots",
                 title="Plots",
-                visible="(descPlotsHAxis)",
+                visible="(plotHAxis)",
                 width=500,
                 height=300,
                 renderFun=".descPlot",
                 clearWith=list(
-                    "dependent",
-                    "fixedFactors",
-                    "descPlotsHAxis",
-                    "descPlotsSepLines",
-                    "descPlotsSepPlots",
+                    "dep",
+                    "factors",
+                    "plotHAxis",
+                    "plotSepLines",
+                    "plotSepPlots",
                     "plotError",
                     "ciWidth"))
             self$add(private$..main)
@@ -412,25 +412,27 @@ anovaBase <- R6::R6Class(
 #' @examples
 #' \dontrun{
 #' anova(ToothGrowth,
-#'     dependent='len',
-#'     fixedFactors=c('dose', 'supp'))
+#'     dep='len',
+#'     factors=c('dose', 'supp'))
 #' }
 #' @param data the data as a data frame
-#' @param dependent a string naming the dependent variable from \code{data}, 
+#' @param dep a string naming the dependent variable from \code{data}, 
 #'   variable must be numeric 
-#' @param fixedFactors a vector of strings naming the fixed factors from 
+#' @param factors a vector of strings naming the fixed factors from 
 #'   \code{data}
 #' @param modelTerms a list of character vectors describing the terms to go 
 #'   into the model 
+#' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default), the sum of 
+#'   squares to use 
 #' @param contrasts a list of lists specifying the factor and type of contrast 
 #'   to use, one of \code{'deviation'}, \code{'simple'}, \code{'difference'}, 
 #'   \code{'helmert'}, \code{'repeated'} or \code{'polynomial'} 
-#' @param descPlotsHAxis a string naming the variable placed on the horizontal 
-#'   axis of the plot 
-#' @param descPlotsSepLines a string naming the variable represented as 
-#'   separate lines on the plot 
-#' @param descPlotsSepPlots a string naming the variable to separate over to 
-#'   form multiple plots 
+#' @param plotHAxis a string naming the variable placed on the horizontal axis 
+#'   of the plot 
+#' @param plotSepLines a string naming the variable represented as separate 
+#'   lines on the plot 
+#' @param plotSepPlots a string naming the variable to separate over to form 
+#'   multiple plots 
 #' @param postHoc a list of terms to perform post-hoc tests on
 #' @param corrNone \code{TRUE} or \code{FALSE} (default), provide uncorrected 
 #'   p-values in post-hoc tests 
@@ -458,18 +460,17 @@ anovaBase <- R6::R6Class(
 #'   standard errors on the plot 
 #' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the 
 #'   confidence interval width 
-#' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default), the sum of 
-#'   squares to use 
 #' @export
 anova <- function(
     data,
-    dependent,
-    fixedFactors = NULL,
+    dep,
+    factors = NULL,
     modelTerms = NULL,
+    ss = "3",
     contrasts = NULL,
-    descPlotsHAxis = NULL,
-    descPlotsSepLines = NULL,
-    descPlotsSepPlots = NULL,
+    plotHAxis = NULL,
+    plotSepLines = NULL,
+    plotSepPlots = NULL,
     postHoc = NULL,
     corrNone = FALSE,
     corrTukey = TRUE,
@@ -483,17 +484,17 @@ anova <- function(
     etaSqP = FALSE,
     omegaSq = FALSE,
     plotError = "ci",
-    ciWidth = 95,
-    ss = "3") {
+    ciWidth = 95) {
 
     options <- anovaOptions$new(
-        dependent = dependent,
-        fixedFactors = fixedFactors,
+        dep = dep,
+        factors = factors,
         modelTerms = modelTerms,
+        ss = ss,
         contrasts = contrasts,
-        descPlotsHAxis = descPlotsHAxis,
-        descPlotsSepLines = descPlotsSepLines,
-        descPlotsSepPlots = descPlotsSepPlots,
+        plotHAxis = plotHAxis,
+        plotSepLines = plotSepLines,
+        plotSepPlots = plotSepPlots,
         postHoc = postHoc,
         corrNone = corrNone,
         corrTukey = corrTukey,
@@ -507,8 +508,7 @@ anova <- function(
         etaSqP = etaSqP,
         omegaSq = omegaSq,
         plotError = plotError,
-        ciWidth = ciWidth,
-        ss = ss)
+        ciWidth = ciWidth)
 
     results <- anovaResults$new(
         options = options)

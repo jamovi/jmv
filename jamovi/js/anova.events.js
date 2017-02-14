@@ -11,7 +11,7 @@ const events = {
         ui.ciWidth.setEnabled(ui.errBarDef_ci.value());
     },
 
-    onChange_fixedFactors: function(ui) {
+    onChange_factors: function(ui) {
         calcModelTerms(ui, this);
     },
 
@@ -21,9 +21,9 @@ const events = {
 
     onChange_plotsSupplier: function(ui) {
         let values = this.itemsToValues(ui.plotsSupplier.value());
-        this.checkValue(ui.descPlotsHAxis, false, values, FormatDef.variable);
-        this.checkValue(ui.descPlotsSepLines, false, values, FormatDef.variable);
-        this.checkValue(ui.descPlotsSepPlots, false, values, FormatDef.variable);
+        this.checkValue(ui.plotHAxis, false, values, FormatDef.variable);
+        this.checkValue(ui.plotSepLines, false, values, FormatDef.variable);
+        this.checkValue(ui.plotSepPlots, false, values, FormatDef.variable);
     },
 
     onChange_postHocSupplier: function(ui) {
@@ -38,7 +38,7 @@ const events = {
 };
 
 var calcModelTerms = function(ui, context) {
-    var variableList = context.cloneArray(ui.fixedFactors.value(), []);
+    var variableList = context.cloneArray(ui.factors.value(), []);
 
     ui.modelSupplier.setValue(context.valuesToItems(variableList, FormatDef.variable));
     ui.plotsSupplier.setValue(context.valuesToItems(variableList, FormatDef.variable));

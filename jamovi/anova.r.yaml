@@ -8,7 +8,7 @@ items:
       title: ANOVA
       type: Table
       clearWith:
-        - dependent
+        - dep
         - modelTerms
         - ss
 
@@ -87,7 +87,7 @@ items:
           height: 300
           renderFun: .qqPlot
           clearWith:
-            - dependent
+            - dep
             - modelTerms
 
     - name: contrasts
@@ -95,7 +95,7 @@ items:
       type: Array
       visible: (contrasts)
       clearWith:
-        - dependent
+        - dep
         - modelTerms
 
       template:
@@ -129,7 +129,7 @@ items:
       type: Array
       items: (postHoc)
       clearWith:
-        - dependent
+        - dep
         - modelTerms
 
       template:
@@ -194,7 +194,7 @@ items:
       type: Table
       visible: (descStats)
       clearWith:
-        - dependent
+        - dep
         - modelTerms
         - ss
 
@@ -213,16 +213,16 @@ items:
 
     - name: plots
       title: Plots
-      visible: (descPlotsHAxis)
+      visible: (plotHAxis)
       type: Image
       width: 500
       height: 300
       renderFun: .descPlot
       clearWith:
-        - dependent
-        - fixedFactors
-        - descPlotsHAxis
-        - descPlotsSepLines
-        - descPlotsSepPlots
+        - dep
+        - factors
+        - plotHAxis
+        - plotSepLines
+        - plotSepPlots
         - plotError
         - ciWidth

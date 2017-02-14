@@ -10,8 +10,8 @@ description:
     R:
         usage: |
             anova(ToothGrowth,
-                dependent='len',
-                fixedFactors=c('dose', 'supp'))
+                dep='len',
+                factors=c('dose', 'supp'))
 
 options:
     - name: data
@@ -19,7 +19,7 @@ options:
       description:
           R: the data as a data frame
 
-    - name: dependent
+    - name: dep
       title: Dependent
       type: Variable
       suggested:
@@ -33,7 +33,7 @@ options:
             a string naming the dependent variable from `data`, variable
             must be numeric
 
-    - name: fixedFactors
+    - name: factors
       title: Fixed factors
       type: Variables
       suggested:
@@ -52,10 +52,23 @@ options:
             a list of character vectors describing the terms to go into the
             model
 
+    - name: ss
+      title: Sum of squares
+      type: List
+      options:
+        - '1'
+        - '2'
+        - '3'
+      default: '3'
+      description:
+          R: >
+            `'1'`, `'2'` or `'3'` (default), the sum of squares
+            to use
+
     - name: contrasts
       title: Contrasts
       type: Array
-      items: (fixedFactors)
+      items: (factors)
       default:
       template:
           type: Group
@@ -81,7 +94,7 @@ options:
             one of `'deviation'`, `'simple'`, `'difference'`, `'helmert'`,
             `'repeated'` or `'polynomial'`
 
-    - name: descPlotsHAxis
+    - name: plotHAxis
       title: Horizontal axis
       type: Variable
       default:
@@ -90,7 +103,7 @@ options:
             a string naming the variable placed on the horizontal axis of the
             plot
 
-    - name: descPlotsSepLines
+    - name: plotSepLines
       title: Separate lines
       type: Variable
       default:
@@ -99,7 +112,7 @@ options:
             a string naming the variable represented as separate lines on the
             plot
 
-    - name: descPlotsSepPlots
+    - name: plotSepPlots
       title: Separate plots
       type: Variable
       default:
@@ -111,7 +124,8 @@ options:
       title: Post Hoc Tests
       type: Terms
       default:
-      description: a list of terms to perform post-hoc tests on
+      description:
+          R: a list of terms to perform post-hoc tests on
 
     - name: corrNone
       title: No correction
@@ -227,17 +241,4 @@ options:
           R: >
             a number between 50 and 99.9 (default: 95) specifying the confidence
             interval width
-
-    - name: ss
-      title: Sum of squares
-      type: List
-      options:
-        - '1'
-        - '2'
-        - '3'
-      default: '3'
-      description:
-          R: >
-            `'1'`, `'2'` or `'3'` (default), the sum of squares
-            to use
 ...

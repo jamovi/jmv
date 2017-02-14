@@ -13,7 +13,7 @@ children:
     persistentItems: false
     stretchFactor: 1
     children:
-      - name: dependent
+      - name: dep
         type: VariableTargetListBox
         label: Dependent Variable
         showColumnHeaders: false
@@ -25,11 +25,11 @@ children:
             label: null
             stretchFactor: 1
       - type: VariableTargetListBox
-        name: fixedFactors
+        name: factors
         label: Fixed Factors
         showColumnHeaders: false
         events:
-          change: './anova.events::onChange_fixedFactors'
+          change: './anova.events::onChange_factors'
         columns:
           - type: ListItem.VariableLabel
             name: column1
@@ -81,11 +81,11 @@ children:
             label: Sum of squares
             options:
               - label: Type 1
-                value: Type 1
+                value: '1'
               - label: Type 2
-                value: Type 2
+                value: '2'
               - label: Type 3
-                value: Type 3
+                value: '3'
   - type: CollapseBox
     label: Assumption Checks
     collapsed: true
@@ -178,7 +178,7 @@ children:
             change: './anova.events::onChange_plotsSupplier'
         children:
           - type: TargetListBox
-            name: descPlotsHAxis
+            name: plotHAxis
             label: Horizontal axis
             showColumnHeaders: false
             maxItemCount: 1
@@ -189,7 +189,7 @@ children:
                 label: null
                 stretchFactor: 1
           - type: TargetListBox
-            name: descPlotsSepLines
+            name: plotSepLines
             label: Separate lines
             showColumnHeaders: false
             maxItemCount: 1
@@ -200,7 +200,7 @@ children:
                 label: null
                 stretchFactor: 1
           - type: TargetListBox
-            name: descPlotsSepPlots
+            name: plotSepPlots
             label: Separate plots
             showColumnHeaders: false
             maxItemCount: 1

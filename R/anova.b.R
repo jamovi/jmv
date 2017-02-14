@@ -7,8 +7,8 @@ anovaClass <- R6::R6Class(
         .model=NA,
         .init=function() {
 
-            dependentName <- self$options$get('dependent')
-            fixedFactors <- self$options$get('fixedFactors')
+            dependentName <- self$options$dep
+            fixedFactors <- self$options$factors
             modelTerms <- private$.modelTerms()
 
             if (is.null(dependentName) || length(fixedFactors) == 0 || length(modelTerms) == 0)
@@ -19,9 +19,9 @@ anovaClass <- R6::R6Class(
                 data[[varName]] <- as.factor(data[[varName]])
             data[[dependentName]] <- jmvcore::toNumeric(data[[dependentName]])
 
-            anovaTable    <- self$results$get('main')
-            postHocTables <- self$results$get('postHoc')
-            contrastsTables <- self$results$get('contrasts')
+            anovaTable    <- self$results$main
+            postHocTables <- self$results$postHoc
+            contrastsTables <- self$results$contrasts
 
             # main table
 
@@ -42,7 +42,7 @@ anovaClass <- R6::R6Class(
 
             # contrasts
 
-            for (contrast in self$options$get('contrasts')) {
+            for (contrast in self$options$contrasts) {
                 if (contrast$type == 'none')
                     next()
                 table <- contrastsTables$addItem(contrast)
@@ -78,8 +78,8 @@ anovaClass <- R6::R6Class(
 
             # descriptives
 
-            descTable <- self$results$get('desc')
-            factorNames <- self$options$get('fixedFactors')
+            descTable <- self$results$desc
+            factorNames <- self$options$factors
 
             if (length(factorNames) > 0) {
 
@@ -109,8 +109,8 @@ anovaClass <- R6::R6Class(
 
             suppressWarnings({
 
-            dependentName <- self$options$get('dependent')
-            fixedFactors <- self$options$get('fixedFactors')
+            dependentName <- self$options$dep
+            fixedFactors <- self$options$factors
             modelTerms <- private$.modelTerms()
 
             if (is.null(dependentName) || length(fixedFactors) == 0 || length(modelTerms) == 0)
@@ -134,7 +134,7 @@ anovaClass <- R6::R6Class(
                     reject("Factor '{}' contains no data", factorName=factorName)
             }
 
-            for (contrast in self$options$get('contrasts')) {
+            for (contrast in self$options$contrasts) {
                levels <- base::levels(data[[contrast$var]])
                stats::contrasts(data[[contrast$var]]) <- private$.createContrasts(levels, contrast$type)
             }
@@ -146,11 +146,11 @@ anovaClass <- R6::R6Class(
 
             singular <- NULL
 
-            if (self$options$get('ss') == '1') {
+            if (self$options$ss == '1') {
 
                 results <- try(stats::anova(private$.model), silent=TRUE)
 
-            } else if (self$options$get('ss') == '2') {
+            } else if (self$options$ss == '2') {
 
                 results <- try(car::Anova(private$.model, type=2, singular.ok=FALSE), silent=TRUE)
                 if (isError(results)) {
@@ -187,7 +187,7 @@ anovaClass <- R6::R6Class(
             if (results['Residuals', 'Sum Sq'] == 0 || results['Residuals', 'Df'] == 0)
                 reject('Residual sum of squares and/or degrees of freedom is zero, indicating a perfect fit')
 
-            anovaTable <- self$results$get('main')
+            anovaTable <- self$results$main
 
             if ( ! is.null(singular))
                 anovaTable$setNote('singular', singular)
@@ -201,7 +201,7 @@ anovaClass <- R6::R6Class(
             errMS <- errSS / errDF
             totalSS <- sum(results[['Sum Sq']], na.rm=TRUE)
 
-            ss <- as.integer(self$options$get('ss'))
+            ss <- as.integer(self$options$ss)
             es <- lsr::etaSquared(private$.model, ss)
 
             for (i in seq_len(rowCount)) {
@@ -258,19 +258,19 @@ anovaClass <- R6::R6Class(
         },
         .populatePostHoc=function(data) {
 
-            depName <- self$options$get('dependent')
-            phNames <- self$options$get('postHoc')
+            depName <- self$options$dep
+            phNames <- self$options$postHoc
 
             if (length(phNames) == 0)
                 return()
 
             dep <- data[[depName]]
 
-            postHocTables <- self$results$get('postHoc')
+            postHocTables <- self$results$postHoc
 
             mcpArgs <- list()
 
-            factorNames <- self$options$get('fixedFactors')
+            factorNames <- self$options$factors
             for (factorName in factorNames)
                 mcpArgs[[factorName]] <- 'Tukey'
 
@@ -328,7 +328,7 @@ anovaClass <- R6::R6Class(
         .populateContrasts=function(data) {
 
             contrResults <- stats::summary.lm(private$.model)[["coefficients"]]
-            contrasts <- self$options$get('contrasts')
+            contrasts <- self$options$contrasts
 
             for (contrast in contrasts) {
 
@@ -358,11 +358,11 @@ anovaClass <- R6::R6Class(
         },
         .populateLevenes=function(data) {
 
-            if ( ! self$options$get('homo'))
+            if ( ! self$options$homo)
                 return()
 
-            dep <- self$options$get('dependent')
-            factors <- self$options$get('fixedFactors')
+            dep <- self$options$dep
+            factors <- self$options$factors
             rhs <- paste0('`', factors, '`', collapse=':')
             formula <- as.formula(paste0('`', dep, '`', '~', rhs))
 
@@ -378,13 +378,13 @@ anovaClass <- R6::R6Class(
         },
         .populateDescriptives=function(data) {
 
-            if ( ! self$options$get('descStats'))
+            if ( ! self$options$descStats)
                 return()
 
-            descTable <- self$results$get('desc')
-            dependentName <- self$options$get('dependent')
+            descTable <- self$results$desc
+            dependentName <- self$options$dep
             dependent <- data[[dependentName]]
-            factorNames <- rev(self$options$get('fixedFactors'))
+            factorNames <- rev(self$options$factors)
             factors <- as.list(select(data, factorNames))
 
             means <- aggregate(dependent, by=factors, base::mean, drop=FALSE)
@@ -512,13 +512,13 @@ anovaClass <- R6::R6Class(
             contrast
         },
         .modelTerms=function() {
-            modelTerms <- self$options$get('modelTerms')
+            modelTerms <- self$options$modelTerms
             if (length(modelTerms) == 0)
                 modelTerms <- private$.ff()
             modelTerms
         },
         .ff=function() {
-            fixedFactors <- self$options$get('fixedFactors')
+            fixedFactors <- self$options$factors
             if (length(fixedFactors) > 1) {
                 formula <- as.formula(paste('~', paste(paste0('`', fixedFactors, '`'), collapse='*')))
                 terms   <- attr(stats::terms(formula), 'term.labels')
@@ -546,10 +546,10 @@ anovaClass <- R6::R6Class(
         },
         .prepareDescPlots=function(data) {
 
-            depName <- self$options$get('dependent')
-            groupName <- self$options$get('descPlotsHAxis')
-            linesName <- self$options$get('descPlotsSepLines')
-            ciWidth   <- self$options$get('ciWidth')
+            depName <- self$options$dep
+            groupName <- self$options$plotHAxis
+            linesName <- self$options$plotSepLines
+            ciWidth   <- self$options$ciWidth
 
             if (length(depName) == 0 || length(groupName) == 0)
                 return()
@@ -573,12 +573,12 @@ anovaClass <- R6::R6Class(
                 plotData <- cbind(plotData, lines=means$lines)
             plotData <- cbind(plotData, mean=unlist(means$x))
 
-            if (self$options$get('plotError') == 'ci')
+            if (self$options$plotError == 'ci')
                 plotData <- cbind(plotData, err=unlist(cis$x))
             else
                 plotData <- cbind(plotData, err=unlist(ses$x))
 
-            image <- self$results$get('plots')
+            image <- self$results$plots
             image$setState(plotData)
 
         },
@@ -587,9 +587,9 @@ anovaClass <- R6::R6Class(
             if (is.null(image$state))
                 return(FALSE)
 
-            depName <- self$options$get('dependent')
-            groupName <- self$options$get('descPlotsHAxis')
-            linesName <- self$options$get('descPlotsSepLines')
+            depName <- self$options$dep
+            groupName <- self$options$plotHAxis
+            linesName <- self$options$plotSepLines
 
             the <- theme(
                 text=element_text(size=16, colour='#333333'),
@@ -603,8 +603,8 @@ anovaClass <- R6::R6Class(
 
             dodge <- position_dodge(0.1)
 
-            if (self$options$get('plotError') == 'ci') {
-                ciWidth <- self$options$get('ciWidth')
+            if (self$options$plotError == 'ci') {
+                ciWidth <- self$options$ciWidth
                 errorType <- paste0('(', ciWidth, '% CI)')
             } else {
                 errorType <- '(SE)'
