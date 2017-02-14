@@ -203,15 +203,15 @@ anovaRMClass <- R6::R6Class(
             private$.postHocRows <- postHocRows
         },
         .initDescPlots=function() {
-            isAxis <- ! is.null(self$options$descPlotsHAxis)
-            isMulti <- ! is.null(self$options$descPlotsSepPlots)
+            isAxis <- ! is.null(self$options$plotHAxis)
+            isMulti <- ! is.null(self$options$plotSepPlots)
 
             self$results$get('descPlot')$setVisible( ! isMulti && isAxis)
             self$results$get('descPlots')$setVisible(isMulti)
 
             if (isMulti) {
 
-                sepPlotsName <- self$options$descPlotsSepPlots
+                sepPlotsName <- self$options$plotSepPlots
 
                 if (sepPlotsName %in% self$options$bs) {
                     sepPlotsVar <- self$data[[sepPlotsName]]
@@ -551,12 +551,12 @@ anovaRMClass <- R6::R6Class(
         .prepareDescPlots=function(data) {
 
             depName <- '.DEPENDENT'
-            groupName <- self$options$descPlotsHAxis
-            linesName <- self$options$descPlotsSepLines
-            plotsName <- self$options$descPlotsSepPlots
+            groupName <- self$options$plotHAxis
+            linesName <- self$options$plotSepLines
+            plotsName <- self$options$plotSepPlots
 
-            ciWidth   <- self$options$descPlotsCIWidth
-            errorBarType <- self$options$descPlotsErrBar
+            ciWidth   <- self$options$ciWidth
+            errorBarType <- self$options$plotError
 
             if (length(depName) == 0 || length(groupName) == 0)
                 return()
@@ -599,7 +599,7 @@ anovaRMClass <- R6::R6Class(
 
             plotData <- cbind(plotData, lower=plotData$mean-plotData$err, upper=plotData$mean+plotData$err)
 
-            if (self$options$descPlotsErrBar != 'none') {
+            if (self$options$plotError != 'none') {
                 yAxisRange <- pretty(c(plotData$lower, plotData$upper))
             } else {
                 yAxisRange <- plotData$mean
@@ -624,9 +624,9 @@ anovaRMClass <- R6::R6Class(
             if (is.null(image$state))
                 return(FALSE)
 
-            groupName <- self$options$descPlotsHAxis
-            linesName <- self$options$descPlotsSepLines
-            plotsName <- self$options$descPlotsSepPlots
+            groupName <- self$options$plotHAxis
+            linesName <- self$options$plotSepLines
+            plotsName <- self$options$plotSepPlots
 
             the <- theme(
                 text=element_text(size=16, colour='#333333'),
@@ -639,16 +639,16 @@ anovaRMClass <- R6::R6Class(
                 axis.title.x=element_text(margin=margin(10,0,0,0)),
                 axis.title.y=element_text(margin=margin(0,10,0,0)))
 
-            if (self$options$descPlotsErrBar != 'none')
+            if (self$options$plotError != 'none')
                 dodge <- position_dodge(0.2)
             else
                 dodge <- position_dodge(0)
 
 
             errorType <- ''
-            if (self$options$descPlotsErrBar != 'none') {
-                if (self$options$descPlotsErrBar == 'ci') {
-                    ciWidth <- self$options$descPlotsCIWidth
+            if (self$options$plotError != 'none') {
+                if (self$options$plotError == 'ci') {
+                    ciWidth <- self$options$ciWidth
                     errorType <- paste0('(', ciWidth, '% CI)')
                 } else {
                     errorType <- '(SE)'
@@ -663,7 +663,7 @@ anovaRMClass <- R6::R6Class(
                     scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
                     the
 
-                if (self$options$descPlotsErrBar != 'none')
+                if (self$options$plotError != 'none')
                     p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, width=.1, group=lines), size=.8, position=dodge)
 
                 p <- p + geom_point(shape=21, fill='white', size=3, position=dodge)
@@ -678,7 +678,7 @@ anovaRMClass <- R6::R6Class(
                     scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
                     the
 
-                if (self$options$descPlotsErrBar != 'none')
+                if (self$options$plotError != 'none')
                     p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, colour='colour', width=.1), size=.8)
 
                 p <- p + geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill='white', size=3)

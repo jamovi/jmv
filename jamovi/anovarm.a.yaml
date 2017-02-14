@@ -235,7 +235,7 @@ options:
             `'bonf'`, or `'holm'`; use Tukey, Scheffe, Bonferroni and
             Holm posthoc corrections, respectively
 
-    - name: descPlotsHAxis
+    - name: plotHAxis
       title: Horizontal axis
       type: Variable
       default:
@@ -244,7 +244,7 @@ options:
             a string naming the variable placed on the horizontal axis of the
             plot
 
-    - name: descPlotsSepLines
+    - name: plotSepLines
       title: Separate lines
       type: Variable
       default:
@@ -253,7 +253,7 @@ options:
             a string naming the variable represented as separate lines on the
             plot
 
-    - name: descPlotsSepPlots
+    - name: plotSepPlots
       title: Separate plots
       type: Variable
       default:
@@ -261,7 +261,7 @@ options:
           R: >
             a string naming the variable to separate over to form multiple plots
 
-    - name: descPlotsErrBar
+    - name: plotError
       title: Error Bar Definition
       type: List
       options:
@@ -275,7 +275,7 @@ options:
             bars, use confidence intervals, or use standard errors on the
             plots, respectively
 
-    - name: descPlotsCIWidth
+    - name: ciWidth
       title: Confidence level
       type: Number
       min: 50
@@ -286,7 +286,7 @@ options:
             a number between 50 and 99.9 (default: 95) specifying the confidence
             interval width
 
-    - name: dispDescStats
+    - name: descStats
       title: Descriptive statistics
       type: Bool
       default: false
