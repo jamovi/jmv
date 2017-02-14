@@ -280,6 +280,11 @@ ttestOneSBase <- R6::R6Class(
 #' One Sample T-Test
 #'
 #' 
+#'
+#' @examples
+#' \dontrun{
+#' ttestOneS(data, vars=c('x', 'y', 'z'))
+#' }
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}

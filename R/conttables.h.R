@@ -11,7 +11,7 @@ contTablesOptions <- R6::R6Class(
             rows = NULL,
             cols = NULL,
             counts = NULL,
-            layers = list(),
+            layers = NULL,
             chiSq = TRUE,
             chiSqCorr = FALSE,
             likeRat = FALSE,
@@ -57,7 +57,7 @@ contTablesOptions <- R6::R6Class(
             private$..layers <- jmvcore::OptionVariables$new(
                 "layers",
                 layers,
-                default=list())
+                default=NULL)
             private$..chiSq <- jmvcore::OptionBool$new(
                 "chiSq",
                 chiSq,
@@ -314,7 +314,12 @@ contTablesBase <- R6::R6Class(
 
 #' Contingency Tables
 #'
-#' 
+#' χ² test of association
+#'
+#' @examples
+#' \dontrun{
+#' contTables(data, rows='x', cols='y')
+#' }
 #' @param data the data as a data frame
 #' @param rows a string naming the variable to use as the rows in the 
 #'   contingency table 
@@ -352,7 +357,7 @@ contTables <- function(
     rows,
     cols,
     counts = NULL,
-    layers = list(),
+    layers = NULL,
     chiSq = TRUE,
     chiSqCorr = FALSE,
     likeRat = FALSE,

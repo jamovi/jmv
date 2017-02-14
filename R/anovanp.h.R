@@ -120,7 +120,7 @@ anovaNPBase <- R6::R6Class(
 
 #' One Way ANOVA (Non-parametric)
 #'
-#' 
+#' Kruskal-Wallis
 #'
 #' @examples
 #' \dontrun{

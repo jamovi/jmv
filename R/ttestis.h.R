@@ -353,6 +353,11 @@ ttestISBase <- R6::R6Class(
 #' Independent Samples T-Test
 #'
 #' 
+#'
+#' @examples
+#' \dontrun{
+#' ttestIS(data, vars='len', group='supp')
+#' }
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the dependent variables
 #' @param group a string naming the grouping variable, must have 2 levels

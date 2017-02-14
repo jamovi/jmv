@@ -135,7 +135,12 @@ contTablesPairedBase <- R6::R6Class(
 
 #' Paired Samples Contingency Tables
 #'
-#' 
+#' McNemar test
+#'
+#' @examples
+#' \dontrun{
+#' contTablesPaired(data, rows='x', cols='y')
+#' }
 #' @param data the data as a data frame
 #' @param rows a string naming the variable to use as the rows in the 
 #'   contingency table 

@@ -140,7 +140,12 @@ anovaRMNPBase <- R6::R6Class(
 
 #' Repeated Measures ANOVA (Non-parametric)
 #'
-#' 
+#' Friedman
+#'
+#' @examples
+#' \dontrun{
+#' anovaRMNP(data, measures=c('before', 'during', 'after'))
+#' }
 #' @param data the data as a data frame
 #' @param measures a vector of strings naming the repeated measures variables
 #' @param pairs \code{TRUE} or \code{FALSE} (default), perform pairwise 

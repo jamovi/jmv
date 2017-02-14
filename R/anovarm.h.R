@@ -106,7 +106,6 @@ anovaRMOptions <- R6::R6Class(
                 "ss",
                 ss,
                 options=list(
-                    "1",
                     "2",
                     "3"),
                 default="3")
@@ -516,6 +515,22 @@ anovaRMBase <- R6::R6Class(
 #' Repeated Measures ANOVA
 #'
 #' 
+#'
+#' @examples
+#' \dontrun{
+#' anovaRM(data=data,
+#'     rm=list(
+#'         list(
+#'             label="When",
+#'             levels=c("Before", "After"))),
+#'     rmCells=list(
+#'         list(
+#'             measure="column 1",
+#'             cell="Before"),
+#'         list(
+#'             measure="column 2",
+#'             cell="After")))
+#' }
 #' @param data the data as a data frame
 #' @param rm a list of lists, where each list describes the \code{label} (as a 
 #'   string) and the \code{levels} (as vector of strings) of a particular 
@@ -532,8 +547,7 @@ anovaRMBase <- R6::R6Class(
 #'   terms to go into the model 
 #' @param bsTerms a list of character vectors describing the between subjects 
 #'   terms to go into the model 
-#' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default); the sum of 
-#'   squares to use 
+#' @param ss \code{'2'} or \code{'3'} (default), the sum of squares to use 
 #' @param effectSize one or more of \code{'eta'}, \code{'partEta'}, or 
 #'   \code{}omega\code{}; use eta², partial eta², and omega² effect sizes, 
 #'   respectively 
@@ -545,7 +559,7 @@ anovaRMBase <- R6::R6Class(
 #'   respectively 
 #' @param leveneTest \code{TRUE} or \code{FALSE} (default), test for equality 
 #'   of variances (i.e., Levene's test) 
-#' @param contrasts .
+#' @param contrasts in development
 #' @param postHoc a list of character vectors describing the post-hoc tests 
 #'   that need to be computed 
 #' @param postHocCorr one or more of \code{'tukey'} (default), 

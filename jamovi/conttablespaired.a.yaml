@@ -10,6 +10,12 @@ menuSubtitle: McNemar test
 version: '1.0.0'
 jas: '1.0'
 
+description:
+    main: McNemar test
+    R:
+        usage: |
+            contTablesPaired(data, rows='x', cols='y')
+
 options:
     - name: data
       type: Data

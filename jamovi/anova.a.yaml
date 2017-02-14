@@ -7,6 +7,11 @@ jas: '1.0'
 
 description:
     main: Analysis of Variance
+    R:
+        usage: |
+            anova(ToothGrowth,
+                dependent='len',
+                fixedFactors=c('dose', 'supp'))
 
 options:
     - name: data
@@ -70,7 +75,11 @@ options:
                   - helmert
                   - repeated
                   - polynomial
-      description: contrasts
+      description:
+          R: >
+            a list of lists specifying the factor and type of contrast to use,
+            one of `'deviation'`, `'simple'`, `'difference'`, `'helmert'`,
+            `'repeated'` or `'polynomial'`
 
     - name: descPlotsHAxis
       title: Horizontal axis
@@ -214,9 +223,10 @@ options:
       min: 50
       max: 99.9
       default: 95
-      description: >
-        a number between 50 and 99.9 (default: 95) specifying the confidence
-        interval width
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width
 
     - name: ss
       title: Sum of squares

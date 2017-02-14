@@ -6,10 +6,10 @@ version: '1.0.0'
 jas: '1.0'
 
 description:
-    main: Descriptives
+    main: Provides a range of descriptive statistics
     R:
         usage: |
-            descriptives(data, vars=c('x', 'y', 'z'), min=TRUE, max=TRUE)
+            descriptives(data, vars=c('x', 'y', 'z'))
 
 options:
     - name: data

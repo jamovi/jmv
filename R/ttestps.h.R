@@ -278,9 +278,17 @@ ttestPSBase <- R6::R6Class(
 
 #' Paired Samples T-Test
 #'
-#' 
+#' Provides a range of descriptive statistics
+#'
+#' @examples
+#' \dontrun{
+#' ttestPS(data,
+#'     pairs=list(
+#'         list(i1='x', i2='y')))
+#' }
 #' @param data the data as a data frame
-#' @param pairs the variables of interest in \code{data}
+#' @param pairs a list of lists specifying the pairs of measurement in 
+#'   \code{data}
 #' @param students \code{TRUE} (default) or \code{FALSE}, perform Student's 
 #'   t-tests 
 #' @param bf \code{TRUE} or \code{FALSE} (default), provide Bayes factors 

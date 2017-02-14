@@ -10,6 +10,12 @@ menuSubtitle: Friedman
 version: '1.0.0'
 jas: '1.0'
 
+description:
+    main: Friedman
+    R:
+        usage: |
+            anovaRMNP(data, measures=c('before', 'during', 'after'))
+
 options:
     - name: data
       type: Data

@@ -408,6 +408,13 @@ anovaBase <- R6::R6Class(
 #' ANOVA
 #'
 #' Analysis of Variance
+#'
+#' @examples
+#' \dontrun{
+#' anova(ToothGrowth,
+#'     dependent='len',
+#'     fixedFactors=c('dose', 'supp'))
+#' }
 #' @param data the data as a data frame
 #' @param dependent a string naming the dependent variable from \code{data}, 
 #'   variable must be numeric 
@@ -415,7 +422,9 @@ anovaBase <- R6::R6Class(
 #'   \code{data}
 #' @param modelTerms a list of character vectors describing the terms to go 
 #'   into the model 
-#' @param contrasts contrasts
+#' @param contrasts a list of lists specifying the factor and type of contrast 
+#'   to use, one of \code{'deviation'}, \code{'simple'}, \code{'difference'}, 
+#'   \code{'helmert'}, \code{'repeated'} or \code{'polynomial'} 
 #' @param descPlotsHAxis a string naming the variable placed on the horizontal 
 #'   axis of the plot 
 #' @param descPlotsSepLines a string naming the variable represented as 

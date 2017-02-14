@@ -130,7 +130,12 @@ propTest2Base <- R6::R6Class(
 
 #' Proportion Test (2 Outcomes)
 #'
-#' 
+#' Binomial test
+#'
+#' @examples
+#' \dontrun{
+#' propTest2(data, vars='x')
+#' }
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}

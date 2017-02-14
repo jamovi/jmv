@@ -11,6 +11,7 @@ version: '1.0.0'
 jas: '1.0'
 
 description:
+    main: Kruskal-Wallis
     R:
         usage: |
             anovaNP(data, deps='len', group='dose')

@@ -207,6 +207,11 @@ corrMatrixBase <- R6::R6Class(
 #' Correlation Matrix
 #'
 #' 
+#'
+#' @examples
+#' \dontrun{
+#' corrMatrix(data, vars=c('x', 'y', 'z'))
+#' }
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables to correlate in 
 #'   \code{data} 

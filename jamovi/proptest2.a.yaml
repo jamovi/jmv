@@ -7,6 +7,12 @@ menuSubgroup: One Sample Proportion Tests
 menuTitle: 2 Outcomes
 menuSubtitle: Binomial test
 
+description:
+    main: Binomial test
+    R:
+        usage: |
+            propTest2(data, vars='x')
+
 version: '1.0.0'
 jas: '1.0'
 

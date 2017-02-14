@@ -10,7 +10,7 @@ propTestNOptions <- R6::R6Class(
         initialize = function(
             var = NULL,
             counts = NULL,
-            expected = NULL,
+            expected = FALSE,
             ratio = NULL, ...) {
 
             super$initialize(
@@ -32,13 +32,15 @@ propTestNOptions <- R6::R6Class(
             private$..counts <- jmvcore::OptionVariable$new(
                 "counts",
                 counts,
+                default=NULL,
                 permitted=list(
                     "continuous",
                     "nominal",
                     "ordinal"))
             private$..expected <- jmvcore::OptionBool$new(
                 "expected",
-                expected)
+                expected,
+                default=FALSE)
             private$..ratio <- jmvcore::OptionArray$new(
                 "ratio",
                 ratio,
@@ -134,20 +136,25 @@ propTestNBase <- R6::R6Class(
 
 #' Proportion Test (N Outcomes)
 #'
-#' 
+#' χ² Goodness of fit
+#'
+#' @examples
+#' \dontrun{
+#' propTestN(data, var="outcome", ratio=c(1,1,1))
+#' }
 #' @param data the data as a data frame
 #' @param var a string naming the variable of interest in \code{data}
-#' @param counts .
+#' @param counts a string naming a variable in \code{data} containing counts, 
+#'   or NULL if each row represents a single observation 
 #' @param expected \code{TRUE} or \code{FALSE} (default), whether expected 
 #'   counts should be displayed 
-#' @param ratio a string naming the variable representing counts, or NULL if 
-#'   each row represents a single observation 
+#' @param ratio a vector of numbers: the expected proportions 
 #' @export
 propTestN <- function(
     data,
     var,
-    counts,
-    expected,
+    counts = NULL,
+    expected = FALSE,
     ratio = NULL) {
 
     options <- propTestNOptions$new(

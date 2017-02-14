@@ -5,6 +5,22 @@ menuGroup: ANOVA
 version: '1.0.0'
 jas: '1.0'
 
+description:
+    R:
+        usage: |
+            anovaRM(data=data,
+                rm=list(
+                    list(
+                        label="When",
+                        levels=c("Before", "After"))),
+                rmCells=list(
+                    list(
+                        measure="column 1",
+                        cell="Before"),
+                    list(
+                        measure="column 2",
+                        cell="After")))
+
 options:
     - name: data
       type: Data
@@ -103,13 +119,12 @@ options:
       title: Sum of squares
       type: List
       options:
-        - '1'
         - '2'
         - '3'
       default: '3'
       description:
           R: >
-            `'1'`, `'2'` or `'3'` (default); the sum of squares
+            `'2'` or `'3'` (default), the sum of squares
             to use
 
     - name: effectSize
@@ -184,6 +199,8 @@ options:
                   - helmert
                   - repeated
                   - polynomial
+      description:
+          R: in development
 
     - name: postHoc
       title: Post Hoc Tests

@@ -5,6 +5,11 @@ menuGroup: T-Tests
 version: '1.0.0'
 jas: '1.0'
 
+description:
+    R:
+        usage: |
+            ttestIS(data, vars='len', group='supp')
+
 options:
     - name: data
       type: Data

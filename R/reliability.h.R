@@ -196,6 +196,11 @@ reliabilityBase <- R6::R6Class(
 #' Reliability Analysis
 #'
 #' 
+#'
+#' @examples
+#' \dontrun{
+#' reliability(data, vars=c('x', 'y', 'z'))
+#' }
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}

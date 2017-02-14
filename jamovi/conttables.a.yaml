@@ -10,6 +10,12 @@ menuSubtitle: χ² test of association
 version: '1.0.0'
 jas: '1.0'
 
+description:
+    main: χ² test of association
+    R:
+        usage: |
+            contTables(data, rows='x', cols='y')
+
 options:
     - name: data
       type: Data
@@ -56,7 +62,7 @@ options:
     - name: layers
       title: Layers
       type: Variables
-      default: []
+      default: NULL
       description:
           R: >
             a character vector naming variables to split the contingency table

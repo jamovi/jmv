@@ -5,6 +5,11 @@ menuGroup: Regression
 version: '1.0.0'
 jas: '1.0'
 
+description:
+    R:
+        usage: |
+            corrMatrix(data, vars=c('x', 'y', 'z'))
+
 options:
     - name: data
       type: Data

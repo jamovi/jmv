@@ -20,34 +20,32 @@ analyses:
     menuGroup: Exploration
     menuTitle: Descriptives
     description:
-      main: Descriptives
-      R:
-        usage: |
-          descriptives(data, vars=c('x', 'y', 'z'), min=TRUE, max=TRUE)
+      main: Provides a range of descriptive statistics
   - title: Reliability Analysis
     name: reliability
     ns: jmv
     menuGroup: Exploration
     menuTitle: Reliability Analysis
-    description: null
+    description: {}
   - title: Independent Samples T-Test
     name: ttestIS
     ns: jmv
     menuGroup: T-Tests
     menuTitle: Independent Samples T-Test
-    description: null
+    description: {}
   - title: Paired Samples T-Test
     name: ttestPS
     ns: jmv
     menuGroup: T-Tests
     menuTitle: Paired Samples T-Test
-    description: null
+    description:
+      main: Provides a range of descriptive statistics
   - title: One Sample T-Test
     name: ttestOneS
     ns: jmv
     menuGroup: T-Tests
     menuTitle: One Sample T-Test
-    description: null
+    description: {}
   - title: ANOVA
     name: anova
     ns: jmv
@@ -60,7 +58,7 @@ analyses:
     ns: jmv
     menuGroup: ANOVA
     menuTitle: Repeated Measures ANOVA
-    description: null
+    description: {}
   - title: ANCOVA
     name: ancova
     ns: jmv
@@ -83,9 +81,7 @@ analyses:
     menuTitle: One Way ANOVA
     menuSubtitle: Kruskal-Wallis
     description:
-      R:
-        usage: |
-          anovaNP(data, deps='len', group='dose')
+      main: Kruskal-Wallis
   - title: Repeated Measures ANOVA (Non-parametric)
     name: anovaRMNP
     ns: jmv
@@ -93,13 +89,14 @@ analyses:
     menuSubgroup: Non-Parametric
     menuTitle: Repeated Measures ANOVA
     menuSubtitle: Friedman
-    description: null
+    description:
+      main: Friedman
   - title: Correlation Matrix
     name: corrMatrix
     menuGroup: Regression
     menuTitle: Correlation Matrix
     ns: jmv
-    description: null
+    description: {}
   - title: Linear Regression
     name: linReg
     ns: jmv
@@ -114,7 +111,8 @@ analyses:
     menuSubgroup: One Sample Proportion Tests
     menuTitle: 2 Outcomes
     menuSubtitle: Binomial test
-    description: null
+    description:
+      main: Binomial test
   - title: Proportion Test (N Outcomes)
     name: propTestN
     ns: jmv
@@ -122,7 +120,8 @@ analyses:
     menuSubgroup: One Sample Proportion Tests
     menuTitle: N Outcomes
     menuSubtitle: χ² Goodness of fit
-    description: null
+    description:
+      main: χ² Goodness of fit
   - title: Contingency Tables
     name: contTables
     ns: jmv
@@ -130,7 +129,8 @@ analyses:
     menuSubgroup: Contingency Tables
     menuTitle: Independent Samples
     menuSubtitle: χ² test of association
-    description: null
+    description:
+      main: χ² test of association
   - title: Paired Samples Contingency Tables
     name: contTablesPaired
     ns: jmv
@@ -138,7 +138,8 @@ analyses:
     menuSubgroup: Contingency Tables
     menuTitle: Paired Samples
     menuSubtitle: McNemar test
-    description: null
+    description:
+      main: McNemar test
   - title: Log-Linear Regression
     name: logLinear
     ns: jmv

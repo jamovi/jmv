@@ -5,6 +5,14 @@ menuGroup: T-Tests
 version: '1.0.0'
 jas: '1.0'
 
+description:
+    main: Provides a range of descriptive statistics
+    R:
+        usage: |
+            ttestPS(data,
+                pairs=list(
+                    list(i1='x', i2='y')))
+
 options:
     - name: data
       type: Data
@@ -21,7 +29,7 @@ options:
         - nominal
         - ordinal
       description:
-          R: the variables of interest in `data`
+          R: a list of lists specifying the pairs of measurement in `data`
 
     - name: students
       title: Student's test

@@ -10,6 +10,12 @@ menuSubtitle: χ² Goodness of fit
 version: '1.0.0'
 jas: '1.0'
 
+description:
+    main: χ² Goodness of fit
+    R:
+        usage: |
+            propTestN(data, var="outcome", ratio=c(1,1,1))
+
 options:
     - name: data
       type: Data
@@ -32,14 +38,20 @@ options:
     - name: counts
       title: Counts (optional)
       type: Variable
+      default:
       permitted:
         - continuous
         - nominal
         - ordinal
+      description:
+          R: >
+            a string naming a variable in `data` containing counts, or NULL if
+            each row represents a single observation
 
     - name: expected
       title: Expected counts
       type: Bool
+      default: false
       description:
           R: >
             `TRUE` or `FALSE` (default), whether expected counts should be displayed
@@ -54,6 +66,5 @@ options:
       default:
       description:
           R: >
-            a string naming the variable representing counts, or NULL if each
-            row represents a single observation
+            a vector of numbers: the expected proportions
 ...
