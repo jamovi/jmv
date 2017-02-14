@@ -263,7 +263,7 @@ children:
           change: './anovarm.events::onChange_plotsSupplier'
         children:
           - type: TargetListBox
-            name: descPlotsHAxis
+            name: plotHAxis
             label: Horizontal axis
             showColumnHeaders: false
             maxItemCount: 1
@@ -274,7 +274,7 @@ children:
                 label: null
                 stretchFactor: 1
           - type: TargetListBox
-            name: descPlotsSepLines
+            name: plotSepLines
             label: Separate lines
             showColumnHeaders: false
             maxItemCount: 1
@@ -285,7 +285,7 @@ children:
                 label: null
                 stretchFactor: 1
           - type: TargetListBox
-            name: descPlotsSepPlots
+            name: plotSepPlots
             label: Separate plots
             showColumnHeaders: false
             maxItemCount: 1
@@ -299,27 +299,27 @@ children:
         label: Error bars
         children:
           - type: RadioButton
-            name: descPlotsErrBar_none
-            optionId: descPlotsErrBar
+            name: plotError_none
+            optionId: plotError
             checkedValue: none
             label: None
           - type: RadioButton
-            name: descPlotsErrBar_ci
-            optionId: descPlotsErrBar
+            name: plotError_ci
+            optionId: plotError
             checkedValue: ci
             label: Confidence interval
             events:
-              change: './anovarm.events::onChange_descPlotsErrBar_ci'
+              change: './anovarm.events::onChange_plotError_ci'
             children:
               - type: TextBox
-                name: descPlotsCIWidth
+                name: ciWidth
                 label: Interval
                 suffix: '%'
                 format: number
                 inputPattern: '[0-9]+'
           - type: RadioButton
-            name: descPlotsErrBar_se
-            optionId: descPlotsErrBar
+            name: plotError_se
+            optionId: plotError
             checkedValue: se
             label: Standard Error
   - type: CollapseBox
@@ -332,5 +332,5 @@ children:
         label: Display
         children:
           - type: CheckBox
-            name: dispDescStats
+            name: descStats
             label: Descriptive statistics

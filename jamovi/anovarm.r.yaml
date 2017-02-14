@@ -367,31 +367,31 @@ items:
 
     - name: descPlot
       title: Descriptive Plot
-      visible: (descPlotsHAxis)
+      visible: (plotHAxis)
       type: Image
       width: 500
       height: 300
       renderFun: .descPlot
       clearWith:
-        - descPlotsHAxis
-        - descPlotsSepLines
-        - descPlotsSepPlots
+        - plotHAxis
+        - plotSepLines
+        - plotSepPlots
         - rm
-        - descPlotsErrBar
-        - descPlotsCIWidth
+        - plotError
+        - ciWidth
 
     - name: descPlots
       title: Descriptive Plots
-      visible: (descPlotsSepPlots)
+      visible: (plotSepPlots)
       type: Array
       template:
           title: $key
           type: Image
           renderFun: .descPlot
           clearWith:
-              - descPlotsHAxis
-              - descPlotsSepLines
-              - descPlotsSepPlots
+              - plotHAxis
+              - plotSepLines
+              - plotSepPlots
               - rm
-              - descPlotsErrBar
-              - descPlotsCIWidth
+              - plotError
+              - ciWidth
