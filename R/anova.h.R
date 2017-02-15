@@ -12,22 +12,17 @@ anovaOptions <- R6::R6Class(
             factors = NULL,
             modelTerms = NULL,
             ss = "3",
+            effectSize = NULL,
             contrasts = NULL,
             plotHAxis = NULL,
             plotSepLines = NULL,
             plotSepPlots = NULL,
             postHoc = NULL,
-            corrNone = FALSE,
-            corrTukey = TRUE,
-            corrScheffe = FALSE,
-            corrBonf = FALSE,
-            corrHolm = FALSE,
+            postHocCorr = list(
+                "tukey"),
             descStats = FALSE,
             homo = FALSE,
             qq = FALSE,
-            etaSq = FALSE,
-            etaSqP = FALSE,
-            omegaSq = FALSE,
             plotError = "ci",
             ciWidth = 95, ...) {
 
@@ -65,6 +60,14 @@ anovaOptions <- R6::R6Class(
                     "2",
                     "3"),
                 default="3")
+            private$..effectSize <- jmvcore::OptionNMXList$new(
+                "effectSize",
+                effectSize,
+                options=list(
+                    list(name="eta", title="\u03B7\u00B2"),
+                    list(name="partEta", title="partial \u03B7\u00B2"),
+                    list(name="omega", title="\u03C9\u00B2")),
+                default=NULL)
             private$..contrasts <- jmvcore::OptionArray$new(
                 "contrasts",
                 contrasts,
@@ -105,26 +108,17 @@ anovaOptions <- R6::R6Class(
                 "postHoc",
                 postHoc,
                 default=NULL)
-            private$..corrNone <- jmvcore::OptionBool$new(
-                "corrNone",
-                corrNone,
-                default=FALSE)
-            private$..corrTukey <- jmvcore::OptionBool$new(
-                "corrTukey",
-                corrTukey,
-                default=TRUE)
-            private$..corrScheffe <- jmvcore::OptionBool$new(
-                "corrScheffe",
-                corrScheffe,
-                default=FALSE)
-            private$..corrBonf <- jmvcore::OptionBool$new(
-                "corrBonf",
-                corrBonf,
-                default=FALSE)
-            private$..corrHolm <- jmvcore::OptionBool$new(
-                "corrHolm",
-                corrHolm,
-                default=FALSE)
+            private$..postHocCorr <- jmvcore::OptionNMXList$new(
+                "postHocCorr",
+                postHocCorr,
+                options=list(
+                    list(name="none", title="No correction"),
+                    list(name="tukey", title="Tukey"),
+                    list(name="scheffe", title="Scheffe"),
+                    list(name="bonf", title="Bonferroni"),
+                    list(name="holm", title="Holm")),
+                default=list(
+                    "tukey"))
             private$..descStats <- jmvcore::OptionBool$new(
                 "descStats",
                 descStats,
@@ -136,18 +130,6 @@ anovaOptions <- R6::R6Class(
             private$..qq <- jmvcore::OptionBool$new(
                 "qq",
                 qq,
-                default=FALSE)
-            private$..etaSq <- jmvcore::OptionBool$new(
-                "etaSq",
-                etaSq,
-                default=FALSE)
-            private$..etaSqP <- jmvcore::OptionBool$new(
-                "etaSqP",
-                etaSqP,
-                default=FALSE)
-            private$..omegaSq <- jmvcore::OptionBool$new(
-                "omegaSq",
-                omegaSq,
                 default=FALSE)
             private$..plotError <- jmvcore::OptionList$new(
                 "plotError",
@@ -167,22 +149,16 @@ anovaOptions <- R6::R6Class(
             self$.addOption(private$..factors)
             self$.addOption(private$..modelTerms)
             self$.addOption(private$..ss)
+            self$.addOption(private$..effectSize)
             self$.addOption(private$..contrasts)
             self$.addOption(private$..plotHAxis)
             self$.addOption(private$..plotSepLines)
             self$.addOption(private$..plotSepPlots)
             self$.addOption(private$..postHoc)
-            self$.addOption(private$..corrNone)
-            self$.addOption(private$..corrTukey)
-            self$.addOption(private$..corrScheffe)
-            self$.addOption(private$..corrBonf)
-            self$.addOption(private$..corrHolm)
+            self$.addOption(private$..postHocCorr)
             self$.addOption(private$..descStats)
             self$.addOption(private$..homo)
             self$.addOption(private$..qq)
-            self$.addOption(private$..etaSq)
-            self$.addOption(private$..etaSqP)
-            self$.addOption(private$..omegaSq)
             self$.addOption(private$..plotError)
             self$.addOption(private$..ciWidth)
         }),
@@ -191,22 +167,16 @@ anovaOptions <- R6::R6Class(
         factors = function() private$..factors$value,
         modelTerms = function() private$..modelTerms$value,
         ss = function() private$..ss$value,
+        effectSize = function() private$..effectSize$value,
         contrasts = function() private$..contrasts$value,
         plotHAxis = function() private$..plotHAxis$value,
         plotSepLines = function() private$..plotSepLines$value,
         plotSepPlots = function() private$..plotSepPlots$value,
         postHoc = function() private$..postHoc$value,
-        corrNone = function() private$..corrNone$value,
-        corrTukey = function() private$..corrTukey$value,
-        corrScheffe = function() private$..corrScheffe$value,
-        corrBonf = function() private$..corrBonf$value,
-        corrHolm = function() private$..corrHolm$value,
+        postHocCorr = function() private$..postHocCorr$value,
         descStats = function() private$..descStats$value,
         homo = function() private$..homo$value,
         qq = function() private$..qq$value,
-        etaSq = function() private$..etaSq$value,
-        etaSqP = function() private$..etaSqP$value,
-        omegaSq = function() private$..omegaSq$value,
         plotError = function() private$..plotError$value,
         ciWidth = function() private$..ciWidth$value),
     private = list(
@@ -214,22 +184,16 @@ anovaOptions <- R6::R6Class(
         ..factors = NA,
         ..modelTerms = NA,
         ..ss = NA,
+        ..effectSize = NA,
         ..contrasts = NA,
         ..plotHAxis = NA,
         ..plotSepLines = NA,
         ..plotSepPlots = NA,
         ..postHoc = NA,
-        ..corrNone = NA,
-        ..corrTukey = NA,
-        ..corrScheffe = NA,
-        ..corrBonf = NA,
-        ..corrHolm = NA,
+        ..postHocCorr = NA,
         ..descStats = NA,
         ..homo = NA,
         ..qq = NA,
-        ..etaSq = NA,
-        ..etaSqP = NA,
-        ..omegaSq = NA,
         ..plotError = NA,
         ..ciWidth = NA)
 )
@@ -270,9 +234,9 @@ anovaResults <- R6::R6Class(
                     list(`name`="ms", `title`="Mean Square", `type`="number"),
                     list(`name`="F", `title`="F", `type`="number"),
                     list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue"),
-                    list(`name`="etaSq", `title`="\u03B7\u00B2", `type`="number", `visible`="(etaSq)", `format`="zto"),
-                    list(`name`="etaSqP", `title`="\u03B7\u00B2p", `type`="number", `visible`="(etaSqP)", `format`="zto"),
-                    list(`name`="omegaSq", `title`="\u03C9\u00B2", `type`="number", `visible`="(omegaSq)", `format`="zto")))
+                    list(`name`="etaSq", `title`="\u03B7\u00B2", `type`="number", `visible`="(effectSize:eta)", `format`="zto"),
+                    list(`name`="etaSqP", `title`="\u03B7\u00B2p", `type`="number", `visible`="(effectSize:partEta)", `format`="zto"),
+                    list(`name`="omegaSq", `title`="\u03C9\u00B2", `type`="number", `visible`="(effectSize:omega)", `format`="zto")))
             private$..assump <- R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
@@ -344,11 +308,11 @@ anovaResults <- R6::R6Class(
                         list(`name`="md", `title`="Mean Difference", `type`="number"),
                         list(`name`="se", `title`="SE", `type`="number"),
                         list(`name`="t", `title`="t", `type`="number"),
-                        list(`name`="p", `title`="p", `visible`="(corrNone)", `type`="number", `format`="zto,pvalue"),
-                        list(`name`="ptukey", `title`="p<sub>tukey</sub>", `visible`="(corrTukey)", `type`="number", `format`="zto,pvalue"),
-                        list(`name`="pscheffe", `title`="p<sub>scheffe</sub>", `visible`="(corrScheffe)", `type`="number", `format`="zto,pvalue"),
-                        list(`name`="pbonf", `title`="p<sub>bonferoni</sub>", `visible`="(corrBonf)", `type`="number", `format`="zto,pvalue"),
-                        list(`name`="pholm", `title`="p<sub>holm</sub>", `visible`="(corrHolm)", `type`="number", `format`="zto,pvalue"))))
+                        list(`name`="p", `title`="p", `visible`="(postHocCorr:none)", `type`="number", `format`="zto,pvalue"),
+                        list(`name`="ptukey", `title`="p<sub>tukey</sub>", `visible`="(postHocCorr:tukey)", `type`="number", `format`="zto,pvalue"),
+                        list(`name`="pscheffe", `title`="p<sub>scheffe</sub>", `visible`="(postHocCorr:scheffe)", `type`="number", `format`="zto,pvalue"),
+                        list(`name`="pbonf", `title`="p<sub>bonferoni</sub>", `visible`="(postHocCorr:bonf)", `type`="number", `format`="zto,pvalue"),
+                        list(`name`="pholm", `title`="p<sub>holm</sub>", `visible`="(postHocCorr:holm)", `type`="number", `format`="zto,pvalue"))))
             private$..desc <- jmvcore::Table$new(
                 options=options,
                 name="desc",
@@ -424,6 +388,9 @@ anovaBase <- R6::R6Class(
 #'   into the model 
 #' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default), the sum of 
 #'   squares to use 
+#' @param effectSize one or more of \code{'eta'}, \code{'partEta'}, or 
+#'   \code{'omega'}; use eta², partial eta², and omega² effect sizes, 
+#'   respectively 
 #' @param contrasts a list of lists specifying the factor and type of contrast 
 #'   to use, one of \code{'deviation'}, \code{'simple'}, \code{'difference'}, 
 #'   \code{'helmert'}, \code{'repeated'} or \code{'polynomial'} 
@@ -434,28 +401,15 @@ anovaBase <- R6::R6Class(
 #' @param plotSepPlots a string naming the variable to separate over to form 
 #'   multiple plots 
 #' @param postHoc a list of terms to perform post-hoc tests on
-#' @param corrNone \code{TRUE} or \code{FALSE} (default), provide uncorrected 
-#'   p-values in post-hoc tests 
-#' @param corrTukey \code{TRUE} (default) or \code{FALSE}, perform Tukey 
-#'   correction in post-hoc tests 
-#' @param corrScheffe \code{TRUE} or \code{FALSE} (default), perform Scheffe 
-#'   correction in post-hoc tests 
-#' @param corrBonf \code{TRUE} or \code{FALSE} (default), perform Bonferroni 
-#'   correction in post-hoc tests 
-#' @param corrHolm \code{TRUE} or \code{FALSE} (default), perform Holm 
-#'   correction in post-hoc tests 
+#' @param postHocCorr one or more of \code{'none'}, \code{'tukey'}, 
+#'   \code{'scheffe'}, \code{'bonf'}, or \code{'holm'}; provide no, Tukey, 
+#'   Scheffe, Bonferroni, and Holm Post Hoc corrections respectively 
 #' @param descStats \code{TRUE} or \code{FALSE} (default), provide descriptive 
 #'   statistics 
 #' @param homo \code{TRUE} or \code{FALSE} (default), perform homogeneity 
 #'   tests 
 #' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of 
 #'   residuals 
-#' @param etaSq \code{TRUE} or \code{FALSE} (default), provide eta² (effect 
-#'   size) 
-#' @param etaSqP \code{TRUE} or \code{FALSE} (default), provide partial eta² 
-#'   (effect size) 
-#' @param omegaSq \code{TRUE} or \code{FALSE} (default), provide omega² 
-#'   (effect size) 
 #' @param plotError \code{'ci'} or \code{'se'}, use confidence intervals or 
 #'   standard errors on the plot 
 #' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the 
@@ -467,22 +421,17 @@ anova <- function(
     factors = NULL,
     modelTerms = NULL,
     ss = "3",
+    effectSize = NULL,
     contrasts = NULL,
     plotHAxis = NULL,
     plotSepLines = NULL,
     plotSepPlots = NULL,
     postHoc = NULL,
-    corrNone = FALSE,
-    corrTukey = TRUE,
-    corrScheffe = FALSE,
-    corrBonf = FALSE,
-    corrHolm = FALSE,
+    postHocCorr = list(
+                "tukey"),
     descStats = FALSE,
     homo = FALSE,
     qq = FALSE,
-    etaSq = FALSE,
-    etaSqP = FALSE,
-    omegaSq = FALSE,
     plotError = "ci",
     ciWidth = 95) {
 
@@ -491,22 +440,16 @@ anova <- function(
         factors = factors,
         modelTerms = modelTerms,
         ss = ss,
+        effectSize = effectSize,
         contrasts = contrasts,
         plotHAxis = plotHAxis,
         plotSepLines = plotSepLines,
         plotSepPlots = plotSepPlots,
         postHoc = postHoc,
-        corrNone = corrNone,
-        corrTukey = corrTukey,
-        corrScheffe = corrScheffe,
-        corrBonf = corrBonf,
-        corrHolm = corrHolm,
+        postHocCorr = postHocCorr,
         descStats = descStats,
         homo = homo,
         qq = qq,
-        etaSq = etaSq,
-        etaSqP = etaSqP,
-        omegaSq = omegaSq,
         plotError = plotError,
         ciWidth = ciWidth)
 

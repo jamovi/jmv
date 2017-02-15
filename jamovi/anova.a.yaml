@@ -65,6 +65,22 @@ options:
             `'1'`, `'2'` or `'3'` (default), the sum of squares
             to use
 
+    - name: effectSize
+      title: Effect Size
+      type: NMXList
+      options:
+          - name: eta
+            title: η²
+          - name: partEta
+            title: partial η²
+          - name: omega
+            title: ω²
+      default:
+      description:
+          R: >
+            one or more of `'eta'`, `'partEta'`, or `'omega'`;
+            use η², partial η², and ω² effect sizes, respectively
+
     - name: contrasts
       title: Contrasts
       type: Array
@@ -127,49 +143,27 @@ options:
       description:
           R: a list of terms to perform post-hoc tests on
 
-    - name: corrNone
-      title: No correction
-      type: Bool
-      default: false
+    - name: postHocCorr
+      title: Correction
+      type: NMXList
+      options:
+          - name: none
+            title: No correction
+          - name: tukey
+            title: Tukey
+          - name: scheffe
+            title: Scheffe
+          - name: bonf
+            title: Bonferroni
+          - name: holm
+            title: Holm
+      default:
+          - tukey
       description:
           R: >
-            `TRUE` or `FALSE` (default), provide uncorrected p-values in
-            post-hoc tests
-
-    - name: corrTukey
-      title: Tukey
-      type: Bool
-      default: true
-      description:
-          R: >
-            `TRUE` (default) or `FALSE`, perform Tukey correction in post-hoc
-            tests
-
-    - name: corrScheffe
-      title: Scheffe
-      type: Bool
-      default: false
-      description:
-          R: >
-            `TRUE` or `FALSE` (default), perform Scheffe correction in post-hoc
-            tests
-
-    - name: corrBonf
-      title: Bonferroni
-      type: Bool
-      default: false
-      description:
-          R: >
-            `TRUE` or `FALSE` (default), perform Bonferroni correction in post-hoc
-            tests
-
-    - name: corrHolm
-      title: Holm
-      type: Bool
-      default: false
-      description:
-          R: >
-            `TRUE` or `FALSE` (default), perform Holm correction in post-hoc tests
+            one or more of `'none'`, `'tukey'`, `'scheffe'`, `'bonf'`, or
+            `'holm'`; provide no, Tukey, Scheffe, Bonferroni, and
+            Holm Post Hoc corrections respectively
 
     - name: descStats
       title: Descriptive statistics
@@ -194,30 +188,6 @@ options:
       description:
           R: >
             `TRUE` or `FALSE` (default), provide a Q-Q plot of residuals
-
-    - name: etaSq
-      title: η²
-      type: Bool
-      default: false
-      description:
-          R: >
-            `TRUE` or `FALSE` (default), provide η² (effect size)
-
-    - name: etaSqP
-      title: partial η²
-      type: Bool
-      default: false
-      description:
-          R: >
-            `TRUE` or `FALSE` (default), provide partial η² (effect size)
-
-    - name: omegaSq
-      title: ω²
-      type: Bool
-      default: false
-      description:
-          R: >
-            `TRUE` or `FALSE` (default), provide ω² (effect size)
 
     - name: plotError
       title: Error Bar Definition
