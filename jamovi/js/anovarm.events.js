@@ -7,7 +7,7 @@ const events = {
 
         this.initializeValue(ui.rmTerms, [["RM Factor 1"]]);
 
-        ui.descPlotsCIWidth.setEnabled(ui.descPlotsErrBar.value() === "ci");
+        ui.ciWidth.setEnabled(ui.plotError.value() === "ci");
 
         updateFactorCells(ui, this);
         updateModelTerms(ui, this);
@@ -15,8 +15,8 @@ const events = {
         filterModelTerms(ui, this);
     },
 
-    onChange_descPlotsErrBar_ci: function(ui) {
-        ui.descPlotsCIWidth.setEnabled(ui.descPlotsErrBar_ci.value());
+    onChange_plotError_ci: function(ui) {
+        ui.ciWidth.setEnabled(ui.plotError_ci.value());
     },
 
     onChange_rm: function(ui) {
@@ -46,9 +46,9 @@ const events = {
 
     onChange_plotsSupplier: function(ui) {
         let values = this.itemsToValues(ui.plotsSupplier.value());
-        this.checkValue(ui.descPlotsHAxis, false, values, FormatDef.variable);
-        this.checkValue(ui.descPlotsSepLines, false, values, FormatDef.variable);
-        this.checkValue(ui.descPlotsSepPlots, false, values, FormatDef.variable);
+        this.checkValue(ui.plotHAxis, false, values, FormatDef.variable);
+        this.checkValue(ui.plotSepLines, false, values, FormatDef.variable);
+        this.checkValue(ui.plotSepPlots, false, values, FormatDef.variable);
     },
 
     onChange_postHocSupplier: function(ui) {
