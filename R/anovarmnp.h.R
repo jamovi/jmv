@@ -113,7 +113,10 @@ anovaRMNPResults <- R6::R6Class(
                 name="plot",
                 title="Descriptive Plot",
                 visible="(plots)",
-                renderFun=".plot")
+                renderFun=".plot",
+                clearWith=list(
+                    "plotType",
+                    "measures"))
             self$add(private$..table)
             self$add(private$..comp)
             self$add(private$..plot)}))

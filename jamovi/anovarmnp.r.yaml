@@ -61,3 +61,6 @@ items:
       visible: (plots)
       type: Image
       renderFun: .plot
+      clearWith:
+        - plotType
+        - measures
