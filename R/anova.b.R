@@ -5,6 +5,7 @@ anovaClass <- R6::R6Class(
     inherit=anovaBase,
     private=list(
         .model=NA,
+        .postHocRows=NA,
         .init=function() {
 
             dependentName <- self$options$dep
@@ -57,24 +58,7 @@ anovaClass <- R6::R6Class(
 
 
             # post hoc
-
-            for (postHocVar in self$options$postHoc) {
-
-                if (length(postHocVar) != 1)
-                    next()
-
-                table <- postHocTables$get(postHocVar)
-
-                postHocVar <- postHocVar[[1]]
-                levels <- base::levels(data[[postHocVar]])
-                combs <- utils::combn(levels, 2)
-                apply(combs, 2, function(comb) {
-                    table$addRow(rowKey=comb, list(
-                        var1=comb[1], var2=comb[2]
-                    ))
-                })
-            }
-
+            private$.initPostHoc()
 
             # descriptives
 
@@ -104,6 +88,9 @@ anovaClass <- R6::R6Class(
                 }
             }
 
+            # descriptives plots
+            private$.initDescPlots()
+
         },
         .run=function() {
 
@@ -122,6 +109,11 @@ anovaClass <- R6::R6Class(
             for (varName in fixedFactors)
                 data[[varName]] <- as.factor(data[[varName]])
             data[[dependentName]] <- jmvcore::toNumeric(data[[dependentName]])
+            data <- lapply(data, function(x) {
+                if (is.factor(x))
+                    levels(x) <- toB64(levels(x))
+                return(x)
+            })
 
             if (is.factor(data[[dependentName]]))
                 reject('Dependent variable must be numeric')
@@ -256,73 +248,153 @@ anovaClass <- R6::R6Class(
 
             }) # suppressWarnings
         },
+        .initPostHoc=function() {
+
+            bs <- self$options$factors
+            phTerms <- self$options$postHoc
+
+            bsLevels <- list()
+            for (i in seq_along(bs))
+                bsLevels[[bs[i]]] <- levels(self$data[[bs[i]]])
+
+            tables <- self$results$postHoc
+
+            postHocRows <- list()
+
+            for (ph in phTerms) {
+
+                table <- tables$get(key=ph)
+
+                table$setTitle(paste0('Post Hoc Comparisons - ', stringifyTerm(ph)))
+
+                for (i in seq_along(ph))
+                    table$addColumn(name=paste0(ph[i],'1'), title=ph[i], type='text', superTitle='Comparison', combineBelow=TRUE)
+
+                table$addColumn(name='sep', title='', type='text', content='-', superTitle='Comparison', format='narrow')
+
+                for (i in seq_along(ph))
+                    table$addColumn(name=paste0(ph[i],'2'), title=ph[i], type='text', superTitle='Comparison')
+
+                table$addColumn(name='md', title='Mean Difference', type='number')
+                table$addColumn(name='se', title='SE', type='number')
+                table$addColumn(name='df', title='df', type='number')
+                table$addColumn(name='t', title='t', type='number')
+
+                table$addColumn(name='pnone', title='p', type='number', format='zto,pvalue', visible="(postHocCorr:none)")
+                table$addColumn(name='ptukey', title='p<sub>tukey</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:tukey)")
+                table$addColumn(name='pscheffe', title='p<sub>sheffe</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:scheffe)")
+                table$addColumn(name='pbonferroni', title='p<sub>bonferroni</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:bonf)")
+                table$addColumn(name='pholm', title='p<sub>holm</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:holm)")
+
+                combin <- expand.grid(bsLevels[rev(ph)])
+                combin <- sapply(combin, as.character, simplify = 'matrix')
+                if (length(ph) > 1)
+                    combin <- combin[,rev(1:length(combin[1,]))]
+
+                comp <- list()
+                iter <- 1
+                for (i in 1:(length(combin[,1]) - 1)) {
+                    for (j in (i+1):length(combin[,1])) {
+                        comp[[iter]] <- list()
+                        comp[[iter]][[1]] <- combin[i,]
+                        comp[[iter]][[2]] <- combin[j,]
+
+                        if (j == length(combin[,1]))
+                            comp[[iter]][[3]] <- TRUE
+                        else
+                            comp[[iter]][[3]] <- FALSE
+
+                        iter <- iter + 1
+                    }
+                }
+
+                postHocRows[[composeTerm(ph)]] <- comp
+
+                for (i in seq_along(comp)) {
+                    row <- list()
+                    for (c in seq_along(comp[[i]][[1]]))
+                        row[[paste0(names(comp[[i]][[1]][c]),'1')]] <- as.character(comp[[i]][[1]][c])
+                    for (c in seq_along(comp[[i]][[2]]))
+                        row[[paste0(names(comp[[i]][[2]][c]),'2')]] <- as.character(comp[[i]][[2]][c])
+
+                    table$addRow(rowKey=i, row)
+                    if (comp[[i]][[3]] == TRUE)
+                        table$addFormat(rowNo=i, col=1, Cell.END_GROUP)
+                }
+            }
+            private$.postHocRows <- postHocRows
+        },
         .populatePostHoc=function(data) {
 
-            depName <- self$options$dep
-            phNames <- self$options$postHoc
+            terms <- self$options$postHoc
 
-            if (length(phNames) == 0)
+            if (length(terms) == 0)
                 return()
 
-            dep <- data[[depName]]
+            tables <- self$results$postHoc
 
-            postHocTables <- self$results$postHoc
+            postHocRows <- list()
 
-            mcpArgs <- list()
+            for (ph in terms) {
 
-            factorNames <- self$options$factors
-            for (factorName in factorNames)
-                mcpArgs[[factorName]] <- 'Tukey'
+                table <- tables$get(key=ph)
 
-            results <- try(suppressWarnings({
-                mcp <- do.call(multcomp::mcp, mcpArgs)
-                r <- multcomp::glht(private$.model, mcp)
-                s <- summary(r, test=multcomp::adjusted('none'))$test
-                md <- s$coefficients
-                se <- s$sigma
-                t  <- s$tstat
-                p  <- s$pvalues
+                term <- jmvcore::composeTerm(ph)
+                termB64 <- jmvcore::composeTerm(toB64(ph))
 
-                ptukey <- summary(r)$test$pvalues
-                pbonf <- summary(r, test=multcomp::adjusted('bonferroni'))$test$pvalues
-                pholm <- summary(r, test=multcomp::adjusted('holm'))$test$pvalues
+                formula <- as.formula(paste('~', term))
 
-                # from https://sites.google.com/site/tukeyhsdrcodetutorial/
-                k <- private$.model$rank
-                v <- private$.model$df.residual
-                pscheffe <- 1-stats::pf(t**2/(k-1),k-1,v)
+                suppressWarnings({
 
-                list(md=md, se=se, t=t, p=p, ptukey=ptukey, pscheffe=pscheffe, pbonf=pbonf, pholm=pholm)
+                    # table$setStatus('running')
 
-            }), silent=TRUE)
+                    referenceGrid <- lsmeans::lsmeans(private$.model, formula)
+                    none <- summary(pairs(referenceGrid, adjust='none'))
+                    tukey <- summary(pairs(referenceGrid, adjust='tukey'))
+                    scheffe <- summary(pairs(referenceGrid, adjust='scheffe'))
+                    bonferroni <- summary(pairs(referenceGrid, adjust='bonferroni'))
+                    holm <- summary(pairs(referenceGrid, adjust='holm'))
 
-            if ( ! isError(results)) {
-                i <- 1
-                for (factorName in factorNames) {
+                }) # suppressWarnings
 
-                    factor <- data[[factorName]]
-                    levels <- base::levels(factor)
-                    nCombn <- dim(combn(levels, 2))[2]
+                resultRows <- lapply(strsplit(as.character(none$contrast), ' - '), function(x) strsplit(x, ','))
+                tableRows <- private$.postHocRows[[term]]
 
-                    if (factorName %in% phNames) {
-                        table <- postHocTables$get(factorName)
-                        for (j in seq_len(nCombn)) {
-                            index <- i + j - 1
-                            table$setRow(rowNo=j, list(
-                                md=results$md[[index]],
-                                se=results$se[[index]],
-                                t=results$t[[index]],
-                                p=results$p[[index]],
-                                ptukey=results$ptukey[[index]],
-                                pscheffe=results$pscheffe[[index]],
-                                pbonf=results$pbonf[[index]],
-                                pholm=results$pholm[[index]]
-                            ))
-                        }
-                    }
+                for (i in seq_along(tableRows)) {
+                    location <- lapply(resultRows, function(x) {
 
-                    i <- i + nCombn
+                        c1 <- identical(x[[1]], toB64(as.character(tableRows[[i]][[1]])))
+                        c2 <- identical(x[[1]], toB64(as.character(tableRows[[i]][[2]])))
+                        c3 <- identical(x[[2]], toB64(as.character(tableRows[[i]][[1]])))
+                        c4 <- identical(x[[2]], toB64(as.character(tableRows[[i]][[2]])))
+
+                        if (c1 && c4)
+                            return(list(TRUE,FALSE))
+                        else if (c2 && c3)
+                            return(list(TRUE,TRUE))
+                        else
+                            return(list(FALSE,FALSE))
+                    })
+
+                    index <- which(sapply(location, function(x) return(x[[1]])))
+                    reverse <- location[[index]][[2]]
+
+                    row <- list()
+                    row[['md']] <- if(reverse) -none[index,'estimate'] else none[index,'estimate']
+                    row[['se']] <- none[index,'SE']
+                    row[['df']] <- none[index,'df']
+                    row[['t']] <- if(reverse) -none[index,'t.ratio'] else none[index,'t.ratio']
+
+                    row[['pnone']] <- none[index,'p.value']
+                    row[['ptukey']] <- tukey[index,'p.value']
+                    row[['pscheffe']] <- scheffe[index,'p.value']
+                    row[['pbonferroni']] <- bonferroni[index,'p.value']
+                    row[['pholm']] <- holm[index,'p.value']
+
+                    table$setRow(rowNo=i, values=row)
+                    private$.checkpoint()
                 }
+                table$setStatus('complete')
             }
         },
         .populateContrasts=function(data) {
@@ -339,7 +411,7 @@ anovaClass <- R6::R6Class(
                     next()
 
                 levels <- base::levels(data[[var]])
-                labels <- private$.contrastLabels(levels, type)
+                labels <- private$.contrastLabels(fromB64(levels), type)
 
                 table <- self$results$get('contrasts')$get(contrast)
 
@@ -544,43 +616,93 @@ anovaClass <- R6::R6Class(
             image <- self$results$get('assump')$get('qq')
             image$setState(df)
         },
+        .initDescPlots=function() {
+            isAxis <- ! is.null(self$options$plotHAxis)
+            isMulti <- ! is.null(self$options$plotSepPlots)
+
+            self$results$get('descPlot')$setVisible( ! isMulti && isAxis)
+            self$results$get('descPlots')$setVisible(isMulti)
+
+            if (isMulti) {
+
+                sepPlotsName <- self$options$plotSepPlots
+                sepPlotsVar <- self$data[[sepPlotsName]]
+                sepPlotsLevels <- levels(sepPlotsVar)
+
+                array <- self$results$descPlots
+
+                for (level in sepPlotsLevels)
+                    array$addItem(level)
+            }
+        },
         .prepareDescPlots=function(data) {
 
             depName <- self$options$dep
             groupName <- self$options$plotHAxis
             linesName <- self$options$plotSepLines
+            plotsName <- self$options$plotSepPlots
+
             ciWidth   <- self$options$ciWidth
+            errorBarType <- self$options$plotError
 
             if (length(depName) == 0 || length(groupName) == 0)
                 return()
 
             by <- list()
             by[['group']] <- data[[groupName]]
+            levels(by[['group']]) <- fromB64(levels(by[['group']]))
 
-            if ( ! is.null(linesName))
+            if ( ! is.null(linesName)) {
                 by[['lines']] <- data[[linesName]]
+                levels(by[['lines']]) <- fromB64(levels(by[['lines']]))
+            }
+
+            if ( ! is.null(plotsName)) {
+                by[['plots']] <- data[[plotsName]]
+                levels(by[['plots']]) <- fromB64(levels(by[['plots']]))
+            }
 
             dep <- data[[depName]]
 
-            ciMult <- qt(ciWidth / 200 + .5, nrow(data)-1)
-
             means <- aggregate(dep, by=by, mean, simplify=FALSE)
             ses   <- aggregate(dep, by=by, function(x) { sd(x) / sqrt(length(x)) }, simplify=FALSE)
-            cis   <- aggregate(dep, by=by, function(x) { sd(x) / sqrt(length(x)) * ciMult }, simplify=FALSE)
+            cis   <- aggregate(dep, by=by, function(x) { sd(x) / sqrt(length(x)) * qt(ciWidth / 200 + .5, length(x)-1) }, simplify=FALSE)
 
             plotData <- data.frame(group=means$group)
             if ( ! is.null(linesName))
                 plotData <- cbind(plotData, lines=means$lines)
+            if ( ! is.null(plotsName))
+                plotData <- cbind(plotData, plots=means$plots)
+
             plotData <- cbind(plotData, mean=unlist(means$x))
 
-            if (self$options$plotError == 'ci')
+            if (errorBarType == 'ci')
                 plotData <- cbind(plotData, err=unlist(cis$x))
             else
                 plotData <- cbind(plotData, err=unlist(ses$x))
 
-            image <- self$results$plots
-            image$setState(plotData)
+            plotData <- cbind(plotData, lower=plotData$mean-plotData$err, upper=plotData$mean+plotData$err)
 
+            if (self$options$plotError != 'none') {
+                yAxisRange <- pretty(c(plotData$lower, plotData$upper))
+            } else {
+                yAxisRange <- plotData$mean
+            }
+
+            if (is.null(plotsName)) {
+
+                image <- self$results$get('descPlot')
+                image$setState(list(data=plotData, range=yAxisRange))
+
+            } else {
+
+                images <- self$results$descPlots
+
+                for (level in images$itemKeys) {
+                    image <- images$get(key=level)
+                    image$setState(list(data=subset(plotData, plots == level), range=yAxisRange))
+                }
+            }
         },
         .descPlot=function(image, ...) {
 
@@ -590,10 +712,12 @@ anovaClass <- R6::R6Class(
             depName <- self$options$dep
             groupName <- self$options$plotHAxis
             linesName <- self$options$plotSepLines
+            plotsName <- self$options$plotSepPlots
 
             the <- theme(
                 text=element_text(size=16, colour='#333333'),
                 plot.background=element_rect(fill='transparent', color=NA),
+                legend.background=element_rect(fill='transparent', colour=NA),
                 panel.background=element_rect(fill='#E8E8E8'),
                 plot.margin=margin(15, 15, 15, 15),
                 axis.text.x=element_text(margin=margin(5,0,0,0)),
@@ -601,33 +725,50 @@ anovaClass <- R6::R6Class(
                 axis.title.x=element_text(margin=margin(10,0,0,0)),
                 axis.title.y=element_text(margin=margin(0,10,0,0)))
 
-            dodge <- position_dodge(0.1)
+            if (self$options$plotError != 'none')
+                dodge <- position_dodge(0.2)
+            else
+                dodge <- position_dodge(0)
 
-            if (self$options$plotError == 'ci') {
-                ciWidth <- self$options$ciWidth
-                errorType <- paste0('(', ciWidth, '% CI)')
-            } else {
-                errorType <- '(SE)'
+            errorType <- ''
+            if (self$options$plotError != 'none') {
+                if (self$options$plotError == 'ci') {
+                    ciWidth <- self$options$ciWidth
+                    errorType <- paste0('(', ciWidth, '% CI)')
+                } else {
+                    errorType <- '(SE)'
+                }
             }
 
             if ( ! is.null(linesName)) {
 
-                print(ggplot(data=image$state, aes(x=group, y=mean, group=lines, colour=lines)) +
-                    geom_errorbar(aes(x=group, ymin=mean-err, ymax=mean+err, width=.1, group=lines), size=.8, position=dodge) +
+                p <- ggplot(data=image$state$data, aes(x=group, y=mean, group=lines, colour=lines)) +
                     geom_line(size=.8, position=dodge) +
-                    geom_point(shape=21, fill='white', size=3, position=dodge) +
-                    labs(x=groupName, y=depName, colour=paste(linesName, errorType)) +
-                    the)
+                    labs(x=groupName, y="", colour=paste(linesName, errorType)) +
+                    scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
+                    the
+
+                if (self$options$plotError != 'none')
+                    p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, width=.1, group=lines), size=.8, position=dodge)
+
+                p <- p + geom_point(shape=21, fill='white', size=3, position=dodge)
+
+                print(p)
 
             } else {
 
-                print(ggplot(data=image$state) +
-                    geom_errorbar(aes(x=group, ymin=mean-err, ymax=mean+err, colour='colour', width=.1), size=.8) +
-                    geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill='white', size=3) +
-                    labs(x=groupName, y=depName, colour=paste(depName, errorType)) +
-                    scale_colour_manual(name=paste(depName, errorType), values=c(colour='#333333'), labels='') +
+                p <- ggplot(data=image$state$data) +
+                    labs(x=groupName, y="", colour=paste("", errorType)) +
+                    scale_colour_manual(name=paste("", errorType), values=c(colour='#333333'), labels='') +
+                    scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
                     the
-                )
+
+                if (self$options$plotError != 'none')
+                    p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, colour='colour', width=.1), size=.8)
+
+                p <- p + geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill='white', size=3)
+
+                print(p)
             }
 
             TRUE

@@ -75,7 +75,6 @@ options:
             title: partial η²
           - name: omega
             title: ω²
-      default:
       description:
           R: >
             one or more of `'eta'`, `'partEta'`, or `'omega'`;
@@ -193,13 +192,15 @@ options:
       title: Error Bar Definition
       type: List
       options:
+        - none
         - ci
         - se
       default: ci
       description:
           R: >
-            `'ci'` or `'se'`, use confidence intervals or standard
-            errors on the plot
+            `'none'`, `'ci'` (default), or `'se'`. Use no error
+            bars, use confidence intervals, or use standard errors on the
+            plots, respectively
 
     - name: ciWidth
       title: Confidence level
