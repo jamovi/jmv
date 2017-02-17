@@ -133,61 +133,12 @@ items:
         - modelTerms
 
       template:
-        title: Post Hoc Comparisons - $key
+        title: ""
         type: Table
+        columns: []
         clearWith:
-
-        columns:
-          - name: var1
-            title: ''
-            type: text
-            combineBelow: true
-
-          - name: var2
-            title: ''
-            type: text
-
-          - name: md
-            title: Mean Difference
-            type: number
-
-          - name: se
-            title: SE
-            type: number
-
-          - name: t
-            title: t
-            type: number
-
-          - name: p
-            title: p
-            visible: (postHocCorr:none)
-            type: number
-            format: zto,pvalue
-
-          - name: ptukey
-            title: p<sub>tukey</sub>
-            visible: (postHocCorr:tukey)
-            type: number
-            format: zto,pvalue
-
-          - name: pscheffe
-            title: p<sub>scheffe</sub>
-            visible: (postHocCorr:scheffe)
-            type: number
-            format: zto,pvalue
-
-          - name: pbonf
-            title: p<sub>bonferoni</sub>
-            visible: (postHocCorr:bonf)
-            type: number
-            format: zto,pvalue
-
-          - name: pholm
-            title: p<sub>holm</sub>
-            visible: (postHocCorr:holm)
-            type: number
-            format: zto,pvalue
+            - dep
+            - modelTerms
 
     - name: desc
       title: Descriptives
@@ -211,18 +162,31 @@ items:
           title: SD
           type: number
 
-    - name: plots
-      title: Plots
+    - name: descPlot
+      title: Descriptive Plot
       visible: (plotHAxis)
       type: Image
       width: 500
       height: 300
       renderFun: .descPlot
       clearWith:
-        - dep
-        - factors
         - plotHAxis
         - plotSepLines
         - plotSepPlots
         - plotError
         - ciWidth
+
+    - name: descPlots
+      title: Descriptive Plots
+      visible: (plotSepPlots)
+      type: Array
+      template:
+          title: $key
+          type: Image
+          renderFun: .descPlot
+          clearWith:
+              - plotHAxis
+              - plotSepLines
+              - plotSepPlots
+              - plotError
+              - ciWidth
