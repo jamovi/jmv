@@ -236,6 +236,11 @@ children:
         label: Display
         children:
           - type: RadioButton
+            name: errBarDef_none
+            optionId: plotError
+            checkedValue: none
+            label: None
+          - type: RadioButton
             name: errBarDef_ci
             optionId: plotError
             checkedValue: ci
