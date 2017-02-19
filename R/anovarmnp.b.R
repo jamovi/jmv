@@ -18,7 +18,7 @@ anovaRMNPClass <- R6::R6Class(
             name <- measureNames[[i]]
             mat[,i] <- jmvcore::toNumeric(data[[name]])
         }
-        
+
         result <- friedman.test(mat)
 
         table <- self$results$get('table')
@@ -44,7 +44,7 @@ anovaRMNPClass <- R6::R6Class(
                 }
             }
         }
-        
+
         private$.preparePlot(data)
 
     },
@@ -66,31 +66,29 @@ anovaRMNPClass <- R6::R6Class(
         }
     },
     .preparePlot=function(data) {
-        
+
         for (i in seq_along(data))
             data[[i]] <- jmvcore::toNumeric(data[[i]])
-        
+
         dataNew <- reshape2::melt(data, measure.vars=self$options$get('measures'), value.name='.DEPENDENT')
-        
+
         by <- list(group = dataNew[["variable"]])
         dep <- dataNew[[".DEPENDENT"]]
-        
+
         means <- aggregate(dep, by=by, mean, simplify=FALSE)
         medians <- aggregate(dep, by=by, median, simplify=FALSE)
-            
-        plotData <- data.frame(group=means$group)
-        plotData <- cbind(plotData, mean=unlist(means$x))
-        plotData <- cbind(plotData, median=unlist(medians$x))
-        
+
+        plotData <- data.frame(group=means$group, mean=unlist(means$x), median=unlist(medians$x))
+
         image <- self$results$get('plot')
         image$setState(plotData)
-        
+
     },
     .plot=function(image,...) {
-        
+
         if (is.null(image$state))
             return(FALSE)
-        
+
         the <- theme(
             text=element_text(size=16, colour='#333333'),
             plot.background=element_rect(fill='transparent', color=NA),
@@ -101,16 +99,16 @@ anovaRMNPClass <- R6::R6Class(
             axis.text.y=element_text(margin=margin(0,5,0,0)),
             axis.title.x=element_text(margin=margin(10,0,0,0)),
             axis.title.y=element_text(margin=margin(0,10,0,0)))
-        
+
         p <- ggplot(data=image$state) + labs(x="Measure", y="Value") + the
-        
+
         if (self$options$plotType == "means")
             p <- p + geom_point(aes(x=group, y=mean), shape=21, fill='white', size=3)
         else
             p <- p + geom_point(aes(x=group, y=median), shape=21, fill='white', size=3)
-        
+
         print(p)
-        
+
         TRUE
     })
 )
