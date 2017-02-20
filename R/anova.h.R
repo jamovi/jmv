@@ -66,8 +66,7 @@ anovaOptions <- R6::R6Class(
                 options=list(
                     list(name="eta", title="\u03B7\u00B2"),
                     list(name="partEta", title="partial \u03B7\u00B2"),
-                    list(name="omega", title="\u03C9\u00B2")),
-                default=NULL)
+                    list(name="omega", title="\u03C9\u00B2")))
             private$..contrasts <- jmvcore::OptionArray$new(
                 "contrasts",
                 contrasts,
@@ -135,6 +134,7 @@ anovaOptions <- R6::R6Class(
                 "plotError",
                 plotError,
                 options=list(
+                    "none",
                     "ci",
                     "se"),
                 default="ci")
@@ -208,14 +208,16 @@ anovaResults <- R6::R6Class(
         contrasts = function() private$..contrasts,
         postHoc = function() private$..postHoc,
         desc = function() private$..desc,
-        plots = function() private$..plots),
+        descPlot = function() private$..descPlot,
+        descPlots = function() private$..descPlots),
     private = list(
         ..main = NA,
         ..assump = NA,
         ..contrasts = NA,
         ..postHoc = NA,
         ..desc = NA,
-        ..plots = NA),
+        ..descPlot = NA,
+        ..descPlots = NA),
     public=list(
         initialize=function(options) {
             super$initialize(options=options, name="", title="ANOVA")
@@ -301,19 +303,11 @@ anovaResults <- R6::R6Class(
                     "modelTerms"),
                 template=jmvcore::Table$new(
                     options=options,
-                    title="Post Hoc Comparisons - $key",
-                    clearWith=NULL,
-                    columns=list(
-                        list(`name`="var1", `title`="", `type`="text", `combineBelow`=TRUE),
-                        list(`name`="var2", `title`="", `type`="text"),
-                        list(`name`="md", `title`="Mean Difference", `type`="number"),
-                        list(`name`="se", `title`="SE", `type`="number"),
-                        list(`name`="t", `title`="t", `type`="number"),
-                        list(`name`="p", `title`="p", `visible`="(postHocCorr:none)", `type`="number", `format`="zto,pvalue"),
-                        list(`name`="ptukey", `title`="p<sub>tukey</sub>", `visible`="(postHocCorr:tukey)", `type`="number", `format`="zto,pvalue"),
-                        list(`name`="pscheffe", `title`="p<sub>scheffe</sub>", `visible`="(postHocCorr:scheffe)", `type`="number", `format`="zto,pvalue"),
-                        list(`name`="pbonf", `title`="p<sub>bonferoni</sub>", `visible`="(postHocCorr:bonf)", `type`="number", `format`="zto,pvalue"),
-                        list(`name`="pholm", `title`="p<sub>holm</sub>", `visible`="(postHocCorr:holm)", `type`="number", `format`="zto,pvalue"))))
+                    title="",
+                    columns=list(),
+                    clearWith=list(
+                        "dep",
+                        "modelTerms")))
             private$..desc <- jmvcore::Table$new(
                 options=options,
                 name="desc",
@@ -327,28 +321,42 @@ anovaResults <- R6::R6Class(
                     list(`name`="n", `title`="N", `type`="integer"),
                     list(`name`="mean", `title`="Mean", `type`="text"),
                     list(`name`="sd", `title`="SD", `type`="number")))
-            private$..plots <- jmvcore::Image$new(
+            private$..descPlot <- jmvcore::Image$new(
                 options=options,
-                name="plots",
-                title="Plots",
+                name="descPlot",
+                title="Descriptive Plot",
                 visible="(plotHAxis)",
                 width=500,
                 height=300,
                 renderFun=".descPlot",
                 clearWith=list(
-                    "dep",
-                    "factors",
                     "plotHAxis",
                     "plotSepLines",
                     "plotSepPlots",
                     "plotError",
                     "ciWidth"))
+            private$..descPlots <- jmvcore::Array$new(
+                options=options,
+                name="descPlots",
+                title="Descriptive Plots",
+                visible="(plotSepPlots)",
+                template=jmvcore::Image$new(
+                    options=options,
+                    title="$key",
+                    renderFun=".descPlot",
+                    clearWith=list(
+                        "plotHAxis",
+                        "plotSepLines",
+                        "plotSepPlots",
+                        "plotError",
+                        "ciWidth")))
             self$add(private$..main)
             self$add(private$..assump)
             self$add(private$..contrasts)
             self$add(private$..postHoc)
             self$add(private$..desc)
-            self$add(private$..plots)}))
+            self$add(private$..descPlot)
+            self$add(private$..descPlots)}))
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
@@ -411,8 +419,9 @@ anovaBase <- R6::R6Class(
 #'   tests 
 #' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of 
 #'   residuals 
-#' @param plotError \code{'ci'} or \code{'se'}, use confidence intervals or 
-#'   standard errors on the plot 
+#' @param plotError \code{'none'}, \code{'ci'} (default), or \code{'se'}. Use 
+#'   no error bars, use confidence intervals, or use standard errors on the 
+#'   plots, respectively 
 #' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the 
 #'   confidence interval width 
 #' @export
@@ -422,7 +431,7 @@ anova <- function(
     factors = NULL,
     modelTerms = NULL,
     ss = "3",
-    effectSize = NULL,
+    effectSize,
     contrasts = NULL,
     plotHAxis = NULL,
     plotSepLines = NULL,

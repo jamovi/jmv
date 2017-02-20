@@ -230,6 +230,11 @@ children:
           - type: Label
             label: Corrections
             children:
+              - name: postHocCorr_none
+                type: CheckBox
+                label: No correction
+                checkedValue: none
+                optionId: postHocCorr
               - name: postHocCorr_tukey
                 type: CheckBox
                 label: Tukey
