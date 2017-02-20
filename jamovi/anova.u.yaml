@@ -240,8 +240,8 @@ children:
             optionId: plotError
             checkedValue: ci
             label: Confidence interval
-            events:
-              change: './anova.events::onChange_errBarDef_ci'
+            #events:
+            #  change: './anova.events::onChange_errBarDef_ci'
             children:
               - type: TextBox
                 name: ciWidth
@@ -249,6 +249,7 @@ children:
                 suffix: '%'
                 format: number
                 inputPattern: '[0-9]+'
+                enableOn: (errBarDef_ci)
           - type: RadioButton
             name: errBarDef_se
             optionId: plotError

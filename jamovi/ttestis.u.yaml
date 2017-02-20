@@ -2,9 +2,6 @@ name:  ttestIS
 title: Independent Samples T-Test
 jus:   '1.0'
 
-events:
-    update: ./ttestis.events::update
-
 children:
   - type: VariableSupplier
     suggested:
@@ -55,14 +52,13 @@ children:
                   - type: CheckBox
                     name: bf
                     label: Bayes factor
-                    events:
-                        change: ./ttestis.events::onChange_bf
                     children:
                       - type: TextBox
                         name: bfPrior
                         label: Prior
                         format: number
                         inputPattern: "[0-9]+"
+                        enableOn: (bf)
 
               - type: CheckBox
                 name: welchs
@@ -128,8 +124,6 @@ children:
               - type: CheckBox
                 name: ci
                 label: Confidence interval
-                events:
-                    change: ./ttestis.events::onChange_ci
                 children:
                   - type: TextBox
                     name: ciWidth
@@ -137,6 +131,7 @@ children:
                     suffix: "%"
                     format: number
                     inputPattern: "[0-9]+"
+                    enableOn: (ci)
 
               - type: CheckBox
                 name: desc

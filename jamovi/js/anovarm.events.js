@@ -7,16 +7,10 @@ const events = {
 
         this.initializeValue(ui.rmTerms, [["RM Factor 1"]]);
 
-        ui.ciWidth.setEnabled(ui.plotError.value() === "ci");
-
         updateFactorCells(ui, this);
         updateModelTerms(ui, this);
         filterModelRMTerms(ui, this);
         filterModelTerms(ui, this);
-    },
-
-    onChange_plotError_ci: function(ui) {
-        ui.ciWidth.setEnabled(ui.plotError_ci.value());
     },
 
     onChange_rm: function(ui) {

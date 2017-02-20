@@ -1,8 +1,7 @@
 name: contTables
 title: Contingency Tables
 jus: '1.0'
-events:
-  update: ui.ciWidth.setEnabled(ui.logOdds.value());
+
 children:
   - type: VariableSupplier
     name: variablesupplier
@@ -79,8 +78,6 @@ children:
               - type: CheckBox
                 name: logOdds
                 label: Log odds ratio (2x2 only)
-                events:
-                  change: ui.ciWidth.setEnabled(ui.logOdds.value());
                 children:
                   - type: TextBox
                     name: ciWidth
@@ -88,6 +85,7 @@ children:
                     suffix: '%'
                     format: number
                     inputPattern: '[0-9]+'
+                    enableOn: (logOdds)
           - type: Label
             label: Nominal
             cell:

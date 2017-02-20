@@ -1,14 +1,8 @@
 
 const events = {
     update: function(ui) {
-        ui.ciWidth.setEnabled(ui.errBarDef_ci.value());
-
         calcModelTerms(ui, this);
         filterModelTerms(ui, this);
-    },
-
-    onChange_errBarDef_ci: function(ui) {
-        ui.ciWidth.setEnabled(ui.errBarDef_ci.value());
     },
 
     onChange_fixedFactors: function(ui) {
