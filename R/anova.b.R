@@ -87,7 +87,7 @@ anovaClass <- R6::R6Class(
                     descTable$addRow(rowKey=row, values=row)
                 }
             }
-            
+
             # descriptives plots
             private$.initDescPlots()
 
@@ -249,60 +249,48 @@ anovaClass <- R6::R6Class(
             }) # suppressWarnings
         },
         .initPostHoc=function() {
-            
+
             bs <- self$options$factors
             phTerms <- self$options$postHoc
-            
+
             bsLevels <- list()
             for (i in seq_along(bs))
                 bsLevels[[bs[i]]] <- levels(self$data[[bs[i]]])
-            
+
             tables <- self$results$postHoc
-            
-            postHocCorr <- self$options$postHocCorr
-            pnone <- "none" %in% postHocCorr
-            ptukey <- "tukey" %in% postHocCorr
-            pscheffe <-"scheffe" %in% postHocCorr
-            pbonf <- "bonf" %in% postHocCorr
-            pholm <- "holm" %in% postHocCorr
-            
+
             postHocRows <- list()
-            
+
             for (ph in phTerms) {
-                
+
                 table <- tables$get(key=ph)
-                
+
                 table$setTitle(paste0('Post Hoc Comparisons - ', stringifyTerm(ph)))
-                
+
                 for (i in seq_along(ph))
                     table$addColumn(name=paste0(ph[i],'1'), title=ph[i], type='text', superTitle='Comparison', combineBelow=TRUE)
-                
+
                 table$addColumn(name='sep', title='', type='text', content='-', superTitle='Comparison', format='narrow')
-                
+
                 for (i in seq_along(ph))
                     table$addColumn(name=paste0(ph[i],'2'), title=ph[i], type='text', superTitle='Comparison')
-                
+
                 table$addColumn(name='md', title='Mean Difference', type='number')
                 table$addColumn(name='se', title='SE', type='number')
                 table$addColumn(name='df', title='df', type='number')
                 table$addColumn(name='t', title='t', type='number')
-                
-                if (pnone)
-                    table$addColumn(name='pnone', title='p', type='number', format='zto,pvalue')
-                if (ptukey)
-                    table$addColumn(name='ptukey', title='p<sub>tukey</sub>', type='number', format='zto,pvalue')
-                if (pscheffe)
-                    table$addColumn(name='pscheffe', title='p<sub>sheffe</sub>', type='number', format='zto,pvalue')
-                if (pbonf)
-                    table$addColumn(name='pbonferroni', title='p<sub>bonferroni</sub>', type='number', format='zto,pvalue')
-                if (pholm)
-                    table$addColumn(name='pholm', title='p<sub>holm</sub>', type='number', format='zto,pvalue')
-                
+
+                table$addColumn(name='pnone', title='p', type='number', format='zto,pvalue', visible="(postHocCorr:none)")
+                table$addColumn(name='ptukey', title='p<sub>tukey</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:tukey)")
+                table$addColumn(name='pscheffe', title='p<sub>sheffe</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:scheffe)")
+                table$addColumn(name='pbonferroni', title='p<sub>bonferroni</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:bonf)")
+                table$addColumn(name='pholm', title='p<sub>holm</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:holm)")
+
                 combin <- expand.grid(bsLevels[rev(ph)])
                 combin <- sapply(combin, as.character, simplify = 'matrix')
                 if (length(ph) > 1)
                     combin <- combin[,rev(1:length(combin[1,]))]
-                
+
                 comp <- list()
                 iter <- 1
                 for (i in 1:(length(combin[,1]) - 1)) {
@@ -310,25 +298,25 @@ anovaClass <- R6::R6Class(
                         comp[[iter]] <- list()
                         comp[[iter]][[1]] <- combin[i,]
                         comp[[iter]][[2]] <- combin[j,]
-                        
+
                         if (j == length(combin[,1]))
                             comp[[iter]][[3]] <- TRUE
                         else
                             comp[[iter]][[3]] <- FALSE
-                        
+
                         iter <- iter + 1
                     }
                 }
-                
+
                 postHocRows[[composeTerm(ph)]] <- comp
-                
+
                 for (i in seq_along(comp)) {
                     row <- list()
                     for (c in seq_along(comp[[i]][[1]]))
                         row[[paste0(names(comp[[i]][[1]][c]),'1')]] <- as.character(comp[[i]][[1]][c])
                     for (c in seq_along(comp[[i]][[2]]))
                         row[[paste0(names(comp[[i]][[2]][c]),'2')]] <- as.character(comp[[i]][[2]][c])
-                    
+
                     table$addRow(rowKey=i, row)
                     if (comp[[i]][[3]] == TRUE)
                         table$addFormat(rowNo=i, col=1, Cell.END_GROUP)
@@ -337,50 +325,38 @@ anovaClass <- R6::R6Class(
             private$.postHocRows <- postHocRows
         },
         .populatePostHoc=function(data) {
-            
+
             terms <- self$options$postHoc
-            
+
             if (length(terms) == 0)
                 return()
-            
+
             tables <- self$results$postHoc
-            
-            postHocCorr <- self$options$postHocCorr
-            pnone <- "none" %in% postHocCorr
-            ptukey <- "tukey" %in% postHocCorr
-            pscheffe <-"scheffe" %in% postHocCorr
-            pbonf <- "bonf" %in% postHocCorr
-            pholm <- "holm" %in% postHocCorr
-            
+
             postHocRows <- list()
-            
+
             for (ph in terms) {
-                
+
                 table <- tables$get(key=ph)
-                
+
                 term <- jmvcore::composeTerm(ph)
                 termB64 <- jmvcore::composeTerm(toB64(ph))
-                
+
                 formula <- as.formula(paste('~', term))
-                
+
                 suppressWarnings({
-                    
+
                     # table$setStatus('running')
-                    
+
                     referenceGrid <- lsmeans::lsmeans(private$.model, formula)
                     none <- summary(pairs(referenceGrid, adjust='none'))
-                    
-                    if (ptukey)
-                        tukey <- summary(pairs(referenceGrid, adjust='tukey'))
-                    if (pscheffe)
-                        scheffe <- summary(pairs(referenceGrid, adjust='scheffe'))
-                    if (pbonf)
-                        bonferroni <- summary(pairs(referenceGrid, adjust='bonferroni'))
-                    if (pholm)
-                        holm <- summary(pairs(referenceGrid, adjust='holm'))
-                    
+                    tukey <- summary(pairs(referenceGrid, adjust='tukey'))
+                    scheffe <- summary(pairs(referenceGrid, adjust='scheffe'))
+                    bonferroni <- summary(pairs(referenceGrid, adjust='bonferroni'))
+                    holm <- summary(pairs(referenceGrid, adjust='holm'))
+
                 }) # suppressWarnings
-                
+
                 resultRows <- lapply(strsplit(as.character(none$contrast), ' - '), function(x) strsplit(x, ','))
                 tableRows <- private$.postHocRows[[term]]
 
@@ -408,17 +384,12 @@ anovaClass <- R6::R6Class(
                     row[['se']] <- none[index,'SE']
                     row[['df']] <- none[index,'df']
                     row[['t']] <- if(reverse) -none[index,'t.ratio'] else none[index,'t.ratio']
-                    
-                    if (pnone)
-                        row[['pnone']] <- none[index,'p.value']
-                    if (ptukey)
-                        row[['ptukey']] <- tukey[index,'p.value']
-                    if (pscheffe)
-                        row[['pscheffe']] <- scheffe[index,'p.value']
-                    if (pbonf)
-                        row[['pbonferroni']] <- bonferroni[index,'p.value']
-                    if (pholm)
-                        row[['pholm']] <- holm[index,'p.value']
+
+                    row[['pnone']] <- none[index,'p.value']
+                    row[['ptukey']] <- tukey[index,'p.value']
+                    row[['pscheffe']] <- scheffe[index,'p.value']
+                    row[['pbonferroni']] <- bonferroni[index,'p.value']
+                    row[['pholm']] <- holm[index,'p.value']
 
                     table$setRow(rowNo=i, values=row)
                     private$.checkpoint()
@@ -648,18 +619,18 @@ anovaClass <- R6::R6Class(
         .initDescPlots=function() {
             isAxis <- ! is.null(self$options$plotHAxis)
             isMulti <- ! is.null(self$options$plotSepPlots)
-            
+
             self$results$get('descPlot')$setVisible( ! isMulti && isAxis)
             self$results$get('descPlots')$setVisible(isMulti)
-            
+
             if (isMulti) {
-                
+
                 sepPlotsName <- self$options$plotSepPlots
                 sepPlotsVar <- self$data[[sepPlotsName]]
                 sepPlotsLevels <- levels(sepPlotsVar)
-                
+
                 array <- self$results$descPlots
-                
+
                 for (level in sepPlotsLevels)
                     array$addItem(level)
             }
@@ -670,63 +641,63 @@ anovaClass <- R6::R6Class(
             groupName <- self$options$plotHAxis
             linesName <- self$options$plotSepLines
             plotsName <- self$options$plotSepPlots
-            
+
             ciWidth   <- self$options$ciWidth
             errorBarType <- self$options$plotError
 
             if (length(depName) == 0 || length(groupName) == 0)
                 return()
-            
+
             by <- list()
             by[['group']] <- data[[groupName]]
             levels(by[['group']]) <- fromB64(levels(by[['group']]))
-            
+
             if ( ! is.null(linesName)) {
                 by[['lines']] <- data[[linesName]]
                 levels(by[['lines']]) <- fromB64(levels(by[['lines']]))
             }
-            
+
             if ( ! is.null(plotsName)) {
                 by[['plots']] <- data[[plotsName]]
                 levels(by[['plots']]) <- fromB64(levels(by[['plots']]))
             }
-            
+
             dep <- data[[depName]]
 
             means <- aggregate(dep, by=by, mean, simplify=FALSE)
             ses   <- aggregate(dep, by=by, function(x) { sd(x) / sqrt(length(x)) }, simplify=FALSE)
             cis   <- aggregate(dep, by=by, function(x) { sd(x) / sqrt(length(x)) * qt(ciWidth / 200 + .5, length(x)-1) }, simplify=FALSE)
-            
+
             plotData <- data.frame(group=means$group)
             if ( ! is.null(linesName))
                 plotData <- cbind(plotData, lines=means$lines)
             if ( ! is.null(plotsName))
                 plotData <- cbind(plotData, plots=means$plots)
-            
+
             plotData <- cbind(plotData, mean=unlist(means$x))
-            
+
             if (errorBarType == 'ci')
                 plotData <- cbind(plotData, err=unlist(cis$x))
             else
                 plotData <- cbind(plotData, err=unlist(ses$x))
-            
+
             plotData <- cbind(plotData, lower=plotData$mean-plotData$err, upper=plotData$mean+plotData$err)
-            
+
             if (self$options$plotError != 'none') {
                 yAxisRange <- pretty(c(plotData$lower, plotData$upper))
             } else {
                 yAxisRange <- plotData$mean
             }
-            
+
             if (is.null(plotsName)) {
-                
+
                 image <- self$results$get('descPlot')
                 image$setState(list(data=plotData, range=yAxisRange))
-                
+
             } else {
-                
+
                 images <- self$results$descPlots
-                
+
                 for (level in images$itemKeys) {
                     image <- images$get(key=level)
                     image$setState(list(data=subset(plotData, plots == level), range=yAxisRange))
@@ -753,7 +724,7 @@ anovaClass <- R6::R6Class(
                 axis.text.y=element_text(margin=margin(0,5,0,0)),
                 axis.title.x=element_text(margin=margin(10,0,0,0)),
                 axis.title.y=element_text(margin=margin(0,10,0,0)))
-            
+
             if (self$options$plotError != 'none')
                 dodge <- position_dodge(0.2)
             else
@@ -776,12 +747,12 @@ anovaClass <- R6::R6Class(
                     labs(x=groupName, y="", colour=paste(linesName, errorType)) +
                     scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
                     the
-                
+
                 if (self$options$plotError != 'none')
                     p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, width=.1, group=lines), size=.8, position=dodge)
-                
+
                 p <- p + geom_point(shape=21, fill='white', size=3, position=dodge)
-                
+
                 print(p)
 
             } else {
@@ -791,12 +762,12 @@ anovaClass <- R6::R6Class(
                     scale_colour_manual(name=paste("", errorType), values=c(colour='#333333'), labels='') +
                     scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
                     the
-                
+
                 if (self$options$plotError != 'none')
                     p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, colour='colour', width=.1), size=.8)
-                
+
                 p <- p + geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill='white', size=3)
-                
+
                 print(p)
             }
 

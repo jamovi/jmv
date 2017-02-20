@@ -128,12 +128,6 @@ anovaRMClass <- R6::R6Class(
             allLevels <- c(bsLevels, rmLevels)
             tables <- self$results$postHoc
 
-            postHocCorr <- self$options$postHocCorr
-            ptukey <- "tukey" %in% postHocCorr
-            pscheffe <-"scheffe" %in% postHocCorr
-            pbonf <- "bonf" %in% postHocCorr
-            pholm <- "holm" %in% postHocCorr
-
             postHocRows <- list()
 
             for (ph in phTerms) {
@@ -155,14 +149,11 @@ anovaRMClass <- R6::R6Class(
                 table$addColumn(name='df', title='df', type='number')
                 table$addColumn(name='t', title='t', type='number')
 
-                if (ptukey)
-                    table$addColumn(name='ptukey', title='p<sub>tukey</sub>', type='number', format='zto,pvalue')
-                if (pscheffe)
-                    table$addColumn(name='pscheffe', title='p<sub>sheffe</sub>', type='number', format='zto,pvalue')
-                if (pbonf)
-                    table$addColumn(name='pbonferroni', title='p<sub>bonferroni</sub>', type='number', format='zto,pvalue')
-                if (pholm)
-                    table$addColumn(name='pholm', title='p<sub>holm</sub>', type='number', format='zto,pvalue')
+                table$addColumn(name='pnone', title='p', type='number', format='zto,pvalue', visible="(postHocCorr:none)")
+                table$addColumn(name='ptukey', title='p<sub>tukey</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:tukey)")
+                table$addColumn(name='pscheffe', title='p<sub>sheffe</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:scheffe)")
+                table$addColumn(name='pbonferroni', title='p<sub>bonferroni</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:bonf)")
+                table$addColumn(name='pholm', title='p<sub>holm</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:holm)")
 
                 combin <- expand.grid(allLevels[rev(ph)])
                 combin <- sapply(combin, as.character, simplify = 'matrix')
@@ -472,12 +463,6 @@ anovaRMClass <- R6::R6Class(
 
             tables <- self$results$postHoc
 
-            postHocCorr <- self$options$postHocCorr
-            ptukey <- "tukey" %in% postHocCorr
-            pscheffe <-"scheffe" %in% postHocCorr
-            pbonf <- "bonf" %in% postHocCorr
-            pholm <- "holm" %in% postHocCorr
-
             postHocRows <- list()
 
             for (ph in terms) {
@@ -494,14 +479,11 @@ anovaRMClass <- R6::R6Class(
                     table$setStatus('running')
 
                     referenceGrid <- lsmeans::lsmeans(result, formula)
+                    none <- summary(pairs(referenceGrid, adjust='none'))
                     tukey <- summary(pairs(referenceGrid, adjust='tukey'))
-
-                    if (pscheffe)
-                        scheffe <- summary(pairs(referenceGrid, adjust='scheffe'))
-                    if (pbonf)
-                        bonferroni <- summary(pairs(referenceGrid, adjust='bonferroni'))
-                    if (pholm)
-                        holm <- summary(pairs(referenceGrid, adjust='holm'))
+                    scheffe <- summary(pairs(referenceGrid, adjust='scheffe'))
+                    bonferroni <- summary(pairs(referenceGrid, adjust='bonferroni'))
+                    holm <- summary(pairs(referenceGrid, adjust='holm'))
 
                 }) # suppressWarnings
 
@@ -533,14 +515,11 @@ anovaRMClass <- R6::R6Class(
                     row[['df']] <- tukey[index,'df']
                     row[['t']] <- if(reverse) -tukey[index,'t.ratio'] else tukey[index,'t.ratio']
 
-                    if (ptukey)
-                        row[['ptukey']] <- tukey[index,'p.value']
-                    if (pscheffe)
-                        row[['pscheffe']] <- scheffe[index,'p.value']
-                    if (pbonf)
-                        row[['pbonferroni']] <- bonferroni[index,'p.value']
-                    if (pholm)
-                        row[['pholm']] <- holm[index,'p.value']
+                    row[['pnone']] <- none[index,'p.value']
+                    row[['ptukey']] <- tukey[index,'p.value']
+                    row[['pscheffe']] <- scheffe[index,'p.value']
+                    row[['pbonferroni']] <- bonferroni[index,'p.value']
+                    row[['pholm']] <- holm[index,'p.value']
 
                     table$setRow(rowNo=i, values=row)
                     private$.checkpoint()

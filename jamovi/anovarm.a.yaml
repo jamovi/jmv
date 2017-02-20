@@ -219,6 +219,8 @@ options:
       title: Corrections
       type: NMXList
       options:
+          - name: none
+            title: No correction
           - name: tukey
             title: Tukey
           - name: scheffe
@@ -231,8 +233,8 @@ options:
           - tukey
       description:
           R: >
-            one or more of `'tukey'` (default), `'scheffe'`,
-            `'bonf'`, or `'holm'`; use Tukey, Scheffe, Bonferroni and
+            one or more of `'none'`, `'tukey'` (default), `'scheffe'`,
+            `'bonf'`, or `'holm'`; use no, Tukey, Scheffe, Bonferroni and
             Holm posthoc corrections, respectively
 
     - name: plotHAxis

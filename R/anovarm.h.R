@@ -171,6 +171,7 @@ anovaRMOptions <- R6::R6Class(
                 "postHocCorr",
                 postHocCorr,
                 options=list(
+                    list(name="none", title="No correction"),
                     list(name="tukey", title="Tukey"),
                     list(name="scheffe", title="Scheffe"),
                     list(name="bonf", title="Bonferroni"),
@@ -562,8 +563,8 @@ anovaRMBase <- R6::R6Class(
 #' @param contrasts in development
 #' @param postHoc a list of character vectors describing the post-hoc tests 
 #'   that need to be computed 
-#' @param postHocCorr one or more of \code{'tukey'} (default), 
-#'   \code{'scheffe'}, \code{'bonf'}, or \code{'holm'}; use Tukey, Scheffe, 
+#' @param postHocCorr one or more of \code{'none'}, \code{'tukey'} (default), 
+#'   \code{'scheffe'}, \code{'bonf'}, or \code{'holm'}; use no, Tukey, Scheffe, 
 #'   Bonferroni and Holm posthoc corrections, respectively 
 #' @param plotHAxis a string naming the variable placed on the horizontal axis 
 #'   of the plot 
