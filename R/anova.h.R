@@ -267,6 +267,7 @@ anovaResults <- R6::R6Class(
                             width=300,
                             height=300,
                             renderFun=".qqPlot",
+                            requiresData=TRUE,
                             clearWith=list(
                                 "dep",
                                 "modelTerms"))

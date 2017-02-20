@@ -11,13 +11,12 @@ anovaClass <- R6::R6Class(
             fixedFactors <- self$options$factors
             modelTerms <- private$.modelTerms()
 
-            if (is.null(dependentName) || length(fixedFactors) == 0 || length(modelTerms) == 0)
+            if (length(fixedFactors) == 0 || length(modelTerms) == 0)
                 return()
 
             data <- self$data
             for (varName in fixedFactors)
                 data[[varName]] <- as.factor(data[[varName]])
-            data[[dependentName]] <- jmvcore::toNumeric(data[[dependentName]])
 
             anovaTable    <- self$results$main
             postHocTables <- self$results$postHoc
@@ -249,7 +248,6 @@ anovaClass <- R6::R6Class(
 
             private$.populateContrasts(data)
             private$.populateLevenes(data)
-            private$.prepareQQPlot(data)
             private$.populatePostHoc(data)
             private$.prepareDescPlots(data)
             private$.populateDescriptives(data)
@@ -536,14 +534,6 @@ anovaClass <- R6::R6Class(
 
             modelTerms
         },
-        .prepareQQPlot=function(data) {
-
-            residuals <- rstandard(private$.model)
-            df <- as.data.frame(qqnorm(residuals, plot.it=FALSE))
-
-            image <- self$results$get('assump')$get('qq')
-            image$setState(df)
-        },
         .prepareDescPlots=function(data) {
 
             depName <- self$options$dep
@@ -634,8 +624,24 @@ anovaClass <- R6::R6Class(
         },
         .qqPlot=function(image, ...) {
 
-            if (is.null(image$state))
+            dependentName <- self$options$dep
+            fixedFactors <- self$options$factors
+            modelTerms <- private$.modelTerms()
+
+            if (is.null(dependentName) || length(fixedFactors) == 0 || length(modelTerms) == 0)
                 return(FALSE)
+
+            data <- self$data
+            for (varName in fixedFactors)
+                data[[varName]] <- as.factor(data[[varName]])
+            data[[dependentName]] <- jmvcore::toNumeric(data[[dependentName]])
+
+            formula <- jmvcore::constructFormula(dependentName, modelTerms)
+            formula <- stats::as.formula(formula)
+            model <- stats::aov(formula, data)
+
+            residuals <- rstandard(model)
+            df <- as.data.frame(qqnorm(residuals, plot.it=FALSE))
 
             the <- theme(
                 text=element_text(size=16, colour='#333333'),
@@ -648,7 +654,7 @@ anovaClass <- R6::R6Class(
                 axis.title.y=element_text(margin=margin(0,10,0,0)),
                 plot.title=element_text(margin=margin(0, 0, 15, 0)))
 
-            print(ggplot(data=image$state, aes(y=y, x=x)) +
+            print(ggplot(data=df, aes(y=y, x=x)) +
                 geom_point(aes(x=x,y=y), colour='#333333') +
                 geom_abline(slope=1, intercept=0, colour='#333333') +
                 xlab("Theoretical Quantiles") +
