@@ -7,10 +7,6 @@ const events = {
         filterModelTerms(ui, this);
     },
 
-    onChange_ci: function(ui) {
-        ui.ciWidth.setEnabled(ui.ci.value());
-    },
-
     onChange_factors: function(ui) {
         calcModelTerms(ui, this);
     },

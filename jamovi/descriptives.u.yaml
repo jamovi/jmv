@@ -2,9 +2,6 @@ name:  descriptives
 title: Descriptives
 jus:   '1.0'
 
-events:
-    update: ui.pcNEqGr.setEnabled(ui.pcEqGr.value());
-
 children:
   - type: VariableSupplier
     persistentItems: false
@@ -52,8 +49,6 @@ children:
                 name: pcEqGr
                 label: Cut points for
                 style: inline
-                events:
-                    change: ui.pcNEqGr.setEnabled(ui.pcEqGr.value());
                 children:
                   - type: TextBox
                     name: pcNEqGr
@@ -61,6 +56,7 @@ children:
                     suffix: equal groups
                     format: number
                     inputPattern: "[0-9]+"
+                    enable: (pcEqGr)
 
       - type: Label
         label: Central Tendency

@@ -2,9 +2,6 @@ name:  ttestOneS
 title: One Sample T-Test
 jus:   '1.0'
 
-events:
-    update: ./ttestones.events::update
-
 children:
   - type: VariableSupplier
     suggested:
@@ -46,14 +43,13 @@ children:
                   - type: CheckBox
                     name: bf
                     label: Bayes factor
-                    events:
-                        change: ./ttestones.events::onChange_bf
                     children:
                       - type: TextBox
                         name: bfPrior
                         label: Prior
                         format: number
                         inputPattern: "[0-9]+"
+                        enable: (bf)
 
               - type: CheckBox
                 name: mann
@@ -123,8 +119,6 @@ children:
               - type: CheckBox
                 name: ci
                 label: Confidence interval
-                events:
-                    change: ./ttestones.events::onChange_ci
                 children:
                   - type: TextBox
                     name: ciWidth
@@ -132,6 +126,7 @@ children:
                     suffix: "%"
                     format: number
                     inputPattern: "[0-9]+"
+                    enable: (ci)
 
               - type: CheckBox
                 name: desc

@@ -2,9 +2,6 @@ name:  anovaRMNP
 title: Repeated Measures ANOVA (Non-parametric)
 jus:   '1.0'
 
-events:
-    update: ./anovarmnp.events::update
-
 children:
   - type: VariableSupplier
     name: variablesupplier
@@ -42,17 +39,17 @@ children:
       - type: CheckBox
         name: plots
         label: Descriptives plot
-        events:
-            change: ./anovarmnp.events::onChange_plots
         children:
           - type: RadioButton
             name: plotType_means
             optionId: plotType
             checkedValue: means
             label: Means
+            enable: (plots)
 
           - type: RadioButton
             name: plotType_medians
             optionId: plotType
             checkedValue: medians
             label: Medians
+            enable: (plots)

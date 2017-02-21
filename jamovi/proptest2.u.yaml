@@ -2,9 +2,6 @@ name:  propTest2
 title: Proportion Test (2 Outcomes)
 jus:   '1.0'
 
-events:
-    update: ui.ciWidth.setEnabled(ui.ci.value());
-
 children:
   - type: VariableSupplier
     suggested:
@@ -66,8 +63,6 @@ children:
       - type: CheckBox
         name: ci
         label: Confidence intervals
-        events:
-            change: ui.ciWidth.setEnabled(ui.ci.value());
         children:
           - type: TextBox
             name: ciWidth
@@ -75,3 +70,4 @@ children:
             suffix: "%"
             format: number
             inputPattern: "[0-9]+"
+            enable: (ci)

@@ -2,9 +2,6 @@ name:  ttestPS
 title: Paired Samples T-Test
 jus:   '1.0'
 
-events:
-    update: ./ttestps.events::update
-
 children:
   - type: VariableSupplier
     suggested:
@@ -55,14 +52,13 @@ children:
                   - type: CheckBox
                     name: bf
                     label: Bayes factor
-                    events:
-                        change: ./ttestps.events::onChange_bf
                     children:
                       - type: TextBox
                         name: bfPrior
                         label: Prior
                         format: number
                         inputPattern: "[0-9]+"
+                        enable: (bf)
 
               - type: CheckBox
                 name: wilcoxon
@@ -124,8 +120,6 @@ children:
               - type: CheckBox
                 name: ci
                 label: Confidence interval
-                events:
-                    change: ./ttestps.events::onChange_ci
                 children:
                   - type: TextBox
                     name: ciWidth
@@ -133,6 +127,7 @@ children:
                     suffix: "%"
                     format: number
                     inputPattern: "[0-9]+"
+                    enable: (ci)
 
               - type: CheckBox
                 name: desc
