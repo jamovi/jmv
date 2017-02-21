@@ -88,4 +88,4 @@ children:
                 suffix: "%"
                 format: number
                 inputPattern: "[0-9]+"
-                enableOn: (ci)
+                enable: (ci)

@@ -247,7 +247,7 @@ children:
                 suffix: '%'
                 format: number
                 inputPattern: '[0-9]+'
-                enableOn: (errBarDef_ci)
+                enable: (errBarDef_ci)
           - type: RadioButton
             name: errBarDef_se
             optionId: plotError

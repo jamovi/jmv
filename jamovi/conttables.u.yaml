@@ -85,7 +85,7 @@ children:
                     suffix: '%'
                     format: number
                     inputPattern: '[0-9]+'
-                    enableOn: (logOdds)
+                    enable: (logOdds)
           - type: Label
             label: Nominal
             cell:

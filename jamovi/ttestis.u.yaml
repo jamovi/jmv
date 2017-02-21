@@ -58,7 +58,7 @@ children:
                         label: Prior
                         format: number
                         inputPattern: "[0-9]+"
-                        enableOn: (bf)
+                        enable: (bf)
 
               - type: CheckBox
                 name: welchs
@@ -131,7 +131,7 @@ children:
                     suffix: "%"
                     format: number
                     inputPattern: "[0-9]+"
-                    enableOn: (ci)
+                    enable: (ci)
 
               - type: CheckBox
                 name: desc

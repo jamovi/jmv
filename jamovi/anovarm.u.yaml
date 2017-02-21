@@ -315,7 +315,7 @@ children:
                 suffix: '%'
                 format: number
                 inputPattern: '[0-9]+'
-                enableOn: (plotError_ci)
+                enable: (plotError_ci)
           - type: RadioButton
             name: plotError_se
             optionId: plotError

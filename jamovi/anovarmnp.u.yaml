@@ -45,11 +45,11 @@ children:
             optionId: plotType
             checkedValue: means
             label: Means
-            enableOn: (plots)
+            enable: (plots)
 
           - type: RadioButton
             name: plotType_medians
             optionId: plotType
             checkedValue: medians
             label: Medians
-            enableOn: (plots)
+            enable: (plots)

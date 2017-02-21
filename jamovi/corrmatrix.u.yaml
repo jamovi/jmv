@@ -70,7 +70,7 @@ children:
                 suffix: "%"
                 format: number
                 inputPattern: "[0-9]+"
-                enableOn: (ci)
+                enable: (ci)
 
       - type: Label
         label: Hypothesis
@@ -109,9 +109,9 @@ children:
               - type: CheckBox
                 name: plotDens
                 label: Densities for variables
-                enableOn: (plots)
+                enable: (plots)
 
               - type: CheckBox
                 name: plotStats
                 label: Statistics
-                enableOn: (plots)
+                enable: (plots)
