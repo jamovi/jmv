@@ -314,7 +314,7 @@ contTablesBase <- R6::R6Class(
 
 #' Contingency Tables
 #'
-#' χ² test of association
+#' chi² test of association
 #'
 #' @examples
 #' \dontrun{

@@ -136,7 +136,7 @@ propTestNBase <- R6::R6Class(
 
 #' Proportion Test (N Outcomes)
 #'
-#' χ² Goodness of fit
+#' chi² Goodness of fit
 #'
 #' @examples
 #' \dontrun{
