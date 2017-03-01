@@ -66,7 +66,8 @@ anovaOptions <- R6::R6Class(
                 options=list(
                     list(name="eta", title="\u03B7\u00B2"),
                     list(name="partEta", title="partial \u03B7\u00B2"),
-                    list(name="omega", title="\u03C9\u00B2")))
+                    list(name="omega", title="\u03C9\u00B2")),
+                default=NULL)
             private$..contrasts <- jmvcore::OptionArray$new(
                 "contrasts",
                 contrasts,
@@ -431,7 +432,7 @@ anova <- function(
     factors = NULL,
     modelTerms = NULL,
     ss = "3",
-    effectSize,
+    effectSize = NULL,
     contrasts = NULL,
     plotHAxis = NULL,
     plotSepLines = NULL,
