@@ -1,4 +1,4 @@
 library(testthat)
-library(silkyR)
+library(jmv)
 
-test_check("silkyR")
+test_check("jmv")
