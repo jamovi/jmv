@@ -3,12 +3,14 @@ name:    corrMatrix
 title:   Correlation Matrix
 menuGroup: Regression
 version: '1.0.0'
-jas: '1.0'
+jas: '1.1'
 
 description:
     R:
         usage: |
             corrMatrix(data, vars=c('x', 'y', 'z'))
+
+completeWhenFilled: true
 
 options:
     - name: data

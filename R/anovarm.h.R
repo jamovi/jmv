@@ -510,7 +510,8 @@ anovaRMBase <- R6::R6Class(
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision,
-                pause = NULL)
+                pause = NULL,
+                completeWhenFilled = TRUE)
         }))
 
 #' Repeated Measures ANOVA
@@ -640,5 +641,5 @@ anovaRM <- function(
     analysis$run()
     analysis$render()
 
-    analysis
+    analysis$results
 }

@@ -3,7 +3,7 @@ name:    anovaRM
 title:   Repeated Measures ANOVA
 menuGroup: ANOVA
 version: '1.0.0'
-jas: '1.0'
+jas: '1.1'
 
 description:
     R:
@@ -20,6 +20,8 @@ description:
                     list(
                         measure="column 2",
                         cell="After")))
+
+completeWhenFilled: true
 
 options:
     - name: data

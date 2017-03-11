@@ -11,11 +11,11 @@ test_that('descriptives works', {
     desc <- descriptives(data, c("x", "y", "z"), freq=TRUE, median=TRUE, mode=TRUE, skew=TRUE, kurt=TRUE, quart=TRUE)
 
     # Test frequency table numerical values
-    expect_equal(4, desc$results$get("frequencies")$get("x")$getCell(rowNo=1,"counts")$value)
-    expect_equal(100/3, desc$results$get("frequencies")$get("x")$getCell(rowNo=1,"percentage")$value)
-    expect_equal(200/3, desc$results$get("frequencies")$get("x")$getCell(rowNo=2,"cumpercentage")$value)
+    expect_equal(4, desc$frequencies$get('x')$getCell(rowNo=1,"counts")$value)
+    expect_equal(100/3, desc$frequencies$get('x')$getCell(rowNo=1,"percentage")$value)
+    expect_equal(200/3, desc$frequencies$get('x')$getCell(rowNo=2,"cumpercentage")$value)
 
-    expect_false(is.numeric(desc$results$get("descriptives")$getCell(rowNo=1, "mean")$value))
+    expect_false(is.numeric(desc$descriptives$getCell(rowNo=1, "mean")$value))
 
     expect_error(descriptives(data.frame(x=c(Inf,-Inf)),c("x")), "Argument 'vars' specifies column 'x' which contains (and must not) infinite values", fixed=TRUE)
 

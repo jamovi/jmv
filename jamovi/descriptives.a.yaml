@@ -3,13 +3,15 @@ name:  descriptives
 title: Descriptives
 menuGroup: Exploration
 version: '1.0.0'
-jas: '1.0'
+jas: '1.1'
 
 description:
     main: Provides a range of descriptive statistics
     R:
         usage: |
             descriptives(data, vars=c('x', 'y', 'z'))
+
+completeWhenFilled: true
 
 options:
     - name: data

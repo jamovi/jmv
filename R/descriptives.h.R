@@ -272,7 +272,8 @@ descriptivesBase <- R6::R6Class(
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision,
-                pause = NULL)
+                pause = NULL,
+                completeWhenFilled = TRUE)
         }))
 
 #' Descriptives
@@ -365,5 +366,5 @@ descriptives <- function(
     analysis$run()
     analysis$render()
 
-    analysis
+    analysis$results
 }

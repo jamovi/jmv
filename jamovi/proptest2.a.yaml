@@ -14,7 +14,9 @@ description:
             propTest2(data, vars='x')
 
 version: '1.0.0'
-jas: '1.0'
+jas: '1.1'
+
+completeWhenFilled: true
 
 options:
     - name: data

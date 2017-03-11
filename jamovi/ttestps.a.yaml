@@ -3,7 +3,7 @@ name: ttestPS
 title: Paired Samples T-Test
 menuGroup: T-Tests
 version: '1.0.0'
-jas: '1.0'
+jas: '1.1'
 
 description:
     main: Provides a range of descriptive statistics
@@ -12,6 +12,8 @@ description:
             ttestPS(data,
                 pairs=list(
                     list(i1='x', i2='y')))
+
+completeWhenFilled: true
 
 options:
     - name: data

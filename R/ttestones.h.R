@@ -274,7 +274,8 @@ ttestOneSBase <- R6::R6Class(
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision,
-                pause = NULL)
+                pause = NULL,
+                completeWhenFilled = TRUE)
         }))
 
 #' One Sample T-Test
@@ -363,5 +364,5 @@ ttestOneS <- function(
     analysis$run()
     analysis$render()
 
-    analysis
+    analysis$results
 }

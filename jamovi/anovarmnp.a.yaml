@@ -8,13 +8,15 @@ menuTitle: Repeated Measures ANOVA
 menuSubtitle: Friedman
 
 version: '1.0.0'
-jas: '1.0'
+jas: '1.1'
 
 description:
     main: Friedman
     R:
         usage: |
             anovaRMNP(data, measures=c('before', 'during', 'after'))
+
+completeWhenFilled: true
 
 options:
     - name: data

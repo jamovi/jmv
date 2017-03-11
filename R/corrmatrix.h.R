@@ -201,7 +201,8 @@ corrMatrixBase <- R6::R6Class(
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision,
-                pause = NULL)
+                pause = NULL,
+                completeWhenFilled = TRUE)
         }))
 
 #' Correlation Matrix
@@ -277,5 +278,5 @@ corrMatrix <- function(
     analysis$run()
     analysis$render()
 
-    analysis
+    analysis$results
 }

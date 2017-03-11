@@ -130,7 +130,8 @@ contTablesPairedBase <- R6::R6Class(
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision,
-                pause = NULL)
+                pause = NULL,
+                completeWhenFilled = TRUE)
         }))
 
 #' Paired Samples Contingency Tables
@@ -177,5 +178,5 @@ contTablesPaired <- function(
     analysis$run()
     analysis$render()
 
-    analysis
+    analysis$results
 }

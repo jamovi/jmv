@@ -131,7 +131,8 @@ propTestNBase <- R6::R6Class(
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision,
-                pause = NULL)
+                pause = NULL,
+                completeWhenFilled = TRUE)
         }))
 
 #' Proportion Test (N Outcomes)
@@ -173,5 +174,5 @@ propTestN <- function(
     analysis$run()
     analysis$render()
 
-    analysis
+    analysis$results
 }

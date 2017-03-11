@@ -8,13 +8,15 @@ menuTitle: Paired Samples
 menuSubtitle: McNemar test
 
 version: '1.0.0'
-jas: '1.0'
+jas: '1.1'
 
 description:
     main: McNemar test
     R:
         usage: |
             contTablesPaired(data, rows='x', cols='y')
+
+completeWhenFilled: true
 
 options:
     - name: data

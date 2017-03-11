@@ -19,8 +19,7 @@ analyses:
     ns: jmv
     menuGroup: Exploration
     menuTitle: Descriptives
-    description:
-      main: Provides a range of descriptive statistics
+    description: Provides a range of descriptive statistics
   - title: Reliability Analysis
     name: reliability
     ns: jmv
@@ -38,8 +37,7 @@ analyses:
     ns: jmv
     menuGroup: T-Tests
     menuTitle: Paired Samples T-Test
-    description:
-      main: Provides a range of descriptive statistics
+    description: Provides a range of descriptive statistics
   - title: One Sample T-Test
     name: ttestOneS
     ns: jmv
@@ -51,8 +49,7 @@ analyses:
     ns: jmv
     menuGroup: ANOVA
     menuTitle: ANOVA
-    description:
-      main: Analysis of Variance
+    description: Analysis of Variance
   - title: Repeated Measures ANOVA
     name: anovaRM
     ns: jmv
@@ -80,8 +77,7 @@ analyses:
     menuSubgroup: Non-Parametric
     menuTitle: One Way ANOVA
     menuSubtitle: Kruskal-Wallis
-    description:
-      main: Kruskal-Wallis
+    description: Kruskal-Wallis
   - title: Repeated Measures ANOVA (Non-parametric)
     name: anovaRMNP
     ns: jmv
@@ -89,8 +85,7 @@ analyses:
     menuSubgroup: Non-Parametric
     menuTitle: Repeated Measures ANOVA
     menuSubtitle: Friedman
-    description:
-      main: Friedman
+    description: Friedman
   - title: Correlation Matrix
     name: corrMatrix
     menuGroup: Regression
@@ -111,8 +106,7 @@ analyses:
     menuSubgroup: One Sample Proportion Tests
     menuTitle: 2 Outcomes
     menuSubtitle: Binomial test
-    description:
-      main: Binomial test
+    description: Binomial test
   - title: Proportion Test (N Outcomes)
     name: propTestN
     ns: jmv
@@ -120,8 +114,7 @@ analyses:
     menuSubgroup: One Sample Proportion Tests
     menuTitle: N Outcomes
     menuSubtitle: χ² Goodness of fit
-    description:
-      main: χ² Goodness of fit
+    description: χ² Goodness of fit
   - title: Contingency Tables
     name: contTables
     ns: jmv
@@ -129,8 +122,7 @@ analyses:
     menuSubgroup: Contingency Tables
     menuTitle: Independent Samples
     menuSubtitle: χ² test of association
-    description:
-      main: χ² test of association
+    description: χ² test of association
   - title: Paired Samples Contingency Tables
     name: contTablesPaired
     ns: jmv
@@ -138,8 +130,7 @@ analyses:
     menuSubgroup: Contingency Tables
     menuTitle: Paired Samples
     menuSubtitle: McNemar test
-    description:
-      main: McNemar test
+    description: McNemar test
   - title: Log-Linear Regression
     name: logLinear
     ns: jmv

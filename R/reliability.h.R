@@ -190,7 +190,8 @@ reliabilityBase <- R6::R6Class(
                 datasetId = datasetId,
                 analysisId = analysisId,
                 revision = revision,
-                pause = NULL)
+                pause = NULL,
+                completeWhenFilled = TRUE)
         }))
 
 #' Reliability Analysis
@@ -260,5 +261,5 @@ reliability <- function(
     analysis$run()
     analysis$render()
 
-    analysis
+    analysis$results
 }

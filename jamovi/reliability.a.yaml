@@ -5,12 +5,14 @@ title: Reliability Analysis
 menuGroup: Exploration
 
 version: '1.0.0'
-jas: '1.0'
+jas: '1.1'
 
 description:
     R:
         usage: |
             reliability(data, vars=c('x', 'y', 'z'))
+
+completeWhenFilled: true
 
 options:
     - name: data
