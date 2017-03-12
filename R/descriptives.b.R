@@ -72,10 +72,13 @@ descriptivesClass <- R6::R6Class(
                     freqPlot  <- freqPlots$get(name)
 
                     data <- NULL
-                    if (length(levels) > 0)
-                        data <- data.frame(x=levels, y=0)
-                    else
+                    if (length(levels) > 0) {
+                        x <- factor(levels, levels=levels)
+                        data <- data.frame(x=x, y=0)
+                    }
+                    else {
                         data <- data.frame(x=character(), y=numeric())
+                    }
 
                     for (j in seq_along(levels)) {
 
@@ -108,11 +111,6 @@ descriptivesClass <- R6::R6Class(
                     freqPlot$setState(list(type='hist', data=data))
                 }
             }
-        },
-        .plotCorr=function(image, ...) {
-            print("rendering")
-            hist(rnorm(200))
-            TRUE
         },
         .plotFreq=function(image, ...) {
 
