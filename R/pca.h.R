@@ -219,6 +219,11 @@ pcaBase <- R6::R6Class(
 #' Principal Component Analysis
 #'
 #' 
+#'
+#' @examples
+#' \dontrun{
+#' pca(data, vars = c('x1', 'x2', 'x3'))
+#' }
 #' @param data .
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}

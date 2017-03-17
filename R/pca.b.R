@@ -1,11 +1,9 @@
 
-# This file is a generated template, your changes will not be overwritten
-
 pcaClass <- R6::R6Class(
     "pcaClass",
     inherit = pcaBase,
     private = list(
-        #### Global variables ----
+        #### Member variables ----
         eigen = NULL,
         simEigen = NULL,
 
@@ -49,7 +47,7 @@ pcaClass <- R6::R6Class(
                 devnull <- '/dev/null'
                 if (Sys.info()['sysname'] == 'Windows')
                     devnull <- 'NUL'
-                sink(file=devnull)
+                    sink(file=devnull)
 
                 SS <- print(r)$Vaccounted
 
@@ -89,6 +87,7 @@ pcaClass <- R6::R6Class(
             nFactors <- results$nFactors
 
             vars <- self$options$vars
+            hide <- self$options$hideLoadings
 
             if (nFactors > 1) {
                 for (i in 2:nFactors)
@@ -103,9 +102,7 @@ pcaClass <- R6::R6Class(
                 for (j in 1:nFactors) {
 
                     index <- which(colNames %in% paste0("C",j))
-
                     l <- loadings[jmvcore::toB64(var), index]
-                    hide <- self$options$hideLoadings
 
                     row[[paste0("pc", j)]] <- if (abs(l) < hide) "" else l
                 }
