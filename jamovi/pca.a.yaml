@@ -1,0 +1,107 @@
+---
+name:  pca
+title: Principal Component Analysis
+menuGroup: Factor
+version: '1.0.0'
+jas: '1.0'
+
+options:
+    - name: data
+      type: Data
+
+    - name: vars
+      title: Variables
+      type: Variables
+      suggested:
+        - ordinal
+        - continuous
+      permitted:
+        - continuous
+        - nominal
+        - ordinal
+      rejectInf: false
+      description:
+          R: a vector of strings naming the variables of interest in `data`
+
+    - name: nFactorMethod
+      title: 'Number of components'
+      type: List
+      options:
+        - parallel
+        - eigen
+        - fixed
+      default: parallel
+      description:
+          R: >
+            `'parallel'` (default), `'eigen'` or
+            `'fixed'`, the way to determine the number of factors
+
+    - name: nFactors
+      title: ''
+      type: Integer
+      min: 1
+      default: 1
+      description:
+          R: >
+            an integer (default: 1), the number of components in the model
+
+    - name: minEigen
+      title: Minimum value
+      type: Number
+      default: 1
+      description:
+          R: >
+            a number (default: 1), the minimal eigenvalue for a component to be included in the model
+
+    - name: rotation
+      title: 'Rotation:'
+      type: List
+      options:
+        - none
+        - varimax
+        - quartimax
+        - promax
+        - oblimin
+        - simplimax
+        - cluster
+      default: varimax
+      description:
+          R: >
+            `'none'`, `'varimax'` (default), `'quartimax'`, `'promax'`,
+            `'oblimin'` `'simplimax'` or `'cluster'`, the rotation to use
+            in estimation
+
+    - name: hideLoadings
+      title: Hide loadings below
+      type: Number
+      default: 0.3
+      description:
+          R: >
+            a number (default: 0.8), hide loadings below
+
+    - name: screePlot
+      title: Scree plot
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), show scree plot
+
+    - name: eigenValues
+      title: Eigenvalues
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), show eigenvalue table
+
+    - name: factorCor
+      title: Component correlations
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), show factor correlations
+
+
+...
