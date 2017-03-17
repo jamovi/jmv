@@ -1,0 +1,103 @@
+---
+name:  pca
+title: Principal Component Analysis
+jrs:   "1.1"
+
+items:
+    - name: loadings
+      title: Component Loadings
+      type: Table
+      rows: (vars)
+      clearWith:
+        - vars
+        - nFactorMethod
+        - nFactors
+        - hideLoadings
+        - rotation
+
+      columns:
+        - name: name
+          title: ''
+          type: 'text'
+          content: ($key)
+        - name: pc1
+          title: '1'
+          type: number
+          superTitle: 'Component'
+        - name: uniq
+          title: 'Uniqueness'
+          type: number
+
+    - name: eigen
+      title: Eigenvalues
+      visible: (eigenValues)
+      type: Table
+      clearWith:
+        - vars
+        - nFactorMethod
+        - nFactors
+        - rotation
+
+      columns:
+        - name: comp
+          title: 'Component'
+          type: 'text'
+        - name: eigen
+          title: Eigenvalue
+          type: number
+          superTitle: 'Initial Eigenvalues'
+        - name: varProp
+          title: '% of Variance'
+          type: number
+          superTitle: 'Initial Eigenvalues'
+        - name: varCum
+          title: 'Cumalitive %'
+          type: number
+          superTitle: 'Initial Eigenvalues'
+        - name: eigenSS
+          title: Eigenvalue
+          type: number
+          superTitle: 'Sum of Squared Loadings'
+        - name: varPropSS
+          title: '% of Variance'
+          type: number
+          superTitle: 'Sum of Squared Loadings'
+        - name: varCumSS
+          title: 'Cumalitive %'
+          type: number
+          superTitle: 'Sum of Squared Loadings'
+
+    - name: factorCor
+      title: Component Correlation Matrix
+      visible: (factorCor)
+      type: Table
+      clearWith:
+        - vars
+        - nFactorMethod
+        - nFactors
+        - hideLoadings
+        - rotation
+
+      columns:
+        - name: comp
+          title: ''
+          type: 'text'
+          format: 'narrow'
+        - name: pc1
+          title: '1'
+          type: number
+
+    - name: screePlot
+      title: Scree Plot
+      visible: (screePlot)
+      type: Image
+      width: 500
+      height: 300
+      renderFun: .screePlot
+      clearWith:
+        - vars
+        - screePlot
+        - nFactorMethod
+        - minEigen
+
+...

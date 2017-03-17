@@ -138,5 +138,12 @@ analyses:
     menuTitle: Log-Linear Regression
     stage: 1
     description: null
+  - title: Principal Component Analysis
+    name: pca
+    ns: jmv
+    menuGroup: Factor
+    menuTitle: Principal Component Analysis
+    stage: 1
+    description: null
 
 ...
