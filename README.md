@@ -1,3 +1,4 @@
+
 # jmv
 
 This module represents the analyses included with jamovi. It contains many
@@ -9,7 +10,7 @@ As with all jamovi modules, this can also be installed as an R package.
 `jmv` can be installed with:
 
 ```
-install.packages('jmv', repos=c('https://repo.jamovi.org', 'https://cran.r-project.org'))
+install.packages('jmv')
 ```
 
 Documentation for `jmv` can be found at the jamovi website:
