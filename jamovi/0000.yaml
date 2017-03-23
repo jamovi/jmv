@@ -145,5 +145,6 @@ analyses:
     menuTitle: Principal Component Analysis
     stage: 1
     description: null
+    hidden: true
 
 ...
