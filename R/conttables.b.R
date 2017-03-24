@@ -3,18 +3,41 @@ contTablesClass <- R6::R6Class(
   "contTablesClass",
   inherit=contTablesBase,
   private=list(
+    .cleanData = function() {
+
+        data <- self$data
+
+        rowVarName <- self$options$rows
+        colVarName <- self$options$cols
+        layerNames <- self$options$layers
+        countsName <- self$options$counts
+
+        if ( ! is.null(rowVarName))
+            data[[rowVarName]] <- droplevels(as.factor(data[[rowVarName]]))
+        if ( ! is.null(colVarName))
+            data[[colVarName]] <- droplevels(as.factor(data[[colVarName]]))
+        for (layerName in layerNames)
+            data[[layerName]] <- droplevels(as.factor(data[[layerName]]))
+        if ( ! is.null(countsName))
+            data[[countsName]] <- toNumeric(data[[countsName]])
+
+        data
+    },
     .init=function() {
 
-        rowVarName <- self$options$get('rows')
-        colVarName <- self$options$get('cols')
-        layerNames <- self$options$get('layers')
+        rowVarName <- self$options$rows
+        colVarName <- self$options$cols
+        layerNames <- self$options$layers
+        countsName <- self$options$counts
 
-        freqs <- self$results$get('freqs')
-        chiSq <- self$results$get('chiSq')
-        nom   <- self$results$get('nom')
-        odds  <- self$results$get('odds')
-        gamma <- self$results$get('gamma')
-        taub  <- self$results$get('taub')
+        freqs <- self$results$freqs
+        chiSq <- self$results$chiSq
+        nom   <- self$results$nom
+        odds  <- self$results$odds
+        gamma <- self$results$gamma
+        taub  <- self$results$taub
+
+        data <- private$.cleanData()
 
         reversed <- rev(layerNames)
         for (i in seq_along(reversed)) {
@@ -45,7 +68,7 @@ contTablesClass <- R6::R6Class(
 
         if ( ! is.null(colVarName)) {
             superTitle <- colVarName
-            levels <- base::levels(self$data[[colVarName]])
+            levels <- base::levels(data[[colVarName]])
         }
         else {
             superTitle <- '.'
@@ -102,7 +125,7 @@ contTablesClass <- R6::R6Class(
         for (i in seq_along(subNames))
             values[[paste0('type', subNames[i])]] <- subTitles[i]
 
-        rows <- private$.grid(incRows=TRUE)
+        rows <- private$.grid(data=data, incRows=TRUE)
 
         for (i in seq_len(nrow(rows))) {
             for (name in dimnames(rows)[[2]]) {
@@ -122,7 +145,7 @@ contTablesClass <- R6::R6Class(
                 freqs$addFormat(rowNo=i, 1, Cell.BEGIN_END_GROUP)
         }
 
-        rows <- private$.grid(incRows=FALSE)
+        rows <- private$.grid(data=data, incRows=FALSE)
         values <- list()
 
         if (length(rows) == 0) {
@@ -152,7 +175,7 @@ contTablesClass <- R6::R6Class(
             }
         }
 
-        ciText <- paste0(self$options$get('ciWidth'), '% Confidence Intervals')
+        ciText <- paste0(self$options$ciWidth, '% Confidence Intervals')
         odds$getColumn('cil[lo]')$setSuperTitle(ciText)
         odds$getColumn('ciu[lo]')$setSuperTitle(ciText)
         odds$getColumn('cil[f]')$setSuperTitle(ciText)
@@ -161,10 +184,10 @@ contTablesClass <- R6::R6Class(
         gamma$getColumn('ciu')$setSuperTitle(ciText)
 
     },
-    .grid=function(incRows=FALSE) {
+    .grid=function(data, incRows=FALSE) {
 
-        rowVarName <- self$options$get('rows')
-        layerNames <- self$options$get('layers')
+        rowVarName <- self$options$rows
+        layerNames <- self$options$layers
 
         expand <- list()
 
@@ -172,40 +195,40 @@ contTablesClass <- R6::R6Class(
             if (is.null(rowVarName))
                 expand[['.']] <- c('.', '. ', 'Total')
             else
-                expand[[rowVarName]] <- c(base::levels(self$data[[rowVarName]]), '.total')
+                expand[[rowVarName]] <- c(base::levels(data[[rowVarName]]), '.total')
         }
 
         for (layerName in layerNames)
-            expand[[layerName]] <- c(base::levels(self$data[[layerName]]), '.total')
+            expand[[layerName]] <- c(base::levels(data[[layerName]]), '.total')
 
         rows <- rev(expand.grid(expand))
 
         rows
     },
-    .matrices=function() {
+    .matrices=function(data) {
 
         matrices <- list()
 
-        rowVarName <- self$options$get('rows')
-        colVarName <- self$options$get('cols')
-        countsName <- self$options$get('counts')
-        layerNames <- rev(unlist(self$options$get('layers')))
+        rowVarName <- self$options$rows
+        colVarName <- self$options$cols
+        layerNames <- self$options$layers
+        countsName <- self$options$counts
 
-        data <- jmvcore::select(self$data, c(layerNames, rowVarName, colVarName))
+        subData <- jmvcore::select(data, c(layerNames, rowVarName, colVarName))
 
         if (is.null(countsName))
             x <- rep(1, nrow(data))
         else
-            x <- jmvcore::toNumeric(self$data[[countsName]])
+            x <- jmvcore::toNumeric(data[[countsName]])
 
-        nRows  <- base::nlevels(data[[rowVarName]])
-        nCols  <- base::nlevels(data[[colVarName]])
+        nRows  <- base::nlevels(subData[[rowVarName]])
+        nCols  <- base::nlevels(subData[[colVarName]])
         nCells <- nRows * nCols
 
         while(TRUE) {
 
-            data <- jmvcore::select(self$data, c(layerNames, rowVarName, colVarName))
-            table <- ftable(xtabs(x ~ ., data=data))
+            subData <- jmvcore::select(data, c(layerNames, rowVarName, colVarName))
+            table <- ftable(xtabs(x ~ ., data=subData))
 
             if (nrow(table) == 0)
                 return(matrices)
@@ -224,43 +247,45 @@ contTablesClass <- R6::R6Class(
     },
     .run=function() {
 
-        rowVarName <- self$options$get('rows')
-        colVarName <- self$options$get('cols')
+        rowVarName <- self$options$rows
+        colVarName <- self$options$cols
+        countsName <- self$options$counts
 
         if (is.null(rowVarName) || is.null(colVarName))
             return()
 
-        if (nlevels(self$data[[rowVarName]]) < 2)
+        data <- private$.cleanData()
+
+        if (nlevels(data[[rowVarName]]) < 2)
             jmvcore::reject("Row variable '{}' contains less than 2 levels", code='', rowVarName)
-        if (nlevels(self$data[[colVarName]]) < 2)
+        if (nlevels(data[[colVarName]]) < 2)
             jmvcore::reject("Column variable '{}' contains less than 2 levels", code='', colVarName)
 
-        countName <- self$options$get('counts')
-        if ( ! is.null(countName)) {
-            countCol <- jmvcore::toNumeric(self$data[[countName]])
+        if ( ! is.null(countsName)) {
+            countCol <- data[[countsName]]
             if (any(countCol < 0, na.rm=TRUE))
                 jmvcore::reject('Counts may not be negative')
             if (any(is.infinite(countCol)))
                 jmvcore::reject('Counts may not be infinite')
         }
 
-        freqs <- self$results$get('freqs')
-        chiSq <- self$results$get('chiSq')
-        nom   <- self$results$get('nom')
-        odds  <- self$results$get('odds')
-        gamma <- self$results$get('gamma')
-        taub  <- self$results$get('taub')
+        freqs <- self$results$freqs
+        chiSq <- self$results$chiSq
+        nom   <- self$results$nom
+        odds  <- self$results$odds
+        gamma <- self$results$gamma
+        taub  <- self$results$taub
 
         freqRowNo <- 1
         othRowNo <- 1
 
-        mats <- private$.matrices()
+        mats <- private$.matrices(data)
 
-        nRows  <- base::nlevels(self$data[[rowVarName]])
-        nCols  <- base::nlevels(self$data[[colVarName]])
+        nRows  <- base::nlevels(data[[rowVarName]])
+        nCols  <- base::nlevels(data[[colVarName]])
         nCells <- nRows * nCols
 
-        ciWidth <- self$options$get('ciWidth') / 100
+        ciWidth <- self$options$ciWidth / 100
 
         for (mat in mats) {
 

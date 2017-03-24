@@ -5,8 +5,8 @@ ttestISClass <- R6::R6Class(
     private=list(
         .run=function() {
 
-            groupVarName <- self$options$get('group')
-            depVarNames <- self$options$get('vars')
+            groupVarName <- self$options$group
+            depVarNames <- self$options$vars
             varNames <- c(groupVarName, depVarNames)
 
             if (is.null(groupVarName) || length(depVarNames) == 0)
@@ -16,13 +16,14 @@ ttestISClass <- R6::R6Class(
 
             for (name in depVarNames)
                 data[[name]] <- jmvcore::toNumeric(data[[name]])
+            data[[groupVarName]] <- droplevels(as.factor(data[[groupVarName]]))
 
-            ttestTable <- self$results$get("ttest")
-            descTable <- self$results$get("desc")
-            normTable <- self$results$get("assum")$get("norm")
-            eqvTable <- self$results$get("assum")$get("eqv")
+            ttestTable <- self$results$ttest
+            descTable <- self$results$desc
+            normTable <- self$results$assum$get('norm')
+            eqvTable <- self$results$assum$get('eqv')
 
-            confInt <- self$options$get('ciWidth') / 100
+            confInt <- self$options$ciWidth / 100
 
             if (any(depVarNames == groupVarName))
                 jmvcore::reject("Grouping variable '{a}' must not also be a dependent variable", code="a_is_dependent_variable", a=groupVarName)
@@ -38,16 +39,16 @@ ttestISClass <- R6::R6Class(
             if (length(groupLevels) != 2)
                 jmvcore::reject("Grouping variable '{a}' must have exactly 2 levels", code="grouping_var_must_have_2_levels", a=groupVarName)
 
-            if (self$options$get('miss') == "listwise") {
+            if (self$options$miss == "listwise") {
                 data <- naOmit(data)
                 if (dim(data)[1] == 0)
                     jmvcore::reject("Grouping variable '{a}' has less than 2 levels after missing values are excluded", code="grouping_var_must_have_2_levels", a=groupVarName)
             }
 
             ## Hypothesis options checking
-            if (self$options$get('hypothesis') == 'oneGreater')
+            if (self$options$hypothesis == 'oneGreater')
                 Ha <- "greater"
-            else if (self$options$get('hypothesis') == 'twoGreater')
+            else if (self$options$hypothesis == 'twoGreater')
                 Ha <- "less"
             else
                 Ha <- "two.sided"
@@ -56,7 +57,7 @@ ttestISClass <- R6::R6Class(
 
                 dataTTest <- data.frame(dep=data[[depName]], group=data[[groupVarName]])
 
-                if (self$options$get('miss') == "perAnalysis")
+                if (self$options$miss == "perAnalysis")
                     dataTTest <- naOmit(dataTTest)
 
                 groupLevels <- base::levels(dataTTest$group)
@@ -104,7 +105,7 @@ ttestISClass <- R6::R6Class(
                 }
 
 
-                if (self$options$get('students')) {
+                if (self$options$students) {
 
                     if (is.factor(dataTTest$dep))
                         res <- createError('Variable is not numeric')
@@ -153,7 +154,7 @@ ttestISClass <- R6::R6Class(
                         ttestTable$addFootnote(rowKey=depName, "stat[stud]", "Levene's test is significant (p < .05), suggesting a violation of the assumption of equal variances")
                 }
 
-                if (self$options$get('welchs')) {
+                if (self$options$welchs) {
 
                     if (is.factor(dataTTest$dep))
                         res <- createError('Variable is not numeric')
@@ -200,7 +201,7 @@ ttestISClass <- R6::R6Class(
                     }
                 }
 
-                if (self$options$get('mann')) {
+                if (self$options$mann) {
 
                     if (is.factor(dataTTest$dep))
                         res <- createError('Variable is not numeric')
@@ -245,7 +246,7 @@ ttestISClass <- R6::R6Class(
                     }
                 }
 
-                if (self$options$get('norm')) {
+                if (self$options$norm) {
 
                     values <- list()
                     footnote <- NULL
@@ -276,7 +277,7 @@ ttestISClass <- R6::R6Class(
                         normTable$addFootnote(rowKey=depName, 'w', footnote)
                 }
 
-                if (self$options$get('desc')) {
+                if (self$options$desc) {
 
                     descTable$setRow(rowKey=depName, list(
                         "dep"=depName,
@@ -295,7 +296,7 @@ ttestISClass <- R6::R6Class(
                     ))
                 }
 
-                if (self$options$get('bf')) {
+                if (self$options$bf) {
 
                     if (is.factor(dataTTest$dep))
                         res <- createError('Variable is not numeric')
@@ -303,15 +304,15 @@ ttestISClass <- R6::R6Class(
                         res <- createError('Variable contains infinite values')
                     else {
 
-                        if (self$options$get('hypothesis') == 'oneGreater') {
+                        if (self$options$hypothesis == 'oneGreater') {
                             nullInterval <- c(0, Inf)
-                        } else if (self$options$get('hypothesis') == 'twoGreater') {
+                        } else if (self$options$hypothesis == 'twoGreater') {
                             nullInterval <- c(-Inf, 0)
                         } else {
                             nullInterval <- NULL
                         }
 
-                        rscale <- self$options$get('bfPrior')
+                        rscale <- self$options$bfPrior
 
                         res <- try(BayesFactor::ttestBF(formula=dep ~ group, data=dataTTest, paired=FALSE, nullInterval=nullInterval, rscale=rscale), silent=TRUE)
                     }
@@ -352,13 +353,13 @@ ttestISClass <- R6::R6Class(
                     }
                 }
 
-                if (self$options$get('plots')) {
+                if (self$options$plots) {
 
-                    image <- self$results$get('plots')$get(key=depName)
+                    image <- self$results$plots$get(key=depName)
 
                     if (nrow(dataTTest) > 0) {
 
-                        ciWidth <- self$options$get('ciWidth')
+                        ciWidth <- self$options$ciWidth
                         tail <- qnorm(1 - (100 - ciWidth) / 200)
 
                         means <- aggregate(dataTTest$dep, by=list(dataTTest$group), function(x) tryNaN(mean(x)), simplify=FALSE)
@@ -391,8 +392,8 @@ ttestISClass <- R6::R6Class(
         },
         .init=function() {
 
-            hypothesis <- self$options$get('hypothesis')
-            groupName <- self$options$get('group')
+            hypothesis <- self$options$hypothesis
+            groupName <- self$options$group
 
             groups <- NULL
             if ( ! is.null(groupName))
@@ -400,9 +401,9 @@ ttestISClass <- R6::R6Class(
             if (length(groups) != 2)
                 groups <- c('Group 1', 'Group 2')
 
-            table <- self$results$get('ttest')
+            table <- self$results$ttest
 
-            ciTitle <- paste0(self$options$get('ciWidth'), '% Confidence Interval')
+            ciTitle <- paste0(self$options$ciWidth, '% Confidence Interval')
             table$getColumn('ciu[stud]')$setSuperTitle(ciTitle)
             table$getColumn('cil[stud]')$setSuperTitle(ciTitle)
             table$getColumn('ciu[bf]')$setSuperTitle(ciTitle)
@@ -424,14 +425,14 @@ ttestISClass <- R6::R6Class(
             if (is.null(image$state))
                 return(FALSE)
 
-            groupName <- self$options$get('group')
+            groupName <- self$options$group
 
-            ciw <- self$options$get('ciWidth')
+            ciw <- self$options$ciWidth
 
             pd <- position_dodge(0.2)
 
             plot <- ggplot(data=image$state, aes(x=group, y=stat, shape=type)) +
-                geom_errorbar(aes(x=group, ymin=stat-cie, ymax=stat+cie, shape=type, width=.1), size=.8, colour='#333333', position=pd) +
+                geom_errorbar(aes(x=group, ymin=stat-cie, ymax=stat+cie, width=.1), size=.8, colour='#333333', position=pd) +
                 geom_point(aes(x=group, y=stat, colour=type, shape=type), fill='white', size=3, colour='#333333', position=pd) +
                 labs(x=groupName, y=image$key) +
                 scale_shape_manual(name='', values=c(mean=21, median=22), labels=c(mean=paste0('Mean (', ciw, '% CI)'), median='Median')) +
