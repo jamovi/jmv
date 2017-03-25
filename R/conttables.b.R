@@ -13,11 +13,11 @@ contTablesClass <- R6::R6Class(
         countsName <- self$options$counts
 
         if ( ! is.null(rowVarName))
-            data[[rowVarName]] <- droplevels(as.factor(data[[rowVarName]]))
+            data[[rowVarName]] <- as.factor(data[[rowVarName]])
         if ( ! is.null(colVarName))
-            data[[colVarName]] <- droplevels(as.factor(data[[colVarName]]))
+            data[[colVarName]] <- as.factor(data[[colVarName]])
         for (layerName in layerNames)
-            data[[layerName]] <- droplevels(as.factor(data[[layerName]]))
+            data[[layerName]] <- as.factor(data[[layerName]])
         if ( ! is.null(countsName))
             data[[countsName]] <- toNumeric(data[[countsName]])
 
