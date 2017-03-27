@@ -3,25 +3,42 @@ contTablesPairedClass <- R6::R6Class(
     "contTablesPairedClass",
     inherit = contTablesPairedBase,
     private = list(
+        .cleanData = function() {
+
+            rowVarName <- self$options$rows
+            colVarName <- self$options$cols
+            countsName <- self$options$counts
+
+            data <- jmvcore::select(self$data, c(rowVarName, colVarName, countsName))
+            data <- jmvcore::naOmit(data)
+
+            if ( ! is.null(rowVarName))
+                data[[rowVarName]] <- as.factor(data[[rowVarName]])
+            if ( ! is.null(colVarName))
+                data[[colVarName]] <- as.factor(data[[colVarName]])
+            if ( ! is.null(countsName))
+                data[[countsName]]  <- jmvcore::toNumeric(data[[countsName]])
+
+            data
+        },
         .run = function() {
 
             rowVarName <- self$options$rows
             colVarName <- self$options$cols
-            countName <- self$options$counts
-
-            data <- jmvcore::select(self$data, c(rowVarName, colVarName, countName))
-            data <- jmvcore::naOmit(data)
+            countsName <- self$options$counts
 
             if (is.null(rowVarName) || is.null(colVarName))
                 return()
+
+            data <- private$.cleanData()
 
             if (nlevels(data[[rowVarName]]) < 2)
                 jmvcore::reject("Row variable '{}' contains fewer than 2 levels", code='', rowVarName)
             if (nlevels(data[[colVarName]]) < 2)
                 jmvcore::reject("Column variable '{}' contains fewer than 2 levels", code='', colVarName)
 
-            if ( ! is.null(countName)) {
-                countCol <- jmvcore::toNumeric(data[[countName]])
+            if ( ! is.null(countsName)) {
+                countCol <- jmvcore::toNumeric(data[[countsName]])
 
                 if (any(countCol < 0, na.rm=TRUE))
                     jmvcore::reject('Counts may not be negative')
@@ -32,10 +49,10 @@ contTablesPairedClass <- R6::R6Class(
             rowVar <- data[[rowVarName]]
             colVar <- data[[colVarName]]
 
-            freqs <- self$results$get('freqs')
-            test  <- self$results$get('test')
+            freqs <- self$results$freqs
+            test  <- self$results$test
 
-            if (! is.null(countName))
+            if (! is.null(countsName))
                 result <- stats::xtabs(countCol ~ rowVar + colVar)
             else
                 result <- base::table(rowVar, colVar)
@@ -134,6 +151,8 @@ contTablesPairedClass <- R6::R6Class(
             rowVarName <- self$options$rows
             colVarName <- self$options$cols
 
+            data <- private$.cleanData()
+
             # add the row column, containing the row variable
             # fill in dots, if no row variable specified
 
@@ -152,7 +171,7 @@ contTablesPairedClass <- R6::R6Class(
 
             if ( ! is.null(colVarName)) {
                 superTitle <- colVarName
-                levels <- base::levels(self$data[[colVarName]])
+                levels <- base::levels(data[[colVarName]])
             }
             else {
                 superTitle <- '.'
@@ -212,7 +231,7 @@ contTablesPairedClass <- R6::R6Class(
             for (i in seq_along(subNames))
                 values[[paste0('type', subNames[i])]] <- subTitles[i]
 
-            rows <- private$.grid(incRows=TRUE)
+            rows <- private$.grid(data, incRows=TRUE)
 
             for (i in seq_len(nrow(rows))) {
                 for (name in dimnames(rows)[[2]]) {
@@ -236,7 +255,7 @@ contTablesPairedClass <- R6::R6Class(
             test$addRow(rowKey=1, values=list())
 
         },
-        .grid=function(incRows=FALSE) {
+        .grid=function(data, incRows=FALSE) {
 
             rowVarName <- self$options$get('rows')
 
@@ -246,7 +265,7 @@ contTablesPairedClass <- R6::R6Class(
                 if (is.null(rowVarName))
                     expand[['.']] <- c('.', '. ', 'Total')
                 else
-                    expand[[rowVarName]] <- c(base::levels(self$data[[rowVarName]]), '.total')
+                    expand[[rowVarName]] <- c(base::levels(data[[rowVarName]]), '.total')
             }
 
             rows <- rev(expand.grid(expand))
