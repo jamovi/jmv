@@ -356,9 +356,21 @@ ttestISBase <- R6::R6Class(
 #' 
 #'
 #' @examples
-#' \dontrun{
-#' ttestIS(data, vars='len', group='supp')
-#' }
+#' data('ToothGrowth')
+#' 
+#' ttestIS(data = ToothGrowth, vars = 'len', group = 'supp')
+#' 
+#' #
+#' # Independent Samples T-Test
+#' #
+#' # Independent Samples T-Test
+#' # ────────────────────────────────────────────────────
+#' #                         statistic    df      p
+#' # ────────────────────────────────────────────────────
+#' #   len    Student's t         1.92    58.0    0.060
+#' # ────────────────────────────────────────────────────
+#' #
+#' 
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the dependent variables
 #' @param group a string naming the grouping variable, must have 2 levels

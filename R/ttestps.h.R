@@ -283,9 +283,24 @@ ttestPSBase <- R6::R6Class(
 #'
 #' @examples
 #' \dontrun{
-#' ttestPS(data,
-#'     pairs=list(
-#'         list(i1='x', i2='y')))
+#' data('ToothGrowth')
+#' 
+#' # todo: find a better example
+#' 
+#' ttestPS(ToothGrowth,
+#'     pairs = list(
+#'         list(i1 = 'len', i2 = 'dose')))
+#' 
+#' #
+#' # Paired Samples T-Test
+#' #
+#' # Paired Samples T-Test
+#' # ─────────────────────────────────────────────────────────────
+#' #                                 statistic    df      p
+#' # ─────────────────────────────────────────────────────────────
+#' #   len    dose    Student's t         19.1    59.0    < .001
+#' # ─────────────────────────────────────────────────────────────
+#' #
 #' }
 #' @param data the data as a data frame
 #' @param pairs a list of lists specifying the pairs of measurement in 

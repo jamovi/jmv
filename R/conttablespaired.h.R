@@ -139,9 +139,36 @@ contTablesPairedBase <- R6::R6Class(
 #' McNemar test
 #'
 #' @examples
-#' \dontrun{
-#' contTablesPaired(data, rows='x', cols='y')
-#' }
+#' dat <- data.frame(
+#'     `1st survey` = c('Approve', 'Approve', 'Disapprove', 'Disapprove'),
+#'     `2nd survey` = c('Approve', 'Disapprove', 'Approve', 'Disapprove'),
+#'     `Counts` = c(794, 150, 86, 570),
+#'     check.names=FALSE)
+#' 
+#' contTablesPaired(dat, rows = '1st survey', cols = '2nd survey', counts = 'Counts')
+#' 
+#' #
+#' #  Paired Samples Contingency Tables
+#' #
+#' #  Contingency Tables
+#' #  ────────────────────────────────────────────────
+#' #    1st survey    Approve    Disapprove    Total
+#' #  ────────────────────────────────────────────────
+#' #    Approve           794           150      944
+#' #    Disapprove         86           570      656
+#' #    Total             880           720     1600
+#' #  ────────────────────────────────────────────────
+#' #
+#' #
+#' #  McNemar Test
+#' #  ─────────────────────────────────────────────────────
+#' #                                Value    df    p
+#' #  ─────────────────────────────────────────────────────
+#' #    χ²                           17.4     1    < .001
+#' #    χ² continuity correction     16.8     1    < .001
+#' #  ─────────────────────────────────────────────────────
+#' #
+#' 
 #' @param data the data as a data frame
 #' @param rows a string naming the variable to use as the rows in the 
 #'   contingency table 

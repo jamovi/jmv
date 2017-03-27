@@ -318,9 +318,35 @@ contTablesBase <- R6::R6Class(
 #' chi² test of association
 #'
 #' @examples
-#' \dontrun{
-#' contTables(data, rows='x', cols='y')
-#' }
+#' data('HairEyeColor')
+#' dat <- as.data.frame(HairEyeColor)
+#' 
+#' jmv::contTables(dat, rows = 'Hair', cols = 'Eye', counts = 'Freq')
+#' 
+#' #
+#' #  Contingency Tables
+#' #
+#' #  Contingency Tables
+#' #  ─────────────────────────────────────────────────────
+#' #    Hair     Brown    Blue    Hazel    Green    Total
+#' #  ─────────────────────────────────────────────────────
+#' #    Black       68      20       15        5      108
+#' #    Brown      119      84       54       29      286
+#' #    Red         26      17       14       14       71
+#' #    Blond        7      94       10       16      127
+#' #    Total      220     215       93       64      592
+#' #  ─────────────────────────────────────────────────────
+#' #
+#' #
+#' #  χ² Tests
+#' #  ───────────────────────────────
+#' #          Value    df    p
+#' #  ───────────────────────────────
+#' #    χ²      138     9    < .001
+#' #    N       592
+#' #  ───────────────────────────────
+#' #
+#' 
 #' @param data the data as a data frame
 #' @param rows a string naming the variable to use as the rows in the 
 #'   contingency table 

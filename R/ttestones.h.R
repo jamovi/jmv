@@ -283,9 +283,22 @@ ttestOneSBase <- R6::R6Class(
 #' 
 #'
 #' @examples
-#' \dontrun{
-#' ttestOneS(data, vars=c('x', 'y', 'z'))
-#' }
+#' data('ToothGrowth')
+#' 
+#' ttestOneS(ToothGrowth, vars = c('len', 'dose'))
+#' 
+#' #
+#' # One Sample T-Test
+#' #
+#' # One Sample T-Test
+#' # ──────────────────────────────────────────────────────
+#' #                          statistic    df      p
+#' # ──────────────────────────────────────────────────────
+#' #   len     Student's t         19.1    59.0    < .001
+#' #   dose    Student's t         14.4    59.0    < .001
+#' # ──────────────────────────────────────────────────────
+#' #
+#' 
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}
