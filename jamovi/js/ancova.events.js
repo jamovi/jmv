@@ -5,7 +5,7 @@ const events = {
         filterModelTerms(ui, this);
     },
 
-    onChange_fixedFactors: function(ui) {
+    onChange_factors: function(ui) {
         calcModelTerms(ui, this);
     },
 
@@ -20,9 +20,9 @@ const events = {
 
     onChange_plotsSupplier: function(ui) {
         let values = this.itemsToValues(ui.plotsSupplier.value());
-        this.checkValue(ui.descPlotsHAxis, false, values, FormatDef.variable);
-        this.checkValue(ui.descPlotsSepLines, false, values, FormatDef.variable);
-        this.checkValue(ui.descPlotsSepPlots, false, values, FormatDef.variable);
+        this.checkValue(ui.plotHAxis, false, values, FormatDef.variable);
+        this.checkValue(ui.plotSepLines, false, values, FormatDef.variable);
+        this.checkValue(ui.plotSepPlots, false, values, FormatDef.variable);
     },
 
     onChange_postHocSupplier: function(ui) {
@@ -37,8 +37,8 @@ const events = {
 };
 
 var calcModelTerms = function(ui, context) {
-    var variableList = context.cloneArray(ui.fixedFactors.value(), []);
-    var covariatesList = context.cloneArray(ui.covariates.value(), []);
+    var variableList = context.cloneArray(ui.factors.value(), []);
+    var covariatesList = context.cloneArray(ui.cov.value(), []);
 
     var combinedList = variableList.concat(covariatesList);
 
@@ -89,7 +89,7 @@ var calcModelTerms = function(ui, context) {
 
 var updatePostHocSupplier = function(ui, context) {
     var termsList = context.cloneArray(ui.modelTerms.value(), []);
-    var covariatesList = context.cloneArray(ui.covariates.value(), []);
+    var covariatesList = context.cloneArray(ui.cov.value(), []);
     var list = [];
     for (var j = 0; j < termsList.length; j++) {
         var term = termsList[j];

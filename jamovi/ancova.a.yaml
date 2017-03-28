@@ -2,9 +2,16 @@
 name: ancova
 title: ANCOVA
 menuGroup: ANOVA
-
 version: '1.0.0'
 jas: '1.1'
+
+description:
+    main: Analysis of Covariance
+    R:
+        usage: |
+            data('ToothGrowth')
+
+            ancova(ToothGrowth, dep = 'len', factors = 'supp', cov = 'dose')
 
 completeWhenFilled: true
 
@@ -14,7 +21,7 @@ options:
       description:
           R: the data as a data frame
 
-    - name: dependent
+    - name: dep
       title: Dependent
       type: Variable
       suggested:
@@ -24,42 +31,76 @@ options:
         - nominal
         - ordinal
       description:
-          R: a string naming the dependent variable in `data`
+          R: >
+            a string naming the dependent variable from `data`, variable
+            must be numeric
 
-    - name: fixedFactors
+    - name: factors
       title: Fixed factors
       type: Variables
       suggested:
         - nominal
         - ordinal
       default:
-      description: >
-        The fixed factors
+      description:
+          R: a vector of strings naming the fixed factors from `data`
 
-    - name: covariates
+    - name: cov
       title: Covariates
       type: Variables
       suggested:
         - continuous
+        - ordinal
       permitted:
         - continuous
         - nominal
         - ordinal
       default:
-      description: >
-        The covariates
+      description:
+          R: a vector of strings naming the covariates from `data`
 
     - name: modelTerms
       title: Model Terms
       type: Terms
       default:
-      description: >
-        The model terms
+      description:
+          R: >
+            a list of character vectors describing the terms to go into the
+            model
+
+    - name: ss
+      title: Sum of squares
+      type: List
+      options:
+        - '1'
+        - '2'
+        - '3'
+      default: '3'
+      description:
+          R: >
+            `'1'`, `'2'` or `'3'` (default), the sum of squares
+            to use
+
+    - name: effectSize
+      title: Effect Size
+      type: NMXList
+      options:
+          - name: eta
+            title: η²
+          - name: partEta
+            title: partial η²
+          - name: omega
+            title: ω²
+      default:
+      description:
+          R: >
+            one or more of `'eta'`, `'partEta'`, or `'omega'`;
+            use η², partial η², and ω² effect sizes, respectively
 
     - name: contrasts
       title: Contrasts
       type: Array
-      items: (fixedFactors)
+      items: (factors)
       default:
       template:
           type: Group
@@ -79,134 +120,104 @@ options:
                   - helmert
                   - repeated
                   - polynomial
+      description:
+          R: >
+            a list of lists specifying the factor and type of contrast to use,
+            one of `'deviation'`, `'simple'`, `'difference'`, `'helmert'`,
+            `'repeated'` or `'polynomial'`
 
-    - name: descPlotsHAxis
+    - name: plotHAxis
       title: Horizontal axis
       type: Variable
       default:
-      description: >
-        The Horizontal axis variable
+      description:
+          R: >
+            a string naming the variable placed on the horizontal axis of the
+            plot
 
-    - name: descPlotsSepLines
+    - name: plotSepLines
       title: Separate lines
       type: Variable
       default:
-      description: >
-        The Separate lines variable
+      description:
+          R: >
+            a string naming the variable represented as separate lines on the
+            plot
 
-    - name: descPlotsSepPlots
+    - name: plotSepPlots
       title: Separate plots
       type: Variable
       default:
-      description: >
-        The Separate plots variable
+      description:
+          R: >
+            a string naming the variable to separate over to form multiple plots
 
     - name: postHoc
       title: Post Hoc Tests
-      type: Variables
+      type: Terms
       default:
-      description: >
-        Post Hoc Tests
+      description:
+          R: a list of terms to perform post-hoc tests on
 
-    - name: corrTukey
-      title: Tukey
-      type: Bool
-      default: false
-      description: >
-        Post Hoc Tests Tukey Correction
-
-    - name: corrScheffe
-      title: Scheffe
-      type: Bool
-      default: false
-      description: >
-        Post Hoc Tests Scheffe Correction
-
-    - name: corrBonf
-      title: Bonferroni
-      type: Bool
-      default: false
-      description: >
-        Post Hoc Tests Bonferroni Correction
-
-    - name: corrHolm
-      title: Holm
-      type: Bool
-      default: false
-      description: >
-        Post Hoc Tests Holm Correction
-
-    - name: compMain
-      title: Compare main effects
-      type: Bool
-      default: false
-      description: >
-        Compare main effects
-
-    - name: compMainCorr
+    - name: postHocCorr
       title: Correction
-      type: List
+      type: NMXList
       options:
-        - none
-        - tukey
-        - bonferroni
-        - scheffe
-        - sidak
-      default: none
-      description: >
-        Confidence interval adjustment
+          - name: none
+            title: No correction
+          - name: tukey
+            title: Tukey
+          - name: scheffe
+            title: Scheffe
+          - name: bonf
+            title: Bonferroni
+          - name: holm
+            title: Holm
+      default:
+          - tukey
+      description:
+          R: >
+            one or more of `'none'`, `'tukey'`, `'scheffe'`, `'bonf'`, or
+            `'holm'`; provide no, Tukey, Scheffe, Bonferroni, and
+            Holm Post Hoc corrections respectively
 
     - name: descStats
       title: Descriptive statistics
       type: Bool
       default: false
-      description: >
-        Descriptive statistics
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide descriptive statistics
 
     - name: homo
       title: Homogeneity tests
       type: Bool
       default: false
-      description: >
-        Display Homogeneity tests
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), perform homogeneity tests
 
     - name: qq
       title: Q-Q plot of residuals
       type: Bool
       default: false
-      description: >
-        Display Q-Q plot of residuals
-
-    - name: etaSq
-      title: n2
-      type: Bool
-      default: false
-      description: >
-        Effect size n2
-
-    - name: etaSqP
-      title: partial n2
-      type: Bool
-      default: false
-      description: >
-        Effect size partial n2
-
-    - name: omegaSq
-      title: w2
-      type: Bool
-      default: false
-      description: >
-        Effect size w2
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a Q-Q plot of residuals
 
     - name: plotError
       title: Error Bar Definition
       type: List
       options:
+        - none
         - ci
         - se
       default: ci
-      description: >
-        Specifies the Error Bar definition as either "Confidence interval"(default) or "Standard Error"
+      description:
+          R: >
+            `'none'`, `'ci'` (default), or `'se'`. Use no error
+            bars, use confidence intervals, or use standard errors on the
+            plots, respectively
 
     - name: ciWidth
       title: Confidence level
@@ -214,15 +225,8 @@ options:
       min: 50
       max: 99.9
       default: 95
-
-    - name: ss
-      title: Sum of squares
-      type: List
-      options:
-        - '1'
-        - '2'
-        - '3'
-      default: '3'
-      description: >
-        Sum of squares
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width
 ...

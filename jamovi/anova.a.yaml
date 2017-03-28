@@ -9,9 +9,23 @@ description:
     main: Analysis of Variance
     R:
         usage: |
-            anova(ToothGrowth,
-                dep='len',
-                factors=c('dose', 'supp'))
+            data('ToothGrowth')
+
+            anova(ToothGrowth, dep='len', factors=c('dose', 'supp'))
+
+            #
+            #  ANOVA
+            #
+            #  ANOVA
+            #  ───────────────────────────────────────────────────────────────────────
+            #                 Sum of Squares    df    Mean Square    F        p
+            #  ───────────────────────────────────────────────────────────────────────
+            #    dose                   2426     2         1213.2    92.00    < .001
+            #    supp                    205     1          205.4    15.57    < .001
+            #    dose:supp               108     2           54.2     4.11     0.022
+            #    Residuals               712    54           13.2
+            #  ───────────────────────────────────────────────────────────────────────
+            #
 
 completeWhenFilled: true
 

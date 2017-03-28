@@ -62,7 +62,7 @@ analyses:
     menuGroup: ANOVA
     menuTitle: ANCOVA
     stage: 1
-    description: null
+    description: Analysis of Covariance
   - title: MANCOVA
     name: mancova
     ns: jmv

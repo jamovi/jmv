@@ -203,161 +203,11 @@ anovaOptions <- R6::R6Class(
 #' @importFrom R6 R6Class
 anovaResults <- R6::R6Class(
     inherit = jmvcore::Group,
-    active = list(
-        main = function() private$..main,
-        assump = function() private$..assump,
-        contrasts = function() private$..contrasts,
-        postHoc = function() private$..postHoc,
-        desc = function() private$..desc,
-        descPlot = function() private$..descPlot,
-        descPlots = function() private$..descPlots),
-    private = list(
-        ..main = NA,
-        ..assump = NA,
-        ..contrasts = NA,
-        ..postHoc = NA,
-        ..desc = NA,
-        ..descPlot = NA,
-        ..descPlots = NA),
+    active = list(),
+    private = list(),
     public=list(
         initialize=function(options) {
-            super$initialize(options=options, name="", title="ANOVA")
-            private$..main <- jmvcore::Table$new(
-                options=options,
-                name="main",
-                title="ANOVA",
-                clearWith=list(
-                    "dep",
-                    "modelTerms",
-                    "ss"),
-                columns=list(
-                    list(`name`="name", `title`="", `type`="text"),
-                    list(`name`="ss", `title`="Sum of Squares", `type`="number"),
-                    list(`name`="df", `title`="df", `type`="integer"),
-                    list(`name`="ms", `title`="Mean Square", `type`="number"),
-                    list(`name`="F", `title`="F", `type`="number"),
-                    list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue"),
-                    list(`name`="etaSq", `title`="\u03B7\u00B2", `type`="number", `visible`="(effectSize:eta)", `format`="zto"),
-                    list(`name`="etaSqP", `title`="\u03B7\u00B2p", `type`="number", `visible`="(effectSize:partEta)", `format`="zto"),
-                    list(`name`="omegaSq", `title`="\u03C9\u00B2", `type`="number", `visible`="(effectSize:omega)", `format`="zto")))
-            private$..assump <- R6::R6Class(
-                inherit = jmvcore::Group,
-                active = list(
-                    homo = function() private$..homo,
-                    qq = function() private$..qq),
-                private = list(
-                    ..homo = NA,
-                    ..qq = NA),
-                public=list(
-                    initialize=function(options) {
-                        super$initialize(options=options, name="assump", title="Assumption Checks")
-                        private$..homo <- jmvcore::Table$new(
-                            options=options,
-                            name="homo",
-                            title="Test for Homogeneity of Variances (Levene's)",
-                            visible="(homo)",
-                            rows=1,
-                            columns=list(
-                                list(`name`="F", `type`="number"),
-                                list(`name`="df1", `type`="integer"),
-                                list(`name`="df2", `type`="integer"),
-                                list(`name`="p", `type`="number", `format`="zto,pvalue")))
-                        private$..qq <- jmvcore::Image$new(
-                            options=options,
-                            name="qq",
-                            title="Q-Q Plot",
-                            visible="(qq)",
-                            width=300,
-                            height=300,
-                            renderFun=".qqPlot",
-                            requiresData=TRUE,
-                            clearWith=list(
-                                "dep",
-                                "modelTerms"))
-                        self$add(private$..homo)
-                        self$add(private$..qq)}))$new(options=options)
-            private$..contrasts <- jmvcore::Array$new(
-                options=options,
-                name="contrasts",
-                title="Contrasts",
-                visible="(contrasts)",
-                clearWith=list(
-                    "dep",
-                    "modelTerms"),
-                template=jmvcore::Table$new(
-                    options=options,
-                    title="Contrasts - $key",
-                    clearWith=NULL,
-                    columns=list(
-                        list(`name`="contrast", `title`="", `type`="text"),
-                        list(`name`="est", `title`="Estimate", `type`="number"),
-                        list(`name`="se", `title`="SE", `type`="number"),
-                        list(`name`="t", `type`="number"),
-                        list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue"))))
-            private$..postHoc <- jmvcore::Array$new(
-                options=options,
-                name="postHoc",
-                title="Post Hoc Tests",
-                items="(postHoc)",
-                clearWith=list(
-                    "dep",
-                    "modelTerms"),
-                template=jmvcore::Table$new(
-                    options=options,
-                    title="",
-                    columns=list(),
-                    clearWith=list(
-                        "dep",
-                        "modelTerms")))
-            private$..desc <- jmvcore::Table$new(
-                options=options,
-                name="desc",
-                title="Descriptives",
-                visible="(descStats)",
-                clearWith=list(
-                    "dep",
-                    "modelTerms",
-                    "ss"),
-                columns=list(
-                    list(`name`="n", `title`="N", `type`="integer"),
-                    list(`name`="mean", `title`="Mean", `type`="text"),
-                    list(`name`="sd", `title`="SD", `type`="number")))
-            private$..descPlot <- jmvcore::Image$new(
-                options=options,
-                name="descPlot",
-                title="Descriptive Plot",
-                visible="(plotHAxis)",
-                width=500,
-                height=300,
-                renderFun=".descPlot",
-                clearWith=list(
-                    "plotHAxis",
-                    "plotSepLines",
-                    "plotSepPlots",
-                    "plotError",
-                    "ciWidth"))
-            private$..descPlots <- jmvcore::Array$new(
-                options=options,
-                name="descPlots",
-                title="Descriptive Plots",
-                visible="(plotSepPlots)",
-                template=jmvcore::Image$new(
-                    options=options,
-                    title="$key",
-                    renderFun=".descPlot",
-                    clearWith=list(
-                        "plotHAxis",
-                        "plotSepLines",
-                        "plotSepPlots",
-                        "plotError",
-                        "ciWidth")))
-            self$add(private$..main)
-            self$add(private$..assump)
-            self$add(private$..contrasts)
-            self$add(private$..postHoc)
-            self$add(private$..desc)
-            self$add(private$..descPlot)
-            self$add(private$..descPlots)}))
+            super$initialize(options=options, name="", title="ANOVA")}))
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
@@ -386,9 +236,23 @@ anovaBase <- R6::R6Class(
 #'
 #' @examples
 #' \dontrun{
-#' anova(ToothGrowth,
-#'     dep='len',
-#'     factors=c('dose', 'supp'))
+#' data('ToothGrowth')
+#' 
+#' anova(ToothGrowth, dep='len', factors=c('dose', 'supp'))
+#' 
+#' #
+#' #  ANOVA
+#' #
+#' #  ANOVA
+#' #  ───────────────────────────────────────────────────────────────────────
+#' #                 Sum of Squares    df    Mean Square    F        p
+#' #  ───────────────────────────────────────────────────────────────────────
+#' #    dose                   2426     2         1213.2    92.00    < .001
+#' #    supp                    205     1          205.4    15.57    < .001
+#' #    dose:supp               108     2           54.2     4.11     0.022
+#' #    Residuals               712    54           13.2
+#' #  ───────────────────────────────────────────────────────────────────────
+#' #
 #' }
 #' @param data the data as a data frame
 #' @param dep a string naming the dependent variable from \code{data}, 

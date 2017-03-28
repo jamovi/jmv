@@ -1,9 +1,8 @@
 name: ancova
 title: ANCOVA
 jus: '1.0'
-stage: 1
 events:
-    update: './ancova.events::update'
+  update: './ancova.events::update'
 children:
   - type: VariableSupplier
     name: variablesupplier
@@ -14,7 +13,7 @@ children:
     persistentItems: false
     stretchFactor: 1
     children:
-      - name: dependent
+      - name: dep
         type: VariableTargetListBox
         label: Dependent Variable
         showColumnHeaders: false
@@ -26,20 +25,21 @@ children:
             label: null
             stretchFactor: 1
       - type: VariableTargetListBox
-        name: fixedFactors
+        name: factors
         label: Fixed Factors
         showColumnHeaders: false
         events:
-          change: './ancova.events::onChange_fixedFactors'
+          change: './ancova.events::onChange_factors'
         columns:
           - type: ListItem.VariableLabel
             name: column1
             label: null
             stretchFactor: 1
       - type: VariableTargetListBox
-        name: covariates
+        name: cov
         label: Covariates
         showColumnHeaders: false
+        height: small
         events:
           change: './ancova.events::onChange_covariates'
         columns:
@@ -47,20 +47,30 @@ children:
             name: column1
             label: null
             stretchFactor: 1
-  - type: Label
-    label: Effect Size
+
+  - type: LayoutBox
     margin: large
-    style: list-inline
     children:
-      - type: CheckBox
-        name: etaSq
-        label: η²
-      - type: CheckBox
-        name: etaSqP
-        label: partial η²
-      - type: CheckBox
-        name: omegaSq
-        label: ω²
+      - type: Label
+        label: Effect Size
+        margin: large
+        style: list-inline
+        children:
+          - name: effectSize_eta
+            type: CheckBox
+            label: η²
+            checkedValue: eta
+            optionId: effectSize
+          - name: effectSize_partEta
+            type: CheckBox
+            label: partial η²
+            checkedValue: partEta
+            optionId: effectSize
+          - name: effectSize_omega
+            type: CheckBox
+            label: ω²
+            checkedValue: omega
+            optionId: effectSize
   - type: CollapseBox
     label: Model
     collapsed: true
@@ -117,8 +127,8 @@ children:
       - type: ListBox
         name: contrasts
         label: Factors
-        showColumnHeaders: false
         stretchFactor: 1
+        showColumnHeaders: false
         columns:
           - type: ListItem.VariableLabel
             name: var
@@ -159,21 +169,37 @@ children:
                 name: column1
                 label: null
                 stretchFactor: 1
-      - type: Label
-        label: Correction
+      - type: LayoutBox
+        margin: large
         children:
-          - type: CheckBox
-            name: corrTukey
-            label: Tukey
-          - type: CheckBox
-            name: corrScheffe
-            label: Scheffe
-          - type: CheckBox
-            name: corrBonf
-            label: Bonferroni
-          - type: CheckBox
-            name: corrHolm
-            label: Holm
+          - type: Label
+            label: Correction
+            children:
+              - name: postHocCorr_none
+                type: CheckBox
+                label: No correction
+                checkedValue: none
+                optionId: postHocCorr
+              - name: postHocCorr_tukey
+                type: CheckBox
+                label: Tukey
+                checkedValue: tukey
+                optionId: postHocCorr
+              - name: postHocCorr_scheffe
+                type: CheckBox
+                label: Scheffe
+                checkedValue: scheffe
+                optionId: postHocCorr
+              - name: postHocCorr_bonf
+                type: CheckBox
+                label: Bonferroni
+                checkedValue: bonf
+                optionId: postHocCorr
+              - name: postHocCorr_holm
+                type: CheckBox
+                label: Holm
+                checkedValue: holm
+                optionId: postHocCorr
   - type: CollapseBox
     label: Descriptive Plots
     collapsed: true
@@ -187,7 +213,7 @@ children:
           change: './ancova.events::onChange_plotsSupplier'
         children:
           - type: TargetListBox
-            name: descPlotsHAxis
+            name: plotHAxis
             label: Horizontal axis
             showColumnHeaders: false
             maxItemCount: 1
@@ -198,7 +224,7 @@ children:
                 label: null
                 stretchFactor: 1
           - type: TargetListBox
-            name: descPlotsSepLines
+            name: plotSepLines
             label: Separate lines
             showColumnHeaders: false
             maxItemCount: 1
@@ -209,7 +235,7 @@ children:
                 label: null
                 stretchFactor: 1
           - type: TargetListBox
-            name: descPlotsSepPlots
+            name: plotSepPlots
             label: Separate plots
             showColumnHeaders: false
             maxItemCount: 1
@@ -222,6 +248,11 @@ children:
       - type: Label
         label: Display
         children:
+          - type: RadioButton
+            name: errBarDef_none
+            optionId: plotError
+            checkedValue: none
+            label: None
           - type: RadioButton
             name: errBarDef_ci
             optionId: plotError
@@ -245,24 +276,6 @@ children:
     collapsed: true
     stretchFactor: 1
     children:
-      - type: CheckBox
-        name: compMain
-        label: Compare main effects
-        children:
-          - type: ComboBox
-            name: compMainCorr
-            label: Correction
-            options:
-              - label: None
-                value: none
-              - label: Tukey
-                value: tukey
-              - label: Bonferroni
-                value: bonferroni
-              - label: Scheffe
-                value: scheffe
-              - label: Sidak
-                value: sidak
       - type: Label
         label: Display
         children:
