@@ -6,18 +6,37 @@ ancovaClass <- R6::R6Class(
     private=list(
         .model=NA,
         .postHocRows=NA,
-        .init=function() {
+        .cleanData=function() {
 
-            dependentName <- self$options$dep
-            fixedFactors <- self$options$factors
-            modelTerms <- private$.modelTerms()
-
-            if (length(fixedFactors) == 0 || length(modelTerms) == 0)
-                return()
+            dep <- self$options$dep
+            factors <- self$options$factors
+            covs <- self$options$cov
 
             data <- self$data
-            for (varName in fixedFactors)
-                data[[varName]] <- as.factor(data[[varName]])
+
+            if ( ! is.null(dep))
+                data[[dep]] <- jmvcore::toNumeric(data[[dep]])
+
+            for (factor in factors)
+                data[[factor]] <- as.factor(data[[factor]])
+
+            for (covariate in covs)
+                data[[covariate]] <- jmvcore::toNumeric(data[[covariate]])
+
+            data <- na.omit(data)
+
+            data
+        },
+        .init=function() {
+
+            dep <- self$options$dep
+            factors <- self$options$factors
+            modelTerms <- private$.modelTerms()
+
+            if (length(factors) == 0 || length(modelTerms) == 0)
+                return()
+
+            data <- private$.cleanData()
 
             anovaTable    <- self$results$main
             postHocTables <- self$results$postHoc
@@ -57,7 +76,7 @@ ancovaClass <- R6::R6Class(
 
 
             # post hoc
-            private$.initPostHoc()
+            private$.initPostHoc(data)
 
             # descriptives
 
@@ -88,36 +107,34 @@ ancovaClass <- R6::R6Class(
             }
 
             # descriptives plots
-            private$.initDescPlots()
+            private$.initDescPlots(data)
 
         },
         .run=function() {
 
             suppressWarnings({
 
-            dependentName <- self$options$dep
-            fixedFactors <- self$options$factors
+            dep <- self$options$dep
+            factors <- self$options$factors
             modelTerms <- private$.modelTerms()
 
-            if (is.null(dependentName) || length(fixedFactors) == 0 || length(modelTerms) == 0)
+            if (is.null(dep) || length(factors) == 0 || length(modelTerms) == 0)
                 return()
 
             base::options(contrasts = c("contr.sum","contr.poly"))
 
-            data <- naOmit(self$data)
-            for (varName in fixedFactors)
-                data[[varName]] <- as.factor(data[[varName]])
-            data[[dependentName]] <- jmvcore::toNumeric(data[[dependentName]])
+            data <- private$.cleanData()
+
             data <- lapply(data, function(x) {
                 if (is.factor(x))
                     levels(x) <- toB64(levels(x))
                 return(x)
             })
 
-            if (is.factor(data[[dependentName]]))
+            if (is.factor(data[[dep]]))
                 reject('Dependent variable must be numeric')
 
-            for (factorName in fixedFactors) {
+            for (factorName in factors) {
                 lvls <- base::levels(data[[factorName]])
                 if (length(lvls) == 1)
                     reject("Factor '{}' contains only a single level", factorName=factorName)
@@ -130,7 +147,7 @@ ancovaClass <- R6::R6Class(
                stats::contrasts(data[[contrast$var]]) <- private$.createContrasts(levels, contrast$type)
             }
 
-            formula <- jmvcore::constructFormula(dependentName, modelTerms)
+            formula <- jmvcore::constructFormula(dep, modelTerms)
             formula <- stats::as.formula(formula)
 
             private$.model <- stats::aov(formula, data)
@@ -246,14 +263,14 @@ ancovaClass <- R6::R6Class(
 
             }) # suppressWarnings
         },
-        .initPostHoc=function() {
+        .initPostHoc=function(data) {
 
             bs <- self$options$factors
             phTerms <- self$options$postHoc
 
             bsLevels <- list()
             for (i in seq_along(bs))
-                bsLevels[[bs[i]]] <- levels(self$data[[bs[i]]])
+                bsLevels[[bs[i]]] <- levels(data[[bs[i]]])
 
             tables <- self$results$postHoc
 
@@ -452,8 +469,8 @@ ancovaClass <- R6::R6Class(
                 return()
 
             descTable <- self$results$desc
-            dependentName <- self$options$dep
-            dependent <- data[[dependentName]]
+            dep <- self$options$dep
+            dependent <- data[[dep]]
             factorNames <- rev(self$options$factors)
             factors <- as.list(select(data, factorNames))
 
@@ -588,13 +605,13 @@ ancovaClass <- R6::R6Class(
             modelTerms
         },
         .ff=function() {
-            fixedFactors <- self$options$factors
-            if (length(fixedFactors) > 1) {
-                formula <- as.formula(paste('~', paste(paste0('`', fixedFactors, '`'), collapse='*')))
+            factors <- self$options$factors
+            if (length(factors) > 1) {
+                formula <- as.formula(paste('~', paste(paste0('`', factors, '`'), collapse='*')))
                 terms   <- attr(stats::terms(formula), 'term.labels')
                 modelTerms <- sapply(terms, function(x) as.list(strsplit(x, ':')), USE.NAMES=FALSE)
             } else {
-                modelTerms <- as.list(fixedFactors)
+                modelTerms <- as.list(factors)
             }
 
             for (i in seq_along(modelTerms)) {
@@ -604,9 +621,12 @@ ancovaClass <- R6::R6Class(
                 modelTerms[[i]] <- term
             }
 
+            for (covariate in self$options$cov)
+                modelTerms[[ length(modelTerms) + 1 ]] <- covariate
+
             modelTerms
         },
-        .initDescPlots=function() {
+        .initDescPlots=function(data) {
             isAxis <- ! is.null(self$options$plotHAxis)
             isMulti <- ! is.null(self$options$plotSepPlots)
 
@@ -616,7 +636,7 @@ ancovaClass <- R6::R6Class(
             if (isMulti) {
 
                 sepPlotsName <- self$options$plotSepPlots
-                sepPlotsVar <- self$data[[sepPlotsName]]
+                sepPlotsVar <- data[[sepPlotsName]]
                 sepPlotsLevels <- levels(sepPlotsVar)
 
                 array <- self$results$descPlots
@@ -765,19 +785,16 @@ ancovaClass <- R6::R6Class(
         },
         .qqPlot=function(image, ...) {
 
-            dependentName <- self$options$dep
-            fixedFactors <- self$options$factors
+            dep <- self$options$dep
+            factors <- self$options$factors
             modelTerms <- private$.modelTerms()
 
-            if (is.null(dependentName) || length(fixedFactors) == 0 || length(modelTerms) == 0)
+            if (is.null(dep) || length(factors) == 0 || length(modelTerms) == 0)
                 return(FALSE)
 
-            data <- self$data
-            for (varName in fixedFactors)
-                data[[varName]] <- as.factor(data[[varName]])
-            data[[dependentName]] <- jmvcore::toNumeric(data[[dependentName]])
+            data <- private$.cleanData()
 
-            formula <- jmvcore::constructFormula(dependentName, modelTerms)
+            formula <- jmvcore::constructFormula(dep, modelTerms)
             formula <- stats::as.formula(formula)
             model <- stats::aov(formula, data)
 
