@@ -209,9 +209,6 @@ ancovaClass <- R6::R6Class(
             errMS <- errSS / errDF
             totalSS <- sum(results[['Sum Sq']], na.rm=TRUE)
 
-            ss <- as.integer(self$options$ss)
-            es <- lsr::etaSquared(private$.model, ss)
-
             for (i in seq_len(rowCount)) {
                 rowName <- rowNames[i]
 
@@ -221,10 +218,10 @@ ancovaClass <- R6::R6Class(
                 F  <- results[i,'F value']
                 p  <- results[i,'Pr(>F)']
 
-                if (i <= nrow(es)) {
-                    e <- es[i, 'eta.sq']
-                    ep <- es[i, 'eta.sq.part']
-                    w <- (df*(ms-errMS))/(totalSS+errMS)
+                if ( is.finite(F)) {
+                    e <- ss / totalSS
+                    ep <- ss / (ss + errSS)
+                    w <- (ss - (df * errMS)) / (totalSS + errMS)
                 } else {
                     e <- ''
                     ep <- ''
