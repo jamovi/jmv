@@ -28,76 +28,127 @@ items:
           title: 'Uniqueness'
           type: number
 
+    - name: factorStats
+      title: Component Statistics
+      type: Group
+      items:
+        - name: factorSummary
+          title: Summary
+          visible: (factorSummary)
+          type: Table
+          clearWith:
+            - vars
+            - nFactorMethod
+            - nFactors
+            - rotation
+
+          columns:
+            - name: comp
+              title: 'Component'
+              type: 'text'
+            - name: loadings
+              title: SS Loadings
+              type: number
+            - name: varProp
+              title: '% of Variance'
+              type: number
+            - name: varCum
+              title: 'Cumalitive %'
+              type: number
+
+        - name: factorCor
+          title: Correlation Matrix
+          visible: (factorCor)
+          type: Table
+          clearWith:
+            - vars
+            - nFactorMethod
+            - nFactors
+            - hideLoadings
+            - rotation
+
+          columns:
+            - name: comp
+              title: ''
+              type: 'text'
+              format: 'narrow'
+            - name: pc1
+              title: '1'
+              type: number
+
+    - name: assump
+      title: Assumption Checks
+      type: Group
+      items:
+        - name: bartlett
+          title: Bartlett's Test of Sphericity
+          type: Table
+          visible: (bartlettTest)
+          rows: 1
+          clearWith:
+            - vars
+          columns:
+            - name: chi
+              title: χ²
+              type: number
+            - name: df
+              title: df
+              type: integer
+            - name: p
+              title: df
+              type: number
+              format: zto,pvalue
+
+        - name: kmo
+          title: KMO Measure of Sampling Adequacy
+          type: Table
+          visible: (kmoTest)
+          clearWith:
+            - vars
+          columns:
+            - name: name
+              title: ''
+              type: 'text'
+            - name: msa
+              title: MSA
+              type: number
+              format: zto
+
     - name: eigen
       title: Eigenvalues
-      visible: (eigenValues)
-      type: Table
-      clearWith:
-        - vars
-        - nFactorMethod
-        - nFactors
-        - rotation
+      type: Group
+      items:
+        - name: initEigen
+          title: Initial Eigenvalues
+          visible: (eigenValues)
+          type: Table
+          clearWith:
+            - vars
 
-      columns:
-        - name: comp
-          title: 'Component'
-          type: 'text'
-        - name: eigen
-          title: Eigenvalue
-          type: number
-          superTitle: 'Initial Eigenvalues'
-        - name: varProp
-          title: '% of Variance'
-          type: number
-          superTitle: 'Initial Eigenvalues'
-        - name: varCum
-          title: 'Cumalitive %'
-          type: number
-          superTitle: 'Initial Eigenvalues'
-        - name: eigenSS
-          title: Eigenvalue
-          type: number
-          superTitle: 'Sum of Squared Loadings'
-        - name: varPropSS
-          title: '% of Variance'
-          type: number
-          superTitle: 'Sum of Squared Loadings'
-        - name: varCumSS
-          title: 'Cumalitive %'
-          type: number
-          superTitle: 'Sum of Squared Loadings'
-
-    - name: factorCor
-      title: Component Correlation Matrix
-      visible: (factorCor)
-      type: Table
-      clearWith:
-        - vars
-        - nFactorMethod
-        - nFactors
-        - hideLoadings
-        - rotation
-
-      columns:
-        - name: comp
-          title: ''
-          type: 'text'
-          format: 'narrow'
-        - name: pc1
-          title: '1'
-          type: number
-
-    - name: screePlot
-      title: Scree Plot
-      visible: (screePlot)
-      type: Image
-      width: 500
-      height: 300
-      renderFun: .screePlot
-      clearWith:
-        - vars
-        - screePlot
-        - nFactorMethod
-        - minEigen
+          columns:
+            - name: comp
+              title: 'Component'
+              type: 'text'
+            - name: eigen
+              title: Eigenvalue
+              type: number
+            - name: varProp
+              title: '% of Variance'
+              type: number
+            - name: varCum
+              title: 'Cumalitive %'
+              type: number
+        - name: screePlot
+          title: Scree Plot
+          visible: (screePlot)
+          type: Image
+          width: 500
+          height: 300
+          renderFun: .screePlot
+          clearWith:
+            - vars
+            - screePlot
+            - nFactorMethod
+            - minEigen
 
 ...

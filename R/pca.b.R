@@ -4,6 +4,7 @@ pcaClass <- R6::R6Class(
     inherit = pcaBase,
     private = list(
         #### Member variables ----
+        analysis = 'pca',
         eigen = NULL,
         simEigen = NULL,
 
@@ -12,6 +13,7 @@ pcaClass <- R6::R6Class(
 
             private$.initLoadingsTable()
             private$.initEigenTable()
+            private$.initKMOTable()
 
         },
         .run = function() {
@@ -29,7 +31,10 @@ pcaClass <- R6::R6Class(
 
                 private$.populateLoadingsTable(results)
                 private$.populateEigenTable(results)
+                private$.populateFactorSummaryTable(results)
                 private$.populateFactorCorTable(results)
+                private$.populateKMOTable(results)
+                private$.populateBartlettTable(results)
                 private$.prepareScreePlot()
 
             }
@@ -42,16 +47,25 @@ pcaClass <- R6::R6Class(
 
             suppressWarnings({
 
-                r <- psych::principal(data, nfactors = nFactors, rotate = self$options$rotation)
+                if (private$analysis == 'pca')
+                    r <- psych::principal(data, nfactors = nFactors, rotate = self$options$rotation)
+                else
+                    r <- psych::fa(data, nfactors = nFactors, rotate = self$options$rotation)
 
                 devnull <- '/dev/null'
                 if (Sys.info()['sysname'] == 'Windows')
-                    devnull <- 'NUL'
-                    sink(file=devnull)
+                    devnull <- 'nul'
+
+                sink(file=devnull)
 
                 SS <- print(r)$Vaccounted
 
                 sink()
+
+                corMatrix <- cor(data, use = "pairwise")
+                N <- nrow(data)
+                kmo <- psych::KMO(corMatrix)
+                bartlett <- psych::cortest.bartlett(corMatrix, n = N)
 
             }) # suppressWarnings
 
@@ -59,7 +73,8 @@ pcaClass <- R6::R6Class(
             loadings <- r$loadings
             uniqueness <- r$uniqueness
 
-            return(list(loadings=loadings, uniqueness=uniqueness, factorCor=factorCor, SS=SS, nFactors=nFactors))
+            return(list(loadings=loadings, uniqueness=uniqueness, factorCor=factorCor, SS=SS, nFactors=nFactors,
+                        kmo=kmo, bartlett=bartlett))
         },
 
         #### Init tables/plots functions ----
@@ -71,10 +86,22 @@ pcaClass <- R6::R6Class(
         },
         .initEigenTable = function() {
 
-            table <- self$results$eigen
+            table <- self$results$eigen$initEigen
 
             for (i in seq_along(self$options$vars))
                 table$addRow(rowKey=i, values=list(comp = as.character(i)))
+
+        },
+        .initKMOTable = function() {
+
+            table <- self$results$assump$kmo
+            vars <- self$options$vars
+
+            table$addRow(rowKey=1, values=list(name = "Overall"))
+            table$addFormat(rowKey=1, col=1, Cell.END_GROUP)
+
+            for (i in seq_along(vars))
+                table$addRow(rowKey=i+1, values=list(name = vars[[i]]))
 
         },
 
@@ -89,21 +116,22 @@ pcaClass <- R6::R6Class(
             vars <- self$options$vars
             hide <- self$options$hideLoadings
 
+            if (private$analysis == 'pca')
+                type <- 'Component'
+            else
+                type <- 'Factor'
+
             if (nFactors > 1) {
                 for (i in 2:nFactors)
-                    table$addColumn(name=paste0("pc",i), title=as.character(i), type='number', superTitle='Component', index=i+1)
+                    table$addColumn(name=paste0("pc",i), title=as.character(i), type='number', superTitle=jmvcore::format('{}', type), index=i+1)
             }
-
-            colNames <- sub('.', '', colnames(loadings))
 
             for (var in vars) {
 
                 row <- list()
                 for (j in 1:nFactors) {
 
-                    index <- which(colNames %in% paste0("C",j))
-                    l <- loadings[jmvcore::toB64(var), index]
-
+                    l <- loadings[jmvcore::toB64(var), j]
                     row[[paste0("pc", j)]] <- if (abs(l) < hide) "" else l
                 }
 
@@ -114,36 +142,52 @@ pcaClass <- R6::R6Class(
         },
         .populateEigenTable = function(results) {
 
-            table <- self$results$eigen
+            table <- self$results$eigen$initEigen
             eigen <- private$eigen
-            SS <- results$SS
 
-            eigenTotal <- sum(eigen)
-            varProp <- (eigen / eigenTotal) * 100
+            eigenTotal <- sum(abs(eigen))
+            varProp <- (abs(eigen) / eigenTotal) * 100
             varCum <- cumsum(varProp)
-            eigenSS <- SS[1,]
-            varPropSS <- SS[2,]
-            varCumSS <- if (dim(SS)[1] <= 2) SS[2,] else SS[3,]
 
             for (i in seq_along(eigen)) {
 
                 row <- list()
                 row[["eigen"]] <- eigen[i]
-                row[["varProp"]] <- varProp[i]
-                row[["varCum"]] <- varCum[i]
 
-                index <- which(sub('.', '', colnames(SS)) %in% paste0("C",i))
-
-                row[["eigenSS"]] <- if (length(index) == 0) "" else eigenSS[index]
-                row[["varPropSS"]] <- if (length(index) == 0) "" else varPropSS[index] * 100
-                row[["varCumSS"]] <- if (length(index) == 0) "" else varCumSS[index] * 100
+                if (private$analysis == 'pca') {
+                    row[["varProp"]] <- varProp[i]
+                    row[["varCum"]] <- varCum[i]
+                }
 
                 table$setRow(rowNo=i, values=row)
             }
         },
+        .populateFactorSummaryTable = function(results) {
+
+            table <- self$results$factorStats$factorSummary
+
+            SS <- results$SS
+            nFactors <- results$nFactors
+
+            loadings <- SS[1,]
+            varProp <- SS[2,]
+            varCum <- if (dim(SS)[1] <= 2) SS[2,] else SS[3,]
+
+            for (i in 1:nFactors) {
+
+                row <- list()
+
+                row[["comp"]] <- as.character(i)
+                row[["loadings"]] <- loadings[i]
+                row[["varProp"]] <- varProp[i] * 100
+                row[["varCum"]] <- varCum[i] * 100
+
+                table$addRow(rowKey=i, values=row)
+            }
+        },
         .populateFactorCorTable = function(results) {
 
-            table <- self$results$factorCor
+            table <- self$results$factorStats$factorCor
             nFactors <- results$nFactors
             factorCor <- results$factorCor
 
@@ -158,28 +202,48 @@ pcaClass <- R6::R6Class(
 
             for (i in 1:nFactors) {
 
-                index1 <- which(colNames %in% paste0("C",i))
                 row <- list()
                 row[["comp"]] <- i
 
                 for (j in 1:nFactors) {
 
-                    index2 <- which(colNames %in% paste0("C",j))
-
                     if (i == j)
-                        row[[paste0("pc", j)]] <- "—"
+                        row[[paste0("pc", j)]] <- "\u2014"
                     else if (j < i)
                         row[[paste0("pc", j)]] <- ""
                     else
-                        row[[paste0("pc", j)]] <- factorCor[index1, index2]
+                        row[[paste0("pc", j)]] <- factorCor[i, j]
                 }
 
                 table$addRow(rowKey=i, values=row)
             }
         },
+        .populateKMOTable = function(results) {
+
+            table <- self$results$assump$kmo
+            vars <- self$options$vars
+            kmo <- results$kmo
+
+            table$setRow(rowNo=1, values=list(msa=kmo$MSA))
+
+            for (i in seq_along(vars)) {
+
+                msa <- kmo$MSAi[ jmvcore::toB64(vars[[i]]) ]
+
+                table$setRow(rowNo=i+1, values=list(msa = msa))
+            }
+        },
+        .populateBartlettTable = function(results) {
+
+            table <- self$results$assump$bartlett
+            r <- results$bartlett
+
+            table$setRow(rowNo=1, values=list(chi=r$chisq, df=r$df, p=r$p.value))
+
+        },
         .prepareScreePlot = function() {
 
-            image <- self$results$get('screePlot')
+            image <- self$results$eigen$screePlot
 
             df <- list()
             df[["eigen"]] <- c(private$simEigen, private$eigen)
@@ -220,13 +284,18 @@ pcaClass <- R6::R6Class(
             if (nFactorMethod != "parallel")
                 data <- subset(data, type == "Data")
 
+            if (private$analysis == 'pca')
+                type <- 'Component'
+            else
+                type <- 'Factor'
+
             p <- ggplot(data=data, aes(x=comp, y=eigen, group=type, linetype=type)) +
-                      geom_line(size=.8) +
-                      geom_point(aes(fill=type), shape=21, size=3) +
-                      scale_colour_manual(values=c("white", "gray")) +
-                      xlab("Component") +
-                      ylab("Eigenvalue") +
-                      the
+                        geom_line(size=.8) +
+                        geom_point(aes(fill=type), shape=21, size=3) +
+                        # scale_fill_manual(values=c("white", "gray")) +
+                        xlab(type) +
+                        ylab("Eigenvalue") +
+                        the
 
             if (nFactorMethod != "parallel")
                 p <- p + theme(legend.position="none")
@@ -246,8 +315,13 @@ pcaClass <- R6::R6Class(
             nFactors <- self$options$nFactors
             vars <- self$options$vars
 
+            if (private$analysis == 'pca')
+                type <- 'components'
+            else
+                type <- 'factors'
+
             if (nFactorMethod == "fixed" && nFactors > length(vars))
-                jmvcore::reject('Number of components cannot be bigger than number of variables', code='')
+                jmvcore::reject(jmvcore::format('Number of {} cannot be bigger than number of variables', type), code='')
 
         },
         .cleanData = function() {
@@ -297,8 +371,10 @@ pcaClass <- R6::R6Class(
             corMatrix <- cor(data, use="pairwise")
 
             # Eigenvalues for PCA and EFA
-            eigen <- eigen(corMatrix)$values
-            # eigenValuesEFA <- psych::fa(rx, fm="minres", warnings=FALSE)$values
+            if (private$analysis == 'pca')
+                eigen <- eigen(corMatrix)$values
+            else
+                eigen<- psych::fa(corMatrix, fm="minres", warnings=FALSE)$values
 
             nSub <- dim(data)[1]
             nVar <- dim(data)[2]
@@ -317,8 +393,11 @@ pcaClass <- R6::R6Class(
 
                 simData <- matrix(rnorm(nSub*nVar), nrow=nSub, ncol=nVar)
                 simCor <- cor(simData)
-                eigen(simCor)$values
-                # psych::fa(simCor, fm="minres", SMC=FALSE, warnings=FALSE)$values
+
+                if (private$analysis == 'pca')
+                    eigen(simCor)$values
+                else
+                    psych::fa(simCor, fm="minres", warnings=FALSE)$values
 
             })
 

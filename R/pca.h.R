@@ -16,7 +16,10 @@ pcaOptions <- R6::R6Class(
             hideLoadings = 0.3,
             screePlot = FALSE,
             eigenValues = FALSE,
-            factorCor = FALSE, ...) {
+            factorCor = FALSE,
+            factorSummary = FALSE,
+            kmoTest = FALSE,
+            bartlettTest = FALSE, ...) {
 
             super$initialize(
                 package='jmv',
@@ -61,8 +64,7 @@ pcaOptions <- R6::R6Class(
                     "quartimax",
                     "promax",
                     "oblimin",
-                    "simplimax",
-                    "cluster"),
+                    "simplimax"),
                 default="varimax")
             private$..hideLoadings <- jmvcore::OptionNumber$new(
                 "hideLoadings",
@@ -80,6 +82,18 @@ pcaOptions <- R6::R6Class(
                 "factorCor",
                 factorCor,
                 default=FALSE)
+            private$..factorSummary <- jmvcore::OptionBool$new(
+                "factorSummary",
+                factorSummary,
+                default=FALSE)
+            private$..kmoTest <- jmvcore::OptionBool$new(
+                "kmoTest",
+                kmoTest,
+                default=FALSE)
+            private$..bartlettTest <- jmvcore::OptionBool$new(
+                "bartlettTest",
+                bartlettTest,
+                default=FALSE)
         
             self$.addOption(private$..vars)
             self$.addOption(private$..nFactorMethod)
@@ -90,6 +104,9 @@ pcaOptions <- R6::R6Class(
             self$.addOption(private$..screePlot)
             self$.addOption(private$..eigenValues)
             self$.addOption(private$..factorCor)
+            self$.addOption(private$..factorSummary)
+            self$.addOption(private$..kmoTest)
+            self$.addOption(private$..bartlettTest)
         }),
     active = list(
         vars = function() private$..vars$value,
@@ -100,7 +117,10 @@ pcaOptions <- R6::R6Class(
         hideLoadings = function() private$..hideLoadings$value,
         screePlot = function() private$..screePlot$value,
         eigenValues = function() private$..eigenValues$value,
-        factorCor = function() private$..factorCor$value),
+        factorCor = function() private$..factorCor$value,
+        factorSummary = function() private$..factorSummary$value,
+        kmoTest = function() private$..kmoTest$value,
+        bartlettTest = function() private$..bartlettTest$value),
     private = list(
         ..vars = NA,
         ..nFactorMethod = NA,
@@ -110,7 +130,10 @@ pcaOptions <- R6::R6Class(
         ..hideLoadings = NA,
         ..screePlot = NA,
         ..eigenValues = NA,
-        ..factorCor = NA)
+        ..factorCor = NA,
+        ..factorSummary = NA,
+        ..kmoTest = NA,
+        ..bartlettTest = NA)
 )
 
 #' @import jmvcore
@@ -119,14 +142,14 @@ pcaResults <- R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         loadings = function() private$..loadings,
-        eigen = function() private$..eigen,
-        factorCor = function() private$..factorCor,
-        screePlot = function() private$..screePlot),
+        factorStats = function() private$..factorStats,
+        assump = function() private$..assump,
+        eigen = function() private$..eigen),
     private = list(
         ..loadings = NA,
-        ..eigen = NA,
-        ..factorCor = NA,
-        ..screePlot = NA),
+        ..factorStats = NA,
+        ..assump = NA,
+        ..eigen = NA),
     public=list(
         initialize=function(options) {
             super$initialize(options=options, name="", title="Principal Component Analysis")
@@ -145,55 +168,125 @@ pcaResults <- R6::R6Class(
                     list(`name`="name", `title`="", `type`="text", `content`="($key)"),
                     list(`name`="pc1", `title`="1", `type`="number", `superTitle`="Component"),
                     list(`name`="uniq", `title`="Uniqueness", `type`="number")))
-            private$..eigen <- jmvcore::Table$new(
-                options=options,
-                name="eigen",
-                title="Eigenvalues",
-                visible="(eigenValues)",
-                clearWith=list(
-                    "vars",
-                    "nFactorMethod",
-                    "nFactors",
-                    "rotation"),
-                columns=list(
-                    list(`name`="comp", `title`="Component", `type`="text"),
-                    list(`name`="eigen", `title`="Eigenvalue", `type`="number", `superTitle`="Initial Eigenvalues"),
-                    list(`name`="varProp", `title`="% of Variance", `type`="number", `superTitle`="Initial Eigenvalues"),
-                    list(`name`="varCum", `title`="Cumalitive %", `type`="number", `superTitle`="Initial Eigenvalues"),
-                    list(`name`="eigenSS", `title`="Eigenvalue", `type`="number", `superTitle`="Sum of Squared Loadings"),
-                    list(`name`="varPropSS", `title`="% of Variance", `type`="number", `superTitle`="Sum of Squared Loadings"),
-                    list(`name`="varCumSS", `title`="Cumalitive %", `type`="number", `superTitle`="Sum of Squared Loadings")))
-            private$..factorCor <- jmvcore::Table$new(
-                options=options,
-                name="factorCor",
-                title="Component Correlation Matrix",
-                visible="(factorCor)",
-                clearWith=list(
-                    "vars",
-                    "nFactorMethod",
-                    "nFactors",
-                    "hideLoadings",
-                    "rotation"),
-                columns=list(
-                    list(`name`="comp", `title`="", `type`="text", `format`="narrow"),
-                    list(`name`="pc1", `title`="1", `type`="number")))
-            private$..screePlot <- jmvcore::Image$new(
-                options=options,
-                name="screePlot",
-                title="Scree Plot",
-                visible="(screePlot)",
-                width=500,
-                height=300,
-                renderFun=".screePlot",
-                clearWith=list(
-                    "vars",
-                    "screePlot",
-                    "nFactorMethod",
-                    "minEigen"))
+            private$..factorStats <- R6::R6Class(
+                inherit = jmvcore::Group,
+                active = list(
+                    factorSummary = function() private$..factorSummary,
+                    factorCor = function() private$..factorCor),
+                private = list(
+                    ..factorSummary = NA,
+                    ..factorCor = NA),
+                public=list(
+                    initialize=function(options) {
+                        super$initialize(options=options, name="factorStats", title="Component Statistics")
+                        private$..factorSummary <- jmvcore::Table$new(
+                            options=options,
+                            name="factorSummary",
+                            title="Summary",
+                            visible="(factorSummary)",
+                            clearWith=list(
+                                "vars",
+                                "nFactorMethod",
+                                "nFactors",
+                                "rotation"),
+                            columns=list(
+                                list(`name`="comp", `title`="Component", `type`="text"),
+                                list(`name`="loadings", `title`="SS Loadings", `type`="number"),
+                                list(`name`="varProp", `title`="% of Variance", `type`="number"),
+                                list(`name`="varCum", `title`="Cumalitive %", `type`="number")))
+                        private$..factorCor <- jmvcore::Table$new(
+                            options=options,
+                            name="factorCor",
+                            title="Correlation Matrix",
+                            visible="(factorCor)",
+                            clearWith=list(
+                                "vars",
+                                "nFactorMethod",
+                                "nFactors",
+                                "hideLoadings",
+                                "rotation"),
+                            columns=list(
+                                list(`name`="comp", `title`="", `type`="text", `format`="narrow"),
+                                list(`name`="pc1", `title`="1", `type`="number")))
+                        self$add(private$..factorSummary)
+                        self$add(private$..factorCor)}))$new(options=options)
+            private$..assump <- R6::R6Class(
+                inherit = jmvcore::Group,
+                active = list(
+                    bartlett = function() private$..bartlett,
+                    kmo = function() private$..kmo),
+                private = list(
+                    ..bartlett = NA,
+                    ..kmo = NA),
+                public=list(
+                    initialize=function(options) {
+                        super$initialize(options=options, name="assump", title="Assumption Checks")
+                        private$..bartlett <- jmvcore::Table$new(
+                            options=options,
+                            name="bartlett",
+                            title="Bartlett's Test of Sphericity",
+                            visible="(bartlettTest)",
+                            rows=1,
+                            clearWith=list(
+                                "vars"),
+                            columns=list(
+                                list(`name`="chi", `title`="\u03C7\u00B2", `type`="number"),
+                                list(`name`="df", `title`="df", `type`="integer"),
+                                list(`name`="p", `title`="df", `type`="number", `format`="zto,pvalue")))
+                        private$..kmo <- jmvcore::Table$new(
+                            options=options,
+                            name="kmo",
+                            title="KMO Measure of Sampling Adequacy",
+                            visible="(kmoTest)",
+                            clearWith=list(
+                                "vars"),
+                            columns=list(
+                                list(`name`="name", `title`="", `type`="text"),
+                                list(`name`="msa", `title`="MSA", `type`="number", `format`="zto")))
+                        self$add(private$..bartlett)
+                        self$add(private$..kmo)}))$new(options=options)
+            private$..eigen <- R6::R6Class(
+                inherit = jmvcore::Group,
+                active = list(
+                    initEigen = function() private$..initEigen,
+                    screePlot = function() private$..screePlot),
+                private = list(
+                    ..initEigen = NA,
+                    ..screePlot = NA),
+                public=list(
+                    initialize=function(options) {
+                        super$initialize(options=options, name="eigen", title="Eigenvalues")
+                        private$..initEigen <- jmvcore::Table$new(
+                            options=options,
+                            name="initEigen",
+                            title="Initial Eigenvalues",
+                            visible="(eigenValues)",
+                            clearWith=list(
+                                "vars"),
+                            columns=list(
+                                list(`name`="comp", `title`="Component", `type`="text"),
+                                list(`name`="eigen", `title`="Eigenvalue", `type`="number"),
+                                list(`name`="varProp", `title`="% of Variance", `type`="number"),
+                                list(`name`="varCum", `title`="Cumalitive %", `type`="number")))
+                        private$..screePlot <- jmvcore::Image$new(
+                            options=options,
+                            name="screePlot",
+                            title="Scree Plot",
+                            visible="(screePlot)",
+                            width=500,
+                            height=300,
+                            renderFun=".screePlot",
+                            clearWith=list(
+                                "vars",
+                                "screePlot",
+                                "nFactorMethod",
+                                "minEigen"))
+                        self$add(private$..initEigen)
+                        self$add(private$..screePlot)}))$new(options=options)
             self$add(private$..loadings)
-            self$add(private$..eigen)
-            self$add(private$..factorCor)
-            self$add(private$..screePlot)}))
+            self$add(private$..factorStats)
+            self$add(private$..assump)
+            self$add(private$..eigen)}))
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
@@ -234,14 +327,20 @@ pcaBase <- R6::R6Class(
 #' @param minEigen a number (default: 1), the minimal eigenvalue for a 
 #'   component to be included in the model 
 #' @param rotation \code{'none'}, \code{'varimax'} (default), 
-#'   \code{'quartimax'}, \code{'promax'}, \code{'oblimin'} \code{'simplimax'} or 
-#'   \code{'cluster'}, the rotation to use in estimation 
-#' @param hideLoadings a number (default: 0.8), hide loadings below 
+#'   \code{'quartimax'}, \code{'promax'}, \code{'oblimin'}, or 
+#'   \code{'simplimax'}, the rotation to use in estimation 
+#' @param hideLoadings a number (default: 0.3), hide loadings below this value 
 #' @param screePlot \code{TRUE} or \code{FALSE} (default), show scree plot 
 #' @param eigenValues \code{TRUE} or \code{FALSE} (default), show eigenvalue 
 #'   table 
 #' @param factorCor \code{TRUE} or \code{FALSE} (default), show factor 
 #'   correlations 
+#' @param factorSummary \code{TRUE} or \code{FALSE} (default), show factor 
+#'   summary 
+#' @param kmoTest \code{TRUE} or \code{FALSE} (default), show 
+#'   Kaiser-Meyer-Olkin (KMO) measure of sampling adequacy (MSA) results 
+#' @param bartlettTest \code{TRUE} or \code{FALSE} (default), show Bartlett's 
+#'   test of sphericity results 
 #' @export
 pca <- function(
     data,
@@ -253,7 +352,10 @@ pca <- function(
     hideLoadings = 0.3,
     screePlot = FALSE,
     eigenValues = FALSE,
-    factorCor = FALSE) {
+    factorCor = FALSE,
+    factorSummary = FALSE,
+    kmoTest = FALSE,
+    bartlettTest = FALSE) {
 
     options <- pcaOptions$new(
         vars = vars,
@@ -264,7 +366,10 @@ pca <- function(
         hideLoadings = hideLoadings,
         screePlot = screePlot,
         eigenValues = eigenValues,
-        factorCor = factorCor)
+        factorCor = factorCor,
+        factorSummary = factorSummary,
+        kmoTest = kmoTest,
+        bartlettTest = bartlettTest)
 
     results <- pcaResults$new(
         options = options)
