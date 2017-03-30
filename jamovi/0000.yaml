@@ -146,5 +146,11 @@ analyses:
     stage: 1
     description: null
     hidden: true
+  - title: Exploratory Factor Analysis
+    name: efa
+    ns: jmv
+    menuGroup: Factor
+    menuTitle: Exploratory Factor Analysis
+    hidden: true
 
 ...
