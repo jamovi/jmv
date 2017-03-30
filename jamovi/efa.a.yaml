@@ -1,0 +1,134 @@
+---
+name:  efa
+title: Exploratory Factor Analysis
+menuGroup: Factor
+version: '1.0.0'
+jas: '1.1'
+
+description:
+    R:
+        usage: |
+            efa(data, vars = c('x1', 'x2', 'x3'))
+
+options:
+    - name: data
+      type: Data
+
+    - name: vars
+      title: Variables
+      type: Variables
+      suggested:
+        - ordinal
+        - continuous
+      permitted:
+        - continuous
+        - nominal
+        - ordinal
+      rejectInf: false
+      description:
+          R: a vector of strings naming the variables of interest in `data`
+
+    - name: nFactorMethod
+      title: 'Number of factors'
+      type: List
+      options:
+        - parallel
+        - eigen
+        - fixed
+      default: parallel
+      description:
+          R: >
+            `'parallel'` (default), `'eigen'` or
+            `'fixed'`, the way to determine the number of factors
+
+    - name: nFactors
+      title: ''
+      type: Integer
+      min: 1
+      default: 1
+      description:
+          R: >
+            an integer (default: 1), the number of factors in the model
+
+    - name: minEigen
+      title: Minimum value
+      type: Number
+      default: 1
+      description:
+          R: >
+            a number (default: 1), the minimal eigenvalue for a factor to be included in the model
+
+    - name: rotation
+      title: 'Rotation:'
+      type: List
+      options:
+        - none
+        - varimax
+        - quartimax
+        - promax
+        - oblimin
+        - simplimax
+      default: varimax
+      description:
+          R: >
+            `'none'`, `'varimax'` (default), `'quartimax'`, `'promax'`,
+            `'oblimin'`, or `'simplimax'`, the rotation to use
+            in estimation
+
+    - name: hideLoadings
+      title: Hide loadings below
+      type: Number
+      default: 0.3
+      description:
+          R: >
+            a number (default: 0.3), hide loadings below this value
+
+    - name: screePlot
+      title: Scree plot
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), show scree plot
+
+    - name: eigenValues
+      title: Initial eigenvalues
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), show eigenvalue table
+
+    - name: factorCor
+      title: Factor correlations
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), show factor correlations
+
+    - name: factorSummary
+      title: Factor summary
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), show factor summary
+
+    - name: kmoTest
+      title: KMO measure of sampling adequacy
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), show Kaiser-Meyer-Olkin (KMO) measure of
+            sampling adequacy (MSA) results
+
+    - name: bartlettTest
+      title: Bartlett's test of sphericity
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), show Bartlett's test of sphericity results
+...
