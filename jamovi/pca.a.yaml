@@ -68,12 +68,11 @@ options:
         - promax
         - oblimin
         - simplimax
-        - cluster
       default: varimax
       description:
           R: >
             `'none'`, `'varimax'` (default), `'quartimax'`, `'promax'`,
-            `'oblimin'` `'simplimax'` or `'cluster'`, the rotation to use
+            `'oblimin'`, or `'simplimax'`, the rotation to use
             in estimation
 
     - name: hideLoadings
@@ -82,7 +81,7 @@ options:
       default: 0.3
       description:
           R: >
-            a number (default: 0.8), hide loadings below
+            a number (default: 0.3), hide loadings below this value
 
     - name: screePlot
       title: Scree plot
@@ -93,7 +92,7 @@ options:
             `TRUE` or `FALSE` (default), show scree plot
 
     - name: eigenValues
-      title: Eigenvalues
+      title: Initial eigenvalues
       type: Bool
       default: false
       description:
@@ -107,6 +106,31 @@ options:
       description:
           R: >
             `TRUE` or `FALSE` (default), show factor correlations
+
+    - name: factorSummary
+      title: Component summary
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), show factor summary
+
+    - name: kmoTest
+      title: KMO measure of sampling adequacy
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), show Kaiser-Meyer-Olkin (KMO) measure of
+            sampling adequacy (MSA) results
+
+    - name: bartlettTest
+      title: Bartlett's test of sphericity
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), show Bartlett's test of sphericity results
 
 
 ...

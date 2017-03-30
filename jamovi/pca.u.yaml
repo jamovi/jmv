@@ -4,6 +4,13 @@ jus: '2.0'
 stage: 0
 children:
   - type: VariableSupplier
+    suggested:
+      - continuous
+      - ordinal
+    permitted:
+      - continuous
+      - nominal
+      - ordinal
     persistentItems: false
     stretchFactor: 1
     children:
@@ -16,42 +23,54 @@ children:
   - type: LayoutBox
     margin: large
     children:
-      - type: Label
-        label: Number of components
+      - type: LayoutBox
+        margin: large
         cell:
           column: 0
           row: 0
         children:
-          - type: RadioButton
-            name: nFactorMethod_parallel
-            optionId: nFactorMethod
-            checkedValue: parallel
-            label: Based on parallel analysis
-          - type: RadioButton
-            name: nFactorMethod_eigen
-            optionId: nFactorMethod
-            checkedValue: eigen
-            label: Based on eigenvalue
+          - type: Label
+            label: Number of Components
             children:
-              - name: minEigen
-                type: TextBox
-                label: 'Eigenvalues greater than:'
-                format: number
-                inputPattern: '[0-9]+'
-                enable: (nFactorMethod_eigen)
-          - type: RadioButton
-            name: nFactorMethod_fixed
-            optionId: nFactorMethod
-            checkedValue: fixed
-            label: Fixed number
+              - type: RadioButton
+                name: nFactorMethod_parallel
+                optionId: nFactorMethod
+                checkedValue: parallel
+                label: Based on parallel analysis
+              - type: RadioButton
+                name: nFactorMethod_eigen
+                optionId: nFactorMethod
+                checkedValue: eigen
+                label: Based on eigenvalue
+                children:
+                  - name: minEigen
+                    type: TextBox
+                    label: 'Eigenvalues greater than:'
+                    format: number
+                    inputPattern: '[0-9]+'
+                    enable: (nFactorMethod_eigen)
+              - type: RadioButton
+                name: nFactorMethod_fixed
+                optionId: nFactorMethod
+                checkedValue: fixed
+                label: Fixed number
+                children:
+                  - name: nFactors
+                    type: TextBox
+                    label: ''
+                    suffix: component(s)
+                    format: number
+                    inputPattern: '[0-9]+'
+                    enable: (nFactorMethod_fixed)
+          - type: Label
+            label: Assumption Checks
             children:
-              - name: nFactors
-                type: TextBox
-                label: ''
-                suffix: component(s)
-                format: number
-                inputPattern: '[0-9]+'
-                enable: (nFactorMethod_fixed)
+              - name: bartlettTest
+                type: CheckBox
+                label: Bartlett's test of sphericity
+              - name: kmoTest
+                type: CheckBox
+                label: KMO measure of sampling adequacy
       - type: LayoutBox
         margin: large
         cell:
@@ -62,16 +81,18 @@ children:
           - type: Label
             label: Output Options
             children:
-              - name: eigenValues
+              - name: factorSummary
                 type: CheckBox
-                label: Eigenvalues
-              - name: screePlot
-                type: CheckBox
-                label: Scree plot
+                label: Component summary
               - name: factorCor
                 type: CheckBox
                 label: Component correlations
-
+              - name: eigenValues
+                type: CheckBox
+                label: Initial eigenvalues
+              - name: screePlot
+                type: CheckBox
+                label: Scree plot
           - type: Label
             label: Additional Options
             children:
@@ -91,8 +112,6 @@ children:
                     value: oblimin
                   - label: simplimax
                     value: simplimax
-                  - label: cluster
-                    value: cluster
               - name: hideLoadings
                 type: TextBox
                 label: Hide loadings below
