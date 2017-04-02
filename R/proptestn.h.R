@@ -137,7 +137,7 @@ propTestNBase <- R6::R6Class(
 
 #' Proportion Test (N Outcomes)
 #'
-#' chi² Goodness of fit
+#' X² Goodness of fit
 #'
 #' @examples
 #' data('HairEyeColor')
@@ -159,9 +159,9 @@ propTestNBase <- R6::R6Class(
 #' #  ────────────────────────────────
 #' #
 #' #
-#' #  χ² Goodness of Fit
+#' #  X² Goodness of Fit
 #' #  ───────────────────────
-#' #    χ²     df    p
+#' #    X²     df    p
 #' #  ───────────────────────
 #' #    133     3    < .001
 #' #  ───────────────────────

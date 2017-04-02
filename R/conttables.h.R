@@ -315,7 +315,7 @@ contTablesBase <- R6::R6Class(
 
 #' Contingency Tables
 #'
-#' chi² test of association
+#' X² test of association
 #'
 #' @examples
 #' data('HairEyeColor')
@@ -338,11 +338,11 @@ contTablesBase <- R6::R6Class(
 #' #  ─────────────────────────────────────────────────────
 #' #
 #' #
-#' #  χ² Tests
+#' #  X² Tests
 #' #  ───────────────────────────────
 #' #          Value    df    p
 #' #  ───────────────────────────────
-#' #    χ²      138     9    < .001
+#' #    X²      138     9    < .001
 #' #    N       592
 #' #  ───────────────────────────────
 #' #
@@ -356,8 +356,8 @@ contTablesBase <- R6::R6Class(
 #'   each row represents a single observation 
 #' @param layers a character vector naming variables to split the contingency 
 #'   table across 
-#' @param chiSq \code{TRUE} (default) or \code{FALSE}, provide chi² 
-#' @param chiSqCorr \code{TRUE} or \code{FALSE} (default), provide chi² with 
+#' @param chiSq \code{TRUE} (default) or \code{FALSE}, provide X² 
+#' @param chiSqCorr \code{TRUE} or \code{FALSE} (default), provide X² with 
 #'   continuity correction 
 #' @param likeRat \code{TRUE} or \code{FALSE} (default), provide the 
 #'   likelihood ratio 
