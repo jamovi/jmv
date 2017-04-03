@@ -26,14 +26,15 @@ options:
           R: a string naming the dependent variable
 
     - name: cov
-      type: Variables
       title: Covariates
-      suggested:
-        - continuous
-      permitted:
-        - continuous
-        - nominal
-        - ordinal
+      type: Array
+      default: [[]]
+      template:
+          type: Variables
       description:
-          R: a vector of strings naming the covariates
+          R: >
+            a list of lists, where each list describes the `label` (as a
+            string) and the `levels` (as vector of strings) of a particular
+            repeated measures factor
+
 ...

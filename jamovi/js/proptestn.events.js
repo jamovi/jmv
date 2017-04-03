@@ -2,6 +2,7 @@
 const events = {
     update: function(ui) {
         this._updatingRatios = 0;
+        this._refreshing = true;
         updateRatios(ui, this);
     },
 
@@ -34,43 +35,15 @@ const updateRatios = function(ui, context) {
         let data = [];
         if (rData.columnFound) {
             let levels = rData.levels;
-
-            let levelsChanged = levels.length !== oldRatios.length;
-            if (levels.length === oldRatios.length) {
-                for (let l1 = 0; l1 < levels.length; l1++) {
-                    let found = false;
-                    for (let l2 = 0; l2 < oldRatios.length; l2++) {
-                        if (levels[l1].label === oldRatios[l2].level) {
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (found === false) {
-                        levelsChanged = true;
-                        break;
-                    }
-                }
-            }
-
-            let totalRatio = 0;
-            if (levelsChanged === false) {
-                for (let i = 0; i < oldRatios.length; i++)
-                    totalRatio += oldRatios[i].ratio;
-            }
-            else
-                totalRatio = levels.length;
-
+            
+            let totalRatio = levels.length;
+            for (let i = 0; i < oldRatios.length; i++)
+                totalRatio += oldRatios[i].ratio - 1;
 
             for (let i = 0; i < levels.length; i++) {
                 let ratio = 1;
-                if (levelsChanged === false) {
-                    for (let r = 0; r < oldRatios.length; r++) {
-                        if (levels[i].label === oldRatios[r].level) {
-                            ratio = oldRatios[r].ratio;
-                            break;
-                        }
-                    }
-                }
+                if (i < oldRatios.length)
+                    ratio = oldRatios[i].ratio;
 
                 let prop = parseFloat(Math.round((ratio / totalRatio) * 1000) / 1000).toFixed(3);
 

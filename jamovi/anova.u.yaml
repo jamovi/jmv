@@ -1,6 +1,6 @@
 name: anova
 title: ANOVA
-jus: '1.0'
+jus: '2.0'
 events:
   update: './anova.events::update'
 children:
@@ -13,28 +13,21 @@ children:
     persistentItems: false
     stretchFactor: 1
     children:
-      - name: dep
-        type: VariableTargetListBox
+      - type: TargetLayoutBox
         label: Dependent Variable
-        showColumnHeaders: false
-        maxItemCount: 1
-        itemDropBehaviour: overwrite
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label: null
-            stretchFactor: 1
-      - type: VariableTargetListBox
-        name: factors
+        children:
+          - type: VariablesListBox
+            name: dep
+            isTarget: true
+            maxItemCount: 1
+      - type: TargetLayoutBox
         label: Fixed Factors
-        showColumnHeaders: false
-        events:
-          change: './anova.events::onChange_factors'
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label: null
-            stretchFactor: 1
+        children:
+          - type: VariablesListBox
+            name: factors
+            isTarget: true
+            events:
+              change: './anova.events::onChange_factors'
   - type: LayoutBox
     margin: large
     children:
@@ -68,21 +61,21 @@ children:
         label: Componets
         persistentItems: true
         stretchFactor: 1
+        format: term
         children:
-          - type: TargetListBox
-            name: modelTerms
+          - type: TargetLayoutBox
             label: Model Terms
-            valueFilter: unique
-            showColumnHeaders: false
-            itemDropBehaviour: emptyspace
-            events:
-              change: './anova.events::onChange_modelTerms'
-              preprocess: './anova.events::onEvent_modelTerms_preprocess'
-            columns:
-              - type: ListItem.TermLabel
-                name: column1
-                label: null
-                stretchFactor: 1
+            children:
+              - type: ListBox
+                name: modelTerms
+                valueFilter: unique
+                isTarget: true
+                itemDropBehaviour: emptyspace
+                events:
+                  change: './anova.events::onChange_modelTerms'
+                  preprocess: './anova.events::onEvent_modelTerms_preprocess'
+                template:
+                    type: TermLabel
       - type: LayoutBox
         children:
           - type: ComboBox
@@ -115,27 +108,35 @@ children:
         name: contrasts
         label: Factors
         stretchFactor: 1
-        showColumnHeaders: false
         columns:
-          - type: ListItem.VariableLabel
-            name: var
+          - name: var
             label: null
             selectable: false
             stretchFactor: 1
             maxWidth: 300
-          - type: ListItem.ComboBox
-            name: type
+            template:
+                type: VariableLabel
+          - name: type
             label: null
             selectable: false
             stretchFactor: 0.5
-            options:
-              - none
-              - deviation
-              - simple
-              - difference
-              - helmert
-              - repeated
-              - polynomial
+            template:
+                type: ComboBox
+                options:
+                  - label: none
+                    value: none
+                  - label: deviation
+                    value: deviation
+                  - label: simple
+                    value: simple
+                  - label: difference
+                    value: difference
+                  - label: helmert
+                    value: helmert
+                  - label: repeated
+                    value: repeated
+                  - label: polynomial
+                    value: polynomial
   - type: CollapseBox
     label: Post Hoc Tests
     collapsed: true
@@ -145,17 +146,17 @@ children:
         name: postHocSupplier
         persistentItems: false
         stretchFactor: 1
+        format: term
         events:
           change: './anova.events::onChange_postHocSupplier'
         children:
-          - type: TargetListBox
-            name: postHoc
-            showColumnHeaders: false
-            columns:
-              - type: ListItem.TermLabel
-                name: column1
-                label: null
-                stretchFactor: 1
+          - type: TargetLayoutBox
+            children:
+              - type: ListBox
+                name: postHoc
+                isTarget: true
+                template:
+                    type: TermLabel
       - type: LayoutBox
         margin: large
         children:
@@ -192,46 +193,34 @@ children:
     collapsed: true
     stretchFactor: 1
     children:
-      - type: Supplier
+      - type: VariableSupplier
         name: plotsSupplier
         stretchFactor: 1
         persistentItems: false
         events:
           change: './anova.events::onChange_plotsSupplier'
         children:
-          - type: TargetListBox
-            name: plotHAxis
+          - type: TargetLayoutBox
             label: Horizontal axis
-            showColumnHeaders: false
-            maxItemCount: 1
-            itemDropBehaviour: overwrite
-            columns:
-              - type: ListItem.VariableLabel
-                name: column1
-                label: null
-                stretchFactor: 1
-          - type: TargetListBox
-            name: plotSepLines
+            children:
+              - type: VariablesListBox
+                name: plotHAxis
+                isTarget: true
+                maxItemCount: 1
+          - type: TargetLayoutBox
             label: Separate lines
-            showColumnHeaders: false
-            maxItemCount: 1
-            itemDropBehaviour: overwrite
-            columns:
-              - type: ListItem.VariableLabel
-                name: column1
-                label: null
-                stretchFactor: 1
-          - type: TargetListBox
-            name: plotSepPlots
+            children:
+              - type: VariablesListBox
+                name: plotSepLines
+                maxItemCount: 1
+                isTarget: true
+          - type: TargetLayoutBox
             label: Separate plots
-            showColumnHeaders: false
-            maxItemCount: 1
-            itemDropBehaviour: overwrite
-            columns:
-              - type: ListItem.VariableLabel
-                name: column1
-                label: null
-                stretchFactor: 1
+            children:
+              - type: VariablesListBox
+                name: plotSepPlots
+                maxItemCount: 1
+                isTarget: true
       - type: Label
         label: Display
         children:

@@ -9,7 +9,8 @@ linRegOptions <- R6::R6Class(
     public = list(
         initialize = function(
             dep = NULL,
-            cov = NULL, ...) {
+            cov = list(
+                list()), ...) {
 
             super$initialize(
                 package='jmv',
@@ -26,15 +27,14 @@ linRegOptions <- R6::R6Class(
                     "continuous",
                     "nominal",
                     "ordinal"))
-            private$..cov <- jmvcore::OptionVariables$new(
+            private$..cov <- jmvcore::OptionArray$new(
                 "cov",
                 cov,
-                suggested=list(
-                    "continuous"),
-                permitted=list(
-                    "continuous",
-                    "nominal",
-                    "ordinal"))
+                default=list(
+                    list()),
+                template=jmvcore::OptionVariables$new(
+                    "cov",
+                    NULL))
         
             self$.addOption(private$..dep)
             self$.addOption(private$..cov)
@@ -92,12 +92,15 @@ linRegBase <- R6::R6Class(
 #' 
 #' @param data the data as a data frame
 #' @param dep a string naming the dependent variable
-#' @param cov a vector of strings naming the covariates
+#' @param cov a list of lists, where each list describes the \code{label} (as 
+#'   a string) and the \code{levels} (as vector of strings) of a particular 
+#'   repeated measures factor 
 #' @export
 linReg <- function(
     data,
     dep,
-    cov) {
+    cov = list(
+                list())) {
 
     options <- linRegOptions$new(
         dep = dep,

@@ -1,6 +1,6 @@
 name:  anovaRMNP
 title: Repeated Measures ANOVA (Non-parametric)
-jus:   '1.0'
+jus:   '2.0'
 
 children:
   - type: VariableSupplier
@@ -14,15 +14,12 @@ children:
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: VariableTargetListBox
-        name: measures
+      - type: TargetLayoutBox
         label: Measures
-        showColumnHeaders: false
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label:
-            stretchFactor: 1
+        children:
+          - type: VariablesListBox
+            name: measures
+            isTarget: true
 
   - type: LayoutBox
     stretchFactor: 1

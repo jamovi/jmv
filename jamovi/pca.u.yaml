@@ -1,22 +1,18 @@
 title: Principal Component Analysis
 name: pca
-jus: '1.0'
+jus: '2.0'
 stage: 0
 children:
   - type: VariableSupplier
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: VariableTargetListBox
-        name: vars
+      - type: TargetLayoutBox
         label: Variables
-        showColumnHeaders: false
-        fullRowSelect: true
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label: ''
-            stretchFactor: 1
+        children:
+          - type: VariablesListBox
+            name: vars
+            isTarget: true
   - type: LayoutBox
     margin: large
     children:

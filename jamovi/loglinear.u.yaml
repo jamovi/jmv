@@ -1,6 +1,6 @@
 name:  logLinear
 title: Log-Linear Regression
-jus:   '1.0'
+jus:   '2.0'
 stage: 1
 
 events:
@@ -16,30 +16,21 @@ children:
     persistentItems: false
     stretchFactor: 1
     children:
-      - name: counts
-        type: VariableTargetListBox
+      - type: TargetLayoutBox
         label: Counts (optional)
-        showColumnHeaders: false
-        maxItemCount: 1
-        itemDropBehaviour: overwrite
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label:
-            stretchFactor: 1
-
-      - type: VariableTargetListBox
-        name: factors
+        children:
+          - type: VariablesListBox
+            name: counts
+            isTarget: true
+            maxItemCount: 1
+      - type: TargetLayoutBox
         label: Factors
-        showColumnHeaders: false
-        events:
-            change: ./loglinear.events::onChange_factors
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label:
-            stretchFactor: 1
-
+        children:
+          - type: VariablesListBox
+            name: factors
+            isTarget: true
+            events:
+                change: ./loglinear.events::onChange_factors
   - type: CollapseBox
     label: Model
     collapsed: true
@@ -48,23 +39,23 @@ children:
       - type: Supplier
         name: modelSupplier
         label: Componets
+        format: term
         persistentItems: true
         stretchFactor: 1
         children:
-          - type: TargetListBox
-            name: modelTerms
+          - type: TargetLayoutBox
             label: Model Terms
-            valueFilter: unique
-            showColumnHeaders: false
-            itemDropBehaviour: emptyspace
-            events:
-                change: ./loglinear.events::onChange_modelTerms
-                preprocess: ./loglinear.events::onEvent_modelTerms_preprocess
-            columns:
-              - type: ListItem.TermLabel
-                name: column1
-                label:
-                stretchFactor: 1
+            children:
+              - type: ListBox
+                name: modelTerms
+                valueFilter: unique
+                isTarget: true
+                itemDropBehaviour: emptyspace
+                events:
+                    change: ./loglinear.events::onChange_modelTerms
+                    preprocess: ./loglinear.events::onEvent_modelTerms_preprocess
+                template:
+                    type: TermLabel
 
   - type: CollapseBox
     label: Statistics

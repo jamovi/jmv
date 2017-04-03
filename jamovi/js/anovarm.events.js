@@ -50,13 +50,13 @@ const events = {
         this.checkValue(ui.postHoc, true, values, FormatDef.term);
     },
 
-    onEvent_rmCells_changing: function(ui, data) {
+    /*onEvent_rmCells_changing: function(ui, data) {
         if (data.key.length === 1 && data.value === null) {
             let oldValue = this.clone(ui.rmCells.value(data.key));
             oldValue["measure"] = null;
             data.value = oldValue;
         }
-    },
+    },*/
 
     onEvent_bsTerms_preprocess: function(ui, data) {
         if (data.intoSelf === false)
