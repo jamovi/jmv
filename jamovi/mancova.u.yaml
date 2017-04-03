@@ -1,7 +1,7 @@
 
 name:  mancova
 title: MANCOVA
-jus:   '1.0'
+jus:   '2.0'
 
 stage: 1
 
@@ -10,13 +10,8 @@ children:
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: VariableTargetListBox
-        name: "vars"
-        label: ""
-        showColumnHeaders: false
-        fullRowSelect: true
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label: ""
-            stretchFactor: 1
+      - type: TargetLayoutBox
+        children:
+          - type: VariablesListBox
+            name: "vars"
+            isTarget: true

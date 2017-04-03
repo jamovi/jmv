@@ -1,6 +1,6 @@
 name:  corrMatrix
 title: Correlation Matrix
-jus:   '1.0'
+jus:   '2.0'
 
 children:
   - type: VariableSupplier
@@ -15,21 +15,18 @@ children:
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: VariableTargetListBox
-        name: vars
-        showColumnHeaders: false
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label:
-            stretchFactor: 1
-
+      - type: TargetLayoutBox
+        children:
+          - type: VariablesListBox
+            name: vars
+            isTarget: true
   - type: LayoutBox
     stretchFactor: 1
     margin: large
     children:
       - type: Label
         label: Correlation Coefficients
+        fitToGrid: true
         cell:
             column: 0
             row: 0
@@ -48,6 +45,7 @@ children:
 
       - type: Label
         label: Additional Options
+        fitToGrid: true
         cell:
             column: 1
             row: 0
@@ -74,6 +72,7 @@ children:
 
       - type: Label
         label: Hypothesis
+        fitToGrid: true
         cell:
             column: 0
             row: 1
@@ -98,6 +97,7 @@ children:
 
       - type: Label
         label: Plot
+        fitToGrid: true
         cell:
             column: 1
             row: 1

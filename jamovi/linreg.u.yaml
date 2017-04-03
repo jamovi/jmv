@@ -1,30 +1,44 @@
 title: Linear Regression
 name: linReg
-jus:   '1.0'
+jus: '2.0'
 stage: 1
+events:
+  update: './linreg.events::update'
 children:
   - type: VariableSupplier
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: VariableTargetListBox
-        name: dep
+      - type: TargetLayoutBox
         label: Dependent Variable
-        maxItemCount: 1
-        showColumnHeaders: false
-        fullRowSelect: true
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label: ''
-            stretchFactor: 1
-      - type: VariableTargetListBox
-        name: cov
+        children:
+          - type: VariablesListBox
+            name: dep
+            isTarget: true
+            maxItemCount: 1
+      - type: TargetLayoutBox
         label: Covariates
-        showColumnHeaders: false
-        fullRowSelect: true
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label: ''
-            stretchFactor: 1
+        children:
+          - type: ListBox
+            name: cov
+            height: large
+            addButton: Add New Block
+            events:
+              listItemAdded: './linreg.events::onEvent_test_listItemsChanged'
+              listItemRemoved: './linreg.events::onEvent_test_listItemsChanged'
+            selectable: false
+            templateName: linreg-block-template
+            template:
+              type: LayoutBox
+              margin: normal
+              children:
+                - type: Label
+                  label: Block 1
+                  name: blockName
+                  stretchFactor: 1
+                  margin: normal
+                - type: VariablesListBox
+                  name: blockList
+                  isTarget: true
+                  height: auto
+                  ghostText: drag variables here

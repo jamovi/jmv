@@ -1,6 +1,6 @@
 name: contTables
 title: Contingency Tables
-jus: '1.0'
+jus: '2.0'
 
 children:
   - type: VariableSupplier
@@ -8,45 +8,33 @@ children:
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: VariableTargetListBox
-        name: rows
+      - type: TargetLayoutBox
         label: Rows
-        showColumnHeaders: false
-        maxItemCount: 1
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label: null
-            stretchFactor: 1
-      - type: VariableTargetListBox
-        name: cols
+        children:
+          - type: VariablesListBox
+            name: rows
+            isTarget: true
+            maxItemCount: 1
+      - type: TargetLayoutBox
         label: Columns
-        showColumnHeaders: false
-        maxItemCount: 1
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label: null
-            stretchFactor: 1
-      - type: VariableTargetListBox
-        name: counts
+        children:
+          - type: VariablesListBox
+            name: cols
+            isTarget: true
+            maxItemCount: 1
+      - type: TargetLayoutBox
         label: Counts (optional)
-        showColumnHeaders: false
-        maxItemCount: 1
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label: null
-            stretchFactor: 1
-      - type: VariableTargetListBox
-        name: layers
+        children:
+          - type: VariablesListBox
+            name: counts
+            isTarget: true
+            maxItemCount: 1
+      - type: TargetLayoutBox
         label: Layers
-        showColumnHeaders: false
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label: null
-            stretchFactor: 1
+        children:
+          - type: VariablesListBox
+            name: layers
+            isTarget: true
   - type: LayoutBox
     stretchFactor: 1
     margin: large
@@ -57,6 +45,7 @@ children:
         collapsed: true
         children:
           - type: Label
+            fitToGrid: true
             cell:
               row: 0
               column: 0
@@ -71,6 +60,7 @@ children:
                 name: likeRat
                 label: Likelihood ratio
           - type: Label
+            fitToGrid: true
             cell:
               column: 1
               row: 0
@@ -87,6 +77,7 @@ children:
                     inputPattern: '[0-9]+'
                     enable: (logOdds)
           - type: Label
+            fitToGrid: true
             label: Nominal
             cell:
               column: 0
@@ -100,6 +91,7 @@ children:
                 label: Phi and Cramer's V
           - type: Label
             label: Ordinal
+            fitToGrid: true
             cell:
               column: 1
               row: 1
@@ -117,12 +109,14 @@ children:
         children:
           - type: Label
             label: Counts
+            fitToGrid: true
             children:
               - type: CheckBox
                 name: exp
                 label: Expected
           - type: Label
             label: Percentages
+            fitToGrid: true
             cell:
               column: 1
               row: 0

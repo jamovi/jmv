@@ -1,7 +1,6 @@
-name:  ttestPS
+name: ttestPS
 title: Paired Samples T-Test
-jus:   '1.0'
-
+jus: '2.0'
 children:
   - type: VariableSupplier
     suggested:
@@ -13,33 +12,31 @@ children:
     persistentItems: true
     stretchFactor: 1
     children:
-      - type: VariableTargetListBox
-        name: pairs
+      - type: TargetLayoutBox
         label: Paired Variables
-        showColumnHeaders: false
-        fullRowSelect: true
-        itemDropBehaviour: overwrite
-        columns:
-          - type: ListItem.VariableLabel
-            name: i1
-            label:
-            stretchFactor: 1
-            format: variable
-
-          - type: ListItem.VariableLabel
-            name: i2
-            label:
-            stretchFactor: 1
-            format: variable
-
+        children:
+          - type: VariablesListBox
+            name: pairs
+            isTarget: true
+            fullRowSelect: true
+            itemDropBehaviour: overwrite
+            columns:
+              - name: i1
+                stretchFactor: 1
+                template:
+                  type: VariableLabel
+              - name: i2
+                stretchFactor: 1
+                template:
+                  type: VariableLabel
   - type: LayoutBox
     margin: large
     stretchFactor: 1
     children:
       - type: LayoutBox
         cell:
-            column: 0
-            row: 0
+          column: 0
+          row: 0
         stretchFactor: 1
         children:
           - type: Label
@@ -57,13 +54,11 @@ children:
                         name: bfPrior
                         label: Prior
                         format: number
-                        inputPattern: "[0-9]+"
+                        inputPattern: '[0-9]+'
                         enable: (bf)
-
               - type: CheckBox
                 name: wilcoxon
                 label: Wilcoxon rank
-
           - type: Label
             label: Hypothesis
             children:
@@ -71,20 +66,17 @@ children:
                 name: hypothesis_different
                 optionId: hypothesis
                 checkedValue: different
-                label: "Measure 1 ≠ Measure 2"
-
+                label: Measure 1 ≠ Measure 2
               - type: RadioButton
                 name: hypothesis_oneGreater
                 optionId: hypothesis
                 checkedValue: oneGreater
-                label: "Measure 1 > Measure 2"
-
+                label: Measure 1 > Measure 2
               - type: RadioButton
                 name: hypothesis_twoGreater
                 optionId: hypothesis
                 checkedValue: twoGreater
-                label: "Measure 1 < Measure 2"
-
+                label: Measure 1 < Measure 2
           - type: Label
             label: Missing values
             children:
@@ -93,17 +85,15 @@ children:
                 optionId: miss
                 checkedValue: perAnalysis
                 label: Exclude cases analysis by analysis
-
               - type: RadioButton
                 name: miss_listwise
                 optionId: miss
                 checkedValue: listwise
                 label: Exclude cases listwise
-
       - type: LayoutBox
         cell:
-            column: 1
-            row: 0
+          column: 1
+          row: 0
         stretchFactor: 1
         children:
           - type: Label
@@ -112,11 +102,9 @@ children:
               - type: CheckBox
                 name: meanDiff
                 label: Mean difference
-
               - type: CheckBox
                 name: effectSize
                 label: Effect size
-
               - type: CheckBox
                 name: ci
                 label: Confidence interval
@@ -124,19 +112,16 @@ children:
                   - type: TextBox
                     name: ciWidth
                     label: Interval
-                    suffix: "%"
+                    suffix: '%'
                     format: number
-                    inputPattern: "[0-9]+"
+                    inputPattern: '[0-9]+'
                     enable: (ci)
-
               - type: CheckBox
                 name: desc
                 label: Descriptives
-
               - type: CheckBox
                 name: plots
                 label: Descriptives plots
-
           - type: Label
             label: Assumption Checks
             children:

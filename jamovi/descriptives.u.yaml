@@ -1,20 +1,17 @@
 name:  descriptives
 title: Descriptives
-jus:   '1.0'
+jus:   '2.0'
 
 children:
   - type: VariableSupplier
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: VariableTargetListBox
-        name: vars
-        showColumnHeaders: false
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label:
-            stretchFactor: 1
+      - type: TargetLayoutBox
+        children:
+          - type: VariablesListBox
+            name: vars
+            isTarget: true
 
   - type: LayoutBox
     stretchFactor: 1
@@ -31,10 +28,10 @@ children:
   - type: CollapseBox
     label: Statistics
     collapsed: true
-    stretchFactor: 1
     children:
       - type: Label
         label: Percentile Values
+        fitToGrid: true
         cell:
             column: 0
             row: 0
@@ -49,6 +46,7 @@ children:
                 name: pcEqGr
                 label: Cut points for
                 style: inline
+                verticalAlignment: center
                 children:
                   - type: TextBox
                     name: pcNEqGr
@@ -60,6 +58,7 @@ children:
 
       - type: Label
         label: Central Tendency
+        fitToGrid: true
         cell:
             column: 1
             row: 0
@@ -82,6 +81,7 @@ children:
 
       - type: Label
         label: Dispersion
+        fitToGrid: true
         cell:
             column: 0
             row: 1
@@ -119,6 +119,7 @@ children:
 
       - type: Label
         label: Distribution
+        fitToGrid: true
         cell:
             column: 1
             row: 1

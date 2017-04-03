@@ -1,6 +1,6 @@
 name: propTestN
 title: Proportion Test (N Outcomes)
-jus: '1.0'
+jus: '2.0'
 events:
   update: './proptestn.events::update'
   remoteDataChanged: './proptestn.events::onRemoteDataChanged'
@@ -9,34 +9,26 @@ children:
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: VariableTargetListBox
-        name: var
+      - type: TargetLayoutBox
         label: Variable
-        maxItemCount: 1
-        fullRowSelect: true
-        showColumnHeaders: false
-        events:
-          change: './proptestn.events::onChange_var'
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label: null
-            stretchFactor: 1
-      - type: VariableTargetListBox
-        name: counts
+        children:
+          - type: VariablesListBox
+            name: var
+            maxItemCount: 1
+            isTarget: true
+            events:
+              change: './proptestn.events::onChange_var'
+      - type: TargetLayoutBox
         label: Counts (optional)
-        permitted:
-          - continuous
-          - nominal
-          - ordinal
-        maxItemCount: 1
-        fullRowSelect: true
-        showColumnHeaders: false
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label: null
-            stretchFactor: 1
+        children:
+          - type: VariablesListBox
+            name: counts
+            permitted:
+              - continuous
+              - nominal
+              - ordinal
+            maxItemCount: 1
+            isTarget: true
   - type: LayoutBox
     margin: large
     children:
@@ -57,28 +49,31 @@ children:
         events:
           change: './proptestn.events::onChange_ratio'
         columns:
-          - type: ListItem.Label
-            name: level
+          - name: level
             label: Level
             headerAlign: left
             stretchFactor: 1
             isVirtual: true
             maxWidth: 300
             selectable: false
-          - type: ListItem.TextBox
-            name: ratio
+            template:
+                type: Label
+          - name: ratio
             label: Ratio
-            format: number
             maxWidth: 50
-            inputPattern: '[0-9]+'
             stretchFactor: 0.25
             selectable: false
-          - type: ListItem.Label
-            name: proportion
+            template:
+                type: TextBox
+                inputPattern: '[0-9]+'
+                format: number
+          - name: proportion
             label: Proportion
             maxWidth: 100
             headerAlign: right
-            horizontalAlignment: right
             isVirtual: true
             stretchFactor: 0.5
             selectable: false
+            template:
+                type: Label
+                horizontalAlignment: right

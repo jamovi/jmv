@@ -1,7 +1,6 @@
-name:  ttestOneS
+name: ttestOneS
 title: One Sample T-Test
-jus:   '1.0'
-
+jus: '2.0'
 children:
   - type: VariableSupplier
     suggested:
@@ -13,24 +12,20 @@ children:
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: VariableTargetListBox
-        name: vars
+      - type: TargetLayoutBox
         label: Dependent Variables
-        showColumnHeaders: false
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label:
-            stretchFactor: 1
-
+        children:
+          - type: VariablesListBox
+            name: vars
+            isTarget: true
   - type: LayoutBox
     margin: large
     stretchFactor: 1
     children:
       - type: LayoutBox
         cell:
-            column: 0
-            row: 0
+          column: 0
+          row: 0
         stretchFactor: 1
         children:
           - type: Label
@@ -48,13 +43,11 @@ children:
                         name: bfPrior
                         label: Prior
                         format: number
-                        inputPattern: "[0-9]+"
+                        inputPattern: '[0-9]+'
                         enable: (bf)
-
               - type: CheckBox
                 name: mann
                 label: Mann-Whitney U
-
           - type: Label
             label: Hypothesis
             children:
@@ -64,26 +57,22 @@ children:
                     name: testValue
                     label: Test value
                     format: number
-                    inputPattern: "[0-9]+"
-
+                    inputPattern: '[0-9]+'
               - type: RadioButton
                 name: hypothesis_dt
                 optionId: hypothesis
                 checkedValue: dt
-                label: "≠ Test value"
-
+                label: ≠ Test value
               - type: RadioButton
                 name: hypothesis_gt
                 optionId: hypothesis
                 checkedValue: gt
-                label: "> Test value"
-
+                label: '> Test value'
               - type: RadioButton
                 name: hypothesis_lt
                 optionId: hypothesis
                 checkedValue: lt
-                label: "< Test value"
-
+                label: < Test value
           - type: Label
             label: Missing values
             children:
@@ -92,17 +81,15 @@ children:
                 optionId: miss
                 checkedValue: perAnalysis
                 label: Exclude cases analysis by analysis
-
               - type: RadioButton
                 name: miss_listwise
                 optionId: miss
                 checkedValue: listwise
                 label: Exclude cases listwise
-
       - type: LayoutBox
         cell:
-            column: 1
-            row: 0
+          column: 1
+          row: 0
         stretchFactor: 1
         children:
           - type: Label
@@ -111,11 +98,9 @@ children:
               - type: CheckBox
                 name: meanDiff
                 label: Mean difference
-
               - type: CheckBox
                 name: effectSize
                 label: Effect size
-
               - type: CheckBox
                 name: ci
                 label: Confidence interval
@@ -123,19 +108,16 @@ children:
                   - type: TextBox
                     name: ciWidth
                     label: Interval
-                    suffix: "%"
+                    suffix: '%'
                     format: number
-                    inputPattern: "[0-9]+"
+                    inputPattern: '[0-9]+'
                     enable: (ci)
-
               - type: CheckBox
                 name: desc
                 label: Descriptives
-
               - type: CheckBox
                 name: plots
                 label: Descriptives plots
-
           - type: Label
             label: Assumption Checks
             children:

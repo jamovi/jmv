@@ -1,6 +1,6 @@
 name:  anovaNP
 title: One-way ANOVA (Non-parametric)
-jus:   '1.0'
+jus:   '2.0'
 
 children:
   - type: VariableSupplier
@@ -12,27 +12,19 @@ children:
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: VariableTargetListBox
-        name: deps
+      - type: TargetLayoutBox
         label: Dependent Variables
-        showColumnHeaders: false
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label:
-            stretchFactor: 1
-
-      - type: VariableTargetListBox
-        name: group
+        children:
+          - type: VariablesListBox
+            name: deps
+            isTarget: true
+      - type: TargetLayoutBox
         label: Grouping Variable
-        showColumnHeaders: false
-        maxItemCount: 1
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label:
-            stretchFactor: 1
-
+        children:
+          - type: VariablesListBox
+            name: group
+            maxItemCount: 1
+            isTarget: true
   - type: LayoutBox
     stretchFactor: 1
     margin: large

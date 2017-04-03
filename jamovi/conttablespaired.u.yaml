@@ -1,41 +1,32 @@
 name: contTablesPaired
 title: Paired Samples Contingency Tables
-jus: '1.0'
+jus: '2.0'
 children:
   - type: VariableSupplier
     persistentItems: false
     stretchFactor: 1
     children:
-      - type: VariableTargetListBox
-        name: rows
+      - type: TargetLayoutBox
         label: Rows
-        showColumnHeaders: false
-        maxItemCount: 1
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label: null
-            stretchFactor: 1
-      - type: VariableTargetListBox
-        name: cols
+        children:
+          - type: VariablesListBox
+            name: rows
+            isTarget: true
+            maxItemCount: 1
+      - type: TargetLayoutBox
         label: Columns
-        showColumnHeaders: false
-        maxItemCount: 1
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label: null
-            stretchFactor: 1
-      - type: VariableTargetListBox
-        name: counts
+        children:
+          - type: VariablesListBox
+            name: cols
+            isTarget: true
+            maxItemCount: 1
+      - type: TargetLayoutBox
         label: Counts (optional)
-        showColumnHeaders: false
-        maxItemCount: 1
-        columns:
-          - type: ListItem.VariableLabel
-            name: column1
-            label: null
-            stretchFactor: 1
+        children:
+          - type: VariablesListBox
+            name: counts
+            isTarget: true
+            maxItemCount: 1
   - type: LayoutBox
     stretchFactor: 1
     margin: large
