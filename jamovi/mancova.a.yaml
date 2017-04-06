@@ -6,7 +6,51 @@ menuGroup: ANOVA
 version: '1.0.0'
 jas: '1.1'
 
-completeWhenFilled: true
+description:
+    main: Multivariate Analysis of Covariance
+    R:
+        dontrun: false
+        usage: |
+            data('iris')
+            dat <- as.data.frame(iris)
+
+            jmv::mancova(
+                data=dat,
+                deps=c(
+                    "Sepal.Length",
+                    "Sepal.Width",
+                    "Petal.Length",
+                    "Petal.Width"),
+                fixedFactors="Species")
+
+            #
+            #  Multivariate Tests
+            #  ───────────────────────────────────────────────────────────────────────────
+            #                                     value     F       df1    df2    p
+            #  ───────────────────────────────────────────────────────────────────────────
+            #    Species    Pillai's Trace          1.19    53.5      8    290    < .001
+            #               Wilks' Lambda         0.0234     199      8    288    < .001
+            #               Hotelling's Trace       32.5     581      8    286    < .001
+            #               Roy's Largest Root      32.2    1167      4    145    < .001
+            #  ───────────────────────────────────────────────────────────────────────────
+            #
+            #
+            #
+            #  Univariate Tests
+            #  ───────────────────────────────────────────────────────────────────────────────────────────────
+            #                 Dependent Variable    Sum of Squares    df     Mean Square    F         p
+            #  ───────────────────────────────────────────────────────────────────────────────────────────────
+            #    Species      Sepal.Length                   63.21      2        31.6061     119.3    < .001
+            #                 Sepal.Width                    11.34      2         5.6725      49.2    < .001
+            #                 Petal.Length                  437.10      2       218.5514    1180.2    < .001
+            #                 Petal.Width                    80.41      2        40.2067     960.0    < .001
+            #    Residuals    Sepal.Length                   38.96    147         0.2650
+            #                 Sepal.Width                    16.96    147         0.1154
+            #                 Petal.Length                   27.22    147         0.1852
+            #                 Petal.Width                     6.16    147         0.0419
+            #  ───────────────────────────────────────────────────────────────────────────────────────────────
+            #
+            #
 
 options:
     - name: data
@@ -14,6 +58,87 @@ options:
       description:
           R: the data as a data frame
 
-    - name: vars
+    - name: deps
+      title: Dependent Variables
       type: Variables
+      suggested:
+        - continuous
+      permitted:
+        - continuous
+        - nominal
+        - ordinal
+      description:
+          R: >
+            a string naming the dependent variable from `data`, variable
+            must be numeric
+
+    - name: fixedFactors
+      title: Fixed factors
+      type: Variables
+      suggested:
+        - nominal
+        - ordinal
+      default:
+      description:
+          R: a vector of strings naming the fixed factors from `data`
+
+    - name: covariates
+      title: Covariates
+      type: Variables
+      suggested:
+        - continuous
+      permitted:
+        - continuous
+        - nominal
+        - ordinal
+      default:
+      description:
+          R: a vector of strings naming the covariates from `data`
+
+    - name: multivarStats
+      title: Multivariate Statistics
+      type: NMXList
+      options:
+          - name: pillai
+            title: Pillai's Trace
+          - name: wilks
+            title: Wilks' Lambda
+          - name: hotel
+            title: Hotelling's Trace
+          - name: roy
+            title: Roy's Largest Root
+      default:
+          - pillai
+          - wilks
+          - hotel
+          - roy
+      description:
+          R: >
+            one or more of `'pillai'`, `'wilks'`, `'hotel'`, or `'roy'`;
+            use Pillai's Trace, Wilks' Lambda, Hotelling's Trace, and
+            Roy's Largest Root multivariate statistics, respectively
+
+    - name: boxM
+      title: Box's M test for homogeneity of covariance matrices
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Box's M test
+
+    - name: shapiroWilk
+      title: Shapiro-Wilk test for multivariate normality
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Shapiro-Wilk test
+
+    - name: qqPlot
+      title: Q-Q plot of multivariate normality
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a Q-Q plot of multivariate normality
 ...

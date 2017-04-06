@@ -69,7 +69,7 @@ analyses:
     menuGroup: ANOVA
     menuTitle: MANCOVA
     stage: 1
-    description: null
+    description: Multivariate Analysis of Covariance
   - title: One Way ANOVA (Non-parametric)
     name: anovaNP
     ns: jmv

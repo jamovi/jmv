@@ -1,17 +1,80 @@
-
-name:  mancova
+name: mancova
 title: MANCOVA
-jus:   '2.0'
-
-stage: 1
-
+jus: '2.0'
+stage: 0
 children:
   - type: VariableSupplier
     persistentItems: false
     stretchFactor: 1
     children:
       - type: TargetLayoutBox
+        label: Dependent
         children:
           - type: VariablesListBox
-            name: "vars"
+            name: deps
             isTarget: true
+      - type: TargetLayoutBox
+        label: Fixed factors
+        children:
+          - type: VariablesListBox
+            name: fixedFactors
+            isTarget: true
+      - type: TargetLayoutBox
+        label: Covariates
+        children:
+          - type: VariablesListBox
+            name: covariates
+            isTarget: true
+  - type: LayoutBox
+    margin: large
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        cell:
+          column: 0
+          row: 0
+        stretchFactor: 1
+        children:
+          - type: Label
+            label: Multivariate Statistics
+            children:
+              - name: multivarStats_pillai
+                type: CheckBox
+                label: Pillai's Trace
+                checkedValue: pillai
+                optionId: multivarStats
+              - name: multivarStats_wilks
+                type: CheckBox
+                label: Wilks' Lambda
+                checkedValue: wilks
+                optionId: multivarStats
+              - name: multivarStats_hotel
+                type: CheckBox
+                label: Hotelling's Trace
+                checkedValue: hotel
+                optionId: multivarStats
+              - name: multivarStats_roy
+                type: CheckBox
+                label: Roy's Largest Root
+                checkedValue: roy
+                optionId: multivarStats
+      - type: LayoutBox
+        margin: large
+        cell:
+          column: 1
+          row: 0
+        stretchFactor: 1
+        children:
+          - type: Label
+            label: Assumption Checks
+            children:
+              - name: boxM
+                type: CheckBox
+                label: Box's M test
+              - name: shapiroWilk
+                type: CheckBox
+                label: Shapiro-Wilk test
+              - type: CheckBox
+                name: qqPlot
+                label: Q-Q plot of multivariate normality
