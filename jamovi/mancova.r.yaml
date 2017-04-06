@@ -4,10 +4,252 @@ title: MANCOVA
 jrs: '1.0'
 
 items:
-    - name: table
-      title: MANCOVA
+    - name: multivar
+      title: Multivariate Tests
       type: Table
+      clearWith:
+        - deps
+        - fixedFactors
+        - covariates
 
       columns:
-          - name: var
-            title: ""
+        - name: term[pillai]
+          title: ""
+          type: "text"
+          combineBelow: true
+          visible: (multivarStats:pillai)
+
+        - name: test[pillai]
+          title: ""
+          type: "text"
+          content: Pillai's Trace
+          visible: (multivarStats:pillai)
+
+        - name: stat[pillai]
+          title: value
+          type: number
+          visible: (multivarStats:pillai)
+
+        - name: f[pillai]
+          title: F
+          type: number
+          visible: (multivarStats:pillai)
+
+        - name: df1[pillai]
+          title: df1
+          type: integer
+          visible: (multivarStats:pillai)
+
+        - name: df2[pillai]
+          title: df2
+          type: integer
+          visible: (multivarStats:pillai)
+
+        - name: p[pillai]
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (multivarStats:pillai)
+
+        - name: term[wilks]
+          title: ""
+          type: "text"
+          combineBelow: true
+          visible: (multivarStats:wilks)
+
+        - name: test[wilks]
+          title: ""
+          type: "text"
+          content: Wilks' Lambda
+          visible: (multivarStats:wilks)
+
+        - name: stat[wilks]
+          title: value
+          type: number
+          visible: (multivarStats:wilks)
+
+        - name: f[wilks]
+          title: F
+          type: number
+          visible: (multivarStats:wilks)
+
+        - name: df1[wilks]
+          title: df1
+          type: integer
+          visible: (multivarStats:wilks)
+
+        - name: df2[wilks]
+          title: df2
+          type: integer
+          visible: (multivarStats:wilks)
+
+        - name: p[wilks]
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (multivarStats:wilks)
+
+        - name: term[hotel]
+          title: ""
+          type: "text"
+          combineBelow: true
+          visible: (multivarStats:hotel)
+
+        - name: test[hotel]
+          title: ""
+          type: "text"
+          content: Hotelling's Trace
+          visible: (multivarStats:hotel)
+
+        - name: stat[hotel]
+          title: value
+          type: number
+          visible: (multivarStats:hotel)
+
+        - name: f[hotel]
+          title: F
+          type: number
+          visible: (multivarStats:hotel)
+
+        - name: df1[hotel]
+          title: df1
+          type: integer
+          visible: (multivarStats:hotel)
+
+        - name: df2[hotel]
+          title: df2
+          type: integer
+          visible: (multivarStats:hotel)
+
+        - name: p[hotel]
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (multivarStats:hotel)
+
+        - name: term[roy]
+          title: ""
+          type: "text"
+          combineBelow: true
+          visible: (multivarStats:roy)
+
+        - name: test[roy]
+          title: ""
+          type: "text"
+          content: Roy's Largest Root
+          visible: (multivarStats:roy)
+
+        - name: stat[roy]
+          title: value
+          type: number
+          visible: (multivarStats:roy)
+
+        - name: f[roy]
+          title: F
+          type: number
+          visible: (multivarStats:roy)
+
+        - name: df1[roy]
+          title: df1
+          type: integer
+          visible: (multivarStats:roy)
+
+        - name: df2[roy]
+          title: df2
+          type: integer
+          visible: (multivarStats:roy)
+
+        - name: p[roy]
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (multivarStats:roy)
+
+    - name: univar
+      title: Univariate Tests
+      type: Table
+      clearWith:
+        - deps
+        - fixedFactors
+        - covariates
+
+      columns:
+        - name: term
+          title: ""
+          type: text
+          combineBelow: true
+
+        - name: dep
+          title: "Dependent Variable"
+          type: text
+
+        - name: ss
+          title: Sum of Squares
+          type: number
+
+        - name: df
+          title: df
+          type: integer
+
+        - name: ms
+          title: Mean Square
+          type: number
+
+        - name: F
+          title: F
+          type: number
+
+        - name: p
+          title: p
+          type: number
+          format: zto,pvalue
+
+    - name: assump
+      title: Assumption Checks
+      type: Group
+      items:
+        - name: boxM
+          title: Box's Homogeneity of Covariance Matrices Test
+          type: Table
+          visible: (boxM)
+          rows: 1
+          clearWith:
+            - deps
+            - fixedFactors
+          columns:
+            - name: chi
+              title: χ²
+              type: number
+            - name: df
+              title: df
+              type: integer
+            - name: p
+              title: p
+              type: number
+              format: zto,pvalue
+
+        - name: shapiroWilk
+          title: Shapiro-Wilk Multivariate Normality Test
+          type: Table
+          visible: (shapiroWilk)
+          rows: 1
+          clearWith:
+            - deps
+          columns:
+            - name: w
+              title: 'W'
+              type: number
+            - name: p
+              title: p
+              type: number
+              format: zto,pvalue
+
+        - name: qqPlot
+          title: Q-Q Plot Assessing Multivariate Normality
+          type: Image
+          width: 450
+          height: 400
+          renderFun: .qqPlot
+          visible: (qqPlot)
+          clearWith:
+            - deps
