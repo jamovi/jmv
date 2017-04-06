@@ -45,6 +45,7 @@ children:
         collapsed: true
         children:
           - type: Label
+            label: ""
             fitToGrid: true
             cell:
               row: 0
@@ -60,6 +61,7 @@ children:
                 name: likeRat
                 label: Likelihood ratio
           - type: Label
+            label: ""
             fitToGrid: true
             cell:
               column: 1
