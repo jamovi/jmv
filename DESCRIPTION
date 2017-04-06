@@ -28,7 +28,9 @@ Imports:
     BayesFactor,
     psych,
     GPArotation,
-    afex
+    afex,
+    mvnormtest,
+    QuantPsyc
 Suggests:
     testthat
 Encoding: UTF-8

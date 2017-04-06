@@ -1,13 +1,20 @@
 title: Linear Regression
 name: linReg
 jus: '2.0'
-stage: 1
+stage: 0
 events:
   update: './linreg.events::update'
 children:
   - type: VariableSupplier
     persistentItems: false
     stretchFactor: 1
+    suggested:
+      - continuous
+      - ordinal
+    permitted:
+      - continuous
+      - nominal
+      - ordinal
     children:
       - type: TargetLayoutBox
         label: Dependent Variable
@@ -20,7 +27,7 @@ children:
         label: Covariates
         children:
           - type: ListBox
-            name: cov
+            name: blocks
             height: large
             addButton: Add New Block
             events:
@@ -42,3 +49,120 @@ children:
                   isTarget: true
                   height: auto
                   ghostText: drag variables here
+  - type: LayoutBox
+    margin: large
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        cell:
+          column: 0
+          row: 0
+        stretchFactor: 1
+        children:
+          - type: Label
+            label: Model Coefficients
+            children:
+              - type: CheckBox
+                name: stdEst
+                label: Standardized estimate
+              - type: CheckBox
+                name: ci
+                label: Confidence interval
+                children:
+                  - type: TextBox
+                    name: ciWidth
+                    label: Interval
+                    suffix: '%'
+                    format: number
+                    inputPattern: '[0-9]+'
+                    enable: (ci)
+              - type: CheckBox
+                name: coefPlot
+                label: Coefficient plot
+            name: modelComp
+          - type: Label
+            label: Data Summary
+            children:
+              - type: CheckBox
+                name: desc
+                label: Descriptives
+              - type: CheckBox
+                name: cooks
+                label: Cook's distance
+          - type: Label
+            label: Assumption Checks
+            children:
+              - type: CheckBox
+                name: durbinWatson
+                label: Autocorrelation test
+              - type: CheckBox
+                name: collinearity
+                label: Collinearity statistics
+              - type: CheckBox
+                name: qqPlot
+                label: Q-Q plot of residuals
+              - type: CheckBox
+                name: resPlots
+                label: Residual plots
+      - type: LayoutBox
+        cell:
+          column: 1
+          row: 0
+        stretchFactor: 1
+        children:
+          - type: Label
+            label: Fit Measures
+            children:
+              - name: fitMeasures_r
+                type: CheckBox
+                label: R
+                checkedValue: r
+                optionId: fitMeasures
+              - name: fitMeasures_r2
+                type: CheckBox
+                label: R²
+                checkedValue: r2
+                optionId: fitMeasures
+              - name: fitMeasures_aic
+                type: CheckBox
+                label: AIC
+                checkedValue: aic
+                optionId: fitMeasures
+              - name: fitMeasures_bic
+                type: CheckBox
+                label: BIC
+                checkedValue: bic
+                optionId: fitMeasures
+              - name: fitMeasures_rmse
+                type: CheckBox
+                label: RMSE
+                checkedValue: rmse
+                optionId: fitMeasures
+            name: fitMeasures
+          - type: Label
+            label: Overall Model Test
+            children:
+              - name: modelTest_f
+                type: CheckBox
+                label: Classical F-test
+                checkedValue: f
+                optionId: modelTest
+              - name: modelTest_bf
+                type: CheckBox
+                label: Bayes factor
+                checkedValue: bf
+                optionId: modelTest
+            name: modelTest
+          - type: Label
+            label: Model Comparison Test
+            children:
+              - name: modelComp_f
+                type: CheckBox
+                label: Classical F-test
+                checkedValue: f
+                optionId: modelComp
+              - name: modelComp_bf
+                type: CheckBox
+                label: Bayes factor
+                checkedValue: bf
+                optionId: modelComp
