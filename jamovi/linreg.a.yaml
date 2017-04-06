@@ -1,11 +1,42 @@
 ---
-name:    linReg
-title:   Linear Regression
+name: linReg
+title: Linear Regression
 menuGroup: Regression
 version: '1.0.0'
-jas: '1.1'
+jas: '1.0'
 
-completeWhenFilled: true
+description:
+    main: Linear Regression
+    R:
+        dontrun: false
+        usage: |
+            data('Prestige')
+            dat <- Prestige
+
+            jmv::linReg(data=data, dep="income",
+                        blocks=list(c("education", "prestige", "women")))
+
+            #
+            #  Model Fit Measures
+            #  ───────────────────────────
+            #    Model    R        R²
+            #  ───────────────────────────
+            #    1        0.802    0.643
+            #  ───────────────────────────
+            #
+            #
+            #
+            #  Model Coefficients
+            #  ─────────────────────────────────────────────────────────────────
+            #    Model    Predictor    Estimate    SE         t         p
+            #  ─────────────────────────────────────────────────────────────────
+            #    1        Intercept      -253.8    1086.16    -0.234     0.816
+            #             education       177.2     187.63     0.944     0.347
+            #             prestige        141.4      29.91     4.729    < .001
+            #             women           -50.9       8.56    -5.948    < .001
+            #  ─────────────────────────────────────────────────────────────────
+            #
+            #
 
 options:
     - name: data
@@ -25,7 +56,7 @@ options:
       description:
           R: a string naming the dependent variable
 
-    - name: cov
+    - name: blocks
       title: Covariates
       type: Array
       default: [[]]
@@ -33,8 +64,159 @@ options:
           type: Variables
       description:
           R: >
-            a list of lists, where each list describes the `label` (as a
-            string) and the `levels` (as vector of strings) of a particular
-            repeated measures factor
+            the blocks that go into the model
 
+    - name: fitMeasures
+      title: Fit Measures
+      type: NMXList
+      options:
+          - name: r
+            title: R
+          - name: rSqr
+            title: R²
+          - name: aic
+            title: AIC
+          - name: bic
+            title: BIC
+          - name: rmse
+            title: RMSE
+      default:
+          - r
+          - rSqr
+      description:
+          R: >
+            one or more of `'r'`, `'rSqr'`, `'aic'`, `'bic'`, or `'rmse'`;
+            use R, R², AIC, BIC, and RMSE model fit measures, respectively
+
+    - name: modelTest
+      title: Overall Model Test
+      type: NMXList
+      options:
+          - name: f
+            title: Classical F-test
+          - name: bf
+            title: Bayes factor
+      default:
+      description:
+          R: >
+            one or more of `'f'`, or `'bf'`; Use classical F-test, and
+            Bayes factor respectively as overall model tests.
+
+    - name: modelComp
+      title: Model Comparison Test
+      type: NMXList
+      options:
+          - name: f
+            title: Classical F-test
+          - name: bf
+            title: Bayes factor
+      default:
+          - f
+      description:
+          R: >
+            one or more of `'f'`, or `'bf'`; Use classical F-test, and
+            Bayes factor respectively as model comparison tests.
+
+    - name: stdEst
+      title: Standardized estimate
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a standardized estimate
+            for the model coefficients
+
+    - name: ci
+      title: Confidence interval
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a confidence interval
+            for the model coefficients
+
+    - name: ciWidth
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width
+
+    - name: coefPlot
+      title: Coefficient plot
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a coefficient plot where
+            for each predictor the estimated coefficient and confidence
+            intervals are plotted.
+
+    - name: qqPlot
+      title: Q-Q plot of residuals
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a Q-Q plot of residuals
+
+    - name: resPlots
+      title: Residual plots
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide residual plots where
+            the dependent variable and each covariate is plotted against
+            the standardized residuals.
+
+    - name: durbinWatson
+      title: Autocorrelation test
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide results of the Durbin-
+            Watson test for autocorrelation
+
+    - name: collinearity
+      title: Collinearity statistics
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide VIF and tolerence
+            collinearity statistics
+
+    - name: desc
+      title: Descriptives
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide descriptive statistics
+
+    - name: cooks
+      title: Cook's distance
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide summary statistics for
+            the Cook's distance
+
+    - name: modelSelected
+      title: modelSelected
+      type: Integer
+      default: -1
+      hidden: true
+      description:
+          R: >
+            an integer defining the model for which the model specific
+            output needs to be calculated (defaults to most complex
+            model)
 ...

@@ -98,7 +98,7 @@ analyses:
     menuGroup: Regression
     menuTitle: Linear Regression
     stage: 1
-    description: null
+    description: Linear Regression
   - title: Proportion Test (2 Outcomes)
     name: propTest2
     ns: jmv

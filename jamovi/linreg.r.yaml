@@ -4,10 +4,346 @@ title: Linear Regression
 jrs: '1.0'
 
 items:
-    - name: table
-      title: Linear Regression
+    - name: modelFit
+      title: Model Fit Measures
       type: Table
+      rowSelect: (modelSelected)
+      clearWith:
+        - dep
+        - blocks
 
       columns:
-          - name: var
-            title: ""
+        - name: model
+          title: "Model"
+          type: text
+
+        - name: r
+          title: R
+          type: number
+          visible: (fitMeasures:r)
+
+        - name: rSqr
+          title: R²
+          type: number
+          visible: (fitMeasures:rSqr)
+
+        - name: aic
+          title: AIC
+          type: number
+          visible: (fitMeasures:aic)
+
+        - name: bic
+          title: BIC
+          type: number
+          visible: (fitMeasures:bic)
+
+        - name: rmse
+          title: RMSE
+          type: number
+          visible: (fitMeasures:rmse)
+
+        - name: f
+          title: F
+          type: number
+          superTitle: Overall Model Test
+          visible: (modelTest:f)
+
+        - name: df1
+          title: df1
+          type: integer
+          superTitle: Overall Model Test
+          visible: (modelTest:f)
+
+        - name: df2
+          title: df2
+          type: integer
+          superTitle: Overall Model Test
+          visible: (modelTest:f)
+
+        - name: p
+          title: p
+          type: number
+          format: zto,pvalue
+          superTitle: Overall Model Test
+          visible: (modelTest:f)
+
+        - name: bf
+          title: BF₁₀
+          type: number
+          superTitle: Overall Model Test
+          visible: (modelTest:bf)
+
+        - name: err
+          title: '±%'
+          type: number
+          superTitle: Overall Model Test
+          visible: (modelTest:bf)
+
+    - name: modelComp
+      title: Model Comparisons
+      type: Table
+      clearWith:
+        - dep
+        - blocks
+
+      columns:
+        - name: model1
+          title: 'Model'
+          content: .
+          type: text
+          superTitle: Comparison
+
+        - name: sep
+          title: ""
+          content: "-"
+          type: text
+          format: narrow
+          superTitle: Comparison
+
+        - name: model2
+          title: 'Model'
+          content: .
+          type: text
+          superTitle: Comparison
+
+        - name: rSqr
+          title: ΔR²
+          type: number
+
+        - name: f
+          title: F
+          type: number
+          visible: (modelComp:f)
+
+        - name: df1
+          title: df1
+          type: integer
+          visible: (modelComp:f)
+
+        - name: df2
+          title: df2
+          type: integer
+          visible: (modelComp:f)
+
+        - name: p
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (modelComp:f)
+
+        - name: bf
+          title: BF₁₀
+          type: number
+          visible: (modelComp:bf)
+
+        - name: err
+          title: '±%'
+          type: number
+          visible: (modelComp:bf)
+
+    - name: coef
+      title: Model Coefficients
+      type: Table
+      clearWith:
+        - dep
+        - blocks
+
+      columns:
+        - name: model
+          title: Model
+          type: text
+          combineBelow: true
+
+        - name: terms
+          title: "Predictor"
+          type: text
+
+        - name: est
+          title: Estimate
+          type: number
+
+        - name: se
+          title: SE
+          type: number
+
+        - name: lower
+          title: Lower
+          type: number
+          visible: (ci)
+
+        - name: upper
+          title: Upper
+          type: number
+          visible: (ci)
+
+        - name: stdEst
+          title: Stand. Estimate
+          type: number
+          visible: (stdEst)
+
+        - name: t
+          title: t
+          type: number
+
+        - name: p
+          title: p
+          type: number
+          format: zto,pvalue
+
+    - name: coefPlot
+      title: Coefficient Plot
+      type: Image
+      width: 500
+      height: 500
+      renderFun: .coefPlot
+      visible: (coefPlot)
+      clearWith:
+        - dep
+        - blocks
+        - selectedModel
+        - ciWidth
+
+    - name: dataSummary
+      title: Data Summary
+      type: Group
+      items:
+        - name: desc
+          title: Descriptives
+          type: Table
+          visible: (desc)
+          clearWith:
+            - dep
+            - blocks
+            - selectedModel
+
+          columns:
+            - name: name
+              title: ""
+              type: text
+
+            - name: num
+              title: "N"
+              type: number
+
+            - name: mean
+              title: Mean
+              type: number
+
+            - name: median
+              title: Median
+              type: number
+
+            - name: sd
+              title: SD
+              type: number
+
+            - name: se
+              title: SE
+              type: number
+
+        - name: cooks
+          title: Cook's Distance
+          type: Table
+          rows: 1
+          visible: (cooks)
+          clearWith:
+            - dep
+            - blocks
+            - selectedModel
+
+          columns:
+            - name: mean
+              title: Mean
+              type: number
+
+            - name: median
+              title: Median
+              type: number
+
+            - name: sd
+              title: SD
+              type: number
+
+            - name: min
+              title: Min
+              type: number
+              superTitle: Range
+
+            - name: max
+              title: Max
+              type: number
+              superTitle: Range
+
+    - name: assump
+      title: Assumption Checks
+      type: Group
+      items:
+        - name: durbinWatson
+          title: Durbin–Watson Test for Autocorrelation
+          type: Table
+          rows: 1
+          visible: (durbinWatson)
+          clearWith:
+            - dep
+            - blocks
+            - selectedModel
+
+          columns:
+            - name: autoCor
+              title: Autocorrelation
+              type: number
+
+            - name: dw
+              title: DW Statistic
+              type: number
+
+            - name: p
+              title: p
+              type: number
+              format: zto,pvalue
+
+        - name: collinearity
+          title: Collinearity Statistics
+          type: Table
+          visible: (collinearity)
+          clearWith:
+            - dep
+            - blocks
+            - selectedModel
+
+          columns:
+            - name: term
+              title: ''
+              type: text
+
+            - name: vif
+              title: VIF
+              type: number
+
+            - name: tol
+              title: Tolerance
+              type: number
+
+        - name: qqPlot
+          title: Q-Q Plot
+          type: Image
+          width: 450
+          height: 400
+          renderFun: .qqPlot
+          visible: (qqPlot)
+          clearWith:
+            - dep
+            - blocks
+            - selectedModel
+
+        - name: resPlots
+          title: Residuals Plots
+          type: Array
+          visible: (resPlots)
+          template:
+              type: Image
+              renderFun: .resPlot
+              clearWith:
+                - dep
+                - blocks
+                - selectedModel

@@ -9,8 +9,25 @@ linRegOptions <- R6::R6Class(
     public = list(
         initialize = function(
             dep = NULL,
-            cov = list(
-                list()), ...) {
+            blocks = list(
+                list()),
+            fitMeasures = list(
+                "r",
+                "rSqr"),
+            modelTest = NULL,
+            modelComp = list(
+                "f"),
+            stdEst = FALSE,
+            ci = FALSE,
+            ciWidth = 95,
+            coefPlot = FALSE,
+            qqPlot = FALSE,
+            resPlots = FALSE,
+            durbinWatson = FALSE,
+            collinearity = FALSE,
+            desc = FALSE,
+            cooks = FALSE,
+            modelSelected = -1, ...) {
 
             super$initialize(
                 package='jmv',
@@ -27,24 +44,140 @@ linRegOptions <- R6::R6Class(
                     "continuous",
                     "nominal",
                     "ordinal"))
-            private$..cov <- jmvcore::OptionArray$new(
-                "cov",
-                cov,
+            private$..blocks <- jmvcore::OptionArray$new(
+                "blocks",
+                blocks,
                 default=list(
                     list()),
                 template=jmvcore::OptionVariables$new(
-                    "cov",
+                    "blocks",
                     NULL))
+            private$..fitMeasures <- jmvcore::OptionNMXList$new(
+                "fitMeasures",
+                fitMeasures,
+                options=list(
+                    list(name="r", title="R"),
+                    list(name="rSqr", title="R\u00B2"),
+                    list(name="aic", title="AIC"),
+                    list(name="bic", title="BIC"),
+                    list(name="rmse", title="RMSE")),
+                default=list(
+                    "r",
+                    "rSqr"))
+            private$..modelTest <- jmvcore::OptionNMXList$new(
+                "modelTest",
+                modelTest,
+                options=list(
+                    list(name="f", title="Classical F-test"),
+                    list(name="bf", title="Bayes factor")),
+                default=NULL)
+            private$..modelComp <- jmvcore::OptionNMXList$new(
+                "modelComp",
+                modelComp,
+                options=list(
+                    list(name="f", title="Classical F-test"),
+                    list(name="bf", title="Bayes factor")),
+                default=list(
+                    "f"))
+            private$..stdEst <- jmvcore::OptionBool$new(
+                "stdEst",
+                stdEst,
+                default=FALSE)
+            private$..ci <- jmvcore::OptionBool$new(
+                "ci",
+                ci,
+                default=FALSE)
+            private$..ciWidth <- jmvcore::OptionNumber$new(
+                "ciWidth",
+                ciWidth,
+                min=50,
+                max=99.9,
+                default=95)
+            private$..coefPlot <- jmvcore::OptionBool$new(
+                "coefPlot",
+                coefPlot,
+                default=FALSE)
+            private$..qqPlot <- jmvcore::OptionBool$new(
+                "qqPlot",
+                qqPlot,
+                default=FALSE)
+            private$..resPlots <- jmvcore::OptionBool$new(
+                "resPlots",
+                resPlots,
+                default=FALSE)
+            private$..durbinWatson <- jmvcore::OptionBool$new(
+                "durbinWatson",
+                durbinWatson,
+                default=FALSE)
+            private$..collinearity <- jmvcore::OptionBool$new(
+                "collinearity",
+                collinearity,
+                default=FALSE)
+            private$..desc <- jmvcore::OptionBool$new(
+                "desc",
+                desc,
+                default=FALSE)
+            private$..cooks <- jmvcore::OptionBool$new(
+                "cooks",
+                cooks,
+                default=FALSE)
+            private$..modelSelected <- jmvcore::OptionInteger$new(
+                "modelSelected",
+                modelSelected,
+                default=-1,
+                hidden=TRUE)
         
             self$.addOption(private$..dep)
-            self$.addOption(private$..cov)
+            self$.addOption(private$..blocks)
+            self$.addOption(private$..fitMeasures)
+            self$.addOption(private$..modelTest)
+            self$.addOption(private$..modelComp)
+            self$.addOption(private$..stdEst)
+            self$.addOption(private$..ci)
+            self$.addOption(private$..ciWidth)
+            self$.addOption(private$..coefPlot)
+            self$.addOption(private$..qqPlot)
+            self$.addOption(private$..resPlots)
+            self$.addOption(private$..durbinWatson)
+            self$.addOption(private$..collinearity)
+            self$.addOption(private$..desc)
+            self$.addOption(private$..cooks)
+            self$.addOption(private$..modelSelected)
         }),
     active = list(
         dep = function() private$..dep$value,
-        cov = function() private$..cov$value),
+        blocks = function() private$..blocks$value,
+        fitMeasures = function() private$..fitMeasures$value,
+        modelTest = function() private$..modelTest$value,
+        modelComp = function() private$..modelComp$value,
+        stdEst = function() private$..stdEst$value,
+        ci = function() private$..ci$value,
+        ciWidth = function() private$..ciWidth$value,
+        coefPlot = function() private$..coefPlot$value,
+        qqPlot = function() private$..qqPlot$value,
+        resPlots = function() private$..resPlots$value,
+        durbinWatson = function() private$..durbinWatson$value,
+        collinearity = function() private$..collinearity$value,
+        desc = function() private$..desc$value,
+        cooks = function() private$..cooks$value,
+        modelSelected = function() private$..modelSelected$value),
     private = list(
         ..dep = NA,
-        ..cov = NA)
+        ..blocks = NA,
+        ..fitMeasures = NA,
+        ..modelTest = NA,
+        ..modelComp = NA,
+        ..stdEst = NA,
+        ..ci = NA,
+        ..ciWidth = NA,
+        ..coefPlot = NA,
+        ..qqPlot = NA,
+        ..resPlots = NA,
+        ..durbinWatson = NA,
+        ..collinearity = NA,
+        ..desc = NA,
+        ..cooks = NA,
+        ..modelSelected = NA)
 )
 
 #' @import jmvcore
@@ -52,19 +185,212 @@ linRegOptions <- R6::R6Class(
 linRegResults <- R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        table = function() private$..table),
+        modelFit = function() private$..modelFit,
+        modelComp = function() private$..modelComp,
+        coef = function() private$..coef,
+        coefPlot = function() private$..coefPlot,
+        dataSummary = function() private$..dataSummary,
+        assump = function() private$..assump),
     private = list(
-        ..table = NA),
+        ..modelFit = NA,
+        ..modelComp = NA,
+        ..coef = NA,
+        ..coefPlot = NA,
+        ..dataSummary = NA,
+        ..assump = NA),
     public=list(
         initialize=function(options) {
             super$initialize(options=options, name="", title="Linear Regression")
-            private$..table <- jmvcore::Table$new(
+            private$..modelFit <- jmvcore::Table$new(
                 options=options,
-                name="table",
-                title="Linear Regression",
+                name="modelFit",
+                title="Model Fit Measures",
+                rowSelect="(modelSelected)",
+                clearWith=list(
+                    "dep",
+                    "blocks"),
                 columns=list(
-                    list(`name`="var", `title`="")))
-            self$add(private$..table)}))
+                    list(`name`="model", `title`="Model", `type`="text"),
+                    list(`name`="r", `title`="R", `type`="number", `visible`="(fitMeasures:r)"),
+                    list(`name`="rSqr", `title`="R\u00B2", `type`="number", `visible`="(fitMeasures:rSqr)"),
+                    list(`name`="aic", `title`="AIC", `type`="number", `visible`="(fitMeasures:aic)"),
+                    list(`name`="bic", `title`="BIC", `type`="number", `visible`="(fitMeasures:bic)"),
+                    list(`name`="rmse", `title`="RMSE", `type`="number", `visible`="(fitMeasures:rmse)"),
+                    list(`name`="f", `title`="F", `type`="number", `superTitle`="Overall Model Test", `visible`="(modelTest:f)"),
+                    list(`name`="df1", `title`="df1", `type`="integer", `superTitle`="Overall Model Test", `visible`="(modelTest:f)"),
+                    list(`name`="df2", `title`="df2", `type`="integer", `superTitle`="Overall Model Test", `visible`="(modelTest:f)"),
+                    list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue", `superTitle`="Overall Model Test", `visible`="(modelTest:f)"),
+                    list(`name`="bf", `title`="BF\u2081\u2080", `type`="number", `superTitle`="Overall Model Test", `visible`="(modelTest:bf)"),
+                    list(`name`="err", `title`="\u00B1%", `type`="number", `superTitle`="Overall Model Test", `visible`="(modelTest:bf)")))
+            private$..modelComp <- jmvcore::Table$new(
+                options=options,
+                name="modelComp",
+                title="Model Comparisons",
+                clearWith=list(
+                    "dep",
+                    "blocks"),
+                columns=list(
+                    list(`name`="model1", `title`="Model", `content`=".", `type`="text", `superTitle`="Comparison"),
+                    list(`name`="sep", `title`="", `content`="-", `type`="text", `format`="narrow", `superTitle`="Comparison"),
+                    list(`name`="model2", `title`="Model", `content`=".", `type`="text", `superTitle`="Comparison"),
+                    list(`name`="rSqr", `title`="\u0394R\u00B2", `type`="number"),
+                    list(`name`="f", `title`="F", `type`="number", `visible`="(modelComp:f)"),
+                    list(`name`="df1", `title`="df1", `type`="integer", `visible`="(modelComp:f)"),
+                    list(`name`="df2", `title`="df2", `type`="integer", `visible`="(modelComp:f)"),
+                    list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(modelComp:f)"),
+                    list(`name`="bf", `title`="BF\u2081\u2080", `type`="number", `visible`="(modelComp:bf)"),
+                    list(`name`="err", `title`="\u00B1%", `type`="number", `visible`="(modelComp:bf)")))
+            private$..coef <- jmvcore::Table$new(
+                options=options,
+                name="coef",
+                title="Model Coefficients",
+                clearWith=list(
+                    "dep",
+                    "blocks"),
+                columns=list(
+                    list(`name`="model", `title`="Model", `type`="text", `combineBelow`=TRUE),
+                    list(`name`="terms", `title`="Predictor", `type`="text"),
+                    list(`name`="est", `title`="Estimate", `type`="number"),
+                    list(`name`="se", `title`="SE", `type`="number"),
+                    list(`name`="lower", `title`="Lower", `type`="number", `visible`="(ci)"),
+                    list(`name`="upper", `title`="Upper", `type`="number", `visible`="(ci)"),
+                    list(`name`="stdEst", `title`="Stand. Estimate", `type`="number", `visible`="(stdEst)"),
+                    list(`name`="t", `title`="t", `type`="number"),
+                    list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue")))
+            private$..coefPlot <- jmvcore::Image$new(
+                options=options,
+                name="coefPlot",
+                title="Coefficient Plot",
+                width=500,
+                height=500,
+                renderFun=".coefPlot",
+                visible="(coefPlot)",
+                clearWith=list(
+                    "dep",
+                    "blocks",
+                    "selectedModel",
+                    "ciWidth"))
+            private$..dataSummary <- R6::R6Class(
+                inherit = jmvcore::Group,
+                active = list(
+                    desc = function() private$..desc,
+                    cooks = function() private$..cooks),
+                private = list(
+                    ..desc = NA,
+                    ..cooks = NA),
+                public=list(
+                    initialize=function(options) {
+                        super$initialize(options=options, name="dataSummary", title="Data Summary")
+                        private$..desc <- jmvcore::Table$new(
+                            options=options,
+                            name="desc",
+                            title="Descriptives",
+                            visible="(desc)",
+                            clearWith=list(
+                                "dep",
+                                "blocks",
+                                "selectedModel"),
+                            columns=list(
+                                list(`name`="name", `title`="", `type`="text"),
+                                list(`name`="num", `title`="N", `type`="number"),
+                                list(`name`="mean", `title`="Mean", `type`="number"),
+                                list(`name`="median", `title`="Median", `type`="number"),
+                                list(`name`="sd", `title`="SD", `type`="number"),
+                                list(`name`="se", `title`="SE", `type`="number")))
+                        private$..cooks <- jmvcore::Table$new(
+                            options=options,
+                            name="cooks",
+                            title="Cook's Distance",
+                            rows=1,
+                            visible="(cooks)",
+                            clearWith=list(
+                                "dep",
+                                "blocks",
+                                "selectedModel"),
+                            columns=list(
+                                list(`name`="mean", `title`="Mean", `type`="number"),
+                                list(`name`="median", `title`="Median", `type`="number"),
+                                list(`name`="sd", `title`="SD", `type`="number"),
+                                list(`name`="min", `title`="Min", `type`="number", `superTitle`="Range"),
+                                list(`name`="max", `title`="Max", `type`="number", `superTitle`="Range")))
+                        self$add(private$..desc)
+                        self$add(private$..cooks)}))$new(options=options)
+            private$..assump <- R6::R6Class(
+                inherit = jmvcore::Group,
+                active = list(
+                    durbinWatson = function() private$..durbinWatson,
+                    collinearity = function() private$..collinearity,
+                    qqPlot = function() private$..qqPlot,
+                    resPlots = function() private$..resPlots),
+                private = list(
+                    ..durbinWatson = NA,
+                    ..collinearity = NA,
+                    ..qqPlot = NA,
+                    ..resPlots = NA),
+                public=list(
+                    initialize=function(options) {
+                        super$initialize(options=options, name="assump", title="Assumption Checks")
+                        private$..durbinWatson <- jmvcore::Table$new(
+                            options=options,
+                            name="durbinWatson",
+                            title="Durbin\u2013Watson Test for Autocorrelation",
+                            rows=1,
+                            visible="(durbinWatson)",
+                            clearWith=list(
+                                "dep",
+                                "blocks",
+                                "selectedModel"),
+                            columns=list(
+                                list(`name`="autoCor", `title`="Autocorrelation", `type`="number"),
+                                list(`name`="dw", `title`="DW Statistic", `type`="number"),
+                                list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue")))
+                        private$..collinearity <- jmvcore::Table$new(
+                            options=options,
+                            name="collinearity",
+                            title="Collinearity Statistics",
+                            visible="(collinearity)",
+                            clearWith=list(
+                                "dep",
+                                "blocks",
+                                "selectedModel"),
+                            columns=list(
+                                list(`name`="term", `title`="", `type`="text"),
+                                list(`name`="vif", `title`="VIF", `type`="number"),
+                                list(`name`="tol", `title`="Tolerance", `type`="number")))
+                        private$..qqPlot <- jmvcore::Image$new(
+                            options=options,
+                            name="qqPlot",
+                            title="Q-Q Plot",
+                            width=450,
+                            height=400,
+                            renderFun=".qqPlot",
+                            visible="(qqPlot)",
+                            clearWith=list(
+                                "dep",
+                                "blocks",
+                                "selectedModel"))
+                        private$..resPlots <- jmvcore::Array$new(
+                            options=options,
+                            name="resPlots",
+                            title="Residuals Plots",
+                            visible="(resPlots)",
+                            template=jmvcore::Image$new(
+                                options=options,
+                                renderFun=".resPlot",
+                                clearWith=list(
+                                    "dep",
+                                    "blocks",
+                                    "selectedModel")))
+                        self$add(private$..durbinWatson)
+                        self$add(private$..collinearity)
+                        self$add(private$..qqPlot)
+                        self$add(private$..resPlots)}))$new(options=options)
+            self$add(private$..modelFit)
+            self$add(private$..modelComp)
+            self$add(private$..coef)
+            self$add(private$..coefPlot)
+            self$add(private$..dataSummary)
+            self$add(private$..assump)}))
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
@@ -84,27 +410,117 @@ linRegBase <- R6::R6Class(
                 analysisId = analysisId,
                 revision = revision,
                 pause = NULL,
-                completeWhenFilled = TRUE)
+                completeWhenFilled = FALSE)
         }))
 
 #' Linear Regression
 #'
+#' Linear Regression
+#'
+#' @examples
+#' data('Prestige')
+#' dat <- Prestige
+#' 
+#' jmv::linReg(data=data, dep="income",
+#'             blocks=list(c("education", "prestige", "women")))
+#' 
+#' #
+#' #  Model Fit Measures
+#' #  ───────────────────────────
+#' #    Model    R        R²
+#' #  ───────────────────────────
+#' #    1        0.802    0.643
+#' #  ───────────────────────────
+#' #
+#' #
+#' #
+#' #  Model Coefficients
+#' #  ─────────────────────────────────────────────────────────────────
+#' #    Model    Predictor    Estimate    SE         t         p
+#' #  ─────────────────────────────────────────────────────────────────
+#' #    1        Intercept      -253.8    1086.16    -0.234     0.816
+#' #             education       177.2     187.63     0.944     0.347
+#' #             prestige        141.4      29.91     4.729    < .001
+#' #             women           -50.9       8.56    -5.948    < .001
+#' #  ─────────────────────────────────────────────────────────────────
+#' #
+#' #
 #' 
 #' @param data the data as a data frame
 #' @param dep a string naming the dependent variable
-#' @param cov a list of lists, where each list describes the \code{label} (as 
-#'   a string) and the \code{levels} (as vector of strings) of a particular 
-#'   repeated measures factor 
+#' @param blocks the blocks that go into the model 
+#' @param fitMeasures one or more of \code{'r'}, \code{'rSqr'}, \code{'aic'}, 
+#'   \code{'bic'}, or \code{'rmse'}; use R, R², AIC, BIC, and RMSE model fit 
+#'   measures, respectively 
+#' @param modelTest one or more of \code{'f'}, or \code{'bf'}; Use classical 
+#'   F-test, and Bayes factor respectively as overall model tests. 
+#' @param modelComp one or more of \code{'f'}, or \code{'bf'}; Use classical 
+#'   F-test, and Bayes factor respectively as model comparison tests. 
+#' @param stdEst \code{TRUE} or \code{FALSE} (default), provide a standardized 
+#'   estimate for the model coefficients 
+#' @param ci \code{TRUE} or \code{FALSE} (default), provide a confidence 
+#'   interval for the model coefficients 
+#' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the 
+#'   confidence interval width 
+#' @param coefPlot \code{TRUE} or \code{FALSE} (default), provide a 
+#'   coefficient plot where for each predictor the estimated coefficient and 
+#'   confidence intervals are plotted. 
+#' @param qqPlot \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of 
+#'   residuals 
+#' @param resPlots \code{TRUE} or \code{FALSE} (default), provide residual 
+#'   plots where the dependent variable and each covariate is plotted against 
+#'   the standardized residuals. 
+#' @param durbinWatson \code{TRUE} or \code{FALSE} (default), provide results 
+#'   of the Durbin- Watson test for autocorrelation 
+#' @param collinearity \code{TRUE} or \code{FALSE} (default), provide VIF and 
+#'   tolerence collinearity statistics 
+#' @param desc \code{TRUE} or \code{FALSE} (default), provide descriptive 
+#'   statistics 
+#' @param cooks \code{TRUE} or \code{FALSE} (default), provide summary 
+#'   statistics for the Cook's distance 
+#' @param modelSelected an integer defining the model for which the model 
+#'   specific output needs to be calculated (defaults to most complex model) 
 #' @export
 linReg <- function(
     data,
     dep,
-    cov = list(
-                list())) {
+    blocks = list(
+                list()),
+    fitMeasures = list(
+                "r",
+                "rSqr"),
+    modelTest = NULL,
+    modelComp = list(
+                "f"),
+    stdEst = FALSE,
+    ci = FALSE,
+    ciWidth = 95,
+    coefPlot = FALSE,
+    qqPlot = FALSE,
+    resPlots = FALSE,
+    durbinWatson = FALSE,
+    collinearity = FALSE,
+    desc = FALSE,
+    cooks = FALSE,
+    modelSelected = -1) {
 
     options <- linRegOptions$new(
         dep = dep,
-        cov = cov)
+        blocks = blocks,
+        fitMeasures = fitMeasures,
+        modelTest = modelTest,
+        modelComp = modelComp,
+        stdEst = stdEst,
+        ci = ci,
+        ciWidth = ciWidth,
+        coefPlot = coefPlot,
+        qqPlot = qqPlot,
+        resPlots = resPlots,
+        durbinWatson = durbinWatson,
+        collinearity = collinearity,
+        desc = desc,
+        cooks = cooks,
+        modelSelected = modelSelected)
 
     results <- linRegResults$new(
         options = options)

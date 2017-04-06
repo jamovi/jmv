@@ -11,7 +11,7 @@ const events = {
 };
 
 let updateModelLabels = function(ui) {
-    let list = ui.cov.applyToItems(0, (item, index) => {
+    let list = ui.blocks.applyToItems(0, (item, index) => {
         item.controls[0].setPropertyValue("label", "Block " + (index + 1) );
     });
 };
