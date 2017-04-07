@@ -18,6 +18,7 @@ efaOptions <- R6::R6Class(
             eigenValues = FALSE,
             factorCor = FALSE,
             factorSummary = FALSE,
+            modelFit = FALSE,
             kmoTest = FALSE,
             bartlettTest = FALSE, ...) {
 
@@ -86,6 +87,10 @@ efaOptions <- R6::R6Class(
                 "factorSummary",
                 factorSummary,
                 default=FALSE)
+            private$..modelFit <- jmvcore::OptionBool$new(
+                "modelFit",
+                modelFit,
+                default=FALSE)
             private$..kmoTest <- jmvcore::OptionBool$new(
                 "kmoTest",
                 kmoTest,
@@ -105,6 +110,7 @@ efaOptions <- R6::R6Class(
             self$.addOption(private$..eigenValues)
             self$.addOption(private$..factorCor)
             self$.addOption(private$..factorSummary)
+            self$.addOption(private$..modelFit)
             self$.addOption(private$..kmoTest)
             self$.addOption(private$..bartlettTest)
         }),
@@ -119,6 +125,7 @@ efaOptions <- R6::R6Class(
         eigenValues = function() private$..eigenValues$value,
         factorCor = function() private$..factorCor$value,
         factorSummary = function() private$..factorSummary$value,
+        modelFit = function() private$..modelFit$value,
         kmoTest = function() private$..kmoTest$value,
         bartlettTest = function() private$..bartlettTest$value),
     private = list(
@@ -132,6 +139,7 @@ efaOptions <- R6::R6Class(
         ..eigenValues = NA,
         ..factorCor = NA,
         ..factorSummary = NA,
+        ..modelFit = NA,
         ..kmoTest = NA,
         ..bartlettTest = NA)
 )
@@ -176,12 +184,28 @@ efaBase <- R6::R6Class(
 
 #' Exploratory Factor Analysis
 #'
-#' 
+#' Exporatory Factor Analysis
 #'
 #' @examples
-#' \dontrun{
-#' efa(data, vars = c('x1', 'x2', 'x3'))
-#' }
+#' data('iris')
+#' dat <- as.data.frame(iris)
+#' 
+#' jmv::efa(data = dat, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
+#' 
+#' #
+#' #  Factor Loadings
+#' #  ─────────────────────────────────────────────────
+#' #                    1        2         Uniqueness
+#' #  ─────────────────────────────────────────────────
+#' #    Sepal.Length    0.948                 0.10181
+#' #    Sepal.Width              -0.747       0.42199
+#' #    Petal.Length    0.917     0.394       0.00483
+#' #    Petal.Width     0.883     0.388       0.07088
+#' #  ─────────────────────────────────────────────────
+#' #    Note. 'varimax' rotation was used
+#' #
+#' #
+#' 
 #' @param data .
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}
@@ -201,6 +225,8 @@ efaBase <- R6::R6Class(
 #'   correlations 
 #' @param factorSummary \code{TRUE} or \code{FALSE} (default), show factor 
 #'   summary 
+#' @param modelFit \code{TRUE} or \code{FALSE} (default), show model fit 
+#'   measures and test 
 #' @param kmoTest \code{TRUE} or \code{FALSE} (default), show 
 #'   Kaiser-Meyer-Olkin (KMO) measure of sampling adequacy (MSA) results 
 #' @param bartlettTest \code{TRUE} or \code{FALSE} (default), show Bartlett's 
@@ -218,6 +244,7 @@ efa <- function(
     eigenValues = FALSE,
     factorCor = FALSE,
     factorSummary = FALSE,
+    modelFit = FALSE,
     kmoTest = FALSE,
     bartlettTest = FALSE) {
 
@@ -232,6 +259,7 @@ efa <- function(
         eigenValues = eigenValues,
         factorCor = factorCor,
         factorSummary = factorSummary,
+        modelFit = modelFit,
         kmoTest = kmoTest,
         bartlettTest = bartlettTest)
 

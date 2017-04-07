@@ -76,6 +76,44 @@ items:
               title: '1'
               type: number
 
+    - name: modelFit
+      title: Model Fit
+      type: Group
+      items:
+        - name: fit
+          title: Model Fit Measures
+          type: Table
+          rows: 1
+          visible: false
+          clearWith:
+            - vars
+            - nFactorMethod
+            - nFactors
+            - rotation
+          columns:
+            - name: tli
+              title: TLI
+              type: number
+            - name: rmsea
+              title: RMSEA
+              type: number
+            - name: bic
+              title: BIC
+              type: number
+            - name: chi
+              title: χ²
+              type: number
+              superTitle: Model Test
+            - name: df
+              title: df
+              type: integer
+              superTitle: Model Test
+            - name: p
+              title: p
+              type: number
+              format: zto,pvalue
+              superTitle: Model Test
+
     - name: assump
       title: Assumption Checks
       type: Group
@@ -95,7 +133,7 @@ items:
               title: df
               type: integer
             - name: p
-              title: df
+              title: p
               type: number
               format: zto,pvalue
 

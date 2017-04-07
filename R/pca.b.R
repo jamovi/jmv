@@ -12,6 +12,7 @@ pcaClass <- R6::R6Class(
         .init = function() {
 
             private$.initLoadingsTable()
+            private$.initModelFitTable()
             private$.initEigenTable()
             private$.initKMOTable()
 
@@ -33,6 +34,7 @@ pcaClass <- R6::R6Class(
                 private$.populateEigenTable(results)
                 private$.populateFactorSummaryTable(results)
                 private$.populateFactorCorTable(results)
+                private$.populateModelFitTable(results)
                 private$.populateKMOTable(results)
                 private$.populateBartlettTable(results)
                 private$.prepareScreePlot()
@@ -73,8 +75,12 @@ pcaClass <- R6::R6Class(
             loadings <- r$loadings
             uniqueness <- r$uniqueness
 
+            modelFit <- NULL
+            if (private$analysis == 'efa')
+                modelFit <- list('tli'=r$TLI, 'bic'=r$BIC, 'rmsea'=r$RMSEA[1], 'chi'=r$STATISTIC, 'df'=r$dof, 'p'=r$PVAL)
+
             return(list(loadings=loadings, uniqueness=uniqueness, factorCor=factorCor, SS=SS, nFactors=nFactors,
-                        kmo=kmo, bartlett=bartlett))
+                        modelFit=modelFit, kmo=kmo, bartlett=bartlett))
         },
 
         #### Init tables/plots functions ----
@@ -83,6 +89,15 @@ pcaClass <- R6::R6Class(
             table <- self$results$loadings
             table$setNote("note", jmvcore::format("\'{}\' rotation was used", self$options$rotation))
 
+        },
+        .initModelFitTable = function() {
+
+            if (private$analysis == 'efa' && self$options$modelFit) {
+
+                table <- self$results$modelFit$fit
+                table$setVisible(TRUE)
+
+            }
         },
         .initEigenTable = function() {
 
@@ -216,6 +231,26 @@ pcaClass <- R6::R6Class(
                 }
 
                 table$addRow(rowKey=i, values=row)
+            }
+        },
+        .populateModelFitTable = function(results) {
+
+            if (private$analysis == 'efa') {
+
+                r <- results$modelFit
+
+                table <- self$results$modelFit$fit
+
+                row <- list()
+                row['tli'] <- r$tli
+                row['bic'] <- r$bic
+                row['rmsea'] <- r$rmsea
+                row['chi'] <- r$chi
+                row['df'] <- r$df
+                row['p'] <- r$p
+
+                table$setRow(rowNo=1, values=row)
+
             }
         },
         .populateKMOTable = function(results) {

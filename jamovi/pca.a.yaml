@@ -3,12 +3,31 @@ name:  pca
 title: Principal Component Analysis
 menuGroup: Factor
 version: '1.0.0'
-jas: '1.0'
+jas: '1.1'
 
 description:
+    main: Principal Component Analysis
     R:
+        dontrun: false
         usage: |
-            pca(data, vars = c('x1', 'x2', 'x3'))
+            data('iris')
+            dat <- as.data.frame(iris)
+
+            jmv::pca(data = dat, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
+
+            #
+            #  Component Loadings
+            #  ────────────────────────────────────────
+            #                    1         Uniqueness
+            #  ────────────────────────────────────────
+            #    Sepal.Length     0.890        0.2076
+            #    Sepal.Width     -0.460        0.7883
+            #    Petal.Length     0.992        0.0168
+            #    Petal.Width      0.965        0.0688
+            #  ────────────────────────────────────────
+            #    Note. 'varimax' rotation was used
+            #
+            #
 
 options:
     - name: data
@@ -131,6 +150,5 @@ options:
       description:
           R: >
             `TRUE` or `FALSE` (default), show Bartlett's test of sphericity results
-
 
 ...
