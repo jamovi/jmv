@@ -294,10 +294,12 @@ mancovaBase <- R6::R6Class(
 #' #
 #' 
 #' @param data the data as a data frame
-#' @param deps a vector containing the names of the dependent variables in 
+#' @param deps a string naming the dependent variable from \code{data}, 
+#'   variable must be numeric 
+#' @param fixedFactors a vector of strings naming the fixed factors from 
 #'   \code{data}
-#' @param fixedFactors The fixed factors 
-#' @param covariates The covariates 
+#' @param covariates a vector of strings naming the covariates from 
+#'   \code{data}
 #' @param multivarStats one or more of \code{'pillai'}, \code{'wilks'}, 
 #'   \code{'hotel'}, or \code{'roy'}; use Pillai's Trace, Wilks' Lambda, 
 #'   Hotelling's Trace, and Roy's Largest Root multivariate statistics, 

@@ -4,7 +4,7 @@ title:   MANCOVA
 menuGroup: ANOVA
 
 version: '1.0.0'
-jas: '1.0'
+jas: '1.1'
 
 description:
     main: Multivariate Analysis of Covariance
@@ -68,7 +68,9 @@ options:
         - nominal
         - ordinal
       description:
-          R: a vector containing the names of the dependent variables in `data`
+          R: >
+            a string naming the dependent variable from `data`, variable
+            must be numeric
 
     - name: fixedFactors
       title: Fixed factors
@@ -77,8 +79,8 @@ options:
         - nominal
         - ordinal
       default:
-      description: >
-        The fixed factors
+      description:
+          R: a vector of strings naming the fixed factors from `data`
 
     - name: covariates
       title: Covariates
@@ -90,8 +92,8 @@ options:
         - nominal
         - ordinal
       default:
-      description: >
-        The covariates
+      description:
+          R: a vector of strings naming the covariates from `data`
 
     - name: multivarStats
       title: Multivariate Statistics

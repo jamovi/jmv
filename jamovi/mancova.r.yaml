@@ -1,7 +1,7 @@
 ---
 name:  mancova
 title: MANCOVA
-jrs: '1.0'
+jrs: '1.1'
 
 items:
     - name: multivar
