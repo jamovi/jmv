@@ -6,9 +6,28 @@ version: '1.0.0'
 jas: '1.1'
 
 description:
+    main: Exporatory Factor Analysis
     R:
+        dontrun: false
         usage: |
-            efa(data, vars = c('x1', 'x2', 'x3'))
+            data('iris')
+            dat <- as.data.frame(iris)
+
+            jmv::efa(data = dat, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
+
+            #
+            #  Factor Loadings
+            #  ─────────────────────────────────────────────────
+            #                    1        2         Uniqueness
+            #  ─────────────────────────────────────────────────
+            #    Sepal.Length    0.948                 0.10181
+            #    Sepal.Width              -0.747       0.42199
+            #    Petal.Length    0.917     0.394       0.00483
+            #    Petal.Width     0.883     0.388       0.07088
+            #  ─────────────────────────────────────────────────
+            #    Note. 'varimax' rotation was used
+            #
+            #
 
 options:
     - name: data
@@ -114,6 +133,14 @@ options:
       description:
           R: >
             `TRUE` or `FALSE` (default), show factor summary
+
+    - name: modelFit
+      title: Model fit measures
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), show model fit measures and test
 
     - name: kmoTest
       title: KMO measure of sampling adequacy

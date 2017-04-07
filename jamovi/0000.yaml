@@ -144,13 +144,14 @@ analyses:
     menuGroup: Factor
     menuTitle: Principal Component Analysis
     stage: 1
-    description: null
-    hidden: true
+    description: Principal Component Analysis
+    hidden: false
   - title: Exploratory Factor Analysis
     name: efa
     ns: jmv
     menuGroup: Factor
     menuTitle: Exploratory Factor Analysis
-    hidden: true
+    description: Exporatory Factor Analysis
+    hidden: false
 
 ...

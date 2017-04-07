@@ -143,11 +143,13 @@ pcaResults <- R6::R6Class(
     active = list(
         loadings = function() private$..loadings,
         factorStats = function() private$..factorStats,
+        modelFit = function() private$..modelFit,
         assump = function() private$..assump,
         eigen = function() private$..eigen),
     private = list(
         ..loadings = NA,
         ..factorStats = NA,
+        ..modelFit = NA,
         ..assump = NA,
         ..eigen = NA),
     public=list(
@@ -210,6 +212,34 @@ pcaResults <- R6::R6Class(
                                 list(`name`="pc1", `title`="1", `type`="number")))
                         self$add(private$..factorSummary)
                         self$add(private$..factorCor)}))$new(options=options)
+            private$..modelFit <- R6::R6Class(
+                inherit = jmvcore::Group,
+                active = list(
+                    fit = function() private$..fit),
+                private = list(
+                    ..fit = NA),
+                public=list(
+                    initialize=function(options) {
+                        super$initialize(options=options, name="modelFit", title="Model Fit")
+                        private$..fit <- jmvcore::Table$new(
+                            options=options,
+                            name="fit",
+                            title="Model Fit Measures",
+                            rows=1,
+                            visible=FALSE,
+                            clearWith=list(
+                                "vars",
+                                "nFactorMethod",
+                                "nFactors",
+                                "rotation"),
+                            columns=list(
+                                list(`name`="tli", `title`="TLI", `type`="number"),
+                                list(`name`="rmsea", `title`="RMSEA", `type`="number"),
+                                list(`name`="bic", `title`="BIC", `type`="number"),
+                                list(`name`="chi", `title`="\u03C7\u00B2", `type`="number", `superTitle`="Model Test"),
+                                list(`name`="df", `title`="df", `type`="integer", `superTitle`="Model Test"),
+                                list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue", `superTitle`="Model Test")))
+                        self$add(private$..fit)}))$new(options=options)
             private$..assump <- R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
@@ -232,7 +262,7 @@ pcaResults <- R6::R6Class(
                             columns=list(
                                 list(`name`="chi", `title`="\u03C7\u00B2", `type`="number"),
                                 list(`name`="df", `title`="df", `type`="integer"),
-                                list(`name`="p", `title`="df", `type`="number", `format`="zto,pvalue")))
+                                list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue")))
                         private$..kmo <- jmvcore::Table$new(
                             options=options,
                             name="kmo",
@@ -285,6 +315,7 @@ pcaResults <- R6::R6Class(
                         self$add(private$..screePlot)}))$new(options=options)
             self$add(private$..loadings)
             self$add(private$..factorStats)
+            self$add(private$..modelFit)
             self$add(private$..assump)
             self$add(private$..eigen)}))
 
@@ -311,12 +342,28 @@ pcaBase <- R6::R6Class(
 
 #' Principal Component Analysis
 #'
-#' 
+#' Principal Component Analysis
 #'
 #' @examples
-#' \dontrun{
-#' pca(data, vars = c('x1', 'x2', 'x3'))
-#' }
+#' data('iris')
+#' dat <- as.data.frame(iris)
+#' 
+#' jmv::pca(data = dat, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
+#' 
+#' #
+#' #  Component Loadings
+#' #  ────────────────────────────────────────
+#' #                    1         Uniqueness
+#' #  ────────────────────────────────────────
+#' #    Sepal.Length     0.890        0.2076
+#' #    Sepal.Width     -0.460        0.7883
+#' #    Petal.Length     0.992        0.0168
+#' #    Petal.Width      0.965        0.0688
+#' #  ────────────────────────────────────────
+#' #    Note. 'varimax' rotation was used
+#' #
+#' #
+#' 
 #' @param data .
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}
