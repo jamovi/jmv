@@ -13,7 +13,7 @@ linRegOptions <- R6::R6Class(
                 list()),
             fitMeasures = list(
                 "r",
-                "rSqr"),
+                "r2"),
             modelTest = NULL,
             modelComp = list(
                 "f"),
@@ -57,13 +57,13 @@ linRegOptions <- R6::R6Class(
                 fitMeasures,
                 options=list(
                     list(name="r", title="R"),
-                    list(name="rSqr", title="R\u00B2"),
+                    list(name="r2", title="R\u00B2"),
                     list(name="aic", title="AIC"),
                     list(name="bic", title="BIC"),
                     list(name="rmse", title="RMSE")),
                 default=list(
                     "r",
-                    "rSqr"))
+                    "r2"))
             private$..modelTest <- jmvcore::OptionNMXList$new(
                 "modelTest",
                 modelTest,
@@ -212,7 +212,7 @@ linRegResults <- R6::R6Class(
                 columns=list(
                     list(`name`="model", `title`="Model", `type`="text"),
                     list(`name`="r", `title`="R", `type`="number", `visible`="(fitMeasures:r)"),
-                    list(`name`="rSqr", `title`="R\u00B2", `type`="number", `visible`="(fitMeasures:rSqr)"),
+                    list(`name`="r2", `title`="R\u00B2", `type`="number", `visible`="(fitMeasures:r2)"),
                     list(`name`="aic", `title`="AIC", `type`="number", `visible`="(fitMeasures:aic)"),
                     list(`name`="bic", `title`="BIC", `type`="number", `visible`="(fitMeasures:bic)"),
                     list(`name`="rmse", `title`="RMSE", `type`="number", `visible`="(fitMeasures:rmse)"),
@@ -233,7 +233,7 @@ linRegResults <- R6::R6Class(
                     list(`name`="model1", `title`="Model", `content`=".", `type`="text", `superTitle`="Comparison"),
                     list(`name`="sep", `title`="", `content`="-", `type`="text", `format`="narrow", `superTitle`="Comparison"),
                     list(`name`="model2", `title`="Model", `content`=".", `type`="text", `superTitle`="Comparison"),
-                    list(`name`="rSqr", `title`="\u0394R\u00B2", `type`="number"),
+                    list(`name`="r2", `title`="\u0394R\u00B2", `type`="number"),
                     list(`name`="f", `title`="F", `type`="number", `visible`="(modelComp:f)"),
                     list(`name`="df1", `title`="df1", `type`="integer", `visible`="(modelComp:f)"),
                     list(`name`="df2", `title`="df2", `type`="integer", `visible`="(modelComp:f)"),
@@ -447,9 +447,12 @@ linRegBase <- R6::R6Class(
 #' #
 #' 
 #' @param data the data as a data frame
-#' @param dep a string naming the dependent variable
-#' @param blocks the blocks that go into the model 
-#' @param fitMeasures one or more of \code{'r'}, \code{'rSqr'}, \code{'aic'}, 
+#' @param dep a string naming the dependent variable from \code{data}, 
+#'   variable must be numeric 
+#' @param blocks a list containing vectors of strings that name the covariates 
+#'   that are added to the model. The elements are added to the model according 
+#'   to their order in the list 
+#' @param fitMeasures one or more of \code{'r'}, \code{'r2'}, \code{'aic'}, 
 #'   \code{'bic'}, or \code{'rmse'}; use R, R², AIC, BIC, and RMSE model fit 
 #'   measures, respectively 
 #' @param modelTest one or more of \code{'f'}, or \code{'bf'}; Use classical 
@@ -488,7 +491,7 @@ linReg <- function(
                 list()),
     fitMeasures = list(
                 "r",
-                "rSqr"),
+                "r2"),
     modelTest = NULL,
     modelComp = list(
                 "f"),

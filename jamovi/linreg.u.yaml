@@ -118,10 +118,10 @@ children:
                 label: R
                 checkedValue: r
                 optionId: fitMeasures
-              - name: fitMeasures_rSqr
+              - name: fitMeasures_r2
                 type: CheckBox
                 label: R²
-                checkedValue: rSqr
+                checkedValue: r2
                 optionId: fitMeasures
               - name: fitMeasures_aic
                 type: CheckBox

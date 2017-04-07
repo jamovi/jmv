@@ -1,7 +1,7 @@
 ---
 name:  linReg
 title: Linear Regression
-jrs: '1.0'
+jrs: '1.1'
 
 items:
     - name: modelFit
@@ -22,10 +22,10 @@ items:
           type: number
           visible: (fitMeasures:r)
 
-        - name: rSqr
+        - name: r2
           title: R²
           type: number
-          visible: (fitMeasures:rSqr)
+          visible: (fitMeasures:r2)
 
         - name: aic
           title: AIC
@@ -106,7 +106,7 @@ items:
           type: text
           superTitle: Comparison
 
-        - name: rSqr
+        - name: r2
           title: ΔR²
           type: number
 

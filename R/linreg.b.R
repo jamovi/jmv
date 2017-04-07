@@ -1,6 +1,4 @@
 
-# This file is a generated template, your changes will not be overwritten
-
 linRegClass <- R6::R6Class(
     "linRegClass",
     inherit = linRegBase,
@@ -201,7 +199,7 @@ linRegClass <- R6::R6Class(
                 row[["aic"]] <- AIC[[i]]
                 row[["bic"]] <- BIC[[i]]
                 row[["r"]] <- sqrt(summary(models[[i]])$r.squared)
-                row[["rSqr"]] <- summary(models[[i]])$r.squared
+                row[["r2"]] <- summary(models[[i]])$r.squared
                 row[["rmse"]] <- sqrt(mean(models[[i]]$residuals^2))
                 row[["bf"]] <- exp(modelsBF[[i]]@bayesFactor$bf)
                 row[["err"]] <- modelsBF[[i]]@bayesFactor$error
@@ -242,7 +240,7 @@ linRegClass <- R6::R6Class(
             for (i in 1:(length(models)-1)) {
 
                 row <- list()
-                row[["rSqr"]] <- abs(summary(models[[i]])$r.squared - summary(models[[i+1]])$r.squared)
+                row[["r2"]] <- abs(summary(models[[i]])$r.squared - summary(models[[i+1]])$r.squared)
                 row[["f"]] <- (r[i,4] / r[i,3]) / (r[i,2] / r[i,1])
                 row[["df1"]] <- r[i,3]
                 row[["df2"]] <- r[i,1]

@@ -3,7 +3,7 @@ name: linReg
 title: Linear Regression
 menuGroup: Regression
 version: '1.0.0'
-jas: '1.0'
+jas: '1.1'
 
 description:
     main: Linear Regression
@@ -54,7 +54,9 @@ options:
         - nominal
         - ordinal
       description:
-          R: a string naming the dependent variable
+          R: >
+            a string naming the dependent variable from `data`, variable
+            must be numeric
 
     - name: blocks
       title: Covariates
@@ -64,7 +66,10 @@ options:
           type: Variables
       description:
           R: >
-            the blocks that go into the model
+            a list containing vectors of strings that name the
+            covariates that are added to the model. The elements
+            are added to the model according to their order in the
+            list
 
     - name: fitMeasures
       title: Fit Measures
@@ -72,7 +77,7 @@ options:
       options:
           - name: r
             title: R
-          - name: rSqr
+          - name: r2
             title: R²
           - name: aic
             title: AIC
@@ -82,10 +87,10 @@ options:
             title: RMSE
       default:
           - r
-          - rSqr
+          - r2
       description:
           R: >
-            one or more of `'r'`, `'rSqr'`, `'aic'`, `'bic'`, or `'rmse'`;
+            one or more of `'r'`, `'r2'`, `'aic'`, `'bic'`, or `'rmse'`;
             use R, R², AIC, BIC, and RMSE model fit measures, respectively
 
     - name: modelTest
