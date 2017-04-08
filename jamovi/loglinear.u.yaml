@@ -38,7 +38,7 @@ children:
     children:
       - type: Supplier
         name: modelSupplier
-        label: Componets
+        label: Components
         format: term
         persistentItems: true
         stretchFactor: 1
