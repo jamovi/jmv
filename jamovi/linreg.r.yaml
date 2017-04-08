@@ -200,7 +200,7 @@ items:
       clearWith:
         - dep
         - blocks
-        - selectedModel
+        - modelSelected
         - ciWidth
 
     - name: dataSummary
@@ -214,7 +214,7 @@ items:
           clearWith:
             - dep
             - blocks
-            - selectedModel
+            - modelSelected
 
           columns:
             - name: name
@@ -249,7 +249,7 @@ items:
           clearWith:
             - dep
             - blocks
-            - selectedModel
+            - modelSelected
 
           columns:
             - name: mean
@@ -286,7 +286,7 @@ items:
           clearWith:
             - dep
             - blocks
-            - selectedModel
+            - modelSelected
 
           columns:
             - name: autoCor
@@ -309,7 +309,7 @@ items:
           clearWith:
             - dep
             - blocks
-            - selectedModel
+            - modelSelected
 
           columns:
             - name: term
@@ -334,7 +334,7 @@ items:
           clearWith:
             - dep
             - blocks
-            - selectedModel
+            - modelSelected
 
         - name: resPlots
           title: Residuals Plots
@@ -346,4 +346,4 @@ items:
               clearWith:
                 - dep
                 - blocks
-                - selectedModel
+                - modelSelected

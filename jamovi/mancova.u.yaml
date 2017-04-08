@@ -24,6 +24,7 @@ children:
         children:
           - type: VariablesListBox
             name: covariates
+            height: small
             isTarget: true
   - type: LayoutBox
     margin: large

@@ -45,7 +45,7 @@ children:
                 children:
                   - name: minEigen
                     type: TextBox
-                    label: 'Eigenvalues greater than:'
+                    label: 'Eigenvalues greater than'
                     format: number
                     inputPattern: '[0-9]+'
                     enable: (nFactorMethod_eigen)
@@ -101,7 +101,7 @@ children:
             children:
               - name: rotation
                 type: ComboBox
-                label: 'Rotation:'
+                label: 'Rotation'
                 options:
                   - label: none
                     value: none

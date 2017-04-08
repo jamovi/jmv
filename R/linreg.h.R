@@ -268,7 +268,7 @@ linRegResults <- R6::R6Class(
                 clearWith=list(
                     "dep",
                     "blocks",
-                    "selectedModel",
+                    "modelSelected",
                     "ciWidth"))
             private$..dataSummary <- R6::R6Class(
                 inherit = jmvcore::Group,
@@ -289,7 +289,7 @@ linRegResults <- R6::R6Class(
                             clearWith=list(
                                 "dep",
                                 "blocks",
-                                "selectedModel"),
+                                "modelSelected"),
                             columns=list(
                                 list(`name`="name", `title`="", `type`="text"),
                                 list(`name`="num", `title`="N", `type`="number"),
@@ -306,7 +306,7 @@ linRegResults <- R6::R6Class(
                             clearWith=list(
                                 "dep",
                                 "blocks",
-                                "selectedModel"),
+                                "modelSelected"),
                             columns=list(
                                 list(`name`="mean", `title`="Mean", `type`="number"),
                                 list(`name`="median", `title`="Median", `type`="number"),
@@ -339,7 +339,7 @@ linRegResults <- R6::R6Class(
                             clearWith=list(
                                 "dep",
                                 "blocks",
-                                "selectedModel"),
+                                "modelSelected"),
                             columns=list(
                                 list(`name`="autoCor", `title`="Autocorrelation", `type`="number"),
                                 list(`name`="dw", `title`="DW Statistic", `type`="number"),
@@ -352,7 +352,7 @@ linRegResults <- R6::R6Class(
                             clearWith=list(
                                 "dep",
                                 "blocks",
-                                "selectedModel"),
+                                "modelSelected"),
                             columns=list(
                                 list(`name`="term", `title`="", `type`="text"),
                                 list(`name`="vif", `title`="VIF", `type`="number"),
@@ -368,7 +368,7 @@ linRegResults <- R6::R6Class(
                             clearWith=list(
                                 "dep",
                                 "blocks",
-                                "selectedModel"))
+                                "modelSelected"))
                         private$..resPlots <- jmvcore::Array$new(
                             options=options,
                             name="resPlots",
@@ -380,7 +380,7 @@ linRegResults <- R6::R6Class(
                                 clearWith=list(
                                     "dep",
                                     "blocks",
-                                    "selectedModel")))
+                                    "modelSelected")))
                         self$add(private$..durbinWatson)
                         self$add(private$..collinearity)
                         self$add(private$..qqPlot)
