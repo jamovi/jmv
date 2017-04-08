@@ -30,7 +30,7 @@ linRegClass <- R6::R6Class(
         .run = function() {
 
             ready <- TRUE
-            if (is.null(self$options$dep) || length(self$options$blocks[[1]]) == 0)
+            if (is.null(self$options$dep) || length(self$options$blocks) < 1 || length(self$options$blocks[[1]]) == 0)
                 ready <- FALSE
 
             if (ready) {
@@ -117,7 +117,7 @@ linRegClass <- R6::R6Class(
             table <- self$results$modelComp
             modelTerms <- private$modelTerms$modelTermsLabels
 
-            if (length(modelTerms) == 1) {
+            if (length(modelTerms) <= 1) {
                 table$setVisible(visible = FALSE)
                 return()
             }
@@ -155,7 +155,11 @@ linRegClass <- R6::R6Class(
 
             table <- self$results$dataSummary$desc
             modelTerms <- private$modelTerms$modelTermsLabels
-            terms <- c(self$options$dep, modelTerms[[private$modelSelected]][["terms"]][-1])
+
+            if (length(modelTerms) < 1)
+                terms <- ''
+            else
+                terms <- c(self$options$dep, modelTerms[[private$modelSelected]][["terms"]][-1])
 
             for (i in seq_along(terms))
                 table$addRow(rowKey=i, values=list(name = terms[i]))
@@ -165,7 +169,11 @@ linRegClass <- R6::R6Class(
 
             table <- self$results$assump$collinearity
             modelTerms <- private$modelTerms$modelTermsLabels
-            terms <- modelTerms[[private$modelSelected]][["terms"]][-1]
+
+            if (length(modelTerms) < 1)
+                terms <- ''
+            else
+                terms <- modelTerms[[private$modelSelected]][["terms"]][-1]
 
             for (i in seq_along(terms))
                 table$addRow(rowKey=i, values=list(term = terms[i]))
@@ -174,7 +182,11 @@ linRegClass <- R6::R6Class(
         .initResPlots=function() {
 
             modelTerms <- private$modelTerms$modelTermsLabels
-            terms <- c(self$options$dep, modelTerms[[private$modelSelected]][["terms"]][-1])
+
+            if (length(modelTerms) < 1)
+                terms <- ''
+            else
+                terms <- c(self$options$dep, modelTerms[[private$modelSelected]][["terms"]][-1])
 
             plots <- self$results$assump$resPlots
 

@@ -441,6 +441,9 @@ pcaClass <- R6::R6Class(
 
             nFactors <- which(!(eigen > simEigenCI))[1]-1
 
+            if (is.na(nFactors))
+                nFactors <- length(eigen)
+
             private$eigen <- eigen
             private$simEigen <- simEigenCI
 
