@@ -87,7 +87,7 @@ options:
         - promax
         - oblimin
         - simplimax
-      default: varimax
+      default: oblimin
       description:
           R: >
             `'none'`, `'varimax'` (default), `'quartimax'`, `'promax'`,

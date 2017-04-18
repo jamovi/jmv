@@ -17,7 +17,7 @@ test_that('efa works', {
     attr(data, 'row.names') <- seq_len(length(data[[1]]))
     attr(data, 'class') <- 'data.frame'
 
-    efa <- jmv::efa(data = data, vars = c("y1","y2","y3 plus","z1","z2"), hideLoadings = .3)
+    efa <- jmv::efa(data = data, vars = c("y1","y2","y3 plus","z1","z2"), hideLoadings = .3, rotation = 'varimax')
 
     # Test loadings table
     expect_equal("", efa$loadings$getCell(rowNo=2, "pc2")$value)
@@ -29,7 +29,7 @@ test_that('efa works', {
                  'Number of factors cannot be bigger than number of variables', fixed=TRUE)
 
     data('ToothGrowth')
-    efa2 <- jmv::efa(data = ToothGrowth, vars = c("len","dose"), factorSummary = TRUE)
+    efa2 <- jmv::efa(data = ToothGrowth, vars = c("len","dose"), factorSummary = TRUE, rotation = 'varimax')
 
     # expect_error(jmv::pca(data = data, vars = c("y1","y2","y3 plus","z1","z2"), hideLoadings = .3, rotation = "cluster",
     #                       nFactorMethod = "fixed", nFactors = 4),
