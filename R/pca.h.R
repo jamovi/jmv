@@ -195,7 +195,7 @@ pcaResults <- R6::R6Class(
                                 list(`name`="comp", `title`="Component", `type`="text"),
                                 list(`name`="loadings", `title`="SS Loadings", `type`="number"),
                                 list(`name`="varProp", `title`="% of Variance", `type`="number"),
-                                list(`name`="varCum", `title`="Cumalitive %", `type`="number")))
+                                list(`name`="varCum", `title`="Cumulative %", `type`="number")))
                         private$..factorCor <- jmvcore::Table$new(
                             options=options,
                             name="factorCor",
@@ -297,7 +297,7 @@ pcaResults <- R6::R6Class(
                                 list(`name`="comp", `title`="Component", `type`="text"),
                                 list(`name`="eigen", `title`="Eigenvalue", `type`="number"),
                                 list(`name`="varProp", `title`="% of Variance", `type`="number"),
-                                list(`name`="varCum", `title`="Cumalitive %", `type`="number")))
+                                list(`name`="varCum", `title`="Cumulative %", `type`="number")))
                         private$..screePlot <- jmvcore::Image$new(
                             options=options,
                             name="screePlot",

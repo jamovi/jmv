@@ -53,7 +53,7 @@ items:
               title: '% of Variance'
               type: number
             - name: varCum
-              title: 'Cumalitive %'
+              title: 'Cumulative %'
               type: number
 
         - name: factorCor
@@ -174,7 +174,7 @@ items:
               title: '% of Variance'
               type: number
             - name: varCum
-              title: 'Cumalitive %'
+              title: 'Cumulative %'
               type: number
         - name: screePlot
           title: Scree Plot
