@@ -27,11 +27,13 @@ anovaRMClass <- R6::R6Class(
                 data <- private$.wideToLong()
                 modelFormula <- private$.modelFormula()
 
-                suppressWarnings({
+                suppressMessages({
+                    suppressWarnings({
 
                     result <- try(afex::aov_car(modelFormula, data, type=self$options$ss, factorize = FALSE), silent=TRUE)
 
-                }) # suppressWarnings
+                    }) # suppressWarnings
+                }) # suppressMessages
 
                 if (isError(result))
                     jmvcore::reject(extractErrorMessage(result), code='error')
@@ -226,7 +228,9 @@ anovaRMClass <- R6::R6Class(
             rmTable <- self$results$get('rmTable')
             bsTable <- self$results$get('bsTable')
 
-            summaryResult <- summary(result)
+            suppressWarnings({
+                summaryResult <- summary(result)
+            })
             model <- summaryResult$univariate.tests
             epsilon <- summaryResult$pval.adjustments
 
@@ -367,7 +371,7 @@ anovaRMClass <- R6::R6Class(
         .populateSpericityTable=function(result) {
 
             spherTable <- self$results$get('assump')$get('spherTable')
-            summaryResult <- summary(result)
+            summaryResult <- suppressWarnings({summary(result)})
             epsilon <- summaryResult$pval.adjustments
             mauchly <- summaryResult$sphericity.tests
 

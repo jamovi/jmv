@@ -139,6 +139,7 @@ options:
             title: partial η²
           - name: omega
             title: ω²
+      default:
       description:
           R: >
             one or more of `'eta'`, `'partEta'`, or `'omega'`;

@@ -115,7 +115,8 @@ anovaRMOptions <- R6::R6Class(
                 options=list(
                     list(name="eta", title="\u03B7\u00B2"),
                     list(name="partEta", title="partial \u03B7\u00B2"),
-                    list(name="omega", title="\u03C9\u00B2")))
+                    list(name="omega", title="\u03C9\u00B2")),
+                default=NULL)
             private$..spherTests <- jmvcore::OptionBool$new(
                 "spherTests",
                 spherTests,
@@ -593,7 +594,7 @@ anovaRM <- function(
     rmTerms = NULL,
     bsTerms = NULL,
     ss = "3",
-    effectSize,
+    effectSize = NULL,
     spherTests = FALSE,
     spherCorr = list(
                 "none"),
