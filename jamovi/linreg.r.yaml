@@ -27,6 +27,11 @@ items:
           type: number
           visible: (fitMeasures:r2)
 
+        - name: r2Adj
+          title: Adjusted R²
+          type: number
+          visible: (fitMeasures:r2Adj)
+
         - name: aic
           title: AIC
           type: number
@@ -193,7 +198,7 @@ items:
     - name: coefPlot
       title: Coefficient Plot
       type: Image
-      width: 500
+      width: 550
       height: 500
       renderFun: .coefPlot
       visible: (coefPlot)

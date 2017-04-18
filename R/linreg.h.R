@@ -51,13 +51,20 @@ linRegOptions <- R6::R6Class(
                     list()),
                 template=jmvcore::OptionVariables$new(
                     "blocks",
-                    NULL))
+                    NULL,
+                    suggested=list(
+                        "continuous"),
+                    permitted=list(
+                        "continuous",
+                        "nominal",
+                        "ordinal")))
             private$..fitMeasures <- jmvcore::OptionNMXList$new(
                 "fitMeasures",
                 fitMeasures,
                 options=list(
                     list(name="r", title="R"),
                     list(name="r2", title="R\u00B2"),
+                    list(name="r2Adj", title="Adjusted R\u00B2"),
                     list(name="aic", title="AIC"),
                     list(name="bic", title="BIC"),
                     list(name="rmse", title="RMSE")),
@@ -213,6 +220,7 @@ linRegResults <- R6::R6Class(
                     list(`name`="model", `title`="Model", `type`="text"),
                     list(`name`="r", `title`="R", `type`="number", `visible`="(fitMeasures:r)"),
                     list(`name`="r2", `title`="R\u00B2", `type`="number", `visible`="(fitMeasures:r2)"),
+                    list(`name`="r2Adj", `title`="Adjusted R\u00B2", `type`="number", `visible`="(fitMeasures:r2Adj)"),
                     list(`name`="aic", `title`="AIC", `type`="number", `visible`="(fitMeasures:aic)"),
                     list(`name`="bic", `title`="BIC", `type`="number", `visible`="(fitMeasures:bic)"),
                     list(`name`="rmse", `title`="RMSE", `type`="number", `visible`="(fitMeasures:rmse)"),
@@ -261,7 +269,7 @@ linRegResults <- R6::R6Class(
                 options=options,
                 name="coefPlot",
                 title="Coefficient Plot",
-                width=500,
+                width=550,
                 height=500,
                 renderFun=".coefPlot",
                 visible="(coefPlot)",
@@ -452,9 +460,9 @@ linRegBase <- R6::R6Class(
 #' @param blocks a list containing vectors of strings that name the covariates 
 #'   that are added to the model. The elements are added to the model according 
 #'   to their order in the list 
-#' @param fitMeasures one or more of \code{'r'}, \code{'r2'}, \code{'aic'}, 
-#'   \code{'bic'}, or \code{'rmse'}; use R, R², AIC, BIC, and RMSE model fit 
-#'   measures, respectively 
+#' @param fitMeasures one or more of \code{'r'}, \code{'r2'}, \code{'r2Adj'}, 
+#'   \code{'aic'}, \code{'bic'}, or \code{'rmse'}; use R, R², adjusted R², AIC, 
+#'   BIC, and RMSE model fit measures, respectively 
 #' @param modelTest one or more of \code{'f'}, or \code{'bf'}; Use classical 
 #'   F-test, and Bayes factor respectively as overall model tests. 
 #' @param modelComp one or more of \code{'f'}, or \code{'bf'}; Use classical 

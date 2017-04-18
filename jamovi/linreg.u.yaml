@@ -60,27 +60,6 @@ children:
         stretchFactor: 1
         children:
           - type: Label
-            label: Model Coefficients
-            children:
-              - type: CheckBox
-                name: stdEst
-                label: Standardized estimate
-              - type: CheckBox
-                name: ci
-                label: Confidence interval
-                children:
-                  - type: TextBox
-                    name: ciWidth
-                    label: Interval
-                    suffix: '%'
-                    format: number
-                    inputPattern: '[0-9]+'
-                    enable: (ci)
-              - type: CheckBox
-                name: coefPlot
-                label: Coefficient plot
-            name: modelComp
-          - type: Label
             label: Data Summary
             children:
               - type: CheckBox
@@ -104,6 +83,27 @@ children:
               - type: CheckBox
                 name: resPlots
                 label: Residual plots
+          - type: Label
+            label: Model Coefficients
+            children:
+              - type: CheckBox
+                name: stdEst
+                label: Standardized estimate
+              - type: CheckBox
+                name: ci
+                label: Confidence interval
+                children:
+                  - type: TextBox
+                    name: ciWidth
+                    label: Interval
+                    suffix: '%'
+                    format: number
+                    inputPattern: '[0-9]+'
+                    enable: (ci)
+              - type: CheckBox
+                name: coefPlot
+                label: Coefficient plot
+            name: modelComp
       - type: LayoutBox
         cell:
           column: 1
@@ -122,6 +122,11 @@ children:
                 type: CheckBox
                 label: R²
                 checkedValue: r2
+                optionId: fitMeasures
+              - name: fitMeasures_r2Adj
+                type: CheckBox
+                label: Adjusted R²
+                checkedValue: r2Adj
                 optionId: fitMeasures
               - name: fitMeasures_aic
                 type: CheckBox

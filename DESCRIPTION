@@ -28,8 +28,7 @@ Imports:
     psych,
     GPArotation,
     afex,
-    mvnormtest,
-    QuantPsyc
+    mvnormtest
 Suggests:
     testthat
 Encoding: UTF-8
