@@ -12,7 +12,7 @@ efaOptions <- R6::R6Class(
             nFactorMethod = "parallel",
             nFactors = 1,
             minEigen = 1,
-            rotation = "varimax",
+            rotation = "oblimin",
             hideLoadings = 0.3,
             screePlot = FALSE,
             eigenValues = FALSE,
@@ -66,7 +66,7 @@ efaOptions <- R6::R6Class(
                     "promax",
                     "oblimin",
                     "simplimax"),
-                default="varimax")
+                default="oblimin")
             private$..hideLoadings <- jmvcore::OptionNumber$new(
                 "hideLoadings",
                 hideLoadings,
@@ -238,7 +238,7 @@ efa <- function(
     nFactorMethod = "parallel",
     nFactors = 1,
     minEigen = 1,
-    rotation = "varimax",
+    rotation = "oblimin",
     hideLoadings = 0.3,
     screePlot = FALSE,
     eigenValues = FALSE,
