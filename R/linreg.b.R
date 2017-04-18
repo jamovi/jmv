@@ -76,7 +76,7 @@ linRegClass <- R6::R6Class(
 
                 AIC[[i]] <- stats::AIC(models[[i]])
                 BIC[[i]] <- stats::BIC(models[[i]])
-                betas[[i]] <- QuantPsyc::lm.beta(models[[i]])
+                betas[[i]] <- private$.stdEst(models[[i]])
                 CI[[i]] <- stats::confint(models[[i]], level = self$options$ciWidth / 100)
                 dwTest[[i]] <- car::durbinWatsonTest(models[[i]])
                 cooks[[i]] <- stats::cooks.distance(models[[i]])
@@ -212,6 +212,7 @@ linRegClass <- R6::R6Class(
                 row[["bic"]] <- BIC[[i]]
                 row[["r"]] <- sqrt(summary(models[[i]])$r.squared)
                 row[["r2"]] <- summary(models[[i]])$r.squared
+                row[["r2Adj"]] <- summary(models[[i]])$adj.r.squared
                 row[["rmse"]] <- sqrt(mean(models[[i]]$residuals^2))
                 row[["bf"]] <- exp(modelsBF[[i]]@bayesFactor$bf)
                 row[["err"]] <- modelsBF[[i]]@bayesFactor$error
@@ -278,7 +279,7 @@ linRegClass <- R6::R6Class(
 
                 coef <- summary(models[[i]])$coef
                 CI <- results$CI[[i]]
-                betas <- results$betas[[i]]
+                betas <- results$betas[[i]]$beta
 
                 modelTermsTemp <- modelTerms[[i]]
                 modelTermsTemp[1] <- "(Intercept)"
@@ -459,17 +460,14 @@ linRegClass <- R6::R6Class(
 
             image <- self$results$coefPlot
 
-            coef <- summary(results$models[[private$modelSelected]])$coef
-            CI <- results$CI[[private$modelSelected]]
-
-            terms <- jmvcore::fromB64(rownames(coef))
-            terms[1] <- 'Intercept'
+            betas <- results$betas[[private$modelSelected]]
 
             df <- data.frame(
-                term = terms,
-                estimate = as.numeric(coef[,1]),
-                conf.low = as.numeric(CI[,1]),
-                conf.high = as.numeric(CI[,2])
+                term = jmvcore::fromB64(names(betas$beta)),
+                estimate = as.numeric(betas$beta),
+                conf.low = as.numeric(betas$lower),
+                conf.high = as.numeric(betas$upper),
+                group = rep('CI', length(betas$beta))
             )
             df$term <- factor(df$term, rev(df$term))
 
@@ -489,12 +487,22 @@ linRegClass <- R6::R6Class(
                 axis.text.y=element_text(margin=margin(0,5,0,0)),
                 axis.title.x=element_text(margin=margin(10,0,0,0)),
                 axis.title.y=element_text(margin=margin(0,10,0,0)),
-                plot.title=element_text(margin=margin(0, 0, 15, 0)))
+                plot.title=element_text(margin=margin(0, 0, 15, 0)),
+                legend.position = 'right',
+                legend.background = element_rect("transparent"),
+                legend.title = element_blank(),
+                legend.key = element_blank(),
+                legend.text = element_text(size=16, colour='#333333'))
 
-            p <- GGally::ggcoef(image$state, errorbar_height = .1, exclude_intercept = TRUE) +
-                xlab("Estimate") +
-                ylab("Predictor") +
-                geom_point(shape=21, fill='white', size=3) +
+            errorType <- paste0(self$options$ciWidth, '% CI')
+
+            p <- ggplot(data=image$state) +
+                geom_hline(yintercept=0, linetype="dotted", colour='#333333', size=1.2) +
+                geom_errorbar(aes(x=term, ymin=conf.low, ymax=conf.high, width=.1, colour='colour'), size=.8) +
+                geom_point(aes(x=term, y=estimate, colour='colour'), shape=21, fill='white', size=3) +
+                scale_colour_manual(name='', values=c(colour='#333333'), labels=paste("", errorType)) +
+                labs(x="Predictor", y="Standardized Estimate") +
+                coord_flip() +
                 the
 
             print(p)
@@ -544,5 +552,23 @@ linRegClass <- R6::R6Class(
                 self$results$coefPlot$setTitle(jmvcore::format('Coefficient Plot \u2013 Model {}', model))
 
             }
+        },
+        .stdEst = function(model) {
+
+            # From 'QuantPsyc' R package
+            b <- summary(model)$coef[-1,1]
+            sx <- sapply(model$model[-1], sd)
+            sy <- sapply(model$model[1], sd)
+            beta <- b * sx /  sy
+
+            CI <- stats::confint(model, level = self$options$ciWidth / 100)[-1,]
+            betaCI <- CI * sx / sy
+
+            if (is.matrix(betaCI))
+                r <- list(beta=beta, lower=betaCI[,1], upper=betaCI[,2])
+            else
+                r <- list(beta=beta, lower=betaCI[1], upper=betaCI[2])
+
+            return(r)
         })
 )

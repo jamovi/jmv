@@ -64,6 +64,12 @@ options:
       default: [[]]
       template:
           type: Variables
+          suggested:
+            - continuous
+          permitted:
+            - continuous
+            - nominal
+            - ordinal
       description:
           R: >
             a list containing vectors of strings that name the
@@ -79,6 +85,8 @@ options:
             title: R
           - name: r2
             title: R²
+          - name: r2Adj
+            title: Adjusted R²
           - name: aic
             title: AIC
           - name: bic
@@ -90,8 +98,8 @@ options:
           - r2
       description:
           R: >
-            one or more of `'r'`, `'r2'`, `'aic'`, `'bic'`, or `'rmse'`;
-            use R, R², AIC, BIC, and RMSE model fit measures, respectively
+            one or more of `'r'`, `'r2'`, `'r2Adj'`, `'aic'`, `'bic'`, or `'rmse'`;
+            use R, R², adjusted R², AIC, BIC, and RMSE model fit measures, respectively
 
     - name: modelTest
       title: Overall Model Test
