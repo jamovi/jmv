@@ -22,12 +22,45 @@ children:
             isTarget: true
   - type: LayoutBox
     margin: large
+    stretchFactor: 1
     children:
       - type: LayoutBox
         margin: large
         cell:
           column: 0
           row: 0
+        stretchFactor: 1
+        children:
+          - type: Label
+            label: Method
+            children:
+              - name: rotation
+                type: ComboBox
+                label: 'Rotation'
+                options:
+                  - label: None
+                    value: none
+                  - label: Varimax
+                    value: varimax
+                  - label: Quartimax
+                    value: quartimax
+                  - label: Promax
+                    value: promax
+                  - label: Oblimin
+                    value: oblimin
+                  - label: Simplimax
+                    value: simplimax
+              - name: hideLoadings
+                type: TextBox
+                label: Hide loadings below
+                format: number
+                inputPattern: '[0-9]+'
+      - type: LayoutBox
+        margin: large
+        cell:
+          column: 0
+          row: 1
+        stretchFactor: 1
         children:
           - type: Label
             label: Number of Components
@@ -62,6 +95,13 @@ children:
                     format: number
                     inputPattern: '[0-9]+'
                     enable: (nFactorMethod_fixed)
+      - type: LayoutBox
+        margin: large
+        cell:
+          column: 1
+          row: 0
+        stretchFactor: 1
+        children:
           - type: Label
             label: Assumption Checks
             children:
@@ -75,11 +115,11 @@ children:
         margin: large
         cell:
           column: 1
-          row: 0
+          row: 1
         stretchFactor: 1
         children:
           - type: Label
-            label: Output Options
+            label: Additional Output
             children:
               - name: factorSummary
                 type: CheckBox
@@ -93,27 +133,3 @@ children:
               - name: screePlot
                 type: CheckBox
                 label: Scree plot
-          - type: Label
-            label: Additional Options
-            children:
-              - name: rotation
-                type: ComboBox
-                label: 'Rotation'
-                options:
-                  - label: none
-                    value: none
-                  - label: varimax
-                    value: varimax
-                  - label: quartimax
-                    value: quartimax
-                  - label: promax
-                    value: promax
-                  - label: oblimin
-                    value: oblimin
-                  - label: simplimax
-                    value: simplimax
-              - name: hideLoadings
-                type: TextBox
-                label: Hide loadings below
-                format: number
-                inputPattern: '[0-9]+'
