@@ -153,39 +153,42 @@ corrMatrixClass <- R6::R6Class(
     .test=function(var1, var2, hyp) {
         results <- list()
 
-        res <- try(cor.test(var1, var2, alternative=hyp, method='pearson'))
-        if ( ! base::inherits(res, 'try-error')) {
-            results$r  <- res$estimate
-            results$rp <- res$p.value
-            results$rciu <- res$conf.int[2]
-            results$rcil <- res$conf.int[1]
-        }
-        else {
-            results$r <- NaN
-            results$rp <- NaN
-            results$rciu <- NaN
-            results$rcil <- NaN
-        }
+        suppressWarnings({
 
-        res <- try(cor.test(var1, var2, alternative=hyp, method='spearman'))
-        if ( ! base::inherits(res, 'try-error')) {
-            results$rho <- res$estimate
-            results$rhop <- res$p.value
-        }
-        else {
-            results$rho <- NaN
-            results$rhop <- NaN
-        }
+            res <- try(cor.test(var1, var2, alternative=hyp, method='pearson'))
+            if ( ! base::inherits(res, 'try-error')) {
+                results$r  <- res$estimate
+                results$rp <- res$p.value
+                results$rciu <- res$conf.int[2]
+                results$rcil <- res$conf.int[1]
+            }
+            else {
+                results$r <- NaN
+                results$rp <- NaN
+                results$rciu <- NaN
+                results$rcil <- NaN
+            }
 
-        res <- try(cor.test(var1, var2, alternative=hyp, method='kendall'))
-        if ( ! base::inherits(res, 'try-error')) {
-            results$tau <- res$estimate
-            results$taup <- res$p.value
-        }
-        else {
-            results$tau <- NaN
-            results$taup <- NaN
-        }
+            res <- try(cor.test(var1, var2, alternative=hyp, method='spearman'))
+            if ( ! base::inherits(res, 'try-error')) {
+                results$rho <- res$estimate
+                results$rhop <- res$p.value
+            }
+            else {
+                results$rho <- NaN
+                results$rhop <- NaN
+            }
+
+            res <- try(cor.test(var1, var2, alternative=hyp, method='kendall'))
+            if ( ! base::inherits(res, 'try-error')) {
+                results$tau <- res$estimate
+                results$taup <- res$p.value
+            }
+            else {
+                results$tau <- NaN
+                results$taup <- NaN
+            }
+        }) # suppressWarnings
 
         results
     },
