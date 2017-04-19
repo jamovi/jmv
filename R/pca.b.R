@@ -385,10 +385,7 @@ pcaClass <- R6::R6Class(
 
             } else if (method == "eigen") {
 
-                corMatrix <- cor(data, use="pairwise")
-                eigen <- eigen(corMatrix)$values
-
-                nFactors <- sum(eigen > self$options$minEigen)
+                nFactors <- sum(private$eigen > self$options$minEigen)
 
                 if (nFactors <= 0)
                     jmvcore::reject(jmvcore::format('No components have an eigenvalue greater than {}'), self$options$minEigen, code='')
