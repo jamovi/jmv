@@ -389,7 +389,7 @@ linRegClass <- R6::R6Class(
 
             image <- self$results$assump$get('qqPlot')
 
-            df <- as.data.frame(qqnorm(model$residuals, plot.it=FALSE))
+            df <- as.data.frame(qqnorm(scale(model$residuals), plot.it=FALSE))
 
             image$setState(df)
 
