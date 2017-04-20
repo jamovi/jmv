@@ -77,18 +77,18 @@ children:
         children:
           - type: RadioButton
             name: hypothesis_corr
-            optionId: hypothesis
-            focusValue: corr
+            optionName: hypothesis
+            optionPart: corr
 
           - type: RadioButton
             name: hypothesis_pos
-            optionId: hypothesis
-            focusValue: pos
+            optionName: hypothesis
+            optionPart: pos
 
           - type: RadioButton
             name: hypothesis_neg
-            optionId: hypothesis
-            focusValue: neg
+            optionName: hypothesis
+            optionPart: neg
 
       - type: Label
         label: Plot

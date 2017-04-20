@@ -73,16 +73,16 @@ children:
         children:
           - name: effectSize_eta
             type: CheckBox
-            focusValue: eta
-            optionId: effectSize
+            optionPart: eta
+            optionName: effectSize
           - name: effectSize_partEta
             type: CheckBox
-            focusValue: partEta
-            optionId: effectSize
+            optionPart: partEta
+            optionName: effectSize
           - name: effectSize_omega
             type: CheckBox
-            focusValue: omega
-            optionId: effectSize
+            optionPart: omega
+            optionName: effectSize
   - type: CollapseBox
     label: Model
     collapsed: true
@@ -147,16 +147,16 @@ children:
             children:
               - name: spherCorr_none
                 type: CheckBox
-                focusValue: none
-                optionId: spherCorr
+                optionPart: none
+                optionName: spherCorr
               - name: spherCorr_GG
                 type: CheckBox
-                focusValue: GG
-                optionId: spherCorr
+                optionPart: GG
+                optionName: spherCorr
               - name: spherCorr_HF
                 type: CheckBox
-                focusValue: HF
-                optionId: spherCorr
+                optionPart: HF
+                optionName: spherCorr
       - type: CheckBox
         name: leveneTest
         label: Equality of variances test (Levene's)
@@ -212,24 +212,24 @@ children:
             children:
               - name: postHocCorr_none
                 type: CheckBox
-                focusValue: none
-                optionId: postHocCorr
+                optionPart: none
+                optionName: postHocCorr
               - name: postHocCorr_tukey
                 type: CheckBox
-                focusValue: tukey
-                optionId: postHocCorr
+                optionPart: tukey
+                optionName: postHocCorr
               - name: postHocCorr_scheffe
                 type: CheckBox
-                focusValue: scheffe
-                optionId: postHocCorr
+                optionPart: scheffe
+                optionName: postHocCorr
               - name: postHocCorr_bonf
                 type: CheckBox
-                focusValue: bonf
-                optionId: postHocCorr
+                optionPart: bonf
+                optionName: postHocCorr
               - name: postHocCorr_holm
                 type: CheckBox
-                focusValue: holm
-                optionId: postHocCorr
+                optionPart: holm
+                optionName: postHocCorr
   - type: CollapseBox
     label: Descriptive Plots
     collapsed: true
@@ -265,12 +265,12 @@ children:
         children:
           - type: RadioButton
             name: plotError_none
-            optionId: plotError
-            focusValue: none
+            optionName: plotError
+            optionPart: none
           - type: RadioButton
             name: plotError_ci
-            optionId: plotError
-            focusValue: ci
+            optionName: plotError
+            optionPart: ci
             children:
               - type: TextBox
                 name: ciWidth
@@ -281,8 +281,8 @@ children:
                 enable: (plotError_ci)
           - type: RadioButton
             name: plotError_se
-            optionId: plotError
-            focusValue: se
+            optionName: plotError
+            optionPart: se
   - type: CollapseBox
     label: Additional Options
     stage: 2

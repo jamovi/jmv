@@ -35,12 +35,12 @@ children:
         children:
           - type: RadioButton
             name: plotType_means
-            optionId: plotType
-            focusValue: means
+            optionName: plotType
+            optionPart: means
             enable: (plots)
 
           - type: RadioButton
             name: plotType_medians
-            optionId: plotType
-            focusValue: medians
+            optionName: plotType
+            optionPart: medians
             enable: (plots)

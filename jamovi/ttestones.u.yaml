@@ -60,31 +60,31 @@ children:
                     inputPattern: '[0-9]+'
               - type: RadioButton
                 name: hypothesis_dt
-                optionId: hypothesis
-                focusValue: dt
+                optionName: hypothesis
+                optionPart: dt
                 label: ≠ Test value
               - type: RadioButton
                 name: hypothesis_gt
-                optionId: hypothesis
-                focusValue: gt
+                optionName: hypothesis
+                optionPart: gt
                 label: '> Test value'
               - type: RadioButton
                 name: hypothesis_lt
-                optionId: hypothesis
-                focusValue: lt
+                optionName: hypothesis
+                optionPart: lt
                 label: < Test value
           - type: Label
             label: Missing values
             children:
               - type: RadioButton
                 name: miss_perAnalysis
-                optionId: miss
-                focusValue: perAnalysis
+                optionName: miss
+                optionPart: perAnalysis
                 label: Exclude cases analysis by analysis
               - type: RadioButton
                 name: miss_listwise
-                optionId: miss
-                focusValue: listwise
+                optionName: miss
+                optionPart: listwise
                 label: Exclude cases listwise
       - type: LayoutBox
         cell:
