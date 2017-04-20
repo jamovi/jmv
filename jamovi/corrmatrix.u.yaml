@@ -1,7 +1,7 @@
 name:  corrMatrix
 title: Correlation Matrix
 jus:   '2.0'
-
+compilerMode: tame
 children:
   - type: VariableSupplier
     name: variablesupplier
@@ -41,7 +41,6 @@ children:
 
           - type: CheckBox
             name: kendall
-            label: Kendall's tau-b
 
       - type: Label
         label: Additional Options
@@ -52,11 +51,9 @@ children:
         children:
           - type: CheckBox
             name: sig
-            label: Report significance
 
           - type: CheckBox
             name: flag
-            label: Flag significant correlations
 
           - type: CheckBox
             name: ci
@@ -79,21 +76,18 @@ children:
         children:
           - type: RadioButton
             name: hypothesis_corr
-            label: Correlated
             optionId: hypothesis
-            checkedValue: corr
+            focusValue: corr
 
           - type: RadioButton
             name: hypothesis_pos
-            label: Correlated positively
             optionId: hypothesis
-            checkedValue: pos
+            focusValue: pos
 
           - type: RadioButton
             name: hypothesis_neg
-            label: Correlated negatively
             optionId: hypothesis
-            checkedValue: neg
+            focusValue: neg
 
       - type: Label
         label: Plot
@@ -108,10 +102,8 @@ children:
             children:
               - type: CheckBox
                 name: plotDens
-                label: Densities for variables
                 enable: (plots)
 
               - type: CheckBox
                 name: plotStats
-                label: Statistics
                 enable: (plots)

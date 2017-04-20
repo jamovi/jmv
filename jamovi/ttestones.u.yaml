@@ -1,6 +1,7 @@
 name: ttestOneS
 title: One Sample T-Test
 jus: '2.0'
+compilerMode: tame
 children:
   - type: VariableSupplier
     suggested:
@@ -61,17 +62,17 @@ children:
               - type: RadioButton
                 name: hypothesis_dt
                 optionId: hypothesis
-                checkedValue: dt
+                focusValue: dt
                 label: ≠ Test value
               - type: RadioButton
                 name: hypothesis_gt
                 optionId: hypothesis
-                checkedValue: gt
+                focusValue: gt
                 label: '> Test value'
               - type: RadioButton
                 name: hypothesis_lt
                 optionId: hypothesis
-                checkedValue: lt
+                focusValue: lt
                 label: < Test value
           - type: Label
             label: Missing values
@@ -79,12 +80,12 @@ children:
               - type: RadioButton
                 name: miss_perAnalysis
                 optionId: miss
-                checkedValue: perAnalysis
+                focusValue: perAnalysis
                 label: Exclude cases analysis by analysis
               - type: RadioButton
                 name: miss_listwise
                 optionId: miss
-                checkedValue: listwise
+                focusValue: listwise
                 label: Exclude cases listwise
       - type: LayoutBox
         cell:

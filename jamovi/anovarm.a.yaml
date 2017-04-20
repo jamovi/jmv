@@ -121,8 +121,10 @@ options:
       title: Sum of squares
       type: List
       options:
-        - '2'
-        - '3'
+        - title: Type 2
+          name: '2'
+        - title: Type 3
+          name: '3'
       default: '3'
       description:
           R: >
@@ -270,9 +272,12 @@ options:
       title: Error Bar Definition
       type: List
       options:
-        - none
-        - ci
-        - se
+        - name: none
+          title: None
+        - name: ci
+          title: Confidence interval
+        - name: se
+          title: Standard Error
       default: ci
       description:
           R: >

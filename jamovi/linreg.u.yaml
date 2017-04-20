@@ -2,6 +2,7 @@ title: Linear Regression
 name: linReg
 jus: '2.0'
 stage: 0
+compilerMode: tame
 events:
   update: './linreg.events::update'
 children:
@@ -64,34 +65,26 @@ children:
             children:
               - type: CheckBox
                 name: desc
-                label: Descriptives
               - type: CheckBox
                 name: cooks
-                label: Cook's distance
           - type: Label
             label: Assumption Checks
             children:
               - type: CheckBox
                 name: durbinWatson
-                label: Autocorrelation test
               - type: CheckBox
                 name: collinearity
-                label: Collinearity statistics
               - type: CheckBox
                 name: qqPlot
-                label: Q-Q plot of residuals
               - type: CheckBox
                 name: resPlots
-                label: Residual plots
           - type: Label
             label: Model Coefficients
             children:
               - type: CheckBox
                 name: stdEst
-                label: Standardized estimate
               - type: CheckBox
                 name: ci
-                label: Confidence interval
                 children:
                   - type: TextBox
                     name: ciWidth
@@ -102,8 +95,6 @@ children:
                     enable: (ci)
               - type: CheckBox
                 name: coefPlot
-                label: Coefficient plot
-            name: modelComp
       - type: LayoutBox
         cell:
           column: 1
@@ -115,33 +106,27 @@ children:
             children:
               - name: fitMeasures_r
                 type: CheckBox
-                label: R
-                checkedValue: r
+                focusValue: r
                 optionId: fitMeasures
               - name: fitMeasures_r2
                 type: CheckBox
-                label: R²
-                checkedValue: r2
+                focusValue: r2
                 optionId: fitMeasures
               - name: fitMeasures_r2Adj
                 type: CheckBox
-                label: Adjusted R²
-                checkedValue: r2Adj
+                focusValue: r2Adj
                 optionId: fitMeasures
               - name: fitMeasures_aic
                 type: CheckBox
-                label: AIC
-                checkedValue: aic
+                focusValue: aic
                 optionId: fitMeasures
               - name: fitMeasures_bic
                 type: CheckBox
-                label: BIC
-                checkedValue: bic
+                focusValue: bic
                 optionId: fitMeasures
               - name: fitMeasures_rmse
                 type: CheckBox
-                label: RMSE
-                checkedValue: rmse
+                focusValue: rmse
                 optionId: fitMeasures
             name: fitMeasures
           - type: Label
@@ -149,13 +134,11 @@ children:
             children:
               - name: modelTest_f
                 type: CheckBox
-                label: Classical F-test
-                checkedValue: f
+                focusValue: f
                 optionId: modelTest
               - name: modelTest_bf
                 type: CheckBox
-                label: Bayes factor
-                checkedValue: bf
+                focusValue: bf
                 optionId: modelTest
             name: modelTest
           - type: Label
@@ -163,11 +146,9 @@ children:
             children:
               - name: modelComp_f
                 type: CheckBox
-                label: Classical F-test
-                checkedValue: f
+                focusValue: f
                 optionId: modelComp
               - name: modelComp_bf
                 type: CheckBox
-                label: Bayes factor
-                checkedValue: bf
+                focusValue: bf
                 optionId: modelComp

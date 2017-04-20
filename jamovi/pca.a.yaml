@@ -78,15 +78,21 @@ options:
             a number (default: 1), the minimal eigenvalue for a component to be included in the model
 
     - name: rotation
-      title: 'Rotation:'
+      title: Rotation
       type: List
       options:
-        - none
-        - varimax
-        - quartimax
-        - promax
-        - oblimin
-        - simplimax
+        - title: None
+          name: none
+        - title: Varimax
+          name: varimax
+        - title: Quartimax
+          name: quartimax
+        - title: Promax
+          name: promax
+        - title: Oblimin
+          name: oblimin
+        - title: Simplimax
+          name: simplimax
       default: varimax
       description:
           R: >

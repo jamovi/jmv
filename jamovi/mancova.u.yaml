@@ -2,6 +2,7 @@ name: mancova
 title: MANCOVA
 jus: '2.0'
 stage: 0
+compilerMode: tame
 children:
   - type: VariableSupplier
     persistentItems: false
@@ -42,23 +43,19 @@ children:
             children:
               - name: multivarStats_pillai
                 type: CheckBox
-                label: Pillai's Trace
-                checkedValue: pillai
+                focusValue: pillai
                 optionId: multivarStats
               - name: multivarStats_wilks
                 type: CheckBox
-                label: Wilks' Lambda
-                checkedValue: wilks
+                focusValue: wilks
                 optionId: multivarStats
               - name: multivarStats_hotel
                 type: CheckBox
-                label: Hotelling's Trace
-                checkedValue: hotel
+                focusValue: hotel
                 optionId: multivarStats
               - name: multivarStats_roy
                 type: CheckBox
-                label: Roy's Largest Root
-                checkedValue: roy
+                focusValue: roy
                 optionId: multivarStats
       - type: LayoutBox
         margin: large
@@ -78,4 +75,3 @@ children:
                 label: Shapiro-Wilk test
               - type: CheckBox
                 name: qqPlot
-                label: Q-Q plot of multivariate normality

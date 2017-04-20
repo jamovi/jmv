@@ -37,7 +37,7 @@ options:
           R: a vector of strings naming the repeated measures variables
 
     - name: pairs
-      title: Pairwise comparisons - Durbin-Conover
+      title: Pairwise comparisons (Durbin-Conover)
       type: Bool
       default: false
       description:
@@ -64,8 +64,10 @@ options:
       title: Plot Type
       type: List
       options:
-        - means
-        - medians
+        - name: means
+          title: Means
+        - name: medians
+          title: Medians
       default: means
       description:
           R: >

@@ -1,7 +1,7 @@
 name: contTables
 title: Contingency Tables
 jus: '2.0'
-
+compilerMode: tame
 children:
   - type: VariableSupplier
     name: variablesupplier
@@ -53,13 +53,10 @@ children:
             children:
               - type: CheckBox
                 name: chiSq
-                label: χ²
               - type: CheckBox
                 name: chiSqCorr
-                label: χ² continuity correction
               - type: CheckBox
                 name: likeRat
-                label: Likelihood ratio
           - type: Label
             label: ""
             fitToGrid: true
@@ -69,11 +66,9 @@ children:
             children:
               - type: CheckBox
                 name: logOdds
-                label: Log odds ratio (2x2 only)
                 children:
                   - type: TextBox
                     name: ciWidth
-                    label: Confidence level
                     suffix: '%'
                     format: number
                     inputPattern: '[0-9]+'
@@ -87,10 +82,8 @@ children:
             children:
               - type: CheckBox
                 name: contCoef
-                label: Contingency coefficient
               - type: CheckBox
                 name: phiCra
-                label: Phi and Cramer's V
           - type: Label
             label: Ordinal
             fitToGrid: true
@@ -100,10 +93,8 @@ children:
             children:
               - type: CheckBox
                 name: gamma
-                label: Gamma
               - type: CheckBox
                 name: taub
-                label: Kendall's tau-b
       - type: CollapseBox
         label: Cells
         stretchFactor: 1
@@ -115,7 +106,6 @@ children:
             children:
               - type: CheckBox
                 name: exp
-                label: Expected
           - type: Label
             label: Percentages
             fitToGrid: true
@@ -125,10 +115,7 @@ children:
             children:
               - type: CheckBox
                 name: pcRow
-                label: Row
               - type: CheckBox
                 name: pcCol
-                label: Column
               - type: CheckBox
                 name: pcTot
-                label: Total

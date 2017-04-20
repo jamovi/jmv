@@ -101,9 +101,12 @@ options:
       title: Alternative hypothesis
       type: List
       options:
-        - different
-        - oneGreater
-        - twoGreater
+        - name: different
+          title: "Group 1 ≠ Group 2"
+        - name: oneGreater
+          title: "Group 1 > Group 2"
+        - name: twoGreater
+          title: "Group 1 < Group 2"
       default: different
       description:
           R: >

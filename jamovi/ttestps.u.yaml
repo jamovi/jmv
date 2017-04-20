@@ -1,6 +1,7 @@
 name: ttestPS
 title: Paired Samples T-Test
 jus: '2.0'
+compilerMode: tame
 children:
   - type: VariableSupplier
     suggested:
@@ -65,17 +66,17 @@ children:
               - type: RadioButton
                 name: hypothesis_different
                 optionId: hypothesis
-                checkedValue: different
+                focusValue: different
                 label: Measure 1 ≠ Measure 2
               - type: RadioButton
                 name: hypothesis_oneGreater
                 optionId: hypothesis
-                checkedValue: oneGreater
+                focusValue: oneGreater
                 label: Measure 1 > Measure 2
               - type: RadioButton
                 name: hypothesis_twoGreater
                 optionId: hypothesis
-                checkedValue: twoGreater
+                focusValue: twoGreater
                 label: Measure 1 < Measure 2
           - type: Label
             label: Missing values
@@ -83,12 +84,12 @@ children:
               - type: RadioButton
                 name: miss_perAnalysis
                 optionId: miss
-                checkedValue: perAnalysis
+                focusValue: perAnalysis
                 label: Exclude cases analysis by analysis
               - type: RadioButton
                 name: miss_listwise
                 optionId: miss
-                checkedValue: listwise
+                focusValue: listwise
                 label: Exclude cases listwise
       - type: LayoutBox
         cell:

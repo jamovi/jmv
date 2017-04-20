@@ -1,7 +1,7 @@
 name:  anovaRMNP
 title: Repeated Measures ANOVA (Non-parametric)
 jus:   '2.0'
-
+compilerMode: tame
 children:
   - type: VariableSupplier
     name: variablesupplier
@@ -27,26 +27,21 @@ children:
     children:
       - type: CheckBox
         name: pairs
-        label: Pairwise comparisons (Durbin-Conover)
 
       - type: CheckBox
         name: desc
-        label: Descriptives
 
       - type: CheckBox
         name: plots
-        label: Descriptives plot
         children:
           - type: RadioButton
             name: plotType_means
             optionId: plotType
-            checkedValue: means
-            label: Means
+            focusValue: means
             enable: (plots)
 
           - type: RadioButton
             name: plotType_medians
             optionId: plotType
-            checkedValue: medians
-            label: Medians
+            focusValue: medians
             enable: (plots)

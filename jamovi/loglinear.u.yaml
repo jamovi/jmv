@@ -2,7 +2,7 @@ name:  logLinear
 title: Log-Linear Regression
 jus:   '2.0'
 stage: 1
-
+compilerMode: tame
 events:
     update: ./loglinear.events::update
 
@@ -67,7 +67,6 @@ children:
         children:
           - type: CheckBox
             name: est
-            label: Estimates
 
           - type: CheckBox
             name: ci

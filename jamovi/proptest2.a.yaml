@@ -34,6 +34,7 @@ options:
           R: a vector of strings naming the variables of interest in `data`
 
     - name: areCounts
+      title: Values are counts
       type: Bool
       default: false
       description:
@@ -62,6 +63,7 @@ options:
             alternative hypothesis
 
     - name: ci
+      title: Confidence intervals
       type: Bool
       default: false
       description:

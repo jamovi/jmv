@@ -1,7 +1,7 @@
 name:  propTest2
 title: Proportion Test (2 Outcomes)
 jus:   '2.0'
-
+compilerMode: tame
 children:
   - type: VariableSupplier
     suggested:
@@ -22,13 +22,11 @@ children:
     children:
       - type: CheckBox
         name: areCounts
-        label: Values are counts
 
       - type: LayoutBox
         children:
           - type: TextBox
             name: testValue
-            label: Test value
             format: number
             inputPattern: "[0-9]+"
 
@@ -39,26 +37,25 @@ children:
         name: hypothesis_notequal
         label: "≠ Test value"
         optionId: hypothesis
-        checkedValue: notequal
+        focusValue: notequal
 
       - type: RadioButton
         name: hypothesis_greater
         label: "> Test value"
         optionId: hypothesis
-        checkedValue: greater
+        focusValue: greater
 
       - type: RadioButton
         name: hypothesis_less
         label: "< Test value"
         optionId: hypothesis
-        checkedValue: less
+        focusValue: less
 
   - type: Label
     label: Additional Statistics
     children:
       - type: CheckBox
         name: ci
-        label: Confidence intervals
         children:
           - type: TextBox
             name: ciWidth

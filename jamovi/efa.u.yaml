@@ -2,6 +2,7 @@ title: Exploratory Factor Analysis
 name: efa
 jus: '2.0'
 stage: 0
+compilerMode: tame
 children:
   - type: VariableSupplier
     suggested:
@@ -36,23 +37,8 @@ children:
             children:
               - name: rotation
                 type: ComboBox
-                label: 'Rotation'
-                options:
-                  - label: None
-                    value: none
-                  - label: Varimax
-                    value: varimax
-                  - label: Quartimax
-                    value: quartimax
-                  - label: Promax
-                    value: promax
-                  - label: Oblimin
-                    value: oblimin
-                  - label: Simplimax
-                    value: simplimax
               - name: hideLoadings
                 type: TextBox
-                label: Hide loadings below
                 format: number
                 inputPattern: '[0-9]+'
       - type: LayoutBox
@@ -68,13 +54,11 @@ children:
               - type: RadioButton
                 name: nFactorMethod_parallel
                 optionId: nFactorMethod
-                checkedValue: parallel
-                label: Based on parallel analysis
+                focusValue: parallel
               - type: RadioButton
                 name: nFactorMethod_eigen
                 optionId: nFactorMethod
-                checkedValue: eigen
-                label: Based on eigenvalue
+                focusValue: eigen
                 children:
                   - name: minEigen
                     type: TextBox
@@ -85,8 +69,7 @@ children:
               - type: RadioButton
                 name: nFactorMethod_fixed
                 optionId: nFactorMethod
-                checkedValue: fixed
-                label: Fixed number
+                focusValue: fixed
                 children:
                   - name: nFactors
                     type: TextBox
@@ -107,10 +90,8 @@ children:
             children:
               - name: bartlettTest
                 type: CheckBox
-                label: Bartlett's test of sphericity
               - name: kmoTest
                 type: CheckBox
-                label: KMO measure of sampling adequacy
       - type: LayoutBox
         margin: large
         cell:
@@ -123,16 +104,11 @@ children:
             children:
               - name: factorSummary
                 type: CheckBox
-                label: Factor summary
               - name: factorCor
                 type: CheckBox
-                label: Factor correlations
               - type: CheckBox
                 name: modelFit
-                label: Model fit measures
               - name: eigenValues
                 type: CheckBox
-                label: Initial eigenvalues
               - name: screePlot
                 type: CheckBox
-                label: Scree plot
