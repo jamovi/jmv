@@ -33,7 +33,7 @@ options:
           R: the data as a data frame
 
     - name: vars
-      title: Variables
+      title: Dependent Variables
       type: Variables
       suggested:
         - continuous
@@ -46,7 +46,7 @@ options:
           R: a vector of strings naming the dependent variables
 
     - name: group
-      title: Grouping variable
+      title: Grouping Variable
       type: Variable
       suggested:
         - nominal

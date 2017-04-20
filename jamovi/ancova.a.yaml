@@ -22,7 +22,7 @@ options:
           R: the data as a data frame
 
     - name: dep
-      title: Dependent
+      title: Dependent Variable
       type: Variable
       suggested:
         - continuous
@@ -36,7 +36,7 @@ options:
             must be numeric
 
     - name: factors
-      title: Fixed factors
+      title: Fixed Factors
       type: Variables
       suggested:
         - nominal

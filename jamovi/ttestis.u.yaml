@@ -12,13 +12,11 @@ children:
     stretchFactor: 1
     children:
       - type: TargetLayoutBox
-        label: Dependent Variables
         children:
           - type: VariablesListBox
             name: vars
             isTarget: true
       - type: TargetLayoutBox
-        label: Grouping Variable
         children:
           - type: VariablesListBox
             name: group

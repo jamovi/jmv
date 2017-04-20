@@ -15,14 +15,12 @@ children:
     stretchFactor: 1
     children:
       - type: TargetLayoutBox
-        label: Dependent Variable
         children:
           - type: VariablesListBox
             name: dep
             isTarget: true
             maxItemCount: 1
       - type: TargetLayoutBox
-        label: Fixed Factors
         children:
           - type: VariablesListBox
             name: factors
@@ -62,7 +60,6 @@ children:
         format: term
         children:
           - type: TargetLayoutBox
-            label: Model Terms
             children:
               - type: ListBox
                 name: modelTerms
@@ -122,6 +119,7 @@ children:
           change: './anova.events::onChange_postHocSupplier'
         children:
           - type: TargetLayoutBox
+            label: ''
             children:
               - type: ListBox
                 name: postHoc
@@ -167,21 +165,18 @@ children:
           change: './anova.events::onChange_plotsSupplier'
         children:
           - type: TargetLayoutBox
-            label: Horizontal axis
             children:
               - type: VariablesListBox
                 name: plotHAxis
                 isTarget: true
                 maxItemCount: 1
           - type: TargetLayoutBox
-            label: Separate lines
             children:
               - type: VariablesListBox
                 name: plotSepLines
                 maxItemCount: 1
                 isTarget: true
           - type: TargetLayoutBox
-            label: Separate plots
             children:
               - type: VariablesListBox
                 name: plotSepPlots

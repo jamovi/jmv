@@ -9,19 +9,16 @@ children:
     stretchFactor: 1
     children:
       - type: TargetLayoutBox
-        label: Dependent
         children:
           - type: VariablesListBox
             name: deps
             isTarget: true
       - type: TargetLayoutBox
-        label: Fixed factors
         children:
           - type: VariablesListBox
             name: fixedFactors
             isTarget: true
       - type: TargetLayoutBox
-        label: Covariates
         children:
           - type: VariablesListBox
             name: covariates
