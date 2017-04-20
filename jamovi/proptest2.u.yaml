@@ -37,20 +37,20 @@ children:
       - type: RadioButton
         name: hypothesis_notequal
         label: "≠ Test value"
-        optionId: hypothesis
-        focusValue: notequal
+        optionName: hypothesis
+        optionPart: notequal
 
       - type: RadioButton
         name: hypothesis_greater
         label: "> Test value"
-        optionId: hypothesis
-        focusValue: greater
+        optionName: hypothesis
+        optionPart: greater
 
       - type: RadioButton
         name: hypothesis_less
         label: "< Test value"
-        optionId: hypothesis
-        focusValue: less
+        optionName: hypothesis
+        optionPart: less
 
   - type: Label
     label: Additional Statistics

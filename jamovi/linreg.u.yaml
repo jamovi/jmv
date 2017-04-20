@@ -104,49 +104,49 @@ children:
             children:
               - name: fitMeasures_r
                 type: CheckBox
-                focusValue: r
-                optionId: fitMeasures
+                optionPart: r
+                optionName: fitMeasures
               - name: fitMeasures_r2
                 type: CheckBox
-                focusValue: r2
-                optionId: fitMeasures
+                optionPart: r2
+                optionName: fitMeasures
               - name: fitMeasures_r2Adj
                 type: CheckBox
-                focusValue: r2Adj
-                optionId: fitMeasures
+                optionPart: r2Adj
+                optionName: fitMeasures
               - name: fitMeasures_aic
                 type: CheckBox
-                focusValue: aic
-                optionId: fitMeasures
+                optionPart: aic
+                optionName: fitMeasures
               - name: fitMeasures_bic
                 type: CheckBox
-                focusValue: bic
-                optionId: fitMeasures
+                optionPart: bic
+                optionName: fitMeasures
               - name: fitMeasures_rmse
                 type: CheckBox
-                focusValue: rmse
-                optionId: fitMeasures
+                optionPart: rmse
+                optionName: fitMeasures
             name: fitMeasures
           - type: Label
             label: Overall Model Test
             children:
               - name: modelTest_f
                 type: CheckBox
-                focusValue: f
-                optionId: modelTest
+                optionPart: f
+                optionName: modelTest
               - name: modelTest_bf
                 type: CheckBox
-                focusValue: bf
-                optionId: modelTest
+                optionPart: bf
+                optionName: modelTest
             name: modelTest
           - type: Label
             label: Model Comparison Test
             children:
               - name: modelComp_f
                 type: CheckBox
-                focusValue: f
-                optionId: modelComp
+                optionPart: f
+                optionName: modelComp
               - name: modelComp_bf
                 type: CheckBox
-                focusValue: bf
-                optionId: modelComp
+                optionPart: bf
+                optionName: modelComp

@@ -52,12 +52,12 @@ children:
             children:
               - type: RadioButton
                 name: nFactorMethod_parallel
-                optionId: nFactorMethod
-                focusValue: parallel
+                optionName: nFactorMethod
+                optionPart: parallel
               - type: RadioButton
                 name: nFactorMethod_eigen
-                optionId: nFactorMethod
-                focusValue: eigen
+                optionName: nFactorMethod
+                optionPart: eigen
                 children:
                   - name: minEigen
                     type: TextBox
@@ -67,8 +67,8 @@ children:
                     enable: (nFactorMethod_eigen)
               - type: RadioButton
                 name: nFactorMethod_fixed
-                optionId: nFactorMethod
-                focusValue: fixed
+                optionName: nFactorMethod
+                optionPart: fixed
                 children:
                   - name: nFactors
                     type: TextBox

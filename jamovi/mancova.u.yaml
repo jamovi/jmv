@@ -40,20 +40,20 @@ children:
             children:
               - name: multivarStats_pillai
                 type: CheckBox
-                focusValue: pillai
-                optionId: multivarStats
+                optionPart: pillai
+                optionName: multivarStats
               - name: multivarStats_wilks
                 type: CheckBox
-                focusValue: wilks
-                optionId: multivarStats
+                optionPart: wilks
+                optionName: multivarStats
               - name: multivarStats_hotel
                 type: CheckBox
-                focusValue: hotel
-                optionId: multivarStats
+                optionPart: hotel
+                optionName: multivarStats
               - name: multivarStats_roy
                 type: CheckBox
-                focusValue: roy
-                optionId: multivarStats
+                optionPart: roy
+                optionName: multivarStats
       - type: LayoutBox
         margin: large
         cell:

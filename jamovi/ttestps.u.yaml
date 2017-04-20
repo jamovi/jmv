@@ -64,31 +64,31 @@ children:
             children:
               - type: RadioButton
                 name: hypothesis_different
-                optionId: hypothesis
-                focusValue: different
+                optionName: hypothesis
+                optionPart: different
                 label: Measure 1 ≠ Measure 2
               - type: RadioButton
                 name: hypothesis_oneGreater
-                optionId: hypothesis
-                focusValue: oneGreater
+                optionName: hypothesis
+                optionPart: oneGreater
                 label: Measure 1 > Measure 2
               - type: RadioButton
                 name: hypothesis_twoGreater
-                optionId: hypothesis
-                focusValue: twoGreater
+                optionName: hypothesis
+                optionPart: twoGreater
                 label: Measure 1 < Measure 2
           - type: Label
             label: Missing values
             children:
               - type: RadioButton
                 name: miss_perAnalysis
-                optionId: miss
-                focusValue: perAnalysis
+                optionName: miss
+                optionPart: perAnalysis
                 label: Exclude cases analysis by analysis
               - type: RadioButton
                 name: miss_listwise
-                optionId: miss
-                focusValue: listwise
+                optionName: miss
+                optionPart: listwise
                 label: Exclude cases listwise
       - type: LayoutBox
         cell:
