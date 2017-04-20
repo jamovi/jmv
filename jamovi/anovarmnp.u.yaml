@@ -15,7 +15,6 @@ children:
     stretchFactor: 1
     children:
       - type: TargetLayoutBox
-        label: Measures
         children:
           - type: VariablesListBox
             name: measures

@@ -18,14 +18,12 @@ children:
       - ordinal
     children:
       - type: TargetLayoutBox
-        label: Dependent Variable
         children:
           - type: VariablesListBox
             name: dep
             isTarget: true
             maxItemCount: 1
       - type: TargetLayoutBox
-        label: Covariates
         children:
           - type: ListBox
             name: blocks

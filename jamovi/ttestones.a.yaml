@@ -34,7 +34,7 @@ options:
           R: the data as a data frame
 
     - name: vars
-      title: Variables
+      title: Dependent Variables
       type: Variables
       suggested:
         - continuous

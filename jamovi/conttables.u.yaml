@@ -9,28 +9,24 @@ children:
     stretchFactor: 1
     children:
       - type: TargetLayoutBox
-        label: Rows
         children:
           - type: VariablesListBox
             name: rows
             isTarget: true
             maxItemCount: 1
       - type: TargetLayoutBox
-        label: Columns
         children:
           - type: VariablesListBox
             name: cols
             isTarget: true
             maxItemCount: 1
       - type: TargetLayoutBox
-        label: Counts (optional)
         children:
           - type: VariablesListBox
             name: counts
             isTarget: true
             maxItemCount: 1
       - type: TargetLayoutBox
-        label: Layers
         children:
           - type: VariablesListBox
             name: layers

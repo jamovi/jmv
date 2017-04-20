@@ -17,14 +17,12 @@ children:
     stretchFactor: 1
     children:
       - type: TargetLayoutBox
-        label: Counts (optional)
         children:
           - type: VariablesListBox
             name: counts
             isTarget: true
             maxItemCount: 1
       - type: TargetLayoutBox
-        label: Factors
         children:
           - type: VariablesListBox
             name: factors
@@ -44,7 +42,6 @@ children:
         stretchFactor: 1
         children:
           - type: TargetLayoutBox
-            label: Model Terms
             children:
               - type: ListBox
                 name: modelTerms

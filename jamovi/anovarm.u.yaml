@@ -21,7 +21,6 @@ children:
         events:
           change: './anovarm.events::onChange_rm'
       - type: TargetLayoutBox
-        label: Repeated Measures Cells
         children:
           - type: ListBox
             name: rmCells
@@ -47,7 +46,6 @@ children:
                     horizontalAlignment: right
 
       - type: TargetLayoutBox
-        label: Between Subject Factors
         children:
           - type: VariablesListBox
             name: bs
@@ -57,7 +55,6 @@ children:
             events:
               change: './anovarm.events::onChange_bs'
       - type: TargetLayoutBox
-        label: Covariates
         children:
           - type: VariablesListBox
             name: cov
@@ -99,7 +96,6 @@ children:
         stretchFactor: 1
         children:
           - type: TargetLayoutBox
-            label: Model Terms
             children:
               - type: ListBox
                 name: rmTerms
@@ -119,7 +115,6 @@ children:
         stretchFactor: 1
         children:
           - type: TargetLayoutBox
-            label: Model Terms
             children:
               - type: ListBox
                 name: bsTerms
@@ -202,6 +197,7 @@ children:
           change: './anovarm.events::onChange_postHocSupplier'
         children:
           - type: TargetLayoutBox
+            label: ''
             children:
               - type: ListBox
                 name: postHoc
@@ -247,21 +243,18 @@ children:
           change: './anovarm.events::onChange_plotsSupplier'
         children:
           - type: TargetLayoutBox
-            label: Horizontal axis
             children:
               - type: VariablesListBox
                 name: plotHAxis
                 isTarget: true
                 maxItemCount: 1
           - type: TargetLayoutBox
-            label: Separate lines
             children:
               - type: VariablesListBox
                 name: plotSepLines
                 isTarget: true
                 maxItemCount: 1
           - type: TargetLayoutBox
-            label: Separate plots
             children:
               - type: VariablesListBox
                 name: plotSepPlots

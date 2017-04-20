@@ -25,7 +25,7 @@ options:
           R: the data as a data frame
 
     - name: deps
-      title: Dependents
+      title: Dependent Variables
       type: Variables
       suggested:
         - continuous
@@ -37,7 +37,7 @@ options:
           R: a string naming the dependent variable in `data`
 
     - name: group
-      title: Grouping variable
+      title: Grouping Variable
       type: Variable
       suggested:
         - nominal
