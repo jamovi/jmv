@@ -1,6 +1,7 @@
 name: contTablesPaired
 title: Paired Samples Contingency Tables
 jus: '2.0'
+compilerMode: tame
 children:
   - type: VariableSupplier
     persistentItems: false
@@ -36,7 +37,5 @@ children:
         children:
           - type: CheckBox
             name: pcRow
-            label: Row
           - type: CheckBox
             name: pcCol
-            label: Column

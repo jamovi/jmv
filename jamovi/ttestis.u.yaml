@@ -1,7 +1,7 @@
 name:  ttestIS
 title: Independent Samples T-Test
 jus:   '2.0'
-
+compilerMode: tame
 children:
   - type: VariableSupplier
     suggested:
@@ -39,7 +39,6 @@ children:
             children:
               - type: CheckBox
                 name: students
-                label: Student's
                 children:
                   - type: CheckBox
                     name: bf
@@ -54,11 +53,9 @@ children:
 
               - type: CheckBox
                 name: welchs
-                label: Welch's
 
               - type: CheckBox
                 name: mann
-                label: Mann-Whitney U
 
           - type: Label
             label: Hypothesis
@@ -66,19 +63,19 @@ children:
               - type: RadioButton
                 name: hypothesis_different
                 optionId: hypothesis
-                checkedValue: different
+                focusValue: different
                 label: "Group 1 ≠ Group 2"
 
               - type: RadioButton
                 name: hypothesis_oneGreater
                 optionId: hypothesis
-                checkedValue: oneGreater
+                focusValue: oneGreater
                 label: "Group 1 > Group 2"
 
               - type: RadioButton
                 name: hypothesis_twoGreater
                 optionId: hypothesis
-                checkedValue: twoGreater
+                focusValue: twoGreater
                 label: "Group 1 < Group 2"
 
           - type: Label
@@ -87,13 +84,13 @@ children:
               - type: RadioButton
                 name: miss_perAnalysis
                 optionId: miss
-                checkedValue: perAnalysis
+                focusValue: perAnalysis
                 label: Exclude cases analysis by analysis
 
               - type: RadioButton
                 name: miss_listwise
                 optionId: miss
-                checkedValue: listwise
+                focusValue: listwise
                 label: Exclude cases listwise
 
       - type: LayoutBox

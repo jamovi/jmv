@@ -1,6 +1,7 @@
 name: propTestN
 title: Proportion Test (N Outcomes)
 jus: '2.0'
+compilerMode: tame
 events:
   update: './proptestn.events::update'
   remoteDataChanged: './proptestn.events::onRemoteDataChanged'
@@ -34,7 +35,6 @@ children:
     children:
       - name: expected
         type: CheckBox
-        label: Expected counts
   - type: CollapseBox
     label: Expected Proportions
     collapsed: true

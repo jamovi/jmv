@@ -1,7 +1,7 @@
 name:  reliability
 title: Reliability Analysis
 jus:   '2.0'
-
+compilerMode: tame
 children:
   - type: VariableSupplier
     persistentItems: false
@@ -24,19 +24,15 @@ children:
         children:
           - type: CheckBox
             name: alphaScale
-            label: Cronbach's α
 
           - type: CheckBox
             name: omegaScale
-            label: McDonald's ω
 
           - type: CheckBox
             name: meanScale
-            label: Mean
 
           - type: CheckBox
             name: sdScale
-            label: Standard deviation
 
       - type: Label
         label: Item Statistics
@@ -46,23 +42,18 @@ children:
         children:
           - type: CheckBox
             name: alphaItems
-            label: Cronbach's α (if item is dropped)
 
           - type: CheckBox
             name: omegaItems
-            label: McDonald's ω (if item is dropped)
 
           - type: CheckBox
             name: meanItems
-            label: Mean
 
           - type: CheckBox
             name: sdItems
-            label: Standard deviation
 
           - type: CheckBox
             name: itemRestCor
-            label: Item-rest correlation
 
       - type: Label
         label: Additional Options

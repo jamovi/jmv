@@ -1,6 +1,7 @@
 name: anova
 title: ANOVA
 jus: '2.0'
+compilerMode: tame
 events:
   update: './anova.events::update'
 children:
@@ -38,18 +39,15 @@ children:
         children:
           - name: effectSize_eta
             type: CheckBox
-            label: η²
-            checkedValue: eta
+            focusValue: eta
             optionId: effectSize
           - name: effectSize_partEta
             type: CheckBox
-            label: partial η²
-            checkedValue: partEta
+            focusValue: partEta
             optionId: effectSize
           - name: effectSize_omega
             type: CheckBox
-            label: ω²
-            checkedValue: omega
+            focusValue: omega
             optionId: effectSize
   - type: CollapseBox
     label: Model
@@ -80,14 +78,6 @@ children:
         children:
           - type: ComboBox
             name: ss
-            label: Sum of squares
-            options:
-              - label: Type 1
-                value: '1'
-              - label: Type 2
-                value: '2'
-              - label: Type 3
-                value: '3'
   - type: CollapseBox
     label: Assumption Checks
     collapsed: true
@@ -95,10 +85,8 @@ children:
     children:
       - type: CheckBox
         name: homo
-        label: Homogeneity tests
       - type: CheckBox
         name: qq
-        label: Q-Q plot of residuals
   - type: CollapseBox
     label: Contrasts
     collapsed: true
@@ -106,37 +94,20 @@ children:
     children:
       - type: ListBox
         name: contrasts
-        label: Factors
         stretchFactor: 1
         columns:
           - name: var
-            label: null
             selectable: false
             stretchFactor: 1
             maxWidth: 300
             template:
                 type: VariableLabel
           - name: type
-            label: null
             selectable: false
             stretchFactor: 0.5
             template:
                 type: ComboBox
-                options:
-                  - label: none
-                    value: none
-                  - label: deviation
-                    value: deviation
-                  - label: simple
-                    value: simple
-                  - label: difference
-                    value: difference
-                  - label: helmert
-                    value: helmert
-                  - label: repeated
-                    value: repeated
-                  - label: polynomial
-                    value: polynomial
+                label: ''
   - type: CollapseBox
     label: Post Hoc Tests
     collapsed: true
@@ -165,28 +136,23 @@ children:
             children:
               - name: postHocCorr_none
                 type: CheckBox
-                label: No correction
-                checkedValue: none
+                focusValue: none
                 optionId: postHocCorr
               - name: postHocCorr_tukey
                 type: CheckBox
-                label: Tukey
-                checkedValue: tukey
+                focusValue: tukey
                 optionId: postHocCorr
               - name: postHocCorr_scheffe
                 type: CheckBox
-                label: Scheffe
-                checkedValue: scheffe
+                focusValue: scheffe
                 optionId: postHocCorr
               - name: postHocCorr_bonf
                 type: CheckBox
-                label: Bonferroni
-                checkedValue: bonf
+                focusValue: bonf
                 optionId: postHocCorr
               - name: postHocCorr_holm
                 type: CheckBox
-                label: Holm
-                checkedValue: holm
+                focusValue: holm
                 optionId: postHocCorr
   - type: CollapseBox
     label: Descriptive Plots
@@ -227,13 +193,11 @@ children:
           - type: RadioButton
             name: errBarDef_none
             optionId: plotError
-            checkedValue: none
-            label: None
+            focusValue: none
           - type: RadioButton
             name: errBarDef_ci
             optionId: plotError
-            checkedValue: ci
-            label: Confidence interval
+            focusValue: ci
             children:
               - type: TextBox
                 name: ciWidth
@@ -245,8 +209,7 @@ children:
           - type: RadioButton
             name: errBarDef_se
             optionId: plotError
-            checkedValue: se
-            label: Standard Error
+            focusValue: se
   - type: CollapseBox
     label: Additional Options
     collapsed: true
@@ -257,4 +220,3 @@ children:
         children:
           - type: CheckBox
             name: descStats
-            label: Descriptive statistics

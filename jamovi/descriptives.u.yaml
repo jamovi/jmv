@@ -1,7 +1,7 @@
 name:  descriptives
 title: Descriptives
 jus:   '2.0'
-
+compilerMode: tame
 children:
   - type: VariableSupplier
     persistentItems: false
@@ -38,7 +38,6 @@ children:
         children:
           - type: CheckBox
             name: quart
-            label: Quartiles
 
           - type: LayoutBox
             children:
@@ -65,19 +64,15 @@ children:
         children:
           - type: CheckBox
             name: mean
-            label: Mean
 
           - type: CheckBox
             name: median
-            label: Median
 
           - type: CheckBox
             name: mode
-            label: Mode
 
           - type: CheckBox
             name: sum
-            label: Sum
 
       - type: Label
         label: Dispersion
@@ -96,22 +91,18 @@ children:
 
               - type: CheckBox
                 name: variance
-                label: Variance
 
               - type: CheckBox
                 name: range
-                label: Range
 
           - type: LayoutBox
             margin: normal
             children:
               - type: CheckBox
                 name: min
-                label: Minimum
 
               - type: CheckBox
                 name: max
-                label: Maximum
 
               - type: CheckBox
                 name: se
@@ -126,8 +117,6 @@ children:
         children:
           - type: CheckBox
             name: skew
-            label: Skewness
 
           - type: CheckBox
             name: kurt
-            label: Kurtosis

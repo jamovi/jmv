@@ -1,7 +1,7 @@
 name:  anovaNP
 title: One-way ANOVA (Non-parametric)
 jus:   '2.0'
-
+compilerMode: tame
 children:
   - type: VariableSupplier
     name: variablesupplier

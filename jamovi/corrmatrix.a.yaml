@@ -121,9 +121,12 @@ options:
       title: Hypothesis
       type: List
       options:
-        - corr
-        - pos
-        - neg
+        - name: corr
+          title: Correlated
+        - name: pos
+          title: Correlated positively
+        - name: neg
+          title: Correlated negatively
       default: corr
       description:
         R: >
