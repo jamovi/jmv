@@ -137,6 +137,7 @@ analyses:
     menuGroup: Frequencies
     menuTitle: Log-Linear Regression
     stage: 1
+    hidden: true
     description: null
   - title: Principal Component Analysis
     name: pca
