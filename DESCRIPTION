@@ -1,9 +1,9 @@
 Package: jmv
 Type: Package
 Title: The 'jamovi' Analyses
-Version: 0.7.2.5
+Version: 0.7.3.0
 Date: 2017-03-25
-Author: Jonathon Love, Damian Dropmann, Ravi Selker
+Author: Ravi Selker, Jonathon Love, Damian Dropmann
 Maintainer: Jonathon Love <jon@thon.cc>
 Description: 'jamovi' is a rich graphical statistics program providing many
     common statistical tests such as t-tests, ANOVAs, correlation matrices,
@@ -14,7 +14,7 @@ License: GPL (>= 2)
 Depends:
     R (>= 3.2)
 Imports:
-    jmvcore (>= 0.4),
+    jmvcore (>= 0.5.3),
     R6,
     car,
     multcomp,
