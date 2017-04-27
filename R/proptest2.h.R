@@ -175,7 +175,6 @@ propTest2 <- function(
         data = data)
 
     analysis$run()
-    analysis$render()
 
     analysis$results
 }

@@ -64,9 +64,9 @@ anovaOptions <- R6::R6Class(
                 "effectSize",
                 effectSize,
                 options=list(
-                    list(name="eta", title="\u03B7\u00B2"),
-                    list(name="partEta", title="partial \u03B7\u00B2"),
-                    list(name="omega", title="\u03C9\u00B2")),
+                    "eta",
+                    "partEta",
+                    "omega"),
                 default=NULL)
             private$..contrasts <- jmvcore::OptionArray$new(
                 "contrasts",
@@ -112,11 +112,11 @@ anovaOptions <- R6::R6Class(
                 "postHocCorr",
                 postHocCorr,
                 options=list(
-                    list(name="none", title="No correction"),
-                    list(name="tukey", title="Tukey"),
-                    list(name="scheffe", title="Scheffe"),
-                    list(name="bonf", title="Bonferroni"),
-                    list(name="holm", title="Holm")),
+                    "none",
+                    "tukey",
+                    "scheffe",
+                    "bonf",
+                    "holm"),
                 default=list(
                     "tukey"))
             private$..descStats <- jmvcore::OptionBool$new(
@@ -337,7 +337,6 @@ anova <- function(
         data = data)
 
     analysis$run()
-    analysis$render()
 
     analysis$results
 }

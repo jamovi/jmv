@@ -113,9 +113,9 @@ anovaRMOptions <- R6::R6Class(
                 "effectSize",
                 effectSize,
                 options=list(
-                    list(name="eta", title="\u03B7\u00B2"),
-                    list(name="partEta", title="partial \u03B7\u00B2"),
-                    list(name="omega", title="\u03C9\u00B2")),
+                    "eta",
+                    "partEta",
+                    "omega"),
                 default=NULL)
             private$..spherTests <- jmvcore::OptionBool$new(
                 "spherTests",
@@ -125,9 +125,9 @@ anovaRMOptions <- R6::R6Class(
                 "spherCorr",
                 spherCorr,
                 options=list(
-                    list(name="none", title="None"),
-                    list(name="GG", title="Greenhouse-Geisser"),
-                    list(name="HF", title="Huynh-Feldt")),
+                    "none",
+                    "GG",
+                    "HF"),
                 default=list(
                     "none"))
             private$..leveneTest <- jmvcore::OptionBool$new(
@@ -172,11 +172,11 @@ anovaRMOptions <- R6::R6Class(
                 "postHocCorr",
                 postHocCorr,
                 options=list(
-                    list(name="none", title="No correction"),
-                    list(name="tukey", title="Tukey"),
-                    list(name="scheffe", title="Scheffe"),
-                    list(name="bonf", title="Bonferroni"),
-                    list(name="holm", title="Holm")),
+                    "none",
+                    "tukey",
+                    "scheffe",
+                    "bonf",
+                    "holm"),
                 default=list(
                     "tukey"))
             private$..plotHAxis <- jmvcore::OptionVariable$new(
@@ -640,7 +640,6 @@ anovaRM <- function(
         data = data)
 
     analysis$run()
-    analysis$render()
 
     analysis$results
 }

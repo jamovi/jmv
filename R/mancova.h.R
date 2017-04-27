@@ -56,10 +56,10 @@ mancovaOptions <- R6::R6Class(
                 "multivarStats",
                 multivarStats,
                 options=list(
-                    list(name="pillai", title="Pillai's Trace"),
-                    list(name="wilks", title="Wilks' Lambda"),
-                    list(name="hotel", title="Hotelling's Trace"),
-                    list(name="roy", title="Roy's Largest Root")),
+                    "pillai",
+                    "wilks",
+                    "hotel",
+                    "roy"),
                 default=list(
                     "pillai",
                     "wilks",
@@ -341,7 +341,6 @@ mancova <- function(
         data = data)
 
     analysis$run()
-    analysis$render()
 
     analysis$results
 }

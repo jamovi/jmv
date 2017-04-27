@@ -184,7 +184,6 @@ anovaRMNP <- function(
         data = data)
 
     analysis$run()
-    analysis$render()
 
     analysis$results
 }

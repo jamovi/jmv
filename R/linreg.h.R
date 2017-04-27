@@ -62,12 +62,12 @@ linRegOptions <- R6::R6Class(
                 "fitMeasures",
                 fitMeasures,
                 options=list(
-                    list(name="r", title="R"),
-                    list(name="r2", title="R\u00B2"),
-                    list(name="r2Adj", title="Adjusted R\u00B2"),
-                    list(name="aic", title="AIC"),
-                    list(name="bic", title="BIC"),
-                    list(name="rmse", title="RMSE")),
+                    "r",
+                    "r2",
+                    "r2Adj",
+                    "aic",
+                    "bic",
+                    "rmse"),
                 default=list(
                     "r",
                     "r2"))
@@ -75,15 +75,15 @@ linRegOptions <- R6::R6Class(
                 "modelTest",
                 modelTest,
                 options=list(
-                    list(name="f", title="Classical F-test"),
-                    list(name="bf", title="Bayes factor")),
+                    "f",
+                    "bf"),
                 default=NULL)
             private$..modelComp <- jmvcore::OptionNMXList$new(
                 "modelComp",
                 modelComp,
                 options=list(
-                    list(name="f", title="Classical F-test"),
-                    list(name="bf", title="Bayes factor")),
+                    "f",
+                    "bf"),
                 default=list(
                     "f"))
             private$..stdEst <- jmvcore::OptionBool$new(
@@ -541,7 +541,6 @@ linReg <- function(
         data = data)
 
     analysis$run()
-    analysis$render()
 
     analysis$results
 }
