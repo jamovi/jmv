@@ -426,10 +426,9 @@ linRegBase <- R6::R6Class(
 #' Linear Regression
 #'
 #' @examples
-#' data('Prestige')
-#' dat <- Prestige
+#' data('Prestige', package='car')
 #' 
-#' jmv::linReg(data=data, dep="income",
+#' jmv::linReg(data=Prestige, dep="income",
 #'             blocks=list(c("education", "prestige", "women")))
 #' 
 #' #
