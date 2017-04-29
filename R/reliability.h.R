@@ -196,12 +196,23 @@ reliabilityBase <- R6::R6Class(
 
 #' Reliability Analysis
 #'
-#' 
+#' Reliability Analysis
 #'
 #' @examples
-#' \dontrun{
-#' reliability(data, vars=c('x', 'y', 'z'))
-#' }
+#' data('iris')
+#' 
+#' reliability(iris, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'),
+#'             omegaScale = TRUE)
+#' 
+#' #
+#' #  Scale Reliability Statistics
+#' #  -----------------------------------------
+#' #             Cronbach's alpha    McDonald's omega
+#' #  -----------------------------------------
+#' #    scale           0.708           0.848
+#' #  -----------------------------------------
+#' #
+#' 
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}

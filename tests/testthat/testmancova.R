@@ -17,8 +17,8 @@ test_that('mancova works', {
     attr(data, 'row.names') <- seq_len(length(data[[1]]))
     attr(data, 'class') <- 'data.frame'
 
-    mancova <- jmv::mancova(data = data, deps = c("y1","y2","y3 plus","y4"), fixedFactors = c("age","sex"), cov="cov",
-                            boxM = TRUE, shapiroWilk = TRUE)
+    mancova <- jmv::mancova(data = data, deps = c("y1","y2","y3 plus","y4"), factors = c("age","sex"), cov="cov",
+                            boxM = TRUE, shapiro = TRUE)
 
     # Test multivariate table
     expect_equal(1.74224110707516, mancova$multivar$getCell(rowNo=3, "f[pillai]")$value)
@@ -33,9 +33,9 @@ test_that('mancova works', {
     expect_equal(0.0331165141642921, mancova$assump$boxM$getCell(rowNo=1, "p")$value)
 
     # Test Shapiro-Wilk test
-    expect_equal(0.978275817603229, mancova$assump$shapiroWilk$getCell(rowNo=1, "w")$value)
-    expect_equal(0.0974751087311048, mancova$assump$shapiroWilk$getCell(rowNo=1, "p")$value)
+    expect_equal(0.978275817603229, mancova$assump$shapiro$getCell(rowNo=1, "w")$value)
+    expect_equal(0.0974751087311048, mancova$assump$shapiro$getCell(rowNo=1, "p")$value)
 
-    # jmv::mancova(data = data, deps = "y1", fixedFactors = "age")
+    # jmv::mancova(data = data, deps = "y1", factors = "age")
 
 })

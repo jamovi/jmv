@@ -121,7 +121,7 @@ items:
         - name: bartlett
           title: Bartlett's Test of Sphericity
           type: Table
-          visible: (bartlettTest)
+          visible: (bartlett)
           rows: 1
           clearWith:
             - vars
@@ -140,7 +140,7 @@ items:
         - name: kmo
           title: KMO Measure of Sampling Adequacy
           type: Table
-          visible: (kmoTest)
+          visible: (kmo)
           clearWith:
             - vars
           columns:
@@ -158,7 +158,7 @@ items:
       items:
         - name: initEigen
           title: Initial Eigenvalues
-          visible: (eigenValues)
+          visible: (eigen)
           type: Table
           clearWith:
             - vars

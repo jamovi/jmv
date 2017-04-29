@@ -11,9 +11,8 @@ description:
         dontrun: false
         usage: |
             data('iris')
-            dat <- as.data.frame(iris)
 
-            jmv::pca(data = dat, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
+            pca(iris, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
 
             #
             #  Component Loadings
@@ -32,6 +31,8 @@ description:
 options:
     - name: data
       type: Data
+      description:
+          R: the data as a data frame
 
     - name: vars
       title: Variables
@@ -116,7 +117,7 @@ options:
           R: >
             `TRUE` or `FALSE` (default), show scree plot
 
-    - name: eigenValues
+    - name: eigen
       title: Initial eigenvalues
       type: Bool
       default: false
@@ -140,7 +141,7 @@ options:
           R: >
             `TRUE` or `FALSE` (default), show factor summary
 
-    - name: kmoTest
+    - name: kmo
       title: KMO measure of sampling adequacy
       type: Bool
       default: false
@@ -149,7 +150,7 @@ options:
             `TRUE` or `FALSE` (default), show Kaiser-Meyer-Olkin (KMO) measure of
             sampling adequacy (MSA) results
 
-    - name: bartlettTest
+    - name: bartlett
       title: Bartlett's test of sphericity
       type: Bool
       default: false

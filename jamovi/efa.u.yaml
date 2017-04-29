@@ -87,9 +87,9 @@ children:
           - type: Label
             label: Assumption Checks
             children:
-              - name: bartlettTest
+              - name: bartlett
                 type: CheckBox
-              - name: kmoTest
+              - name: kmo
                 type: CheckBox
       - type: LayoutBox
         margin: large
@@ -107,7 +107,7 @@ children:
                 type: CheckBox
               - type: CheckBox
                 name: modelFit
-              - name: eigenValues
+              - name: eigen
                 type: CheckBox
               - name: screePlot
                 type: CheckBox

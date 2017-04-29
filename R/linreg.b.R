@@ -167,7 +167,7 @@ linRegClass <- R6::R6Class(
         },
         .initCollinearityTable = function() {
 
-            table <- self$results$assump$collinearity
+            table <- self$results$assump$collin
             modelTerms <- private$modelTerms$modelTermsLabels
 
             if (length(modelTerms) < 1)
@@ -195,7 +195,7 @@ linRegClass <- R6::R6Class(
 
         },
 
-        #### Populate tables/plots functions ----
+        #### Populate tables functions ----
         .populateModelFitTable = function(results) {
 
             table <- self$results$modelFit
@@ -344,7 +344,7 @@ linRegClass <- R6::R6Class(
         },
         .populateDurbinWatsonTable = function(results) {
 
-            table <- self$results$assump$durbinWatson
+            table <- self$results$assump$durbin
             dwTest <- results$dwTest
 
             row <- list()
@@ -357,7 +357,7 @@ linRegClass <- R6::R6Class(
         },
         .populateCollinearityTable = function(results) {
 
-            table <- self$results$assump$collinearity
+            table <- self$results$assump$collin
 
             modelTerms <- private$modelTerms$modelTermsLabels
             terms <- jmvcore::toB64(modelTerms[[private$modelSelected]][["terms"]][-1])
@@ -385,6 +385,8 @@ linRegClass <- R6::R6Class(
                 table$setRow(rowNo=i, values=row)
             }
         },
+
+        #### Plot functions ----
         .prepareQQPlot = function(data, model) {
 
             image <- self$results$assump$get('qqPlot')

@@ -5,67 +5,69 @@ reliabilityClass <- R6::R6Class(
     private = list(
         .run = function() {
 
-            suppressWarnings({
+            suppressMessages({
+                suppressWarnings({
 
-                if (is.null(self$options$vars) || length(self$options$vars) < 2)
-                    return()
+                    if (is.null(self$options$vars) || length(self$options$vars) < 2)
+                        return()
 
-                items <- unlist(self$options$vars)
+                    items <- unlist(self$options$vars)
 
-                data <- list()
-                for (item in items)
-                    data[[item]] <- jmvcore::toNumeric(self$data[[item]])
+                    data <- list()
+                    for (item in items)
+                        data[[item]] <- jmvcore::toNumeric(self$data[[item]])
 
-                attr(data, 'row.names') <- seq_len(length(data[[1]]))
-                attr(data, 'class') <- 'data.frame'
-                data <- jmvcore::naOmit(data)
+                    attr(data, 'row.names') <- seq_len(length(data[[1]]))
+                    attr(data, 'class') <- 'data.frame'
+                    data <- jmvcore::naOmit(data)
 
-                private$.errorCheck(data)
+                    private$.errorCheck(data)
 
-                # Fill scale statistics table
+                    # Fill scale statistics table
 
-                scaleTable <- self$results$scale
+                    scaleTable <- self$results$scale
 
-                resultAlpha <- psych::alpha(data, delete=FALSE, warnings=FALSE)
+                    resultAlpha <- psych::alpha(data, delete=FALSE, warnings=FALSE)
 
-                values <- list("alpha" = resultAlpha$total$raw_alpha,
-                               "mean" = resultAlpha$total$mean,
-                               "sd" = resultAlpha$total$sd)
+                    values <- list("alpha" = resultAlpha$total$raw_alpha,
+                                   "mean" = resultAlpha$total$mean,
+                                   "sd" = resultAlpha$total$sd)
 
-                if (self$options$omegaScale) {
-                    resultOmega <- psych::omega(data, 1, flip = FALSE)
-                    values[["omega"]] <- resultOmega$omega.tot
-                }
+                    if (self$options$omegaScale) {
+                        resultOmega <- psych::omega(data, 1, flip = FALSE)
+                        values[["omega"]] <- resultOmega$omega.tot
+                    }
 
-                scaleTable$setRow(rowNo=1, values=values)
+                    scaleTable$setRow(rowNo=1, values=values)
 
-                private$.checkpoint()
+                    private$.checkpoint()
 
-                # Fill item statistics table
+                    # Fill item statistics table
 
-                itemsTable <- self$results$items
+                    itemsTable <- self$results$items
 
-                for (item in items) {
+                    for (item in items) {
 
-                    row <- list()
-                    row[["alpha"]] <- resultAlpha$alpha.drop[item,"raw_alpha"]
-                    row[["mean"]] <- resultAlpha$item.stats[item,"mean"]
-                    row[["sd"]] <- resultAlpha$item.stats[item,"sd"]
-                    row[["itemRestCor"]] <- resultAlpha$item.stats[item,"r.drop"]
+                        row <- list()
+                        row[["alpha"]] <- resultAlpha$alpha.drop[item,"raw_alpha"]
+                        row[["mean"]] <- resultAlpha$item.stats[item,"mean"]
+                        row[["sd"]] <- resultAlpha$item.stats[item,"sd"]
+                        row[["itemRestCor"]] <- resultAlpha$item.stats[item,"r.drop"]
 
-                    itemsTable$setRow(rowKey=item, values=row)
-                }
+                        itemsTable$setRow(rowKey=item, values=row)
+                    }
 
-                private$.checkpoint()
+                    private$.checkpoint()
 
-                if (self$options$omegaItems && length(self$options$vars) > 2)
-                    private$.omegaDrop(data, items, itemsTable)
+                    if (self$options$omegaItems && length(self$options$vars) > 2)
+                        private$.omegaDrop(data, items, itemsTable)
 
-                private$.checkpoint()
+                    private$.checkpoint()
 
-                private$.prepareCorPlot(data)
+                    private$.prepareCorPlot(data)
 
-            }) # suppressWarnings
+                }) # suppressWarnings
+            }) # suppressMessages
         },
         .errorCheck=function(data) {
 

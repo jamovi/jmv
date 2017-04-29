@@ -23,8 +23,8 @@ linRegOptions <- R6::R6Class(
             coefPlot = FALSE,
             qqPlot = FALSE,
             resPlots = FALSE,
-            durbinWatson = FALSE,
-            collinearity = FALSE,
+            durbin = FALSE,
+            collin = FALSE,
             desc = FALSE,
             cooks = FALSE,
             modelSelected = -1, ...) {
@@ -112,13 +112,13 @@ linRegOptions <- R6::R6Class(
                 "resPlots",
                 resPlots,
                 default=FALSE)
-            private$..durbinWatson <- jmvcore::OptionBool$new(
-                "durbinWatson",
-                durbinWatson,
+            private$..durbin <- jmvcore::OptionBool$new(
+                "durbin",
+                durbin,
                 default=FALSE)
-            private$..collinearity <- jmvcore::OptionBool$new(
-                "collinearity",
-                collinearity,
+            private$..collin <- jmvcore::OptionBool$new(
+                "collin",
+                collin,
                 default=FALSE)
             private$..desc <- jmvcore::OptionBool$new(
                 "desc",
@@ -145,8 +145,8 @@ linRegOptions <- R6::R6Class(
             self$.addOption(private$..coefPlot)
             self$.addOption(private$..qqPlot)
             self$.addOption(private$..resPlots)
-            self$.addOption(private$..durbinWatson)
-            self$.addOption(private$..collinearity)
+            self$.addOption(private$..durbin)
+            self$.addOption(private$..collin)
             self$.addOption(private$..desc)
             self$.addOption(private$..cooks)
             self$.addOption(private$..modelSelected)
@@ -163,8 +163,8 @@ linRegOptions <- R6::R6Class(
         coefPlot = function() private$..coefPlot$value,
         qqPlot = function() private$..qqPlot$value,
         resPlots = function() private$..resPlots$value,
-        durbinWatson = function() private$..durbinWatson$value,
-        collinearity = function() private$..collinearity$value,
+        durbin = function() private$..durbin$value,
+        collin = function() private$..collin$value,
         desc = function() private$..desc$value,
         cooks = function() private$..cooks$value,
         modelSelected = function() private$..modelSelected$value),
@@ -180,8 +180,8 @@ linRegOptions <- R6::R6Class(
         ..coefPlot = NA,
         ..qqPlot = NA,
         ..resPlots = NA,
-        ..durbinWatson = NA,
-        ..collinearity = NA,
+        ..durbin = NA,
+        ..collin = NA,
         ..desc = NA,
         ..cooks = NA,
         ..modelSelected = NA)
@@ -326,24 +326,24 @@ linRegResults <- R6::R6Class(
             private$..assump <- R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
-                    durbinWatson = function() private$..durbinWatson,
-                    collinearity = function() private$..collinearity,
+                    durbin = function() private$..durbin,
+                    collin = function() private$..collin,
                     qqPlot = function() private$..qqPlot,
                     resPlots = function() private$..resPlots),
                 private = list(
-                    ..durbinWatson = NA,
-                    ..collinearity = NA,
+                    ..durbin = NA,
+                    ..collin = NA,
                     ..qqPlot = NA,
                     ..resPlots = NA),
                 public=list(
                     initialize=function(options) {
                         super$initialize(options=options, name="assump", title="Assumption Checks")
-                        private$..durbinWatson <- jmvcore::Table$new(
+                        private$..durbin <- jmvcore::Table$new(
                             options=options,
-                            name="durbinWatson",
+                            name="durbin",
                             title="Durbin\u2013Watson Test for Autocorrelation",
                             rows=1,
-                            visible="(durbinWatson)",
+                            visible="(durbin)",
                             clearWith=list(
                                 "dep",
                                 "blocks",
@@ -352,11 +352,11 @@ linRegResults <- R6::R6Class(
                                 list(`name`="autoCor", `title`="Autocorrelation", `type`="number"),
                                 list(`name`="dw", `title`="DW Statistic", `type`="number"),
                                 list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue")))
-                        private$..collinearity <- jmvcore::Table$new(
+                        private$..collin <- jmvcore::Table$new(
                             options=options,
-                            name="collinearity",
+                            name="collin",
                             title="Collinearity Statistics",
-                            visible="(collinearity)",
+                            visible="(collin)",
                             clearWith=list(
                                 "dep",
                                 "blocks",
@@ -389,8 +389,8 @@ linRegResults <- R6::R6Class(
                                     "dep",
                                     "blocks",
                                     "modelSelected")))
-                        self$add(private$..durbinWatson)
-                        self$add(private$..collinearity)
+                        self$add(private$..durbin)
+                        self$add(private$..collin)
                         self$add(private$..qqPlot)
                         self$add(private$..resPlots)}))$new(options=options)
             self$add(private$..modelFit)
@@ -428,8 +428,8 @@ linRegBase <- R6::R6Class(
 #' @examples
 #' data('Prestige', package='car')
 #' 
-#' linReg(data = Prestige, dep = "income",
-#'        blocks = list(c("education", "prestige", "women")))
+#' linReg(data = Prestige, dep = 'income',
+#'        blocks = list(c('education', 'prestige', 'women')))
 #' 
 #' #
 #' #  Model Fit Measures
@@ -479,9 +479,9 @@ linRegBase <- R6::R6Class(
 #' @param resPlots \code{TRUE} or \code{FALSE} (default), provide residual 
 #'   plots where the dependent variable and each covariate is plotted against 
 #'   the standardized residuals. 
-#' @param durbinWatson \code{TRUE} or \code{FALSE} (default), provide results 
-#'   of the Durbin- Watson test for autocorrelation 
-#' @param collinearity \code{TRUE} or \code{FALSE} (default), provide VIF and 
+#' @param durbin \code{TRUE} or \code{FALSE} (default), provide results of the 
+#'   Durbin- Watson test for autocorrelation 
+#' @param collin \code{TRUE} or \code{FALSE} (default), provide VIF and 
 #'   tolerence collinearity statistics 
 #' @param desc \code{TRUE} or \code{FALSE} (default), provide descriptive 
 #'   statistics 
@@ -507,8 +507,8 @@ linReg <- function(
     coefPlot = FALSE,
     qqPlot = FALSE,
     resPlots = FALSE,
-    durbinWatson = FALSE,
-    collinearity = FALSE,
+    durbin = FALSE,
+    collin = FALSE,
     desc = FALSE,
     cooks = FALSE,
     modelSelected = -1) {
@@ -525,8 +525,8 @@ linReg <- function(
         coefPlot = coefPlot,
         qqPlot = qqPlot,
         resPlots = resPlots,
-        durbinWatson = durbinWatson,
-        collinearity = collinearity,
+        durbin = durbin,
+        collin = collin,
         desc = desc,
         cooks = cooks,
         modelSelected = modelSelected)

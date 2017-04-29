@@ -15,11 +15,11 @@ pcaOptions <- R6::R6Class(
             rotation = "varimax",
             hideLoadings = 0.3,
             screePlot = FALSE,
-            eigenValues = FALSE,
+            eigen = FALSE,
             factorCor = FALSE,
             factorSummary = FALSE,
-            kmoTest = FALSE,
-            bartlettTest = FALSE, ...) {
+            kmo = FALSE,
+            bartlett = FALSE, ...) {
 
             super$initialize(
                 package='jmv',
@@ -74,9 +74,9 @@ pcaOptions <- R6::R6Class(
                 "screePlot",
                 screePlot,
                 default=FALSE)
-            private$..eigenValues <- jmvcore::OptionBool$new(
-                "eigenValues",
-                eigenValues,
+            private$..eigen <- jmvcore::OptionBool$new(
+                "eigen",
+                eigen,
                 default=FALSE)
             private$..factorCor <- jmvcore::OptionBool$new(
                 "factorCor",
@@ -86,13 +86,13 @@ pcaOptions <- R6::R6Class(
                 "factorSummary",
                 factorSummary,
                 default=FALSE)
-            private$..kmoTest <- jmvcore::OptionBool$new(
-                "kmoTest",
-                kmoTest,
+            private$..kmo <- jmvcore::OptionBool$new(
+                "kmo",
+                kmo,
                 default=FALSE)
-            private$..bartlettTest <- jmvcore::OptionBool$new(
-                "bartlettTest",
-                bartlettTest,
+            private$..bartlett <- jmvcore::OptionBool$new(
+                "bartlett",
+                bartlett,
                 default=FALSE)
         
             self$.addOption(private$..vars)
@@ -102,11 +102,11 @@ pcaOptions <- R6::R6Class(
             self$.addOption(private$..rotation)
             self$.addOption(private$..hideLoadings)
             self$.addOption(private$..screePlot)
-            self$.addOption(private$..eigenValues)
+            self$.addOption(private$..eigen)
             self$.addOption(private$..factorCor)
             self$.addOption(private$..factorSummary)
-            self$.addOption(private$..kmoTest)
-            self$.addOption(private$..bartlettTest)
+            self$.addOption(private$..kmo)
+            self$.addOption(private$..bartlett)
         }),
     active = list(
         vars = function() private$..vars$value,
@@ -116,11 +116,11 @@ pcaOptions <- R6::R6Class(
         rotation = function() private$..rotation$value,
         hideLoadings = function() private$..hideLoadings$value,
         screePlot = function() private$..screePlot$value,
-        eigenValues = function() private$..eigenValues$value,
+        eigen = function() private$..eigen$value,
         factorCor = function() private$..factorCor$value,
         factorSummary = function() private$..factorSummary$value,
-        kmoTest = function() private$..kmoTest$value,
-        bartlettTest = function() private$..bartlettTest$value),
+        kmo = function() private$..kmo$value,
+        bartlett = function() private$..bartlett$value),
     private = list(
         ..vars = NA,
         ..nFactorMethod = NA,
@@ -129,11 +129,11 @@ pcaOptions <- R6::R6Class(
         ..rotation = NA,
         ..hideLoadings = NA,
         ..screePlot = NA,
-        ..eigenValues = NA,
+        ..eigen = NA,
         ..factorCor = NA,
         ..factorSummary = NA,
-        ..kmoTest = NA,
-        ..bartlettTest = NA)
+        ..kmo = NA,
+        ..bartlett = NA)
 )
 
 #' @import jmvcore
@@ -255,7 +255,7 @@ pcaResults <- R6::R6Class(
                             options=options,
                             name="bartlett",
                             title="Bartlett's Test of Sphericity",
-                            visible="(bartlettTest)",
+                            visible="(bartlett)",
                             rows=1,
                             clearWith=list(
                                 "vars"),
@@ -267,7 +267,7 @@ pcaResults <- R6::R6Class(
                             options=options,
                             name="kmo",
                             title="KMO Measure of Sampling Adequacy",
-                            visible="(kmoTest)",
+                            visible="(kmo)",
                             clearWith=list(
                                 "vars"),
                             columns=list(
@@ -290,7 +290,7 @@ pcaResults <- R6::R6Class(
                             options=options,
                             name="initEigen",
                             title="Initial Eigenvalues",
-                            visible="(eigenValues)",
+                            visible="(eigen)",
                             clearWith=list(
                                 "vars"),
                             columns=list(
@@ -346,9 +346,8 @@ pcaBase <- R6::R6Class(
 #'
 #' @examples
 #' data('iris')
-#' dat <- as.data.frame(iris)
 #' 
-#' jmv::pca(data = dat, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
+#' pca(iris, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
 #' 
 #' #
 #' #  Component Loadings
@@ -364,7 +363,7 @@ pcaBase <- R6::R6Class(
 #' #
 #' #
 #' 
-#' @param data .
+#' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}
 #' @param nFactorMethod \code{'parallel'} (default), \code{'eigen'} or 
@@ -378,16 +377,15 @@ pcaBase <- R6::R6Class(
 #'   \code{'simplimax'}, the rotation to use in estimation 
 #' @param hideLoadings a number (default: 0.3), hide loadings below this value 
 #' @param screePlot \code{TRUE} or \code{FALSE} (default), show scree plot 
-#' @param eigenValues \code{TRUE} or \code{FALSE} (default), show eigenvalue 
-#'   table 
+#' @param eigen \code{TRUE} or \code{FALSE} (default), show eigenvalue table 
 #' @param factorCor \code{TRUE} or \code{FALSE} (default), show factor 
 #'   correlations 
 #' @param factorSummary \code{TRUE} or \code{FALSE} (default), show factor 
 #'   summary 
-#' @param kmoTest \code{TRUE} or \code{FALSE} (default), show 
-#'   Kaiser-Meyer-Olkin (KMO) measure of sampling adequacy (MSA) results 
-#' @param bartlettTest \code{TRUE} or \code{FALSE} (default), show Bartlett's 
-#'   test of sphericity results 
+#' @param kmo \code{TRUE} or \code{FALSE} (default), show Kaiser-Meyer-Olkin 
+#'   (KMO) measure of sampling adequacy (MSA) results 
+#' @param bartlett \code{TRUE} or \code{FALSE} (default), show Bartlett's test 
+#'   of sphericity results 
 #' @export
 pca <- function(
     data,
@@ -398,11 +396,11 @@ pca <- function(
     rotation = "varimax",
     hideLoadings = 0.3,
     screePlot = FALSE,
-    eigenValues = FALSE,
+    eigen = FALSE,
     factorCor = FALSE,
     factorSummary = FALSE,
-    kmoTest = FALSE,
-    bartlettTest = FALSE) {
+    kmo = FALSE,
+    bartlett = FALSE) {
 
     options <- pcaOptions$new(
         vars = vars,
@@ -412,11 +410,11 @@ pca <- function(
         rotation = rotation,
         hideLoadings = hideLoadings,
         screePlot = screePlot,
-        eigenValues = eigenValues,
+        eigen = eigen,
         factorCor = factorCor,
         factorSummary = factorSummary,
-        kmoTest = kmoTest,
-        bartlettTest = bartlettTest)
+        kmo = kmo,
+        bartlett = bartlett)
 
     results <- pcaResults$new(
         options = options)

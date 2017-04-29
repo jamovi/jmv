@@ -11,9 +11,9 @@ description:
         usage: |
             data('ToothGrowth')
 
-            ancova(ToothGrowth, dep = 'len', factors = 'supp', cov = 'dose')
+            ancova(ToothGrowth, dep = 'len', factors = 'supp', covs = 'dose')
 
-            # 
+            #
             #  ANCOVA
             #
             #  ANCOVA
@@ -58,7 +58,7 @@ options:
       description:
           R: a vector of strings naming the fixed factors from `data`
 
-    - name: cov
+    - name: covs
       title: Covariates
       type: Variables
       suggested:
