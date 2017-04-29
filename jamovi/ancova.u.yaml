@@ -31,7 +31,7 @@ children:
       - type: TargetLayoutBox
         children:
           - type: VariablesListBox
-            name: cov
+            name: covs
             height: small
             isTarget: true
             events:

@@ -12,8 +12,8 @@ description:
         usage: |
             data('Prestige', package='car')
 
-            linReg(data = Prestige, dep = "income",
-                   blocks = list(c("education", "prestige", "women")))
+            linReg(data = Prestige, dep = 'income',
+                   blocks = list(c('education', 'prestige', 'women')))
 
             #
             #  Model Fit Measures
@@ -185,7 +185,7 @@ options:
             the dependent variable and each covariate is plotted against
             the standardized residuals.
 
-    - name: durbinWatson
+    - name: durbin
       title: Autocorrelation test
       type: Bool
       default: false
@@ -194,7 +194,7 @@ options:
             `TRUE` or `FALSE` (default), provide results of the Durbin-
             Watson test for autocorrelation
 
-    - name: collinearity
+    - name: collin
       title: Collinearity statistics
       type: Bool
       default: false

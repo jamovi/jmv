@@ -38,7 +38,7 @@ const events = {
 
 var calcModelTerms = function(ui, context) {
     var variableList = context.cloneArray(ui.factors.value(), []);
-    var covariatesList = context.cloneArray(ui.cov.value(), []);
+    var covariatesList = context.cloneArray(ui.covs.value(), []);
 
     var combinedList = variableList.concat(covariatesList);
 
@@ -89,7 +89,7 @@ var calcModelTerms = function(ui, context) {
 
 var updatePostHocSupplier = function(ui, context) {
     var termsList = context.cloneArray(ui.modelTerms.value(), []);
-    var covariatesList = context.cloneArray(ui.cov.value(), []);
+    var covariatesList = context.cloneArray(ui.covs.value(), []);
     var list = [];
     for (var j = 0; j < termsList.length; j++) {
         var term = termsList[j];

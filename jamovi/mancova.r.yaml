@@ -9,169 +9,169 @@ items:
       type: Table
       clearWith:
         - deps
-        - fixedFactors
-        - covariates
+        - factors
+        - covs
 
       columns:
         - name: term[pillai]
           title: ""
           type: "text"
           combineBelow: true
-          visible: (multivarStats:pillai)
+          visible: (multivar:pillai)
 
         - name: test[pillai]
           title: ""
           type: "text"
           content: Pillai's Trace
-          visible: (multivarStats:pillai)
+          visible: (multivar:pillai)
 
         - name: stat[pillai]
           title: value
           type: number
-          visible: (multivarStats:pillai)
+          visible: (multivar:pillai)
 
         - name: f[pillai]
           title: F
           type: number
-          visible: (multivarStats:pillai)
+          visible: (multivar:pillai)
 
         - name: df1[pillai]
           title: df1
           type: integer
-          visible: (multivarStats:pillai)
+          visible: (multivar:pillai)
 
         - name: df2[pillai]
           title: df2
           type: integer
-          visible: (multivarStats:pillai)
+          visible: (multivar:pillai)
 
         - name: p[pillai]
           title: p
           type: number
           format: zto,pvalue
-          visible: (multivarStats:pillai)
+          visible: (multivar:pillai)
 
         - name: term[wilks]
           title: ""
           type: "text"
           combineBelow: true
-          visible: (multivarStats:wilks)
+          visible: (multivar:wilks)
 
         - name: test[wilks]
           title: ""
           type: "text"
           content: Wilks' Lambda
-          visible: (multivarStats:wilks)
+          visible: (multivar:wilks)
 
         - name: stat[wilks]
           title: value
           type: number
-          visible: (multivarStats:wilks)
+          visible: (multivar:wilks)
 
         - name: f[wilks]
           title: F
           type: number
-          visible: (multivarStats:wilks)
+          visible: (multivar:wilks)
 
         - name: df1[wilks]
           title: df1
           type: integer
-          visible: (multivarStats:wilks)
+          visible: (multivar:wilks)
 
         - name: df2[wilks]
           title: df2
           type: integer
-          visible: (multivarStats:wilks)
+          visible: (multivar:wilks)
 
         - name: p[wilks]
           title: p
           type: number
           format: zto,pvalue
-          visible: (multivarStats:wilks)
+          visible: (multivar:wilks)
 
         - name: term[hotel]
           title: ""
           type: "text"
           combineBelow: true
-          visible: (multivarStats:hotel)
+          visible: (multivar:hotel)
 
         - name: test[hotel]
           title: ""
           type: "text"
           content: Hotelling's Trace
-          visible: (multivarStats:hotel)
+          visible: (multivar:hotel)
 
         - name: stat[hotel]
           title: value
           type: number
-          visible: (multivarStats:hotel)
+          visible: (multivar:hotel)
 
         - name: f[hotel]
           title: F
           type: number
-          visible: (multivarStats:hotel)
+          visible: (multivar:hotel)
 
         - name: df1[hotel]
           title: df1
           type: integer
-          visible: (multivarStats:hotel)
+          visible: (multivar:hotel)
 
         - name: df2[hotel]
           title: df2
           type: integer
-          visible: (multivarStats:hotel)
+          visible: (multivar:hotel)
 
         - name: p[hotel]
           title: p
           type: number
           format: zto,pvalue
-          visible: (multivarStats:hotel)
+          visible: (multivar:hotel)
 
         - name: term[roy]
           title: ""
           type: "text"
           combineBelow: true
-          visible: (multivarStats:roy)
+          visible: (multivar:roy)
 
         - name: test[roy]
           title: ""
           type: "text"
           content: Roy's Largest Root
-          visible: (multivarStats:roy)
+          visible: (multivar:roy)
 
         - name: stat[roy]
           title: value
           type: number
-          visible: (multivarStats:roy)
+          visible: (multivar:roy)
 
         - name: f[roy]
           title: F
           type: number
-          visible: (multivarStats:roy)
+          visible: (multivar:roy)
 
         - name: df1[roy]
           title: df1
           type: integer
-          visible: (multivarStats:roy)
+          visible: (multivar:roy)
 
         - name: df2[roy]
           title: df2
           type: integer
-          visible: (multivarStats:roy)
+          visible: (multivar:roy)
 
         - name: p[roy]
           title: p
           type: number
           format: zto,pvalue
-          visible: (multivarStats:roy)
+          visible: (multivar:roy)
 
     - name: univar
       title: Univariate Tests
       type: Table
       clearWith:
         - deps
-        - fixedFactors
-        - covariates
+        - factors
+        - covs
 
       columns:
         - name: term
@@ -215,7 +215,7 @@ items:
           rows: 1
           clearWith:
             - deps
-            - fixedFactors
+            - factors
           columns:
             - name: chi
               title: χ²
@@ -228,10 +228,10 @@ items:
               type: number
               format: zto,pvalue
 
-        - name: shapiroWilk
+        - name: shapiro
           title: Shapiro-Wilk Multivariate Normality Test
           type: Table
-          visible: (shapiroWilk)
+          visible: (shapiro)
           rows: 1
           clearWith:
             - deps

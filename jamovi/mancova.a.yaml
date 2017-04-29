@@ -12,16 +12,10 @@ description:
         dontrun: false
         usage: |
             data('iris')
-            dat <- as.data.frame(iris)
 
-            jmv::mancova(
-                data=dat,
-                deps=c(
-                    "Sepal.Length",
-                    "Sepal.Width",
-                    "Petal.Length",
-                    "Petal.Width"),
-                fixedFactors="Species")
+            mancova(data = iris,
+                deps = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'),
+                factors = 'Species')
 
             #
             #  Multivariate Tests
@@ -72,17 +66,17 @@ options:
             a string naming the dependent variable from `data`, variable
             must be numeric
 
-    - name: fixedFactors
-      title: Fixed factors
+    - name: factors
+      title: Factors
       type: Variables
       suggested:
         - nominal
         - ordinal
       default:
       description:
-          R: a vector of strings naming the fixed factors from `data`
+          R: a vector of strings naming the factors from `data`
 
-    - name: covariates
+    - name: covs
       title: Covariates
       type: Variables
       suggested:
@@ -95,7 +89,7 @@ options:
       description:
           R: a vector of strings naming the covariates from `data`
 
-    - name: multivarStats
+    - name: multivar
       title: Multivariate Statistics
       type: NMXList
       options:
@@ -126,7 +120,7 @@ options:
           R: >
             `TRUE` or `FALSE` (default), provide Box's M test
 
-    - name: shapiroWilk
+    - name: shapiro
       title: Shapiro-Wilk test for multivariate normality
       type: Bool
       default: false

@@ -11,26 +11,28 @@ description:
         dontrun: false
         usage: |
             data('iris')
-            dat <- as.data.frame(iris)
 
-            efa(dat, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
+            efa(iris, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
 
             #
             #  Factor Loadings
-            #  ─────────────────────────────────────────────────
-            #                    1        2         Uniqueness
-            #  ─────────────────────────────────────────────────
-            #    Sepal.Length    0.948                 0.10181
-            #    Sepal.Width              -0.747       0.42199
-            #    Petal.Length    0.917     0.394       0.00483
-            #    Petal.Width     0.883     0.388       0.07088
-            #  ─────────────────────────────────────────────────
-            #    Note. 'varimax' rotation was used
+            #  ────────────────────────────────────────────────
+            #                    1        2        Uniqueness
+            #  ────────────────────────────────────────────────
+            #    Sepal.Length    0.993                0.10181
+            #    Sepal.Width              0.725       0.42199
+            #    Petal.Length    0.933                0.00483
+            #    Petal.Width     0.897                0.07088
+            #  ────────────────────────────────────────────────
+            #    Note. 'oblimin' rotation was used
             #
+
 
 options:
     - name: data
       type: Data
+      description:
+          R: the data as a data frame
 
     - name: vars
       title: Variables
@@ -118,7 +120,7 @@ options:
           R: >
             `TRUE` or `FALSE` (default), show scree plot
 
-    - name: eigenValues
+    - name: eigen
       title: Initial eigenvalues
       type: Bool
       default: false
@@ -150,7 +152,7 @@ options:
           R: >
             `TRUE` or `FALSE` (default), show model fit measures and test
 
-    - name: kmoTest
+    - name: kmo
       title: KMO measure of sampling adequacy
       type: Bool
       default: false
@@ -159,7 +161,7 @@ options:
             `TRUE` or `FALSE` (default), show Kaiser-Meyer-Olkin (KMO) measure of
             sampling adequacy (MSA) results
 
-    - name: bartlettTest
+    - name: bartlett
       title: Bartlett's test of sphericity
       type: Bool
       default: false

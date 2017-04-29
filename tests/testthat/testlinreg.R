@@ -26,7 +26,7 @@ test_that('linreg works', {
         c("var3")
     )
 
-    linreg <- jmv::linReg(data, dep, blocks, stdEst = TRUE, durbinWatson = TRUE, collinearity = TRUE,
+    linreg <- jmv::linReg(data, dep, blocks, stdEst = TRUE, durbin = TRUE, collin = TRUE,
                           desc = TRUE, cooks = TRUE)
 
     # Test model fit table
@@ -56,11 +56,11 @@ test_that('linreg works', {
     expect_equal(1.58025802217294e-07, linreg$dataSummary$cooks$getCell(rowNo=1, "min")$value)
 
     # Test DW table
-    expect_equal(-0.260593973186961, linreg$assump$durbinWatson$getCell(rowNo=1, "autoCor")$value)
-    expect_equal(2.51048535456813, linreg$assump$durbinWatson$getCell(rowNo=1, "dw")$value)
-    expect_equal(0.008, linreg$assump$durbinWatson$getCell(rowNo=1, "p")$value)
+    expect_equal(-0.260593973186961, linreg$assump$durbin$getCell(rowNo=1, "autoCor")$value)
+    expect_equal(2.51048535456813, linreg$assump$durbin$getCell(rowNo=1, "dw")$value)
+    expect_equal(0.008, linreg$assump$durbin$getCell(rowNo=1, "p")$value)
 
     # Test collinearity table
-    expect_equal(1.07906860128795, linreg$assump$collinearity$getCell(rowNo=1, 'vif')$value)
-    expect_equal(0.920805815542556, linreg$assump$collinearity$getCell(rowNo=2, 'tol')$value)
+    expect_equal(1.07906860128795, linreg$assump$collin$getCell(rowNo=1, 'vif')$value)
+    expect_equal(0.920805815542556, linreg$assump$collin$getCell(rowNo=2, 'tol')$value)
 })

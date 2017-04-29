@@ -9,15 +9,15 @@ mancovaOptions <- R6::R6Class(
     public = list(
         initialize = function(
             deps = NULL,
-            fixedFactors = NULL,
-            covariates = NULL,
-            multivarStats = list(
+            factors = NULL,
+            covs = NULL,
+            multivar = list(
                 "pillai",
                 "wilks",
                 "hotel",
                 "roy"),
             boxM = FALSE,
-            shapiroWilk = FALSE,
+            shapiro = FALSE,
             qqPlot = FALSE, ...) {
 
             super$initialize(
@@ -35,16 +35,16 @@ mancovaOptions <- R6::R6Class(
                     "continuous",
                     "nominal",
                     "ordinal"))
-            private$..fixedFactors <- jmvcore::OptionVariables$new(
-                "fixedFactors",
-                fixedFactors,
+            private$..factors <- jmvcore::OptionVariables$new(
+                "factors",
+                factors,
                 suggested=list(
                     "nominal",
                     "ordinal"),
                 default=NULL)
-            private$..covariates <- jmvcore::OptionVariables$new(
-                "covariates",
-                covariates,
+            private$..covs <- jmvcore::OptionVariables$new(
+                "covs",
+                covs,
                 suggested=list(
                     "continuous"),
                 permitted=list(
@@ -52,9 +52,9 @@ mancovaOptions <- R6::R6Class(
                     "nominal",
                     "ordinal"),
                 default=NULL)
-            private$..multivarStats <- jmvcore::OptionNMXList$new(
-                "multivarStats",
-                multivarStats,
+            private$..multivar <- jmvcore::OptionNMXList$new(
+                "multivar",
+                multivar,
                 options=list(
                     "pillai",
                     "wilks",
@@ -69,9 +69,9 @@ mancovaOptions <- R6::R6Class(
                 "boxM",
                 boxM,
                 default=FALSE)
-            private$..shapiroWilk <- jmvcore::OptionBool$new(
-                "shapiroWilk",
-                shapiroWilk,
+            private$..shapiro <- jmvcore::OptionBool$new(
+                "shapiro",
+                shapiro,
                 default=FALSE)
             private$..qqPlot <- jmvcore::OptionBool$new(
                 "qqPlot",
@@ -79,28 +79,28 @@ mancovaOptions <- R6::R6Class(
                 default=FALSE)
         
             self$.addOption(private$..deps)
-            self$.addOption(private$..fixedFactors)
-            self$.addOption(private$..covariates)
-            self$.addOption(private$..multivarStats)
+            self$.addOption(private$..factors)
+            self$.addOption(private$..covs)
+            self$.addOption(private$..multivar)
             self$.addOption(private$..boxM)
-            self$.addOption(private$..shapiroWilk)
+            self$.addOption(private$..shapiro)
             self$.addOption(private$..qqPlot)
         }),
     active = list(
         deps = function() private$..deps$value,
-        fixedFactors = function() private$..fixedFactors$value,
-        covariates = function() private$..covariates$value,
-        multivarStats = function() private$..multivarStats$value,
+        factors = function() private$..factors$value,
+        covs = function() private$..covs$value,
+        multivar = function() private$..multivar$value,
         boxM = function() private$..boxM$value,
-        shapiroWilk = function() private$..shapiroWilk$value,
+        shapiro = function() private$..shapiro$value,
         qqPlot = function() private$..qqPlot$value),
     private = list(
         ..deps = NA,
-        ..fixedFactors = NA,
-        ..covariates = NA,
-        ..multivarStats = NA,
+        ..factors = NA,
+        ..covs = NA,
+        ..multivar = NA,
         ..boxM = NA,
-        ..shapiroWilk = NA,
+        ..shapiro = NA,
         ..qqPlot = NA)
 )
 
@@ -125,45 +125,45 @@ mancovaResults <- R6::R6Class(
                 title="Multivariate Tests",
                 clearWith=list(
                     "deps",
-                    "fixedFactors",
-                    "covariates"),
+                    "factors",
+                    "covs"),
                 columns=list(
-                    list(`name`="term[pillai]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(multivarStats:pillai)"),
-                    list(`name`="test[pillai]", `title`="", `type`="text", `content`="Pillai's Trace", `visible`="(multivarStats:pillai)"),
-                    list(`name`="stat[pillai]", `title`="value", `type`="number", `visible`="(multivarStats:pillai)"),
-                    list(`name`="f[pillai]", `title`="F", `type`="number", `visible`="(multivarStats:pillai)"),
-                    list(`name`="df1[pillai]", `title`="df1", `type`="integer", `visible`="(multivarStats:pillai)"),
-                    list(`name`="df2[pillai]", `title`="df2", `type`="integer", `visible`="(multivarStats:pillai)"),
-                    list(`name`="p[pillai]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(multivarStats:pillai)"),
-                    list(`name`="term[wilks]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(multivarStats:wilks)"),
-                    list(`name`="test[wilks]", `title`="", `type`="text", `content`="Wilks' Lambda", `visible`="(multivarStats:wilks)"),
-                    list(`name`="stat[wilks]", `title`="value", `type`="number", `visible`="(multivarStats:wilks)"),
-                    list(`name`="f[wilks]", `title`="F", `type`="number", `visible`="(multivarStats:wilks)"),
-                    list(`name`="df1[wilks]", `title`="df1", `type`="integer", `visible`="(multivarStats:wilks)"),
-                    list(`name`="df2[wilks]", `title`="df2", `type`="integer", `visible`="(multivarStats:wilks)"),
-                    list(`name`="p[wilks]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(multivarStats:wilks)"),
-                    list(`name`="term[hotel]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(multivarStats:hotel)"),
-                    list(`name`="test[hotel]", `title`="", `type`="text", `content`="Hotelling's Trace", `visible`="(multivarStats:hotel)"),
-                    list(`name`="stat[hotel]", `title`="value", `type`="number", `visible`="(multivarStats:hotel)"),
-                    list(`name`="f[hotel]", `title`="F", `type`="number", `visible`="(multivarStats:hotel)"),
-                    list(`name`="df1[hotel]", `title`="df1", `type`="integer", `visible`="(multivarStats:hotel)"),
-                    list(`name`="df2[hotel]", `title`="df2", `type`="integer", `visible`="(multivarStats:hotel)"),
-                    list(`name`="p[hotel]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(multivarStats:hotel)"),
-                    list(`name`="term[roy]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(multivarStats:roy)"),
-                    list(`name`="test[roy]", `title`="", `type`="text", `content`="Roy's Largest Root", `visible`="(multivarStats:roy)"),
-                    list(`name`="stat[roy]", `title`="value", `type`="number", `visible`="(multivarStats:roy)"),
-                    list(`name`="f[roy]", `title`="F", `type`="number", `visible`="(multivarStats:roy)"),
-                    list(`name`="df1[roy]", `title`="df1", `type`="integer", `visible`="(multivarStats:roy)"),
-                    list(`name`="df2[roy]", `title`="df2", `type`="integer", `visible`="(multivarStats:roy)"),
-                    list(`name`="p[roy]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(multivarStats:roy)")))
+                    list(`name`="term[pillai]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(multivar:pillai)"),
+                    list(`name`="test[pillai]", `title`="", `type`="text", `content`="Pillai's Trace", `visible`="(multivar:pillai)"),
+                    list(`name`="stat[pillai]", `title`="value", `type`="number", `visible`="(multivar:pillai)"),
+                    list(`name`="f[pillai]", `title`="F", `type`="number", `visible`="(multivar:pillai)"),
+                    list(`name`="df1[pillai]", `title`="df1", `type`="integer", `visible`="(multivar:pillai)"),
+                    list(`name`="df2[pillai]", `title`="df2", `type`="integer", `visible`="(multivar:pillai)"),
+                    list(`name`="p[pillai]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(multivar:pillai)"),
+                    list(`name`="term[wilks]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(multivar:wilks)"),
+                    list(`name`="test[wilks]", `title`="", `type`="text", `content`="Wilks' Lambda", `visible`="(multivar:wilks)"),
+                    list(`name`="stat[wilks]", `title`="value", `type`="number", `visible`="(multivar:wilks)"),
+                    list(`name`="f[wilks]", `title`="F", `type`="number", `visible`="(multivar:wilks)"),
+                    list(`name`="df1[wilks]", `title`="df1", `type`="integer", `visible`="(multivar:wilks)"),
+                    list(`name`="df2[wilks]", `title`="df2", `type`="integer", `visible`="(multivar:wilks)"),
+                    list(`name`="p[wilks]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(multivar:wilks)"),
+                    list(`name`="term[hotel]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(multivar:hotel)"),
+                    list(`name`="test[hotel]", `title`="", `type`="text", `content`="Hotelling's Trace", `visible`="(multivar:hotel)"),
+                    list(`name`="stat[hotel]", `title`="value", `type`="number", `visible`="(multivar:hotel)"),
+                    list(`name`="f[hotel]", `title`="F", `type`="number", `visible`="(multivar:hotel)"),
+                    list(`name`="df1[hotel]", `title`="df1", `type`="integer", `visible`="(multivar:hotel)"),
+                    list(`name`="df2[hotel]", `title`="df2", `type`="integer", `visible`="(multivar:hotel)"),
+                    list(`name`="p[hotel]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(multivar:hotel)"),
+                    list(`name`="term[roy]", `title`="", `type`="text", `combineBelow`=TRUE, `visible`="(multivar:roy)"),
+                    list(`name`="test[roy]", `title`="", `type`="text", `content`="Roy's Largest Root", `visible`="(multivar:roy)"),
+                    list(`name`="stat[roy]", `title`="value", `type`="number", `visible`="(multivar:roy)"),
+                    list(`name`="f[roy]", `title`="F", `type`="number", `visible`="(multivar:roy)"),
+                    list(`name`="df1[roy]", `title`="df1", `type`="integer", `visible`="(multivar:roy)"),
+                    list(`name`="df2[roy]", `title`="df2", `type`="integer", `visible`="(multivar:roy)"),
+                    list(`name`="p[roy]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(multivar:roy)")))
             private$..univar <- jmvcore::Table$new(
                 options=options,
                 name="univar",
                 title="Univariate Tests",
                 clearWith=list(
                     "deps",
-                    "fixedFactors",
-                    "covariates"),
+                    "factors",
+                    "covs"),
                 columns=list(
                     list(`name`="term", `title`="", `type`="text", `combineBelow`=TRUE),
                     list(`name`="dep", `title`="Dependent Variable", `type`="text"),
@@ -176,11 +176,11 @@ mancovaResults <- R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
                     boxM = function() private$..boxM,
-                    shapiroWilk = function() private$..shapiroWilk,
+                    shapiro = function() private$..shapiro,
                     qqPlot = function() private$..qqPlot),
                 private = list(
                     ..boxM = NA,
-                    ..shapiroWilk = NA,
+                    ..shapiro = NA,
                     ..qqPlot = NA),
                 public=list(
                     initialize=function(options) {
@@ -193,16 +193,16 @@ mancovaResults <- R6::R6Class(
                             rows=1,
                             clearWith=list(
                                 "deps",
-                                "fixedFactors"),
+                                "factors"),
                             columns=list(
                                 list(`name`="chi", `title`="\u03C7\u00B2", `type`="number"),
                                 list(`name`="df", `title`="df", `type`="integer"),
                                 list(`name`="p", `title`="p", `type`="number", `format`="zto,pvalue")))
-                        private$..shapiroWilk <- jmvcore::Table$new(
+                        private$..shapiro <- jmvcore::Table$new(
                             options=options,
-                            name="shapiroWilk",
+                            name="shapiro",
                             title="Shapiro-Wilk Multivariate Normality Test",
-                            visible="(shapiroWilk)",
+                            visible="(shapiro)",
                             rows=1,
                             clearWith=list(
                                 "deps"),
@@ -220,7 +220,7 @@ mancovaResults <- R6::R6Class(
                             clearWith=list(
                                 "deps"))
                         self$add(private$..boxM)
-                        self$add(private$..shapiroWilk)
+                        self$add(private$..shapiro)
                         self$add(private$..qqPlot)}))$new(options=options)
             self$add(private$..multivar)
             self$add(private$..univar)
@@ -253,16 +253,10 @@ mancovaBase <- R6::R6Class(
 #'
 #' @examples
 #' data('iris')
-#' dat <- as.data.frame(iris)
 #' 
-#' jmv::mancova(
-#'     data=dat,
-#'     deps=c(
-#'         "Sepal.Length",
-#'         "Sepal.Width",
-#'         "Petal.Length",
-#'         "Petal.Width"),
-#'     fixedFactors="Species")
+#' mancova(data = iris,
+#'     deps = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'),
+#'     factors = 'Species')
 #' 
 #' #
 #' #  Multivariate Tests
@@ -296,41 +290,39 @@ mancovaBase <- R6::R6Class(
 #' @param data the data as a data frame
 #' @param deps a string naming the dependent variable from \code{data}, 
 #'   variable must be numeric 
-#' @param fixedFactors a vector of strings naming the fixed factors from 
-#'   \code{data}
-#' @param covariates a vector of strings naming the covariates from 
-#'   \code{data}
-#' @param multivarStats one or more of \code{'pillai'}, \code{'wilks'}, 
+#' @param factors a vector of strings naming the factors from \code{data}
+#' @param covs a vector of strings naming the covariates from \code{data}
+#' @param multivar one or more of \code{'pillai'}, \code{'wilks'}, 
 #'   \code{'hotel'}, or \code{'roy'}; use Pillai's Trace, Wilks' Lambda, 
 #'   Hotelling's Trace, and Roy's Largest Root multivariate statistics, 
 #'   respectively 
 #' @param boxM \code{TRUE} or \code{FALSE} (default), provide Box's M test 
-#' @param shapiroWilk \code{TRUE} or \code{FALSE} (default), provide 
-#'   Shapiro-Wilk test 
+#' @param shapiro \code{TRUE} or \code{FALSE} (default), provide Shapiro-Wilk 
+#'   test 
 #' @param qqPlot \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of 
 #'   multivariate normality 
 #' @export
 mancova <- function(
     data,
     deps,
-    fixedFactors = NULL,
-    covariates = NULL,
-    multivarStats = list(
+    factors = NULL,
+    covs = NULL,
+    multivar = list(
                 "pillai",
                 "wilks",
                 "hotel",
                 "roy"),
     boxM = FALSE,
-    shapiroWilk = FALSE,
+    shapiro = FALSE,
     qqPlot = FALSE) {
 
     options <- mancovaOptions$new(
         deps = deps,
-        fixedFactors = fixedFactors,
-        covariates = covariates,
-        multivarStats = multivarStats,
+        factors = factors,
+        covs = covs,
+        multivar = multivar,
         boxM = boxM,
-        shapiroWilk = shapiroWilk,
+        shapiro = shapiro,
         qqPlot = qqPlot)
 
     results <- mancovaResults$new(

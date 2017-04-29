@@ -29,8 +29,14 @@ test_that('anovarm works', {
                     measure="fri",
                     cell="fri"))
 
+    postHoc <- list(
+        "between",
+        c("intake", "between")
+    )
+
     r <- jmv::anovaRM(data=data, rm=rm, rmCells=rmCells, bs="between",
-                      rmTerms=list("intake"), bsTerms=list("between"))
+                      rmTerms=list("intake"), bsTerms=list("between"),
+                      postHoc = postHoc)
 
     # Test rm table
     expect_equal(2.26500538322502, r$rmTable$getCell(rowNo=2, "ss[none]")$value)

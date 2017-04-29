@@ -14,7 +14,7 @@ mancovaClass <- R6::R6Class(
         .run = function() {
 
             ready <- TRUE
-            if (is.null(self$options$deps) || (is.null(self$options$fixedFactors) && is.null(self$options$covariates)))
+            if (is.null(self$options$deps) || (is.null(self$options$factors) && is.null(self$options$covs)))
                 ready <- FALSE
 
             if (ready) {
@@ -25,7 +25,7 @@ mancovaClass <- R6::R6Class(
                 private$.populateMultivarTable(results)
                 private$.populateUnivarTable(results)
                 private$.populateBoxMTable(results)
-                private$.populateShapiroWilkTable(results)
+                private$.populateShapiroTable(results)
                 private$.prepareQQPlot(data)
 
             }
@@ -35,8 +35,8 @@ mancovaClass <- R6::R6Class(
         .compute = function(data) {
 
             deps <- self$options$deps
-            fixedFactors <- self$options$fixedFactors
-            covariates <- self$options$covariates
+            factors <- self$options$factors
+            covs <- self$options$covs
 
             modelTerms <- jmvcore::composeTerms(private$.modelTerms(B64=TRUE))
             formula <- as.formula(paste(paste0("cbind(", paste0(jmvcore::toB64(deps), collapse=","), ")"), paste0(modelTerms, collapse ="+"), sep="~"))
@@ -53,10 +53,10 @@ mancovaClass <- R6::R6Class(
             boxM <- private$.boxM(data)
 
             dataDeps <- t(as.matrix(data[jmvcore::toB64(deps)]))
-            shapiroWilk <- mvnormtest::mshapiro.test(dataDeps)
+            shapiro <- mvnormtest::mshapiro.test(dataDeps)
 
             return(list(pillai=pillai, wilks=wilks, hotel=hotel, roy=roy, univar=univar,
-                        boxM=boxM, shapiroWilk=shapiroWilk))
+                        boxM=boxM, shapiro=shapiro))
         },
 
         #### Init tables/plots functions ----
@@ -196,17 +196,19 @@ mancovaClass <- R6::R6Class(
                 table$addFootnote(rowNo=1, 'p', boxM$warning)
             }
         },
-        .populateShapiroWilkTable = function(results) {
+        .populateShapiroTable = function(results) {
 
-            table <- self$results$assump$shapiroWilk
-            shapiroWilk <- results$shapiroWilk
+            table <- self$results$assump$shapiro
+            shapiro <- results$shapiro
 
-            w <- as.numeric(shapiroWilk$statistic)
-            p <- as.numeric(shapiroWilk$p.value)
+            w <- as.numeric(shapiro$statistic)
+            p <- as.numeric(shapiro$p.value)
 
             table$setRow(rowNo=1, values=list(w=w, p=p))
 
         },
+
+        #### Plot functions ----
         .prepareQQPlot = function(data, model) {
 
             image <- self$results$assump$get('qqPlot')
@@ -257,14 +259,14 @@ mancovaClass <- R6::R6Class(
         .cleanData = function() {
 
             deps <- self$options$deps
-            fixedFactors <- self$options$fixedFactors
-            covariates <- self$options$covariates
+            factors <- self$options$factors
+            covs <- self$options$covs
 
             data <- list()
-            for (var in c(deps, covariates))
+            for (var in c(deps, covs))
                 data[[jmvcore::toB64(var)]] <- jmvcore::toNumeric(self$data[[var]])
 
-            for (var in fixedFactors)
+            for (var in factors)
                 data[[jmvcore::toB64(var)]] <- as.factor(self$data[[var]])
 
             attr(data, 'row.names') <- seq_len(length(data[[1]]))
@@ -275,24 +277,24 @@ mancovaClass <- R6::R6Class(
         },
         .modelTerms = function(B64 = FALSE) {
 
-            fixedFactors <- self$options$fixedFactors
-            covariates <- self$options$covariates
+            factors <- self$options$factors
+            covs <- self$options$covs
 
-            if (length(fixedFactors) > 1) {
+            if (length(factors) > 1) {
 
-                formula <- as.formula(paste('~', paste(paste0('`', fixedFactors, '`'), collapse='*')))
+                formula <- as.formula(paste('~', paste(paste0('`', factors, '`'), collapse='*')))
                 terms   <- attr(stats::terms(formula), 'term.labels')
                 modelTerms <- sapply(terms, function(x) as.list(strsplit(x, ':')), USE.NAMES=FALSE)
 
             } else {
 
-                modelTerms <- as.list(fixedFactors)
+                modelTerms <- as.list(factors)
 
             }
 
-            if (! is.null(covariates)) {
+            if (! is.null(covs)) {
 
-                for (cov in covariates)
+                for (cov in covs)
                     modelTerms[[length(modelTerms) + 1]] <- cov
 
             }
@@ -323,7 +325,7 @@ mancovaClass <- R6::R6Class(
         .boxM = function(data) {
 
             deps <- self$options$deps
-            factors <- self$options$fixedFactors
+            factors <- self$options$factors
 
             dataDeps <- data[jmvcore::toB64(deps)]
             dataFactors <- data[jmvcore::toB64(factors)]

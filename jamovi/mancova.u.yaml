@@ -16,12 +16,12 @@ children:
       - type: TargetLayoutBox
         children:
           - type: VariablesListBox
-            name: fixedFactors
+            name: factors
             isTarget: true
       - type: TargetLayoutBox
         children:
           - type: VariablesListBox
-            name: covariates
+            name: covs
             height: small
             isTarget: true
   - type: LayoutBox
@@ -38,22 +38,22 @@ children:
           - type: Label
             label: Multivariate Statistics
             children:
-              - name: multivarStats_pillai
+              - name: multivar_pillai
                 type: CheckBox
                 optionPart: pillai
-                optionName: multivarStats
-              - name: multivarStats_wilks
+                optionName: multivar
+              - name: multivar_wilks
                 type: CheckBox
                 optionPart: wilks
-                optionName: multivarStats
-              - name: multivarStats_hotel
+                optionName: multivar
+              - name: multivar_hotel
                 type: CheckBox
                 optionPart: hotel
-                optionName: multivarStats
-              - name: multivarStats_roy
+                optionName: multivar
+              - name: multivar_roy
                 type: CheckBox
                 optionPart: roy
-                optionName: multivarStats
+                optionName: multivar
       - type: LayoutBox
         margin: large
         cell:
@@ -67,7 +67,7 @@ children:
               - name: boxM
                 type: CheckBox
                 label: Box's M test
-              - name: shapiroWilk
+              - name: shapiro
                 type: CheckBox
                 label: Shapiro-Wilk test
               - type: CheckBox

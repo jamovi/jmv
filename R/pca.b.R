@@ -276,6 +276,8 @@ pcaClass <- R6::R6Class(
             table$setRow(rowNo=1, values=list(chi=r$chisq, df=r$df, p=r$p.value))
 
         },
+
+        #### Plot functions ----
         .prepareScreePlot = function() {
 
             image <- self$results$eigen$screePlot

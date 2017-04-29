@@ -283,11 +283,11 @@ items:
       title: Assumption Checks
       type: Group
       items:
-        - name: durbinWatson
+        - name: durbin
           title: Durbin–Watson Test for Autocorrelation
           type: Table
           rows: 1
-          visible: (durbinWatson)
+          visible: (durbin)
           clearWith:
             - dep
             - blocks
@@ -307,10 +307,10 @@ items:
               type: number
               format: zto,pvalue
 
-        - name: collinearity
+        - name: collin
           title: Collinearity Statistics
           type: Table
-          visible: (collinearity)
+          visible: (collin)
           clearWith:
             - dep
             - blocks

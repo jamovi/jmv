@@ -10,7 +10,7 @@ ancovaClass <- R6::R6Class(
 
             dep <- self$options$dep
             factors <- self$options$factors
-            covs <- self$options$cov
+            covs <- self$options$covs
 
             data <- self$data
 
@@ -618,7 +618,7 @@ ancovaClass <- R6::R6Class(
                 modelTerms[[i]] <- term
             }
 
-            for (covariate in self$options$cov)
+            for (covariate in self$options$covs)
                 modelTerms[[ length(modelTerms) + 1 ]] <- covariate
 
             modelTerms
