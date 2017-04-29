@@ -404,6 +404,19 @@ ancovaBase <- R6::R6Class(
 #' data('ToothGrowth')
 #' 
 #' ancova(ToothGrowth, dep = 'len', factors = 'supp', cov = 'dose')
+#' 
+#' # 
+#' #  ANCOVA
+#' #
+#' #  ANCOVA
+#' #  -----------------------------------------------------------------------
+#' #                 Sum of Squares    df    Mean Square    F        p
+#' #  -----------------------------------------------------------------------
+#' #    supp                    205     1          205.4     11.4     0.001
+#' #    dose                   2224     1         2224.3    124.0    < .001
+#' #    Residuals              1023    57           17.9
+#' #  -----------------------------------------------------------------------
+#' #
 #' }
 #' @param data the data as a data frame
 #' @param dep a string naming the dependent variable from \code{data}, 

@@ -283,23 +283,18 @@ ttestPSBase <- R6::R6Class(
 #'
 #' @examples
 #' \dontrun{
-#' data('ToothGrowth')
+#' data('bugs', package = 'jmv')
 #' 
-#' # todo: find a better example
-#' 
-#' ttestPS(ToothGrowth,
-#'     pairs = list(
-#'         list(i1 = 'len', i2 = 'dose')))
+#' ttestPS(bugs, pairs = list(
+#'         list(i1 = 'LDLF', i2 = 'LDHF')))
 #' 
 #' #
-#' # Paired Samples T-Test
-#' #
-#' # Paired Samples T-Test
-#' # -------------------------------------------------------------
-#' #                                 statistic    df      p
-#' # -------------------------------------------------------------
-#' #   len    dose    Student's t         19.1    59.0    < .001
-#' # -------------------------------------------------------------
+#' #  Paired Samples T-Test
+#' #  --------------------------------------------------------------
+#' #                                   statistic    df      p
+#' #  --------------------------------------------------------------
+#' #    LDLF    LDHF    Student's t        -6.65    90.0    < .001
+#' #  --------------------------------------------------------------
 #' #
 #' }
 #' @param data the data as a data frame

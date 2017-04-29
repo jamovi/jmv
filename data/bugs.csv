@@ -1,0 +1,94 @@
+"Subject";"Gender";"Region";"Education";"LDLF";"LDHF";"HDLF";"HDHF"
+"1";1;"Female";"North America";"some";6;6;9;10
+"2";2;"Female";"North America";"advance";10;NA;10;10
+"3";3;"Female";"Europe";"college";5;10;10;10
+"4";4;"Female";"North America";"college";6;9;6;9
+"5";5;"Female";"North America";"some";3;6.5;5.5;8.5
+"6";6;"Female";"Europe";"some";2;0.5;7.5;3
+"7";7;"Female";"North America";"some";10;10;10;10
+"8";8;"Female";"North America";"high";10;10;9;10
+"9";9;"Female";"North America";"high";9.5;9.5;6;10
+"10";10;"Female";"Other";"high";8.5;10;7;NA
+"11";11;"Male";"North America";"some";0;2.5;0;0
+"12";12;"Male";"North America";"some";9.5;7.5;8.5;10
+"13";13;"Female";"North America";"less";7;8.5;6.5;8.5
+"14";14;"Female";"North America";"some";3;8;4;8.5
+"15";15;"Male";"North America";"some";4;5;6;7
+"16";16;"Male";"North America";"high";7;8.5;8.5;9
+"17";17;"Male";"North America";"some";2;6;10;10
+"18";18;"Female";"North America";"high";7.5;6;7.5;10
+"19";19;"Female";"North America";"some";6.5;6;10;10
+"20";20;"Female";"North America";"some";7;9;8.5;9.5
+"21";22;"Female";"North America";"some";3;4.5;5;9.5
+"22";23;"Female";"Australia";"some";2.5;9.5;4.5;7.5
+"23";24;"Female";"North America";"less";10;10;9;10
+"24";25;"Male";"Europe";"high";0;1.5;4;1.5
+"25";26;"Female";"Europe";"some";0.5;0.5;4.5;5.5
+"26";27;"Female";"North America";"less";5;7.5;3.5;10
+"27";29;"Female";"Other";"some";6.5;5;10;10
+"28";30;"Female";"North America";"some";8;9;8;8
+"29";31;"Female";"North America";"some";3;10;7.5;6
+"30";32;"Male";"Europe";"some";7.5;7;6.5;10
+"31";33;"Male";"North America";"some";6.5;10;10;4
+"32";34;"Male";"Europe";"college";4.5;8.5;8.5;6
+"33";35;"Male";"North America";"some";3;2;8;4
+"34";36;"Male";"North America";"some";6;10;2;4.5
+"35";37;"Female";"North America";"some";4;10;7;10
+"36";38;"Female";"North America";"some";4.5;7;10;10
+"37";39;"Male";"North America";"some";7;7;10;9
+"38";40;NA;NA;NA;8;8.5;8;9.5
+"39";41;"Female";"North America";"some";5;7.5;7.5;7.5
+"40";42;"Female";"North America";"high";5;8.5;NA;9.5
+"41";43;"Female";"North America";"some";2;2;0;5.5
+"42";45;"Male";"North America";"partial";7.5;7;6.5;8
+"43";46;"Female";"North America";"less";3.5;4;1;10
+"44";47;"Female";"North America";"advance";5;7.5;0.5;2.5
+"45";48;"Male";"North America";"some";2;3.5;9.5;5.5
+"46";49;"Male";"North America";"some";4;8;1.5;9.5
+"47";50;"Female";"North America";"some";5;6;4.5;3.5
+"48";51;"Female";"North America";"some";5.5;2.5;8;9
+"49";52;"Female";"North America";"less";10;10;10;10
+"50";53;"Female";"North America";"some";7;8.5;4;9
+"51";54;"Female";"Other";"some";5.5;10;6;10
+"52";56;"Female";"North America";"some";10;10;10;10
+"53";57;"Female";"South America";"some";9.5;10;10;10
+"54";58;"Male";"North America";"some";6;4.5;7.5;6
+"55";59;"Female";"North America";"less";7.5;6.5;10;8.5
+"56";60;"Male";"North America";"less";3.5;7.5;8;8
+"57";61;"Female";"North America";"college";2.5;7.5;5;7.5
+"58";62;"Male";"North America";"less";3.5;9.5;3.5;8
+"59";64;"Female";"Europe";"some";8.5;6;NA;5
+"60";65;"Female";"North America";"less";3;8.5;10;2.5
+"61";66;"Male";"North America";"less";6;10;3;8.5
+"62";67;"Male";"North America";"high";5.5;8;4.5;9.5
+"63";68;"Male";"North America";"high";3;8;10;7
+"64";69;"Male";"North America";"college";2;8.5;4;6
+"65";70;"Female";"North America";"less";4;9;2.5;10
+"66";71;"Female";"North America";"less";9;10;8.5;10
+"67";72;"Female";"North America";"some";10;10;10;10
+"68";73;"Female";"North America";"some";5.5;6;1;5.5
+"69";74;"Male";"North America";"less";6;8.5;8.5;9
+"70";76;"Female";"North America";"some";9;9;9;9
+"71";77;"Female";"North America";"some";6;6;7.5;6
+"72";78;"Female";"North America";"less";5;6.5;0.5;5.5
+"73";79;"Male";"North America";"less";6;8;9;7
+"74";80;"Female";"North America";"less";1.5;NA;9;9.5
+"75";81;"Male";"North America";"high";5.5;4;10;5.5
+"76";82;"Female";"North America";"high";9.5;9.5;9.5;8.5
+"77";83;"Female";"North America";"high";8;8;8.5;10
+"78";84;"Female";"North America";"some";0;5;0;5
+"79";85;"Female";"North America";"high";3;3;0.5;7
+"80";86;"Male";"North America";"less";7;7;8.5;7.5
+"81";87;"Female";"North America";"partial";5;4;3.5;5.5
+"82";88;"Female";"North America";"high";10;10;10;10
+"83";89;"Male";"North America";"less";7.5;8;9.5;10
+"84";90;"Male";"North America";"less";6;8;4.5;6.5
+"85";91;"Female";"Other";"some";7;7.5;8.5;8
+"86";92;"Female";"Europe";"less";6.5;9.5;4;8.5
+"87";93;"Female";"North America";"less";6.5;10;10;10
+"88";95;"Female";"North America";"less";3;4;2;2
+"89";96;"Male";"North America";"high";10;10;10;10
+"90";97;"Female";"North America";NA;8.5;10;8.5;10
+"91";98;"Female";"North America";"some";1.5;10;8.5;10
+"92";99;"Female";"North America";"some";9;10;10;10
+"93";100;"Female";"Europe";"some";5.5;5.5;2;3

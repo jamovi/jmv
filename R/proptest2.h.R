@@ -135,7 +135,20 @@ propTest2Base <- R6::R6Class(
 #'
 #' @examples
 #' \dontrun{
-#' propTest2(data, vars='x')
+#' dat <- data.frame(x=c(8, 15))
+#' 
+#' propTest2(dat, vars = 'x', areCounts = TRUE)
+#' 
+#' #
+#' #  Binomial Test
+#' #  -------------------------------------------------------
+#' #         Level    Count    Total    Proportion    p
+#' #  -------------------------------------------------------
+#' #    x    1            8       23         0.348    0.210
+#' #         2           15       23         0.652    0.210
+#' #  -------------------------------------------------------
+#' #    Note. Hₐ is proportion ≠ 0.5
+#' #
 #' }
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in 

@@ -184,13 +184,13 @@ efaBase <- R6::R6Class(
 
 #' Exploratory Factor Analysis
 #'
-#' Exporatory Factor Analysis
+#' Exploratory Factor Analysis
 #'
 #' @examples
 #' data('iris')
 #' dat <- as.data.frame(iris)
 #' 
-#' jmv::efa(data = dat, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
+#' efa(dat, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
 #' 
 #' #
 #' #  Factor Loadings
@@ -203,7 +203,6 @@ efaBase <- R6::R6Class(
 #' #    Petal.Width     0.883     0.388       0.07088
 #' #  -------------------------------------------------
 #' #    Note. 'varimax' rotation was used
-#' #
 #' #
 #' 
 #' @param data .

@@ -428,8 +428,8 @@ linRegBase <- R6::R6Class(
 #' @examples
 #' data('Prestige', package='car')
 #' 
-#' jmv::linReg(data=Prestige, dep="income",
-#'             blocks=list(c("education", "prestige", "women")))
+#' linReg(data = Prestige, dep = "income",
+#'        blocks = list(c("education", "prestige", "women")))
 #' 
 #' #
 #' #  Model Fit Measures
@@ -450,7 +450,6 @@ linRegBase <- R6::R6Class(
 #' #             prestige        141.4      29.91     4.729    < .001
 #' #             women           -50.9       8.56    -5.948    < .001
 #' #  -----------------------------------------------------------------
-#' #
 #' #
 #' 
 #' @param data the data as a data frame

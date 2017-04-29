@@ -282,7 +282,41 @@ descriptivesBase <- R6::R6Class(
 #'
 #' @examples
 #' \dontrun{
-#' descriptives(data, vars=c('x', 'y', 'z'))
+#' data('mtcars')
+#' dat <- mtcars
+#' 
+#' # frequency tables can be provided for factors
+#' dat$gear <- as.factor(dat$gear)
+#' 
+#' descriptives(dat, vars = c('mpg', 'cyl', 'disp', 'gear'), freq = TRUE)
+#' 
+#' #
+#' #  Descriptives
+#' #
+#' #  Descriptives
+#' #  -------------------------------------------
+#' #               mpg     cyl     disp    gear
+#' #  -------------------------------------------
+#' #    N            32      32      32      32
+#' #    Missing       0       0       0       0
+#' #    Mean       20.1    6.19     231
+#' #    Median     19.2    6.00     196
+#' #    Minimum    10.4    4.00    71.1
+#' #    Maximum    33.9    8.00     472
+#' #  -------------------------------------------
+#' #
+#' #
+#' #  Frequencies
+#' #
+#' #  Frequencies of gear
+#' #  -------------------------------------------
+#' #    Level    Counts    %       Cumulative %
+#' #  -------------------------------------------
+#' #    3            15    46.9            46.9
+#' #    4            12    37.5            84.4
+#' #    5             5    15.6           100.0
+#' #  -------------------------------------------
+#' #
 #' }
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in 

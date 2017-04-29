@@ -321,7 +321,7 @@ contTablesBase <- R6::R6Class(
 #' data('HairEyeColor')
 #' dat <- as.data.frame(HairEyeColor)
 #' 
-#' jmv::contTables(dat, rows = 'Hair', cols = 'Eye', counts = 'Freq')
+#' contTables(dat, rows = 'Hair', cols = 'Eye', counts = 'Freq')
 #' 
 #' #
 #' #  Contingency Tables

@@ -6,14 +6,14 @@ version: '1.0.0'
 jas: '1.1'
 
 description:
-    main: Exporatory Factor Analysis
+    main: Exploratory Factor Analysis
     R:
         dontrun: false
         usage: |
             data('iris')
             dat <- as.data.frame(iris)
 
-            jmv::efa(data = dat, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
+            efa(dat, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
 
             #
             #  Factor Loadings
@@ -26,7 +26,6 @@ description:
             #    Petal.Width     0.883     0.388       0.07088
             #  ─────────────────────────────────────────────────
             #    Note. 'varimax' rotation was used
-            #
             #
 
 options:

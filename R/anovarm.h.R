@@ -521,18 +521,45 @@ anovaRMBase <- R6::R6Class(
 #'
 #' @examples
 #' \dontrun{
-#' anovaRM(data=data,
-#'     rm=list(
+#' 
+#' data('bugs', package = 'jmv')
+#' 
+#' anovaRM(
+#'     data = bugs,
+#'     rm = list(
 #'         list(
-#'             label="When",
-#'             levels=c("Before", "After"))),
-#'     rmCells=list(
+#'             label = 'Disgusting',
+#'             levels = c('Low', 'High'))),
+#'     rmCells = list(
 #'         list(
-#'             measure="column 1",
-#'             cell="Before"),
+#'             measure = 'LDLF',
+#'             cell = 'Low'),
 #'         list(
-#'             measure="column 2",
-#'             cell="After")))
+#'             measure = 'LDHF',
+#'             cell = 'High')),
+#'     rmTerms = list(
+#'         'Disgusting'))
+#' 
+#' #
+#' #  Within Subjects Effects
+#' #  -----------------------------------------------------------------------
+#' #                  Sum of Squares    df    Mean Square    F       p
+#' #  -----------------------------------------------------------------------
+#' #    Disgusting               126     1         126.11    44.2    < .001
+#' #    Residual                 257    90           2.85
+#' #  -----------------------------------------------------------------------
+#' #    Note. Type 3 Sums of Squares
+#' #
+#' #
+#' #
+#' #  Between Subjects Effects
+#' #  -----------------------------------------------------------------
+#' #                Sum of Squares    df    Mean Square    F    p
+#' #  -----------------------------------------------------------------
+#' #    Residual               954    90           10.6
+#' #  -----------------------------------------------------------------
+#' #    Note. Type 3 Sums of Squares
+#' #
 #' }
 #' @param data the data as a data frame
 #' @param rm a list of lists, where each list describes the \code{label} (as a 

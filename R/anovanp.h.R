@@ -125,7 +125,20 @@ anovaNPBase <- R6::R6Class(
 #'
 #' @examples
 #' \dontrun{
-#' anovaNP(data, deps='len', group='dose')
+#' data('ToothGrowth')
+#' 
+#' anovaNP(ToothGrowth, deps = 'len', group = 'dose')
+#' 
+#' #
+#' # One-way ANOVA (Non-parametric)
+#' #
+#' # Kruskal-Wallis
+#' # -------------------------------
+#' #          X²      df    p
+#' # -------------------------------
+#' #   len    40.7     2    < .001
+#' # -------------------------------
+#' #
 #' }
 #' @param data the data as a data frame
 #' @param deps a string naming the dependent variable in \code{data}

@@ -211,7 +211,30 @@ corrMatrixBase <- R6::R6Class(
 #'
 #' @examples
 #' \dontrun{
-#' corrMatrix(data, vars=c('x', 'y', 'z'))
+#' data('mtcars')
+#' 
+#' corrMatrix(mtcars, vars = c('mpg', 'cyl', 'disp', 'hp'))
+#' 
+#' #
+#' #  Correlation Matrix
+#' #
+#' #  Correlation Matrix
+#' #  --------------------------------------------------------------
+#' #                           mpg      cyl       disp      hp
+#' #  --------------------------------------------------------------
+#' #    mpg     Pearson's r        —    -0.852    -0.848    -0.776
+#' #            p-value            —    < .001    < .001    < .001
+#' #
+#' #    cyl     Pearson's r                  —     0.902     0.832
+#' #            p-value                      —    < .001    < .001
+#' #
+#' #    disp    Pearson's r                            —     0.791
+#' #            p-value                                —    < .001
+#' #
+#' #    hp      Pearson's r                                      —
+#' #            p-value                                          —
+#' #  --------------------------------------------------------------
+#' #
 #' }
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables to correlate in 

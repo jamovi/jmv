@@ -25,13 +25,13 @@ analyses:
     ns: jmv
     menuGroup: Exploration
     menuTitle: Reliability Analysis
-    description: {}
+    description: null
   - title: Independent Samples T-Test
     name: ttestIS
     ns: jmv
     menuGroup: T-Tests
     menuTitle: Independent Samples T-Test
-    description: {}
+    description: null
   - title: Paired Samples T-Test
     name: ttestPS
     ns: jmv
@@ -43,7 +43,7 @@ analyses:
     ns: jmv
     menuGroup: T-Tests
     menuTitle: One Sample T-Test
-    description: {}
+    description: null
   - title: ANOVA
     name: anova
     ns: jmv
@@ -55,20 +55,18 @@ analyses:
     ns: jmv
     menuGroup: ANOVA
     menuTitle: Repeated Measures ANOVA
-    description: {}
+    description: null
   - title: ANCOVA
     name: ancova
     ns: jmv
     menuGroup: ANOVA
     menuTitle: ANCOVA
-    stage: 1
     description: Analysis of Covariance
   - title: MANCOVA
     name: mancova
     ns: jmv
     menuGroup: ANOVA
     menuTitle: MANCOVA
-    stage: 1
     description: Multivariate Analysis of Covariance
   - title: One Way ANOVA (Non-parametric)
     name: anovaNP
@@ -91,13 +89,12 @@ analyses:
     menuGroup: Regression
     menuTitle: Correlation Matrix
     ns: jmv
-    description: {}
+    description: null
   - title: Linear Regression
     name: linReg
     ns: jmv
     menuGroup: Regression
     menuTitle: Linear Regression
-    stage: 1
     description: Linear Regression
   - title: Proportion Test (2 Outcomes)
     name: propTest2
@@ -138,21 +135,17 @@ analyses:
     menuTitle: Log-Linear Regression
     stage: 1
     hidden: true
-    description: null
   - title: Principal Component Analysis
     name: pca
     ns: jmv
     menuGroup: Factor
     menuTitle: Principal Component Analysis
-    stage: 1
     description: Principal Component Analysis
-    hidden: false
   - title: Exploratory Factor Analysis
     name: efa
     ns: jmv
     menuGroup: Factor
     menuTitle: Exploratory Factor Analysis
-    description: Exporatory Factor Analysis
-    hidden: false
+    description: Exploratory Factor Analysis
 
 ...

@@ -148,7 +148,18 @@ anovaRMNPBase <- R6::R6Class(
 #'
 #' @examples
 #' \dontrun{
-#' anovaRMNP(data, measures=c('before', 'during', 'after'))
+#' data('bugs', package = 'jmv')
+#' 
+#' anovaRMNP(bugs, measures = c('LDLF', 'LDHF', 'HDLF', 'HDHF'))
+#' 
+#' #
+#' #  Friedman
+#' #  ------------------------
+#' #    X²      df    p
+#' #  ------------------------
+#' #    55.8     3    < .001
+#' #  ------------------------
+#' #
 #' }
 #' @param data the data as a data frame
 #' @param measures a vector of strings naming the repeated measures variables

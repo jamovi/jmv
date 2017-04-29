@@ -238,7 +238,7 @@ anovaBase <- R6::R6Class(
 #' \dontrun{
 #' data('ToothGrowth')
 #' 
-#' anova(ToothGrowth, dep='len', factors=c('dose', 'supp'))
+#' anova(ToothGrowth, dep = 'len', factors = c('dose', 'supp'))
 #' 
 #' #
 #' #  ANOVA

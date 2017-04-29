@@ -361,14 +361,14 @@ ttestISBase <- R6::R6Class(
 #' ttestIS(data = ToothGrowth, vars = 'len', group = 'supp')
 #' 
 #' #
-#' # Independent Samples T-Test
+#' #  Independent Samples T-Test
 #' #
-#' # Independent Samples T-Test
-#' # ----------------------------------------------------
-#' #                         statistic    df      p
-#' # ----------------------------------------------------
-#' #   len    Student's t         1.92    58.0    0.060
-#' # ----------------------------------------------------
+#' #  Independent Samples T-Test
+#' #  ----------------------------------------------------
+#' #                          statistic    df      p
+#' #  ----------------------------------------------------
+#' #    len    Student's t         1.92    58.0    0.060
+#' #  ----------------------------------------------------
 #' #
 #' 
 #' @param data the data as a data frame
