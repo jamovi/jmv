@@ -1067,5 +1067,17 @@ anovaRMClass <- R6::R6Class(
             termsTotal <- sum(model[indicesTotal,'SS'])
 
             return(termsTotal)
+        },
+        .sourcifyOption = function(option) {
+
+            name <- option$name
+            value <- option$value
+
+            if (name == 'contrasts') {
+                if (all(vapply(value, function(x) x$type == 'none', FALSE)))
+                    return('')
+            }
+
+            super$.sourcifyOption(option)
         })
 )
