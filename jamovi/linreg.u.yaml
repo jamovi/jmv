@@ -37,6 +37,7 @@ children:
             template:
               type: LayoutBox
               margin: normal
+              targetArea: true
               children:
                 - type: Label
                   label: Block 1
