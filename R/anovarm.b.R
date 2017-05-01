@@ -14,6 +14,11 @@ anovaRMClass <- R6::R6Class(
             private$.initPostHocTables()
             private$.initDescPlots()
 
+            measures <- lapply(self$options$rmCells, function(x) x$measure)
+            areNull  <- vapply(measures, is.null, FALSE, USE.NAMES=FALSE)
+
+            if (any(areNull))
+                self$setStatus('complete')
         },
         .run=function() {
 
