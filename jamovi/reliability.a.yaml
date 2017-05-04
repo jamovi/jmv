@@ -35,7 +35,7 @@ options:
           R: the data as a data frame
 
     - name: vars
-      title: Variables
+      title: Items
       type: Variables
       suggested:
         - ordinal
@@ -81,7 +81,7 @@ options:
             `TRUE` or `FALSE` (default), provide the standard deviation
 
     - name: corPlot
-      title: Correlation Plot
+      title: Correlation Heatmap
       type: Bool
       default: false
       description:
@@ -129,4 +129,14 @@ options:
       description:
           R: >
             `TRUE` or `FALSE` (default), provide item-rest correlations
+
+    - name: revItems
+      title: Reverse Scaled Items
+      type: Variables
+      default:
+      description:
+          R: >
+            a vector containing strings naming the varibales that are
+            reverse scaled
+
 ...
