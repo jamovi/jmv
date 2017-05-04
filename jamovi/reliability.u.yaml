@@ -1,6 +1,6 @@
-name:  reliability
+name: reliability
 title: Reliability Analysis
-jus:   '2.0'
+jus: '2.0'
 compilerMode: tame
 children:
   - type: VariableSupplier
@@ -12,54 +12,72 @@ children:
           - type: VariablesListBox
             name: vars
             isTarget: true
+            events:
+              change: './reliability.events::onChange_vars'
   - type: LayoutBox
     margin: large
+    stretchFactor: 1
     children:
-      - type: Label
-        label: Scale Statistics
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
         cell:
-            column: 0
-            row: 0
+          column: 0
+          row: 0
         children:
-          - type: CheckBox
-            name: alphaScale
-
-          - type: CheckBox
-            name: omegaScale
-
-          - type: CheckBox
-            name: meanScale
-
-          - type: CheckBox
-            name: sdScale
-
-      - type: Label
-        label: Item Statistics
+          - type: Label
+            label: Scale Statistics
+            children:
+              - type: CheckBox
+                name: alphaScale
+              - type: CheckBox
+                name: omegaScale
+              - type: CheckBox
+                name: meanScale
+              - type: CheckBox
+                name: sdScale
+          - type: Label
+            label: Additional Options
+            children:
+              - type: CheckBox
+                name: corPlot
+                label: Correlation heatmap
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
         cell:
-            column: 1
-            row: 0
+          column: 1
+          row: 0
         children:
-          - type: CheckBox
-            name: alphaItems
+          - type: Label
+            label: Item Statistics
+            children:
+              - type: CheckBox
+                name: alphaItems
+              - type: CheckBox
+                name: omegaItems
+              - type: CheckBox
+                name: meanItems
+              - type: CheckBox
+                name: sdItems
+              - type: CheckBox
+                name: itemRestCor
 
-          - type: CheckBox
-            name: omegaItems
-
-          - type: CheckBox
-            name: meanItems
-
-          - type: CheckBox
-            name: sdItems
-
-          - type: CheckBox
-            name: itemRestCor
-
-      - type: Label
-        label: Additional Options
-        cell:
-            column: 0
-            row: 1
+  - type: CollapseBox
+    label: Reverse Scaled Items
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: Supplier
+        format: variable
+        name: revItemsSupplier
+        label: Normal Scaled Items
+        persistentItems: false
+        stretchFactor: 1
         children:
-          - type: CheckBox
-            name: corPlot
-            label: Correlation heat plot
+          - type: TargetLayoutBox
+            label: Reverse Scaled Items
+            children:
+              - type: VariablesListBox
+                name: revItems
+                isTarget: true

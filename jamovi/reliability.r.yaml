@@ -10,6 +10,7 @@ items:
       rows: 1
       clearWith:
         - vars
+        - revItems
 
       columns:
         - name: name
@@ -40,6 +41,7 @@ items:
       rows: (vars)
       clearWith:
         - vars
+        - revItems
 
       columns:
         - name: name
@@ -61,14 +63,16 @@ items:
 
         - name: alpha
           title: Cronbach's α
+          superTitle: 'if item dropped'
           visible: (alphaItems)
 
         - name: omega
           title: McDonald's ω
+          superTitle: 'if item dropped'
           visible: (omegaItems)
 
     - name: corPlot
-      title: Correlation Plot
+      title: Correlation Heatmap
       visible: (corPlot)
       type: Image
       width: 400
@@ -76,3 +80,4 @@ items:
       renderFun: .corPlot
       clearWith:
         - vars
+        - revItems

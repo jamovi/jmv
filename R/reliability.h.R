@@ -18,7 +18,8 @@ reliabilityOptions <- R6::R6Class(
             omegaItems = FALSE,
             meanItems = FALSE,
             sdItems = FALSE,
-            itemRestCor = FALSE, ...) {
+            itemRestCor = FALSE,
+            revItems = NULL, ...) {
 
             super$initialize(
                 package='jmv',
@@ -77,6 +78,10 @@ reliabilityOptions <- R6::R6Class(
                 "itemRestCor",
                 itemRestCor,
                 default=FALSE)
+            private$..revItems <- jmvcore::OptionVariables$new(
+                "revItems",
+                revItems,
+                default=NULL)
         
             self$.addOption(private$..vars)
             self$.addOption(private$..alphaScale)
@@ -89,6 +94,7 @@ reliabilityOptions <- R6::R6Class(
             self$.addOption(private$..meanItems)
             self$.addOption(private$..sdItems)
             self$.addOption(private$..itemRestCor)
+            self$.addOption(private$..revItems)
         }),
     active = list(
         vars = function() private$..vars$value,
@@ -101,7 +107,8 @@ reliabilityOptions <- R6::R6Class(
         omegaItems = function() private$..omegaItems$value,
         meanItems = function() private$..meanItems$value,
         sdItems = function() private$..sdItems$value,
-        itemRestCor = function() private$..itemRestCor$value),
+        itemRestCor = function() private$..itemRestCor$value,
+        revItems = function() private$..revItems$value),
     private = list(
         ..vars = NA,
         ..alphaScale = NA,
@@ -113,7 +120,8 @@ reliabilityOptions <- R6::R6Class(
         ..omegaItems = NA,
         ..meanItems = NA,
         ..sdItems = NA,
-        ..itemRestCor = NA)
+        ..itemRestCor = NA,
+        ..revItems = NA)
 )
 
 #' @import jmvcore
@@ -137,7 +145,8 @@ reliabilityResults <- R6::R6Class(
                 title="Scale Reliability Statistics",
                 rows=1,
                 clearWith=list(
-                    "vars"),
+                    "vars",
+                    "revItems"),
                 columns=list(
                     list(`name`="name", `title`="", `type`="text", `content`="scale"),
                     list(`name`="mean", `title`="mean", `visible`="(meanScale)"),
@@ -151,24 +160,26 @@ reliabilityResults <- R6::R6Class(
                 visible="(meanItems || sdItems || itemRestCor || alphaItems || omegaItems)",
                 rows="(vars)",
                 clearWith=list(
-                    "vars"),
+                    "vars",
+                    "revItems"),
                 columns=list(
                     list(`name`="name", `title`="", `type`="text", `content`="($key)"),
                     list(`name`="mean", `title`="mean", `visible`="(meanItems)"),
                     list(`name`="sd", `title`="sd", `visible`="(sdItems)"),
                     list(`name`="itemRestCor", `title`="item-rest correlation", `visible`="(itemRestCor)"),
-                    list(`name`="alpha", `title`="Cronbach's \u03B1", `visible`="(alphaItems)"),
-                    list(`name`="omega", `title`="McDonald's \u03C9", `visible`="(omegaItems)")))
+                    list(`name`="alpha", `title`="Cronbach's \u03B1", `superTitle`="if item dropped", `visible`="(alphaItems)"),
+                    list(`name`="omega", `title`="McDonald's \u03C9", `superTitle`="if item dropped", `visible`="(omegaItems)")))
             private$..corPlot <- jmvcore::Image$new(
                 options=options,
                 name="corPlot",
-                title="Correlation Plot",
+                title="Correlation Heatmap",
                 visible="(corPlot)",
                 width=400,
                 height=400,
                 renderFun=".corPlot",
                 clearWith=list(
-                    "vars"))
+                    "vars",
+                    "revItems"))
             self$add(private$..scale)
             self$add(private$..items)
             self$add(private$..corPlot)}))
@@ -234,6 +245,8 @@ reliabilityBase <- R6::R6Class(
 #'   deviations 
 #' @param itemRestCor \code{TRUE} or \code{FALSE} (default), provide item-rest 
 #'   correlations 
+#' @param revItems a vector containing strings naming the varibales that are 
+#'   reverse scaled 
 #' @export
 reliability <- function(
     data,
@@ -247,7 +260,8 @@ reliability <- function(
     omegaItems = FALSE,
     meanItems = FALSE,
     sdItems = FALSE,
-    itemRestCor = FALSE) {
+    itemRestCor = FALSE,
+    revItems = NULL) {
 
     options <- reliabilityOptions$new(
         vars = vars,
@@ -260,7 +274,8 @@ reliability <- function(
         omegaItems = omegaItems,
         meanItems = meanItems,
         sdItems = sdItems,
-        itemRestCor = itemRestCor)
+        itemRestCor = itemRestCor,
+        revItems = revItems)
 
     results <- reliabilityResults$new(
         options = options)
