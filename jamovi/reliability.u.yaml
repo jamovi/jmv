@@ -64,7 +64,7 @@ children:
                 name: itemRestCor
 
   - type: CollapseBox
-    label: Define Reverse Scaled Items
+    label: Reverse Scaled Items
     collapsed: true
     stretchFactor: 1
     children:
