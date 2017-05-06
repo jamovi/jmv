@@ -5,6 +5,8 @@ anovaClass <- R6::R6Class(
     private = list(
         .init=function() {
 
+            private$.name <- 'anova'
+
             super$.init()
 
             self$results$setTitle('ANOVA')
