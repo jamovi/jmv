@@ -4,6 +4,13 @@ jus: '2.0'
 compilerMode: tame
 children:
   - type: VariableSupplier
+    suggested:
+      - continuous
+      - ordinal
+    permitted:
+      - continuous
+      - nominal
+      - ordinal
     persistentItems: false
     stretchFactor: 1
     children:
