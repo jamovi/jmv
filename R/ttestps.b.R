@@ -315,7 +315,7 @@ ttestPSClass <- R6::R6Class(
                 descTable$addRow(row2Key)
             }
         },
-        .plot=function(image, ...) {
+        .plot=function(image, theme, ...) {
 
             if (is.null(image$state))
                 return(FALSE)
@@ -330,14 +330,8 @@ ttestPSClass <- R6::R6Class(
                 geom_point(aes(x=group, y=stat, colour=type, shape=type), fill='white', size=3, colour='#333333', position=pd) +
                 labs(x=groupName, y=NULL) +
                 scale_shape_manual(name='', values=c(mean=21, median=22), labels=c(mean=paste0('Mean (', ciw, '% CI)'), median='Median')) +
-                theme(
-                    text=element_text(size=16, colour='#333333'),
-                    plot.background=element_rect(fill='transparent', color=NA),
-                    panel.background=element_rect(fill='#E8E8E8'),
-                    axis.text.x=element_text(margin=margin(5,0,0,0)),
-                    axis.text.y=element_text(margin=margin(0,5,0,0)),
-                    axis.title.x=element_text(margin=margin(10,0,0,0)),
-                    axis.title.y=element_text(margin=margin(0,10,0,0)))
+                theme + theme(plot.title = ggplot2::element_text(margin=ggplot2::margin(b = 5.5 * 1.2)),
+                              plot.margin = ggplot2::margin(5.5, 5.5, 5.5, 5.5))
 
             suppressWarnings(print(plot))
 

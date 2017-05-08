@@ -192,7 +192,7 @@ corrMatrixClass <- R6::R6Class(
 
         results
     },
-    .plot=function(image, ...) {
+    .plot=function(image, theme, ...) {
 
         columns <- unlist(self$options$get('vars'))
 
@@ -230,12 +230,15 @@ corrMatrixClass <- R6::R6Class(
         for (i in seq_along(columns))
             data[[i]] <- jmvcore::toNumeric(data[[i]])
 
-        print(GGally::ggpairs(
+        p <- GGally::ggpairs(
             data,
             columnLabels=columns,
             lower=lower,
             upper=upper,
-            diag=diag))
+            diag=diag) + theme +
+            theme(axis.text = element_text(size = 9))
+
+        print(p)
 
         TRUE
     })

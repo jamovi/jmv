@@ -112,7 +112,7 @@ descriptivesClass <- R6::R6Class(
                 }
             }
         },
-        .plotFreq=function(image, ...) {
+        .plotFreq=function(image, theme, ...) {
 
             if (is.null(image$state))
                 return(FALSE)
@@ -123,21 +123,20 @@ descriptivesClass <- R6::R6Class(
             if (type == 'hist') {
                 ylab <- 'density'
                 axis.text.y <- element_blank()
+                axis.ticks.y <- element_blank()
             }
             else {
                 ylab <- 'counts'
                 axis.text.y <- NULL
+                axis.ticks.y <- NULL
             }
 
             plot <- ggplot(data=data, aes(x=x, y=y)) +
                 geom_bar(stat="identity") +
                 labs(list(x=NULL, y=ylab)) +
-                theme(
-                    text=element_text(size=16, colour='#333333'),
-                    plot.background=element_rect(fill='transparent', color=NA),
-                    panel.background=element_rect(fill='#E8E8E8'),
-                    axis.title.y=element_text(margin=margin(0,10,0,0)),
-                    axis.text.y=axis.text.y)
+                theme +
+                theme(axis.text.y=axis.text.y,
+                      axis.ticks.y=axis.ticks.y)
 
             suppressWarnings(print(plot))
 

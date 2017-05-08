@@ -84,23 +84,12 @@ anovaRMNPClass <- R6::R6Class(
         image$setState(plotData)
 
     },
-    .plot=function(image,...) {
+    .plot=function(image, theme, ...) {
 
         if (is.null(image$state))
             return(FALSE)
 
-        the <- theme(
-            text=element_text(size=16, colour='#333333'),
-            plot.background=element_rect(fill='transparent', color=NA),
-            legend.background=element_rect(fill='transparent', colour=NA),
-            panel.background=element_rect(fill='#E8E8E8'),
-            plot.margin=margin(15, 15, 15, 15),
-            axis.text.x=element_text(margin=margin(5,0,0,0)),
-            axis.text.y=element_text(margin=margin(0,5,0,0)),
-            axis.title.x=element_text(margin=margin(10,0,0,0)),
-            axis.title.y=element_text(margin=margin(0,10,0,0)))
-
-        p <- ggplot(data=image$state) + labs(x="Measure", y="Value") + the
+        p <- ggplot(data=image$state) + labs(x="Measure", y="Value") + theme
 
         if (self$options$plotType == "means")
             p <- p + geom_point(aes(x=group, y=mean), shape=21, fill='white', size=3)

@@ -293,21 +293,12 @@ pcaClass <- R6::R6Class(
             image$setState(df)
 
         },
-        .screePlot = function(image, ...) {
+        .screePlot = function(image, theme, ...) {
 
             if (is.null(image$state))
                 return(FALSE)
 
-            the <- theme(
-                text = element_text(size=16, colour='#333333'),
-                plot.background = element_rect(fill='transparent', color=NA),
-                panel.background = element_rect(fill='#E8E8E8'),
-                plot.margin = margin(15, 15, 15, 15),
-                axis.text.x = element_text(margin=margin(5,0,0,0)),
-                axis.text.y = element_text(margin=margin(0,5,0,0)),
-                axis.title.x = element_text(margin=margin(10,0,0,0)),
-                axis.title.y = element_text(margin=margin(0,10,0,0)),
-                plot.title = element_text(margin=margin(0, 0, 15, 0)),
+            themeSpec <- theme(
                 legend.position = c(1, 1),
                 legend.justification = c(1, 1),
                 legend.background = element_rect("transparent"),
@@ -326,13 +317,13 @@ pcaClass <- R6::R6Class(
             else
                 type <- 'Factor'
 
-            p <- ggplot(data=data, aes(x=comp, y=eigen, group=type, linetype=type)) +
+            p <- ggplot(data=data, aes(x=comp, y=eigen, group=type, linetype=factor(type))) +
                         geom_line(size=.8) +
-                        geom_point(aes(fill=type), shape=21, size=3) +
-                        # scale_fill_manual(values=c("white", "gray")) +
+                        geom_point(aes(fill=factor(type)), shape=21, size=3) +
+                        # scale_fill_manual(values=c("black", "white")) +
                         xlab(type) +
                         ylab("Eigenvalue") +
-                        the
+                        theme + themeSpec
 
             if (nFactorMethod != "parallel")
                 p <- p + theme(legend.position="none")
