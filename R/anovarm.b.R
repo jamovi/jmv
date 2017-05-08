@@ -607,7 +607,7 @@ anovaRMClass <- R6::R6Class(
                 }
             }
         },
-        .descPlot=function(image, ...) {
+        .descPlot=function(image, theme, ...) {
 
             if (is.null(image$state))
                 return(FALSE)
@@ -615,17 +615,6 @@ anovaRMClass <- R6::R6Class(
             groupName <- self$options$plotHAxis
             linesName <- self$options$plotSepLines
             plotsName <- self$options$plotSepPlots
-
-            the <- theme(
-                text=element_text(size=16, colour='#333333'),
-                plot.background=element_rect(fill='transparent', color=NA),
-                legend.background=element_rect(fill='transparent', colour=NA),
-                panel.background=element_rect(fill='#E8E8E8'),
-                plot.margin=margin(15, 15, 15, 15),
-                axis.text.x=element_text(margin=margin(5,0,0,0)),
-                axis.text.y=element_text(margin=margin(0,5,0,0)),
-                axis.title.x=element_text(margin=margin(10,0,0,0)),
-                axis.title.y=element_text(margin=margin(0,10,0,0)))
 
             if (self$options$plotError != 'none')
                 dodge <- position_dodge(0.2)
@@ -649,7 +638,7 @@ anovaRMClass <- R6::R6Class(
                     geom_line(size=.8, position=dodge) +
                     labs(x=groupName, y="", colour=paste(linesName, errorType)) +
                     scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
-                    the
+                    theme
 
                 if (self$options$plotError != 'none')
                     p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, width=.1, group=lines), size=.8, position=dodge)
@@ -664,7 +653,7 @@ anovaRMClass <- R6::R6Class(
                     labs(x=groupName, y="", colour=paste("", errorType)) +
                     scale_colour_manual(name=paste("", errorType), values=c(colour='#333333'), labels='') +
                     scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
-                    the
+                    theme
 
                 if (self$options$plotError != 'none')
                     p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, colour='colour', width=.1), size=.8)

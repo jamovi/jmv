@@ -718,7 +718,7 @@ ancovaClass <- R6::R6Class(
                 }
             }
         },
-        .descPlot=function(image, ...) {
+        .descPlot=function(image, theme, ...) {
 
             if (is.null(image$state))
                 return(FALSE)
@@ -727,17 +727,6 @@ ancovaClass <- R6::R6Class(
             groupName <- self$options$plotHAxis
             linesName <- self$options$plotSepLines
             plotsName <- self$options$plotSepPlots
-
-            the <- theme(
-                text=element_text(size=16, colour='#333333'),
-                plot.background=element_rect(fill='transparent', color=NA),
-                legend.background=element_rect(fill='transparent', colour=NA),
-                panel.background=element_rect(fill='#E8E8E8'),
-                plot.margin=margin(15, 15, 15, 15),
-                axis.text.x=element_text(margin=margin(5,0,0,0)),
-                axis.text.y=element_text(margin=margin(0,5,0,0)),
-                axis.title.x=element_text(margin=margin(10,0,0,0)),
-                axis.title.y=element_text(margin=margin(0,10,0,0)))
 
             if (self$options$plotError != 'none')
                 dodge <- position_dodge(0.2)
@@ -758,9 +747,9 @@ ancovaClass <- R6::R6Class(
 
                 p <- ggplot(data=image$state$data, aes(x=group, y=mean, group=lines, colour=lines)) +
                     geom_line(size=.8, position=dodge) +
-                    labs(x=groupName, y="", colour=paste(linesName, errorType)) +
+                    labs(x=groupName, y=depName, colour=paste(linesName, errorType)) +
                     scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
-                    the
+                    theme
 
                 if (self$options$plotError != 'none')
                     p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, width=.1, group=lines), size=.8, position=dodge)
@@ -772,10 +761,10 @@ ancovaClass <- R6::R6Class(
             } else {
 
                 p <- ggplot(data=image$state$data) +
-                    labs(x=groupName, y="", colour=paste("", errorType)) +
+                    labs(x=groupName, y=depName, colour=paste("", errorType)) +
                     scale_colour_manual(name=paste("", errorType), values=c(colour='#333333'), labels='') +
                     scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
-                    the
+                    theme
 
                 if (self$options$plotError != 'none')
                     p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, colour='colour', width=.1), size=.8)
@@ -787,7 +776,7 @@ ancovaClass <- R6::R6Class(
 
             TRUE
         },
-        .qqPlot=function(image, ...) {
+        .qqPlot=function(image, theme, ...) {
 
             dep <- self$options$dep
             factors <- self$options$factors
@@ -805,23 +794,12 @@ ancovaClass <- R6::R6Class(
             residuals <- rstandard(model)
             df <- as.data.frame(qqnorm(residuals, plot.it=FALSE))
 
-            the <- theme(
-                text=element_text(size=16, colour='#333333'),
-                plot.background=element_rect(fill='transparent', color=NA),
-                panel.background=element_rect(fill='#E8E8E8'),
-                plot.margin=margin(15, 15, 15, 15),
-                axis.text.x=element_text(margin=margin(5,0,0,0)),
-                axis.text.y=element_text(margin=margin(0,5,0,0)),
-                axis.title.x=element_text(margin=margin(10,0,0,0)),
-                axis.title.y=element_text(margin=margin(0,10,0,0)),
-                plot.title=element_text(margin=margin(0, 0, 15, 0)))
-
             print(ggplot(data=df, aes(y=y, x=x)) +
                 geom_point(aes(x=x,y=y), colour='#333333') +
                 geom_abline(slope=1, intercept=0, colour='#333333') +
                 xlab("Theoretical Quantiles") +
                 ylab("Standardized Residuals") +
-                the)
+                theme)
 
             TRUE
         },
