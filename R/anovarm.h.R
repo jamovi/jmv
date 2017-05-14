@@ -468,6 +468,7 @@ anovaRMResults <- R6::R6Class(
                     "plotSepLines",
                     "plotSepPlots",
                     "rm",
+                    "rmCells",
                     "plotError",
                     "ciWidth"))
             private$..descPlots <- jmvcore::Array$new(
@@ -484,6 +485,7 @@ anovaRMResults <- R6::R6Class(
                         "plotSepLines",
                         "plotSepPlots",
                         "rm",
+                        "rmCells",
                         "plotError",
                         "ciWidth")))
             self$add(private$..rmTable)
