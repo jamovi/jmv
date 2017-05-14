@@ -3,6 +3,7 @@ const events = {
     update: function(ui) {
         calcModelTerms(ui, this);
         filterModelTerms(ui, this);
+        updatePostHocSupplier(ui, this);
     },
 
     onChange_factors: function(ui) {
