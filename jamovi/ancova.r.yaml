@@ -83,8 +83,8 @@ items:
           title: Q-Q Plot
           visible: (qq)
           type: Image
-          width: 300
-          height: 300
+          width: 450
+          height: 400
           renderFun: .qqPlot
           requiresData: true
           clearWith:

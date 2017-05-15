@@ -192,7 +192,7 @@ corrMatrixClass <- R6::R6Class(
 
         results
     },
-    .plot=function(image, theme, ...) {
+    .plot=function(image, ggtheme, ...) {
 
         columns <- unlist(self$options$get('vars'))
 
@@ -235,7 +235,7 @@ corrMatrixClass <- R6::R6Class(
             columnLabels=columns,
             lower=lower,
             upper=upper,
-            diag=diag) + theme +
+            diag=diag) + ggtheme +
             theme(axis.text = element_text(size = 9))
 
         print(p)

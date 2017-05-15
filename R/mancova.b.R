@@ -229,17 +229,17 @@ mancovaClass <- R6::R6Class(
             image$setState(df)
 
         },
-        .qqPlot = function(image, theme, ...) {
+        .qqPlot = function(image, ggtheme, theme, ...) {
 
             if (is.null(image$state))
                 return(FALSE)
 
             print(ggplot(data=image$state, aes(x=chi, y=dist)) +
-                      geom_point(aes(x=chi,y=dist), colour='#333333') +
-                      geom_abline(slope=1, intercept=0, colour='#333333') +
+                      geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
+                      geom_point(aes(x=chi,y=dist), size=2, colour=theme$color[1]) +
                       xlab("Chi-Square Quantiles") +
                       ylab("Squared Mahalanobis Distance") +
-                      theme)
+                      ggtheme)
 
             TRUE
         },

@@ -293,7 +293,7 @@ pcaClass <- R6::R6Class(
             image$setState(df)
 
         },
-        .screePlot = function(image, theme, ...) {
+        .screePlot = function(image, ggtheme, theme, ...) {
 
             if (is.null(image$state))
                 return(FALSE)
@@ -318,18 +318,19 @@ pcaClass <- R6::R6Class(
                 type <- 'Factor'
 
             p <- ggplot(data=data, aes(x=comp, y=eigen, group=type, linetype=factor(type))) +
-                        geom_line(size=.8) +
-                        geom_point(aes(fill=factor(type)), shape=21, size=3) +
-                        # scale_fill_manual(values=c("black", "white")) +
+                        geom_line(size=.8, colour=theme$color[1]) +
+                        geom_point(aes(fill=factor(type), colour=factor(type)), shape=21, size=3) +
+                        scale_fill_manual(values=c(theme$color[1], theme$fill[1])) +
+                        scale_color_manual(values=c(theme$color[1], theme$color[1])) +
                         xlab(type) +
                         ylab("Eigenvalue") +
-                        theme + themeSpec
+                        ggtheme + themeSpec
 
             if (nFactorMethod != "parallel")
                 p <- p + theme(legend.position="none")
 
             if (nFactorMethod == "eigen")
-                p <- p + geom_hline(aes(yintercept=self$options$minEigen), linetype = 2)
+                p <- p + geom_hline(aes(yintercept=self$options$minEigen), linetype = 2, colour=theme$color[1])
 
             print(p)
 
