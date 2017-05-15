@@ -77,7 +77,7 @@ pcaClass <- R6::R6Class(
 
             modelFit <- NULL
             if (private$analysis == 'efa')
-                modelFit <- list('tli'=r$TLI, 'bic'=r$BIC, 'rmsea'=r$RMSEA[1], 'chi'=r$STATISTIC, 'df'=r$dof, 'p'=r$PVAL)
+                modelFit <- list('tli'=r$TLI, 'bic'=r$BIC, 'rmsea'=r$RMSEA, 'chi'=r$STATISTIC, 'df'=r$dof, 'p'=r$PVAL)
 
             return(list(loadings=loadings, uniqueness=uniqueness, factorCor=factorCor, SS=SS, nFactors=nFactors,
                         modelFit=modelFit, kmo=kmo, bartlett=bartlett))
@@ -244,7 +244,9 @@ pcaClass <- R6::R6Class(
                 row <- list()
                 row['tli'] <- r$tli
                 row['bic'] <- r$bic
-                row['rmsea'] <- r$rmsea
+                row['rmsea'] <- r$rmsea[1]
+                row['rmseaLower'] <- r$rmsea[2]
+                row['rmseaUpper'] <- r$rmsea[3]
                 row['chi'] <- r$chi
                 row['df'] <- r$df
                 row['p'] <- r$p
