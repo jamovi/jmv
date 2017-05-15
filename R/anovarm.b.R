@@ -607,7 +607,7 @@ anovaRMClass <- R6::R6Class(
                 }
             }
         },
-        .descPlot=function(image, theme, ...) {
+        .descPlot=function(image, ggtheme, theme, ...) {
 
             if (is.null(image$state))
                 return(FALSE)
@@ -638,7 +638,7 @@ anovaRMClass <- R6::R6Class(
                     geom_line(size=.8, position=dodge) +
                     labs(x=groupName, y="", colour=paste(linesName, errorType)) +
                     scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
-                    theme
+                    ggtheme
 
                 if (self$options$plotError != 'none')
                     p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, width=.1, group=lines), size=.8, position=dodge)
@@ -651,14 +651,14 @@ anovaRMClass <- R6::R6Class(
 
                 p <- ggplot(data=image$state$data) +
                     labs(x=groupName, y="", colour=paste("", errorType)) +
-                    scale_colour_manual(name=paste("", errorType), values=c(colour='#333333'), labels='') +
+                    scale_colour_manual(name=paste("", errorType), values=c(colour=theme$color[1]), labels='') +
                     scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
-                    theme
+                    ggtheme
 
                 if (self$options$plotError != 'none')
                     p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, colour='colour', width=.1), size=.8)
 
-                p <- p + geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill='white', size=3)
+                p <- p + geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill=theme$fill[1], size=3)
 
                 print(p)
             }

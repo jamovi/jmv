@@ -282,8 +282,8 @@ ancovaResults <- R6::R6Class(
                             name="qq",
                             title="Q-Q Plot",
                             visible="(qq)",
-                            width=300,
-                            height=300,
+                            width=450,
+                            height=400,
                             renderFun=".qqPlot",
                             requiresData=TRUE,
                             clearWith=list(

@@ -84,17 +84,17 @@ anovaRMNPClass <- R6::R6Class(
         image$setState(plotData)
 
     },
-    .plot=function(image, theme, ...) {
+    .plot=function(image, ggtheme, theme, ...) {
 
         if (is.null(image$state))
             return(FALSE)
 
-        p <- ggplot(data=image$state) + labs(x="Measure", y="Value") + theme
+        p <- ggplot(data=image$state) + labs(x="Measure", y="Value") + ggtheme
 
         if (self$options$plotType == "means")
-            p <- p + geom_point(aes(x=group, y=mean), shape=21, fill='white', size=3)
+            p <- p + geom_point(aes(x=group, y=mean), shape=21, color=theme$color[1], fill=theme$fill[1], size=3)
         else
-            p <- p + geom_point(aes(x=group, y=median), shape=21, fill='white', size=3)
+            p <- p + geom_point(aes(x=group, y=median), shape=21, color=theme$color[1], fill=theme$fill[1], size=3)
 
         print(p)
 

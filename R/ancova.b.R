@@ -718,7 +718,7 @@ ancovaClass <- R6::R6Class(
                 }
             }
         },
-        .descPlot=function(image, theme, ...) {
+        .descPlot=function(image, ggtheme, theme, ...) {
 
             if (is.null(image$state))
                 return(FALSE)
@@ -749,7 +749,7 @@ ancovaClass <- R6::R6Class(
                     geom_line(size=.8, position=dodge) +
                     labs(x=groupName, y=depName, colour=paste(linesName, errorType)) +
                     scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
-                    theme
+                    ggtheme
 
                 if (self$options$plotError != 'none')
                     p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, width=.1, group=lines), size=.8, position=dodge)
@@ -762,21 +762,21 @@ ancovaClass <- R6::R6Class(
 
                 p <- ggplot(data=image$state$data) +
                     labs(x=groupName, y=depName, colour=paste("", errorType)) +
-                    scale_colour_manual(name=paste("", errorType), values=c(colour='#333333'), labels='') +
+                    scale_colour_manual(name=paste("", errorType), values=c(colour=theme$color[1]), labels='') +
                     scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
-                    theme
+                    ggtheme
 
                 if (self$options$plotError != 'none')
                     p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, colour='colour', width=.1), size=.8)
 
-                p <- p + geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill='white', size=3)
+                p <- p + geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill=theme$fill[1], size=3)
 
                 print(p)
             }
 
             TRUE
         },
-        .qqPlot=function(image, theme, ...) {
+        .qqPlot=function(image, ggtheme, theme, ...) {
 
             dep <- self$options$dep
             factors <- self$options$factors
@@ -795,11 +795,11 @@ ancovaClass <- R6::R6Class(
             df <- as.data.frame(qqnorm(residuals, plot.it=FALSE))
 
             print(ggplot(data=df, aes(y=y, x=x)) +
-                geom_point(aes(x=x,y=y), colour='#333333') +
-                geom_abline(slope=1, intercept=0, colour='#333333') +
+                geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
+                geom_point(aes(x=x,y=y), size=2, colour=theme$color[1]) +
                 xlab("Theoretical Quantiles") +
                 ylab("Standardized Residuals") +
-                theme)
+                ggtheme)
 
             TRUE
         },

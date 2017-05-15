@@ -112,7 +112,7 @@ descriptivesClass <- R6::R6Class(
                 }
             }
         },
-        .plotFreq=function(image, theme, ...) {
+        .plotFreq=function(image, ggtheme, theme, ...) {
 
             if (is.null(image$state))
                 return(FALSE)
@@ -132,9 +132,9 @@ descriptivesClass <- R6::R6Class(
             }
 
             plot <- ggplot(data=data, aes(x=x, y=y)) +
-                geom_bar(stat="identity") +
+                geom_bar(stat="identity", color=theme$color[2], fill=theme$fill[2]) +
                 labs(list(x=NULL, y=ylab)) +
-                theme +
+                ggtheme +
                 theme(axis.text.y=axis.text.y,
                       axis.ticks.y=axis.ticks.y)
 

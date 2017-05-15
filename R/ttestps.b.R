@@ -315,7 +315,7 @@ ttestPSClass <- R6::R6Class(
                 descTable$addRow(row2Key)
             }
         },
-        .plot=function(image, theme, ...) {
+        .plot=function(image, ggtheme, theme, ...) {
 
             if (is.null(image$state))
                 return(FALSE)
@@ -326,11 +326,11 @@ ttestPSClass <- R6::R6Class(
             pd <- position_dodge(0.2)
 
             plot <- ggplot(data=image$state, aes(x=group, y=stat, shape=type)) +
-                geom_errorbar(aes(x=group, ymin=stat-cie, ymax=stat+cie, shape=type, width=.2), size=.8, colour='#333333', position=pd) +
-                geom_point(aes(x=group, y=stat, colour=type, shape=type), fill='white', size=3, colour='#333333', position=pd) +
+                geom_errorbar(aes(x=group, ymin=stat-cie, ymax=stat+cie, shape=type, width=.2), size=.8, colour=theme$color[1], position=pd) +
+                geom_point(aes(x=group, y=stat, colour=type, shape=type), fill=theme$fill[1], size=3, colour=theme$color[1], position=pd) +
                 labs(x=groupName, y=NULL) +
                 scale_shape_manual(name='', values=c(mean=21, median=22), labels=c(mean=paste0('Mean (', ciw, '% CI)'), median='Median')) +
-                theme + theme(plot.title = ggplot2::element_text(margin=ggplot2::margin(b = 5.5 * 1.2)),
+                ggtheme + theme(plot.title = ggplot2::element_text(margin=ggplot2::margin(b = 5.5 * 1.2)),
                               plot.margin = ggplot2::margin(5.5, 5.5, 5.5, 5.5))
 
             suppressWarnings(print(plot))
