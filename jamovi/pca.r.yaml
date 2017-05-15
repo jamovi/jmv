@@ -91,11 +91,19 @@ items:
             - nFactors
             - rotation
           columns:
-            - name: tli
-              title: TLI
-              type: number
             - name: rmsea
               title: RMSEA
+              type: number
+            - name: rmseaLower
+              title: 'Lower'
+              type: number
+              superTitle: 'RMSEA 90% CI'
+            - name: rmseaUpper
+              title: 'Upper'
+              type: number
+              superTitle: 'RMSEA 90% CI'
+            - name: tli
+              title: TLI
               type: number
             - name: bic
               title: BIC

@@ -233,8 +233,10 @@ pcaResults <- R6::R6Class(
                                 "nFactors",
                                 "rotation"),
                             columns=list(
-                                list(`name`="tli", `title`="TLI", `type`="number"),
                                 list(`name`="rmsea", `title`="RMSEA", `type`="number"),
+                                list(`name`="rmseaLower", `title`="Lower", `type`="number", `superTitle`="RMSEA 90% CI"),
+                                list(`name`="rmseaUpper", `title`="Upper", `type`="number", `superTitle`="RMSEA 90% CI"),
+                                list(`name`="tli", `title`="TLI", `type`="number"),
                                 list(`name`="bic", `title`="BIC", `type`="number"),
                                 list(`name`="chi", `title`="\u03C7\u00B2", `type`="number", `superTitle`="Model Test"),
                                 list(`name`="df", `title`="df", `type`="integer", `superTitle`="Model Test"),
