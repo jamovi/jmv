@@ -179,6 +179,18 @@ contTablesPairedBase <- R6::R6Class(
 #' @param pcRow \code{TRUE} or \code{FALSE} (default), provide row percentages 
 #' @param pcCol \code{TRUE} or \code{FALSE} (default), provide column 
 #'   percentages 
+#' @return A results object containing:
+#' \tabular{llllll}{
+#'   \code{results$freqs} \tab \tab \tab \tab \tab a proportions table \cr
+#'   \code{results$test} \tab \tab \tab \tab \tab a table of test results \cr
+#' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$freqs$asDF}
+#'
+#' \code{as.data.frame(results$freqs)}
+#'
 #' @export
 contTablesPaired <- function(
     data,

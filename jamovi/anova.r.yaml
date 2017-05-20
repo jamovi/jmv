@@ -1,0 +1,67 @@
+---
+name:  anova
+title: ANOVA
+jrs: '1.0'
+
+items:
+    - name: main
+      title: ANOVA
+      type: Table
+      description: a table of ANOVA results
+
+      columns: []
+
+    - name: assump
+      title: Assumption Checks
+      type: Group
+      items:
+        - name: homo
+          title: Test for Homogeneity of Variances (Levene's)
+          type: Table
+          description: a table of homogeneity tests
+          columns: []
+
+        - name: qq
+          title: Q-Q Plot
+          description: a q-q plot
+          type: Image
+
+    - name: contrasts
+      title: Contrasts
+      type: Array
+      description: an array of contrasts tables
+
+      template:
+        title: Contrasts - $key
+        type: Table
+        columns: []
+
+    - name: postHoc
+      title: Post Hoc Tests
+      type: Array
+      description: an array of post-hoc tables
+
+      template:
+        title: ""
+        type: Table
+        columns: []
+
+    - name: desc
+      title: Descriptives
+      type: Table
+      description: a table of descriptive statistics
+      columns: []
+
+    - name: descPlot
+      title: Descriptive Plot
+      type: Image
+      description: a descriptives plot
+
+    - name: descPlots
+      title: Descriptive Plots
+      type: Array
+      description: an array of descriptives plots
+      template:
+          title: $key
+          type: Image
+          renderFun: .descPlot

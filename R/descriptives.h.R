@@ -344,6 +344,19 @@ descriptivesBase <- R6::R6Class(
 #' @param pcEqGr \code{TRUE} or \code{FALSE} (default), provide quantiles 
 #' @param pcNEqGr an integer (default: 4) specifying the number of equal 
 #'   groups 
+#' @return A results object containing:
+#' \tabular{llllll}{
+#'   \code{results$descriptives} \tab \tab \tab \tab \tab a table of the descriptive statistics \cr
+#'   \code{results$frequencies} \tab \tab \tab \tab \tab an array of frequency tables \cr
+#'   \code{results$freqPlots} \tab \tab \tab \tab \tab an array of descriptive plots \cr
+#' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$descriptives$asDF}
+#'
+#' \code{as.data.frame(results$descriptives)}
+#'
 #' @export
 descriptives <- function(
     data,

@@ -7,6 +7,7 @@ items:
     - name: props
       title: Proportions
       type: Table
+      description: a table of the proportions
       rows: (levels(var))
       clearWith:
           - var
@@ -52,6 +53,7 @@ items:
     - name: tests
       title: χ² Goodness of Fit
       type: Table
+      description: a table of the test results
       rows: 1
       clearWith:
           - var

@@ -7,6 +7,7 @@ items:
     - name: freqs
       title: Contingency Tables
       type: Table
+      description: a table of proportions
       columns: [ ]
       clearWith:
         - rows
@@ -17,6 +18,7 @@ items:
     - name: chiSq
       title: χ² Tests
       type: Table
+      description: a table of χ² test results
 
       clearWith:
         - rows
@@ -100,6 +102,7 @@ items:
     - name: odds
       title: Log Odds Ratio
       type: Table
+      description: a table of odds ratio results
       visible: (logOdds)
 
       clearWith:
@@ -145,6 +148,7 @@ items:
     - name: nom
       title: Nominal
       type: Table
+      description: a table of the 'nominal' test results
       visible: (contCoef || phiCra)
 
       columns:
@@ -181,6 +185,7 @@ items:
     - name: gamma
       title: Gamma
       type: Table
+      description: a table of the gamma test results
       visible: (gamma)
 
       clearWith:
@@ -207,6 +212,7 @@ items:
     - name: taub
       title: Kendall's Tau-b
       type: Table
+      description: a table of the Kendall's tau-b test results
       visible: (taub)
 
       clearWith:

@@ -228,6 +228,11 @@ efaBase <- R6::R6Class(
 #'   (KMO) measure of sampling adequacy (MSA) results 
 #' @param bartlett \code{TRUE} or \code{FALSE} (default), show Bartlett's test 
 #'   of sphericity results 
+#' @return A results object containing:
+#' \tabular{llllll}{
+#'   \code{results$text} \tab \tab \tab \tab \tab a preformatted \cr
+#' }
+#'
 #' @export
 efa <- function(
     data,

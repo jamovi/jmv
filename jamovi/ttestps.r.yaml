@@ -7,6 +7,7 @@ items:
     - name: ttest
       title: Paired Samples T-Test
       type: Table
+      description: a table containing the t-test results
       rows: (pairs)
       clearWith:
           - miss
@@ -213,6 +214,7 @@ items:
     - name: norm
       title: Test of Normality (Shapiro-Wilk)
       type: Table
+      description: a table containing the normality test results
       visible: (norm)
       rows: (pairs)
       notes:
@@ -246,6 +248,7 @@ items:
     - name: desc
       title: Descriptives
       type: Table
+      description: a table containing the descriptives
       visible: (desc)
       clearWith:
           - miss
@@ -278,6 +281,7 @@ items:
 
     - name: plots
       title: Plots
+      description: an array of the descriptive plots
       visible: (plots)
       type: Array
       items: (pairs)

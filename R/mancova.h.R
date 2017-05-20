@@ -301,6 +301,21 @@ mancovaBase <- R6::R6Class(
 #'   test 
 #' @param qqPlot \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of 
 #'   multivariate normality 
+#' @return A results object containing:
+#' \tabular{llllll}{
+#'   \code{results$multivar} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$univar} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$assump$boxM} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$assump$shapiro} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$assump$qqPlot} \tab \tab \tab \tab \tab an image \cr
+#' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$multivar$asDF}
+#'
+#' \code{as.data.frame(results$multivar)}
+#'
 #' @export
 mancova <- function(
     data,

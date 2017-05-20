@@ -129,6 +129,17 @@ logLinearBase <- R6::R6Class(
 #' @param est Estimates 
 #' @param ci Confidence Intervals 
 #' @param ciWidth .
+#' @return A results object containing:
+#' \tabular{llllll}{
+#'   \code{results$table} \tab \tab \tab \tab \tab a table \cr
+#' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$table$asDF}
+#'
+#' \code{as.data.frame(results$table)}
+#'
 #' @export
 logLinear <- function(
     data,

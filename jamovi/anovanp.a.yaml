@@ -15,6 +15,7 @@ completeWhenFilled: true
 description:
     main: Kruskal-Wallis
     R:
+        dontrun: false
         usage: |
             data('ToothGrowth')
 

@@ -7,6 +7,7 @@ items:
     - name: matrix
       title: Correlation Matrix
       type: Table
+      description: a correlation matrix table
       rows: (vars)
       clearWith:
           - ciWidth
@@ -120,8 +121,9 @@ items:
 
     - name: plot
       title: Plot
-      visible: (plots)
       type: Image
+      description: a correlation matrix plot
+      visible: (plots)
       width: 500
       height: 500
       renderFun: .plot

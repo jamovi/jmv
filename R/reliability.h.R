@@ -247,6 +247,19 @@ reliabilityBase <- R6::R6Class(
 #'   correlations 
 #' @param revItems a vector containing strings naming the varibales that are 
 #'   reverse scaled 
+#' @return A results object containing:
+#' \tabular{llllll}{
+#'   \code{results$scale} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$items} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$corPlot} \tab \tab \tab \tab \tab an image \cr
+#' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$scale$asDF}
+#'
+#' \code{as.data.frame(results$scale)}
+#'
 #' @export
 reliability <- function(
     data,

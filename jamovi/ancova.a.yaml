@@ -8,6 +8,7 @@ jas: '1.1'
 description:
     main: Analysis of Covariance
     R:
+        dontrun: false
         usage: |
             data('ToothGrowth')
 

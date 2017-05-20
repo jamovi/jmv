@@ -7,6 +7,7 @@ items:
     - name: freqs
       title: Contingency Tables
       type: Table
+      description: a proportions table
       columns: [ ]
       clearWith:
         - rows
@@ -16,6 +17,7 @@ items:
     - name: test
       title: McNemar Test
       type: Table
+      description: a table of test results
       clearWith:
         - rows
         - cols

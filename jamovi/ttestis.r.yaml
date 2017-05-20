@@ -6,6 +6,7 @@ jrs: '1.0'
 items:
     - name: ttest
       title: Independent Samples T-Test
+      description: a table containing the t-test results
       type: Table
       rows: (vars)
       clearWith:
@@ -262,6 +263,7 @@ items:
         - name: norm
           title: Test of Normality (Shapiro-Wilk)
           type: Table
+          description: a table containing the normality tests
           visible: (norm)
           rows: (vars)
           clearWith:
@@ -288,6 +290,7 @@ items:
         - name: eqv
           title: Test of Equality of Variances (Levene's)
           type: Table
+          description: a table containing the equality of variances tests
           visible: (eqv)
           rows: (vars)
           clearWith:
@@ -316,6 +319,7 @@ items:
     - name: desc
       title: Group Descriptives
       type: Table
+      description: a table containing the group descriptives
       visible: (desc)
       rows: (vars)
       clearWith:
@@ -378,8 +382,9 @@ items:
 
     - name: plots
       title: Plots
-      visible: (plots)
       type: Array
+      description: an array of the descriptive plots
+      visible: (plots)
       items: (vars)
       template:
           title: $key

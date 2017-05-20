@@ -329,6 +329,20 @@ ttestPSBase <- R6::R6Class(
 #'   missing values; \code{'perAnalysis'} excludes missing values for individual 
 #'   dependent variables, \code{'listwise'} excludes a row from all analyses if 
 #'   one of its entries is missing. 
+#' @return A results object containing:
+#' \tabular{llllll}{
+#'   \code{results$ttest} \tab \tab \tab \tab \tab a table containing the t-test results \cr
+#'   \code{results$norm} \tab \tab \tab \tab \tab a table containing the normality test results \cr
+#'   \code{results$desc} \tab \tab \tab \tab \tab a table containing the descriptives \cr
+#'   \code{results$plots} \tab \tab \tab \tab \tab an array of the descriptive plots \cr
+#' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$ttest$asDF}
+#'
+#' \code{as.data.frame(results$ttest)}
+#'
 #' @export
 ttestPS <- function(
     data,

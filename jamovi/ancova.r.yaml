@@ -7,6 +7,7 @@ items:
     - name: main
       title: ANCOVA
       type: Table
+      description: a table of ANCOVA results
       clearWith:
         - dep
         - modelTerms
@@ -63,6 +64,7 @@ items:
         - name: homo
           title: Test for Homogeneity of Variances (Levene's)
           type: Table
+          description: a table of homogeneity tests
           visible: (homo)
           rows: 1
           columns:
@@ -83,6 +85,7 @@ items:
           title: Q-Q Plot
           visible: (qq)
           type: Image
+          description: a q-q plot
           width: 450
           height: 400
           renderFun: .qqPlot
@@ -94,6 +97,7 @@ items:
     - name: contrasts
       title: Contrasts
       type: Array
+      description: an array of contrasts tables
       visible: (contrasts)
       clearWith:
         - dep
@@ -128,6 +132,7 @@ items:
     - name: postHoc
       title: Post Hoc Tests
       type: Array
+      description: an array of post-hoc tables
       items: (postHoc)
       clearWith:
         - dep
@@ -144,6 +149,7 @@ items:
     - name: desc
       title: Descriptives
       type: Table
+      description: a table of descriptives
       visible: (descStats)
       clearWith:
         - dep
@@ -167,6 +173,7 @@ items:
       title: Descriptive Plot
       visible: (plotHAxis)
       type: Image
+      description: a descriptives plot
       width: 500
       height: 300
       renderFun: .descPlot
@@ -179,8 +186,9 @@ items:
 
     - name: descPlots
       title: Descriptive Plots
-      visible: (plotSepPlots)
       type: Array
+      description: an array of descriptives plots
+      visible: (plotSepPlots)
       template:
           title: $key
           type: Image

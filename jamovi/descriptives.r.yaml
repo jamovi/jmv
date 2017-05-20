@@ -6,6 +6,7 @@ jrs: '1.0'
 items:
     - name: descriptives
       title: Descriptives
+      description: a table of the descriptive statistics
       type: Table
       rows: (vars)
       swapRowsColumns: true
@@ -103,6 +104,7 @@ items:
     - name: frequencies
       title: Frequencies
       type: Array
+      description: an array of frequency tables
       visible: (freq)
 
       items: (vars)
@@ -133,17 +135,10 @@ items:
               title: "Cumulative %"
               type: number
 
-#    - name: corrMatrix
-#      title: Correlations
-#      type: Image
-#      renderInitFun: .plotCorr
-#      renderFun: .plotCorr
-#      width: 400
-#      height: 300
-#
     - name: freqPlots
       title: Plots
       type: Array
+      description: an array of descriptive plots
       visible: (plots)
       items: (vars)
 

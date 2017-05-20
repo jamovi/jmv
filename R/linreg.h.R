@@ -489,6 +489,26 @@ linRegBase <- R6::R6Class(
 #'   statistics for the Cook's distance 
 #' @param modelSelected an integer defining the model for which the model 
 #'   specific output needs to be calculated (defaults to most complex model) 
+#' @return A results object containing:
+#' \tabular{llllll}{
+#'   \code{results$modelFit} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$modelComp} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$coef} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$coefPlot} \tab \tab \tab \tab \tab an image \cr
+#'   \code{results$dataSummary$desc} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$dataSummary$cooks} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$assump$durbin} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$assump$collin} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$assump$qqPlot} \tab \tab \tab \tab \tab an image \cr
+#'   \code{results$assump$resPlots} \tab \tab \tab \tab \tab an array \cr
+#' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$modelFit$asDF}
+#'
+#' \code{as.data.frame(results$modelFit)}
+#'
 #' @export
 linReg <- function(
     data,

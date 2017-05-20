@@ -13,6 +13,7 @@ jas: '1.1'
 description:
     main: Friedman
     R:
+        dontrun: false
         usage: |
             data('bugs', package = 'jmv')
 

@@ -147,7 +147,7 @@ propTest2Base <- R6::R6Class(
 #' #    x    1            8       23         0.348    0.210
 #' #         2           15       23         0.652    0.210
 #' #  -------------------------------------------------------
-#' #    Note. Hₐ is proportion ≠ 0.5
+#' #    Note. Ha is proportion != 0.5
 #' #
 #' }
 #' @param data the data as a data frame
@@ -162,6 +162,17 @@ propTest2Base <- R6::R6Class(
 #'   intervals 
 #' @param ciWidth a number between 50 and 99.9 (default: 95), the confidence 
 #'   interval width 
+#' @return A results object containing:
+#' \tabular{llllll}{
+#'   \code{results$table} \tab \tab \tab \tab \tab a table of the proportions and test results \cr
+#' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$table$asDF}
+#'
+#' \code{as.data.frame(results$table)}
+#'
 #' @export
 propTest2 <- function(
     data,

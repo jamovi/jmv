@@ -7,6 +7,7 @@ items:
     - name: table
       title: Kruskal-Wallis
       type: Table
+      description: a table of the test results
       rows: (deps)
       clearWith:
         - group
@@ -33,6 +34,7 @@ items:
     - name: comparisons
       title: Dwass-Steel-Critchlow-Fligner pairwise comparisons
       type: Array
+      description: an array of pairwise comparison tables
       items: (deps)
       visible: (pairs)
       clearWith:

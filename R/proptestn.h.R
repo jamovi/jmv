@@ -174,6 +174,18 @@ propTestNBase <- R6::R6Class(
 #' @param expected \code{TRUE} or \code{FALSE} (default), whether expected 
 #'   counts should be displayed 
 #' @param ratio a vector of numbers: the expected proportions 
+#' @return A results object containing:
+#' \tabular{llllll}{
+#'   \code{results$props} \tab \tab \tab \tab \tab a table of the proportions \cr
+#'   \code{results$tests} \tab \tab \tab \tab \tab a table of the test results \cr
+#' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$props$asDF}
+#'
+#' \code{as.data.frame(results$props)}
+#'
 #' @export
 propTestN <- function(
     data,

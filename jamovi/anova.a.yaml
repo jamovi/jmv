@@ -8,6 +8,7 @@ jas: '1.1'
 description:
     main: Analysis of Variance
     R:
+        dontrun: false
         usage: |
             data('ToothGrowth')
 

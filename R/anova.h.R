@@ -203,11 +203,92 @@ anovaOptions <- R6::R6Class(
 #' @importFrom R6 R6Class
 anovaResults <- R6::R6Class(
     inherit = jmvcore::Group,
-    active = list(),
-    private = list(),
+    active = list(
+        main = function() private$..main,
+        assump = function() private$..assump,
+        contrasts = function() private$..contrasts,
+        postHoc = function() private$..postHoc,
+        desc = function() private$..desc,
+        descPlot = function() private$..descPlot,
+        descPlots = function() private$..descPlots),
+    private = list(
+        ..main = NA,
+        ..assump = NA,
+        ..contrasts = NA,
+        ..postHoc = NA,
+        ..desc = NA,
+        ..descPlot = NA,
+        ..descPlots = NA),
     public=list(
         initialize=function(options) {
-            super$initialize(options=options, name="", title="ANOVA")}))
+            super$initialize(options=options, name="", title="ANOVA")
+            private$..main <- jmvcore::Table$new(
+                options=options,
+                name="main",
+                title="ANOVA",
+                columns=list())
+            private$..assump <- R6::R6Class(
+                inherit = jmvcore::Group,
+                active = list(
+                    homo = function() private$..homo,
+                    qq = function() private$..qq),
+                private = list(
+                    ..homo = NA,
+                    ..qq = NA),
+                public=list(
+                    initialize=function(options) {
+                        super$initialize(options=options, name="assump", title="Assumption Checks")
+                        private$..homo <- jmvcore::Table$new(
+                            options=options,
+                            name="homo",
+                            title="Test for Homogeneity of Variances (Levene's)",
+                            columns=list())
+                        private$..qq <- jmvcore::Image$new(
+                            options=options,
+                            name="qq",
+                            title="Q-Q Plot")
+                        self$add(private$..homo)
+                        self$add(private$..qq)}))$new(options=options)
+            private$..contrasts <- jmvcore::Array$new(
+                options=options,
+                name="contrasts",
+                title="Contrasts",
+                template=jmvcore::Table$new(
+                    options=options,
+                    title="Contrasts - $key",
+                    columns=list()))
+            private$..postHoc <- jmvcore::Array$new(
+                options=options,
+                name="postHoc",
+                title="Post Hoc Tests",
+                template=jmvcore::Table$new(
+                    options=options,
+                    title="",
+                    columns=list()))
+            private$..desc <- jmvcore::Table$new(
+                options=options,
+                name="desc",
+                title="Descriptives",
+                columns=list())
+            private$..descPlot <- jmvcore::Image$new(
+                options=options,
+                name="descPlot",
+                title="Descriptive Plot")
+            private$..descPlots <- jmvcore::Array$new(
+                options=options,
+                name="descPlots",
+                title="Descriptive Plots",
+                template=jmvcore::Image$new(
+                    options=options,
+                    title="$key",
+                    renderFun=".descPlot"))
+            self$add(private$..main)
+            self$add(private$..assump)
+            self$add(private$..contrasts)
+            self$add(private$..postHoc)
+            self$add(private$..desc)
+            self$add(private$..descPlot)
+            self$add(private$..descPlots)}))
 
 #' @importFrom jmvcore Analysis
 #' @importFrom R6 R6Class
@@ -235,7 +316,6 @@ anovaBase <- R6::R6Class(
 #' Analysis of Variance
 #'
 #' @examples
-#' \dontrun{
 #' data('ToothGrowth')
 #' 
 #' anova(ToothGrowth, dep = 'len', factors = c('dose', 'supp'))
@@ -253,7 +333,7 @@ anovaBase <- R6::R6Class(
 #' #    Residuals               712    54           13.2
 #' #  -----------------------------------------------------------------------
 #' #
-#' }
+#' 
 #' @param data the data as a data frame
 #' @param dep a string naming the dependent variable from \code{data}, 
 #'   variable must be numeric 
@@ -290,6 +370,24 @@ anovaBase <- R6::R6Class(
 #'   plots, respectively 
 #' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the 
 #'   confidence interval width 
+#' @return A results object containing:
+#' \tabular{llllll}{
+#'   \code{results$main} \tab \tab \tab \tab \tab a table of ANOVA results \cr
+#'   \code{results$assump$homo} \tab \tab \tab \tab \tab a table of homogeneity tests \cr
+#'   \code{results$assump$qq} \tab \tab \tab \tab \tab a q-q plot \cr
+#'   \code{results$contrasts} \tab \tab \tab \tab \tab an array of contrasts tables \cr
+#'   \code{results$postHoc} \tab \tab \tab \tab \tab an array of post-hoc tables \cr
+#'   \code{results$desc} \tab \tab \tab \tab \tab a table of descriptive statistics \cr
+#'   \code{results$descPlot} \tab \tab \tab \tab \tab a descriptives plot \cr
+#'   \code{results$descPlots} \tab \tab \tab \tab \tab an array of descriptives plots \cr
+#' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$main$asDF}
+#'
+#' \code{as.data.frame(results$main)}
+#'
 #' @export
 anova <- function(
     data,

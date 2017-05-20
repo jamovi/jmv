@@ -7,6 +7,7 @@ items:
     - name: ttest
       title: One Sample T-Test
       type: Table
+      description: a table containing the t-test results
       rows: (vars)
       clearWith:
         - hypothesis
@@ -186,6 +187,7 @@ items:
     - name: normality
       title: Test of Normality (Shapiro-Wilk)
       type: Table
+      description: a table containing the normality test results
       visible: (norm)
       rows: (vars)
       notes:
@@ -210,6 +212,7 @@ items:
     - name: descriptives
       title: Descriptives
       type: Table
+      description: a table containing the descriptives
       visible: (desc)
       rows: (vars)
       clearWith:
@@ -243,6 +246,7 @@ items:
 
     - name: plots
       title: Plots
+      description: an image of the descriptive plots
       visible: (plots)
       type: Image
       renderFun: .plot
