@@ -1,0 +1,264 @@
+title: Confirmatory Factor Analysis
+name: cfa
+jus: '2.0'
+stage: 0
+events:
+  update: './cfa.events::update'
+children:
+  - type: VariableSupplier
+    persistentItems: true
+    stretchFactor: 1
+    suggested:
+      - continuous
+      - ordinal
+    permitted:
+      - continuous
+      - nominal
+      - ordinal
+    children:
+      - type: TargetLayoutBox
+        label: Factors
+        children:
+          - type: ListBox
+            name: factors
+            height: large
+            addButton: Add New Factor
+            selectable: false
+            events:
+                listItemAdded: './cfa.events::onEvent_test_listItemsAdded'
+                listItemRemoved: './cfa.events::onEvent_test_listItemsChanged'
+            templateName: linreg-block-template
+            template:
+              type: LayoutBox
+              margin: normal
+              children:
+                - type: TextBox
+                  events:
+                      change: './cfa.events::onEvent_factorNameChange'
+                  valueKey:
+                    - label
+                  borderless: true
+                  name: blockName
+                  stretchFactor: 1
+                  margin: normal
+                - type: VariablesListBox
+                  events:
+                      listItemAdded: './cfa.events::onEvent_test_listItemsChanged'
+                      listItemRemoved: './cfa.events::onEvent_test_listItemsChanged'
+                  valueKey:
+                    - vars
+                  name: blockList
+                  isTarget: true
+                  height: auto
+                  ghostText: drag variables here
+  - type: CollapseBox
+    label: Residual Covariances
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: VariableSupplier
+        name: resCovSupplier
+        persistentItems: true
+        stretchFactor: 1
+        events:
+          change: './cfa.events::onChange_resCovSupplier'
+        children:
+          - type: TargetLayoutBox
+            label: Residual Covariances
+            children:
+              - type: VariablesListBox
+                name: resCov
+                fullRowSelect: true
+                isTarget: true
+                columns:
+                  - name: i1
+                    stretchFactor: 1
+                    template:
+                      type: VariableLabel
+                  - name: i2
+                    stretchFactor: 1
+                    template:
+                      type: VariableLabel
+  - type: CollapseBox
+    label: Options
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        cell:
+          column: 0
+          row: 0
+        children:
+          - type: Label
+            label: Missing Values Method
+            children:
+              - type: RadioButton
+                name: miss_fiml
+                optionName: miss
+                optionPart: fiml
+                label: Full information maximum likelihood
+              - type: RadioButton
+                name: miss_listwise
+                optionName: miss
+                optionPart: listwise
+                label: Exclude cases listwise
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        cell:
+          column: 1
+          row: 0
+        children:
+          - type: Label
+            label: Constraints
+            children:
+              - type: RadioButton
+                name: constrain_facVar
+                optionName: constrain
+                optionPart: facVar
+                label: Factor variances = 1
+              - type: RadioButton
+                name: constrain_facInd
+                optionName: constrain
+                optionPart: facInd
+                label: Scale factor = scale first indicator
+  - type: CollapseBox
+    label: Estimates
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        cell:
+          column: 0
+          row: 0
+        children:
+          - type: Label
+            label: Results
+            children:
+              - type: CheckBox
+                name: factCovEst
+              - type: CheckBox
+                name: factInterceptEst
+              - type: CheckBox
+                name: resCovEst
+              - type: CheckBox
+                name: resInterceptEst
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        cell:
+          column: 1
+          row: 0
+        children:
+          - type: Label
+            label: Statistics
+            children:
+              - type: CheckBox
+                name: estTest
+              - type: CheckBox
+                name: ci
+                children:
+                  - type: TextBox
+                    name: ciWidth
+                    label: Interval
+                    suffix: '%'
+                    format: number
+                    inputPattern: '[0-9]+'
+                    enable: (ci)
+              - type: CheckBox
+                name: stdEst
+
+  - type: CollapseBox
+    label: Model Fit
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        cell:
+          column: 0
+          row: 0
+        children:
+          - type: LayoutBox
+            margin: large
+            children:
+              - type: Label
+                label: Test for Exact Fit
+                children:
+                  - type: CheckBox
+                    name: modelTest
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        cell:
+          column: 1
+          row: 0
+        children:
+          - type: LayoutBox
+            margin: large
+            children:
+              - type: Label
+                label: Fit Measures
+                children:
+                  - name: fitMeasures_cfi
+                    type: CheckBox
+                    optionName: fitMeasures
+                    optionPart: cfi
+                  - name: fitMeasures_tli
+                    type: CheckBox
+                    optionName: fitMeasures
+                    optionPart: tli
+                  - name: fitMeasures_srmr
+                    type: CheckBox
+                    optionName: fitMeasures
+                    optionPart: srmr
+                  - name: fitMeasures_rmsea
+                    type: CheckBox
+                    optionName: fitMeasures
+                    optionPart: rmsea
+                  - name: fitMeasures_aic
+                    type: CheckBox
+                    optionName: fitMeasures
+                    optionPart: aic
+                  - name: fitMeasures_bic
+                    type: CheckBox
+                    optionName: fitMeasures
+                    optionPart: bic
+                name: fitMeasures
+  - type: CollapseBox
+    label: Additional Output
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        cell:
+          column: 0
+          row: 0
+        children:
+          - type: Label
+            label: Post-Hoc Model Performance
+            children:
+              - type: CheckBox
+                name: corRes
+                children:
+                  - type: TextBox
+                    name: hlCorRes
+                    format: number
+                    inputPattern: '[0-9]+'
+                    enable: (corRes)
+              - type: CheckBox
+                name: mi
+                children:
+                  - type: TextBox
+                    name: hlMI
+                    format: number
+                    inputPattern: '[0-9]+'
+                    enable: (mi)
+compilerMode: tame

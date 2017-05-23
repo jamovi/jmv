@@ -151,5 +151,13 @@ analyses:
     menuSubgroup: Data Reduction
     menuTitle: Exploratory Factor Analysis
     description: Exploratory Factor Analysis
+    hidden: false
+  - title: Confirmatory Factor Analysis
+    name: cfa
+    ns: jmv
+    menuGroup: Factor
+    menuSubgroup: Data Reduction
+    menuTitle: Confirmatory Factor Analysis
+    description: Confirmatory Factor Analysis
 
 ...

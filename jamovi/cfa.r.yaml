@@ -1,0 +1,430 @@
+---
+name:  cfa
+title: Confirmatory Factor Analysis
+jrs:   "1.1"
+
+items:
+    - name: factorLoadings
+      title: Factor Loadings
+      type: Table
+      description: a table containing the factor loadings
+      clearWith:
+        - factors
+        - resCov
+        - constrain
+        - miss
+
+      columns:
+        - name: factor
+          title: 'Factor'
+          type: text
+          combineBelow: true
+
+        - name: indicator
+          title: 'Indicator'
+          type: text
+
+        - name: est
+          title: 'Estimate'
+          type: number
+
+        - name: se
+          title: 'SE'
+          type: number
+
+        - name: lower
+          title: Lower
+          type: number
+          visible: (ci)
+
+        - name: upper
+          title: Upper
+          type: number
+          visible: (ci)
+
+        - name: z
+          title: 'Z'
+          type: number
+          visible: (estTest)
+
+        - name: p
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (estTest)
+
+        - name: stdEst
+          title: Stand. Estimate
+          type: number
+          visible: (stdEst)
+
+    - name: factorEst
+      title: Factor Estimates
+      type: Group
+      items:
+        - name: factorCov
+          title: Factor Covariances
+          type: Table
+          description: a table containing factor covariances estimates
+          visible: (factCovEst)
+          clearWith:
+            - factors
+            - resCov
+            - constrain
+            - miss
+
+          columns:
+            - name: factor1
+              title: ''
+              type: text
+              combineBelow: true
+
+            - name: factor2
+              title: ''
+              type: text
+
+            - name: est
+              title: 'Estimate'
+              type: number
+
+            - name: se
+              title: 'SE'
+              type: number
+
+            - name: lower
+              title: Lower
+              type: number
+              visible: (ci)
+
+            - name: upper
+              title: Upper
+              type: number
+              visible: (ci)
+
+            - name: z
+              title: 'Z'
+              type: number
+              visible: (estTest)
+
+            - name: p
+              title: p
+              type: number
+              format: zto,pvalue
+              visible: (estTest)
+
+            - name: stdEst
+              title: Stand. Estimate
+              type: number
+              visible: (stdEst)
+
+        - name: factorIntercept
+          title: Factor Intercepts
+          type: Table
+          description: a table containing factor intercept estimates
+          visible: (factInterceptEst)
+          clearWith:
+            - factors
+            - resCov
+            - constrain
+            - miss
+
+          columns:
+            - name: factor
+              title: ''
+              type: text
+              combineBelow: true
+
+            - name: est
+              title: 'Estimate'
+              type: number
+
+            - name: se
+              title: 'SE'
+              type: number
+
+            - name: lower
+              title: Lower
+              type: number
+              visible: (ci)
+
+            - name: upper
+              title: Upper
+              type: number
+              visible: (ci)
+
+            - name: z
+              title: 'Z'
+              type: number
+              visible: (estTest)
+
+            - name: p
+              title: p
+              type: number
+              format: zto,pvalue
+              visible: (estTest)
+
+            - name: stdEst
+              title: Stand. Estimate
+              type: number
+              visible: (stdEst)
+
+    - name: resEst
+      title: Residual Estimates
+      type: Group
+      items:
+        - name: resCov
+          title: Residual Covariances
+          type: Table
+          description: a table containing residual covariances estimates
+          visible: (resCovEst)
+          clearWith:
+            - factors
+            - resCov
+            - constrain
+            - miss
+
+          columns:
+            - name: var1
+              title: ''
+              type: text
+              combineBelow: true
+
+            - name: var2
+              title: ''
+              type: text
+
+            - name: est
+              title: 'Estimate'
+              type: number
+
+            - name: se
+              title: 'SE'
+              type: number
+
+            - name: lower
+              title: Lower
+              type: number
+              visible: (ci)
+
+            - name: upper
+              title: Upper
+              type: number
+              visible: (ci)
+
+            - name: z
+              title: 'Z'
+              type: number
+              visible: (estTest)
+
+            - name: p
+              title: p
+              type: number
+              format: zto,pvalue
+              visible: (estTest)
+
+            - name: stdEst
+              title: Stand. Estimate
+              type: number
+              visible: (stdEst)
+
+        - name: resIntercept
+          title: Residual Intercepts
+          type: Table
+          description: a table containing residual intercept estimates
+          visible: (resInterceptEst)
+          clearWith:
+            - factors
+            - resCov
+            - constrain
+            - miss
+
+          columns:
+            - name: var
+              title: ''
+              type: text
+              combineBelow: true
+
+            - name: est
+              title: 'Estimate'
+              type: number
+
+            - name: se
+              title: 'SE'
+              type: number
+
+            - name: lower
+              title: Lower
+              type: number
+              visible: (ci)
+
+            - name: upper
+              title: Upper
+              type: number
+              visible: (ci)
+
+            - name: z
+              title: 'Z'
+              type: number
+              visible: (estTest)
+
+            - name: p
+              title: p
+              type: number
+              format: zto,pvalue
+              visible: (estTest)
+
+            - name: stdEst
+              title: Stand. Estimate
+              type: number
+              visible: (stdEst)
+
+    - name: modelFit
+      title: Model Fit
+      type: Group
+      items:
+        - name: test
+          title: Test for Exact Fit
+          type: Table
+          description: a table containing the chi-square test for exact fit
+          rows: 1
+          visible: (modelTest)
+          clearWith:
+            - factors
+            - resCov
+            - constrain
+            - miss
+
+          columns:
+            - name: chi
+              title: χ²
+              type: number
+            - name: df
+              title: df
+              type: integer
+            - name: p
+              title: p
+              type: number
+              format: zto,pvalue
+
+        - name: fitMeasures
+          title: Fit Measures
+          type: Table
+          description: a table containing fit measures
+          rows: 1
+          visible: (fitMeasures:cfi || fitMeasures:tli || fitMeasures:aic || fitMeasures:bic || fitMeasures:srmr || fitMeasures:rmsea)
+          clearWith:
+            - factors
+            - resCov
+            - constrain
+            - miss
+
+          columns:
+            - name: cfi
+              title: 'CFI'
+              type: number
+              visible: (fitMeasures:cfi)
+            - name: tli
+              title: 'TLI'
+              type: number
+              visible: (fitMeasures:tli)
+            - name: srmr
+              title: 'SRMR'
+              type: number
+              visible: (fitMeasures:srmr)
+            - name: rmsea
+              title: 'RMSEA'
+              type: number
+              visible: (fitMeasures:rmsea)
+            - name: rmseaLower
+              title: 'Lower'
+              type: number
+              superTitle: 'RMSEA 90% CI'
+              visible: (fitMeasures:rmsea)
+            - name: rmseaUpper
+              title: 'Upper'
+              type: number
+              superTitle: 'RMSEA 90% CI'
+              visible: (fitMeasures:rmsea)
+            - name: aic
+              title: 'AIC'
+              type: number
+              visible: (fitMeasures:aic)
+            - name: bic
+              title: 'BIC'
+              type: number
+              visible: (fitMeasures:bic)
+
+    - name: modelPerformance
+      title: Post-Hoc Model Performance
+      type: Group
+      items:
+        - name: corRes
+          title: Residuals for Observed Correlation Matrix
+          type: Table
+          description: a table containing residuals for the observed correlation matrix
+          visible: (corRes)
+          clearWith:
+            - factors
+            - resCov
+            - constrain
+            - miss
+
+          columns:
+            - name: var
+              title: ''
+              type: 'text'
+              format: 'narrow'
+
+        - name: modIndices
+          title: Modification Indices
+          type: Group
+          items:
+
+            - name: factorLoadingsMod
+              title: Factor Loadings – Modification Indices
+              type: Table
+              description: a table containing modification indices for the factor loadings not included in the model
+              visible: (mi)
+              clearWith:
+                - factors
+                - resCov
+                - constrain
+                - miss
+              columns:
+                - name: var
+                  title: ''
+                  type: 'text'
+                  format: 'narrow'
+            - name: resCovMod
+              title: Residual Covariances – Modification Indices
+              type: Table
+              description: a table containing modification indices for the residual covariances not included in the model
+              visible: (mi)
+              clearWith:
+                - factors
+                - resCov
+                - constrain
+                - miss
+              columns:
+                - name: var
+                  title: ''
+                  type: 'text'
+                  format: 'narrow'
+
+    - name: pathDiagram
+      title: Path Diagram
+      type: Image
+      description: an image containing the model path diagram (not yet implemented)
+      width: 450
+      height: 600
+      renderFun: .pathDiagram
+      visible: false
+      clearWith:
+        - factors
+        - resCov
+        - constrain
+
+    - name:  modelSyntax
+      type:  Property
+      description: the lavaan syntax used to fit the model
+...
