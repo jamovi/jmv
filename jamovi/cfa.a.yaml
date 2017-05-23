@@ -1,0 +1,298 @@
+---
+name:  cfa
+title: Confirmatory Factor Analysis
+menuGroup: Factor
+version: '1.0.0'
+jas: '1.1'
+
+description:
+    main: Confirmatory Factor Analysis
+    R:
+        dontrun: false
+        usage: |
+            data <- lavaan::HolzingerSwineford1939
+
+            jmv::cfa(
+                data = data,
+                factors = list(
+                    list(label="Visual", vars=c("x1", "x2", "x3")),
+                    list(label="Textual", vars=c("x4", "x5", "x6")),
+                    list(label="Speed", vars=c("x7", "x8", "x9"))),
+                resCov = NULL)
+
+            # Confirmatory Factor Analysis
+            #
+            #  Factor Loadings
+            #  ─────────────────────────────────────────────────────────────────
+            #    Factor     Indicator    Estimate    SE        Z        p
+            #  ─────────────────────────────────────────────────────────────────
+            #    Visual     x1              0.900    0.0832    10.81    < .001
+            #               x2              0.498    0.0808     6.16    < .001
+            #               x3              0.656    0.0776     8.46    < .001
+            #    Textual    x4              0.990    0.0567    17.46    < .001
+            #               x5              1.102    0.0626    17.60    < .001
+            #               x6              0.917    0.0538    17.05    < .001
+            #    Speed      x7              0.619    0.0743     8.34    < .001
+            #               x8              0.731    0.0755     9.68    < .001
+            #               x9              0.670    0.0775     8.64    < .001
+            #  ─────────────────────────────────────────────────────────────────
+            #
+            #
+            # Factor Estimates
+            #
+            #  Factor Covariances
+            #  ──────────────────────────────────────────────────────────────
+            #                          Estimate    SE        Z       p
+            #  ──────────────────────────────────────────────────────────────
+            #    Visual     Visual      1.000 ᵃ
+            #               Textual     0.459      0.0635    7.22    < .001
+            #               Speed       0.471      0.0862    5.46    < .001
+            #    Textual    Textual     1.000 ᵃ
+            #               Speed       0.283      0.0715    3.96    < .001
+            #    Speed      Speed       1.000 ᵃ
+            #  ──────────────────────────────────────────────────────────────
+            #    ᵃ fixed parameter
+            #
+            #
+            # Model Fit
+            #
+            #  Test for Exact Fit
+            #  ────────────────────────
+            #    χ²      df    p
+            #  ────────────────────────
+            #    85.3    24    < .001
+            #  ────────────────────────
+            #
+            #
+            #
+            #  Fit Measures
+            #  ───────────────────────────────────────────────
+            #    CFI      TLI      RMSEA     Lower     Upper
+            #  ───────────────────────────────────────────────
+            #    0.931    0.896    0.0921    0.0714    0.114
+            #  ───────────────────────────────────────────────
+            #
+            #
+
+
+options:
+    - name: data
+      type: Data
+      description:
+          R: the data as a data frame
+
+    - name: factors
+      title: Factors
+      type: Array
+      default:
+        - label: Factor 1
+          vars: []
+      template:
+          type: Group
+          elements:
+            - name: label
+              type: String
+            - name: vars
+              type: Variables
+              suggested:
+                - continuous
+              permitted:
+                - continuous
+                - nominal
+                - ordinal
+      description:
+          R: >
+            a list containing named lists that define the `label` of
+            the factor and the `vars` that belong to that factor
+
+    - name: resCov
+      title: Residual Covariances
+      type: Pairs
+      description:
+          R: >
+            a list of lists specifying the residual covariances that
+            need to be estimated
+
+    - name: miss
+      title: Missing Values Method
+      type: List
+      options:
+        - listwise
+        - fiml
+      default: fiml
+      description:
+          R: >
+            `'listwise'` or `'fiml'`, how to handle missing
+            values; `'listwise'` excludes a row from all
+            analyses if one of its entries is missing,
+            `'fiml'` uses a full information maximum
+            likelihood method to estimate the model.
+
+    - name: constrain
+      title: Constraints
+      type: List
+      options:
+        - facVar
+        - facInd
+      default: facVar
+      description:
+          R: >
+            `'facVar'` or `'facInd'`, how to contrain the model;
+            `'facVar'` fixes the factor variances to one, `'facInd'`
+            fixes each factor to the scale of its first indicator.
+
+    - name: estTest
+      title: Test statistics
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide 'Z' and 'p' values
+            for the model estimates
+
+    - name: ci
+      title: Confidence interval
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a confidence interval
+            for the model estimates
+
+    - name: ciWidth
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width that is used as `'ci'`
+
+    - name: stdEst
+      title: Standardized estimate
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a standardized estimate
+            for the model estimates
+
+    - name: factCovEst
+      title: Factor covariances
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide estimates for the factor
+            (co)variances
+
+    - name: factInterceptEst
+      title: Factor intercepts
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide estimates for the factor
+            intercepts
+
+    - name: resCovEst
+      title: Residual covariances
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide estimates for the residual
+            (co)variances
+
+    - name: resInterceptEst
+      title: Residual intercepts
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide estimates for the residual
+            intercepts
+
+    - name: fitMeasures
+      title: Fit Measures
+      type: NMXList
+      options:
+          - name: cfi
+            title: CFI
+          - name: tli
+            title: TLI
+          - name: srmr
+            title: SRMR
+          - name: rmsea
+            title: RMSEA
+          - name: aic
+            title: AIC
+          - name: bic
+            title: BIC
+      default:
+          - cfi
+          - tli
+          - rmsea
+      description:
+          R: >
+            one or more of `'cfi'`, `'tli'`, `'srmr'`, `'rmsea'`, `'aic'`, or `'bic'`;
+            use CFI, TLI, SRMR, RMSEA + 90% confidence interval, adjusted AIC, and BIC
+            model fit measures, respectively
+
+    - name: modelTest
+      title: χ² test
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide a chi-square test for exact fit that
+            compares the model with the perfect fitting model
+
+    - name: pathDiagram
+      title: Path diagram
+      type: Bool
+      default: false
+      hidden: true
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a path diagram of the model (not yet implemented)
+
+    - name: corRes
+      title: Residuals observed correlation matrix
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the residuals for the observed
+            correlation matrix (i.e., the difference between the
+            expected correlation matrix and the observed correlation matrix)
+
+    - name: hlCorRes
+      title: Highlight values above
+      type: Number
+      default: 0.1
+      description:
+          R: >
+            a number (default: 0.1), highlight values in the `'corRes'` table
+            above this value
+
+    - name: mi
+      title: Modification indices
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide modification indices for the
+            parameters not included in the model
+
+    - name: hlMI
+      title: Highlight values above
+      type: Number
+      default: 3
+      description:
+          R: >
+            a number (default: 3), highlight values in the `'modIndices'` tables
+            above this value
+...
