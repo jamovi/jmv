@@ -42,6 +42,7 @@ children:
                   stretchFactor: 1
                   margin: normal
                 - type: VariablesListBox
+                  valueFilter: unique
                   events:
                       listItemAdded: './cfa.events::onEvent_test_listItemsChanged'
                       listItemRemoved: './cfa.events::onEvent_test_listItemsChanged'
