@@ -81,6 +81,8 @@ children:
         label: Normal Scaled Items
         persistentItems: false
         stretchFactor: 1
+        events:
+            change: './reliability.events::onChange_revItemsSupplier'
         children:
           - type: TargetLayoutBox
             label: Reverse Scaled Items
