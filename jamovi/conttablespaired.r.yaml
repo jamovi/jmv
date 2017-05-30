@@ -28,32 +28,77 @@ items:
           title: ''
           type: 'text'
           content: χ²
+          visible: (chiSq)
 
         - name: value[mcn]
           title: Value
+          visible: (chiSq)
 
         - name: df[mcn]
           title: df
           type: integer
+          visible: (chiSq)
 
         - name: p[mcn]
           title: p
           type: number
           format: zto,pvalue
+          visible: (chiSq)
 
         - name: name[cor]
           title: ''
           type: 'text'
           content: χ² continuity correction
+          visible: (chiSqCorr)
 
         - name: value[cor]
           title: Value
+          visible: (chiSqCorr)
 
         - name: df[cor]
           title: df
           type: integer
+          visible: (chiSqCorr)
 
         - name: p[cor]
           title: p
           type: number
           format: zto,pvalue
+          visible: (chiSqCorr)
+
+        - name: name[exa]
+          title: ''
+          type: 'text'
+          content: Log odds ratio exact
+          visible: (exact)
+
+        - name: value[exa]
+          title: Value
+          visible: (exact)
+
+        - name: df[exa]
+          title: df
+          type: integer
+          visible: (exact)
+
+        - name: p[exa]
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (exact)
+
+        - name: name[n]
+          title: ''
+          type: 'text'
+          content: N
+
+        - name: value[n]
+          title: Value
+
+        - name: df[n]
+          title: df
+          content: ''
+
+        - name: p[n]
+          title: p
+          content: ''

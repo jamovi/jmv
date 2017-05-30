@@ -81,7 +81,8 @@ contTablesPairedClass <- R6::R6Class(
 
             nCols <- length(colTotals)
 
-            rowTotal <- base::sum(colTotals)
+            N <- base::sum(colTotals)
+            rowTotal <- N
             values <- as.list(colTotals)
             names(values) <- paste0(1:nCols, '[count]')
             values[['.total[count]']] <- rowTotal
@@ -102,6 +103,7 @@ contTablesPairedClass <- R6::R6Class(
 
             wocor <- try(stats::mcnemar.test(result, correct=FALSE), silent=TRUE)
             wcor  <- try(stats::mcnemar.test(result, correct=TRUE), silent=TRUE)
+            exact <- try(exact2x2::exact2x2(result, paired=TRUE), silent=TRUE)
 
             values <- list()
 
@@ -125,6 +127,18 @@ contTablesPairedClass <- R6::R6Class(
                 values[['p[cor]']]  <- wcor$p.value
             }
 
+            if (base::inherits(exact, 'try-error') || is.na(exact$estimate)) {
+                values[['value[exa]']] <- NaN
+                values[['df[exa]']] <- ''
+                values[['p[exa]']]  <- ''
+            } else {
+                values[['value[exa]']] <- log(exact$estimate)
+                values[['df[exa]']] <- ''
+                values[['p[exa]']]  <- exact$p.value
+            }
+
+            values[['value[n]']] <- N
+
             test$setRow(rowNo=1, values=values)
 
             if (base::inherits(wocor, 'try-error')) {
@@ -143,6 +157,15 @@ contTablesPairedClass <- R6::R6Class(
                 else if (error == "all entries of 'x' must be nonnegative and finite")
                     error <- 'Counts must be non-negative and finite'
                 test$addFootnote(rowNo=1, 'value[cor]', error)
+            }
+
+            if (base::inherits(exact, 'try-error')) {
+                error <- jmvcore::extractErrorMessage(exact)
+                if (error == "table must be 2 by 2")
+                    error <- 'McNemar requires a 2x2 table'
+                else if (error == "all entries of 'x' must be nonnegative and finite")
+                    error <- 'Counts must be non-negative and finite'
+                test$addFootnote(rowNo=1, 'value[exa]', error)
             }
         },
         .init = function() {

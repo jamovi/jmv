@@ -90,6 +90,30 @@ options:
             a string naming the variable to use as counts, or NULL if each row
             represents a single observation
 
+    - name: chiSq
+      title: χ²
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide χ²
+
+    - name: chiSqCorr
+      title: χ² continuity correction
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide χ² with continuity correction
+
+    - name: exact
+      title: Log odds ratio exact
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide an exact log odds ratio
+
     - name: pcRow
       title: Row
       type: Bool

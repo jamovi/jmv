@@ -11,6 +11,9 @@ contTablesPairedOptions <- R6::R6Class(
             rows = NULL,
             cols = NULL,
             counts = NULL,
+            chiSq = TRUE,
+            chiSqCorr = FALSE,
+            exact = FALSE,
             pcRow = FALSE,
             pcCol = FALSE, ...) {
 
@@ -42,6 +45,18 @@ contTablesPairedOptions <- R6::R6Class(
                     "nominal",
                     "ordinal"),
                 default=NULL)
+            private$..chiSq <- jmvcore::OptionBool$new(
+                "chiSq",
+                chiSq,
+                default=TRUE)
+            private$..chiSqCorr <- jmvcore::OptionBool$new(
+                "chiSqCorr",
+                chiSqCorr,
+                default=FALSE)
+            private$..exact <- jmvcore::OptionBool$new(
+                "exact",
+                exact,
+                default=FALSE)
             private$..pcRow <- jmvcore::OptionBool$new(
                 "pcRow",
                 pcRow,
@@ -54,6 +69,9 @@ contTablesPairedOptions <- R6::R6Class(
             self$.addOption(private$..rows)
             self$.addOption(private$..cols)
             self$.addOption(private$..counts)
+            self$.addOption(private$..chiSq)
+            self$.addOption(private$..chiSqCorr)
+            self$.addOption(private$..exact)
             self$.addOption(private$..pcRow)
             self$.addOption(private$..pcCol)
         }),
@@ -61,12 +79,18 @@ contTablesPairedOptions <- R6::R6Class(
         rows = function() private$..rows$value,
         cols = function() private$..cols$value,
         counts = function() private$..counts$value,
+        chiSq = function() private$..chiSq$value,
+        chiSqCorr = function() private$..chiSqCorr$value,
+        exact = function() private$..exact$value,
         pcRow = function() private$..pcRow$value,
         pcCol = function() private$..pcCol$value),
     private = list(
         ..rows = NA,
         ..cols = NA,
         ..counts = NA,
+        ..chiSq = NA,
+        ..chiSqCorr = NA,
+        ..exact = NA,
         ..pcRow = NA,
         ..pcCol = NA)
 )
@@ -102,14 +126,22 @@ contTablesPairedResults <- R6::R6Class(
                     "cols",
                     "counts"),
                 columns=list(
-                    list(`name`="name[mcn]", `title`="", `type`="text", `content`="\u03C7\u00B2"),
-                    list(`name`="value[mcn]", `title`="Value"),
-                    list(`name`="df[mcn]", `title`="df", `type`="integer"),
-                    list(`name`="p[mcn]", `title`="p", `type`="number", `format`="zto,pvalue"),
-                    list(`name`="name[cor]", `title`="", `type`="text", `content`="\u03C7\u00B2 continuity correction"),
-                    list(`name`="value[cor]", `title`="Value"),
-                    list(`name`="df[cor]", `title`="df", `type`="integer"),
-                    list(`name`="p[cor]", `title`="p", `type`="number", `format`="zto,pvalue")))
+                    list(`name`="name[mcn]", `title`="", `type`="text", `content`="\u03C7\u00B2", `visible`="(chiSq)"),
+                    list(`name`="value[mcn]", `title`="Value", `visible`="(chiSq)"),
+                    list(`name`="df[mcn]", `title`="df", `type`="integer", `visible`="(chiSq)"),
+                    list(`name`="p[mcn]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(chiSq)"),
+                    list(`name`="name[cor]", `title`="", `type`="text", `content`="\u03C7\u00B2 continuity correction", `visible`="(chiSqCorr)"),
+                    list(`name`="value[cor]", `title`="Value", `visible`="(chiSqCorr)"),
+                    list(`name`="df[cor]", `title`="df", `type`="integer", `visible`="(chiSqCorr)"),
+                    list(`name`="p[cor]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(chiSqCorr)"),
+                    list(`name`="name[exa]", `title`="", `type`="text", `content`="Log odds ratio exact", `visible`="(exact)"),
+                    list(`name`="value[exa]", `title`="Value", `visible`="(exact)"),
+                    list(`name`="df[exa]", `title`="df", `type`="integer", `visible`="(exact)"),
+                    list(`name`="p[exa]", `title`="p", `type`="number", `format`="zto,pvalue", `visible`="(exact)"),
+                    list(`name`="name[n]", `title`="", `type`="text", `content`="N"),
+                    list(`name`="value[n]", `title`="Value"),
+                    list(`name`="df[n]", `title`="df", `content`=""),
+                    list(`name`="p[n]", `title`="p", `content`="")))
             self$add(private$..freqs)
             self$add(private$..test)}))
 
@@ -176,6 +208,11 @@ contTablesPairedBase <- R6::R6Class(
 #'   contingency table 
 #' @param counts a string naming the variable to use as counts, or NULL if 
 #'   each row represents a single observation 
+#' @param chiSq \code{TRUE} (default) or \code{FALSE}, provide X² 
+#' @param chiSqCorr \code{TRUE} or \code{FALSE} (default), provide X² with 
+#'   continuity correction 
+#' @param exact \code{TRUE} or \code{FALSE} (default), provide an exact log 
+#'   odds ratio 
 #' @param pcRow \code{TRUE} or \code{FALSE} (default), provide row percentages 
 #' @param pcCol \code{TRUE} or \code{FALSE} (default), provide column 
 #'   percentages 
@@ -197,6 +234,9 @@ contTablesPaired <- function(
     rows,
     cols,
     counts = NULL,
+    chiSq = TRUE,
+    chiSqCorr = FALSE,
+    exact = FALSE,
     pcRow = FALSE,
     pcCol = FALSE) {
 
@@ -204,6 +244,9 @@ contTablesPaired <- function(
         rows = rows,
         cols = cols,
         counts = counts,
+        chiSq = chiSq,
+        chiSqCorr = chiSqCorr,
+        exact = exact,
         pcRow = pcRow,
         pcCol = pcCol)
 

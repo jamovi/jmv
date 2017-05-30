@@ -26,6 +26,19 @@ children:
             isTarget: true
             maxItemCount: 1
   - type: LayoutBox
+    margin: large
+    stretchFactor: 1
+    children:
+      - type: CheckBox
+        name: chiSq
+      - type: CheckBox
+        name: chiSqCorr
+      - type: CheckBox
+        name: exact
+  - type: LayoutBox
+    cell:
+        row: 1
+        column: 1
     stretchFactor: 1
     margin: large
     children:
@@ -36,3 +49,4 @@ children:
             name: pcRow
           - type: CheckBox
             name: pcCol
+
