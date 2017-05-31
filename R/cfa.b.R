@@ -41,7 +41,7 @@ cfaClass <- R6::R6Class(
                 private$.populateCorResTable(results)
                 private$.populateResCovModTable(results)
                 private$.populateFactorLoadingsModTable(results)
-                # private$.preparePathDiagram(results)
+                private$.preparePathDiagram(results)
 
             }
         },
@@ -621,8 +621,13 @@ cfaClass <- R6::R6Class(
 
             fit <- results$fit
 
+            fit@ParTable$rhs <- jmvcore::fromB64(fit@ParTable$rhs)
+            fit@ParTable$lhs <- jmvcore::fromB64(fit@ParTable$lhs)
+
+            semPlotModel <- try(semPlot::semPlotModel(fit), silent = TRUE)
+
             image <- self$results$pathDiagram
-            image$setState(list(fit=fit))
+            image$setState(list(semPlotModel=semPlotModel))
 
         },
         .pathDiagram = function(image, theme, ...) {
@@ -630,24 +635,31 @@ cfaClass <- R6::R6Class(
             if (is.null(image$state))
                 return(FALSE)
 
-            fit <- image$state$fit
+            semPlotModel <- image$state$semPlotModel
 
             vars <- unique(unlist(lapply(self$options$factors, function(x) x$vars)))
             factors <- sapply(self$options$factors, function(x) x$label)
 
-            nodeLabels <- tolower(c(abbreviate(vars,3), abbreviate(factors, 8)))
             colors <- c(rep(theme$fill[1], length(vars)), rep(theme$fill[1], length(factors)))
             edgeColor <- theme$color[1]
 
-            suppressWarnings({
+            if (requireNamespace('semPlot')) {
 
-                semPlot::semPaths(fit, intercepts = FALSE, residuals = FALSE, rotation = 4,
-                                  whatLabels = 'omit', mar = c(2,6,2,6), curve = .1, curvature = 30,
-                                  color = colors, edge.color = edgeColor, edge.width = 2,
-                                  nodeLabels = nodeLabels, bg = "transparent", sizeMan = 6,
-                                  sizeLat = 10, nCharNodes = 3, arrows = TRUE)
+                suppressWarnings({
 
-            }) # suppressWarnings
+                    semPlot::semPaths(semPlotModel, intercepts = FALSE, residuals = FALSE, rotation = 4,
+                                      whatLabels = 'omit', mar = c(2,6,2,6), curve = .1, curvature = 30,
+                                      color = colors, edge.color = edgeColor, edge.width = 2,
+                                      bg = "transparent", sizeMan = 6,
+                                      sizeLat = 10, nCharNodes = 3, arrows = TRUE)
+
+                }) # suppressWarnings
+
+            } else {
+
+                warning("In order to get the path diagram you need to install the R package \"semplot\"")
+
+            }
 
             TRUE
         },

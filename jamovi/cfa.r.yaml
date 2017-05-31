@@ -418,7 +418,7 @@ items:
       width: 450
       height: 600
       renderFun: .pathDiagram
-      visible: false
+      visible: (pathDiagram)
       clearWith:
         - factors
         - resCov

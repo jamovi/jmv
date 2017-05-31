@@ -25,8 +25,8 @@ children:
             addButton: Add New Factor
             selectable: false
             events:
-                listItemAdded: './cfa.events::onEvent_test_listItemsAdded'
-                listItemRemoved: './cfa.events::onEvent_test_listItemsChanged'
+              listItemAdded: './cfa.events::onEvent_test_listItemsAdded'
+              listItemRemoved: './cfa.events::onEvent_test_listItemsChanged'
             templateName: linreg-block-template
             template:
               type: LayoutBox
@@ -34,7 +34,7 @@ children:
               children:
                 - type: TextBox
                   events:
-                      change: './cfa.events::onEvent_factorNameChange'
+                    change: './cfa.events::onEvent_factorNameChange'
                   valueKey:
                     - label
                   borderless: true
@@ -44,8 +44,8 @@ children:
                 - type: VariablesListBox
                   valueFilter: unique
                   events:
-                      listItemAdded: './cfa.events::onEvent_test_listItemsChanged'
-                      listItemRemoved: './cfa.events::onEvent_test_listItemsChanged'
+                    listItemAdded: './cfa.events::onEvent_test_listItemsChanged'
+                    listItemRemoved: './cfa.events::onEvent_test_listItemsChanged'
                   valueKey:
                     - vars
                   name: blockList
@@ -172,7 +172,6 @@ children:
                     enable: (ci)
               - type: CheckBox
                 name: stdEst
-
   - type: CollapseBox
     label: Model Fit
     collapsed: true
@@ -262,4 +261,16 @@ children:
                     format: number
                     inputPattern: '[0-9]+'
                     enable: (mi)
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        cell:
+          column: 1
+          row: 0
+        children:
+          - type: Label
+            label: Plots
+            children:
+              - type: CheckBox
+                name: pathDiagram
 compilerMode: tame
