@@ -254,7 +254,6 @@ options:
       title: Path diagram
       type: Bool
       default: false
-      hidden: true
       description:
           R: >
             `TRUE` or `FALSE` (default), provide a path diagram of the model (not yet implemented)

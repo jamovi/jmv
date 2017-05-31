@@ -131,8 +131,7 @@ cfaOptions <- R6::R6Class(
             private$..pathDiagram <- jmvcore::OptionBool$new(
                 "pathDiagram",
                 pathDiagram,
-                default=FALSE,
-                hidden=TRUE)
+                default=FALSE)
             private$..corRes <- jmvcore::OptionBool$new(
                 "corRes",
                 corRes,
@@ -475,7 +474,7 @@ cfaResults <- R6::R6Class(
                 width=450,
                 height=600,
                 renderFun=".pathDiagram",
-                visible=FALSE,
+                visible="(pathDiagram)",
                 clearWith=list(
                     "factors",
                     "resCov",
