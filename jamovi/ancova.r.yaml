@@ -178,6 +178,7 @@ items:
       height: 300
       renderFun: .descPlot
       clearWith:
+        - dep
         - plotHAxis
         - plotSepLines
         - plotSepPlots
@@ -194,6 +195,7 @@ items:
           type: Image
           renderFun: .descPlot
           clearWith:
+              - dep
               - plotHAxis
               - plotSepLines
               - plotSepPlots

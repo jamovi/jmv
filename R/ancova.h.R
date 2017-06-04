@@ -346,6 +346,7 @@ ancovaResults <- R6::R6Class(
                 height=300,
                 renderFun=".descPlot",
                 clearWith=list(
+                    "dep",
                     "plotHAxis",
                     "plotSepLines",
                     "plotSepPlots",
@@ -361,6 +362,7 @@ ancovaResults <- R6::R6Class(
                     title="$key",
                     renderFun=".descPlot",
                     clearWith=list(
+                        "dep",
                         "plotHAxis",
                         "plotSepLines",
                         "plotSepPlots",
