@@ -608,7 +608,7 @@ cfaBase <- R6::R6Class(
 #'   estimates for the residual intercepts 
 #' @param fitMeasures one or more of \code{'cfi'}, \code{'tli'}, 
 #'   \code{'srmr'}, \code{'rmsea'}, \code{'aic'}, or \code{'bic'}; use CFI, TLI, 
-#'   SRMR, RMSEA + 90% confidence interval, adjusted AIC, and BIC model fit 
+#'   SRMR, RMSEA + 90\% confidence interval, adjusted AIC, and BIC model fit 
 #'   measures, respectively 
 #' @param modelTest \code{TRUE} (default) or \code{FALSE}, provide a 
 #'   chi-square test for exact fit that compares the model with the perfect 

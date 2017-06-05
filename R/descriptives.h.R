@@ -310,7 +310,7 @@ descriptivesBase <- R6::R6Class(
 #' #
 #' #  Frequencies of gear
 #' #  -------------------------------------------
-#' #    Level    Counts    %       Cumulative %
+#' #    Level    Counts    \%       Cumulative \%
 #' #  -------------------------------------------
 #' #    3            15    46.9            46.9
 #' #    4            12    37.5            84.4
