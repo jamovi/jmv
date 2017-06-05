@@ -22,14 +22,14 @@ description:
             anovaNP(ToothGrowth, deps = 'len', group = 'dose')
 
             #
-            # One-way ANOVA (Non-parametric)
+            #  One-way ANOVA (Non-parametric)
             #
-            # Kruskal-Wallis
-            # ───────────────────────────────
-            #          χ²      df    p
-            # ───────────────────────────────
-            #   len    40.7     2    < .001
-            # ───────────────────────────────
+            #  Kruskal-Wallis
+            #  ───────────────────────────────
+            #           χ²      df    p
+            #  ───────────────────────────────
+            #    len    40.7     2    < .001
+            #  ───────────────────────────────
             #
 
 options:
