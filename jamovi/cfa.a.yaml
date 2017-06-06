@@ -256,7 +256,7 @@ options:
       default: false
       description:
           R: >
-            `TRUE` or `FALSE` (default), provide a path diagram of the model (not yet implemented)
+            `TRUE` or `FALSE` (default), provide a path diagram of the model
 
     - name: corRes
       title: Residuals observed correlation matrix
