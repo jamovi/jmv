@@ -624,7 +624,11 @@ cfaClass <- R6::R6Class(
             fit@ParTable$rhs <- jmvcore::fromB64(fit@ParTable$rhs)
             fit@ParTable$lhs <- jmvcore::fromB64(fit@ParTable$lhs)
 
-            semPlotModel <- try(semPlot::semPlotModel(fit), silent = TRUE)
+            if (self$options$pathDiagram) {
+                semPlotModel <- try(semPlot::semPlotModel(fit), silent = TRUE)
+            } else {
+                semPlotModel <- NULL
+            }
 
             image <- self$results$pathDiagram
             image$setState(list(semPlotModel=semPlotModel))
