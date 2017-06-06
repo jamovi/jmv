@@ -548,14 +548,14 @@ cfaBase <- R6::R6Class(
 #' #  --------------------------------------------------------------
 #' #                          Estimate    SE        Z       p
 #' #  --------------------------------------------------------------
-#' #    Visual     Visual      1.000 ᵃ
+#' #    Visual     Visual      1.000 a
 #' #               Textual     0.459      0.0635    7.22    < .001
 #' #               Speed       0.471      0.0862    5.46    < .001
-#' #    Textual    Textual     1.000 ᵃ
+#' #    Textual    Textual     1.000 a
 #' #               Speed       0.283      0.0715    3.96    < .001
-#' #    Speed      Speed       1.000 ᵃ
+#' #    Speed      Speed       1.000 a
 #' #  --------------------------------------------------------------
-#' #    ᵃ fixed parameter
+#' #    a fixed parameter
 #' #
 #' #
 #' # Model Fit
@@ -614,7 +614,7 @@ cfaBase <- R6::R6Class(
 #'   chi-square test for exact fit that compares the model with the perfect 
 #'   fitting model 
 #' @param pathDiagram \code{TRUE} or \code{FALSE} (default), provide a path 
-#'   diagram of the model (not yet implemented) 
+#'   diagram of the model 
 #' @param corRes \code{TRUE} or \code{FALSE} (default), provide the residuals 
 #'   for the observed correlation matrix (i.e., the difference between the 
 #'   expected correlation matrix and the observed correlation matrix) 

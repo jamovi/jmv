@@ -381,7 +381,7 @@ contTablesBase <- R6::R6Class(
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$freqs} \tab \tab \tab \tab \tab a table of proportions \cr
-#'   \code{results$chiSq} \tab \tab \tab \tab \tab a table of χ² test results \cr
+#'   \code{results$chiSq} \tab \tab \tab \tab \tab a table of X² test results \cr
 #'   \code{results$odds} \tab \tab \tab \tab \tab a table of odds ratio results \cr
 #'   \code{results$nom} \tab \tab \tab \tab \tab a table of the 'nominal' test results \cr
 #'   \code{results$gamma} \tab \tab \tab \tab \tab a table of the gamma test results \cr
