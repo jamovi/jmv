@@ -1,6 +1,7 @@
 
 # aggregate from R 3.3 for use in R 3.2
 
+#' @importFrom stats aggregate.data.frame
 aggregate <- function (x, by, FUN, ..., simplify = TRUE, drop = TRUE)
 {
     if (!is.data.frame(x))
