@@ -635,7 +635,7 @@ cfaBase <- R6::R6Class(
 #'   \code{results$modelFit$fitMeasures} \tab \tab \tab \tab \tab a table containing fit measures \cr
 #'   \code{results$modelPerformance$corRes} \tab \tab \tab \tab \tab a table containing residuals for the observed correlation matrix \cr
 #'   \code{results$modelPerformance$modIndices} \tab \tab \tab \tab \tab a group \cr
-#'   \code{results$pathDiagram} \tab \tab \tab \tab \tab an image containing the model path diagram (not yet implemented) \cr
+#'   \code{results$pathDiagram} \tab \tab \tab \tab \tab an image containing the model path diagram \cr
 #'   \code{results$modelSyntax} \tab \tab \tab \tab \tab the lavaan syntax used to fit the model \cr
 #' }
 #'

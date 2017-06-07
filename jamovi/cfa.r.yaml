@@ -414,7 +414,7 @@ items:
     - name: pathDiagram
       title: Path Diagram
       type: Image
-      description: an image containing the model path diagram (not yet implemented)
+      description: an image containing the model path diagram
       width: 450
       height: 600
       renderFun: .pathDiagram

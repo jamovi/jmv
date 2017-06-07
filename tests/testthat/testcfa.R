@@ -19,8 +19,8 @@ test_that('cfa works', {
     loadings <- cfa$factorLoadings$asDF
 
     # Test factor loadings table
-    expect_equal(0.5092696550414613, loadings$est[2])
-    expect_equal(0.0626379735945978, loadings$se[5])
-    expect_equal(10.5402542346004520, loadings$z[1])
+    expect_equal(0.509, loadings$est[2], tolerance = 1e-3)
+    expect_equal(0.063, loadings$se[5], tolerance = 1e-3)
+    expect_equal(10.540, loadings$z[1], tolerance = 1e-3)
 
 })
