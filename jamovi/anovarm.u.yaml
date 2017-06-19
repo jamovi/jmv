@@ -97,6 +97,7 @@ children:
         stretchFactor: 1
         children:
           - type: TargetLayoutBox
+            transferAction: interactions
             children:
               - type: ListBox
                 name: rmTerms
@@ -105,7 +106,6 @@ children:
                 isTarget: true
                 events:
                   change: './anovarm.events::onChange_rmTerms'
-                  preprocess: './anovarm.events::onEvent_rmTerms_preprocess'
                 template:
                     type: TermLabel
       - type: Supplier
@@ -116,6 +116,7 @@ children:
         stretchFactor: 1
         children:
           - type: TargetLayoutBox
+            transferAction: interactions
             children:
               - type: ListBox
                 name: bsTerms
@@ -124,7 +125,6 @@ children:
                 isTarget: true
                 events:
                   change: './anovarm.events::onChange_bsTerms'
-                  preprocess: './anovarm.events::onEvent_bsTerms_preprocess'
                 template:
                     type: TermLabel
       - type: LayoutBox

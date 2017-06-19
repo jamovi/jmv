@@ -15,7 +15,7 @@ const events = {
 
     onChange_rm: function(ui) {
         updateFactorCells(ui, this);
-        updateModelTerms(ui, this);
+        updateRMModelTerms(ui, this);
     },
 
     onChange_rmCells: function(ui) {
@@ -48,24 +48,6 @@ const events = {
     onChange_postHocSupplier: function(ui) {
         let values = this.itemsToValues(ui.postHocSupplier.value());
         this.checkValue(ui.postHoc, true, values, FormatDef.term);
-    },
-
-    /*onEvent_rmCells_changing: function(ui, data) {
-        if (data.key.length === 1 && data.value === null) {
-            let oldValue = this.clone(ui.rmCells.value(data.key));
-            oldValue["measure"] = null;
-            data.value = oldValue;
-        }
-    },*/
-
-    onEvent_bsTerms_preprocess: function(ui, data) {
-        if (data.intoSelf === false)
-            data.items = this.getItemCombinations(data.items);
-    },
-
-    onEvent_rmTerms_preprocess: function(ui, data) {
-        if (data.intoSelf === false)
-            data.items = this.getItemCombinations(data.items);
     }
 };
 
@@ -135,27 +117,37 @@ var calcRMTerms = function(ui, factorList, context) {
         ui.rmTerms.setValue(termsList);
 };
 
-var updateModelTerms = function(ui, context) {
-    var variableList = context.cloneArray(ui.bs.value(), []);
-    var covariatesList = context.cloneArray(ui.cov.value(), []);
+var updateRMModelTerms = function(ui, context, variableList) {
+    if (variableList === undefined)
+        variableList = context.cloneArray(ui.bs.value(), []);
 
-    var factorList = context.cloneArray(ui.rm.value(), []);
+    let factorList = context.cloneArray(ui.rm.value(), []);
+
     for(let i = 0; i < factorList.length; i++)
         factorList[i] = factorList[i].label;
 
-    var combinedList = variableList.concat(covariatesList);
     var combinedList2 = factorList.concat(variableList);
 
     ui.rmcModelSupplier.setValue(context.valuesToItems(factorList, FormatDef.variable))
-    ui.bscModelSupplier.setValue(context.valuesToItems(combinedList, FormatDef.variable));
     ui.plotsSupplier.setValue(context.valuesToItems(combinedList2, FormatDef.variable));
 
     calcRMTerms(ui, factorList, context);
 
+    updateContrasts(ui, combinedList2, context);
+};
+
+var updateModelTerms = function(ui, context) {
+    var variableList = context.cloneArray(ui.bs.value(), []);
+    var covariatesList = context.cloneArray(ui.cov.value(), []);
+
+    updateRMModelTerms(ui, context, variableList);
+
+    var combinedList = variableList.concat(covariatesList);
+    ui.bscModelSupplier.setValue(context.valuesToItems(combinedList, FormatDef.variable));
+
     var diff = context.findChanges("variableList", variableList, true, FormatDef.variable);
     var diff2 = context.findChanges("covariatesList", covariatesList, true, FormatDef.variable);
     var combinedDiff = context.findChanges("combinedList", combinedList, true, FormatDef.variable);
-
 
     var termsList = context.cloneArray(ui.bsTerms.value(), []);
     var termsChanged = false;
@@ -169,28 +161,45 @@ var updateModelTerms = function(ui, context) {
         }
     }
 
-    for (var i = 0; i < diff.added.length; i++) {
+    for (let i = 0; i < termsList.length; i++) {
+        if (termsList[i].length > 1 && containsCovariate(termsList[i], covariatesList)) {
+            termsList.splice(i, 1);
+            i -= 1;
+            termsChanged = true;
+        }
+    }
+
+    for (var a = 0; a < diff.added.length; a++) {
+        let item = diff.added[a];
         var listLength = termsList.length;
         for (var j = 0; j < listLength; j++) {
             var newTerm = context.clone(termsList[j]);
             if (containsCovariate(newTerm, covariatesList) === false) {
-                newTerm.push(diff.added[i])
-                termsList.push(newTerm);
+                if (context.listContains(newTerm, item, FormatDef.variable) === false) {
+                    newTerm.push(item)
+                    if (context.listContains(termsList, newTerm , FormatDef.term) === false) {
+                        termsList.push(newTerm);
+                        termsChanged = true;
+                    }
+                }
             }
         }
-        termsList.push([diff.added[i]]);
-        termsChanged = true;
+        if (context.listContains(termsList, [item] , FormatDef.term) === false) {
+            termsList.push([item]);
+            termsChanged = true;
+        }
     }
 
-    for (var i = 0; i < diff2.added.length; i++) {
-        termsList.push([diff2.added[i]]);
-        termsChanged = true;
+    for (var a = 0; a < diff2.added.length; a++) {
+        let item = diff2.added[a];
+        if (context.listContains(termsList, [item] , FormatDef.term) === false) {
+            termsList.push([item]);
+            termsChanged = true;
+        }
     }
 
     if (termsChanged)
         ui.bsTerms.setValue(termsList);
-
-    updateContrasts(ui, combinedList2, context);
 };
 
 var updatePostHocSupplier = function(ui, context) {

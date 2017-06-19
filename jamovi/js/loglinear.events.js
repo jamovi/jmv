@@ -13,11 +13,6 @@ const events = {
 
     onChange_modelTerms: function(ui) {
         filterModelTerms(ui, this);
-    },
-
-    onEvent_modelTerms_preprocess: function(ui, data) {
-        if (data.intoSelf === false)
-            data.items = this.getItemCombinations(data.items);
     }
 };
 

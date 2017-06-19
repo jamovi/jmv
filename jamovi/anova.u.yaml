@@ -60,6 +60,7 @@ children:
         format: term
         children:
           - type: TargetLayoutBox
+            transferAction: interactions
             children:
               - type: ListBox
                 name: modelTerms
@@ -68,7 +69,6 @@ children:
                 itemDropBehaviour: emptyspace
                 events:
                   change: './anova.events::onChange_modelTerms'
-                  preprocess: './anova.events::onEvent_modelTerms_preprocess'
                 template:
                     type: TermLabel
       - type: LayoutBox

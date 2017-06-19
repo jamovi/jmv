@@ -29,11 +29,6 @@ const events = {
     onChange_postHocSupplier: function(ui) {
         let values = this.itemsToValues(ui.postHocSupplier.value());
         this.checkValue(ui.postHoc, true, values, FormatDef.term);
-    },
-
-    onEvent_modelTerms_preprocess: function(ui, data) {
-        if (data.intoSelf === false)
-            data.items = this.getItemCombinations(data.items);
     }
 };
 
@@ -64,22 +59,41 @@ var calcModelTerms = function(ui, context) {
         }
     }
 
-    for (var i = 0; i < diff.added.length; i++) {
+    for (let i = 0; i < termsList.length; i++) {
+        if (termsList[i].length > 1 && containsCovariate(termsList[i], covariatesList)) {
+            termsList.splice(i, 1);
+            i -= 1;
+            termsChanged = true;
+        }
+    }
+
+    for (var a = 0; a < diff.added.length; a++) {
+        let item = diff.added[a];
         var listLength = termsList.length;
         for (var j = 0; j < listLength; j++) {
             var newTerm = context.clone(termsList[j]);
             if (containsCovariate(newTerm, covariatesList) === false) {
-                newTerm.push(diff.added[i])
-                termsList.push(newTerm);
+                if (context.listContains(newTerm, item, FormatDef.variable) === false) {
+                    newTerm.push(item)
+                    if (context.listContains(termsList, newTerm , FormatDef.term) === false) {
+                        termsList.push(newTerm);
+                        termsChanged = true;
+                    }
+                }
             }
         }
-        termsList.push([diff.added[i]]);
-        termsChanged = true;
+        if (context.listContains(termsList, [item] , FormatDef.term) === false) {
+            termsList.push([item]);
+            termsChanged = true;
+        }
     }
 
-    for (var i = 0; i < diff2.added.length; i++) {
-        termsList.push([diff2.added[i]]);
-        termsChanged = true;
+    for (var a = 0; a < diff2.added.length; a++) {
+        let item = diff2.added[a];
+        if (context.listContains(termsList, [item] , FormatDef.term) === false) {
+            termsList.push([item]);
+            termsChanged = true;
+        }
     }
 
     if (termsChanged)
