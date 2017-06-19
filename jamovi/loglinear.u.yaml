@@ -42,6 +42,7 @@ children:
         stretchFactor: 1
         children:
           - type: TargetLayoutBox
+            transferAction: interactions
             children:
               - type: ListBox
                 name: modelTerms
@@ -50,7 +51,7 @@ children:
                 itemDropBehaviour: emptyspace
                 events:
                     change: ./loglinear.events::onChange_modelTerms
-                    preprocess: ./loglinear.events::onEvent_modelTerms_preprocess
+                    #preprocess: ./loglinear.events::onEvent_modelTerms_preprocess
                 template:
                     type: TermLabel
 

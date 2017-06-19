@@ -23,11 +23,6 @@ const events = {
     onChange_postHocSupplier: function(ui) {
         let values = this.itemsToValues(ui.postHocSupplier.value());
         this.checkValue(ui.postHoc, true, values, FormatDef.term);
-    },
-
-    onEvent_modelTerms_preprocess: function(ui, data) {
-        if (data.intoSelf === false)
-            data.items = this.getItemCombinations(data.items);
     }
 };
 
@@ -63,8 +58,8 @@ var calcModelTerms = function(ui, context) {
 var filterModelTerms = function(ui, context) {
     var termsList = context.cloneArray(ui.modelTerms.value(), []);
 
+    //Remove common terms
     var termsDiff = context.findChanges("currentList", termsList, true, FormatDef.term);
-
     var changed = false;
     if (termsDiff.removed.length > 0 && termsList !== null) {
         var itemsRemoved = false;
@@ -82,9 +77,12 @@ var filterModelTerms = function(ui, context) {
         if (itemsRemoved)
             changed = true;
     }
+    /////////////////////
 
+    //Sort terms
     if (context.sortArraysByLength(termsList))
         changed = true;
+    ////////////
 
     if (changed)
         ui.modelTerms.setValue(termsList);
