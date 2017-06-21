@@ -172,6 +172,7 @@ children:
     children:
       - type: VariableSupplier
         name: plotsSupplier
+        populate: manual
         stretchFactor: 1
         persistentItems: false
         events:

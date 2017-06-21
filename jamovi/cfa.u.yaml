@@ -59,6 +59,7 @@ children:
     children:
       - type: VariableSupplier
         name: resCovSupplier
+        populate: manual
         persistentItems: true
         stretchFactor: 1
         events:
