@@ -28,6 +28,10 @@ efaClass <- R6::R6Class(
     public = list(
         asSource=function() {
             paste0(private$.package, '::', 'efa', '(', private$.asArgs(), ')')
+        },
+        initialize=function(...) {
+            super$initialize(...)
+            private$.name <- 'efa'
         }
     )
 )

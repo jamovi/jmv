@@ -4,20 +4,18 @@ anovaClass <- R6::R6Class(
     inherit = ancovaClass,
     private = list(
         .init=function() {
-
-            private$.name <- 'anova'
-
             super$.init()
-
             self$results$setTitle('ANOVA')
-
-            anovaTable <- self$results$main
-            anovaTable$setTitle('ANOVA')
+            self$results$main$setTitle('ANOVA')
         }
     ),
     public = list(
         asSource=function() {
             paste0(private$.package, '::', 'anova', '(', private$.asArgs(), ')')
+        },
+        initialize=function(...) {
+            super$initialize(...)
+            private$.name <- 'anova'
         }
     )
 )
