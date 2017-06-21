@@ -21,7 +21,7 @@ const events = {
 
     onChange_resCovSupplier: function(ui) {
         let values = this.itemsToValues(ui.resCovSupplier.value());
-        this.checkValue(ui.resCov, true, values, FormatDef.term);
+        this.checkPairsValue(ui.resCov, values);
     },
 
     onEvent_factorNameChange : function(ui) {
