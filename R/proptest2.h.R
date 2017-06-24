@@ -93,6 +93,7 @@ propTest2Results <- R6::R6Class(
                 name="table",
                 title="Binomial Test",
                 clearWith=list(
+                    "vars",
                     "areCounts",
                     "testValue",
                     "hypothesis",
