@@ -320,7 +320,7 @@ anovaRMClass <- R6::R6Class(
                         HF <- 1
                     } else {
                         GG <- if (is.na(epsilon[indexEps,'GG eps'])) 1 else epsilon[indexEps,'GG eps']
-                        HF <- if (is.na(epsilon[indexEps,'HF eps'])) 1 else epsilon[indexEps,'HF eps']
+                        HF <- if (is.na(epsilon[indexEps,'HF eps']) || epsilon[indexEps,'HF eps'] > 1) 1 else epsilon[indexEps,'HF eps']
                     }
 
                     row[['df[GG]']] <- row[['df[none]']] * GG
