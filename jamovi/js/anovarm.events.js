@@ -6,6 +6,7 @@ const events = {
         this._factorCells = null;
 
         this.initializeValue(ui.rmTerms, [["RM Factor 1"]]);
+        this.setCustomVariable("RM Factor 1", "none", []);
 
         updateFactorCells(ui, this);
         updateModelTerms(ui, this);
@@ -123,8 +124,12 @@ var updateRMModelTerms = function(ui, context, variableList) {
 
     let factorList = context.cloneArray(ui.rm.value(), []);
 
-    for(let i = 0; i < factorList.length; i++)
+    let customVariables = [];
+    for(let i = 0; i < factorList.length; i++) {
+        customVariables.push( { name: factorList[i].label, measureType: 'none', levels: [] } );
         factorList[i] = factorList[i].label;
+    }
+    context.setCustomVariables(customVariables);
 
     var combinedList2 = factorList.concat(variableList);
 
