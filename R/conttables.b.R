@@ -108,22 +108,31 @@ contTablesClass <- R6::R6Class(
 
             rows <- private$.grid(data=data, incRows=TRUE)
 
+            nextIsNewGroup <- TRUE
+
             for (i in seq_len(nrow(rows))) {
-                for (name in dimnames(rows)[[2]]) {
+
+                for (name in colnames(rows)) {
                     value <- as.character(rows[i, name])
                     if (value == '.total')
                         value <- 'Total'
                     values[[name]] <- value
                 }
+
                 key <- paste0(rows[i,], collapse='`')
                 freqs$addRow(rowKey=key, values=values)
 
-                if (i == 1)
+                if (nextIsNewGroup) {
                     freqs$addFormat(rowNo=i, 1, Cell.BEGIN_GROUP)
-                else if (i == nrow(rows) - 1)
-                    freqs$addFormat(rowNo=i, 1, Cell.END_GROUP)
-                else if (i == nrow(rows))
+                    nextIsNewGroup <- FALSE
+                }
+
+                if (as.character(rows[i, name]) == '.total') {
                     freqs$addFormat(rowNo=i, 1, Cell.BEGIN_END_GROUP)
+                    nextIsNewGroup <- TRUE
+                    if (i > 1)
+                        freqs$addFormat(rowNo=i - 1, 1, Cell.END_GROUP)
+                }
             }
 
             rows <- private$.grid(data=data, incRows=FALSE)
