@@ -7,6 +7,18 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
     public = list(
         initialize = function(
             vars = NULL,
+            splitBy = NULL,
+            freq = FALSE,
+            hist = FALSE,
+            dens = FALSE,
+            bar = FALSE,
+            barCounts = FALSE,
+            box = FALSE,
+            violin = FALSE,
+            dot = FALSE,
+            dotType = "jitter",
+            n = TRUE,
+            missing = TRUE,
             mean = TRUE,
             median = TRUE,
             mode = FALSE,
@@ -19,10 +31,6 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             se = FALSE,
             skew = FALSE,
             kurt = FALSE,
-            freq = FALSE,
-            plots = FALSE,
-            plotW = 480,
-            plotH = 320,
             quart = FALSE,
             pcEqGr = FALSE,
             pcNEqGr = 4, ...) {
@@ -36,6 +44,64 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..vars <- jmvcore::OptionVariables$new(
                 "vars",
                 vars)
+            private$..splitBy <- jmvcore::OptionVariables$new(
+                "splitBy",
+                splitBy,
+                suggested=list(
+                    "nominal"),
+                permitted=list(
+                    "nominal",
+                    "ordinal",
+                    "nominaltext"),
+                default=NULL)
+            private$..freq <- jmvcore::OptionBool$new(
+                "freq",
+                freq,
+                default=FALSE)
+            private$..hist <- jmvcore::OptionBool$new(
+                "hist",
+                hist,
+                default=FALSE)
+            private$..dens <- jmvcore::OptionBool$new(
+                "dens",
+                dens,
+                default=FALSE)
+            private$..bar <- jmvcore::OptionBool$new(
+                "bar",
+                bar,
+                default=FALSE)
+            private$..barCounts <- jmvcore::OptionBool$new(
+                "barCounts",
+                barCounts,
+                default=FALSE,
+                hidden=TRUE)
+            private$..box <- jmvcore::OptionBool$new(
+                "box",
+                box,
+                default=FALSE)
+            private$..violin <- jmvcore::OptionBool$new(
+                "violin",
+                violin,
+                default=FALSE)
+            private$..dot <- jmvcore::OptionBool$new(
+                "dot",
+                dot,
+                default=FALSE)
+            private$..dotType <- jmvcore::OptionList$new(
+                "dotType",
+                dotType,
+                options=list(
+                    "jitter",
+                    "stack"),
+                default="jitter")
+            private$..n <- jmvcore::OptionBool$new(
+                "n",
+                n,
+                default=TRUE)
+            private$..missing <- jmvcore::OptionBool$new(
+                "missing",
+                missing,
+                default=TRUE)
             private$..mean <- jmvcore::OptionBool$new(
                 "mean",
                 mean,
@@ -84,24 +150,6 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "kurt",
                 kurt,
                 default=FALSE)
-            private$..freq <- jmvcore::OptionBool$new(
-                "freq",
-                freq,
-                default=FALSE)
-            private$..plots <- jmvcore::OptionBool$new(
-                "plots",
-                plots,
-                default=FALSE)
-            private$..plotW <- jmvcore::OptionInteger$new(
-                "plotW",
-                plotW,
-                default=480,
-                hidden=TRUE)
-            private$..plotH <- jmvcore::OptionInteger$new(
-                "plotH",
-                plotH,
-                default=320,
-                hidden=TRUE)
             private$..quart <- jmvcore::OptionBool$new(
                 "quart",
                 quart,
@@ -116,6 +164,18 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 default=4)
         
             self$.addOption(private$..vars)
+            self$.addOption(private$..splitBy)
+            self$.addOption(private$..freq)
+            self$.addOption(private$..hist)
+            self$.addOption(private$..dens)
+            self$.addOption(private$..bar)
+            self$.addOption(private$..barCounts)
+            self$.addOption(private$..box)
+            self$.addOption(private$..violin)
+            self$.addOption(private$..dot)
+            self$.addOption(private$..dotType)
+            self$.addOption(private$..n)
+            self$.addOption(private$..missing)
             self$.addOption(private$..mean)
             self$.addOption(private$..median)
             self$.addOption(private$..mode)
@@ -128,16 +188,24 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..se)
             self$.addOption(private$..skew)
             self$.addOption(private$..kurt)
-            self$.addOption(private$..freq)
-            self$.addOption(private$..plots)
-            self$.addOption(private$..plotW)
-            self$.addOption(private$..plotH)
             self$.addOption(private$..quart)
             self$.addOption(private$..pcEqGr)
             self$.addOption(private$..pcNEqGr)
         }),
     active = list(
         vars = function() private$..vars$value,
+        splitBy = function() private$..splitBy$value,
+        freq = function() private$..freq$value,
+        hist = function() private$..hist$value,
+        dens = function() private$..dens$value,
+        bar = function() private$..bar$value,
+        barCounts = function() private$..barCounts$value,
+        box = function() private$..box$value,
+        violin = function() private$..violin$value,
+        dot = function() private$..dot$value,
+        dotType = function() private$..dotType$value,
+        n = function() private$..n$value,
+        missing = function() private$..missing$value,
         mean = function() private$..mean$value,
         median = function() private$..median$value,
         mode = function() private$..mode$value,
@@ -150,15 +218,23 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         se = function() private$..se$value,
         skew = function() private$..skew$value,
         kurt = function() private$..kurt$value,
-        freq = function() private$..freq$value,
-        plots = function() private$..plots$value,
-        plotW = function() private$..plotW$value,
-        plotH = function() private$..plotH$value,
         quart = function() private$..quart$value,
         pcEqGr = function() private$..pcEqGr$value,
         pcNEqGr = function() private$..pcNEqGr$value),
     private = list(
         ..vars = NA,
+        ..splitBy = NA,
+        ..freq = NA,
+        ..hist = NA,
+        ..dens = NA,
+        ..bar = NA,
+        ..barCounts = NA,
+        ..box = NA,
+        ..violin = NA,
+        ..dot = NA,
+        ..dotType = NA,
+        ..n = NA,
+        ..missing = NA,
         ..mean = NA,
         ..median = NA,
         ..mode = NA,
@@ -171,10 +247,6 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..se = NA,
         ..skew = NA,
         ..kurt = NA,
-        ..freq = NA,
-        ..plots = NA,
-        ..plotW = NA,
-        ..plotH = NA,
         ..quart = NA,
         ..pcEqGr = NA,
         ..pcNEqGr = NA)
@@ -185,11 +257,11 @@ descriptivesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     active = list(
         descriptives = function() private$..descriptives,
         frequencies = function() private$..frequencies,
-        freqPlots = function() private$..freqPlots),
+        plots = function() private$..plots),
     private = list(
         ..descriptives = NA,
         ..frequencies = NA,
-        ..freqPlots = NA),
+        ..plots = NA),
     public=list(
         initialize=function(options) {
             super$initialize(
@@ -200,98 +272,11 @@ descriptivesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 options=options,
                 name="descriptives",
                 title="Descriptives",
-                rows="(vars)",
-                swapRowsColumns=TRUE,
-                clearWith=NULL,
-                columns=list(
-                    list(
-                        `name`="name", 
-                        `title`="", 
-                        `content`="$key", 
-                        `type`="text"),
-                    list(
-                        `name`="n", 
-                        `title`="N", 
-                        `type`="integer"),
-                    list(
-                        `name`="missing", 
-                        `title`="Missing", 
-                        `type`="integer"),
-                    list(
-                        `name`="mean", 
-                        `title`="Mean", 
-                        `type`="number", 
-                        `visible`="(mean)"),
-                    list(
-                        `name`="median", 
-                        `title`="Median", 
-                        `type`="number", 
-                        `visible`="(median)"),
-                    list(
-                        `name`="mode", 
-                        `title`="Mode", 
-                        `type`="number", 
-                        `visible`="(mode)"),
-                    list(
-                        `name`="sum", 
-                        `title`="Sum", 
-                        `type`="number", 
-                        `visible`="(sum)"),
-                    list(
-                        `name`="sd", 
-                        `title`="Standard deviation", 
-                        `type`="number", 
-                        `visible`="(sd)"),
-                    list(
-                        `name`="variance", 
-                        `title`="Variance", 
-                        `type`="number", 
-                        `visible`="(variance)"),
-                    list(
-                        `name`="range", 
-                        `title`="Range", 
-                        `type`="number", 
-                        `visible`="(range)"),
-                    list(
-                        `name`="min", 
-                        `title`="Minimum", 
-                        `type`="number", 
-                        `visible`="(min)"),
-                    list(
-                        `name`="max", 
-                        `title`="Maximum", 
-                        `type`="number", 
-                        `visible`="(max)"),
-                    list(
-                        `name`="se", 
-                        `title`="Standard error", 
-                        `type`="number", 
-                        `visible`="(se)"),
-                    list(
-                        `name`="skew", 
-                        `title`="Skewness", 
-                        `type`="number", 
-                        `visible`="(skew)"),
-                    list(
-                        `name`="kurt", 
-                        `title`="Kurtosis", 
-                        `type`="number", 
-                        `visible`="(kurt)"),
-                    list(
-                        `name`="quart1", 
-                        `title`="25th percentile", 
-                        `type`="number", 
-                        `visible`="(quart)"),
-                    list(
-                        `name`="quart2", 
-                        `title`="50th percentile", 
-                        `type`="number", 
-                        `visible`="(quart)"),
-                    list(
-                        `name`="quart3", 
-                        `title`="75th percentile", 
-                        `type`="number", 
-                        `visible`="(quart)")))
+                visible="(n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || skew || kurt || quart || pcEqGr)",
+                rows=1,
+                clearWith=list(
+                    "splitBy"),
+                columns=list())
             private$..frequencies <- jmvcore::Array$new(
                 options=options,
                 name="frequencies",
@@ -302,40 +287,27 @@ descriptivesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     options=options,
                     title="Frequencies of $key",
                     visible="(levels($key))",
-                    clearWith=NULL,
-                    rows="(levels($key))",
-                    columns=list(
-                        list(
-                            `name`="level", 
-                            `title`="Level", 
-                            `type`="text", 
-                            `content`="($key)"),
-                        list(
-                            `name`="counts", 
-                            `title`="Counts", 
-                            `type`="number"),
-                        list(
-                            `name`="percentage", 
-                            `title`="%", 
-                            `type`="number"),
-                        list(
-                            `name`="cumpercentage", 
-                            `title`="Cumulative %", 
-                            `type`="number"))))
-            private$..freqPlots <- jmvcore::Array$new(
+                    clearWith=list(
+                        "splitBy"),
+                    columns=list()))
+            private$..plots <- jmvcore::Array$new(
                 options=options,
-                name="freqPlots",
+                name="plots",
                 title="Plots",
-                visible="(plots)",
                 items="(vars)",
-                template=jmvcore::Image$new(
-                    options=options,
-                    title="$key",
-                    renderFun=".plotFreq",
-                    clearWith=NULL))
+                template=R6::R6Class(
+                    inherit = jmvcore::Group,
+                    active = list(),
+                    private = list(),
+                    public=list(
+                        initialize=function(options) {
+                            super$initialize(
+                                options=options,
+                                name="undefined",
+                                title="($key)")}))$new(options=options))
             self$add(private$..descriptives)
             self$add(private$..frequencies)
-            self$add(private$..freqPlots)}))
+            self$add(private$..plots)}))
 
 descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "descriptivesBase",
@@ -379,28 +351,51 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #  -------------------------------------------
 #' #    N            32      32      32      32
 #' #    Missing       0       0       0       0
-#' #    Mean       20.1    6.19     231
-#' #    Median     19.2    6.00     196
-#' #    Minimum    10.4    4.00    71.1
-#' #    Maximum    33.9    8.00     472
+#' #    Mean       20.1    6.19     231    3.69
+#' #    Median     19.2    6.00     196    4.00
+#' #    Minimum    10.4    4.00    71.1       3
+#' #    Maximum    33.9    8.00     472       5
 #' #  -------------------------------------------
 #' #
 #' #
 #' #  Frequencies
 #' #
 #' #  Frequencies of gear
-#' #  -------------------------------------------
-#' #    Level    Counts    \%       Cumulative \%
-#' #  -------------------------------------------
-#' #    3            15    46.9            46.9
-#' #    4            12    37.5            84.4
-#' #    5             5    15.6           100.0
-#' #  -------------------------------------------
+#' #  --------------------
+#' #    Levels    Counts
+#' #  --------------------
+#' #    3             15
+#' #    4             12
+#' #    5              5
+#' #  --------------------
+#' #
 #' #
 #' }
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in 
 #'   \code{data}
+#' @param splitBy a vector of strings naming the variables used to split 
+#'   \code{vars}
+#' @param freq \code{TRUE} or \code{FALSE} (default), provide frequency tables 
+#'   (nominal, ordinal variables only) 
+#' @param hist \code{TRUE} or \code{FALSE} (default), provide histograms 
+#'   (continuous variables only) 
+#' @param dens \code{TRUE} or \code{FALSE} (default), provide density plots 
+#'   (continuous variables only) 
+#' @param bar \code{TRUE} or \code{FALSE} (default), provide bar plots 
+#'   (nominal, ordinal variables only) 
+#' @param barCounts \code{TRUE} or \code{FALSE} (default), add counts to the  
+#'   bar plots 
+#' @param box \code{TRUE} or \code{FALSE} (default), provide box plots 
+#'   (continuous variables only) 
+#' @param violin \code{TRUE} or \code{FALSE} (default), provide violin plots 
+#'   (continuous variables only) 
+#' @param dot \code{TRUE} or \code{FALSE} (default), provide dot plots 
+#'   (continuous variables only) 
+#' @param dotType .
+#' @param n \code{TRUE} (default) or \code{FALSE}, provide the sample size 
+#' @param missing \code{TRUE} (default) or \code{FALSE}, provide the number of 
+#'   missing values 
 #' @param mean \code{TRUE} (default) or \code{FALSE}, provide the mean 
 #' @param median \code{TRUE} (default) or \code{FALSE}, provide the median 
 #' @param mode \code{TRUE} or \code{FALSE} (default), provide the mode 
@@ -414,12 +409,6 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param se \code{TRUE} or \code{FALSE} (default), provide the standard error 
 #' @param skew \code{TRUE} or \code{FALSE} (default), provide the skewness 
 #' @param kurt \code{TRUE} or \code{FALSE} (default), provide the kurtosis 
-#' @param freq \code{TRUE} or \code{FALSE} (default), provide frequency tables 
-#'   (nominal, ordinal variables only) 
-#' @param plots \code{TRUE} or \code{FALSE} (default), provide frequency 
-#'   tables (nominal, ordinal variables only) 
-#' @param plotW an integer (default: 480) specifying the width of the plots 
-#' @param plotH an integer (default: 320) specifying the height of the plots 
 #' @param quart \code{TRUE} or \code{FALSE} (default), provide quartiles 
 #' @param pcEqGr \code{TRUE} or \code{FALSE} (default), provide quantiles 
 #' @param pcNEqGr an integer (default: 4) specifying the number of equal 
@@ -428,7 +417,7 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' \tabular{llllll}{
 #'   \code{results$descriptives} \tab \tab \tab \tab \tab a table of the descriptive statistics \cr
 #'   \code{results$frequencies} \tab \tab \tab \tab \tab an array of frequency tables \cr
-#'   \code{results$freqPlots} \tab \tab \tab \tab \tab an array of descriptive plots \cr
+#'   \code{results$plots} \tab \tab \tab \tab \tab an array of descriptive plots \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -441,6 +430,18 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 descriptives <- function(
     data,
     vars,
+    splitBy = NULL,
+    freq = FALSE,
+    hist = FALSE,
+    dens = FALSE,
+    bar = FALSE,
+    barCounts = FALSE,
+    box = FALSE,
+    violin = FALSE,
+    dot = FALSE,
+    dotType = "jitter",
+    n = TRUE,
+    missing = TRUE,
     mean = TRUE,
     median = TRUE,
     mode = FALSE,
@@ -453,10 +454,6 @@ descriptives <- function(
     se = FALSE,
     skew = FALSE,
     kurt = FALSE,
-    freq = FALSE,
-    plots = FALSE,
-    plotW = 480,
-    plotH = 320,
     quart = FALSE,
     pcEqGr = FALSE,
     pcNEqGr = 4) {
@@ -466,6 +463,18 @@ descriptives <- function(
 
     options <- descriptivesOptions$new(
         vars = vars,
+        splitBy = splitBy,
+        freq = freq,
+        hist = hist,
+        dens = dens,
+        bar = bar,
+        barCounts = barCounts,
+        box = box,
+        violin = violin,
+        dot = dot,
+        dotType = dotType,
+        n = n,
+        missing = missing,
         mean = mean,
         median = median,
         mode = mode,
@@ -478,10 +487,6 @@ descriptives <- function(
         se = se,
         skew = skew,
         kurt = kurt,
-        freq = freq,
-        plots = plots,
-        plotW = plotW,
-        plotH = plotH,
         quart = quart,
         pcEqGr = pcEqGr,
         pcNEqGr = pcNEqGr)

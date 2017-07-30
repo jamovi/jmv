@@ -29,7 +29,9 @@ Imports:
     GPArotation,
     afex,
     mvnormtest,
-    lavaan
+    lavaan,
+    ggjoy,
+    purrr
 Suggests:
     exact2x2,
     testthat,

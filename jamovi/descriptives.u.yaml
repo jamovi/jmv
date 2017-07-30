@@ -1,6 +1,6 @@
-name:  descriptives
+name: descriptives
 title: Descriptives
-jus:   '2.0'
+jus: '2.0'
 compilerMode: tame
 children:
   - type: VariableSupplier
@@ -8,116 +8,182 @@ children:
     stretchFactor: 1
     children:
       - type: TargetLayoutBox
-        label: ''
+        label: Variables
         children:
           - type: VariablesListBox
             name: vars
             isTarget: true
-
+      - type: TargetLayoutBox
+        label: Split by
+        children:
+          - type: VariablesListBox
+            name: splitBy
+            height: small
+            isTarget: true
   - type: LayoutBox
     stretchFactor: 1
     margin: large
     children:
       - type: CheckBox
-        name: plots
-        label: Bar plots and histograms
-
-      - type: CheckBox
         name: freq
-        label: Frequency tables (nominal and ordinal variables only)
-
+        label: Frequency tables
+        icons:
+          - variable-nominal
+          - variable-ordinal
+        iconPosition: right
   - type: CollapseBox
     label: Statistics
     collapsed: true
     children:
-      - type: Label
-        label: Percentile Values
-        fitToGrid: true
+      - type: LayoutBox
+        stretchFactor: 2
+        margin: large
         cell:
-            column: 0
-            row: 0
+          column: 0
+          row: 0
+        fitToGrid: true
         children:
-          - type: CheckBox
-            name: quart
-
-          - type: LayoutBox
+          - type: Label
+            label: Sample Size
             children:
-              - type: CheckBox
-                name: pcEqGr
-                label: Cut points for
+              - type: LayoutBox
+                stretchFactor: 1
                 style: inline
-                verticalAlignment: center
                 children:
-                  - type: TextBox
-                    name: pcNEqGr
-                    label: ""
-                    suffix: equal groups
-                    format: number
-                    inputPattern: "[0-9]+"
-                    enable: (pcEqGr)
-
-      - type: Label
-        label: Central Tendency
-        fitToGrid: true
-        cell:
-            column: 1
-            row: 0
-        children:
-          - type: CheckBox
-            name: mean
-
-          - type: CheckBox
-            name: median
-
-          - type: CheckBox
-            name: mode
-
-          - type: CheckBox
-            name: sum
-
-      - type: Label
-        label: Dispersion
-        fitToGrid: true
-        cell:
-            column: 0
-            row: 1
-        style: list-inline
-        children:
-          - type: LayoutBox
-            margin: normal
+                  - type: CheckBox
+                    name: 'n'
+                  - type: CheckBox
+                    name: missing
+          - type: Label
+            label: Percentile Values
             children:
               - type: CheckBox
-                name: sd
-                label: Std. deviation
-
-              - type: CheckBox
-                name: variance
-
-              - type: CheckBox
-                name: range
-
-          - type: LayoutBox
-            margin: normal
+                name: quart
+              - type: LayoutBox
+                children:
+                  - type: CheckBox
+                    name: pcEqGr
+                    label: Cut points for
+                    style: inline
+                    verticalAlignment: center
+                    children:
+                      - type: TextBox
+                        name: pcNEqGr
+                        label: ''
+                        suffix: equal groups
+                        format: number
+                        inputPattern: '[0-9]+'
+                        enable: (pcEqGr)
+      - type: LayoutBox
+        stretchFactor: 1
+        margin: large
+        cell:
+          column: 1
+          row: 0
+        fitToGrid: true
+        children:
+          - type: Label
+            label: Central Tendency
             children:
               - type: CheckBox
-                name: min
-
+                name: mean
               - type: CheckBox
-                name: max
-
+                name: median
               - type: CheckBox
-                name: se
-                label: S. E. Mean
-
-      - type: Label
-        label: Distribution
-        fitToGrid: true
+                name: mode
+              - type: CheckBox
+                name: sum
+      - type: LayoutBox
+        stretchFactor: 2
+        margin: large
         cell:
-            column: 1
-            row: 1
+          column: 0
+          row: 1
+        fitToGrid: true
         children:
-          - type: CheckBox
-            name: skew
-
-          - type: CheckBox
-            name: kurt
+          - type: Label
+            label: Dispersion
+            style: list-inline
+            children:
+              - type: LayoutBox
+                margin: normal
+                children:
+                  - type: CheckBox
+                    name: sd
+                    label: Std. deviation
+                  - type: CheckBox
+                    name: variance
+                  - type: CheckBox
+                    name: range
+              - type: LayoutBox
+                margin: normal
+                children:
+                  - type: CheckBox
+                    name: min
+                  - type: CheckBox
+                    name: max
+                  - type: CheckBox
+                    name: se
+                    label: S. E. Mean
+      - type: LayoutBox
+        stretchFactor: 1
+        margin: large
+        cell:
+          column: 1
+          row: 1
+        fitToGrid: true
+        children:
+          - type: Label
+            label: Distribution
+            children:
+              - type: CheckBox
+                name: skew
+              - type: CheckBox
+                name: kurt
+  - type: CollapseBox
+    label: Plots
+    collapsed: true
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        stretchFactor: 1
+        children:
+          - type: Label
+            label: Histograms
+            stretchFactor: 1
+            icons:
+              - variable-continuous
+            iconPosition: right
+            children:
+              - type: CheckBox
+                name: hist
+              - type: CheckBox
+                name: dens
+          - type: Label
+            label: Box Plots
+            stretchFactor: 1
+            icons:
+              - variable-continuous
+            iconPosition: right
+            children:
+              - type: CheckBox
+                name: box
+              - type: CheckBox
+                name: violin
+              - type: CheckBox
+                name: dot
+                children:
+                  - type: ComboBox
+                    name: dotType
+                    enable: (dot)
+          - type: Label
+            label: Bar Plots
+            stretchFactor: 1
+            icons:
+              - variable-nominal
+              - variable-ordinal
+            iconPosition: right
+            children:
+              - type: CheckBox
+                name: bar
