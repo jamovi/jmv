@@ -30,8 +30,7 @@ Imports:
     afex,
     mvnormtest,
     lavaan,
-    ggjoy,
-    purrr
+    ggjoy
 Suggests:
     exact2x2,
     testthat,
