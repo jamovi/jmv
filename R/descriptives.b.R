@@ -650,15 +650,15 @@ descriptivesClass <- R6::R6Class(
 
             } else {
 
-                plot <- ggplot(data=data, aes_string(x=names$s1, y=names$x, fill=names$s2)) +
-                    labs(list(x=labels$s1, y=labels$x, fill=labels$s2, color=labels$s2))
+                plot <- ggplot(data=data, aes_string(x=names$s2, y=names$x, fill=names$s1)) +
+                    labs(list(x=labels$s1, y=labels$x, fill=labels$s1, color=labels$s1))
 
                 if (self$options$violin)
                     plot <- plot + ggplot2::geom_violin(color=theme$color[1], position=position_dodge(0.9), alpha=0.3)
 
                 if (self$options$dot) {
                     if (self$options$dotType == 'jitter')
-                        plot <- plot + ggplot2::geom_jitter(aes_string(color=names$s2), alpha=0.7,
+                        plot <- plot + ggplot2::geom_jitter(aes_string(color=names$s1), alpha=0.7,
                                                             position = position_jitterdodge(jitter.width=0.1,
                                                                                             dodge.width = 0.9))
                     else if (self$options$dotType == 'stack')
@@ -766,9 +766,9 @@ descriptivesClass <- R6::R6Class(
                 yAxis <- 30 + 20
                 width <- max(300, 70 * nLevels[1] * nLevels[2] * nLevels[3])
                 height <- 300
-                legend <- max(25 + 21 + 3.5 + 8.3 * nCharLevels[2] + 28, 25 + 10 * nCharNames[2] + 28)
+                legend <- max(25 + 21 + 3.5 + 8.3 * nCharLevels[1] + 28, 25 + 10 * nCharNames[1] + 28)
 
-                width <- yAxis + width + ifelse(nLevels[2] > 1, legend, 0)
+                width <- yAxis + width + ifelse(nLevels[1] > 1, legend, 0)
                 height <- xAxis + height
 
             } else {
