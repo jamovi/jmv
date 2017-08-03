@@ -1,4 +1,7 @@
 
+#' @import jmvcore
+NULL
+
 # aggregate from R 3.3 for use in R 3.2
 
 #' @importFrom stats aggregate.data.frame
