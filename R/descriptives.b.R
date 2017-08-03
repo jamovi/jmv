@@ -521,11 +521,19 @@ descriptivesClass <- R6::R6Class(
                     scale_y_discrete(expand = c(0.05, 0)) +
                     scale_x_continuous(expand = c(0.01, 0))
 
-                if (self$options$hist)
-                    plot <- plot + ggjoy::geom_joy(stat="binline", bins=20, scale=0.9)
+                if (self$options$hist) {
+                    if (requireNamespace('ggjoy', quietly=TRUE))
+                        plot <- plot + ggjoy::geom_joy(stat="binline", bins=20, scale=0.9)
+                    else
+                        stop('Histograms require the ggjoy package to be installed (restart may be required)')
+                }
 
-                if (self$options$dens)
-                    plot <- plot + ggjoy::geom_joy(scale=0.9, alpha=alpha)
+                if (self$options$dens) {
+                    if (requireNamespace('ggjoy', quietly=TRUE))
+                        plot <- plot + ggjoy::geom_joy(scale=0.9, alpha=alpha)
+                    else
+                        stop('Density requires the ggjoy package to be installed (restart may be required)')
+                }
 
                 themeSpec <- theme(legend.position = 'none')
             }
