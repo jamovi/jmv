@@ -12,6 +12,7 @@ items:
       rows: 1
       clearWith:
         - splitBy
+        - pcNEqGr
       columns: []
 
     - name: frequencies

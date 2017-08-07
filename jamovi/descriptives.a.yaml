@@ -283,6 +283,8 @@ options:
       title: Cut point values
       type: Integer
       default: 4
+      min: 2
+      max: 10
       description:
           R: >
             an integer (default: 4) specifying the number of equal groups

@@ -161,7 +161,9 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..pcNEqGr <- jmvcore::OptionInteger$new(
                 "pcNEqGr",
                 pcNEqGr,
-                default=4)
+                default=4,
+                min=2,
+                max=10)
         
             self$.addOption(private$..vars)
             self$.addOption(private$..splitBy)
@@ -275,7 +277,8 @@ descriptivesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 visible="(n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || skew || kurt || quart || pcEqGr)",
                 rows=1,
                 clearWith=list(
-                    "splitBy"),
+                    "splitBy",
+                    "pcNEqGr"),
                 columns=list())
             private$..frequencies <- jmvcore::Array$new(
                 options=options,
