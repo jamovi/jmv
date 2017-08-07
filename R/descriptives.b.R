@@ -19,6 +19,7 @@ descriptivesClass <- R6::R6Class(
         #### Init + run functions ----
         .init = function() {
 
+            private$.addQuantiles()
             private$.initDescriptivesTable()
 
             if (self$options$freq)
@@ -697,6 +698,22 @@ descriptivesClass <- R6::R6Class(
         },
 
         #### Helper functions ----
+        .addQuantiles = function() {
+
+            pcNEqGr <- self$options$pcNEqGr
+
+            if (self$options$quart && pcNEqGr == 4)
+                return()
+
+            colArgs <- private$colArgs
+            pcEq <- (1:pcNEqGr / pcNEqGr)[-pcNEqGr]
+
+            private$colArgs$name <- c(colArgs$name, paste0('quant', 1:(pcNEqGr-1)))
+            private$colArgs$title <- c(colArgs$title, paste0(round(pcEq * 100, 2), 'th percentile'))
+            private$colArgs$type <- c(colArgs$type, rep('number', pcNEqGr - 1))
+            private$colArgs$visible <- c(colArgs$visible, rep("(pcEqGr)", pcNEqGr - 1))
+
+        },
         .computeDesc = function(column) {
 
             stats <- list()
@@ -728,11 +745,28 @@ descriptivesClass <- R6::R6Class(
                 stats[['quart2']] <- as.numeric(quantile(column, c(.5)))
                 stats[['quart3']] <- as.numeric(quantile(column, c(.75)))
 
+                pcNEqGr <- self$options$pcNEqGr
+
+                if (self$options$quart && pcNEqGr == 4)
+                    break()
+
+                pcEq <- (1:pcNEqGr / pcNEqGr)[-pcNEqGr]
+                quants <- as.numeric(quantile(column, pcEq))
+
+                for (i in 1:(pcNEqGr-1))
+                    stats[[paste0('quant', i)]] <- quants[i]
+
             } else if (jmvcore::canBeNumeric(column)) {
 
                 l <- list(mean=NaN, median=NaN, mode=NaN, sum=NaN, sd=NaN, variance=NaN,
                           range=NaN, min=NaN, max=NaN, se=NaN, skew=NaN, kurt=NaN,
                           quart1=NaN, quart2=NaN, quart3=NaN)
+
+                pcNEqGr <- self$options$pcNEqGr
+                if ( ! (self$options$quart && pcNEqGr == 4)) {
+                    for (i in 1:(pcNEqGr-1))
+                        l[[paste0('quant', i)]] <- NaN
+                }
 
                 stats <- append(stats, l)
 
@@ -741,6 +775,12 @@ descriptivesClass <- R6::R6Class(
                 l <- list(mean='', median='', mode='', sum='', sd='', variance='',
                           range='', min='', max='', se='', skew='', kurt='',
                           quart1='', quart2='', quart3='')
+
+                pcNEqGr <- self$options$pcNEqGr
+                if ( ! (self$options$quart && pcNEqGr == 4)) {
+                    for (i in 1:(pcNEqGr-1))
+                        l[[paste0('quant', i)]] <- ''
+                }
 
                 stats <- append(stats, l)
 
