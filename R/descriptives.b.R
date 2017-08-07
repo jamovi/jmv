@@ -517,6 +517,8 @@ descriptivesClass <- R6::R6Class(
 
             } else {
 
+                levels(data$s1) <- rev(levels(data$s1))
+
                 plot <- ggplot(data=data, aes_string(x=names$x, y=names$s1, fill=names$s1)) +
                     labs(list(x=labels$x, y=labels$s1)) +
                     scale_y_discrete(expand = c(0.05, 0)) +
