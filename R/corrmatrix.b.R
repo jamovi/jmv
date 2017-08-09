@@ -138,7 +138,9 @@ corrMatrixClass <- R6::R6Class(
                         else if (result$rhop < .05)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[rho]'), '*')
 
-                        if (result$taup < .001)
+                        if ( ! self$options$kendall)
+                            {}  # do nothing
+                        else if (result$taup < .001)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[tau]'), '***')
                         else if (result$taup < .01)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[tau]'), '**')
@@ -179,7 +181,10 @@ corrMatrixClass <- R6::R6Class(
                 results$rhop <- NaN
             }
 
-            res <- try(cor.test(var1, var2, alternative=hyp, method='kendall'))
+            res <- list()
+            if (self$options$kendall)
+                res <- try(cor.test(var1, var2, alternative=hyp, method='kendall'))
+
             if ( ! base::inherits(res, 'try-error')) {
                 results$tau <- res$estimate
                 results$taup <- res$p.value
