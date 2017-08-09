@@ -5,11 +5,10 @@ Version: 0.7.5.6
 Date: 2017-08-03
 Author: Ravi Selker, Jonathon Love, Damian Dropmann
 Maintainer: Jonathon Love <jon@thon.cc>
-Description: 'jamovi' is a rich graphical statistics program providing many
-    common statistical tests such as t-tests, ANOVAs, correlation matrices,
-    proportion tests, contingency tables, etc (see <https://www.jamovi.org> for
-    more information). This package makes all of the basic 'jamovi' analyses
-    available to the R user.
+Description: A suite of common statistical methods such as descriptives,
+    t-tests, ANOVAs, correlation matrices, proportion tests, contingency tables,
+    and factor analysis. This package is also useable from the 'jamovi'
+    statistical spreadsheet (see <https://www.jamovi.org> for more information).
 License: GPL (>= 2)
 Depends:
     R (>= 3.2)
