@@ -28,6 +28,11 @@ descriptivesClass <- R6::R6Class(
             private$.initPlots()
 
         },
+        .clear = function(vChanges, ...) {
+
+            private$.clearDescriptivesTable(vChanges)
+
+        },
         .run=function() {
 
             if (length(self$options$vars) > 0) {
@@ -275,6 +280,56 @@ descriptivesClass <- R6::R6Class(
                     }
                 }
             }
+        },
+
+        #### Clear tables ----
+        .clearDescriptivesTable = function(vChanges) {
+
+            table <- self$results$descriptives
+            vars <- vChanges
+            splitBy <- self$options$splitBy
+
+            expandGrid <- function(...) expand.grid(..., stringsAsFactors = FALSE)
+            grid <- rev(do.call(expandGrid, rev(private$levels)))
+
+            colNames <- private$colArgs$name
+
+            values <- rep(NA, length(vars) * ifelse(length(splitBy) > 0, nrow(grid), 1) * length(colNames))
+            names <- rep('', length(vars) * ifelse(length(splitBy) > 0, nrow(grid), 1) * length(colNames))
+            iter <- 1
+
+            for (i in seq_along(vars)) {
+
+                if (length(splitBy) > 0) {
+
+                    for (j in 1:nrow(grid)) {
+                        for (k in seq_along(colNames)) {
+
+                            name <- colNames[k]
+                            post <- paste0("[", name, paste0(grid[j,], collapse = ""), "]")
+                            subName <- paste0(vars[i], post)
+
+                            names[iter] <- subName
+                            iter <- iter + 1
+                        }
+                    }
+
+                } else {
+
+                    for (k in seq_along(colNames)) {
+
+                        name <- colNames[k]
+                        post <- paste0("[", name, "]")
+                        subName <- paste0(vars[i], post)
+
+                        names[iter] <- subName
+                        iter <- iter + 1
+                    }
+                }
+            }
+
+            names(values) <- names
+            table$setRow(rowNo=1, values=values)
         },
 
         #### Populate tables ----
