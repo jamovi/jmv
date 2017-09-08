@@ -554,15 +554,22 @@ descriptivesClass <- R6::R6Class(
                 alpha <- 1
 
             themeSpec <- NULL
+            nBins <- 18
 
             if (is.null(splitBy)) {
+
+                min <- min(data[names$x])
+                max <- max(data[names$x])
+
+                range <- max - min
+                binWidth <- range / nBins
 
                 plot <- ggplot(data=data, aes_string(x=names$x)) +
                     labs(list(x=labels$x, y='density'))
 
                 if (self$options$hist)
                     plot <- plot + geom_histogram(aes(y=..density..), position="identity",
-                                                  stat="bin", binwidth = 0.5, color=color, fill=fill)
+                                                  stat="bin", binwidth = binWidth, color=color, fill=fill)
 
                 if (self$options$dens)
                     plot <- plot + geom_density(color=color, fill=fill, alpha=alpha)
@@ -581,7 +588,7 @@ descriptivesClass <- R6::R6Class(
 
                 if (self$options$hist) {
                     if (requireNamespace('ggjoy', quietly=TRUE))
-                        plot <- plot + ggjoy::geom_joy(stat="binline", bins=20, scale=0.9)
+                        plot <- plot + ggjoy::geom_joy(stat="binline", bins=nBins, scale=0.9)
                     else
                         stop('Histograms require the ggjoy package to be installed (restart may be required)')
                 }
