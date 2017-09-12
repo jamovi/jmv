@@ -57,6 +57,10 @@ items:
           visible: (effectSize:omega)
           format: zto
 
+    - name: model
+      type: Property
+      description: The underlying `aov` object
+
     - name: assump
       title: Assumption Checks
       type: Group

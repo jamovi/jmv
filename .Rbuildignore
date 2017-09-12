@@ -1,2 +1,11 @@
+
+^\..*
 ^.*\.Rproj$
+^.*\.jmo$
+
+^temp$
+^build$
+^jamovi$
+^package.json$
+^README.md$
 ^\.Rproj\.user$

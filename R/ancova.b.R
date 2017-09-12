@@ -153,7 +153,9 @@ ancovaClass <- R6::R6Class(
             formula <- jmvcore::constructFormula(dep, modelTerms)
             formula <- stats::as.formula(formula)
 
-            private$.model <- stats::aov(formula, data)
+            model <- stats::aov(formula, data)
+            private$.model <- model
+            self$results$.setModel(model)
 
             singular <- NULL
 

@@ -647,7 +647,7 @@ cfaClass <- R6::R6Class(
             colors <- c(rep(theme$fill[1], length(vars)), rep(theme$fill[1], length(factors)))
             edgeColor <- theme$color[1]
 
-            if (requireNamespace('semPlot')) {
+            if (requireNamespace('semPlot', quietly = TRUE)) {
 
                 suppressWarnings({
 

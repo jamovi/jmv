@@ -1,9 +1,10 @@
 
 jamovi/ui/*.options.js
 build/
+temp/
+man/
 .Rproj.user
 .DS_Store
 npm-debug.log
 
 *.jmo
-

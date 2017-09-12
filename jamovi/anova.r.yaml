@@ -11,6 +11,10 @@ items:
 
       columns: []
 
+    - name: model
+      type: Property
+      description: The underlying `aov` object
+
     - name: assump
       title: Assumption Checks
       type: Group

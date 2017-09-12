@@ -216,6 +216,7 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         main = function() private$..main,
+        model = function() private$..model,
         assump = function() private$..assump,
         contrasts = function() private$..contrasts,
         postHoc = function() private$..postHoc,
@@ -224,6 +225,7 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
         descPlots = function() private$..descPlots),
     private = list(
         ..main = NA,
+        ..model = NA,
         ..assump = NA,
         ..contrasts = NA,
         ..postHoc = NA,
@@ -288,6 +290,7 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `type`="number", 
                         `visible`="(effectSize:omega)", 
                         `format`="zto")))
+            private$..model <- NULL
             private$..assump <- R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
@@ -443,7 +446,8 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$add(private$..postHoc)
             self$add(private$..desc)
             self$add(private$..descPlot)
-            self$add(private$..descPlots)}))
+            self$add(private$..descPlots)},
+        .setModel=function(x) private$..model <- x))
 
 ancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "ancovaBase",
@@ -526,6 +530,7 @@ ancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$main} \tab \tab \tab \tab \tab a table of ANCOVA results \cr
+#'   \code{results$model} \tab \tab \tab \tab \tab The underlying \code{aov} object \cr
 #'   \code{results$assump$homo} \tab \tab \tab \tab \tab a table of homogeneity tests \cr
 #'   \code{results$assump$qq} \tab \tab \tab \tab \tab a q-q plot \cr
 #'   \code{results$contrasts} \tab \tab \tab \tab \tab an array of contrasts tables \cr
