@@ -28,11 +28,11 @@ Imports:
     GPArotation,
     afex,
     mvnormtest,
-    lavaan
+    lavaan,
+    ggridges
 Suggests:
     exact2x2,
     testthat,
-    semPlot,
-    ggjoy
+    semPlot
 Encoding: UTF-8
 RoxygenNote: 6.0.1
