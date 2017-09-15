@@ -1,8 +1,8 @@
 Package: jmv
 Type: Package
 Title: The 'jamovi' Analyses
-Version: 0.7.5.6
-Date: 2017-08-03
+Version: 0.8
+Date: 2017-09-15
 Author: Ravi Selker, Jonathon Love, Damian Dropmann
 Maintainer: Jonathon Love <jon@thon.cc>
 Description: A suite of common statistical methods such as descriptives,
@@ -13,7 +13,7 @@ License: GPL (>= 2)
 Depends:
     R (>= 3.2)
 Imports:
-    jmvcore (>= 0.7),
+    jmvcore (>= 0.8),
     R6,
     car,
     multcomp,
