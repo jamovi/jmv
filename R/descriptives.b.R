@@ -803,14 +803,13 @@ descriptivesClass <- R6::R6Class(
 
                 pcNEqGr <- self$options$pcNEqGr
 
-                if (self$options$quart && pcNEqGr == 4)
-                    break()
+                if ( ! self$options$quart || pcNEqGr != 4) {
+                    pcEq <- (1:pcNEqGr / pcNEqGr)[-pcNEqGr]
+                    quants <- as.numeric(quantile(column, pcEq))
 
-                pcEq <- (1:pcNEqGr / pcNEqGr)[-pcNEqGr]
-                quants <- as.numeric(quantile(column, pcEq))
-
-                for (i in 1:(pcNEqGr-1))
-                    stats[[paste0('quant', i)]] <- quants[i]
+                    for (i in 1:(pcNEqGr-1))
+                        stats[[paste0('quant', i)]] <- quants[i]
+                }
 
             } else if (jmvcore::canBeNumeric(column)) {
 
