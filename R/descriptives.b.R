@@ -35,9 +35,16 @@ descriptivesClass <- R6::R6Class(
         },
         .run=function() {
 
+            data <- self$data
+            splitBy <- self$options$splitBy
+
+            if ( ! is.null(splitBy)) {
+                if ( ! is.factor(data[[splitBy]]))
+                    reject('Unable to split by a continuous variable')
+            }
+
             if (length(self$options$vars) > 0) {
 
-                data <- self$data
                 results <- private$.compute(data)
 
                 private$.populateDescriptivesTable(results)
@@ -102,9 +109,17 @@ descriptivesClass <- R6::R6Class(
             splitBy <- self$options$splitBy
             data <- self$data
 
-            levels <- list()
-            for (i in seq_along(splitBy))
-                levels[[i]] <- levels(data[[splitBy[i]]])
+            levels <- rep(list(NULL), length(splitBy))
+            for (i in seq_along(splitBy)) {
+                lvls <- levels(data[[splitBy[i]]])
+                if (length(lvls) == 0) {
+                    # error
+                    splitBy <- NULL
+                    levels <- list()
+                    break()
+                }
+                levels[[i]] <- lvls
+            }
 
             private$levels <- levels
 
