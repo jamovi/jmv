@@ -117,7 +117,7 @@ pRangeNor<-function(x,k){
     approx.dens=approx.dens/sum(approx.dens)
 
     upper.tails<-rev(cumsum(rev(approx.dens)))
-    upper.tails[test.grid==round(x,3)]
+    max(upper.tails[test.grid==round(x,3)], 0)
 }
 
 #' @importFrom stats complete.cases
