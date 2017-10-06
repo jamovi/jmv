@@ -39,8 +39,10 @@ descriptivesClass <- R6::R6Class(
             splitBy <- self$options$splitBy
 
             if ( ! is.null(splitBy)) {
-                if ( ! is.factor(data[[splitBy]]))
-                    reject('Unable to split by a continuous variable')
+                for (item in splitBy) {
+                    if ( ! is.factor(data[[item]]))
+                        reject('Unable to split by a continuous variable')
+                }
             }
 
             if (length(self$options$vars) > 0) {
