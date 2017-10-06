@@ -590,8 +590,8 @@ ancovaClass <- R6::R6Class(
 
                 contrast <- matrix(0, nrow=nLevels, ncol=nLevels-1)
                 for (i in seq_len(nLevels-1)) {
-                    contrast[i,  i] <- 1
-                    contrast[i+1,i] <- -1
+                    contrast[1:i,i] <- (nLevels-i) / nLevels
+                    contrast[(i+1):nLevels,i] <- -i / nLevels
                 }
 
             } else {
