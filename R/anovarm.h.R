@@ -276,28 +276,21 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        rmTable = function() private$..rmTable,
-        bsTable = function() private$..bsTable,
-        assump = function() private$..assump,
-        contrasts = function() private$..contrasts,
-        postHoc = function() private$..postHoc,
-        descPlot = function() private$..descPlot,
-        descPlots = function() private$..descPlots),
-    private = list(
-        ..rmTable = NA,
-        ..bsTable = NA,
-        ..assump = NA,
-        ..contrasts = NA,
-        ..postHoc = NA,
-        ..descPlot = NA,
-        ..descPlots = NA),
+        rmTable = function() private$.items[["rmTable"]],
+        bsTable = function() private$.items[["bsTable"]],
+        assump = function() private$.items[["assump"]],
+        contrasts = function() private$.items[["contrasts"]],
+        postHoc = function() private$.items[["postHoc"]],
+        descPlot = function() private$.items[["descPlot"]],
+        descPlots = function() private$.items[["descPlots"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="Repeated Measures ANOVA")
-            private$..rmTable <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="rmTable",
                 title="Within Subjects Effects",
@@ -480,8 +473,8 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="\u03C9\u00B2", 
                         `type`="number", 
                         `format`="zto", 
-                        `visible`="(effectSize:omega && spherCorr:HF)")))
-            private$..bsTable <- jmvcore::Table$new(
+                        `visible`="(effectSize:omega && spherCorr:HF)"))))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="bsTable",
                 title="Between Subjects Effects",
@@ -540,22 +533,20 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="\u03C9\u00B2", 
                         `type`="number", 
                         `format`="zto", 
-                        `visible`="(effectSize:omega)")))
-            private$..assump <- R6::R6Class(
+                        `visible`="(effectSize:omega)"))))
+            self$add(R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
-                    spherTable = function() private$..spherTable,
-                    leveneTable = function() private$..leveneTable),
-                private = list(
-                    ..spherTable = NA,
-                    ..leveneTable = NA),
+                    spherTable = function() private$.items[["spherTable"]],
+                    leveneTable = function() private$.items[["leveneTable"]]),
+                private = list(),
                 public=list(
                     initialize=function(options) {
                         super$initialize(
                             options=options,
                             name="assump",
                             title="Assumptions")
-                        private$..spherTable <- jmvcore::Table$new(
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="spherTable",
                             title="Tests of Sphericity",
@@ -592,8 +583,8 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 list(
                                     `name`="hf", 
                                     `title`="Huynh-Feldt \u03B5", 
-                                    `type`="number")))
-                        private$..leveneTable <- jmvcore::Table$new(
+                                    `type`="number"))))
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="leveneTable",
                             title="Equality of variances test (Levene's)",
@@ -619,10 +610,8 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 list(
                                     `name`="p", 
                                     `type`="number", 
-                                    `format`="zto,pvalue")))
-                        self$add(private$..spherTable)
-                        self$add(private$..leveneTable)}))$new(options=options)
-            private$..contrasts <- jmvcore::Array$new(
+                                    `format`="zto,pvalue"))))}))$new(options=options))
+            self$add(jmvcore::Array$new(
                 options=options,
                 name="contrasts",
                 title="Contrasts",
@@ -652,8 +641,8 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                             `name`="p", 
                             `title`="p", 
                             `type`="number", 
-                            `format`="zto,pvalue"))))
-            private$..postHoc <- jmvcore::Array$new(
+                            `format`="zto,pvalue")))))
+            self$add(jmvcore::Array$new(
                 options=options,
                 name="postHoc",
                 title="Post Hoc Tests",
@@ -672,8 +661,8 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         "rm",
                         "cov",
                         "rmTerms",
-                        "bsTerms")))
-            private$..descPlot <- jmvcore::Image$new(
+                        "bsTerms"))))
+            self$add(jmvcore::Image$new(
                 options=options,
                 name="descPlot",
                 title="Descriptive Plot",
@@ -688,8 +677,8 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "rm",
                     "rmCells",
                     "plotError",
-                    "ciWidth"))
-            private$..descPlots <- jmvcore::Array$new(
+                    "ciWidth")))
+            self$add(jmvcore::Array$new(
                 options=options,
                 name="descPlots",
                 title="Descriptive Plots",
@@ -705,14 +694,7 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         "rm",
                         "rmCells",
                         "plotError",
-                        "ciWidth")))
-            self$add(private$..rmTable)
-            self$add(private$..bsTable)
-            self$add(private$..assump)
-            self$add(private$..contrasts)
-            self$add(private$..postHoc)
-            self$add(private$..descPlot)
-            self$add(private$..descPlots)}))
+                        "ciWidth"))))}))
 
 anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "anovaRMBase",

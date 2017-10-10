@@ -200,100 +200,82 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 anovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        main = function() private$..main,
+        main = function() private$.items[["main"]],
         model = function() private$..model,
-        assump = function() private$..assump,
-        contrasts = function() private$..contrasts,
-        postHoc = function() private$..postHoc,
-        desc = function() private$..desc,
-        descPlot = function() private$..descPlot,
-        descPlots = function() private$..descPlots),
+        assump = function() private$.items[["assump"]],
+        contrasts = function() private$.items[["contrasts"]],
+        postHoc = function() private$.items[["postHoc"]],
+        desc = function() private$.items[["desc"]],
+        descPlot = function() private$.items[["descPlot"]],
+        descPlots = function() private$.items[["descPlots"]]),
     private = list(
-        ..main = NA,
-        ..model = NA,
-        ..assump = NA,
-        ..contrasts = NA,
-        ..postHoc = NA,
-        ..desc = NA,
-        ..descPlot = NA,
-        ..descPlots = NA),
+        ..model = NA),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="ANOVA")
-            private$..main <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="main",
                 title="ANOVA",
-                columns=list())
+                columns=list()))
             private$..model <- NULL
-            private$..assump <- R6::R6Class(
+            self$add(R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
-                    homo = function() private$..homo,
-                    qq = function() private$..qq),
-                private = list(
-                    ..homo = NA,
-                    ..qq = NA),
+                    homo = function() private$.items[["homo"]],
+                    qq = function() private$.items[["qq"]]),
+                private = list(),
                 public=list(
                     initialize=function(options) {
                         super$initialize(
                             options=options,
                             name="assump",
                             title="Assumption Checks")
-                        private$..homo <- jmvcore::Table$new(
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="homo",
                             title="Test for Homogeneity of Variances (Levene's)",
-                            columns=list())
-                        private$..qq <- jmvcore::Image$new(
+                            columns=list()))
+                        self$add(jmvcore::Image$new(
                             options=options,
                             name="qq",
-                            title="Q-Q Plot")
-                        self$add(private$..homo)
-                        self$add(private$..qq)}))$new(options=options)
-            private$..contrasts <- jmvcore::Array$new(
+                            title="Q-Q Plot"))}))$new(options=options))
+            self$add(jmvcore::Array$new(
                 options=options,
                 name="contrasts",
                 title="Contrasts",
                 template=jmvcore::Table$new(
                     options=options,
                     title="Contrasts - $key",
-                    columns=list()))
-            private$..postHoc <- jmvcore::Array$new(
+                    columns=list())))
+            self$add(jmvcore::Array$new(
                 options=options,
                 name="postHoc",
                 title="Post Hoc Tests",
                 template=jmvcore::Table$new(
                     options=options,
                     title="",
-                    columns=list()))
-            private$..desc <- jmvcore::Table$new(
+                    columns=list())))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="desc",
                 title="Descriptives",
-                columns=list())
-            private$..descPlot <- jmvcore::Image$new(
+                columns=list()))
+            self$add(jmvcore::Image$new(
                 options=options,
                 name="descPlot",
-                title="Descriptive Plot")
-            private$..descPlots <- jmvcore::Array$new(
+                title="Descriptive Plot"))
+            self$add(jmvcore::Array$new(
                 options=options,
                 name="descPlots",
                 title="Descriptive Plots",
                 template=jmvcore::Image$new(
                     options=options,
                     title="$key",
-                    renderFun=".descPlot"))
-            self$add(private$..main)
-            self$add(private$..assump)
-            self$add(private$..contrasts)
-            self$add(private$..postHoc)
-            self$add(private$..desc)
-            self$add(private$..descPlot)
-            self$add(private$..descPlots)},
+                    renderFun=".descPlot")))},
         .setModel=function(x) private$..model <- x))
 
 anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(

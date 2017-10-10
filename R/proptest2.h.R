@@ -78,16 +78,15 @@ propTest2Options <- if (requireNamespace('jmvcore')) R6::R6Class(
 propTest2Results <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        table = function() private$..table),
-    private = list(
-        ..table = NA),
+        table = function() private$.items[["table"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="Proportion Test (2 Outcomes)")
-            private$..table <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="table",
                 title="Binomial Test",
@@ -136,8 +135,7 @@ propTest2Results <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="Upper", 
                         `superTitle`="Confidence Interval", 
                         `type`="number", 
-                        `visible`="(ci)")))
-            self$add(private$..table)}))
+                        `visible`="(ci)"))))}))
 
 propTest2Base <- if (requireNamespace('jmvcore')) R6::R6Class(
     "propTest2Base",

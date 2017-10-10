@@ -130,18 +130,16 @@ corrMatrixOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 corrMatrixResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        matrix = function() private$..matrix,
-        plot = function() private$..plot),
-    private = list(
-        ..matrix = NA,
-        ..plot = NA),
+        matrix = function() private$.items[["matrix"]],
+        plot = function() private$.items[["plot"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="Correlation Matrix")
-            private$..matrix <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="matrix",
                 title="Correlation Matrix",
@@ -254,8 +252,8 @@ corrMatrixResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="", 
                         `type`="text", 
                         `content`="p-value", 
-                        `visible`="(kendall && sig)")))
-            private$..plot <- jmvcore::Image$new(
+                        `visible`="(kendall && sig)"))))
+            self$add(jmvcore::Image$new(
                 options=options,
                 name="plot",
                 title="Plot",
@@ -267,9 +265,7 @@ corrMatrixResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 clearWith=list(
                     "vars",
                     "plotDens",
-                    "plotStats"))
-            self$add(private$..matrix)
-            self$add(private$..plot)}))
+                    "plotStats")))}))
 
 corrMatrixBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "corrMatrixBase",

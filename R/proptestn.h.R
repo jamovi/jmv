@@ -69,18 +69,16 @@ propTestNOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 propTestNResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        props = function() private$..props,
-        tests = function() private$..tests),
-    private = list(
-        ..props = NA,
-        ..tests = NA),
+        props = function() private$.items[["props"]],
+        tests = function() private$.items[["tests"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="Proportion Test (N Outcomes)")
-            private$..props <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="props",
                 title="Proportions",
@@ -124,8 +122,8 @@ propTestNResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="prop[exp]", 
                         `title`="Proportion", 
                         `type`="number", 
-                        `visible`="(expected)")))
-            private$..tests <- jmvcore::Table$new(
+                        `visible`="(expected)"))))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="tests",
                 title="\u03C7\u00B2 Goodness of Fit",
@@ -147,9 +145,7 @@ propTestNResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="p", 
                         `title`="p", 
                         `type`="number", 
-                        `format`="zto,pvalue")))
-            self$add(private$..props)
-            self$add(private$..tests)}))
+                        `format`="zto,pvalue"))))}))
 
 propTestNBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "propTestNBase",

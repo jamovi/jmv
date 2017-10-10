@@ -53,18 +53,16 @@ anovaNPOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 anovaNPResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        table = function() private$..table,
-        comparisons = function() private$..comparisons),
-    private = list(
-        ..table = NA,
-        ..comparisons = NA),
+        table = function() private$.items[["table"]],
+        comparisons = function() private$.items[["comparisons"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="One-way ANOVA (Non-parametric)")
-            private$..table <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="table",
                 title="Kruskal-Wallis",
@@ -89,8 +87,8 @@ anovaNPResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="p", 
                         `title`="p", 
                         `type`="number", 
-                        `format`="zto,pvalue")))
-            private$..comparisons <- jmvcore::Array$new(
+                        `format`="zto,pvalue"))))
+            self$add(jmvcore::Array$new(
                 options=options,
                 name="comparisons",
                 title="Dwass-Steel-Critchlow-Fligner pairwise comparisons",
@@ -121,9 +119,7 @@ anovaNPResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                             `name`="p", 
                             `title`="p", 
                             `type`="number", 
-                            `format`="zto,pvalue"))))
-            self$add(private$..table)
-            self$add(private$..comparisons)}))
+                            `format`="zto,pvalue")))))}))
 
 anovaNPBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "anovaNPBase",

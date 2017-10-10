@@ -188,26 +188,20 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        modelFit = function() private$..modelFit,
-        modelComp = function() private$..modelComp,
-        coef = function() private$..coef,
-        coefPlot = function() private$..coefPlot,
-        dataSummary = function() private$..dataSummary,
-        assump = function() private$..assump),
-    private = list(
-        ..modelFit = NA,
-        ..modelComp = NA,
-        ..coef = NA,
-        ..coefPlot = NA,
-        ..dataSummary = NA,
-        ..assump = NA),
+        modelFit = function() private$.items[["modelFit"]],
+        modelComp = function() private$.items[["modelComp"]],
+        coef = function() private$.items[["coef"]],
+        coefPlot = function() private$.items[["coefPlot"]],
+        dataSummary = function() private$.items[["dataSummary"]],
+        assump = function() private$.items[["assump"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="Linear Regression")
-            private$..modelFit <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="modelFit",
                 title="Model Fit Measures",
@@ -286,8 +280,8 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="\u00B1%", 
                         `type`="number", 
                         `superTitle`="Overall Model Test", 
-                        `visible`="(modelTest:bf)")))
-            private$..modelComp <- jmvcore::Table$new(
+                        `visible`="(modelTest:bf)"))))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="modelComp",
                 title="Model Comparisons",
@@ -348,8 +342,8 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="err", 
                         `title`="\u00B1%", 
                         `type`="number", 
-                        `visible`="(modelComp:bf)")))
-            private$..coef <- jmvcore::Table$new(
+                        `visible`="(modelComp:bf)"))))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="coef",
                 title="Model Coefficients",
@@ -397,8 +391,8 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="p", 
                         `title`="p", 
                         `type`="number", 
-                        `format`="zto,pvalue")))
-            private$..coefPlot <- jmvcore::Image$new(
+                        `format`="zto,pvalue"))))
+            self$add(jmvcore::Image$new(
                 options=options,
                 name="coefPlot",
                 title="Coefficient Plot",
@@ -410,22 +404,20 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "dep",
                     "blocks",
                     "modelSelected",
-                    "ciWidth"))
-            private$..dataSummary <- R6::R6Class(
+                    "ciWidth")))
+            self$add(R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
-                    desc = function() private$..desc,
-                    cooks = function() private$..cooks),
-                private = list(
-                    ..desc = NA,
-                    ..cooks = NA),
+                    desc = function() private$.items[["desc"]],
+                    cooks = function() private$.items[["cooks"]]),
+                private = list(),
                 public=list(
                     initialize=function(options) {
                         super$initialize(
                             options=options,
                             name="dataSummary",
                             title="Data Summary")
-                        private$..desc <- jmvcore::Table$new(
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="desc",
                             title="Descriptives",
@@ -458,8 +450,8 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 list(
                                     `name`="se", 
                                     `title`="SE", 
-                                    `type`="number")))
-                        private$..cooks <- jmvcore::Table$new(
+                                    `type`="number"))))
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="cooks",
                             title="Cook's Distance",
@@ -491,28 +483,22 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     `name`="max", 
                                     `title`="Max", 
                                     `type`="number", 
-                                    `superTitle`="Range")))
-                        self$add(private$..desc)
-                        self$add(private$..cooks)}))$new(options=options)
-            private$..assump <- R6::R6Class(
+                                    `superTitle`="Range"))))}))$new(options=options))
+            self$add(R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
-                    durbin = function() private$..durbin,
-                    collin = function() private$..collin,
-                    qqPlot = function() private$..qqPlot,
-                    resPlots = function() private$..resPlots),
-                private = list(
-                    ..durbin = NA,
-                    ..collin = NA,
-                    ..qqPlot = NA,
-                    ..resPlots = NA),
+                    durbin = function() private$.items[["durbin"]],
+                    collin = function() private$.items[["collin"]],
+                    qqPlot = function() private$.items[["qqPlot"]],
+                    resPlots = function() private$.items[["resPlots"]]),
+                private = list(),
                 public=list(
                     initialize=function(options) {
                         super$initialize(
                             options=options,
                             name="assump",
                             title="Assumption Checks")
-                        private$..durbin <- jmvcore::Table$new(
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="durbin",
                             title="Durbin\u2013Watson Test for Autocorrelation",
@@ -535,8 +521,8 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     `name`="p", 
                                     `title`="p", 
                                     `type`="number", 
-                                    `format`="zto,pvalue")))
-                        private$..collin <- jmvcore::Table$new(
+                                    `format`="zto,pvalue"))))
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="collin",
                             title="Collinearity Statistics",
@@ -557,8 +543,8 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 list(
                                     `name`="tol", 
                                     `title`="Tolerance", 
-                                    `type`="number")))
-                        private$..qqPlot <- jmvcore::Image$new(
+                                    `type`="number"))))
+                        self$add(jmvcore::Image$new(
                             options=options,
                             name="qqPlot",
                             title="Q-Q Plot",
@@ -569,8 +555,8 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                             clearWith=list(
                                 "dep",
                                 "blocks",
-                                "modelSelected"))
-                        private$..resPlots <- jmvcore::Array$new(
+                                "modelSelected")))
+                        self$add(jmvcore::Array$new(
                             options=options,
                             name="resPlots",
                             title="Residuals Plots",
@@ -581,17 +567,7 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 clearWith=list(
                                     "dep",
                                     "blocks",
-                                    "modelSelected")))
-                        self$add(private$..durbin)
-                        self$add(private$..collin)
-                        self$add(private$..qqPlot)
-                        self$add(private$..resPlots)}))$new(options=options)
-            self$add(private$..modelFit)
-            self$add(private$..modelComp)
-            self$add(private$..coef)
-            self$add(private$..coefPlot)
-            self$add(private$..dataSummary)
-            self$add(private$..assump)}))
+                                    "modelSelected"))))}))$new(options=options))}))
 
 linRegBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "linRegBase",

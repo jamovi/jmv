@@ -96,18 +96,16 @@ contTablesPairedOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 contTablesPairedResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        freqs = function() private$..freqs,
-        test = function() private$..test),
-    private = list(
-        ..freqs = NA,
-        ..test = NA),
+        freqs = function() private$.items[["freqs"]],
+        test = function() private$.items[["test"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="Paired Samples Contingency Tables")
-            private$..freqs <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="freqs",
                 title="Contingency Tables",
@@ -115,8 +113,8 @@ contTablesPairedResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 clearWith=list(
                     "rows",
                     "cols",
-                    "counts"))
-            private$..test <- jmvcore::Table$new(
+                    "counts")))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="test",
                 title="McNemar Test",
@@ -203,9 +201,7 @@ contTablesPairedResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     list(
                         `name`="p[n]", 
                         `title`="p", 
-                        `content`="")))
-            self$add(private$..freqs)
-            self$add(private$..test)}))
+                        `content`=""))))}))
 
 contTablesPairedBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "contTablesPairedBase",

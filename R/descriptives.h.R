@@ -257,20 +257,17 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 descriptivesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        descriptives = function() private$..descriptives,
-        frequencies = function() private$..frequencies,
-        plots = function() private$..plots),
-    private = list(
-        ..descriptives = NA,
-        ..frequencies = NA,
-        ..plots = NA),
+        descriptives = function() private$.items[["descriptives"]],
+        frequencies = function() private$.items[["frequencies"]],
+        plots = function() private$.items[["plots"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="Descriptives")
-            private$..descriptives <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="descriptives",
                 title="Descriptives",
@@ -279,8 +276,8 @@ descriptivesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 clearWith=list(
                     "splitBy",
                     "pcNEqGr"),
-                columns=list())
-            private$..frequencies <- jmvcore::Array$new(
+                columns=list()))
+            self$add(jmvcore::Array$new(
                 options=options,
                 name="frequencies",
                 title="Frequencies",
@@ -292,8 +289,8 @@ descriptivesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     visible="(levels($key))",
                     clearWith=list(
                         "splitBy"),
-                    columns=list()))
-            private$..plots <- jmvcore::Array$new(
+                    columns=list())))
+            self$add(jmvcore::Array$new(
                 options=options,
                 name="plots",
                 title="Plots",
@@ -307,10 +304,7 @@ descriptivesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                             super$initialize(
                                 options=options,
                                 name="undefined",
-                                title="($key)")}))$new(options=options))
-            self$add(private$..descriptives)
-            self$add(private$..frequencies)
-            self$add(private$..plots)}))
+                                title="($key)")}))$new(options=options)))}))
 
 descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "descriptivesBase",

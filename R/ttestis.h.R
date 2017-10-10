@@ -177,22 +177,18 @@ ttestISOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        ttest = function() private$..ttest,
-        assum = function() private$..assum,
-        desc = function() private$..desc,
-        plots = function() private$..plots),
-    private = list(
-        ..ttest = NA,
-        ..assum = NA,
-        ..desc = NA,
-        ..plots = NA),
+        ttest = function() private$.items[["ttest"]],
+        assum = function() private$.items[["assum"]],
+        desc = function() private$.items[["desc"]],
+        plots = function() private$.items[["plots"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="Independent Samples T-Test")
-            private$..ttest <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="ttest",
                 title="Independent Samples T-Test",
@@ -442,22 +438,20 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="ciu[mann]", 
                         `title`="Upper", 
                         `type`="number", 
-                        `visible`="(ci && mann)")))
-            private$..assum <- R6::R6Class(
+                        `visible`="(ci && mann)"))))
+            self$add(R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
-                    norm = function() private$..norm,
-                    eqv = function() private$..eqv),
-                private = list(
-                    ..norm = NA,
-                    ..eqv = NA),
+                    norm = function() private$.items[["norm"]],
+                    eqv = function() private$.items[["eqv"]]),
+                private = list(),
                 public=list(
                     initialize=function(options) {
                         super$initialize(
                             options=options,
                             name="assum",
                             title="Assumptions")
-                        private$..norm <- jmvcore::Table$new(
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="norm",
                             title="Test of Normality (Shapiro-Wilk)",
@@ -482,8 +476,8 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     `name`="p", 
                                     `title`="p", 
                                     `type`="number", 
-                                    `format`="zto,pvalue")))
-                        private$..eqv <- jmvcore::Table$new(
+                                    `format`="zto,pvalue"))))
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="eqv",
                             title="Test of Equality of Variances (Levene's)",
@@ -510,10 +504,8 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 list(
                                     `name`="p", 
                                     `type`="number", 
-                                    `format`="zto,pvalue")))
-                        self$add(private$..norm)
-                        self$add(private$..eqv)}))$new(options=options)
-            private$..desc <- jmvcore::Table$new(
+                                    `format`="zto,pvalue"))))}))$new(options=options))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="desc",
                 title="Group Descriptives",
@@ -575,8 +567,8 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     list(
                         `name`="se[2]", 
                         `title`="SE", 
-                        `type`="number")))
-            private$..plots <- jmvcore::Array$new(
+                        `type`="number"))))
+            self$add(jmvcore::Array$new(
                 options=options,
                 name="plots",
                 title="Plots",
@@ -588,11 +580,7 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     renderFun=".plot",
                     clearWith=list(
                         "group",
-                        "miss")))
-            self$add(private$..ttest)
-            self$add(private$..assum)
-            self$add(private$..desc)
-            self$add(private$..plots)}))
+                        "miss"))))}))
 
 ttestISBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "ttestISBase",

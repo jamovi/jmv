@@ -159,22 +159,18 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        ttest = function() private$..ttest,
-        normality = function() private$..normality,
-        descriptives = function() private$..descriptives,
-        plots = function() private$..plots),
-    private = list(
-        ..ttest = NA,
-        ..normality = NA,
-        ..descriptives = NA,
-        ..plots = NA),
+        ttest = function() private$.items[["ttest"]],
+        normality = function() private$.items[["normality"]],
+        descriptives = function() private$.items[["descriptives"]],
+        plots = function() private$.items[["plots"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="One Sample T-Test")
-            private$..ttest <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="ttest",
                 title="One Sample T-Test",
@@ -352,8 +348,8 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="ciu[mann]", 
                         `title`="Upper", 
                         `type`="number", 
-                        `visible`="(ci && mann)")))
-            private$..normality <- jmvcore::Table$new(
+                        `visible`="(ci && mann)"))))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="normality",
                 title="Test of Normality (Shapiro-Wilk)",
@@ -376,8 +372,8 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     list(
                         `name`="p", 
                         `type`="number", 
-                        `format`="zto,pvalue")))
-            private$..descriptives <- jmvcore::Table$new(
+                        `format`="zto,pvalue"))))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="descriptives",
                 title="Descriptives",
@@ -410,8 +406,8 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     list(
                         `name`="se", 
                         `title`="SE", 
-                        `type`="number")))
-            private$..plots <- jmvcore::Image$new(
+                        `type`="number"))))
+            self$add(jmvcore::Image$new(
                 options=options,
                 name="plots",
                 title="Plots",
@@ -419,11 +415,7 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 renderFun=".plot",
                 clearWith=list(
                     "vars",
-                    "miss"))
-            self$add(private$..ttest)
-            self$add(private$..normality)
-            self$add(private$..descriptives)
-            self$add(private$..plots)}))
+                    "miss")))}))
 
 ttestOneSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "ttestOneSBase",

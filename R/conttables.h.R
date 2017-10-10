@@ -170,26 +170,20 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        freqs = function() private$..freqs,
-        chiSq = function() private$..chiSq,
-        odds = function() private$..odds,
-        nom = function() private$..nom,
-        gamma = function() private$..gamma,
-        taub = function() private$..taub),
-    private = list(
-        ..freqs = NA,
-        ..chiSq = NA,
-        ..odds = NA,
-        ..nom = NA,
-        ..gamma = NA,
-        ..taub = NA),
+        freqs = function() private$.items[["freqs"]],
+        chiSq = function() private$.items[["chiSq"]],
+        odds = function() private$.items[["odds"]],
+        nom = function() private$.items[["nom"]],
+        gamma = function() private$.items[["gamma"]],
+        taub = function() private$.items[["taub"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="Contingency Tables")
-            private$..freqs <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="freqs",
                 title="Contingency Tables",
@@ -198,8 +192,8 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "rows",
                     "cols",
                     "counts",
-                    "layers"))
-            private$..chiSq <- jmvcore::Table$new(
+                    "layers")))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="chiSq",
                 title="\u03C7\u00B2 Tests",
@@ -280,8 +274,8 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     list(
                         `name`="value[N]", 
                         `title`="Value", 
-                        `type`="integer")))
-            private$..odds <- jmvcore::Table$new(
+                        `type`="integer"))))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="odds",
                 title="Log Odds Ratio",
@@ -324,8 +318,8 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     list(
                         `name`="ciu[f]", 
                         `title`="Upper", 
-                        `superTitle`="Confidence Intervals")))
-            private$..nom <- jmvcore::Table$new(
+                        `superTitle`="Confidence Intervals"))))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="nom",
                 title="Nominal",
@@ -360,8 +354,8 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     list(
                         `name`="v[cra]", 
                         `title`="Value", 
-                        `visible`="(phiCra)")))
-            private$..gamma <- jmvcore::Table$new(
+                        `visible`="(phiCra)"))))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="gamma",
                 title="Gamma",
@@ -385,8 +379,8 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     list(
                         `name`="ciu", 
                         `title`="Upper", 
-                        `superTitle`="Confidence Intervals")))
-            private$..taub <- jmvcore::Table$new(
+                        `superTitle`="Confidence Intervals"))))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="taub",
                 title="Kendall's Tau-b",
@@ -407,13 +401,7 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="p", 
                         `title`="p", 
                         `type`="number", 
-                        `format`="zto,pvalue")))
-            self$add(private$..freqs)
-            self$add(private$..chiSq)
-            self$add(private$..odds)
-            self$add(private$..nom)
-            self$add(private$..gamma)
-            self$add(private$..taub)}))
+                        `format`="zto,pvalue"))))}))
 
 contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "contTablesBase",

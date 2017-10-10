@@ -125,20 +125,17 @@ reliabilityOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 reliabilityResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        scale = function() private$..scale,
-        items = function() private$..items,
-        corPlot = function() private$..corPlot),
-    private = list(
-        ..scale = NA,
-        ..items = NA,
-        ..corPlot = NA),
+        scale = function() private$.items[["scale"]],
+        items = function() private$.items[["items"]],
+        corPlot = function() private$.items[["corPlot"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="Reliability Analysis")
-            private$..scale <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="scale",
                 title="Scale Reliability Statistics",
@@ -167,8 +164,8 @@ reliabilityResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     list(
                         `name`="omega", 
                         `title`="McDonald's \u03C9", 
-                        `visible`="(omegaScale)")))
-            private$..items <- jmvcore::Table$new(
+                        `visible`="(omegaScale)"))))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="items",
                 title="Item Reliability Statistics",
@@ -204,8 +201,8 @@ reliabilityResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="omega", 
                         `title`="McDonald's \u03C9", 
                         `superTitle`="if item dropped", 
-                        `visible`="(omegaItems)")))
-            private$..corPlot <- jmvcore::Image$new(
+                        `visible`="(omegaItems)"))))
+            self$add(jmvcore::Image$new(
                 options=options,
                 name="corPlot",
                 title="Correlation Heatmap",
@@ -215,10 +212,7 @@ reliabilityResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 renderFun=".corPlot",
                 clearWith=list(
                     "vars",
-                    "revItems"))
-            self$add(private$..scale)
-            self$add(private$..items)
-            self$add(private$..corPlot)}))
+                    "revItems")))}))
 
 reliabilityBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "reliabilityBase",

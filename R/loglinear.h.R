@@ -80,24 +80,22 @@ logLinearOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 logLinearResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        table = function() private$..table),
-    private = list(
-        ..table = NA),
+        table = function() private$.items[["table"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="Log-Linear Regression")
-            private$..table <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="table",
                 title="Log-Linear Regression",
                 columns=list(
                     list(
                         `name`="var", 
-                        `title`="")))
-            self$add(private$..table)}))
+                        `title`=""))))}))
 
 logLinearBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "logLinearBase",

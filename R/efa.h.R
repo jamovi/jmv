@@ -145,20 +145,18 @@ efaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 efaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        text = function() private$..text),
-    private = list(
-        ..text = NA),
+        text = function() private$.items[["text"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="Exploratory Factor Analysis")
-            private$..text <- jmvcore::Preformatted$new(
+            self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="text",
-                title="Exploratory Factor Analysis")
-            self$add(private$..text)}))
+                title="Exploratory Factor Analysis"))}))
 
 efaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "efaBase",

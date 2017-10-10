@@ -105,20 +105,17 @@ mancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 mancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        multivar = function() private$..multivar,
-        univar = function() private$..univar,
-        assump = function() private$..assump),
-    private = list(
-        ..multivar = NA,
-        ..univar = NA,
-        ..assump = NA),
+        multivar = function() private$.items[["multivar"]],
+        univar = function() private$.items[["univar"]],
+        assump = function() private$.items[["assump"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="MANCOVA")
-            private$..multivar <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="multivar",
                 title="Multivariate Tests",
@@ -278,8 +275,8 @@ mancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="p", 
                         `type`="number", 
                         `format`="zto,pvalue", 
-                        `visible`="(multivar:roy)")))
-            private$..univar <- jmvcore::Table$new(
+                        `visible`="(multivar:roy)"))))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="univar",
                 title="Univariate Tests",
@@ -317,24 +314,21 @@ mancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="p", 
                         `title`="p", 
                         `type`="number", 
-                        `format`="zto,pvalue")))
-            private$..assump <- R6::R6Class(
+                        `format`="zto,pvalue"))))
+            self$add(R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
-                    boxM = function() private$..boxM,
-                    shapiro = function() private$..shapiro,
-                    qqPlot = function() private$..qqPlot),
-                private = list(
-                    ..boxM = NA,
-                    ..shapiro = NA,
-                    ..qqPlot = NA),
+                    boxM = function() private$.items[["boxM"]],
+                    shapiro = function() private$.items[["shapiro"]],
+                    qqPlot = function() private$.items[["qqPlot"]]),
+                private = list(),
                 public=list(
                     initialize=function(options) {
                         super$initialize(
                             options=options,
                             name="assump",
                             title="Assumption Checks")
-                        private$..boxM <- jmvcore::Table$new(
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="boxM",
                             title="Box's Homogeneity of Covariance Matrices Test",
@@ -356,8 +350,8 @@ mancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     `name`="p", 
                                     `title`="p", 
                                     `type`="number", 
-                                    `format`="zto,pvalue")))
-                        private$..shapiro <- jmvcore::Table$new(
+                                    `format`="zto,pvalue"))))
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="shapiro",
                             title="Shapiro-Wilk Multivariate Normality Test",
@@ -374,8 +368,8 @@ mancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     `name`="p", 
                                     `title`="p", 
                                     `type`="number", 
-                                    `format`="zto,pvalue")))
-                        private$..qqPlot <- jmvcore::Image$new(
+                                    `format`="zto,pvalue"))))
+                        self$add(jmvcore::Image$new(
                             options=options,
                             name="qqPlot",
                             title="Q-Q Plot Assessing Multivariate Normality",
@@ -384,13 +378,7 @@ mancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                             renderFun=".qqPlot",
                             visible="(qqPlot)",
                             clearWith=list(
-                                "deps"))
-                        self$add(private$..boxM)
-                        self$add(private$..shapiro)
-                        self$add(private$..qqPlot)}))$new(options=options)
-            self$add(private$..multivar)
-            self$add(private$..univar)
-            self$add(private$..assump)}))
+                                "deps")))}))$new(options=options))}))
 
 mancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "mancovaBase",

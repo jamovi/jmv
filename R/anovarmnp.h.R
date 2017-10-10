@@ -70,20 +70,17 @@ anovaRMNPOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 anovaRMNPResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        table = function() private$..table,
-        comp = function() private$..comp,
-        plot = function() private$..plot),
-    private = list(
-        ..table = NA,
-        ..comp = NA,
-        ..plot = NA),
+        table = function() private$.items[["table"]],
+        comp = function() private$.items[["comp"]],
+        plot = function() private$.items[["plot"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="Repeated Measures ANOVA (Non-parametric)")
-            private$..table <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="table",
                 title="Friedman",
@@ -103,8 +100,8 @@ anovaRMNPResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="p", 
                         `title`="p", 
                         `type`="number", 
-                        `format`="zto,pvalue")))
-            private$..comp <- jmvcore::Table$new(
+                        `format`="zto,pvalue"))))
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="comp",
                 title="Pairwise Comparisons (Durbin-Conover)",
@@ -134,8 +131,8 @@ anovaRMNPResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="p", 
                         `title`="p", 
                         `type`="number", 
-                        `format`="zto,pvalue")))
-            private$..plot <- jmvcore::Image$new(
+                        `format`="zto,pvalue"))))
+            self$add(jmvcore::Image$new(
                 options=options,
                 name="plot",
                 title="Descriptive Plot",
@@ -143,10 +140,7 @@ anovaRMNPResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 renderFun=".plot",
                 clearWith=list(
                     "plotType",
-                    "measures"))
-            self$add(private$..table)
-            self$add(private$..comp)
-            self$add(private$..plot)}))
+                    "measures")))}))
 
 anovaRMNPBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "anovaRMNPBase",

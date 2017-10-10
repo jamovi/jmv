@@ -137,24 +137,19 @@ pcaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 pcaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        loadings = function() private$..loadings,
-        factorStats = function() private$..factorStats,
-        modelFit = function() private$..modelFit,
-        assump = function() private$..assump,
-        eigen = function() private$..eigen),
-    private = list(
-        ..loadings = NA,
-        ..factorStats = NA,
-        ..modelFit = NA,
-        ..assump = NA,
-        ..eigen = NA),
+        loadings = function() private$.items[["loadings"]],
+        factorStats = function() private$.items[["factorStats"]],
+        modelFit = function() private$.items[["modelFit"]],
+        assump = function() private$.items[["assump"]],
+        eigen = function() private$.items[["eigen"]]),
+    private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
                 title="Principal Component Analysis")
-            private$..loadings <- jmvcore::Table$new(
+            self$add(jmvcore::Table$new(
                 options=options,
                 name="loadings",
                 title="Component Loadings",
@@ -179,22 +174,20 @@ pcaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     list(
                         `name`="uniq", 
                         `title`="Uniqueness", 
-                        `type`="number")))
-            private$..factorStats <- R6::R6Class(
+                        `type`="number"))))
+            self$add(R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
-                    factorSummary = function() private$..factorSummary,
-                    factorCor = function() private$..factorCor),
-                private = list(
-                    ..factorSummary = NA,
-                    ..factorCor = NA),
+                    factorSummary = function() private$.items[["factorSummary"]],
+                    factorCor = function() private$.items[["factorCor"]]),
+                private = list(),
                 public=list(
                     initialize=function(options) {
                         super$initialize(
                             options=options,
                             name="factorStats",
                             title="Component Statistics")
-                        private$..factorSummary <- jmvcore::Table$new(
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="factorSummary",
                             title="Summary",
@@ -220,8 +213,8 @@ pcaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 list(
                                     `name`="varCum", 
                                     `title`="Cumulative %", 
-                                    `type`="number")))
-                        private$..factorCor <- jmvcore::Table$new(
+                                    `type`="number"))))
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="factorCor",
                             title="Correlation Matrix",
@@ -241,22 +234,19 @@ pcaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 list(
                                     `name`="pc1", 
                                     `title`="1", 
-                                    `type`="number")))
-                        self$add(private$..factorSummary)
-                        self$add(private$..factorCor)}))$new(options=options)
-            private$..modelFit <- R6::R6Class(
+                                    `type`="number"))))}))$new(options=options))
+            self$add(R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
-                    fit = function() private$..fit),
-                private = list(
-                    ..fit = NA),
+                    fit = function() private$.items[["fit"]]),
+                private = list(),
                 public=list(
                     initialize=function(options) {
                         super$initialize(
                             options=options,
                             name="modelFit",
                             title="Model Fit")
-                        private$..fit <- jmvcore::Table$new(
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="fit",
                             title="Model Fit Measures",
@@ -305,23 +295,20 @@ pcaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     `title`="p", 
                                     `type`="number", 
                                     `format`="zto,pvalue", 
-                                    `superTitle`="Model Test")))
-                        self$add(private$..fit)}))$new(options=options)
-            private$..assump <- R6::R6Class(
+                                    `superTitle`="Model Test"))))}))$new(options=options))
+            self$add(R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
-                    bartlett = function() private$..bartlett,
-                    kmo = function() private$..kmo),
-                private = list(
-                    ..bartlett = NA,
-                    ..kmo = NA),
+                    bartlett = function() private$.items[["bartlett"]],
+                    kmo = function() private$.items[["kmo"]]),
+                private = list(),
                 public=list(
                     initialize=function(options) {
                         super$initialize(
                             options=options,
                             name="assump",
                             title="Assumption Checks")
-                        private$..bartlett <- jmvcore::Table$new(
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="bartlett",
                             title="Bartlett's Test of Sphericity",
@@ -342,8 +329,8 @@ pcaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     `name`="p", 
                                     `title`="p", 
                                     `type`="number", 
-                                    `format`="zto,pvalue")))
-                        private$..kmo <- jmvcore::Table$new(
+                                    `format`="zto,pvalue"))))
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="kmo",
                             title="KMO Measure of Sampling Adequacy",
@@ -359,24 +346,20 @@ pcaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     `name`="msa", 
                                     `title`="MSA", 
                                     `type`="number", 
-                                    `format`="zto")))
-                        self$add(private$..bartlett)
-                        self$add(private$..kmo)}))$new(options=options)
-            private$..eigen <- R6::R6Class(
+                                    `format`="zto"))))}))$new(options=options))
+            self$add(R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
-                    initEigen = function() private$..initEigen,
-                    screePlot = function() private$..screePlot),
-                private = list(
-                    ..initEigen = NA,
-                    ..screePlot = NA),
+                    initEigen = function() private$.items[["initEigen"]],
+                    screePlot = function() private$.items[["screePlot"]]),
+                private = list(),
                 public=list(
                     initialize=function(options) {
                         super$initialize(
                             options=options,
                             name="eigen",
                             title="Eigenvalues")
-                        private$..initEigen <- jmvcore::Table$new(
+                        self$add(jmvcore::Table$new(
                             options=options,
                             name="initEigen",
                             title="Initial Eigenvalues",
@@ -399,8 +382,8 @@ pcaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 list(
                                     `name`="varCum", 
                                     `title`="Cumulative %", 
-                                    `type`="number")))
-                        private$..screePlot <- jmvcore::Image$new(
+                                    `type`="number"))))
+                        self$add(jmvcore::Image$new(
                             options=options,
                             name="screePlot",
                             title="Scree Plot",
@@ -412,14 +395,7 @@ pcaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 "vars",
                                 "screePlot",
                                 "nFactorMethod",
-                                "minEigen"))
-                        self$add(private$..initEigen)
-                        self$add(private$..screePlot)}))$new(options=options)
-            self$add(private$..loadings)
-            self$add(private$..factorStats)
-            self$add(private$..modelFit)
-            self$add(private$..assump)
-            self$add(private$..eigen)}))
+                                "minEigen")))}))$new(options=options))}))
 
 pcaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "pcaBase",
