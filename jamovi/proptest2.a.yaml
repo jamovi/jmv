@@ -93,4 +93,56 @@ options:
           R: >
             a number between 50 and 99.9 (default: 95), the confidence interval
             width
+
+    - name: bf
+      title: Bayes factor
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Bayes factors
+
+    - name: priorA
+      title: "beta 'a' parameter"
+      type: Number
+      min: 0.01
+      default: 1
+      description:
+          R: >
+            a number (default: 1), the beta prior 'a' parameter
+
+    - name: priorB
+      title: "beta 'b' parameter"
+      type: Number
+      min: 0.01
+      default: 1
+      description:
+          R: >
+            a number (default: 1), the beta prior 'b' parameter
+
+    - name: ciBayes
+      title: Credible intervals
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Bayesian credible intervals
+
+    - name: ciBayesWidth
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95), the credible interval
+            width
+
+    - name: postPlots
+      title: Posterior plot
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide posterior plots
 ...
