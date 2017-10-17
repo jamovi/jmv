@@ -14,6 +14,12 @@ items:
           - testValue
           - hypothesis
           - ciWidth
+          - bf
+          - ciBayes
+          - ciBayesWidth
+          - priorA
+          - priorB
+          - ci
 
       columns:
           - name: var
@@ -54,3 +60,41 @@ items:
             superTitle: Confidence Interval
             type: number
             visible: (ci)
+
+          - name: bf
+            title: Bayes factor₁₀
+            type: number
+            visible: (bf)
+
+          - name: cilBayes
+            title: Lower
+            superTitle: Credible Interval
+            type: number
+            visible: (ciBayes)
+
+          - name: ciuBayes
+            title: Upper
+            superTitle: Credible Interval
+            type: number
+            visible: (ciBayes)
+
+    - name: postPlots
+      title: Posterior Plots
+      type: Array
+      description: an array of the posterior plots
+      visible: (postPlots)
+      items: (vars)
+      template:
+          title: ($key)
+          type: Array
+          template:
+              type: Image
+              title: ($key)
+              renderFun: .postPlot
+              width: 400
+              height: 350
+              clearWith:
+                - priorA
+                - priorB
+                - testValue
+                - hypothesis

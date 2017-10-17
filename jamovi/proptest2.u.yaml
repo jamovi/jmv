@@ -1,6 +1,6 @@
-name:  propTest2
+name: propTest2
 title: Proportion Test (2 Outcomes)
-jus:   '2.0'
+jus: '2.0'
 compilerMode: tame
 children:
   - type: VariableSupplier
@@ -18,50 +18,116 @@ children:
             name: vars
             isTarget: true
   - type: LayoutBox
-    stretchFactor: 1
     margin: large
+    stretchFactor: 1
     children:
-      - type: CheckBox
-        name: areCounts
-
       - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        cell:
+          column: 0
+          row: 0
         children:
-          - type: TextBox
-            name: testValue
-            format: number
-            inputPattern: "[0-9]+"
-
-  - type: Label
-    label: Hypothesis
-    children:
-      - type: RadioButton
-        name: hypothesis_notequal
-        label: "≠ Test value"
-        optionName: hypothesis
-        optionPart: notequal
-
-      - type: RadioButton
-        name: hypothesis_greater
-        label: "> Test value"
-        optionName: hypothesis
-        optionPart: greater
-
-      - type: RadioButton
-        name: hypothesis_less
-        label: "< Test value"
-        optionName: hypothesis
-        optionPart: less
-
-  - type: Label
-    label: Additional Statistics
-    children:
-      - type: CheckBox
-        name: ci
+          - type: LayoutBox
+            stretchFactor: 1
+            margin: large
+            children:
+              - type: CheckBox
+                name: areCounts
+              - type: LayoutBox
+                children:
+                  - type: TextBox
+                    name: testValue
+                    format: number
+                    inputPattern: '[0-9]+'
+          - type: Label
+            label: Hypothesis
+            children:
+              - type: RadioButton
+                name: hypothesis_notequal
+                label: ≠ Test value
+                optionName: hypothesis
+                optionPart: notequal
+              - type: RadioButton
+                name: hypothesis_greater
+                label: '> Test value'
+                optionName: hypothesis
+                optionPart: greater
+              - type: RadioButton
+                name: hypothesis_less
+                label: < Test value
+                optionName: hypothesis
+                optionPart: less
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        cell:
+          column: 1
+          row: 0
         children:
-          - type: TextBox
-            name: ciWidth
-            label: Interval
-            suffix: "%"
-            format: number
-            inputPattern: "[0-9]+"
-            enable: (ci)
+          - type: Label
+            label: Additional Statistics
+            children:
+              - type: CheckBox
+                name: ci
+                children:
+                  - type: TextBox
+                    name: ciWidth
+                    label: Interval
+                    suffix: '%'
+                    format: number
+                    inputPattern: '[0-9]+'
+                    enable: (ci)
+  - type: CollapseBox
+    label: Bayesian Statistics
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        cell:
+          column: 0
+          row: 0
+        children:
+          - type: Label
+            label: Prior
+            children:
+              - type: TextBox
+                name: priorA
+                label: a parameter
+                format: number
+                inputPattern: '[0-9]+'
+              - type: TextBox
+                name: priorB
+                label: b parameter
+                format: number
+                inputPattern: '[0-9]+'
+          - type: Label
+            label: Plots
+            children:
+              - type: CheckBox
+                name: postPlots
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        cell:
+          column: 1
+          row: 0
+        children:
+          - type: Label
+            label: Statistics
+            children:
+              - type: CheckBox
+                name: bf
+              - type: CheckBox
+                name: ciBayes
+                children:
+                  - type: TextBox
+                    name: ciBayesWidth
+                    label: Interval
+                    suffix: '%'
+                    format: number
+                    inputPattern: '[0-9]+'
+                    enable: (ciBayes)
+
