@@ -40,78 +40,130 @@ children:
         stretchFactor: 1
         collapsed: true
         children:
-          - type: Label
-            label: ""
-            fitToGrid: true
-            cell:
-              row: 0
-              column: 0
+          - type: LayoutBox
+            margin: large
+            stretchFactor: 1
             children:
-              - type: CheckBox
-                name: chiSq
-              - type: CheckBox
-                name: chiSqCorr
-              - type: CheckBox
-                name: likeRat
-          - type: Label
-            label: ""
-            fitToGrid: true
-            cell:
-              column: 1
-              row: 0
-            children:
-              - type: CheckBox
-                name: logOdds
+              - type: LayoutBox
+                cell:
+                  column: 0
+                  row: 0
+                stretchFactor: 1
                 children:
-                  - type: TextBox
-                    name: ciWidth
-                    suffix: '%'
-                    format: number
-                    inputPattern: '[0-9]+'
-                    enable: (logOdds)
-          - type: Label
-            fitToGrid: true
-            label: Nominal
-            cell:
-              column: 0
-              row: 1
+                  - type: Label
+                    label: Tests
+                    fitToGrid: true
+                    cell:
+                      row: 0
+                      column: 0
+                    children:
+                      - type: CheckBox
+                        name: chiSq
+                      - type: CheckBox
+                        name: chiSqCorr
+                      - type: CheckBox
+                        name: likeRat
+                      - type: CheckBox
+                        name: fisher
+              - type: LayoutBox
+                cell:
+                  column: 1
+                  row: 0
+                stretchFactor: 1
+                children:
+                  - type: Label
+                    label: Comparative Measures (2x2 only)
+                    children:
+                      - type: CheckBox
+                        name: logOdds
+                      - type: CheckBox
+                        name: odds
+                      - type: CheckBox
+                        name: relRisk
+                      - type: CheckBox
+                        name: ci
+                        children:
+                          - type: TextBox
+                            name: ciWidth
+                            suffix: '%'
+                            format: number
+                            inputPattern: '[0-9]+'
+                            enable: (ci)
+          - type: LayoutBox
+            margin: large
+            stretchFactor: 1
             children:
-              - type: CheckBox
-                name: contCoef
-              - type: CheckBox
-                name: phiCra
-          - type: Label
-            label: Ordinal
-            fitToGrid: true
-            cell:
-              column: 1
-              row: 1
-            children:
-              - type: CheckBox
-                name: gamma
-              - type: CheckBox
-                name: taub
+              - type: LayoutBox
+                cell:
+                  column: 0
+                  row: 0
+                stretchFactor: 1
+                children:
+                  - type: Label
+                    fitToGrid: true
+                    label: Nominal
+                    cell:
+                      column: 0
+                      row: 1
+                    children:
+                      - type: CheckBox
+                        name: contCoef
+                      - type: CheckBox
+                        name: phiCra
+              - type: LayoutBox
+                cell:
+                  column: 1
+                  row: 0
+                stretchFactor: 1
+                children:
+                  - type: Label
+                    label: Ordinal
+                    fitToGrid: true
+                    cell:
+                      column: 1
+                      row: 1
+                    children:
+                      - type: CheckBox
+                        name: gamma
+                      - type: CheckBox
+                        name: taub
       - type: CollapseBox
         label: Cells
         stretchFactor: 1
         collapsed: true
         children:
-          - type: Label
-            label: Counts
-            fitToGrid: true
+          - type: LayoutBox
+            margin: large
+            stretchFactor: 1
             children:
-              - type: CheckBox
-                name: exp
-          - type: Label
-            label: Percentages
-            fitToGrid: true
-            cell:
-              column: 1
-              row: 0
-            children:
-              - type: CheckBox
-                name: pcRow
-              - type: CheckBox
-                name: pcCol
-              - type: CheckBox
-                name: pcTot
+              - type: LayoutBox
+                cell:
+                  column: 0
+                  row: 0
+                stretchFactor: 1
+                children:
+                  - type: Label
+                    label: Counts
+                    fitToGrid: true
+                    children:
+                      - type: CheckBox
+                        name: exp
+              - type: LayoutBox
+                cell:
+                  column: 1
+                  row: 0
+                stretchFactor: 1
+                children:
+                  - type: Label
+                    label: Percentages
+                    fitToGrid: true
+                    cell:
+                      column: 1
+                      row: 0
+                    children:
+                      - type: CheckBox
+                        name: pcRow
+                      - type: CheckBox
+                        name: pcCol
+                      - type: CheckBox
+                        name: pcTot
