@@ -122,6 +122,14 @@ options:
           R: >
             `TRUE` or `FALSE` (default), provide the likelihood ratio
 
+    - name: fisher
+      title: Fisher's exact test
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Fisher's exact test
+
     - name: contCoef
       title: Contingency coefficient
       type: Bool
@@ -139,7 +147,7 @@ options:
             `TRUE` or `FALSE` (default), provide Phi and Cramer's V
 
     - name: logOdds
-      title: Log odds ratio (2x2 only)
+      title: Log odds ratio
       type: Bool
       default: false
       description:
@@ -147,8 +155,35 @@ options:
             `TRUE` or `FALSE` (default), provide the log odds ratio (only available
             for 2x2 tables)
 
+    - name: odds
+      title: Odds ratio
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the odds ratio (only available
+            for 2x2 tables)
+
+    - name: relRisk
+      title: Relative risk
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the relative risk (only available
+            for 2x2 tables)
+
+    - name: ci
+      title: Confidence intervals
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide confidence intervals for the
+            comparative measures
+
     - name: ciWidth
-      title: Confidence level
+      title: Interval
       type: Number
       min: 50
       max: 99.9

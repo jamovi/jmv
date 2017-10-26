@@ -168,8 +168,10 @@ contTablesClass <- R6::R6Class(
             ciText <- paste0(self$options$ciWidth, '% Confidence Intervals')
             odds$getColumn('cil[lo]')$setSuperTitle(ciText)
             odds$getColumn('ciu[lo]')$setSuperTitle(ciText)
-            odds$getColumn('cil[f]')$setSuperTitle(ciText)
-            odds$getColumn('ciu[f]')$setSuperTitle(ciText)
+            odds$getColumn('cil[o]')$setSuperTitle(ciText)
+            odds$getColumn('ciu[o]')$setSuperTitle(ciText)
+            odds$getColumn('cil[rr]')$setSuperTitle(ciText)
+            odds$getColumn('ciu[rr]')$setSuperTitle(ciText)
             gamma$getColumn('cil')$setSuperTitle(ciText)
             gamma$getColumn('ciu')$setSuperTitle(ciText)
 
@@ -241,6 +243,7 @@ contTablesClass <- R6::R6Class(
                     if (all(dim(mat) == 2)) {
                         fish <- stats::fisher.test(mat, conf.level=ciWidth)
                         lor <- vcd::loddsratio(mat)
+                        rr <- private$.relativeRisk(mat)
                     }
 
                 }) # suppressWarnings
@@ -307,7 +310,7 @@ contTablesClass <- R6::R6Class(
 
                 # populate chi squared table
 
-                if (base::inherits(test, 'try-error'))
+                if (base::inherits(test, 'try-error')) {
                     values <- list(
                         `value[chiSq]`=NaN,
                         `df[chiSq]`='',
@@ -318,8 +321,19 @@ contTablesClass <- R6::R6Class(
                         `value[likeRat]`=NaN,
                         `df[likeRat]`='',
                         `p[likeRat]`='',
+                        `value[fisher]`=NaN,
+                        `p[fisher]`='',
                         `value[N]`=n)
-                else
+                } else {
+
+                    if (is.null(fish)) {
+                        fishE <- NaN
+                        fishP <- ''
+                    } else {
+                        fishE <- fish$estimate
+                        fishP <- fish$p.value
+                    }
+
                     values <- list(
                         `value[chiSq]`=unname(test$statistic),
                         `df[chiSq]`=unname(test$parameter),
@@ -330,8 +344,15 @@ contTablesClass <- R6::R6Class(
                         `value[likeRat]`=asso$chisq_tests['Likelihood Ratio', 'X^2'],
                         `df[likeRat]`=asso$chisq_tests['Likelihood Ratio', 'df'],
                         `p[likeRat]`=asso$chisq_tests['Likelihood Ratio', 'P(> X^2)'],
+                        `value[fisher]`=fishE,
+                        `p[fisher]`=fishP,
                         `value[N]`=n)
+                }
+
                 chiSq$setRow(rowNo=othRowNo, values=values)
+
+                if (is.null(fish))
+                    chiSq$addFootnote(rowNo=othRowNo, 'value[fisher]', 'Available for 2x2 tables only')
 
                 values <- list(
                     `v[cont]`=asso$contingency,
@@ -361,16 +382,21 @@ contTablesClass <- R6::R6Class(
                         `v[lo]`=unname(lor[[1]]),
                         `cil[lo]`=ci[1],
                         `ciu[lo]`=ci[2],
-                        `v[f]`=fish$estimate,
-                        `cil[f]`=fish$conf.int[1],
-                        `ciu[f]`=fish$conf.int[2]))
+                        `v[o]`=exp(unname(lor[[1]])),
+                        `cil[o]`=exp(ci[1]),
+                        `ciu[o]`=exp(ci[2]),
+                        `v[rr]`=rr$rr,
+                        `cil[rr]`=rr$lower,
+                        `ciu[rr]`=rr$upper))
 
                 } else {
                     odds$setRow(rowNo=othRowNo, list(
                         `v[lo]`=NaN, `cil[lo]`='', `ciu[lo]`='',
-                        `v[f]`=NaN, `cil[f]`='', `ciu[f]`=''))
+                        `v[o]`=NaN, `cil[o]`='', `ciu[o]`='',
+                        `v[rr]`=NaN, `cil[rr]`='', `ciu[rr]`=''))
                     odds$addFootnote(rowNo=othRowNo, 'v[lo]', 'Available for 2x2 tables only')
-                    odds$addFootnote(rowNo=othRowNo, 'v[f]', 'Available for 2x2 tables only')
+                    odds$addFootnote(rowNo=othRowNo, 'v[o]', 'Available for 2x2 tables only')
+                    odds$addFootnote(rowNo=othRowNo, 'v[rr]', 'Available for 2x2 tables only')
                 }
 
                 othRowNo <- othRowNo + 1
@@ -485,5 +511,36 @@ contTablesClass <- R6::R6Class(
             rows <- rev(expand.grid(expand))
 
             rows
+        },
+        .relativeRisk = function(mat) {
+
+            # https://en.wikipedia.org/wiki/Relative_risk#Tests
+
+            dims <- dim(mat)
+
+            if (dims[1] > 2 || dims[2] > 2)
+                return(NULL)
+
+            ciWidth <- self$options$ciWidth
+            tail <- (100 - ciWidth) / 200
+            z <- qnorm(tail, lower.tail = FALSE)
+
+            a <- mat[1,1]
+            b <- mat[1,2]
+            c <- mat[2,1]
+            d <- mat[2,2]
+
+            p1 <- a / (a + b)
+            p2 <- c / (c + d)
+
+            m <- log(p1 / p2)
+            s <- sqrt((b / (a*(a+b))) + (d / (c*(c+d))))
+            lower <- exp(m - z*s)
+            upper <- exp(m + z*s)
+
+            rr <- p1 / p2
+
+            return(list(rr=rr, lower=lower, upper=upper))
+
         })
 )

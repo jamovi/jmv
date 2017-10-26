@@ -90,6 +90,22 @@ items:
           format: zto,pvalue
           visible: (likeRat)
 
+        - name: test[fisher]
+          title: ''
+          type: text
+          content: Fisher's exact test
+          visible: (fisher)
+
+        - name: value[fisher]
+          title: Value
+          visible: (fisher)
+
+        - name: p[fisher]
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (fisher)
+
         - name: test[N]
           title: ''
           type: text
@@ -103,7 +119,7 @@ items:
       title: Log Odds Ratio
       type: Table
       description: a table of odds ratio results
-      visible: (logOdds)
+      visible: (logOdds || odds || relRisk)
 
       clearWith:
         - rows
@@ -117,33 +133,61 @@ items:
           title: ''
           type: text
           content: Log odds ratio
+          visible: (logOdds)
 
         - name: v[lo]
           title: Value
+          visible: (logOdds)
 
         - name: cil[lo]
           title: Lower
           superTitle: Confidence Intervals
+          visible: (logOdds && ci)
 
         - name: ciu[lo]
           title: Upper
           superTitle: Confidence Intervals
+          visible: (logOdds && ci)
 
-        - name: t[f]
+        - name: t[o]
           title: ''
           type: text
-          content: Fisher's exact test
+          content: Odds ratio
+          visible: (odds)
 
-        - name: v[f]
+        - name: v[o]
           title: Value
+          visible: (odds)
 
-        - name: cil[f]
+        - name: cil[o]
           title: Lower
           superTitle: Confidence Intervals
+          visible: (odds && ci)
 
-        - name: ciu[f]
+        - name: ciu[o]
           title: Upper
           superTitle: Confidence Intervals
+          visible: (odds && ci)
+
+        - name: t[rr]
+          title: ''
+          type: text
+          content: Relative risk
+          visible: (relRisk)
+
+        - name: v[rr]
+          title: Value
+          visible: (relRisk)
+
+        - name: cil[rr]
+          title: Lower
+          superTitle: Confidence Intervals
+          visible: (relRisk && ci)
+
+        - name: ciu[rr]
+          title: Upper
+          superTitle: Confidence Intervals
+          visible: (relRisk && ci)
 
     - name: nom
       title: Nominal
