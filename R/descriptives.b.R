@@ -45,6 +45,8 @@ descriptivesClass <- R6::R6Class(
                 }
             }
 
+            private$.errorCheck(data)
+
             if (length(self$options$vars) > 0) {
 
                 results <- private$.compute(data)
@@ -362,7 +364,7 @@ descriptivesClass <- R6::R6Class(
             colNames <- private$colArgs$name
             desc <- results$desc
 
-            values <- list()
+            values <- list(); footnotes <- list()
             for (i in seq_along(vars)) {
 
                 r <- desc[[vars[i]]]
@@ -383,6 +385,12 @@ descriptivesClass <- R6::R6Class(
                             values[[subName]] <- stats[[name]][1]
 
                         }
+
+                        if (length(stats[['mode']]) > 1) {
+                            post <- paste0("[mode", paste0(grid[j,], collapse = ""), "]")
+                            subName <- paste0(vars[i], post)
+                            footnotes <- c(footnotes, subName)
+                        }
                     }
 
                 } else {
@@ -394,12 +402,19 @@ descriptivesClass <- R6::R6Class(
                         subName <- paste0(vars[i], post)
 
                         values[[subName]] <- r[[name]][1]
-
                     }
+
+                    if (length(r[['mode']]) > 1)
+                        footnotes <- c(footnotes, paste0(vars[i], '[mode]'))
                 }
             }
 
             table$setRow(rowNo=1, values=values)
+
+            for (i in seq_along(footnotes))
+                table$addFootnote(rowNo=1, footnotes[[i]], 'More than one mode exists, only the first is reported')
+
+
         },
         .populateFrequencyTables = function(results) {
 
@@ -771,6 +786,15 @@ descriptivesClass <- R6::R6Class(
         },
 
         #### Helper functions ----
+        .errorCheck = function(data) {
+
+            splitBy <- self$options$splitBy
+
+            for (var in splitBy) {
+                if (length(levels(data[[var]])) == 0)
+                    jmvcore::reject(jmvcore::format('The \'split by\' variable \'{}\' contains no data.', var), code='')
+            }
+        },
         .addQuantiles = function() {
 
             pcNEqGr <- self$options$pcNEqGr
