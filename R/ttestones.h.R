@@ -178,7 +178,8 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 clearWith=list(
                     "hypothesis",
                     "testValue",
-                    "miss"),
+                    "miss",
+                    "bfPrior"),
                 columns=list(
                     list(
                         `name`="var[stud]", 
