@@ -197,7 +197,8 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "group",
                     "hypothesis",
                     "ciWidth",
-                    "miss"),
+                    "miss",
+                    "bfPrior"),
                 columns=list(
                     list(
                         `name`="var[stud]", 

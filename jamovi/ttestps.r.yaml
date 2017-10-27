@@ -13,6 +13,7 @@ items:
           - miss
           - hypothesis
           - ciWidth
+          - bfPrior
 
       columns:
         - name: var1[stud]

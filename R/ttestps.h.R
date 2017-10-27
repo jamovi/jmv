@@ -169,7 +169,8 @@ ttestPSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 clearWith=list(
                     "miss",
                     "hypothesis",
-                    "ciWidth"),
+                    "ciWidth",
+                    "bfPrior"),
                 columns=list(
                     list(
                         `name`="var1[stud]", 
