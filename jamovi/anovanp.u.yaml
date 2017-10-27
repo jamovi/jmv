@@ -5,10 +5,6 @@ compilerMode: tame
 children:
   - type: VariableSupplier
     name: variablesupplier
-    suggested:
-      - continuous
-      - nominal
-      - ordinal
     persistentItems: false
     stretchFactor: 1
     children:

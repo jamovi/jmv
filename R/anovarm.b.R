@@ -3,8 +3,11 @@ anovaRMClass <- R6::R6Class(
     "anovaRMClass",
     inherit=anovaRMBase,
     private=list(
+        #### Member variables ----
         .model=NA,
         .postHocRows=NA,
+
+        #### Init + run functions ----
         .init=function() {
 
             private$.initRMTable()
@@ -50,8 +53,8 @@ anovaRMClass <- R6::R6Class(
                 private$.prepareDescPlots(data)
             }
         },
-        # Initings tables/plots functions
-        #####################################
+
+        #### Init tables/plots functions ----
         .initRMTable=function() {
             rmTable <- self$results$get('rmTable')
             rmTable$setNote('Note', jmvcore::format("Type {} Sums of Squares", self$options$ss))
@@ -226,8 +229,8 @@ anovaRMClass <- R6::R6Class(
                     array$addItem(level)
             }
         },
-        # Populating tables/plots functions
-        #####################################
+
+        #### Populate tables functions ----
         .populateEffectsTables=function(result) {
 
             rmTable <- self$results$get('rmTable')
@@ -536,6 +539,8 @@ anovaRMClass <- R6::R6Class(
                 table$setStatus('complete')
             }
         },
+
+        #### Plot functions ----
         .prepareDescPlots=function(data) {
 
             depName <- '.DEPENDENT'
@@ -665,8 +670,8 @@ anovaRMClass <- R6::R6Class(
 
             TRUE
         },
-        # Helper functions
-        #####################################
+
+        #### Helper functions ----
         .dataCheck=function() {
 
             data <- self$data
