@@ -326,7 +326,7 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$add(jmvcore::Table$new(
                 options=options,
                 name="odds",
-                title="Log Odds Ratio",
+                title="Comparative Measures",
                 visible="(logOdds || odds || relRisk)",
                 clearWith=list(
                     "rows",
@@ -575,7 +575,7 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' \tabular{llllll}{
 #'   \code{results$freqs} \tab \tab \tab \tab \tab a table of proportions \cr
 #'   \code{results$chiSq} \tab \tab \tab \tab \tab a table of X² test results \cr
-#'   \code{results$odds} \tab \tab \tab \tab \tab a table of odds ratio results \cr
+#'   \code{results$odds} \tab \tab \tab \tab \tab a table of comparative measures \cr
 #'   \code{results$nom} \tab \tab \tab \tab \tab a table of the 'nominal' test results \cr
 #'   \code{results$gamma} \tab \tab \tab \tab \tab a table of the gamma test results \cr
 #'   \code{results$taub} \tab \tab \tab \tab \tab a table of the Kendall's tau-b test results \cr
