@@ -116,9 +116,9 @@ items:
           type: 'integer'
 
     - name: odds
-      title: Log Odds Ratio
+      title: Comparative Measures
       type: Table
-      description: a table of odds ratio results
+      description: a table of comparative measures
       visible: (logOdds || odds || relRisk)
 
       clearWith:
