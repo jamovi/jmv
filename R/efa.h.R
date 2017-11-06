@@ -25,7 +25,7 @@ efaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name='efa',
                 requiresData=TRUE,
                 ...)
-        
+
             private$..vars <- jmvcore::OptionVariables$new(
                 "vars",
                 vars,
@@ -97,7 +97,7 @@ efaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "bartlett",
                 bartlett,
                 default=FALSE)
-        
+
             self$.addOption(private$..vars)
             self$.addOption(private$..nFactorMethod)
             self$.addOption(private$..nFactors)
@@ -183,9 +183,9 @@ efaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'
 #' @examples
 #' data('iris')
-#' 
+#'
 #' efa(iris, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
-#' 
+#'
 #' #
 #' #  Factor Loadings
 #' #  ------------------------------------------------
@@ -198,31 +198,31 @@ efaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #  ------------------------------------------------
 #' #    Note. 'oblimin' rotation was used
 #' #
-#' 
+#'
 #' @param data the data as a data frame
-#' @param vars a vector of strings naming the variables of interest in 
+#' @param vars a vector of strings naming the variables of interest in
 #'   \code{data}
-#' @param nFactorMethod \code{'parallel'} (default), \code{'eigen'} or 
-#'   \code{'fixed'}, the way to determine the number of factors 
-#' @param nFactors an integer (default: 1), the number of factors in the model 
-#' @param minEigen a number (default: 1), the minimal eigenvalue for a factor 
-#'   to be included in the model 
-#' @param rotation \code{'none'}, \code{'varimax'} (default), 
-#'   \code{'quartimax'}, \code{'promax'}, \code{'oblimin'}, or 
-#'   \code{'simplimax'}, the rotation to use in estimation 
-#' @param hideLoadings a number (default: 0.3), hide loadings below this value 
-#' @param screePlot \code{TRUE} or \code{FALSE} (default), show scree plot 
-#' @param eigen \code{TRUE} or \code{FALSE} (default), show eigenvalue table 
-#' @param factorCor \code{TRUE} or \code{FALSE} (default), show factor 
-#'   correlations 
-#' @param factorSummary \code{TRUE} or \code{FALSE} (default), show factor 
-#'   summary 
-#' @param modelFit \code{TRUE} or \code{FALSE} (default), show model fit 
-#'   measures and test 
-#' @param kmo \code{TRUE} or \code{FALSE} (default), show Kaiser-Meyer-Olkin 
-#'   (KMO) measure of sampling adequacy (MSA) results 
-#' @param bartlett \code{TRUE} or \code{FALSE} (default), show Bartlett's test 
-#'   of sphericity results 
+#' @param nFactorMethod \code{'parallel'} (default), \code{'eigen'} or
+#'   \code{'fixed'}, the way to determine the number of factors
+#' @param nFactors an integer (default: 1), the number of factors in the model
+#' @param minEigen a number (default: 1), the minimal eigenvalue for a factor
+#'   to be included in the model
+#' @param rotation \code{'none'}, \code{'varimax'} (default),
+#'   \code{'quartimax'}, \code{'promax'}, \code{'oblimin'}, or
+#'   \code{'simplimax'}, the rotation to use in estimation
+#' @param hideLoadings a number (default: 0.3), hide loadings below this value
+#' @param screePlot \code{TRUE} or \code{FALSE} (default), show scree plot
+#' @param eigen \code{TRUE} or \code{FALSE} (default), show eigenvalue table
+#' @param factorCor \code{TRUE} or \code{FALSE} (default), show factor
+#'   correlations
+#' @param factorSummary \code{TRUE} or \code{FALSE} (default), show factor
+#'   summary
+#' @param modelFit \code{TRUE} or \code{FALSE} (default), show model fit
+#'   measures and test
+#' @param kmo \code{TRUE} or \code{FALSE} (default), show Kaiser-Meyer-Olkin
+#'   (KMO) measure of sampling adequacy (MSA) results
+#' @param bartlett \code{TRUE} or \code{FALSE} (default), show Bartlett's test
+#'   of sphericity results
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$text} \tab \tab \tab \tab \tab a preformatted \cr

@@ -17,7 +17,7 @@ anovaRMNPOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name='anovaRMNP',
                 requiresData=TRUE,
                 ...)
-        
+
             private$..measures <- jmvcore::OptionVariables$new(
                 "measures",
                 measures,
@@ -46,7 +46,7 @@ anovaRMNPOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "means",
                     "medians"),
                 default="means")
-        
+
             self$.addOption(private$..measures)
             self$.addOption(private$..pairs)
             self$.addOption(private$..desc)
@@ -167,9 +167,9 @@ anovaRMNPBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'
 #' @examples
 #' data('bugs', package = 'jmv')
-#' 
+#'
 #' anovaRMNP(bugs, measures = c('LDLF', 'LDHF', 'HDLF', 'HDHF'))
-#' 
+#'
 #' #
 #' #  Friedman
 #' #  ------------------------
@@ -178,17 +178,17 @@ anovaRMNPBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #    55.8     3    < .001
 #' #  ------------------------
 #' #
-#' 
+#'
 #' @param data the data as a data frame
 #' @param measures a vector of strings naming the repeated measures variables
-#' @param pairs \code{TRUE} or \code{FALSE} (default), perform pairwise 
-#'   comparisons 
-#' @param desc \code{TRUE} or \code{FALSE} (default), provide descriptive 
-#'   statistics 
-#' @param plots \code{TRUE} or \code{FALSE} (default), provide a descriptive 
-#'   plot 
-#' @param plotType \code{'means'} (default) or \code{'medians'}, the error 
-#'   bars to use in the plot 
+#' @param pairs \code{TRUE} or \code{FALSE} (default), perform pairwise
+#'   comparisons
+#' @param desc \code{TRUE} or \code{FALSE} (default), provide descriptive
+#'   statistics
+#' @param plots \code{TRUE} or \code{FALSE} (default), provide a descriptive
+#'   plot
+#' @param plotType \code{'means'} (default) or \code{'medians'}, the error
+#'   bars to use in the plot
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$table} \tab \tab \tab \tab \tab a table of the Friedman test results \cr

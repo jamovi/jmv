@@ -40,7 +40,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name='descriptives',
                 requiresData=TRUE,
                 ...)
-        
+
             private$..vars <- jmvcore::OptionVariables$new(
                 "vars",
                 vars)
@@ -164,7 +164,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 default=4,
                 min=2,
                 max=10)
-        
+
             self$.addOption(private$..vars)
             self$.addOption(private$..splitBy)
             self$.addOption(private$..freq)
@@ -333,12 +333,12 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' \dontrun{
 #' data('mtcars')
 #' dat <- mtcars
-#' 
+#'
 #' # frequency tables can be provided for factors
 #' dat$gear <- as.factor(dat$gear)
-#' 
+#'
 #' descriptives(dat, vars = c('mpg', 'cyl', 'disp', 'gear'), freq = TRUE)
-#' 
+#'
 #' #
 #' #  Descriptives
 #' #
@@ -367,49 +367,49 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #  --------------------
 #' #
 #' #
-#' }
+#'}
 #' @param data the data as a data frame
-#' @param vars a vector of strings naming the variables of interest in 
+#' @param vars a vector of strings naming the variables of interest in
 #'   \code{data}
-#' @param splitBy a vector of strings naming the variables used to split 
+#' @param splitBy a vector of strings naming the variables used to split
 #'   \code{vars}
-#' @param freq \code{TRUE} or \code{FALSE} (default), provide frequency tables 
-#'   (nominal, ordinal variables only) 
-#' @param hist \code{TRUE} or \code{FALSE} (default), provide histograms 
-#'   (continuous variables only) 
-#' @param dens \code{TRUE} or \code{FALSE} (default), provide density plots 
-#'   (continuous variables only) 
-#' @param bar \code{TRUE} or \code{FALSE} (default), provide bar plots 
-#'   (nominal, ordinal variables only) 
-#' @param barCounts \code{TRUE} or \code{FALSE} (default), add counts to the  
-#'   bar plots 
-#' @param box \code{TRUE} or \code{FALSE} (default), provide box plots 
-#'   (continuous variables only) 
-#' @param violin \code{TRUE} or \code{FALSE} (default), provide violin plots 
-#'   (continuous variables only) 
-#' @param dot \code{TRUE} or \code{FALSE} (default), provide dot plots 
-#'   (continuous variables only) 
+#' @param freq \code{TRUE} or \code{FALSE} (default), provide frequency tables
+#'   (nominal, ordinal variables only)
+#' @param hist \code{TRUE} or \code{FALSE} (default), provide histograms
+#'   (continuous variables only)
+#' @param dens \code{TRUE} or \code{FALSE} (default), provide density plots
+#'   (continuous variables only)
+#' @param bar \code{TRUE} or \code{FALSE} (default), provide bar plots
+#'   (nominal, ordinal variables only)
+#' @param barCounts \code{TRUE} or \code{FALSE} (default), add counts to the
+#'   bar plots
+#' @param box \code{TRUE} or \code{FALSE} (default), provide box plots
+#'   (continuous variables only)
+#' @param violin \code{TRUE} or \code{FALSE} (default), provide violin plots
+#'   (continuous variables only)
+#' @param dot \code{TRUE} or \code{FALSE} (default), provide dot plots
+#'   (continuous variables only)
 #' @param dotType .
-#' @param n \code{TRUE} (default) or \code{FALSE}, provide the sample size 
-#' @param missing \code{TRUE} (default) or \code{FALSE}, provide the number of 
-#'   missing values 
-#' @param mean \code{TRUE} (default) or \code{FALSE}, provide the mean 
-#' @param median \code{TRUE} (default) or \code{FALSE}, provide the median 
-#' @param mode \code{TRUE} or \code{FALSE} (default), provide the mode 
-#' @param sum \code{TRUE} or \code{FALSE} (default), provide the sum 
-#' @param sd \code{TRUE} or \code{FALSE} (default), provide the standard 
-#'   deviation 
-#' @param variance \code{TRUE} or \code{FALSE} (default), provide the variance 
-#' @param range \code{TRUE} or \code{FALSE} (default), provide the range 
-#' @param min \code{TRUE} or \code{FALSE} (default), provide the minimum 
-#' @param max \code{TRUE} or \code{FALSE} (default), provide the maximum 
-#' @param se \code{TRUE} or \code{FALSE} (default), provide the standard error 
-#' @param skew \code{TRUE} or \code{FALSE} (default), provide the skewness 
-#' @param kurt \code{TRUE} or \code{FALSE} (default), provide the kurtosis 
-#' @param quart \code{TRUE} or \code{FALSE} (default), provide quartiles 
-#' @param pcEqGr \code{TRUE} or \code{FALSE} (default), provide quantiles 
-#' @param pcNEqGr an integer (default: 4) specifying the number of equal 
-#'   groups 
+#' @param n \code{TRUE} (default) or \code{FALSE}, provide the sample size
+#' @param missing \code{TRUE} (default) or \code{FALSE}, provide the number of
+#'   missing values
+#' @param mean \code{TRUE} (default) or \code{FALSE}, provide the mean
+#' @param median \code{TRUE} (default) or \code{FALSE}, provide the median
+#' @param mode \code{TRUE} or \code{FALSE} (default), provide the mode
+#' @param sum \code{TRUE} or \code{FALSE} (default), provide the sum
+#' @param sd \code{TRUE} or \code{FALSE} (default), provide the standard
+#'   deviation
+#' @param variance \code{TRUE} or \code{FALSE} (default), provide the variance
+#' @param range \code{TRUE} or \code{FALSE} (default), provide the range
+#' @param min \code{TRUE} or \code{FALSE} (default), provide the minimum
+#' @param max \code{TRUE} or \code{FALSE} (default), provide the maximum
+#' @param se \code{TRUE} or \code{FALSE} (default), provide the standard error
+#' @param skew \code{TRUE} or \code{FALSE} (default), provide the skewness
+#' @param kurt \code{TRUE} or \code{FALSE} (default), provide the kurtosis
+#' @param quart \code{TRUE} or \code{FALSE} (default), provide quartiles
+#' @param pcEqGr \code{TRUE} or \code{FALSE} (default), provide quantiles
+#' @param pcNEqGr an integer (default: 4) specifying the number of equal
+#'   groups
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$descriptives} \tab \tab \tab \tab \tab a table of the descriptive statistics \cr

@@ -29,7 +29,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name='anova',
                 requiresData=TRUE,
                 ...)
-        
+
             private$..dep <- jmvcore::OptionVariable$new(
                 "dep",
                 dep,
@@ -143,7 +143,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 min=50,
                 max=99.9,
                 default=95)
-        
+
             self$.addOption(private$..dep)
             self$.addOption(private$..factors)
             self$.addOption(private$..modelTerms)
@@ -303,9 +303,9 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'
 #' @examples
 #' data('ToothGrowth')
-#' 
+#'
 #' anova(ToothGrowth, dep = 'len', factors = c('dose', 'supp'))
-#' 
+#'
 #' #
 #' #  ANOVA
 #' #
@@ -319,43 +319,43 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #    Residuals               712    54           13.2
 #' #  -----------------------------------------------------------------------
 #' #
-#' 
+#'
 #' @param data the data as a data frame
-#' @param dep a string naming the dependent variable from \code{data}, 
-#'   variable must be numeric 
-#' @param factors a vector of strings naming the fixed factors from 
+#' @param dep a string naming the dependent variable from \code{data},
+#'   variable must be numeric
+#' @param factors a vector of strings naming the fixed factors from
 #'   \code{data}
-#' @param modelTerms a list of character vectors describing the terms to go 
-#'   into the model 
-#' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default), the sum of 
-#'   squares to use 
-#' @param effectSize one or more of \code{'eta'}, \code{'partEta'}, or 
-#'   \code{'omega'}; use eta², partial eta², and omega² effect sizes, 
-#'   respectively 
-#' @param contrasts a list of lists specifying the factor and type of contrast 
-#'   to use, one of \code{'deviation'}, \code{'simple'}, \code{'difference'}, 
-#'   \code{'helmert'}, \code{'repeated'} or \code{'polynomial'} 
-#' @param plotHAxis a string naming the variable placed on the horizontal axis 
-#'   of the plot 
-#' @param plotSepLines a string naming the variable represented as separate 
-#'   lines on the plot 
-#' @param plotSepPlots a string naming the variable to separate over to form 
-#'   multiple plots 
+#' @param modelTerms a list of character vectors describing the terms to go
+#'   into the model
+#' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default), the sum of
+#'   squares to use
+#' @param effectSize one or more of \code{'eta'}, \code{'partEta'}, or
+#'   \code{'omega'}; use eta², partial eta², and omega² effect sizes,
+#'   respectively
+#' @param contrasts a list of lists specifying the factor and type of contrast
+#'   to use, one of \code{'deviation'}, \code{'simple'}, \code{'difference'},
+#'   \code{'helmert'}, \code{'repeated'} or \code{'polynomial'}
+#' @param plotHAxis a string naming the variable placed on the horizontal axis
+#'   of the plot
+#' @param plotSepLines a string naming the variable represented as separate
+#'   lines on the plot
+#' @param plotSepPlots a string naming the variable to separate over to form
+#'   multiple plots
 #' @param postHoc a list of terms to perform post-hoc tests on
-#' @param postHocCorr one or more of \code{'none'}, \code{'tukey'}, 
-#'   \code{'scheffe'}, \code{'bonf'}, or \code{'holm'}; provide no, Tukey, 
-#'   Scheffe, Bonferroni, and Holm Post Hoc corrections respectively 
-#' @param descStats \code{TRUE} or \code{FALSE} (default), provide descriptive 
-#'   statistics 
-#' @param homo \code{TRUE} or \code{FALSE} (default), perform homogeneity 
-#'   tests 
-#' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of 
-#'   residuals 
-#' @param plotError \code{'none'}, \code{'ci'} (default), or \code{'se'}. Use 
-#'   no error bars, use confidence intervals, or use standard errors on the 
-#'   plots, respectively 
-#' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the 
-#'   confidence interval width 
+#' @param postHocCorr one or more of \code{'none'}, \code{'tukey'},
+#'   \code{'scheffe'}, \code{'bonf'}, or \code{'holm'}; provide no, Tukey,
+#'   Scheffe, Bonferroni, and Holm Post Hoc corrections respectively
+#' @param descStats \code{TRUE} or \code{FALSE} (default), provide descriptive
+#'   statistics
+#' @param homo \code{TRUE} or \code{FALSE} (default), perform homogeneity
+#'   tests
+#' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
+#'   residuals
+#' @param plotError \code{'none'}, \code{'ci'} (default), or \code{'se'}. Use
+#'   no error bars, use confidence intervals, or use standard errors on the
+#'   plots, respectively
+#' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the
+#'   confidence interval width
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$main} \tab \tab \tab \tab \tab a table of ANOVA results \cr

@@ -15,7 +15,7 @@ anovaNPOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name='anovaNP',
                 requiresData=TRUE,
                 ...)
-        
+
             private$..deps <- jmvcore::OptionVariables$new(
                 "deps",
                 deps,
@@ -35,7 +35,7 @@ anovaNPOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "pairs",
                 pairs,
                 default=FALSE)
-        
+
             self$.addOption(private$..deps)
             self$.addOption(private$..group)
             self$.addOption(private$..pairs)
@@ -146,9 +146,9 @@ anovaNPBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'
 #' @examples
 #' data('ToothGrowth')
-#' 
+#'
 #' anovaNP(ToothGrowth, deps = 'len', group = 'dose')
-#' 
+#'
 #' #
 #' #  One-way ANOVA (Non-parametric)
 #' #
@@ -159,13 +159,13 @@ anovaNPBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #    len    40.7     2    < .001
 #' #  -------------------------------
 #' #
-#' 
+#'
 #' @param data the data as a data frame
 #' @param deps a string naming the dependent variable in \code{data}
-#' @param group a string naming the grouping or independent variable in 
+#' @param group a string naming the grouping or independent variable in
 #'   \code{data}
-#' @param pairs \code{TRUE} or \code{FALSE} (default), perform pairwise 
-#'   comparisons 
+#' @param pairs \code{TRUE} or \code{FALSE} (default), perform pairwise
+#'   comparisons
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$table} \tab \tab \tab \tab \tab a table of the test results \cr

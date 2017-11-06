@@ -23,7 +23,7 @@ mancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name='mancova',
                 requiresData=TRUE,
                 ...)
-        
+
             private$..deps <- jmvcore::OptionVariables$new(
                 "deps",
                 deps,
@@ -75,7 +75,7 @@ mancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "qqPlot",
                 qqPlot,
                 default=FALSE)
-        
+
             self$.addOption(private$..deps)
             self$.addOption(private$..factors)
             self$.addOption(private$..covs)
@@ -405,11 +405,11 @@ mancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'
 #' @examples
 #' data('iris')
-#' 
+#'
 #' mancova(data = iris,
 #'     deps = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'),
 #'     factors = 'Species')
-#' 
+#'
 #' #
 #' #  Multivariate Tests
 #' #  ---------------------------------------------------------------------------
@@ -438,21 +438,21 @@ mancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #  -----------------------------------------------------------------------------------------------
 #' #
 #' #
-#' 
+#'
 #' @param data the data as a data frame
-#' @param deps a string naming the dependent variable from \code{data}, 
-#'   variable must be numeric 
+#' @param deps a string naming the dependent variable from \code{data},
+#'   variable must be numeric
 #' @param factors a vector of strings naming the factors from \code{data}
 #' @param covs a vector of strings naming the covariates from \code{data}
-#' @param multivar one or more of \code{'pillai'}, \code{'wilks'}, 
-#'   \code{'hotel'}, or \code{'roy'}; use Pillai's Trace, Wilks' Lambda, 
-#'   Hotelling's Trace, and Roy's Largest Root multivariate statistics, 
-#'   respectively 
-#' @param boxM \code{TRUE} or \code{FALSE} (default), provide Box's M test 
-#' @param shapiro \code{TRUE} or \code{FALSE} (default), provide Shapiro-Wilk 
-#'   test 
-#' @param qqPlot \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of 
-#'   multivariate normality 
+#' @param multivar one or more of \code{'pillai'}, \code{'wilks'},
+#'   \code{'hotel'}, or \code{'roy'}; use Pillai's Trace, Wilks' Lambda,
+#'   Hotelling's Trace, and Roy's Largest Root multivariate statistics,
+#'   respectively
+#' @param boxM \code{TRUE} or \code{FALSE} (default), provide Box's M test
+#' @param shapiro \code{TRUE} or \code{FALSE} (default), provide Shapiro-Wilk
+#'   test
+#' @param qqPlot \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
+#'   multivariate normality
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$multivar} \tab \tab \tab \tab \tab a table \cr

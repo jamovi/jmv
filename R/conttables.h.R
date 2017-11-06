@@ -33,7 +33,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name='contTables',
                 requiresData=TRUE,
                 ...)
-        
+
             private$..rows <- jmvcore::OptionVariable$new(
                 "rows",
                 rows,
@@ -130,7 +130,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "pcTot",
                 pcTot,
                 default=FALSE)
-        
+
             self$.addOption(private$..rows)
             self$.addOption(private$..cols)
             self$.addOption(private$..counts)
@@ -505,9 +505,9 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @examples
 #' data('HairEyeColor')
 #' dat <- as.data.frame(HairEyeColor)
-#' 
+#'
 #' contTables(dat, rows = 'Hair', cols = 'Eye', counts = 'Freq')
-#' 
+#'
 #' #
 #' #  Contingency Tables
 #' #
@@ -531,46 +531,46 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #    N       592
 #' #  -------------------------------
 #' #
-#' 
+#'
 #' @param data the data as a data frame
-#' @param rows a string naming the variable to use as the rows in the 
-#'   contingency table 
-#' @param cols a string naming the variable to use as the columns in the 
-#'   contingency table 
-#' @param counts a string naming the variable to use as counts, or NULL if 
-#'   each row represents a single observation 
-#' @param layers a character vector naming variables to split the contingency 
-#'   table across 
-#' @param chiSq \code{TRUE} (default) or \code{FALSE}, provide X² 
-#' @param chiSqCorr \code{TRUE} or \code{FALSE} (default), provide X² with 
-#'   continuity correction 
-#' @param likeRat \code{TRUE} or \code{FALSE} (default), provide the 
-#'   likelihood ratio 
-#' @param fisher \code{TRUE} or \code{FALSE} (default), provide Fisher's exact 
-#'   test 
-#' @param contCoef \code{TRUE} or \code{FALSE} (default), provide the 
-#'   contingency coefficient 
-#' @param phiCra \code{TRUE} or \code{FALSE} (default), provide Phi and 
-#'   Cramer's V 
-#' @param logOdds \code{TRUE} or \code{FALSE} (default), provide the log odds 
-#'   ratio (only available for 2x2 tables) 
-#' @param odds \code{TRUE} or \code{FALSE} (default), provide the odds ratio 
-#'   (only available for 2x2 tables) 
-#' @param relRisk \code{TRUE} or \code{FALSE} (default), provide the relative 
-#'   risk (only available for 2x2 tables) 
-#' @param ci \code{TRUE} or \code{FALSE} (default), provide confidence 
-#'   intervals for the comparative measures 
-#' @param ciWidth a number between 50 and 99.9 (default: 95), width of the 
-#'   confidence intervals to provide 
-#' @param gamma \code{TRUE} or \code{FALSE} (default), provide gamma 
-#' @param taub \code{TRUE} or \code{FALSE} (default), provide Kendall's tau-b 
-#' @param exp \code{TRUE} or \code{FALSE} (default), provide the expected 
-#'   counts 
-#' @param pcRow \code{TRUE} or \code{FALSE} (default), provide row percentages 
-#' @param pcCol \code{TRUE} or \code{FALSE} (default), provide column 
-#'   percentages 
-#' @param pcTot \code{TRUE} or \code{FALSE} (default), provide total 
-#'   percentages 
+#' @param rows a string naming the variable to use as the rows in the
+#'   contingency table
+#' @param cols a string naming the variable to use as the columns in the
+#'   contingency table
+#' @param counts a string naming the variable to use as counts, or NULL if
+#'   each row represents a single observation
+#' @param layers a character vector naming variables to split the contingency
+#'   table across
+#' @param chiSq \code{TRUE} (default) or \code{FALSE}, provide X²
+#' @param chiSqCorr \code{TRUE} or \code{FALSE} (default), provide X² with
+#'   continuity correction
+#' @param likeRat \code{TRUE} or \code{FALSE} (default), provide the
+#'   likelihood ratio
+#' @param fisher \code{TRUE} or \code{FALSE} (default), provide Fisher's exact
+#'   test
+#' @param contCoef \code{TRUE} or \code{FALSE} (default), provide the
+#'   contingency coefficient
+#' @param phiCra \code{TRUE} or \code{FALSE} (default), provide Phi and
+#'   Cramer's V
+#' @param logOdds \code{TRUE} or \code{FALSE} (default), provide the log odds
+#'   ratio (only available for 2x2 tables)
+#' @param odds \code{TRUE} or \code{FALSE} (default), provide the odds ratio
+#'   (only available for 2x2 tables)
+#' @param relRisk \code{TRUE} or \code{FALSE} (default), provide the relative
+#'   risk (only available for 2x2 tables)
+#' @param ci \code{TRUE} or \code{FALSE} (default), provide confidence
+#'   intervals for the comparative measures
+#' @param ciWidth a number between 50 and 99.9 (default: 95), width of the
+#'   confidence intervals to provide
+#' @param gamma \code{TRUE} or \code{FALSE} (default), provide gamma
+#' @param taub \code{TRUE} or \code{FALSE} (default), provide Kendall's tau-b
+#' @param exp \code{TRUE} or \code{FALSE} (default), provide the expected
+#'   counts
+#' @param pcRow \code{TRUE} or \code{FALSE} (default), provide row percentages
+#' @param pcCol \code{TRUE} or \code{FALSE} (default), provide column
+#'   percentages
+#' @param pcTot \code{TRUE} or \code{FALSE} (default), provide total
+#'   percentages
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$freqs} \tab \tab \tab \tab \tab a table of proportions \cr

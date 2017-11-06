@@ -32,7 +32,7 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name='linReg',
                 requiresData=TRUE,
                 ...)
-        
+
             private$..dep <- jmvcore::OptionVariable$new(
                 "dep",
                 dep,
@@ -131,7 +131,7 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 modelSelected,
                 default=-1,
                 hidden=TRUE)
-        
+
             self$.addOption(private$..dep)
             self$.addOption(private$..blocks)
             self$.addOption(private$..fitMeasures)
@@ -594,10 +594,10 @@ linRegBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'
 #' @examples
 #' data('Prestige', package='car')
-#' 
+#'
 #' linReg(data = Prestige, dep = 'income',
 #'        blocks = list(c('education', 'prestige', 'women')))
-#' 
+#'
 #' #
 #' #  Model Fit Measures
 #' #  ---------------------------
@@ -618,44 +618,44 @@ linRegBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #             women           -50.9       8.56    -5.948    < .001
 #' #  -----------------------------------------------------------------
 #' #
-#' 
+#'
 #' @param data the data as a data frame
-#' @param dep a string naming the dependent variable from \code{data}, 
-#'   variable must be numeric 
-#' @param blocks a list containing vectors of strings that name the covariates 
-#'   that are added to the model. The elements are added to the model according 
-#'   to their order in the list 
-#' @param fitMeasures one or more of \code{'r'}, \code{'r2'}, \code{'r2Adj'}, 
-#'   \code{'aic'}, \code{'bic'}, or \code{'rmse'}; use R, R², adjusted R², AIC, 
-#'   BIC, and RMSE model fit measures, respectively 
-#' @param modelTest one or more of \code{'f'}, or \code{'bf'}; Use classical 
-#'   F-test, and Bayes factor respectively as overall model tests. 
-#' @param modelComp one or more of \code{'f'}, or \code{'bf'}; Use classical 
-#'   F-test, and Bayes factor respectively as model comparison tests. 
-#' @param stdEst \code{TRUE} or \code{FALSE} (default), provide a standardized 
-#'   estimate for the model coefficients 
-#' @param ci \code{TRUE} or \code{FALSE} (default), provide a confidence 
-#'   interval for the model coefficients 
-#' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the 
-#'   confidence interval width 
-#' @param coefPlot \code{TRUE} or \code{FALSE} (default), provide a 
-#'   coefficient plot where for each predictor the estimated coefficient and 
-#'   confidence intervals are plotted. 
-#' @param qqPlot \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of 
-#'   residuals 
-#' @param resPlots \code{TRUE} or \code{FALSE} (default), provide residual 
-#'   plots where the dependent variable and each covariate is plotted against 
-#'   the standardized residuals. 
-#' @param durbin \code{TRUE} or \code{FALSE} (default), provide results of the 
-#'   Durbin- Watson test for autocorrelation 
-#' @param collin \code{TRUE} or \code{FALSE} (default), provide VIF and 
-#'   tolerence collinearity statistics 
-#' @param desc \code{TRUE} or \code{FALSE} (default), provide descriptive 
-#'   statistics 
-#' @param cooks \code{TRUE} or \code{FALSE} (default), provide summary 
-#'   statistics for the Cook's distance 
-#' @param modelSelected an integer defining the model for which the model 
-#'   specific output needs to be calculated (defaults to most complex model) 
+#' @param dep a string naming the dependent variable from \code{data},
+#'   variable must be numeric
+#' @param blocks a list containing vectors of strings that name the covariates
+#'   that are added to the model. The elements are added to the model according
+#'   to their order in the list
+#' @param fitMeasures one or more of \code{'r'}, \code{'r2'}, \code{'r2Adj'},
+#'   \code{'aic'}, \code{'bic'}, or \code{'rmse'}; use R, R², adjusted R², AIC,
+#'   BIC, and RMSE model fit measures, respectively
+#' @param modelTest one or more of \code{'f'}, or \code{'bf'}; Use classical
+#'   F-test, and Bayes factor respectively as overall model tests.
+#' @param modelComp one or more of \code{'f'}, or \code{'bf'}; Use classical
+#'   F-test, and Bayes factor respectively as model comparison tests.
+#' @param stdEst \code{TRUE} or \code{FALSE} (default), provide a standardized
+#'   estimate for the model coefficients
+#' @param ci \code{TRUE} or \code{FALSE} (default), provide a confidence
+#'   interval for the model coefficients
+#' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the
+#'   confidence interval width
+#' @param coefPlot \code{TRUE} or \code{FALSE} (default), provide a
+#'   coefficient plot where for each predictor the estimated coefficient and
+#'   confidence intervals are plotted.
+#' @param qqPlot \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
+#'   residuals
+#' @param resPlots \code{TRUE} or \code{FALSE} (default), provide residual
+#'   plots where the dependent variable and each covariate is plotted against
+#'   the standardized residuals.
+#' @param durbin \code{TRUE} or \code{FALSE} (default), provide results of the
+#'   Durbin- Watson test for autocorrelation
+#' @param collin \code{TRUE} or \code{FALSE} (default), provide VIF and
+#'   tolerence collinearity statistics
+#' @param desc \code{TRUE} or \code{FALSE} (default), provide descriptive
+#'   statistics
+#' @param cooks \code{TRUE} or \code{FALSE} (default), provide summary
+#'   statistics for the Cook's distance
+#' @param modelSelected an integer defining the model for which the model
+#'   specific output needs to be calculated (defaults to most complex model)
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$modelFit} \tab \tab \tab \tab \tab a table \cr

@@ -37,7 +37,7 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name='anovaRM',
                 requiresData=TRUE,
                 ...)
-        
+
             private$..rm <- jmvcore::OptionArray$new(
                 "rm",
                 rm,
@@ -207,7 +207,7 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "descStats",
                 descStats,
                 default=FALSE)
-        
+
             self$.addOption(private$..rm)
             self$.addOption(private$..rmCells)
             self$.addOption(private$..bs)
@@ -723,7 +723,7 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' \dontrun{
 #' 
 #' data('bugs', package = 'jmv')
-#' 
+#'
 #' anovaRM(
 #'     data = bugs,
 #'     rm = list(
@@ -739,7 +739,7 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'             cell = 'High')),
 #'     rmTerms = list(
 #'         'Disgusting'))
-#' 
+#'
 #' #
 #' #  Within Subjects Effects
 #' #  -----------------------------------------------------------------------
@@ -760,54 +760,54 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #  -----------------------------------------------------------------
 #' #    Note. Type 3 Sums of Squares
 #' #
-#' }
+#'}
 #' @param data the data as a data frame
-#' @param rm a list of lists, where each list describes the \code{label} (as a 
-#'   string) and the \code{levels} (as vector of strings) of a particular 
-#'   repeated measures factor 
-#' @param rmCells a list of lists, where each list decribes a repeated measure 
-#'   (as a string) from \code{data} defined as \code{measure} and the particular 
-#'   combination of levels from \code{rm} that it belongs to (as a vector of 
-#'   strings) defined as \code{cell} 
-#' @param bs a vector of strings naming the between subjects factors from 
-#'   \code{data} 
-#' @param cov a vector of strings naming the covariates from \code{data}. 
-#'   Variables must be numeric 
-#' @param rmTerms a list of character vectors describing the repeated measures 
-#'   terms to go into the model 
-#' @param bsTerms a list of character vectors describing the between subjects 
-#'   terms to go into the model 
-#' @param ss \code{'2'} or \code{'3'} (default), the sum of squares to use 
-#' @param effectSize one or more of \code{'eta'}, \code{'partEta'}, or 
-#'   \code{'omega'}; use eta², partial eta², and omega² effect sizes, 
-#'   respectively 
-#' @param spherTests \code{TRUE} or \code{FALSE} (default), perform sphericity 
-#'   tests 
-#' @param spherCorr one or more of \code{'none'} (default), \code{'GG'}, or 
-#'   \code{}HF\code{}; use no p-value correction, the Greenhouse-Geisser p-value 
-#'   correction, and the Huynh-Feldt p-value correction for shericity, 
-#'   respectively 
-#' @param leveneTest \code{TRUE} or \code{FALSE} (default), test for equality 
-#'   of variances (i.e., Levene's test) 
+#' @param rm a list of lists, where each list describes the \code{label} (as a
+#'   string) and the \code{levels} (as vector of strings) of a particular
+#'   repeated measures factor
+#' @param rmCells a list of lists, where each list decribes a repeated measure
+#'   (as a string) from \code{data} defined as \code{measure} and the particular
+#'   combination of levels from \code{rm} that it belongs to (as a vector of
+#'   strings) defined as \code{cell}
+#' @param bs a vector of strings naming the between subjects factors from
+#'   \code{data}
+#' @param cov a vector of strings naming the covariates from \code{data}.
+#'   Variables must be numeric
+#' @param rmTerms a list of character vectors describing the repeated measures
+#'   terms to go into the model
+#' @param bsTerms a list of character vectors describing the between subjects
+#'   terms to go into the model
+#' @param ss \code{'2'} or \code{'3'} (default), the sum of squares to use
+#' @param effectSize one or more of \code{'eta'}, \code{'partEta'}, or
+#'   \code{'omega'}; use eta², partial eta², and omega² effect sizes,
+#'   respectively
+#' @param spherTests \code{TRUE} or \code{FALSE} (default), perform sphericity
+#'   tests
+#' @param spherCorr one or more of \code{'none'} (default), \code{'GG'}, or
+#'   \code{}HF\code{}; use no p-value correction, the Greenhouse-Geisser p-value
+#'   correction, and the Huynh-Feldt p-value correction for shericity,
+#'   respectively
+#' @param leveneTest \code{TRUE} or \code{FALSE} (default), test for equality
+#'   of variances (i.e., Levene's test)
 #' @param contrasts in development
-#' @param postHoc a list of character vectors describing the post-hoc tests 
-#'   that need to be computed 
-#' @param postHocCorr one or more of \code{'none'}, \code{'tukey'} (default), 
-#'   \code{'scheffe'}, \code{'bonf'}, or \code{'holm'}; use no, Tukey, Scheffe, 
-#'   Bonferroni and Holm posthoc corrections, respectively 
-#' @param plotHAxis a string naming the variable placed on the horizontal axis 
-#'   of the plot 
-#' @param plotSepLines a string naming the variable represented as separate 
-#'   lines on the plot 
-#' @param plotSepPlots a string naming the variable to separate over to form 
-#'   multiple plots 
-#' @param plotError \code{'none'}, \code{'ci'} (default), or \code{'se'}. Use 
-#'   no error bars, use confidence intervals, or use standard errors on the 
-#'   plots, respectively 
-#' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the 
-#'   confidence interval width 
-#' @param descStats \code{TRUE} or \code{FALSE} (default), provide descriptive 
-#'   statistics 
+#' @param postHoc a list of character vectors describing the post-hoc tests
+#'   that need to be computed
+#' @param postHocCorr one or more of \code{'none'}, \code{'tukey'} (default),
+#'   \code{'scheffe'}, \code{'bonf'}, or \code{'holm'}; use no, Tukey, Scheffe,
+#'   Bonferroni and Holm posthoc corrections, respectively
+#' @param plotHAxis a string naming the variable placed on the horizontal axis
+#'   of the plot
+#' @param plotSepLines a string naming the variable represented as separate
+#'   lines on the plot
+#' @param plotSepPlots a string naming the variable to separate over to form
+#'   multiple plots
+#' @param plotError \code{'none'}, \code{'ci'} (default), or \code{'se'}. Use
+#'   no error bars, use confidence intervals, or use standard errors on the
+#'   plots, respectively
+#' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the
+#'   confidence interval width
+#' @param descStats \code{TRUE} or \code{FALSE} (default), provide descriptive
+#'   statistics
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$rmTable} \tab \tab \tab \tab \tab a table \cr

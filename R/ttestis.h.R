@@ -29,7 +29,7 @@ ttestISOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name='ttestIS',
                 requiresData=TRUE,
                 ...)
-        
+
             private$..vars <- jmvcore::OptionVariables$new(
                 "vars",
                 vars,
@@ -117,7 +117,7 @@ ttestISOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "perAnalysis",
                     "listwise"),
                 default="perAnalysis")
-        
+
             self$.addOption(private$..vars)
             self$.addOption(private$..group)
             self$.addOption(private$..students)
@@ -608,9 +608,9 @@ ttestISBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'
 #' @examples
 #' data('ToothGrowth')
-#' 
+#'
 #' ttestIS(data = ToothGrowth, vars = 'len', group = 'supp')
-#' 
+#'
 #' #
 #' #  Independent Samples T-Test
 #' #
@@ -621,43 +621,43 @@ ttestISBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #    len    Student's t         1.92    58.0    0.060
 #' #  ----------------------------------------------------
 #' #
-#' 
+#'
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the dependent variables
 #' @param group a string naming the grouping variable, must have 2 levels
-#' @param students \code{TRUE} (default) or \code{FALSE}, perform Student's 
-#'   t-tests 
-#' @param bf \code{TRUE} or \code{FALSE} (default), provide Bayes factors 
-#' @param bfPrior a number between 0.5 and 2 (default 0.707), the prior width 
-#'   to use in calculating Bayes factors 
-#' @param welchs \code{TRUE} or \code{FALSE} (default), perform Welch's 
-#'   t-tests 
-#' @param mann \code{TRUE} or \code{FALSE} (default), perform Mann-Whitney U 
-#'   tests 
-#' @param hypothesis \code{'different'} (default), \code{'oneGreater'} or 
-#'   \code{'twoGreater'}, the alternative hypothesis; group 1 different to group 
-#'   2, group 1 greater than group 2, and group 2 greater than group 1 
-#'   respectively 
-#' @param norm \code{TRUE} or \code{FALSE} (default), perform Shapiro-Wilk 
-#'   test of normality 
-#' @param eqv \code{TRUE} or \code{FALSE} (default), perform Levene's test for 
-#'   equality of variances 
-#' @param meanDiff \code{TRUE} or \code{FALSE} (default), provide means and 
-#'   standard errors 
-#' @param effectSize \code{TRUE} or \code{FALSE} (default), provide effect 
-#'   sizes 
-#' @param ci \code{TRUE} or \code{FALSE} (default), provide confidence 
-#'   intervals 
-#' @param ciWidth a number between 50 and 99.9 (default: 95), the width of 
-#'   confidence intervals 
-#' @param desc \code{TRUE} or \code{FALSE} (default), provide descriptive 
-#'   statistics 
-#' @param plots \code{TRUE} or \code{FALSE} (default), provide descriptive 
-#'   plots 
-#' @param miss \code{'perAnalysis'} or \code{'listwise'}, how to handle 
-#'   missing values; \code{'perAnalysis'} excludes missing values for individual 
-#'   dependent variables, \code{'listwise'} excludes a row from all analyses if 
-#'   one of its entries is missing. 
+#' @param students \code{TRUE} (default) or \code{FALSE}, perform Student's
+#'   t-tests
+#' @param bf \code{TRUE} or \code{FALSE} (default), provide Bayes factors
+#' @param bfPrior a number between 0.5 and 2 (default 0.707), the prior width
+#'   to use in calculating Bayes factors
+#' @param welchs \code{TRUE} or \code{FALSE} (default), perform Welch's
+#'   t-tests
+#' @param mann \code{TRUE} or \code{FALSE} (default), perform Mann-Whitney U
+#'   tests
+#' @param hypothesis \code{'different'} (default), \code{'oneGreater'} or
+#'   \code{'twoGreater'}, the alternative hypothesis; group 1 different to group
+#'   2, group 1 greater than group 2, and group 2 greater than group 1
+#'   respectively
+#' @param norm \code{TRUE} or \code{FALSE} (default), perform Shapiro-Wilk
+#'   test of normality
+#' @param eqv \code{TRUE} or \code{FALSE} (default), perform Levene's test for
+#'   equality of variances
+#' @param meanDiff \code{TRUE} or \code{FALSE} (default), provide means and
+#'   standard errors
+#' @param effectSize \code{TRUE} or \code{FALSE} (default), provide effect
+#'   sizes
+#' @param ci \code{TRUE} or \code{FALSE} (default), provide confidence
+#'   intervals
+#' @param ciWidth a number between 50 and 99.9 (default: 95), the width of
+#'   confidence intervals
+#' @param desc \code{TRUE} or \code{FALSE} (default), provide descriptive
+#'   statistics
+#' @param plots \code{TRUE} or \code{FALSE} (default), provide descriptive
+#'   plots
+#' @param miss \code{'perAnalysis'} or \code{'listwise'}, how to handle
+#'   missing values; \code{'perAnalysis'} excludes missing values for individual
+#'   dependent variables, \code{'listwise'} excludes a row from all analyses if
+#'   one of its entries is missing.
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$ttest} \tab \tab \tab \tab \tab a table containing the t-test results \cr

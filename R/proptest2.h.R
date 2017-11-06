@@ -24,7 +24,7 @@ propTest2Options <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name='propTest2',
                 requiresData=TRUE,
                 ...)
-        
+
             private$..vars <- jmvcore::OptionVariables$new(
                 "vars",
                 vars,
@@ -85,7 +85,7 @@ propTest2Options <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "postPlots",
                 postPlots,
                 default=FALSE)
-        
+
             self$.addOption(private$..vars)
             self$.addOption(private$..areCounts)
             self$.addOption(private$..testValue)
@@ -259,9 +259,9 @@ propTest2Base <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @examples
 #' \dontrun{
 #' dat <- data.frame(x=c(8, 15))
-#' 
+#'
 #' propTest2(dat, vars = 'x', areCounts = TRUE)
-#' 
+#'
 #' #
 #' #  Binomial Test
 #' #  -------------------------------------------------------
@@ -272,28 +272,28 @@ propTest2Base <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #  -------------------------------------------------------
 #' #    Note. Ha is proportion != 0.5
 #' #
-#' }
+#'}
 #' @param data the data as a data frame
-#' @param vars a vector of strings naming the variables of interest in 
+#' @param vars a vector of strings naming the variables of interest in
 #'   \code{data}
-#' @param areCounts \code{TRUE} or \code{FALSE} (default), the variables are 
-#'   counts 
-#' @param testValue a number (default: 0.5), the value for the null hypothesis 
-#' @param hypothesis \code{'notequal'} (default), \code{'greater'} or 
-#'   \code{'less'}, the alternative hypothesis 
-#' @param ci \code{TRUE} or \code{FALSE} (default), provide confidence 
-#'   intervals 
-#' @param ciWidth a number between 50 and 99.9 (default: 95), the confidence 
-#'   interval width 
-#' @param bf \code{TRUE} or \code{FALSE} (default), provide Bayes factors 
-#' @param priorA a number (default: 1), the beta prior 'a' parameter 
-#' @param priorB a number (default: 1), the beta prior 'b' parameter 
-#' @param ciBayes \code{TRUE} or \code{FALSE} (default), provide Bayesian 
-#'   credible intervals 
-#' @param ciBayesWidth a number between 50 and 99.9 (default: 95), the 
-#'   credible interval width 
-#' @param postPlots \code{TRUE} or \code{FALSE} (default), provide posterior 
-#'   plots 
+#' @param areCounts \code{TRUE} or \code{FALSE} (default), the variables are
+#'   counts
+#' @param testValue a number (default: 0.5), the value for the null hypothesis
+#' @param hypothesis \code{'notequal'} (default), \code{'greater'} or
+#'   \code{'less'}, the alternative hypothesis
+#' @param ci \code{TRUE} or \code{FALSE} (default), provide confidence
+#'   intervals
+#' @param ciWidth a number between 50 and 99.9 (default: 95), the confidence
+#'   interval width
+#' @param bf \code{TRUE} or \code{FALSE} (default), provide Bayes factors
+#' @param priorA a number (default: 1), the beta prior 'a' parameter
+#' @param priorB a number (default: 1), the beta prior 'b' parameter
+#' @param ciBayes \code{TRUE} or \code{FALSE} (default), provide Bayesian
+#'   credible intervals
+#' @param ciBayesWidth a number between 50 and 99.9 (default: 95), the
+#'   credible interval width
+#' @param postPlots \code{TRUE} or \code{FALSE} (default), provide posterior
+#'   plots
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$table} \tab \tab \tab \tab \tab a table of the proportions and test results \cr

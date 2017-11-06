@@ -26,7 +26,7 @@ ttestPSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name='ttestPS',
                 requiresData=TRUE,
                 ...)
-        
+
             private$..pairs <- jmvcore::OptionPairs$new(
                 "pairs",
                 pairs,
@@ -99,7 +99,7 @@ ttestPSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "perAnalysis",
                     "listwise"),
                 default="perAnalysis")
-        
+
             self$.addOption(private$..pairs)
             self$.addOption(private$..students)
             self$.addOption(private$..bf)
@@ -472,10 +472,10 @@ ttestPSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @examples
 #' \dontrun{
 #' data('bugs', package = 'jmv')
-#' 
+#'
 #' ttestPS(bugs, pairs = list(
 #'         list(i1 = 'LDLF', i2 = 'LDHF')))
-#' 
+#'
 #' #
 #' #  Paired Samples T-Test
 #' #  --------------------------------------------------------------
@@ -484,39 +484,39 @@ ttestPSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #    LDLF    LDHF    Student's t        -6.65    90.0    < .001
 #' #  --------------------------------------------------------------
 #' #
-#' }
+#'}
 #' @param data the data as a data frame
-#' @param pairs a list of lists specifying the pairs of measurement in 
+#' @param pairs a list of lists specifying the pairs of measurement in
 #'   \code{data}
-#' @param students \code{TRUE} (default) or \code{FALSE}, perform Student's 
-#'   t-tests 
-#' @param bf \code{TRUE} or \code{FALSE} (default), provide Bayes factors 
-#' @param bfPrior a number between 0.5 and 2 (default 0.707), the prior width 
-#'   to use in calculating Bayes factors 
-#' @param wilcoxon \code{TRUE} or \code{FALSE} (default), perform Wilcoxon 
-#'   signed rank tests 
-#' @param hypothesis \code{'different'} (default), \code{'oneGreater'} or 
-#'   \code{'twoGreater'}, the alternative hypothesis; group 1 different to group 
-#'   2, group 1 greater than group 2, and group 2 greater than group 1 
-#'   respectively 
-#' @param norm \code{TRUE} or \code{FALSE} (default), perform Shapiro-wilk 
-#'   normality tests 
-#' @param meanDiff \code{TRUE} or \code{FALSE} (default), provide means and 
-#'   standard errors 
-#' @param effectSize \code{TRUE} or \code{FALSE} (default), provide effect 
-#'   sizes 
-#' @param ci \code{TRUE} or \code{FALSE} (default), provide confidence 
-#'   intervals 
-#' @param ciWidth a number between 50 and 99.9 (default: 95), the width of 
-#'   confidence intervals 
-#' @param desc \code{TRUE} or \code{FALSE} (default), provide descriptive 
-#'   statistics 
-#' @param plots \code{TRUE} or \code{FALSE} (default), provide descriptive 
-#'   plots 
-#' @param miss \code{'perAnalysis'} or \code{'listwise'}, how to handle 
-#'   missing values; \code{'perAnalysis'} excludes missing values for individual 
-#'   dependent variables, \code{'listwise'} excludes a row from all analyses if 
-#'   one of its entries is missing. 
+#' @param students \code{TRUE} (default) or \code{FALSE}, perform Student's
+#'   t-tests
+#' @param bf \code{TRUE} or \code{FALSE} (default), provide Bayes factors
+#' @param bfPrior a number between 0.5 and 2 (default 0.707), the prior width
+#'   to use in calculating Bayes factors
+#' @param wilcoxon \code{TRUE} or \code{FALSE} (default), perform Wilcoxon
+#'   signed rank tests
+#' @param hypothesis \code{'different'} (default), \code{'oneGreater'} or
+#'   \code{'twoGreater'}, the alternative hypothesis; group 1 different to group
+#'   2, group 1 greater than group 2, and group 2 greater than group 1
+#'   respectively
+#' @param norm \code{TRUE} or \code{FALSE} (default), perform Shapiro-wilk
+#'   normality tests
+#' @param meanDiff \code{TRUE} or \code{FALSE} (default), provide means and
+#'   standard errors
+#' @param effectSize \code{TRUE} or \code{FALSE} (default), provide effect
+#'   sizes
+#' @param ci \code{TRUE} or \code{FALSE} (default), provide confidence
+#'   intervals
+#' @param ciWidth a number between 50 and 99.9 (default: 95), the width of
+#'   confidence intervals
+#' @param desc \code{TRUE} or \code{FALSE} (default), provide descriptive
+#'   statistics
+#' @param plots \code{TRUE} or \code{FALSE} (default), provide descriptive
+#'   plots
+#' @param miss \code{'perAnalysis'} or \code{'listwise'}, how to handle
+#'   missing values; \code{'perAnalysis'} excludes missing values for individual
+#'   dependent variables, \code{'listwise'} excludes a row from all analyses if
+#'   one of its entries is missing.
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$ttest} \tab \tab \tab \tab \tab a table containing the t-test results \cr

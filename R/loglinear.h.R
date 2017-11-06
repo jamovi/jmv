@@ -18,7 +18,7 @@ logLinearOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name='logLinear',
                 requiresData=TRUE,
                 ...)
-        
+
             private$..counts <- jmvcore::OptionVariable$new(
                 "counts",
                 counts,
@@ -53,7 +53,7 @@ logLinearOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 min=50,
                 max=99.9,
                 default=95)
-        
+
             self$.addOption(private$..counts)
             self$.addOption(private$..factors)
             self$.addOption(private$..modelTerms)
@@ -120,11 +120,11 @@ logLinearBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'
 #' 
 #' @param data the data as a data frame
-#' @param counts The counts 
-#' @param factors The factors 
-#' @param modelTerms The model terms 
-#' @param est Estimates 
-#' @param ci Confidence Intervals 
+#' @param counts The counts
+#' @param factors The factors
+#' @param modelTerms The model terms
+#' @param est Estimates
+#' @param ci Confidence Intervals
 #' @param ciWidth .
 #' @return A results object containing:
 #' \tabular{llllll}{

@@ -35,7 +35,7 @@ cfaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name='cfa',
                 requiresData=TRUE,
                 ...)
-        
+
             private$..factors <- jmvcore::OptionArray$new(
                 "factors",
                 factors,
@@ -146,7 +146,7 @@ cfaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "hlMI",
                 hlMI,
                 default=3)
-        
+
             self$.addOption(private$..factors)
             self$.addOption(private$..resCov)
             self$.addOption(private$..miss)
@@ -715,7 +715,7 @@ cfaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'
 #' @examples
 #' data <- lavaan::HolzingerSwineford1939
-#' 
+#'
 #' jmv::cfa(
 #'     data = data,
 #'     factors = list(
@@ -723,7 +723,7 @@ cfaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'         list(label="Textual", vars=c("x4", "x5", "x6")),
 #'         list(label="Speed", vars=c("x7", "x8", "x9"))),
 #'     resCov = NULL)
-#' 
+#'
 #' # Confirmatory Factor Analysis
 #' #
 #' #  Factor Loadings
@@ -777,53 +777,53 @@ cfaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #  -----------------------------------------------
 #' #
 #' #
-#' 
+#'
 #' @param data the data as a data frame
-#' @param factors a list containing named lists that define the \code{label} 
-#'   of the factor and the \code{vars} that belong to that factor 
-#' @param resCov a list of lists specifying the residual covariances that need 
-#'   to be estimated 
-#' @param miss \code{'listwise'} or \code{'fiml'}, how to handle missing 
-#'   values; \code{'listwise'} excludes a row from all analyses if one of its 
-#'   entries is missing, \code{'fiml'} uses a full information maximum 
-#'   likelihood method to estimate the model. 
-#' @param constrain \code{'facVar'} or \code{'facInd'}, how to contrain the 
-#'   model; \code{'facVar'} fixes the factor variances to one, \code{'facInd'} 
-#'   fixes each factor to the scale of its first indicator. 
-#' @param estTest \code{TRUE} (default) or \code{FALSE}, provide 'Z' and 'p' 
-#'   values for the model estimates 
-#' @param ci \code{TRUE} or \code{FALSE} (default), provide a confidence 
-#'   interval for the model estimates 
-#' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the 
-#'   confidence interval width that is used as \code{'ci'} 
-#' @param stdEst \code{TRUE} or \code{FALSE} (default), provide a standardized 
-#'   estimate for the model estimates 
-#' @param factCovEst \code{TRUE} (default) or \code{FALSE}, provide estimates 
-#'   for the factor (co)variances 
-#' @param factInterceptEst \code{TRUE} or \code{FALSE} (default), provide 
-#'   estimates for the factor intercepts 
-#' @param resCovEst \code{TRUE} (default) or \code{FALSE}, provide estimates 
-#'   for the residual (co)variances 
-#' @param resInterceptEst \code{TRUE} or \code{FALSE} (default), provide 
-#'   estimates for the residual intercepts 
-#' @param fitMeasures one or more of \code{'cfi'}, \code{'tli'}, 
-#'   \code{'srmr'}, \code{'rmsea'}, \code{'aic'}, or \code{'bic'}; use CFI, TLI, 
-#'   SRMR, RMSEA + 90\% confidence interval, adjusted AIC, and BIC model fit 
-#'   measures, respectively 
-#' @param modelTest \code{TRUE} (default) or \code{FALSE}, provide a 
-#'   chi-square test for exact fit that compares the model with the perfect 
-#'   fitting model 
-#' @param pathDiagram \code{TRUE} or \code{FALSE} (default), provide a path 
-#'   diagram of the model 
-#' @param corRes \code{TRUE} or \code{FALSE} (default), provide the residuals 
-#'   for the observed correlation matrix (i.e., the difference between the 
-#'   expected correlation matrix and the observed correlation matrix) 
-#' @param hlCorRes a number (default: 0.1), highlight values in the 
-#'   \code{'corRes'} table above this value 
-#' @param mi \code{TRUE} or \code{FALSE} (default), provide modification 
-#'   indices for the parameters not included in the model 
-#' @param hlMI a number (default: 3), highlight values in the 
-#'   \code{'modIndices'} tables above this value 
+#' @param factors a list containing named lists that define the \code{label}
+#'   of the factor and the \code{vars} that belong to that factor
+#' @param resCov a list of lists specifying the residual covariances that need
+#'   to be estimated
+#' @param miss \code{'listwise'} or \code{'fiml'}, how to handle missing
+#'   values; \code{'listwise'} excludes a row from all analyses if one of its
+#'   entries is missing, \code{'fiml'} uses a full information maximum
+#'   likelihood method to estimate the model.
+#' @param constrain \code{'facVar'} or \code{'facInd'}, how to contrain the
+#'   model; \code{'facVar'} fixes the factor variances to one, \code{'facInd'}
+#'   fixes each factor to the scale of its first indicator.
+#' @param estTest \code{TRUE} (default) or \code{FALSE}, provide 'Z' and 'p'
+#'   values for the model estimates
+#' @param ci \code{TRUE} or \code{FALSE} (default), provide a confidence
+#'   interval for the model estimates
+#' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the
+#'   confidence interval width that is used as \code{'ci'}
+#' @param stdEst \code{TRUE} or \code{FALSE} (default), provide a standardized
+#'   estimate for the model estimates
+#' @param factCovEst \code{TRUE} (default) or \code{FALSE}, provide estimates
+#'   for the factor (co)variances
+#' @param factInterceptEst \code{TRUE} or \code{FALSE} (default), provide
+#'   estimates for the factor intercepts
+#' @param resCovEst \code{TRUE} (default) or \code{FALSE}, provide estimates
+#'   for the residual (co)variances
+#' @param resInterceptEst \code{TRUE} or \code{FALSE} (default), provide
+#'   estimates for the residual intercepts
+#' @param fitMeasures one or more of \code{'cfi'}, \code{'tli'},
+#'   \code{'srmr'}, \code{'rmsea'}, \code{'aic'}, or \code{'bic'}; use CFI, TLI,
+#'   SRMR, RMSEA + 90\% confidence interval, adjusted AIC, and BIC model fit
+#'   measures, respectively
+#' @param modelTest \code{TRUE} (default) or \code{FALSE}, provide a
+#'   chi-square test for exact fit that compares the model with the perfect
+#'   fitting model
+#' @param pathDiagram \code{TRUE} or \code{FALSE} (default), provide a path
+#'   diagram of the model
+#' @param corRes \code{TRUE} or \code{FALSE} (default), provide the residuals
+#'   for the observed correlation matrix (i.e., the difference between the
+#'   expected correlation matrix and the observed correlation matrix)
+#' @param hlCorRes a number (default: 0.1), highlight values in the
+#'   \code{'corRes'} table above this value
+#' @param mi \code{TRUE} or \code{FALSE} (default), provide modification
+#'   indices for the parameters not included in the model
+#' @param hlMI a number (default: 3), highlight values in the
+#'   \code{'modIndices'} tables above this value
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$factorLoadings} \tab \tab \tab \tab \tab a table containing the factor loadings \cr
