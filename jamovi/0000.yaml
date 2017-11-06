@@ -1,14 +1,14 @@
 ---
 title: jamovi
 name: jmv
-version: 0.8.0
+version: 0.8.1
 jms: '1.0'
 authors:
   - Jonathon Love
   - Damian Dropmann
   - Ravi Selker
 maintainer: Jonathon Love <jon@thon.cc>
-date: '2017-09-15'
+date: '2017-11-06'
 description: >
   This module represents the analyses included with jamovi. It contains many
   common statistical tests (such as t-tests, ANOVAs, correlation matrices,
