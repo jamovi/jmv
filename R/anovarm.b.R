@@ -853,30 +853,30 @@ anovaRMClass <- R6::R6Class(
 
             data <- cbind(data, '.SUBJECT'=1:nrow(data))
 
-            data_long <- as.list(reshape2::melt(data, id.vars=c(bsVars, covVars, '.SUBJECT'), measure.vars=rmVars, value.name='.DEPENDENT'))
+            dataLong <- as.list(reshape2:::melt.data.frame(data, id.vars=c(bsVars, covVars, '.SUBJECT'), measure.vars=rmVars, value.name='.DEPENDENT'))
 
-            col <- data_long[['variable']]
+            col <- dataLong[['variable']]
             temp <- numeric(length(col))
             for (j in seq_along(col))
                 temp[j] <- which(rmVars %in% col[j])
 
             for (i in seq_along(labels))
-                data_long[[labels[[i]]]] <- factor(sapply(rmCells[temp], function(x) x[i]), levels[[i]])
+                dataLong[[labels[[i]]]] <- factor(sapply(rmCells[temp], function(x) x[i]), levels[[i]])
 
-            data_long[['variable']] <- NULL
+            dataLong[['variable']] <- NULL
 
-            data_long <- lapply(data_long, function(x) {
+            dataLong <- lapply(dataLong, function(x) {
                 if (is.factor(x))
                     levels(x) <- toB64(levels(x))
                 return(x)
             })
 
-            attr(data_long, 'row.names') <- seq_len(length(data_long[[1]]))
-            attr(data_long, 'names') <- toB64(names(data_long))
-            attr(data_long, 'class') <- 'data.frame'
-            data_long <- jmvcore::naOmit(data_long)
+            attr(dataLong, 'row.names') <- seq_len(length(dataLong[[1]]))
+            attr(dataLong, 'names') <- toB64(names(dataLong))
+            attr(dataLong, 'class') <- 'data.frame'
+            dataLong <- jmvcore::naOmit(dataLong)
 
-            return(data_long)
+            return(dataLong)
         },
         .modelFormula=function() {
 

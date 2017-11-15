@@ -70,7 +70,7 @@ anovaRMNPClass <- R6::R6Class(
         for (i in seq_along(data))
             data[[i]] <- jmvcore::toNumeric(data[[i]])
 
-        dataNew <- reshape2::melt(data, measure.vars=self$options$get('measures'), value.name='.DEPENDENT')
+        dataNew <- reshape2:::melt.data.frame(data, measure.vars=self$options$get('measures'), value.name='.DEPENDENT')
 
         by <- list(group = dataNew[["variable"]])
         dep <- dataNew[[".DEPENDENT"]]
