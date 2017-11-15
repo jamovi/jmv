@@ -490,7 +490,7 @@ anovaRMClass <- R6::R6Class(
 
                     table$setStatus('running')
 
-                    referenceGrid <- emmeans::emmeans(result, formula)
+                    referenceGrid <- lsmeans::lsmeans(result, formula)
                     none <- summary(pairs(referenceGrid, adjust='none'))
                     tukey <- summary(pairs(referenceGrid, adjust='tukey'))
                     scheffe <- summary(pairs(referenceGrid, adjust='scheffe'))

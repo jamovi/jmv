@@ -365,7 +365,7 @@ ancovaClass <- R6::R6Class(
 
                     # table$setStatus('running')
 
-                    referenceGrid <- emmeans::emmeans(private$.model, formula)
+                    referenceGrid <- lsmeans::lsmeans(private$.model, formula)
                     none <- summary(pairs(referenceGrid, adjust='none'))
                     tukey <- summary(pairs(referenceGrid, adjust='tukey'))
                     scheffe <- summary(pairs(referenceGrid, adjust='scheffe'))
