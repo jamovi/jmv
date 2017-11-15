@@ -467,7 +467,7 @@ ttestPSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 
 #' Paired Samples T-Test
 #'
-#' Provides a range of descriptive statistics
+#' 
 #'
 #' @examples
 #' \dontrun{

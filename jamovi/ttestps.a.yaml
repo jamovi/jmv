@@ -6,7 +6,6 @@ version: '1.0.0'
 jas: '1.1'
 
 description:
-    main: Provides a range of descriptive statistics
     R:
         usage: |
             data('bugs', package = 'jmv')
