@@ -809,7 +809,7 @@ anovaRMClass <- R6::R6Class(
                 # terms that include covariates:
                 covTerms <- c()
                 if (length(covariates) > 0)
-                    covTerms <- apply(sapply(as.list(covariates), function (y) sapply(bsTerms, function(x) y %in% x)), 1, any)
+                    covTerms <- sapply(as.list(sapply(as.list(covariates), function (y) sapply(bsTerms, function(x) y %in% x))), any)
 
                 if (sum(covTerms) != length(covariates) || length(covTerms) == 0) {
 
