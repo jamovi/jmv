@@ -68,10 +68,11 @@ ttestISClass <- R6::R6Class(
                 se <- sqrt(v/n)
                 sd <- sqrt(v)
 
-                sediff <- tryNaN(sqrt((v[1]/n[1])+(v[2]/n[2])))
-
-                pooledSD <- tryNaN(sqrt(((n[1]-1)*v[1]+(n[2]-1)*v[2])/(n[1]+n[2]-2)))
-                d <- (m[1]-m[2])/pooledSD # Cohen's d
+                pooledVAR <- tryNaN(((n[1]-1)*v[1]+(n[2]-1)*v[2])/(n[1]+n[2]-2))
+                sediffSTUD <- tryNaN(sqrt((pooledVAR/n[1])+(pooledVAR/n[2])))
+                sediffWELC <- tryNaN(sqrt((v[1]/n[1])+(v[2]/n[2])))
+                                
+                d <- (m[1]-m[2])/sqrt(pooledVAR) # Cohen's d
 
                 n[is.na(n)] <- 0
                 m[is.na(m)] <- NaN
@@ -79,7 +80,7 @@ ttestISClass <- R6::R6Class(
                 se[is.na(se)] <- NaN
                 sd[is.na(sd)] <- NaN
                 sediff[is.na(sediff)] <- NaN
-                pooledSD[is.na(pooledSD)] <- NaN
+                pooledVAR[is.na(pooledVAR)] <- NaN
                 d[is.na(d)] <- NaN
 
                 ## Levene's test and equality of variances table
@@ -143,7 +144,7 @@ ttestISClass <- R6::R6Class(
                             "df[stud]"=res$parameter,
                             "p[stud]"=res$p.value,
                             "md[stud]"=res$estimate[1]-res$estimate[2],
-                            "sed[stud]"=sediff,
+                            "sed[stud]"=sediffSTUD,
                             "es[stud]"=d,
                             "cil[stud]"=res$conf.int[1],
                             "ciu[stud]"=res$conf.int[2]))
@@ -170,7 +171,7 @@ ttestISClass <- R6::R6Class(
                             "df[welc]"=res$parameter,
                             "p[welc]"=res$p.value,
                             "md[welc]"=res$estimate[1]-res$estimate[2],
-                            "sed[welc]"=sediff,
+                            "sed[welc]"=sediffWELC,
                             "es[welc]"=d,
                             "cil[welc]"=res$conf.int[1],
                             "ciu[welc]"=res$conf.int[2]))
