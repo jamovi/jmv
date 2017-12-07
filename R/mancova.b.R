@@ -317,6 +317,10 @@ mancovaClass <- R6::R6Class(
             factors <- self$options$factors
 
             dataDeps <- data[jmvcore::toB64(deps)]
+
+            if (length(factors) == 0)
+                return(list(chiSq = NaN, df = NaN, p = NaN, warning = "No factors defined. Box's M test is only relevant when model contains factors."))
+
             dataFactors <- data[jmvcore::toB64(factors)]
 
             grouping <- apply(dataFactors, 1 , function(x) {
