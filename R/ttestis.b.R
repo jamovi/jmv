@@ -71,7 +71,7 @@ ttestISClass <- R6::R6Class(
                 pooledVAR <- tryNaN(((n[1]-1)*v[1]+(n[2]-1)*v[2])/(n[1]+n[2]-2))
                 sediffSTUD <- tryNaN(sqrt((pooledVAR/n[1])+(pooledVAR/n[2])))
                 sediffWELC <- tryNaN(sqrt((v[1]/n[1])+(v[2]/n[2])))
-                                
+
                 d <- (m[1]-m[2])/sqrt(pooledVAR) # Cohen's d
 
                 n[is.na(n)] <- 0
@@ -79,7 +79,8 @@ ttestISClass <- R6::R6Class(
                 med[is.na(med)] <- NaN
                 se[is.na(se)] <- NaN
                 sd[is.na(sd)] <- NaN
-                sediff[is.na(sediff)] <- NaN
+                sediffSTUD[is.na(sediffSTUD)] <- NaN
+                sediffWELC[is.na(sediffWELC)] <- NaN
                 pooledVAR[is.na(pooledVAR)] <- NaN
                 d[is.na(d)] <- NaN
 
@@ -218,7 +219,7 @@ ttestISClass <- R6::R6Class(
                             "df[mann]"=res$parameter,
                             "p[mann]"=res$p.value,
                             "md[mann]"=res$estimate,
-                            "sed[mann]"=sediff,
+                            "sed[mann]"='',
                             "es[mann]"=d,
                             "cil[mann]"=res$conf.int[1],
                             "ciu[mann]"=res$conf.int[2]))
