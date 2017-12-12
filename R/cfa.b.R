@@ -90,7 +90,7 @@ cfaClass <- R6::R6Class(
                     if ( ! self$options$constrain == "facVar" && j == 1) {
 
                         row <- list("factor"=factorName, "indicator"=var, "est"=1, "se"='',
-                                    "z"='', "p"='', "lower"='', "upper"='', "stdEst"='')
+                                    "z"='', "p"='', "lower"='', "upper"='')
 
                         table$addRow(rowKey=rowNo, values=row)
                         table$addFootnote(rowKey=rowNo, 'est', 'fixed parameter')
@@ -333,25 +333,26 @@ cfaClass <- R6::R6Class(
 
                 for (j in seq_along(vars)) {
 
+                    factorName <- jmvcore::toB64(factors[[i]]$label)
+                    var <- jmvcore::toB64(vars[j])
+
+                    index <- which(r$lhs == factorName & r$rhs == var)
+
+                    row <- list()
+                    row[['stdEst']] <- if (is.na(r[index, 'std.all'])) '' else r[index, 'std.all']
+
                     if (self$options$constrain == "facVar" || j != 1) {
 
-                        factorName <- jmvcore::toB64(factors[[i]]$label)
-                        var <- jmvcore::toB64(vars[j])
-
-                        index <- which(r$lhs == factorName & r$rhs == var)
-
-                        row <- list()
                         row[['est']] <- r[index, 'est']
                         row[['se']] <- r[index, 'se']
                         row[['z']] <- if (is.na(r[index, 'z'])) '' else r[index, 'z']
                         row[['p']] <- if (is.na(r[index, 'pvalue'])) '' else r[index, 'pvalue']
                         row[['lower']] <- if (is.na(r[index, 'ci.lower'])) '' else r[index, 'ci.lower']
                         row[['upper']] <- if (is.na(r[index, 'ci.upper'])) '' else r[index, 'ci.upper']
-                        row[['stdEst']] <- if (is.na(r[index, 'std.all'])) '' else r[index, 'std.all']
-
-                        table$setRow(rowNo=rowNo, values=row)
 
                     }
+
+                    table$setRow(rowNo=rowNo, values=row)
 
                     rowNo <- rowNo + 1
                 }
