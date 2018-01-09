@@ -748,7 +748,7 @@ descriptivesClass <- R6::R6Class(
             } else {
 
                 plot <- ggplot(data=data, aes_string(x=names$s2, y=names$x, fill=names$s1)) +
-                    labs(list(x=labels$s1, y=labels$x, fill=labels$s1, color=labels$s1))
+                    labs(list(x=labels$s2, y=labels$x, fill=labels$s1, color=labels$s1))
 
                 if (self$options$violin)
                     plot <- plot + ggplot2::geom_violin(color=theme$color[1], position=position_dodge(0.9), alpha=0.3)
