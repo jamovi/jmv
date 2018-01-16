@@ -23,7 +23,6 @@ children:
             height: large
             events:
                 change: './anovarm.events::onChange_rmCells'
-            selectable: false
             templateName: rmcell-template
             template:
                 type: LayoutBox

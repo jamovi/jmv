@@ -32,7 +32,6 @@ children:
             events:
               listItemAdded: './linreg.events::onEvent_test_listItemsChanged'
               listItemRemoved: './linreg.events::onEvent_test_listItemsChanged'
-            selectable: false
             templateName: linreg-block-template
             template:
               type: LayoutBox

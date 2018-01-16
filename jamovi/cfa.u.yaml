@@ -23,7 +23,6 @@ children:
             name: factors
             height: large
             addButton: Add New Factor
-            selectable: false
             events:
               listItemAdded: './cfa.events::onEvent_test_listItemsAdded'
               listItemRemoved: './cfa.events::onEvent_test_listItemsChanged'
