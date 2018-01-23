@@ -605,6 +605,10 @@ ancovaClass <- R6::R6Class(
             modelTerms <- self$options$modelTerms
             if (length(modelTerms) == 0)
                 modelTerms <- private$.ff()
+
+            lengths <- vapply(modelTerms, length, 1)
+            modelTerms <- modelTerms[order(lengths)]
+
             modelTerms
         },
         .ff=function() {
