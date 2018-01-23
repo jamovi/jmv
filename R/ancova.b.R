@@ -216,13 +216,12 @@ ancovaClass <- R6::R6Class(
 
             for (i in seq_len(rowCount)) {
                 rowName <- rowNames[i]
-                rowKey  <- decomposeTerm(rowName)
 
-                ss <- results[rowName, 'Sum Sq']
-                df <- results[rowName, 'Df']
+                ss <- results[i,'Sum Sq']
+                df <- results[i,'Df']
                 ms <- ss / df
-                F  <- results[rowName, 'F value']
-                p  <- results[rowName, 'Pr(>F)']
+                F  <- results[i,'F value']
+                p  <- results[i,'Pr(>F)']
 
                 if ( is.finite(F)) {
                     e <- ss / totalSS
@@ -246,7 +245,7 @@ ancovaClass <- R6::R6Class(
                 tableRow <- list(ss=ss, df=df, ms=ms, F=F, p=p, etaSq=e, etaSqP=ep, omegaSq=w)
 
                 if (i < rowCount) {
-                    anovaTable$setRow(rowKey=rowKey, tableRow)
+                    anovaTable$setRow(rowNo=i, tableRow)
                 }
                 else {
                     if (rowCount < anovaTable$rowCount) {
