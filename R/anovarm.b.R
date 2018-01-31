@@ -102,6 +102,7 @@ anovaRMClass <- R6::R6Class(
             bsTable$setNote('Note', jmvcore::format("Type {} Sums of Squares", self$options$ss))
 
             bsTerms <- private$.bsTerms()
+
             if (length(bsTerms) > 0) {
                 for (term in bsTerms)
                     bsTable$addRow(rowKey=unlist(term), list(name=stringifyTerm(term)))
@@ -336,7 +337,9 @@ anovaRMClass <- R6::R6Class(
             }
 
             # Populate BS table
+
             bsTerms <- lapply(bsRows[which( ! sapply(bsRows, function(x) x[1] == 'Residual'))], toB64)
+
             if (length(bsTerms) > 0)
                 bsIndices <- sapply(bsTerms, function(x) which(sapply(modelRows, function(y) setequal(x,y))))
 
@@ -808,8 +811,11 @@ anovaRMClass <- R6::R6Class(
 
                 # terms that include covariates:
                 covTerms <- c()
-                if (length(covariates) > 0)
-                    covTerms <- sapply(as.list(sapply(as.list(covariates), function (y) sapply(bsTerms, function(x) y %in% x))), any)
+                if (length(covariates) > 0) {
+                    for (i in seq_along(bsTerms)) {
+                        covTerms[[i]] <- any(covariates %in% bsTerms[[i]])
+                    }
+                }
 
                 if (sum(covTerms) != length(covariates) || length(covTerms) == 0) {
 
