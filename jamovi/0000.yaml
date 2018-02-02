@@ -90,6 +90,13 @@ analyses:
     menuGroup: Regression
     menuTitle: Linear Regression
     description: Linear Regression
+  - title: Binomial Logistic Regression
+    name: logRegBin
+    ns: jmv
+    menuGroup: Regression
+    menuSubgroup: Logistic Regression
+    menuTitle: 2 Outcomes
+    menuSubtitle: Binomial
   - title: Proportion Test (2 Outcomes)
     name: propTest2
     ns: jmv

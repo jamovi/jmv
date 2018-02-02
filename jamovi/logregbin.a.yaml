@@ -1,0 +1,356 @@
+---
+name:  logRegBin
+title: Binomial Logistic Regression
+menuGroup: Regression
+menuSubgroup: Logistic Regression
+menuTitle: 2 Outcomes
+menuSubtitle: Binomial
+version: '1.0.0'
+jas: '1.1'
+
+options:
+    - name: data
+      type: Data
+      description:
+          R: the data as a data frame
+
+    - name: dep
+      type: Variable
+      title: Dependent Variable
+      suggested:
+        - nominal
+      permitted:
+        - nominal
+        - nominaltext
+        - ordinal
+      description:
+          R: >
+            a string naming the dependent variable from `data`, variable
+            must be numeric
+
+    - name: covs
+      title: Covariates
+      type: Variables
+      suggested:
+        - continuous
+      permitted:
+        - continuous
+        - nominal
+        - ordinal
+      default:
+      description:
+          R: a vector of strings naming the covariates from `data`
+
+    - name: factors
+      title: Factors
+      type: Variables
+      suggested:
+        - nominal
+      permitted:
+        - nominal
+        - nominaltext
+        - ordinal
+      default:
+      description:
+          R: a vector of strings naming the fixed factors from `data`
+
+    - name: blocks
+      title: Blocks
+      type: Array
+      default: [[]]
+      template:
+          type: Terms
+      description:
+          R: >
+            a list containing vectors of strings that name the
+            predictors that are added to the model. The elements
+            are added to the model according to their order in the
+            list
+
+    - name: refLevels
+      title: Reference Levels
+      type: Array
+      items: (factors)
+      default:
+      template:
+          type: Group
+          elements:
+              - name: var
+                type: Variable
+                content: $key
+              - name: ref
+                type: Level
+      description:
+          R: >
+            a list of lists specifying reference levels of the dependent variable
+            and all the factors
+
+    - name: modelTest
+      title: Overall model test
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide the model comparison between
+            the models and the NULL model
+
+    - name: dev
+      title: Deviance
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide the deviance (or -2LogLikelihood)
+            for the models
+
+    - name: aic
+      title: AIC
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide Aikaike's Information Criterion (AIC)
+            for the models
+
+    - name: bic
+      title: BIC
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide Bayesian Information Criterion (BIC)
+            for the models
+
+    - name: pseudoR2
+      title: Pseudo R²
+      type: NMXList
+      options:
+          - name: r2mf
+            title: McFadden's R²
+          - name: r2cs
+            title: Cox & Snell's R²
+          - name: r2n
+            title: Nagelkerke's R²
+      default:
+          - r2mf
+      description:
+          R: >
+            one or more of `'r2mf'`, `'r2cs'`, or `'r2n'`;
+            use McFadden's, Cox & Snell, and Nagelkerke pseudo-R²,
+            respectively
+
+    - name: omni
+      title: Likelihood ratio tests
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the omnibus likelihood ratio tests
+            for the predictors
+
+    - name: ci
+      title: Confidence interval
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a confidence interval
+            for the model coefficient estimates
+
+    - name: ciWidth
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width
+
+    - name: OR
+      title: Odds ratio
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the exponential of the log-odds
+            ratio estimate, or the odds ratio estimate
+
+    - name: ciOR
+      title: Confidence interval
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a confidence interval
+            for the model coefficient odds ratio estimates
+
+    - name: ciWidthOR
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width
+
+    - name: emMeans
+      title: Marginal Means
+      type: Array
+      default: [[]]
+      template:
+          type: Variables
+      description:
+          R: >
+            a list of lists specifying the variables for which the estimated marginal
+            means need to be calculate. Supports up to three variables per term.
+
+    - name: ciEmm
+      title: Confidence interval
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide a confidence interval
+            for the estimated marginal means
+
+    - name: ciWidthEmm
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width for the estimated marginal means
+
+    - name: emmPlots
+      title: Marginal means plots
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide estimated marginal means plots
+
+    - name: emmTables
+      title: Marginal means tables
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide estimated marginal means tables
+
+    - name: emmWeights
+      title: Equal cell weights
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, weigh each cell equally or weigh them according to
+            the cell frequency
+
+    - name: class
+      title: Classification table
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a predicted classification
+            table (or confusion matrix)
+
+    - name: acc
+      title: Accuracy
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the predicted accuracy of
+            outcomes grouped by the cut-off value
+
+    - name: spec
+      title: Specificity
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the predicted specificity of
+            outcomes grouped by the cut-off value
+
+    - name: sens
+      title: Sensitivity
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the predicted sensitivity of
+            outcomes grouped by the cut-off value
+
+    - name: auc
+      title: AUC
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the rea under the
+            ROC curve (AUC)
+
+    - name: rocPlot
+      title: ROC curve
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a ROC curve plot
+
+    - name: cutOff
+      title: Cut-off value
+      type: Number
+      min: 0
+      max: 1
+      default: 0.5
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), set a cut-off used for the predictions
+
+    - name: cutOffPlot
+      title: Cut-off plot
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a cut-off plot
+
+    - name: collin
+      title: Collinearity statistics
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide VIF and tolerence
+            collinearity statistics
+
+    - name: boxTidwell
+      title: Box-Tidwell test
+      type: Bool
+      default: false
+      hidden: true
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Box-Tidwell test
+            for linearity of the logit
+
+    - name: cooks
+      title: Cook's distance
+      type: Bool
+      default: false
+      hidden: true
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide summary statistics for
+            the Cook's distance
+
+...
