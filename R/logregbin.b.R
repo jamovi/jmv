@@ -170,13 +170,17 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             factors <- self$options$factors
 
             dep <- self$options$dep
-            refLevels <- self$options$refLevels
-            depLevels <- levels(self$data[[dep]])
-            refVars <- sapply(refLevels, function(x) x$var)
-            depRef <- refLevels[[which(dep == refVars)]][['ref']]
-            depLevel <- depLevels[-which(depRef == depLevels)]
 
-            note <- paste0("Estimates represent the log-odds of \"", dep, " = ", depLevel, " vs. ", dep, " = ", depRef, "\"")
+            if ( ! is.null(dep) ) {
+                refLevels <- self$options$refLevels
+                depLevels <- levels(self$data[[dep]])
+                refVars <- sapply(refLevels, function(x) x$var)
+                depRef <- refLevels[[which(dep == refVars)]][['ref']]
+                depLevel <- depLevels[-which(depRef == depLevels)]
+                note <- paste0("Estimates represent the log odds of \"", dep, " = ", depLevel, "\" vs. \"", dep, " = ", depRef, "\"")
+            } else {
+                note <- paste0("Estimates represent the log odds of \u2026")
+            }
 
             for (i in seq_along(termsAll)) {
 
@@ -224,10 +228,9 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                         coefTerms[[length(coefTerms) + 1]] <- jmvcore::toB64(terms[[j]])
 
                     }
-
-                    table$setNote("est", note)
                 }
 
+                table$setNote("est", note)
                 private$coefTerms[[i]] <- coefTerms
             }
         },
