@@ -29,7 +29,10 @@ Imports:
     afex,
     mvnormtest,
     lavaan,
-    ggridges
+    ggridges,
+    ROCR,
+    nnet,
+    MASS
 Suggests:
     exact2x2,
     testthat,

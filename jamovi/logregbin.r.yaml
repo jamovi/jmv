@@ -1,0 +1,412 @@
+---
+name:  logRegBin
+title: Binomial Logistic Regression
+jrs:   '1.1'
+
+items:
+    - name: modelFit
+      title: Model Fit Measures
+      type: Table
+      clearWith:
+        - dep
+        - blocks
+      visible: (dev || aic || bic || pseudoR2:r2mf || pseudoR2:r2cs || pseudoR2:r2n || modelTest)
+
+      columns:
+        - name: model
+          title: "Model"
+          type: text
+
+        - name: dev
+          title: Deviance
+          type: number
+          visible: (dev)
+
+        - name: aic
+          title: AIC
+          type: number
+          visible: (aic)
+
+        - name: bic
+          title: BIC
+          type: number
+          visible: (bic)
+
+        - name: r2mf
+          title: R²<sub>McF</sub>
+          type: number
+          visible: (pseudoR2:r2mf)
+
+        - name: r2cs
+          title: R²<sub>CS</sub>
+          type: number
+          visible: (pseudoR2:r2cs)
+
+        - name: r2n
+          title: R²<sub>N</sub>
+          type: number
+          visible: (pseudoR2:r2n)
+
+        - name: chi
+          title: χ²
+          type: number
+          superTitle: Overall Model Test
+          visible: (modelTest)
+
+        - name: df
+          title: df
+          type: integer
+          superTitle: Overall Model Test
+          visible: (modelTest)
+
+        - name: p
+          title: p
+          type: number
+          format: zto,pvalue
+          superTitle: Overall Model Test
+          visible: (modelTest)
+
+    - name: modelComp
+      title: Model Comparisons
+      type: Table
+      clearWith:
+        - dep
+        - blocks
+
+      columns:
+        - name: model1
+          title: 'Model'
+          content: .
+          type: text
+          superTitle: Comparison
+
+        - name: sep
+          title: ""
+          content: "-"
+          type: text
+          format: narrow
+          superTitle: Comparison
+
+        - name: model2
+          title: 'Model'
+          content: .
+          type: text
+          superTitle: Comparison
+
+        - name: chi
+          title: χ²
+          type: number
+
+        - name: df
+          title: df
+          type: integer
+
+        - name: p
+          title: p
+          type: number
+          format: zto,pvalue
+
+    - name: models
+      title: Model Specific Results
+      type: Array
+      layout: listSelect
+      hideHeadingOnlyChild: true
+      description: an array of model specific results
+      template:
+
+        title: ''
+        type: Group
+        items:
+
+          - name: lrt
+            title: Omnibus Likelihood Ratio Tests
+            type: Table
+            clearWith:
+                - dep
+                - blocks
+            description: a table of likelihood ratio tests
+            visible: (omni)
+            columns:
+
+              - name: term
+                title: "Predictor"
+                type: text
+
+              - name: chi
+                title: χ²
+                type: number
+
+              - name: df
+                title: df
+                type: integer
+
+              - name: p
+                title: p
+                type: number
+                format: zto,pvalue
+
+          - name: coef
+            title: Model Coefficients
+            type: Table
+            clearWith:
+                - dep
+                - blocks
+                - refLevels
+            description: a table of model coefficients
+            columns:
+
+              - name: term
+                title: "Predictor"
+                type: text
+
+              - name: est
+                title: Estimate
+                type: number
+
+              - name: lower
+                title: Lower
+                type: number
+                visible: (ci)
+
+              - name: upper
+                title: Upper
+                type: number
+                visible: (ci)
+
+              - name: se
+                title: SE
+                type: number
+
+              - name: z
+                title: Z
+                type: number
+
+              - name: p
+                title: p
+                type: number
+                format: zto,pvalue
+
+              - name: odds
+                title: Odds ratio
+                type: number
+                visible: (OR)
+
+              - name: oddsLower
+                title: Lower
+                type: number
+                visible: (ciOR && OR)
+
+              - name: oddsUpper
+                title: Upper
+                type: number
+                visible: (ciOR && OR)
+
+          - name: dataSummary
+            title: Data Summary
+            type: Group
+            items:
+              - name: cooks
+                title: Cook's Distance
+                type: Table
+                rows: 1
+                visible: (cooks)
+                clearWith:
+                - dep
+                - blocks
+
+                columns:
+                - name: mean
+                  title: Mean
+                  type: number
+
+                - name: median
+                  title: Median
+                  type: number
+
+                - name: sd
+                  title: SD
+                  type: number
+
+                - name: min
+                  title: Min
+                  type: number
+                  superTitle: Range
+
+                - name: max
+                  title: Max
+                  type: number
+                  superTitle: Range
+
+          - name: assump
+            title: Assumption Checks
+            type: Group
+            items:
+
+            - name: collin
+              title: Collinearity Statistics
+              type: Table
+              description: a table containing the collinearity statistics
+              visible: (collin)
+              clearWith:
+                - dep
+                - blocks
+              columns:
+                - name: term
+                  title: ''
+                  type: text
+
+                - name: vif
+                  title: VIF
+                  type: number
+
+                - name: tol
+                  title: Tolerance
+                  type: number
+
+            - name: boxTidwell
+              title: Box-Tidwell Test for Linearity of the Logit
+              type: Table
+              description: a table containing the results from the Box-Tidwell test
+              visible: (boxTidwell)
+              columns:
+                - name: term
+                  title: "Predictor"
+                  type: text
+
+                - name: est
+                  title: Estimate
+                  type: number
+
+                - name: se
+                  title: SE
+                  type: number
+
+                - name: z
+                  title: Z
+                  type: number
+
+                - name: p
+                  title: p
+                  type: number
+                  format: zto,pvalue
+
+          - name: emm
+            title: Estimated Marginal Means
+            type: Array
+            description: an array of the estimated marginal means plots + tables
+            clearWith:
+              - dep
+              - blocks
+              - emMeans
+            template:
+
+                title: ''
+                type: Group
+                items:
+
+                  - name: emmPlot
+                    title: ''
+                    type: Image
+                    width: 450
+                    height: 400
+                    renderFun: .emmPlot
+                    visible: (emmPlots)
+                    clearWith:
+                      - dep
+                      - blocks
+                      - cutOff
+                      - refLevels
+                      - ciEmm
+                      - ciWidthEmm
+                      - emmWeights
+
+                  - name: emmTable
+                    title: ''
+                    type: Table
+                    description: a table containing estimated marginal means
+                    visible: (emmTables)
+                    columns: []
+                    clearWith:
+                      - dep
+                      - blocks
+                      - cutOff
+                      - refLevels
+                      - ciWidthEmm
+                      - emmWeights
+
+
+          - name: pred
+            title: Prediction
+            type: Group
+            items:
+
+              - name: cutOffPlot
+                title: Cut-Off Plot
+                type: Image
+                width: 450
+                height: 430
+                renderFun: .cutOffPlot
+                visible: (cutOffPlot)
+                clearWith:
+                  - dep
+                  - blocks
+                  - cutOff
+                  - refLevels
+
+              - name: class
+                title: Classification Table
+                type: Table
+                description: a table of predicted classifications
+                clearWith:
+                  - dep
+                  - blocks
+                  - cutOff
+                  - refLevels
+                rows: 1
+                visible: (class)
+                columns: []
+
+              - name: measures
+                title: Predictive Measures
+                type: Table
+                description: a table of predictive measures
+                clearWith:
+                  - dep
+                  - blocks
+                  - cutOff
+                  - refLevels
+                rows: 1
+                visible: (acc || spec || sens || auc)
+                columns:
+                  - name: accuracy
+                    title: Accuracy
+                    type: number
+                    visible: (acc)
+
+                  - name: spec
+                    title: Specificity
+                    type: number
+                    visible: (spec)
+
+                  - name: sens
+                    title: Sensitivity
+                    type: number
+                    visible: (sens)
+
+                  - name: auc
+                    title: AUC
+                    type: number
+                    visible: (auc)
+
+              - name: rocPlot
+                title: ROC Curve
+                type: Image
+                width: 450
+                height: 400
+                renderFun: .rocPlot
+                visible: (rocPlot)
+                clearWith:
+                  - dep
+                  - blocks
+                  - refLevels
+...

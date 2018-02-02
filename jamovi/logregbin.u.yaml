@@ -1,0 +1,354 @@
+title: Binomial Logistic Regression
+name: logRegBin
+jus: '2.0'
+stage: 0
+compilerMode: tame
+events:
+  update: './linreg.events::update'
+children:
+  - type: VariableSupplier
+    stretchFactor: 1
+    children:
+      - type: TargetLayoutBox
+        children:
+          - type: VariablesListBox
+            name: dep
+            isTarget: true
+            maxItemCount: 1
+            events:
+              change: './linreg.events::onChange_dep'
+      - type: TargetLayoutBox
+        label: Covariates
+        children:
+          - type: VariablesListBox
+            name: covs
+            isTarget: true
+            events:
+              change: './linreg.events::onChange_covs'
+      - type: TargetLayoutBox
+        label: Factors
+        children:
+          - type: VariablesListBox
+            name: factors
+            isTarget: true
+            events:
+              change: './linreg.events::onChange_factors'
+  - type: CollapseBox
+    label: Model Builder
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: Supplier
+        name: modelSupplier
+        label: Predictors
+        persistentItems: true
+        stretchFactor: 1
+        format: term
+        children:
+          - type: TargetLayoutBox
+            transferAction: interactions
+            children:
+              - type: ListBox
+                name: blocks
+                height: normal
+                addButton: Add New Block
+                events:
+                  listItemAdded: './linreg.events::onEvent_test_listItemsChanged'
+                  listItemRemoved: './linreg.events::onEvent_test_listItemsChanged'
+                selectable: true
+                templateName: linreg-block-template
+                template:
+                  type: LayoutBox
+                  margin: normal
+                  targetArea: true
+                  children:
+                    - type: Label
+                      label: Block 1
+                      name: blockName
+                      stretchFactor: 1
+                      margin: normal
+                    - type: ListBox
+                      name: blockList
+                      isTarget: true
+                      valueFilter: unique
+                      height: auto
+                      ghostText: drag variables here
+                      events:
+                        change: './linreg.events::onChange_blocks'
+                      template:
+                        type: TermLabel
+  - type: CollapseBox
+    label: Reference Levels
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: ListBox
+        name: refLevels
+        showColumnHeaders: true
+        fullRowSelect: true
+        stretchFactor: 1
+        events:
+          change: './linreg.events::onChange_refLevels'
+        columns:
+          - name: var
+            label: Variable
+            selectable: false
+            stretchFactor: 1
+            maxWidth: 300
+            template:
+              type: VariableLabel
+          - name: ref
+            label: Reference Level
+            selectable: false
+            stretchFactor: 0.5
+            template:
+              type: LevelSelector
+              label: ''
+  - type: CollapseBox
+    label: Assumption Checks
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        children:
+          - type: CheckBox
+            name: collin
+  - type: CollapseBox
+    label: Model Fit
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        children:
+          - type: LayoutBox
+            cell:
+              column: 0
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Fit Measures
+                children:
+                  - type: CheckBox
+                    name: dev
+                  - type: CheckBox
+                    name: aic
+                  - type: CheckBox
+                    name: bic
+                  - type: CheckBox
+                    name: modelTest
+          - type: LayoutBox
+            cell:
+              column: 1
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Pseudo R²
+                children:
+                  - name: pseudoR2_r2mf
+                    type: CheckBox
+                    optionName: pseudoR2
+                    optionPart: r2mf
+                  - name: pseudoR2_r2cs
+                    type: CheckBox
+                    optionName: pseudoR2
+                    optionPart: r2cs
+                  - name: pseudoR2_r2n
+                    type: CheckBox
+                    optionName: pseudoR2
+                    optionPart: r2n
+                name: pseudoR2
+  - type: CollapseBox
+    label: Model Coefficients
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        children:
+          - type: LayoutBox
+            cell:
+              column: 0
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Omnibus Tests
+                children:
+                  - type: CheckBox
+                    name: omni
+              - type: Label
+                label: Estimate (Log Odds Ratio)
+                children:
+                  - type: CheckBox
+                    name: ci
+                    children:
+                      - type: TextBox
+                        name: ciWidth
+                        label: Interval
+                        suffix: '%'
+                        format: number
+                        inputPattern: '[0-9]+'
+                        enable: (ci)
+          - type: LayoutBox
+            cell:
+              column: 1
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Odds Ratio
+                children:
+                  - type: CheckBox
+                    name: OR
+                  - type: CheckBox
+                    name: ciOR
+                    enable: (OR)
+                    children:
+                      - type: TextBox
+                        name: ciWidthOR
+                        label: Interval
+                        suffix: '%'
+                        format: number
+                        inputPattern: '[0-9]+'
+                        enable: (ciOR)
+  - type: CollapseBox
+    label: Estimated Marginal Means
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        children:
+          - type: Supplier
+            name: emMeansSupplier
+            format: variable
+            persistentItems: true
+            stretchFactor: 1
+            children:
+              - type: TargetLayoutBox
+                children:
+                  - type: ListBox
+                    name: emMeans
+                    height: large
+                    addButton: Add New Term
+                    events:
+                      listItemAdded: './linreg.events::onEvent_emMeans_listItemsChanged'
+                      listItemRemoved: './linreg.events::onEvent_emMeans_listItemsChanged'
+                    selectable: true
+                    templateName: linreg-block-template
+                    template:
+                      type: LayoutBox
+                      margin: normal
+                      targetArea: true
+                      children:
+                        - type: Label
+                          label: Term 1
+                          name: blockName
+                          stretchFactor: 1
+                          margin: normal
+                        - type: VariablesListBox
+                          name: blockList
+                          isTarget: true
+                          valueFilter: unique
+                          height: auto
+                          maxItemCount: 3
+                          ghostText: drag variables here
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        children:
+          - type: LayoutBox
+            cell:
+              column: 0
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: General Options
+                children:
+                  - type: CheckBox
+                    name: emmWeights
+                  - type: CheckBox
+                    name: ciEmm
+                    children:
+                      - type: TextBox
+                        name: ciWidthEmm
+                        label: Interval
+                        suffix: '%'
+                        format: number
+                        inputPattern: '[0-9]+'
+                        enable: (ciEmm)
+          - type: LayoutBox
+            cell:
+              column: 1
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Output
+                children:
+                  - type: CheckBox
+                    name: emmPlots
+                  - type: CheckBox
+                    name: emmTables
+  - type: CollapseBox
+    label: Prediction
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        children:
+          - type: LayoutBox
+            cell:
+              column: 0
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Cut-Off
+                children:
+                  - type: CheckBox
+                    name: cutOffPlot
+                  - type: TextBox
+                    name: cutOff
+                    format: number
+                    inputPattern: '[0-9]+'
+          - type: LayoutBox
+            cell:
+              column: 1
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Predictive Measures
+                children:
+                  - type: CheckBox
+                    name: class
+                  - type: CheckBox
+                    name: acc
+                  - type: CheckBox
+                    name: spec
+                  - type: CheckBox
+                    name: sens
+          - type: LayoutBox
+            cell:
+              column: 2
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: ROC
+                children:
+                  - type: CheckBox
+                    name: rocPlot
+                  - type: CheckBox
+                    name: auc
