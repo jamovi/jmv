@@ -4,7 +4,7 @@ jus: '2.0'
 stage: 0
 compilerMode: tame
 events:
-  update: './linreg.events::update'
+  update: './logregbin.events::update'
 children:
   - type: VariableSupplier
     stretchFactor: 1
@@ -16,7 +16,7 @@ children:
             isTarget: true
             maxItemCount: 1
             events:
-              change: './linreg.events::onChange_dep'
+              change: './logregbin.events::onChange_dep'
       - type: TargetLayoutBox
         label: Covariates
         children:
@@ -24,7 +24,7 @@ children:
             name: covs
             isTarget: true
             events:
-              change: './linreg.events::onChange_covs'
+              change: './logregbin.events::onChange_covs'
       - type: TargetLayoutBox
         label: Factors
         children:
@@ -32,7 +32,7 @@ children:
             name: factors
             isTarget: true
             events:
-              change: './linreg.events::onChange_factors'
+              change: './logregbin.events::onChange_factors'
   - type: CollapseBox
     label: Model Builder
     collapsed: true
@@ -53,8 +53,8 @@ children:
                 height: normal
                 addButton: Add New Block
                 events:
-                  listItemAdded: './linreg.events::onEvent_test_listItemsChanged'
-                  listItemRemoved: './linreg.events::onEvent_test_listItemsChanged'
+                  listItemAdded: './logregbin.events::onEvent_test_listItemsChanged'
+                  listItemRemoved: './logregbin.events::onEvent_test_listItemsChanged'
                 selectable: true
                 templateName: linreg-block-template
                 template:
@@ -74,7 +74,7 @@ children:
                       height: auto
                       ghostText: drag variables here
                       events:
-                        change: './linreg.events::onChange_blocks'
+                        change: './logregbin.events::onChange_blocks'
                       template:
                         type: TermLabel
   - type: CollapseBox
@@ -88,7 +88,7 @@ children:
         fullRowSelect: true
         stretchFactor: 1
         events:
-          change: './linreg.events::onChange_refLevels'
+          change: './logregbin.events::onChange_refLevels'
         columns:
           - name: var
             label: Variable
@@ -239,8 +239,8 @@ children:
                     height: large
                     addButton: Add New Term
                     events:
-                      listItemAdded: './linreg.events::onEvent_emMeans_listItemsChanged'
-                      listItemRemoved: './linreg.events::onEvent_emMeans_listItemsChanged'
+                      listItemAdded: './logregbin.events::onEvent_emMeans_listItemsChanged'
+                      listItemRemoved: './logregbin.events::onEvent_emMeans_listItemsChanged'
                     selectable: true
                     templateName: linreg-block-template
                     template:
