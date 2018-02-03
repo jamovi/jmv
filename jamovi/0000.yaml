@@ -97,6 +97,7 @@ analyses:
     menuSubgroup: Logistic Regression
     menuTitle: 2 Outcomes
     menuSubtitle: Binomial
+    hidden: true
   - title: Proportion Test (2 Outcomes)
     name: propTest2
     ns: jmv
