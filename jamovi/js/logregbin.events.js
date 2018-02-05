@@ -54,38 +54,8 @@ var calcModelTerms = function(ui, context) {
 var updateLevelControls = function(ui, context) {
     let dlist = ui.refLevels.value();
     let list = ui.refLevels.applyToItems(0, (item, index, column) => {
-        if (column === 1) {
+        if (column === 1)
             item.setPropertyValue('variable', dlist[index].var );
-            checkForValidLevel(dlist[index].var, item, context);
-        }
-    });
-};
-
-let checkForValidLevel = function(columnName, ctrl, context) {
-    let promise = context.requestData("column", { columnName: columnName, properties: ["levels"] })
-    promise.then(rData => {
-        let data = [];
-        if (rData.columnFound) {
-            let levels = rData.levels;
-            if (Array.isArray(levels) && levels.length > 0) {
-                let current = ctrl.value();
-                if (current === null)
-                    ctrl.setValue(levels[0].label);
-                else {
-                    let found = false;
-                    for (let level of levels) {
-                        if (level.label === current) {
-                            found = true;
-                            break;
-                        }
-                    }
-                    if ( ! found)
-                        ctrl.setValue(levels[0].label);
-                }
-            }
-            else
-                ctrl.setValue(null);
-        }
     });
 };
 
