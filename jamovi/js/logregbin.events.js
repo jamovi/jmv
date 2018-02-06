@@ -24,6 +24,10 @@ const events = {
     },
 
     onChange_blocks: function(ui) {
+        checkForNullBlocks(ui, this);
+    },
+
+    onChange_block: function(ui) {
         filterBlocks(ui, this);
     },
 
@@ -145,6 +149,20 @@ let inOtherBlock = function(blocks, value, blockIndex) {
     return false;
 };
 
+let checkForNullBlocks = function(ui, context) {
+    let changed = false;
+    let blocks = context.cloneArray(ui.blocks.value(), []);
+    for (let blockIndex = 0; blockIndex < blocks.length; blockIndex++)  {
+        if (blocks[blockIndex] === null) {
+            changed = true;
+            blocks[blockIndex] = [];
+        }
+    }
+
+    if (changed)
+        ui.blocks.setValue(blocks);
+};
+
 let filterBlocks = function(ui, context) {
     let changed = false;
     let blocks = context.cloneArray(ui.blocks.value(), []);
@@ -152,8 +170,10 @@ let filterBlocks = function(ui, context) {
     let prevBlocks = context.workspace["blocks"];
 
     for (let blockIndex = 0; blockIndex < blocks.length; blockIndex++)  {
-        if (blocks[blockIndex] === null)
+        if (blocks[blockIndex] === null) {
+            changed = true;
             blocks[blockIndex] = [];
+        }
 
         let termsList = blocks[blockIndex];
 
