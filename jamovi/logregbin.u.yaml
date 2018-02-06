@@ -53,6 +53,7 @@ children:
                 height: normal
                 addButton: Add New Block
                 events:
+                  change: './logregbin.events::onChange_blocks'
                   listItemAdded: './logregbin.events::onEvent_test_listItemsChanged'
                   listItemRemoved: './logregbin.events::onEvent_test_listItemsChanged'
                 selectable: true
@@ -74,7 +75,7 @@ children:
                       height: auto
                       ghostText: drag variables here
                       events:
-                        change: './logregbin.events::onChange_blocks'
+                        change: './logregbin.events::onChange_block'
                       template:
                         type: TermLabel
   - type: CollapseBox
