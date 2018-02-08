@@ -835,8 +835,8 @@ descriptivesClass <- R6::R6Class(
                 stats[['se']] <- sqrt(var(column)/length(column))
 
                 deviation <- column-mean(column)
-                stats[['skew']] <- sum(deviation^3)/(length(column)*sd(column)^3)
-                stats[['kurt']] <- sum(deviation^4)/(length(column)*var(column)^2)
+                stats[['skew']] <- private$.skewness(column)
+                stats[['kurt']] <- private$.kurtosis(column)
 
                 stats[['quart1']] <- as.numeric(quantile(column, c(.25)))
                 stats[['quart2']] <- as.numeric(quantile(column, c(.5)))
@@ -928,6 +928,33 @@ descriptivesClass <- R6::R6Class(
             }
 
             return(c(width, height))
+        },
+        .kurtosis = function(x) {
+
+            # https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-whats-with-the-different-formulas-for-kurtosis/
+
+            n <- length(x)
+            s2 <- sum((x - mean(x))^2)
+            s4 <- sum((x - mean(x))^4)
+            v <- s2 / (n-1)
+
+            e1 <- (n * (n + 1)) / ((n - 1) * (n - 2) * (n - 3))
+            e2 <- s4 / (v^2)
+            e3 <- (-3 * (n - 1)^2) / ((n - 2) * (n - 3))
+            kurtosis <- e1 * e2 + e3
+
+            return(kurtosis)
+        },
+        .skewness = function(x) {
+
+            n <- length(x)
+            x <- x - mean(x)
+
+            e1 <- sqrt(n * (n - 1))/(n - 2)
+            e2 <- sqrt(n) * sum(x^3)/(sum(x^2)^(3/2))
+            skewness <- e1 * e2
+
+            return(skewness)
         }
     )
 )
