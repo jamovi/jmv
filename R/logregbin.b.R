@@ -71,23 +71,29 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
                         models[[i]] <- stats::glm(formulas[[i]],  data=data, family="binomial")
 
-                        lrTestTerms[[i]] <- car::Anova(models[[i]], test="LR", type=3, singular.ok=TRUE)
+                        if (self$options$omni)
+                            lrTestTerms[[i]] <- car::Anova(models[[i]], test="LR", type=3, singular.ok=TRUE)
+
                         modelTest[[i]] <- private$.modelTest(models[[i]])
                         dev[[i]] <- models[[i]]$deviance
                         AIC[[i]] <- stats::AIC(models[[i]])
                         BIC[[i]] <- stats::BIC(models[[i]])
                         pseudoR[[i]] <- private$.pseudoR2(models[[i]])
+
                         classTable[[i]] <- private$.classTable(models[[i]])
-                        AUC[[i]] <- private$.auc(models[[i]])
-                        cooks[[i]] <- stats::cooks.distance(models[[i]])
 
-                        CI[[i]] <- try(confint(models[[i]], level=self$options$ciWidth/100), silent=TRUE)
-                        if (class(CI[[i]]) == 'try-error')
-                            CI[[i]] <- confint.default(models[[i]], level=self$options$ciWidth/100)
+                        if (self$options$auc)
+                            AUC[[i]] <- private$.auc(models[[i]])
 
-                        CILO <- try(confint(models[[i]], level=self$options$ciWidthOR/100), silent=TRUE)
-                        if (class(CI[[i]]) == 'try-error')
-                            CILO <- confint.default(models[[i]], level=self$options$ciWidthOR/100)
+                        # cooks[[i]] <- stats::cooks.distance(models[[i]])
+
+                        CI[[i]] <- try(confint.default(models[[i]], level=self$options$ciWidth/100), silent=TRUE)
+                        # if (class(CI[[i]]) == 'try-error')
+                        #     CI[[i]] <- confint.default(models[[i]], level=self$options$ciWidth/100)
+
+                        CILO <- try(confint.default(models[[i]], level=self$options$ciWidthOR/100), silent=TRUE)
+                        # if (class(CILO) == 'try-error')
+                        #     CILO <- confint.default(models[[i]], level=self$options$ciWidthOR/100)
 
                         CIOR[[i]] <- exp(CILO)
 
@@ -446,6 +452,9 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         },
         .populateLrtTables = function(results) {
 
+            if ( ! self$options$omni)
+                return()
+
             groups <- self$results$models
             termsAll <- private$terms
             lrTests <- results$lrTestTerms
@@ -646,7 +655,9 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 row[['accuracy']] <- (classTable[1,1] + classTable[2,2]) / sum(classTable)
                 row[['spec']] <- (classTable[1,1] / sum(classTable[1,]))
                 row[['sens']] <- (classTable[2,2] / sum(classTable[2,]))
-                row[['auc']] <- results$AUC[[i]]
+
+                if (self$options$auc)
+                    row[['auc']] <- results$AUC[[i]]
 
                 table$setRow(rowNo=1, values=row)
             }
@@ -1216,4 +1227,4 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             return(bt)
         })
-                )
+)

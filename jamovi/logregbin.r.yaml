@@ -112,6 +112,8 @@ items:
       layout: listSelect
       hideHeadingOnlyChild: true
       description: an array of model specific results
+      clearWith:
+        - blocks
       template:
 
         title: ''

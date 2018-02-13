@@ -459,6 +459,8 @@ logRegBinResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 title="Model Specific Results",
                 layout="listSelect",
                 hideHeadingOnlyChild=TRUE,
+                clearWith=list(
+                    "blocks"),
                 template=R6::R6Class(
                     inherit = jmvcore::Group,
                     active = list(
