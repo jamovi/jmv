@@ -1,19 +1,20 @@
 Package: jmv
 Type: Package
 Title: The 'jamovi' Analyses
-Version: 0.8.1.16
-Date: 2018-01-23
+Version: 0.8.2.0
+Date: 2018-02-14
 Author: Ravi Selker, Jonathon Love, Damian Dropmann
 Maintainer: Jonathon Love <jon@thon.cc>
 Description: A suite of common statistical methods such as descriptives,
-    t-tests, ANOVAs, correlation matrices, proportion tests, contingency tables,
-    and factor analysis. This package is also useable from the 'jamovi'
-    statistical spreadsheet (see <https://www.jamovi.org> for more information).
+    t-tests, ANOVAs, regression, correlation matrices, proportion tests,
+    contingency tables, and factor analysis. This package is also useable from
+    the 'jamovi' statistical spreadsheet (see <https://www.jamovi.org> for more
+    information).
 License: GPL (>= 2)
 Depends:
     R (>= 3.2)
 Imports:
-    jmvcore (>= 0.8.1.4),
+    jmvcore (>= 0.8.2.0),
     R6,
     car,
     multcomp,
