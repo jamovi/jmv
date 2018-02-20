@@ -728,7 +728,7 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'     data = bugs,
 #'     rm = list(
 #'         list(
-#'             label = 'Disgusting',
+#'             label = 'Frightening',
 #'             levels = c('Low', 'High'))),
 #'     rmCells = list(
 #'         list(
@@ -738,14 +738,16 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'             measure = 'LDHF',
 #'             cell = 'High')),
 #'     rmTerms = list(
-#'         'Disgusting'))
+#'         'Frightening'))
 #'
+#' #
+#' #  REPEATED MEASURES ANOVA
 #' #
 #' #  Within Subjects Effects
 #' #  -----------------------------------------------------------------------
 #' #                  Sum of Squares    df    Mean Square    F       p
 #' #  -----------------------------------------------------------------------
-#' #    Disgusting               126     1         126.11    44.2    < .001
+#' #    Frightening              126     1         126.11    44.2    < .001
 #' #    Residual                 257    90           2.85
 #' #  -----------------------------------------------------------------------
 #' #    Note. Type 3 Sums of Squares
