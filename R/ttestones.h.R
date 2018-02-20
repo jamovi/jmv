@@ -179,7 +179,8 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "hypothesis",
                     "testValue",
                     "miss",
-                    "bfPrior"),
+                    "bfPrior",
+                    "ciWidth"),
                 columns=list(
                     list(
                         `name`="var[stud]", 
