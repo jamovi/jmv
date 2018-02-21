@@ -612,7 +612,7 @@ ttestISBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' ttestIS(data = ToothGrowth, vars = 'len', group = 'supp')
 #'
 #' #
-#' #  Independent Samples T-Test
+#' #  INDEPENDENT SAMPLES T-TEST
 #' #
 #' #  Independent Samples T-Test
 #' #  ----------------------------------------------------

@@ -187,6 +187,8 @@ efaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' efa(iris, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
 #'
 #' #
+#' #  EXPLORATORY FACTOR ANALYSIS
+#' #
 #' #  Factor Loadings
 #' #  ------------------------------------------------
 #' #                    1        2        Uniqueness

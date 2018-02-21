@@ -20,6 +20,8 @@ description:
             anovaRMNP(bugs, measures = c('LDLF', 'LDHF', 'HDLF', 'HDHF'))
 
             #
+            #  REPEATED MEASURES ANOVA (NON-PARAMETRIC)
+            #
             #  Friedman
             #  ────────────────────────
             #    χ²      df    p

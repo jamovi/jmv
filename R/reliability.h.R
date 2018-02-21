@@ -244,6 +244,8 @@ reliabilityBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'             omegaScale = TRUE)
 #'
 #' #
+#' #  RELIABILITY ANALYSIS
+#' #
 #' #  Scale Reliability Statistics
 #' #  -----------------------------------------
 #' #             Cronbach's alpha    McDonald's omega

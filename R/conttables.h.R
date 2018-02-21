@@ -509,7 +509,7 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' contTables(dat, rows = 'Hair', cols = 'Eye', counts = 'Freq')
 #'
 #' #
-#' #  Contingency Tables
+#' #  CONTINGENCY TABLES
 #' #
 #' #  Contingency Tables
 #' #  -----------------------------------------------------

@@ -18,7 +18,7 @@ description:
             descriptives(dat, vars = c('mpg', 'cyl', 'disp', 'gear'), freq = TRUE)
 
             #
-            #  Descriptives
+            #  DESCRIPTIVES
             #
             #  Descriptives
             #  ───────────────────────────────────────────
@@ -33,7 +33,7 @@ description:
             #  ───────────────────────────────────────────
             #
             #
-            #  Frequencies
+            #  FREQUENCIES
             #
             #  Frequencies of gear
             #  ────────────────────
@@ -43,7 +43,6 @@ description:
             #    4             12
             #    5              5
             #  ────────────────────
-            #
             #
 
 

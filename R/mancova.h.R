@@ -411,6 +411,8 @@ mancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'     factors = 'Species')
 #'
 #' #
+#' #  MANCOVA
+#' #
 #' #  Multivariate Tests
 #' #  ---------------------------------------------------------------------------
 #' #                                     value     F       df1    df2    p
@@ -420,7 +422,6 @@ mancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #               Hotelling's Trace       32.5     581      8    286    < .001
 #' #               Roy's Largest Root      32.2    1167      4    145    < .001
 #' #  ---------------------------------------------------------------------------
-#' #
 #' #
 #' #
 #' #  Univariate Tests
@@ -436,7 +437,6 @@ mancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #                 Petal.Length                   27.22    147         0.1852
 #' #                 Petal.Width                     6.16    147         0.0419
 #' #  -----------------------------------------------------------------------------------------------
-#' #
 #' #
 #'
 #' @param data the data as a data frame

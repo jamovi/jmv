@@ -150,7 +150,7 @@ anovaNPBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' anovaNP(ToothGrowth, deps = 'len', group = 'dose')
 #'
 #' #
-#' #  One-way ANOVA (Non-parametric)
+#' #  ONE-WAY ANOVA (NON-PARAMETRIC)
 #' #
 #' #  Kruskal-Wallis
 #' #  -------------------------------

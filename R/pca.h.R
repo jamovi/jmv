@@ -426,6 +426,8 @@ pcaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' pca(iris, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
 #'
 #' #
+#' #  PRINCIPAL COMPONENT ANALYSIS
+#' #
 #' #  Component Loadings
 #' #  ----------------------------------------
 #' #                    1         Uniqueness
@@ -436,7 +438,6 @@ pcaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #    Petal.Width      0.965        0.0688
 #' #  ----------------------------------------
 #' #    Note. 'varimax' rotation was used
-#' #
 #' #
 #'
 #' @param data the data as a data frame

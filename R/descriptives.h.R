@@ -340,7 +340,7 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' descriptives(dat, vars = c('mpg', 'cyl', 'disp', 'gear'), freq = TRUE)
 #'
 #' #
-#' #  Descriptives
+#' #  DESCRIPTIVES
 #' #
 #' #  Descriptives
 #' #  -------------------------------------------
@@ -355,7 +355,7 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #  -------------------------------------------
 #' #
 #' #
-#' #  Frequencies
+#' #  FREQUENCIES
 #' #
 #' #  Frequencies of gear
 #' #  --------------------
@@ -365,7 +365,6 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #    4             12
 #' #    5              5
 #' #  --------------------
-#' #
 #' #
 #'}
 #' @param data the data as a data frame

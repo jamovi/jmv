@@ -448,7 +448,7 @@ ttestOneSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' ttestOneS(ToothGrowth, vars = c('len', 'dose'))
 #'
 #' #
-#' #  One Sample T-Test
+#' #  ONE SAMPLE T-TEST
 #' #
 #' #  One Sample T-Test
 #' #  ------------------------------------------------------

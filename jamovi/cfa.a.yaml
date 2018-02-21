@@ -20,7 +20,8 @@ description:
                     list(label="Speed", vars=c("x7", "x8", "x9"))),
                 resCov = NULL)
 
-            # Confirmatory Factor Analysis
+            #
+            #  CONFIRMATORY FACTOR ANALYSIS
             #
             #  Factor Loadings
             #  ─────────────────────────────────────────────────────────────────
@@ -38,7 +39,7 @@ description:
             #  ─────────────────────────────────────────────────────────────────
             #
             #
-            # Factor Estimates
+            #  FACTOR ESTIMATES
             #
             #  Factor Covariances
             #  ──────────────────────────────────────────────────────────────
@@ -54,7 +55,7 @@ description:
             #    ᵃ fixed parameter
             #
             #
-            # Model Fit
+            #  MODEL FIT
             #
             #  Test for Exact Fit
             #  ────────────────────────
@@ -64,14 +65,12 @@ description:
             #  ────────────────────────
             #
             #
-            #
             #  Fit Measures
             #  ───────────────────────────────────────────────
             #    CFI      TLI      RMSEA     Lower     Upper
             #  ───────────────────────────────────────────────
             #    0.931    0.896    0.0921    0.0714    0.114
             #  ───────────────────────────────────────────────
-            #
             #
 
 

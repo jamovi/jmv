@@ -724,7 +724,8 @@ cfaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'         list(label="Speed", vars=c("x7", "x8", "x9"))),
 #'     resCov = NULL)
 #'
-#' # Confirmatory Factor Analysis
+#' #
+#' #  CONFIRMATORY FACTOR ANALYSIS
 #' #
 #' #  Factor Loadings
 #' #  -----------------------------------------------------------------
@@ -742,7 +743,7 @@ cfaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #  -----------------------------------------------------------------
 #' #
 #' #
-#' # Factor Estimates
+#' #  FACTOR ESTIMATES
 #' #
 #' #  Factor Covariances
 #' #  --------------------------------------------------------------
@@ -758,7 +759,7 @@ cfaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #    a fixed parameter
 #' #
 #' #
-#' # Model Fit
+#' #  MODEL FIT
 #' #
 #' #  Test for Exact Fit
 #' #  ------------------------
@@ -768,14 +769,12 @@ cfaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #  ------------------------
 #' #
 #' #
-#' #
 #' #  Fit Measures
 #' #  -----------------------------------------------
 #' #    CFI      TLI      RMSEA     Lower     Upper
 #' #  -----------------------------------------------
 #' #    0.931    0.896    0.0921    0.0714    0.114
 #' #  -----------------------------------------------
-#' #
 #' #
 #'
 #' @param data the data as a data frame

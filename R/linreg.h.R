@@ -599,13 +599,14 @@ linRegBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'        blocks = list(c('education', 'prestige', 'women')))
 #'
 #' #
+#' #  LINEAR REGRESSION
+#' #
 #' #  Model Fit Measures
 #' #  ---------------------------
 #' #    Model    R        R²
 #' #  ---------------------------
 #' #    1        0.802    0.643
 #' #  ---------------------------
-#' #
 #' #
 #' #
 #' #  Model Coefficients

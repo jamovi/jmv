@@ -263,6 +263,8 @@ propTest2Base <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' propTest2(dat, vars = 'x', areCounts = TRUE)
 #'
 #' #
+#' #  PROPORTION TEST (2 OUTCOMES)
+#' #
 #' #  Binomial Test
 #' #  -------------------------------------------------------
 #' #         Level    Count    Total    Proportion    p
