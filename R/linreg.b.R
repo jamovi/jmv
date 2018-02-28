@@ -79,7 +79,7 @@ linRegClass <- R6::R6Class(
                 dwTest[[i]] <- car::durbinWatsonTest(models[[i]])
                 cooks[[i]] <- stats::cooks.distance(models[[i]])
 
-                if (length(models[[i]]$coefficients) > 2)
+                if (length(private$terms[[i]]) > 1)
                     VIF[[i]] <- car::vif(models[[i]])
                 else
                     VIF[[i]] <- NULL
