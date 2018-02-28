@@ -2,7 +2,7 @@
 name: linReg
 title: Linear Regression
 menuGroup: Regression
-version: '1.0.0'
+version: '2.0.0'
 jas: '1.1'
 
 description:
@@ -13,7 +13,8 @@ description:
             data('Prestige', package='car')
 
             linReg(data = Prestige, dep = 'income',
-                   blocks = list(c('education', 'prestige', 'women')))
+                   covs = c('education', 'prestige', 'women'),
+                   blocks = list(list('education', 'prestige', 'women')))
 
             #
             #  LINEAR REGRESSION
@@ -22,19 +23,24 @@ description:
             #  ───────────────────────────
             #    Model    R        R²
             #  ───────────────────────────
-            #    1        0.802    0.643
+            #        1    0.802    0.643
             #  ───────────────────────────
             #
             #
+            # Model Specific Results
+            #
+            # Model 1
+            #
+            #
             #  Model Coefficients
-            #  ─────────────────────────────────────────────────────────────────
-            #    Model    Predictor    Estimate    SE         t         p
-            #  ─────────────────────────────────────────────────────────────────
-            #    1        Intercept      -253.8    1086.16    -0.234     0.816
-            #             education       177.2     187.63     0.944     0.347
-            #             prestige        141.4      29.91     4.729    < .001
-            #             women           -50.9       8.56    -5.948    < .001
-            #  ─────────────────────────────────────────────────────────────────
+            #  ────────────────────────────────────────────────────────
+            #    Predictor    Estimate    SE         t         p
+            #  ────────────────────────────────────────────────────────
+            #    Intercept      -253.8    1086.16    -0.234     0.816
+            #    women           -50.9       8.56    -5.948    < .001
+            #    prestige        141.4      29.91     4.729    < .001
+            #    education       177.2     187.63     0.944     0.347
+            #  ────────────────────────────────────────────────────────
             #
 
 options:
@@ -57,86 +63,130 @@ options:
             a string naming the dependent variable from `data`, variable
             must be numeric
 
-    - name: blocks
+    - name: covs
       title: Covariates
+      type: Variables
+      suggested:
+        - continuous
+      permitted:
+        - continuous
+        - nominal
+        - ordinal
+      default:
+      description:
+          R: a vector of strings naming the covariates from `data`
+
+    - name: factors
+      title: Factors
+      type: Variables
+      suggested:
+        - nominal
+      permitted:
+        - nominal
+        - nominaltext
+        - ordinal
+      default:
+      description:
+          R: a vector of strings naming the fixed factors from `data`
+
+    - name: blocks
+      title: Blocks
       type: Array
       default: [[]]
       template:
-          type: Variables
-          suggested:
-            - continuous
-          permitted:
-            - continuous
-            - nominal
-            - ordinal
+          type: Terms
       description:
           R: >
             a list containing vectors of strings that name the
-            covariates that are added to the model. The elements
+            predictors that are added to the model. The elements
             are added to the model according to their order in the
             list
 
-    - name: fitMeasures
-      title: Fit Measures
-      type: NMXList
-      options:
-          - name: r
-            title: R
-          - name: r2
-            title: R²
-          - name: r2Adj
-            title: Adjusted R²
-          - name: aic
-            title: AIC
-          - name: bic
-            title: BIC
-          - name: rmse
-            title: RMSE
+    - name: refLevels
+      title: Reference Levels
+      type: Array
+      items: (factors)
       default:
-          - r
-          - r2
+      template:
+          type: Group
+          elements:
+              - name: var
+                type: Variable
+                content: $key
+              - name: ref
+                type: Level
       description:
           R: >
-            one or more of `'r'`, `'r2'`, `'r2Adj'`, `'aic'`, `'bic'`, or `'rmse'`;
-            use R, R², adjusted R², AIC, BIC, and RMSE model fit measures, respectively
+            a list of lists specifying reference levels of the dependent variable
+            and all the factors
 
-    - name: modelTest
-      title: Overall Model Test
-      type: NMXList
-      options:
-          - name: f
-            title: Classical F-test
-          - name: bf
-            title: Bayes factor
-      default:
+    - name: r
+      title: R
+      type: Bool
+      default: true
       description:
           R: >
-            one or more of `'f'`, or `'bf'`; Use classical F-test, and
-            Bayes factor respectively as overall model tests.
+            `TRUE` (default) or `FALSE`, provide the statistical measure `R` for the models
 
-    - name: modelComp
-      title: Model Comparison Test
-      type: NMXList
-      options:
-          - name: f
-            title: Classical F-test
-          - name: bf
-            title: Bayes factor
-      default:
-          - f
+    - name: r2
+      title: R²
+      type: Bool
+      default: true
       description:
           R: >
-            one or more of `'f'`, or `'bf'`; Use classical F-test, and
-            Bayes factor respectively as model comparison tests.
+            `TRUE` (default) or `FALSE`, provide the statistical measure `R-squared` for the models
 
-    - name: stdEst
-      title: Standardized estimate
+    - name: r2Adj
+      title: Adjusted R²
       type: Bool
       default: false
       description:
           R: >
-            `TRUE` or `FALSE` (default), provide a standardized estimate
-            for the model coefficients
+            `TRUE` or `FALSE` (default), provide the statistical measure `adjusted R-squared` for the models
+
+    - name: aic
+      title: AIC
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Aikaike's Information Criterion (AIC)
+            for the models
+
+    - name: bic
+      title: BIC
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Bayesian Information Criterion (BIC)
+            for the models
+
+    - name: rmse
+      title: RMSE
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide RMSE for the models
+
+    - name: modelTest
+      title: F test
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide the model comparison between
+            the models and the NULL model
+
+    - name: anova
+      title: ANOVA test
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the omnibus ANOVA test
+            for the predictors
 
     - name: ci
       title: Confidence interval
@@ -158,10 +208,40 @@ options:
             a number between 50 and 99.9 (default: 95) specifying the confidence
             interval width
 
+    - name: stdEst
+      title: Standardized estimate
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a standardized estimate
+            for the model coefficients
+
+    - name: ciStdEst
+      title: Confidence interval
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a confidence interval
+            for the model coefficient standardized estimates
+
+    - name: ciWidthStdEst
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width
+
     - name: coefPlot
       title: Coefficient plot
       type: Bool
       default: false
+      hidden: true
       description:
           R: >
             `TRUE` or `FALSE` (default), provide a coefficient plot where
@@ -204,14 +284,6 @@ options:
             `TRUE` or `FALSE` (default), provide VIF and tolerence
             collinearity statistics
 
-    - name: desc
-      title: Descriptives
-      type: Bool
-      default: false
-      description:
-          R: >
-            `TRUE` or `FALSE` (default), provide descriptive statistics
-
     - name: cooks
       title: Cook's distance
       type: Bool
@@ -221,14 +293,59 @@ options:
             `TRUE` or `FALSE` (default), provide summary statistics for
             the Cook's distance
 
-    - name: modelSelected
-      title: modelSelected
-      type: Integer
-      default: -1
-      hidden: true
+    - name: emMeans
+      title: Marginal Means
+      type: Array
+      default: [[]]
+      template:
+          type: Variables
       description:
           R: >
-            an integer defining the model for which the model specific
-            output needs to be calculated (defaults to most complex
-            model)
+            a list of lists specifying the variables for which the estimated marginal
+            means need to be calculate. Supports up to three variables per term.
+
+    - name: ciEmm
+      title: Confidence interval
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide a confidence interval
+            for the estimated marginal means
+
+    - name: ciWidthEmm
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width for the estimated marginal means
+
+    - name: emmPlots
+      title: Marginal means plots
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide estimated marginal means plots
+
+    - name: emmTables
+      title: Marginal means tables
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide estimated marginal means tables
+
+    - name: emmWeights
+      title: Equal cell weights
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, weigh each cell equally or weigh them according to
+            the cell frequency
 ...

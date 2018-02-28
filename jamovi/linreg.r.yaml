@@ -7,10 +7,10 @@ items:
     - name: modelFit
       title: Model Fit Measures
       type: Table
-      rowSelect: (modelSelected)
       clearWith:
         - dep
         - blocks
+      visible: (r || r2 || r2Adj || aic || bic || rmse || modelTest)
 
       columns:
         - name: model
@@ -20,69 +20,57 @@ items:
         - name: r
           title: R
           type: number
-          visible: (fitMeasures:r)
+          visible: (r)
 
         - name: r2
           title: R²
           type: number
-          visible: (fitMeasures:r2)
+          visible: (r2)
 
         - name: r2Adj
           title: Adjusted R²
           type: number
-          visible: (fitMeasures:r2Adj)
+          visible: (r2Adj)
 
         - name: aic
           title: AIC
           type: number
-          visible: (fitMeasures:aic)
+          visible: (aic)
 
         - name: bic
           title: BIC
           type: number
-          visible: (fitMeasures:bic)
+          visible: (bic)
 
         - name: rmse
           title: RMSE
           type: number
-          visible: (fitMeasures:rmse)
+          visible: (rmse)
 
         - name: f
           title: F
           type: number
           superTitle: Overall Model Test
-          visible: (modelTest:f)
+          visible: (modelTest)
 
         - name: df1
           title: df1
           type: integer
           superTitle: Overall Model Test
-          visible: (modelTest:f)
+          visible: (modelTest)
 
         - name: df2
           title: df2
           type: integer
           superTitle: Overall Model Test
-          visible: (modelTest:f)
+          visible: (modelTest)
 
         - name: p
           title: p
           type: number
           format: zto,pvalue
           superTitle: Overall Model Test
-          visible: (modelTest:f)
-
-        - name: bf
-          title: BF₁₀
-          type: number
-          superTitle: Overall Model Test
-          visible: (modelTest:bf)
-
-        - name: err
-          title: '±%'
-          type: number
-          superTitle: Overall Model Test
-          visible: (modelTest:bf)
+          visible: (modelTest)
 
     - name: modelComp
       title: Model Comparisons
@@ -118,237 +106,283 @@ items:
         - name: f
           title: F
           type: number
-          visible: (modelComp:f)
 
         - name: df1
           title: df1
           type: integer
-          visible: (modelComp:f)
 
         - name: df2
           title: df2
           type: integer
-          visible: (modelComp:f)
-
-        - name: p
-          title: p
-          type: number
-          format: zto,pvalue
-          visible: (modelComp:f)
-
-        - name: bf
-          title: BF₁₀
-          type: number
-          visible: (modelComp:bf)
-
-        - name: err
-          title: '±%'
-          type: number
-          visible: (modelComp:bf)
-
-    - name: coef
-      title: Model Coefficients
-      type: Table
-      clearWith:
-        - dep
-        - blocks
-
-      columns:
-        - name: model
-          title: Model
-          type: text
-          combineBelow: true
-
-        - name: terms
-          title: "Predictor"
-          type: text
-
-        - name: est
-          title: Estimate
-          type: number
-
-        - name: se
-          title: SE
-          type: number
-
-        - name: lower
-          title: Lower
-          type: number
-          visible: (ci)
-
-        - name: upper
-          title: Upper
-          type: number
-          visible: (ci)
-
-        - name: stdEst
-          title: Stand. Estimate
-          type: number
-          visible: (stdEst)
-
-        - name: t
-          title: t
-          type: number
 
         - name: p
           title: p
           type: number
           format: zto,pvalue
 
-    - name: coefPlot
-      title: Coefficient Plot
-      type: Image
-      width: 550
-      height: 500
-      renderFun: .coefPlot
-      visible: (coefPlot)
+    - name: models
+      title: Model Specific Results
+      type: Array
+      layout: listSelect
+      hideHeadingOnlyChild: true
+      description: an array of model specific results
       clearWith:
-        - dep
         - blocks
-        - modelSelected
-        - ciWidth
+      template:
 
-    - name: dataSummary
-      title: Data Summary
-      type: Group
-      items:
-        - name: desc
-          title: Descriptives
-          type: Table
-          visible: (desc)
-          clearWith:
-            - dep
-            - blocks
-            - modelSelected
+        title: ''
+        type: Group
+        items:
 
-          columns:
-            - name: name
-              title: ""
-              type: text
-
-            - name: num
-              title: "N"
-              type: number
-
-            - name: mean
-              title: Mean
-              type: number
-
-            - name: median
-              title: Median
-              type: number
-
-            - name: sd
-              title: SD
-              type: number
-
-            - name: se
-              title: SE
-              type: number
-
-        - name: cooks
-          title: Cook's Distance
-          type: Table
-          rows: 1
-          visible: (cooks)
-          clearWith:
-            - dep
-            - blocks
-            - modelSelected
-
-          columns:
-            - name: mean
-              title: Mean
-              type: number
-
-            - name: median
-              title: Median
-              type: number
-
-            - name: sd
-              title: SD
-              type: number
-
-            - name: min
-              title: Min
-              type: number
-              superTitle: Range
-
-            - name: max
-              title: Max
-              type: number
-              superTitle: Range
-
-    - name: assump
-      title: Assumption Checks
-      type: Group
-      items:
-        - name: durbin
-          title: Durbin–Watson Test for Autocorrelation
-          type: Table
-          rows: 1
-          visible: (durbin)
-          clearWith:
-            - dep
-            - blocks
-            - modelSelected
-
-          columns:
-            - name: autoCor
-              title: Autocorrelation
-              type: number
-
-            - name: dw
-              title: DW Statistic
-              type: number
-
-            - name: p
-              title: p
-              type: number
-              format: zto,pvalue
-
-        - name: collin
-          title: Collinearity Statistics
-          type: Table
-          visible: (collin)
-          clearWith:
-            - dep
-            - blocks
-            - modelSelected
-
-          columns:
-            - name: term
-              title: ''
-              type: text
-
-            - name: vif
-              title: VIF
-              type: number
-
-            - name: tol
-              title: Tolerance
-              type: number
-
-        - name: qqPlot
-          title: Q-Q Plot
-          type: Image
-          width: 450
-          height: 400
-          renderFun: .qqPlot
-          visible: (qqPlot)
-          clearWith:
-            - dep
-            - blocks
-            - modelSelected
-
-        - name: resPlots
-          title: Residuals Plots
-          type: Array
-          visible: (resPlots)
-          template:
-              type: Image
-              renderFun: .resPlot
+            - name: anova
+              title: Omnibus ANOVA Test
+              type: Table
+              description: a table of ANOVA results
+              visible: (anova)
               clearWith:
                 - dep
                 - blocks
-                - modelSelected
+              columns:
+                - name: term
+                  title: ""
+                  type: text
+
+                - name: ss
+                  title: Sum of Squares
+                  type: number
+
+                - name: df
+                  title: df
+                  type: integer
+
+                - name: ms
+                  title: Mean Square
+                  type: number
+
+                - name: F
+                  title: F
+                  type: number
+
+                - name: p
+                  title: p
+                  type: number
+                  format: zto,pvalue
+
+            - name: coef
+              title: Model Coefficients
+              type: Table
+              description: a table of model coefficients
+              clearWith:
+                - dep
+                - blocks
+                - refLevels
+                - ciWidth
+                - ciWidthStdEst
+
+              columns:
+                - name: term
+                  title: "Predictor"
+                  type: text
+
+                - name: est
+                  title: Estimate
+                  type: number
+
+                - name: se
+                  title: SE
+                  type: number
+
+                - name: lower
+                  title: Lower
+                  type: number
+                  visible: (ci)
+
+                - name: upper
+                  title: Upper
+                  type: number
+                  visible: (ci)
+
+                - name: t
+                  title: t
+                  type: number
+
+                - name: p
+                  title: p
+                  type: number
+                  format: zto,pvalue
+
+                - name: stdEst
+                  title: Stand. Estimate
+                  type: number
+                  visible: (stdEst)
+
+                - name: stdEstLower
+                  title: Lower
+                  type: number
+                  visible: (ciStdEst && stdEst)
+
+                - name: stdEstUpper
+                  title: Upper
+                  type: number
+                  visible: (ciStdEst && stdEst)
+
+            - name: coefPlot
+              title: Coefficient Plot
+              type: Image
+              width: 550
+              height: 500
+              renderFun: .coefPlot
+              visible: (coefPlot)
+              clearWith:
+                - dep
+                - blocks
+                - ciWidth
+
+            - name: dataSummary
+              title: Data Summary
+              type: Group
+              items:
+
+                - name: cooks
+                  title: Cook's Distance
+                  type: Table
+                  rows: 1
+                  visible: (cooks)
+                  clearWith:
+                    - dep
+                    - blocks
+
+                  columns:
+                    - name: mean
+                      title: Mean
+                      type: number
+
+                    - name: median
+                      title: Median
+                      type: number
+
+                    - name: sd
+                      title: SD
+                      type: number
+
+                    - name: min
+                      title: Min
+                      type: number
+                      superTitle: Range
+
+                    - name: max
+                      title: Max
+                      type: number
+                      superTitle: Range
+
+            - name: assump
+              title: Assumption Checks
+              type: Group
+              items:
+                - name: durbin
+                  title: Durbin–Watson Test for Autocorrelation
+                  type: Table
+                  rows: 1
+                  visible: (durbin)
+                  clearWith:
+                    - dep
+                    - blocks
+
+                  columns:
+                    - name: autoCor
+                      title: Autocorrelation
+                      type: number
+
+                    - name: dw
+                      title: DW Statistic
+                      type: number
+
+                    - name: p
+                      title: p
+                      type: number
+                      format: zto,pvalue
+
+                - name: collin
+                  title: Collinearity Statistics
+                  type: Table
+                  visible: (collin)
+                  clearWith:
+                    - dep
+                    - blocks
+
+                  columns:
+                    - name: term
+                      title: ''
+                      type: text
+
+                    - name: vif
+                      title: VIF
+                      type: number
+
+                    - name: tol
+                      title: Tolerance
+                      type: number
+
+                - name: qqPlot
+                  title: Q-Q Plot
+                  type: Image
+                  width: 450
+                  height: 400
+                  renderFun: .qqPlot
+                  visible: (qqPlot)
+                  clearWith:
+                    - dep
+                    - blocks
+
+                - name: resPlots
+                  title: Residuals Plots
+                  type: Array
+                  visible: (resPlots)
+                  template:
+                      type: Image
+                      renderFun: .resPlot
+                      clearWith:
+                        - dep
+                        - blocks
+
+            - name: emm
+              title: Estimated Marginal Means
+              type: Array
+              description: an array of the estimated marginal means plots + tables
+              clearWith:
+                - dep
+                - blocks
+                - emMeans
+              template:
+
+                  title: ''
+                  type: Group
+                  items:
+
+                    - name: emmPlot
+                      title: ''
+                      type: Image
+                      width: 450
+                      height: 400
+                      renderFun: .emmPlot
+                      visible: (emmPlots)
+                      clearWith:
+                        - dep
+                        - blocks
+                        - refLevels
+                        - ciEmm
+                        - ciWidthEmm
+                        - emmWeights
+
+                    - name: emmTable
+                      title: ''
+                      type: Table
+                      description: a table containing estimated marginal means
+                      visible: (emmTables)
+                      columns: []
+                      clearWith:
+                        - dep
+                        - blocks
+                        - refLevels
+                        - ciWidthEmm
+                        - emmWeights
