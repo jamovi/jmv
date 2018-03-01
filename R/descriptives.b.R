@@ -193,7 +193,8 @@ descriptivesClass <- R6::R6Class(
 
                         table$addColumn(name='levels', title='Levels', type='text')
                         table$addColumn(name='counts', title='Counts', type='integer')
-                        # table$addColumn(name='perc', title='% of Total', type='number')
+                        table$addColumn(name='pc', title='% of Total', type='number', format='pc')
+                        table$addColumn(name='cumpc', title='Cumulative %', type='number', format='pc')
 
                         for (k in seq_along(levels))
                             table$addRow(levels[k], values = list(levels = levels[k]))
@@ -436,10 +437,19 @@ descriptivesClass <- R6::R6Class(
                     freq <- freqs[[var]]
 
                     if (length(splitBy) == 0) {
-
+                        n <- sum(freq)
+                        cumsum <- 0
                         for (k in seq_along(levels)) {
                             counts <- as.numeric(freq[levels[k]])
-                            table$setRow(rowNo=k, values=list(counts=counts))
+                            cumsum <- cumsum + counts
+                            pc <- counts / n
+                            cumpc <- cumsum / n
+                            if (is.na(pc)) pc <- 0
+                            if (is.na(cumpc)) cumpc <- 0
+                            table$setRow(rowNo=k, values=list(
+                                counts=counts,
+                                pc=pc,
+                                cumpc=cumpc))
                         }
 
                     } else {
