@@ -40,6 +40,7 @@ const events = {
         updateModelLabels(ui.blocks, 'Block');
         let blocks = this.cloneArray(ui.blocks.value(), []);
         this.workspace["blocks"] = blocks;
+        calcMarginalMeansSupplier(ui, this);
     },
 
     onEvent_emMeans_listItemsChanged: function(ui) {
@@ -52,12 +53,16 @@ let calcMarginalMeansSupplier = function(ui, context) {
     let blocks = context.cloneArray(ui.blocks.value(), []);
     let variableList = [];
     for (let blockIndex = 0; blockIndex < blocks.length; blockIndex++)  {
-        for (let term of blocks[blockIndex])
-            variableList = _.union(variableList, term);
+        if (blocks[blockIndex]) {
+            for (let term of blocks[blockIndex])
+                variableList = _.union(variableList, term);
+        }
     }
 
     if (ui.emMeansSupplier)
         ui.emMeansSupplier.setValue(context.valuesToItems(variableList, FormatDef.variable));
+
+    context.checkValue(ui.emMeans, 2, variableList, FormatDef.variable);
 };
 
 var calcModelTerms = function(ui, context) {
