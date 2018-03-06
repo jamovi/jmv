@@ -8,7 +8,7 @@ authors:
   - Damian Dropmann
   - Ravi Selker
 maintainer: Jonathon Love <jon@thon.cc>
-date: '2018-02-28'
+date: '2018-03-07'
 description: >
   This module represents the analyses included with jamovi. It contains many
   common analyses (such as t-tests, ANOVAs, regression, correlation matrices,
