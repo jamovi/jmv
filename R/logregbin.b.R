@@ -709,7 +709,6 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
                     table$setRow(rowNo=i, values=row)
                 }
-
             }
         },
         .populateBoxTidwellTable = function(data, results) {

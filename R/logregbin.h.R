@@ -815,10 +815,52 @@ logRegBinBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 
 #' Binomial Logistic Regression
 #'
-#' 
+#' Binomial Logistic Regression
+#'
+#' @examples
+#' data('birthwt', package='MASS')
+#'
+#' dat <- data.frame(
+#'             low = factor(birthwt$low),
+#'             age = birthwt$age,
+#'             bwt = birthwt$bwt)
+#'
+#' logRegBin(data = dat, dep = "low",
+#'           covs = c("age", "bwt"),
+#'           blocks = list(list("age", "bwt")),
+#'           refLevels = list(list(var="low", ref="0")))
+#'
+#' #
+#' # BINOMIAL LOGISTIC REGRESSION
+#' #
+#' #  Model Fit Measures
+#' #  ---------------------------------------
+#' #    Model    Deviance    AIC     R²-McF
+#' #  ---------------------------------------
+#' #        1     4.97e-7    6.00     1.000
+#' #  ---------------------------------------
+#' #
+#' #
+#' # MODEL SPECIFIC RESULTS
+#' #
+#' # MODEL 1
+#' #
+#' #  Model Coefficients
+#' #  ------------------------------------------------------------
+#' #    Predictor    Estimate      SE          Z           p
+#' #  ------------------------------------------------------------
+#' #    Intercept    2974.73225    218237.2      0.0136    0.989
+#' #    age            -0.00653       482.7    -1.35e-5    1.000
+#' #    bwt            -1.18532        87.0     -0.0136    0.989
+#' #  ------------------------------------------------------------
+#' #    Note. Estimates represent the log odds of "low = 1"
+#' #    vs. "low = 0"
+#' #
+#' #
+#'
 #' @param data the data as a data frame
 #' @param dep a string naming the dependent variable from \code{data},
-#'   variable must be numeric
+#'   variable must be a factor
 #' @param covs a vector of strings naming the covariates from \code{data}
 #' @param factors a vector of strings naming the fixed factors from
 #'   \code{data}
