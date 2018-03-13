@@ -88,6 +88,7 @@ children:
         showColumnHeaders: true
         fullRowSelect: true
         stretchFactor: 1
+        height: large
         events:
           change: './linreg.events::onChange_refLevels'
         columns:
