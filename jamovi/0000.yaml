@@ -97,6 +97,7 @@ analyses:
     menuSubgroup: Logistic Regression
     menuTitle: 2 Outcomes
     menuSubtitle: Binomial
+    description: Binomial Logistic Regression
   - title: Multinomial Logistic Regression
     name: logRegMulti
     ns: jmv

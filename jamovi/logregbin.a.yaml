@@ -8,6 +8,52 @@ menuSubtitle: Binomial
 version: '1.0.0'
 jas: '1.1'
 
+description:
+    main: Binomial Logistic Regression
+    R:
+        dontrun: false
+        usage: |
+            data('birthwt', package='MASS')
+
+            dat <- data.frame(
+                        low = factor(birthwt$low),
+                        age = birthwt$age,
+                        bwt = birthwt$bwt)
+
+            logRegBin(data = dat, dep = "low",
+                      covs = c("age", "bwt"),
+                      blocks = list(list("age", "bwt")),
+                      refLevels = list(list(var="low", ref="0")))
+
+            #
+            #  BINOMIAL LOGISTIC REGRESSION
+            #
+            #  Model Fit Measures
+            #  ───────────────────────────────────────
+            #    Model    Deviance    AIC     R²-McF
+            #  ───────────────────────────────────────
+            #        1     4.97e-7    6.00     1.000
+            #  ───────────────────────────────────────
+            #
+            #
+            #  MODEL SPECIFIC RESULTS
+            #
+            #  MODEL 1
+            #
+            #  Model Coefficients
+            #  ────────────────────────────────────────────────────────────
+            #    Predictor    Estimate      SE          Z           p
+            #  ────────────────────────────────────────────────────────────
+            #    Intercept    2974.73225    218237.2      0.0136    0.989
+            #    age            -0.00653       482.7    -1.35e-5    1.000
+            #    bwt            -1.18532        87.0     -0.0136    0.989
+            #  ────────────────────────────────────────────────────────────
+            #    Note. Estimates represent the log odds of "low = 1"
+            #    vs. "low = 0"
+            #
+            #
+
+
 options:
     - name: data
       type: Data
@@ -26,7 +72,7 @@ options:
       description:
           R: >
             a string naming the dependent variable from `data`, variable
-            must be numeric
+            must be a factor
 
     - name: covs
       title: Covariates
@@ -91,7 +137,7 @@ options:
       default: false
       description:
           R: >
-            `TRUE` (default) or `FALSE`, provide the model comparison between
+            `TRUE` or `FALSE` (default), provide the model comparison between
             the models and the NULL model
 
     - name: dev
@@ -118,7 +164,7 @@ options:
       default: false
       description:
           R: >
-            `TRUE` (default) or `FALSE`, provide Bayesian Information Criterion (BIC)
+            `TRUE` or `FALSE` (default), provide Bayesian Information Criterion (BIC)
             for the models
 
     - name: pseudoR2
