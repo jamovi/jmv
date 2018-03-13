@@ -97,6 +97,14 @@ analyses:
     menuSubgroup: Logistic Regression
     menuTitle: 2 Outcomes
     menuSubtitle: Binomial
+  - title: Multinomial Logistic Regression
+    name: logRegMulti
+    ns: jmv
+    menuGroup: Regression
+    menuSubgroup: Logistic Regression
+    menuTitle: N Outcomes
+    menuSubtitle: Multinomial
+    description: Multinomial Logistic Regression
   - title: Proportion Test (2 Outcomes)
     name: propTest2
     ns: jmv
