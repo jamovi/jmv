@@ -5,14 +5,14 @@ descriptivesClass <- R6::R6Class(
     private=list(
         #### Member variables ----
         colArgs = list(
-            name = c("n", "missing", "mean", "median", "mode", "sum", "sd", "variance", "range",
-                     "min", "max", "se", "skew", "kurt", "quart1", "quart2", "quart3"),
-            title = c("N", "Missing", "Mean", "Median", "Mode", "Sum", "Standard deviation", "Variance",
-                      "Range", "Minimum", "Maximum", "Standard error", "Skewness", "Kurtosis",
-                      "25th percentile", "50th percentile", "75th percentile"),
-            type = c(rep("integer", 2), rep("number", 15)),
-            visible = c("(n)", "(missing)", "(mean)", "(median)", "(mode)", "(sum)", "(sd)", "(variance)", "(range)",
-                        "(min)", "(max)", "(se)", "(skew)", "(kurt)", "(quart)", "(quart)", "(quart)")
+            name = c("n", "missing", "mean", "se", "median", "mode", "sum", "sd", "variance", "range",
+                     "min", "max", "skew", "seSkew", "kurt", "seKurt", "quart1", "quart2", "quart3"),
+            title = c("N", "Missing", "Mean", "Std. error mean", "Median", "Mode", "Sum", "Standard deviation", "Variance",
+                      "Range", "Minimum", "Maximum", "Skewness", "Std. error skewness",
+                      "Kurtosis", "Std. error kurtosis", "25th percentile", "50th percentile", "75th percentile"),
+            type = c(rep("integer", 2), rep("number", 17)),
+            visible = c("(n)", "(missing)", "(mean)", "(se)", "(median)", "(mode)", "(sum)", "(sd)", "(variance)", "(range)",
+                        "(min)", "(max)", "(skew)", "(skew)", "(kurt)", "(kurt)", "(quart)", "(quart)", "(quart)")
         ),
         levels = NULL,
 
@@ -845,8 +845,12 @@ descriptivesClass <- R6::R6Class(
                 stats[['se']] <- sqrt(var(column)/length(column))
 
                 deviation <- column-mean(column)
-                stats[['skew']] <- private$.skewness(column)
-                stats[['kurt']] <- private$.kurtosis(column)
+                skew <- private$.skewness(column)
+                kurt <- private$.kurtosis(column)
+                stats[['skew']] <- skew$skew
+                stats[['seSkew']] <- skew$seSkew
+                stats[['kurt']] <- kurt$kurt
+                stats[['seKurt']] <- kurt$seKurt
 
                 stats[['quart1']] <- as.numeric(quantile(column, c(.25)))
                 stats[['quart2']] <- as.numeric(quantile(column, c(.5)))
@@ -865,8 +869,8 @@ descriptivesClass <- R6::R6Class(
             } else if (jmvcore::canBeNumeric(column)) {
 
                 l <- list(mean=NaN, median=NaN, mode=NaN, sum=NaN, sd=NaN, variance=NaN,
-                          range=NaN, min=NaN, max=NaN, se=NaN, skew=NaN, kurt=NaN,
-                          quart1=NaN, quart2=NaN, quart3=NaN)
+                          range=NaN, min=NaN, max=NaN, se=NaN, skew=NaN, seSkew=NaN,
+                          kurt=NaN, seKurt=NaN, quart1=NaN, quart2=NaN, quart3=NaN)
 
                 pcNEqGr <- self$options$pcNEqGr
                 if ( ! (self$options$quart && pcNEqGr == 4)) {
@@ -879,8 +883,8 @@ descriptivesClass <- R6::R6Class(
             } else {
 
                 l <- list(mean='', median='', mode='', sum='', sd='', variance='',
-                          range='', min='', max='', se='', skew='', kurt='',
-                          quart1='', quart2='', quart3='')
+                          range='', min='', max='', se='', skew='', seSkew='',
+                          kurt='', seKurt='', quart1='', quart2='', quart3='')
 
                 pcNEqGr <- self$options$pcNEqGr
                 if ( ! (self$options$quart && pcNEqGr == 4)) {
@@ -953,7 +957,11 @@ descriptivesClass <- R6::R6Class(
             e3 <- (-3 * (n - 1)^2) / ((n - 2) * (n - 3))
             kurtosis <- e1 * e2 + e3
 
-            return(kurtosis)
+            varSkew <- 6 * n * (n - 1) / ((n - 2) * (n + 1) * (n + 3))
+            varKurt <- 4 * (n^2 - 1) * varSkew / ((n - 3) * (n + 5))
+            seKurt <- sqrt(varKurt)
+
+            return(list(kurt=kurtosis, seKurt=seKurt))
         },
         .skewness = function(x) {
 
@@ -964,7 +972,10 @@ descriptivesClass <- R6::R6Class(
             e2 <- sqrt(n) * sum(x^3)/(sum(x^2)^(3/2))
             skewness <- e1 * e2
 
-            return(skewness)
+            varSkew <- 6 * n * (n - 1) / ((n - 2) * (n + 1) * (n + 3))
+            seSkew <- sqrt(varSkew)
+
+            return(list(skew=skewness, seSkew=seSkew))
         }
     )
 )
