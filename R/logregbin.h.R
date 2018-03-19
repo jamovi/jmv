@@ -831,7 +831,7 @@ logRegBinBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'           refLevels = list(list(var="low", ref="0")))
 #'
 #' #
-#' # BINOMIAL LOGISTIC REGRESSION
+#' #  BINOMIAL LOGISTIC REGRESSION
 #' #
 #' #  Model Fit Measures
 #' #  ---------------------------------------
@@ -841,9 +841,9 @@ logRegBinBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #  ---------------------------------------
 #' #
 #' #
-#' # MODEL SPECIFIC RESULTS
+#' #  MODEL SPECIFIC RESULTS
 #' #
-#' # MODEL 1
+#' #  MODEL 1
 #' #
 #' #  Model Coefficients
 #' #  ------------------------------------------------------------
@@ -869,13 +869,13 @@ logRegBinBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   to their order in the list
 #' @param refLevels a list of lists specifying reference levels of the
 #'   dependent variable and all the factors
-#' @param modelTest \code{TRUE} (default) or \code{FALSE}, provide the model
+#' @param modelTest \code{TRUE} or \code{FALSE} (default), provide the model
 #'   comparison between the models and the NULL model
 #' @param dev \code{TRUE} (default) or \code{FALSE}, provide the deviance (or
 #'   -2LogLikelihood) for the models
 #' @param aic \code{TRUE} (default) or \code{FALSE}, provide Aikaike's
 #'   Information Criterion (AIC) for the models
-#' @param bic \code{TRUE} (default) or \code{FALSE}, provide Bayesian
+#' @param bic \code{TRUE} or \code{FALSE} (default), provide Bayesian
 #'   Information Criterion (BIC) for the models
 #' @param pseudoR2 one or more of \code{'r2mf'}, \code{'r2cs'}, or
 #'   \code{'r2n'}; use McFadden's, Cox & Snell, and Nagelkerke pseudo-R²,
