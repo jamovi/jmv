@@ -773,9 +773,9 @@ linRegBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #  ---------------------------
 #' #
 #' #
-#' # MODEL SPECIFIC RESULTS
+#' #  MODEL SPECIFIC RESULTS
 #' #
-#' # MODEL 1
+#' #  MODEL 1
 #' #
 #' #
 #' #  Model Coefficients

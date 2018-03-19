@@ -286,7 +286,7 @@ logRegMultiClass <- R6::R6Class(
                         emm <- c(dep, emm)
                         nLevels <- numeric(length(emm))
                         for (k in rev(seq_along(emm))) {
-                            if (emm[k] %in% factors) {
+                            if (emm[k] %in% c(dep, factors)) {
                                 table$addColumn(name=emm[k], title=emm[k], type='text', combineBelow=TRUE)
                                 nLevels[k] <- length(levels(self$data[[ emm[k] ]]))
                             } else {
