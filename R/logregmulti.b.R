@@ -433,8 +433,8 @@ logRegMultiClass <- R6::R6Class(
                         row[["p"]] <- p[index1, index2]
                         row[["lower"]] <- CI[index2, 1, index1]
                         row[["upper"]] <- CI[index2, 2, index1]
-                        row[["oddsLower"]] <- exp(CIOR[index2, 1, index1])
-                        row[["oddsUpper"]] <- exp(CIOR[index2, 2, index1])
+                        row[["oddsLower"]] <- CIOR[index2, 1, index1]
+                        row[["oddsUpper"]] <- CIOR[index2, 2, index1]
 
                         table$setRow(rowKey=paste0(j, jmvcore::composeTerm(terms[[k]])), values = row)
                     }
