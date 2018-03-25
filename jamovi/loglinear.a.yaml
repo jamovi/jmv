@@ -2,10 +2,62 @@
 name:    logLinear
 title:   Log-Linear Regression
 menuGroup: Frequencies
+menuSubgroup: ''
+menuTitle: Log-Linear Regression
 version: '1.0.0'
 jas: '1.1'
 
-completeWhenFilled: true
+description:
+    main: Log-Linear Regression
+    R:
+        dontrun: false
+        usage: |
+            data('mtcars')
+
+            tab <- table('gear'=mtcars$gear, 'cyl'=mtcars$cyl)
+            dat <- as.data.frame(tab)
+
+            logLinear(data = dat, factors = c("gear", "cyl"),  counts = "Freq",
+                      blocks = list(list("gear", "cyl", c("gear", "cyl"))),
+                      refLevels = list(
+                          list(var="gear", ref="3"),
+                          list(var="cyl", ref="4")))
+
+            #
+            #  LOG-LINEAR REGRESSION
+            #
+            #  Model Fit Measures
+            #  ───────────────────────────────────────
+            #    Model    Deviance    AIC     R²-McF
+            #  ───────────────────────────────────────
+            #        1    4.12e-10    41.4     1.000
+            #  ───────────────────────────────────────
+            #
+            #
+            #  MODEL SPECIFIC RESULTS
+            #
+            #  MODEL 1
+            #
+            #  Model Coefficients
+            #  ──────────────────────────────────────────────────────────────────
+            #    Predictor          Estimate     SE          Z            p
+            #  ──────────────────────────────────────────────────────────────────
+            #    Intercept          -4.71e-16        1.00    -4.71e-16    1.000
+            #    gear:
+            #    4 – 3                  2.079        1.06        1.961    0.050
+            #    5 – 3                  0.693        1.22        0.566    0.571
+            #    cyl:
+            #    6 – 4                  0.693        1.22        0.566    0.571
+            #    8 – 4                  2.485        1.04        2.387    0.017
+            #    gear:cyl:
+            #    (4 – 3):(6 – 4)       -1.386        1.37       -1.012    0.311
+            #    (5 – 3):(6 – 4)       -1.386        1.73       -0.800    0.423
+            #    (4 – 3):(8 – 4)      -26.867    42247.17    -6.36e -4    0.999
+            #    (5 – 3):(8 – 4)       -2.485        1.44       -1.722    0.085
+            #  ──────────────────────────────────────────────────────────────────
+            #
+            #
+
 
 options:
     - name: data
@@ -13,48 +65,134 @@ options:
       description:
           R: the data as a data frame
 
-    - name: counts
-      title: Counts (optional)
-      type: Variable
-      suggested:
-        - continuous
-      permitted:
-        - continuous
-        - nominal
-        - ordinal
-      description: >
-        The counts
-
     - name: factors
       title: Factors
       type: Variables
       suggested:
         - nominal
+      permitted:
+        - nominal
+        - nominaltext
         - ordinal
       default:
-      description: >
-        The factors
+      description:
+          R: a vector of strings naming the factors from `data`
 
-    - name: modelTerms
-      title: Model Terms
-      type: Terms
+    - name: counts
+      title: Counts (optional)
+      type: Variable
       default:
-      description: >
-        The model terms
+      permitted:
+        - continuous
+        - nominal
+        - ordinal
+      description:
+          R: >
+            a string naming a variable in `data` containing counts, or NULL if
+            each row represents a single observation
 
-    - name: est
-      title: Estimates
+    - name: blocks
+      title: Blocks
+      type: Array
+      default: [[]]
+      template:
+          type: Terms
+      description:
+          R: >
+            a list containing vectors of strings that name the
+            predictors that are added to the model. The elements
+            are added to the model according to their order in the
+            list
+
+    - name: refLevels
+      title: Reference Levels
+      type: Array
+      items: (factors)
+      default:
+      template:
+          type: Group
+          elements:
+              - name: var
+                type: Variable
+                content: $key
+              - name: ref
+                type: Level
+      description:
+          R: >
+            a list of lists specifying reference levels of the dependent variable
+            and all the factors
+
+    - name: modelTest
+      title: Overall model test
       type: Bool
       default: false
-      description: >
-        Estimates
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the model comparison between
+            the models and the NULL model
+
+    - name: dev
+      title: Deviance
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide the deviance (or -2LogLikelihood)
+            for the models
+
+    - name: aic
+      title: AIC
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide Aikaike's Information Criterion (AIC)
+            for the models
+
+    - name: bic
+      title: BIC
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Bayesian Information Criterion (BIC)
+            for the models
+
+    - name: pseudoR2
+      title: Pseudo R²
+      type: NMXList
+      options:
+          - name: r2mf
+            title: McFadden's R²
+          - name: r2cs
+            title: Cox & Snell's R²
+          - name: r2n
+            title: Nagelkerke's R²
+      default:
+          - r2mf
+      description:
+          R: >
+            one or more of `'r2mf'`, `'r2cs'`, or `'r2n'`;
+            use McFadden's, Cox & Snell, and Nagelkerke pseudo-R²,
+            respectively
+
+    - name: omni
+      title: Likelihood ratio tests
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the omnibus likelihood ratio tests
+            for the predictors
 
     - name: ci
-      title: Confidence Intervals
+      title: Confidence interval
       type: Bool
       default: false
-      description: >
-        Confidence Intervals
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a confidence interval
+            for the model coefficient estimates
 
     - name: ciWidth
       title: Confidence level
@@ -62,4 +200,93 @@ options:
       min: 50
       max: 99.9
       default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width
+
+    - name: RR
+      title: Rate ratio
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the exponential of the log-rate
+            ratio estimate, or the rate ratio estimate
+
+    - name: ciRR
+      title: Confidence interval
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a confidence interval
+            for the model coefficient rate ratio estimates
+
+    - name: ciWidthRR
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width
+
+    - name: emMeans
+      title: Marginal Means
+      type: Array
+      default: [[]]
+      template:
+          type: Variables
+      description:
+          R: >
+            a list of lists specifying the variables for which the estimated marginal
+            means need to be calculate. Supports up to three variables per term.
+
+    - name: ciEmm
+      title: Confidence interval
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide a confidence interval
+            for the estimated marginal means
+
+    - name: ciWidthEmm
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width for the estimated marginal means
+
+    - name: emmPlots
+      title: Marginal means plots
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide estimated marginal means plots
+
+    - name: emmTables
+      title: Marginal means tables
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide estimated marginal means tables
+
+    - name: emmWeights
+      title: Equal cell weights
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, weigh each cell equally or weigh them according to
+            the cell frequency
 ...

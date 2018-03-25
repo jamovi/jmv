@@ -143,9 +143,8 @@ analyses:
     ns: jmv
     menuGroup: Frequencies
     menuTitle: Log-Linear Regression
-    stage: 1
-    hidden: true
-    description: null
+    description: Log-Linear Regression
+    menuSubgroup: ''
   - title: Reliability Analysis
     name: reliability
     ns: jmv
