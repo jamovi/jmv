@@ -52,6 +52,10 @@ logRegMultiClass <- R6::R6Class(
 
             formulas <- private$.formula()
 
+            globalContr <- options('contrasts')$contrasts
+            options('contrasts' = c('contr.treatment', 'contr.poly'))
+            on.exit(options('contrasts', substitute(globalContr)), add=TRUE)
+
             suppressWarnings({
                 suppressMessages({
 

@@ -6,12 +6,30 @@ logLinearOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
-            counts = NULL,
             factors = NULL,
-            modelTerms = NULL,
-            est = FALSE,
+            counts = NULL,
+            blocks = list(
+                list()),
+            refLevels = NULL,
+            modelTest = FALSE,
+            dev = TRUE,
+            aic = TRUE,
+            bic = FALSE,
+            pseudoR2 = list(
+                "r2mf"),
+            omni = FALSE,
             ci = FALSE,
-            ciWidth = 95, ...) {
+            ciWidth = 95,
+            RR = FALSE,
+            ciRR = FALSE,
+            ciWidthRR = 95,
+            emMeans = list(
+                list()),
+            ciEmm = TRUE,
+            ciWidthEmm = 95,
+            emmPlots = TRUE,
+            emmTables = FALSE,
+            emmWeights = TRUE, ...) {
 
             super$initialize(
                 package='jmv',
@@ -19,29 +37,76 @@ logLinearOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 requiresData=TRUE,
                 ...)
 
-            private$..counts <- jmvcore::OptionVariable$new(
-                "counts",
-                counts,
-                suggested=list(
-                    "continuous"),
-                permitted=list(
-                    "continuous",
-                    "nominal",
-                    "ordinal"))
             private$..factors <- jmvcore::OptionVariables$new(
                 "factors",
                 factors,
                 suggested=list(
+                    "nominal"),
+                permitted=list(
                     "nominal",
+                    "nominaltext",
                     "ordinal"),
                 default=NULL)
-            private$..modelTerms <- jmvcore::OptionTerms$new(
-                "modelTerms",
-                modelTerms,
-                default=NULL)
-            private$..est <- jmvcore::OptionBool$new(
-                "est",
-                est,
+            private$..counts <- jmvcore::OptionVariable$new(
+                "counts",
+                counts,
+                default=NULL,
+                permitted=list(
+                    "continuous",
+                    "nominal",
+                    "ordinal"))
+            private$..blocks <- jmvcore::OptionArray$new(
+                "blocks",
+                blocks,
+                default=list(
+                    list()),
+                template=jmvcore::OptionTerms$new(
+                    "blocks",
+                    NULL))
+            private$..refLevels <- jmvcore::OptionArray$new(
+                "refLevels",
+                refLevels,
+                items="(factors)",
+                default=NULL,
+                template=jmvcore::OptionGroup$new(
+                    "refLevels",
+                    NULL,
+                    elements=list(
+                        jmvcore::OptionVariable$new(
+                            "var",
+                            NULL,
+                            content="$key"),
+                        jmvcore::OptionLevel$new(
+                            "ref",
+                            NULL))))
+            private$..modelTest <- jmvcore::OptionBool$new(
+                "modelTest",
+                modelTest,
+                default=FALSE)
+            private$..dev <- jmvcore::OptionBool$new(
+                "dev",
+                dev,
+                default=TRUE)
+            private$..aic <- jmvcore::OptionBool$new(
+                "aic",
+                aic,
+                default=TRUE)
+            private$..bic <- jmvcore::OptionBool$new(
+                "bic",
+                bic,
+                default=FALSE)
+            private$..pseudoR2 <- jmvcore::OptionNMXList$new(
+                "pseudoR2",
+                pseudoR2,
+                options=list(
+                    "r2mf",
+                    "r2cs",
+                    "r2n"),
+                default=list(
+                    "r2mf"))
+            private$..omni <- jmvcore::OptionBool$new(
+                "omni",
+                omni,
                 default=FALSE)
             private$..ci <- jmvcore::OptionBool$new(
                 "ci",
@@ -53,34 +118,125 @@ logLinearOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 min=50,
                 max=99.9,
                 default=95)
+            private$..RR <- jmvcore::OptionBool$new(
+                "RR",
+                RR,
+                default=FALSE)
+            private$..ciRR <- jmvcore::OptionBool$new(
+                "ciRR",
+                ciRR,
+                default=FALSE)
+            private$..ciWidthRR <- jmvcore::OptionNumber$new(
+                "ciWidthRR",
+                ciWidthRR,
+                min=50,
+                max=99.9,
+                default=95)
+            private$..emMeans <- jmvcore::OptionArray$new(
+                "emMeans",
+                emMeans,
+                default=list(
+                    list()),
+                template=jmvcore::OptionVariables$new(
+                    "emMeans",
+                    NULL))
+            private$..ciEmm <- jmvcore::OptionBool$new(
+                "ciEmm",
+                ciEmm,
+                default=TRUE)
+            private$..ciWidthEmm <- jmvcore::OptionNumber$new(
+                "ciWidthEmm",
+                ciWidthEmm,
+                min=50,
+                max=99.9,
+                default=95)
+            private$..emmPlots <- jmvcore::OptionBool$new(
+                "emmPlots",
+                emmPlots,
+                default=TRUE)
+            private$..emmTables <- jmvcore::OptionBool$new(
+                "emmTables",
+                emmTables,
+                default=FALSE)
+            private$..emmWeights <- jmvcore::OptionBool$new(
+                "emmWeights",
+                emmWeights,
+                default=TRUE)
 
-            self$.addOption(private$..counts)
             self$.addOption(private$..factors)
-            self$.addOption(private$..modelTerms)
-            self$.addOption(private$..est)
+            self$.addOption(private$..counts)
+            self$.addOption(private$..blocks)
+            self$.addOption(private$..refLevels)
+            self$.addOption(private$..modelTest)
+            self$.addOption(private$..dev)
+            self$.addOption(private$..aic)
+            self$.addOption(private$..bic)
+            self$.addOption(private$..pseudoR2)
+            self$.addOption(private$..omni)
             self$.addOption(private$..ci)
             self$.addOption(private$..ciWidth)
+            self$.addOption(private$..RR)
+            self$.addOption(private$..ciRR)
+            self$.addOption(private$..ciWidthRR)
+            self$.addOption(private$..emMeans)
+            self$.addOption(private$..ciEmm)
+            self$.addOption(private$..ciWidthEmm)
+            self$.addOption(private$..emmPlots)
+            self$.addOption(private$..emmTables)
+            self$.addOption(private$..emmWeights)
         }),
     active = list(
-        counts = function() private$..counts$value,
         factors = function() private$..factors$value,
-        modelTerms = function() private$..modelTerms$value,
-        est = function() private$..est$value,
+        counts = function() private$..counts$value,
+        blocks = function() private$..blocks$value,
+        refLevels = function() private$..refLevels$value,
+        modelTest = function() private$..modelTest$value,
+        dev = function() private$..dev$value,
+        aic = function() private$..aic$value,
+        bic = function() private$..bic$value,
+        pseudoR2 = function() private$..pseudoR2$value,
+        omni = function() private$..omni$value,
         ci = function() private$..ci$value,
-        ciWidth = function() private$..ciWidth$value),
+        ciWidth = function() private$..ciWidth$value,
+        RR = function() private$..RR$value,
+        ciRR = function() private$..ciRR$value,
+        ciWidthRR = function() private$..ciWidthRR$value,
+        emMeans = function() private$..emMeans$value,
+        ciEmm = function() private$..ciEmm$value,
+        ciWidthEmm = function() private$..ciWidthEmm$value,
+        emmPlots = function() private$..emmPlots$value,
+        emmTables = function() private$..emmTables$value,
+        emmWeights = function() private$..emmWeights$value),
     private = list(
-        ..counts = NA,
         ..factors = NA,
-        ..modelTerms = NA,
-        ..est = NA,
+        ..counts = NA,
+        ..blocks = NA,
+        ..refLevels = NA,
+        ..modelTest = NA,
+        ..dev = NA,
+        ..aic = NA,
+        ..bic = NA,
+        ..pseudoR2 = NA,
+        ..omni = NA,
         ..ci = NA,
-        ..ciWidth = NA)
+        ..ciWidth = NA,
+        ..RR = NA,
+        ..ciRR = NA,
+        ..ciWidthRR = NA,
+        ..emMeans = NA,
+        ..ciEmm = NA,
+        ..ciWidthEmm = NA,
+        ..emmPlots = NA,
+        ..emmTables = NA,
+        ..emmWeights = NA)
 )
 
 logLinearResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
-        table = function() private$.items[["table"]]),
+        modelFit = function() private$.items[["modelFit"]],
+        modelComp = function() private$.items[["modelComp"]],
+        models = function() private$.items[["models"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -90,12 +246,256 @@ logLinearResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 title="Log-Linear Regression")
             self$add(jmvcore::Table$new(
                 options=options,
-                name="table",
-                title="Log-Linear Regression",
+                name="modelFit",
+                title="Model Fit Measures",
+                clearWith=list(
+                    "counts",
+                    "blocks"),
+                visible="(dev || aic || bic || pseudoR2:r2mf || pseudoR2:r2cs || pseudoR2:r2n || modelTest)",
                 columns=list(
                     list(
-                        `name`="var", 
-                        `title`=""))))}))
+                        `name`="model", 
+                        `title`="Model", 
+                        `type`="text"),
+                    list(
+                        `name`="dev", 
+                        `title`="Deviance", 
+                        `type`="number", 
+                        `visible`="(dev)"),
+                    list(
+                        `name`="aic", 
+                        `title`="AIC", 
+                        `type`="number", 
+                        `visible`="(aic)"),
+                    list(
+                        `name`="bic", 
+                        `title`="BIC", 
+                        `type`="number", 
+                        `visible`="(bic)"),
+                    list(
+                        `name`="r2mf", 
+                        `title`="R\u00B2<sub>McF</sub>", 
+                        `type`="number", 
+                        `visible`="(pseudoR2:r2mf)"),
+                    list(
+                        `name`="r2cs", 
+                        `title`="R\u00B2<sub>CS</sub>", 
+                        `type`="number", 
+                        `visible`="(pseudoR2:r2cs)"),
+                    list(
+                        `name`="r2n", 
+                        `title`="R\u00B2<sub>N</sub>", 
+                        `type`="number", 
+                        `visible`="(pseudoR2:r2n)"),
+                    list(
+                        `name`="chi", 
+                        `title`="\u03C7\u00B2", 
+                        `type`="number", 
+                        `superTitle`="Overall Model Test", 
+                        `visible`="(modelTest)"),
+                    list(
+                        `name`="df", 
+                        `title`="df", 
+                        `type`="integer", 
+                        `superTitle`="Overall Model Test", 
+                        `visible`="(modelTest)"),
+                    list(
+                        `name`="p", 
+                        `title`="p", 
+                        `type`="number", 
+                        `format`="zto,pvalue", 
+                        `superTitle`="Overall Model Test", 
+                        `visible`="(modelTest)"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="modelComp",
+                title="Model Comparisons",
+                clearWith=list(
+                    "counts",
+                    "blocks"),
+                columns=list(
+                    list(
+                        `name`="model1", 
+                        `title`="Model", 
+                        `content`=".", 
+                        `type`="text", 
+                        `superTitle`="Comparison"),
+                    list(
+                        `name`="sep", 
+                        `title`="", 
+                        `content`="-", 
+                        `type`="text", 
+                        `format`="narrow", 
+                        `superTitle`="Comparison"),
+                    list(
+                        `name`="model2", 
+                        `title`="Model", 
+                        `content`=".", 
+                        `type`="text", 
+                        `superTitle`="Comparison"),
+                    list(
+                        `name`="chi", 
+                        `title`="\u03C7\u00B2", 
+                        `type`="number"),
+                    list(
+                        `name`="df", 
+                        `title`="df", 
+                        `type`="integer"),
+                    list(
+                        `name`="p", 
+                        `title`="p", 
+                        `type`="number", 
+                        `format`="zto,pvalue"))))
+            self$add(jmvcore::Array$new(
+                options=options,
+                name="models",
+                title="Model Specific Results",
+                layout="listSelect",
+                hideHeadingOnlyChild=TRUE,
+                clearWith=list(
+                    "counts",
+                    "blocks"),
+                template=R6::R6Class(
+                    inherit = jmvcore::Group,
+                    active = list(
+                        lrt = function() private$.items[["lrt"]],
+                        coef = function() private$.items[["coef"]],
+                        emm = function() private$.items[["emm"]]),
+                    private = list(),
+                    public=list(
+                        initialize=function(options) {
+                            super$initialize(
+                                options=options,
+                                name="undefined",
+                                title="")
+                            self$add(jmvcore::Table$new(
+                                options=options,
+                                name="lrt",
+                                title="Omnibus Likelihood Ratio Tests",
+                                clearWith=list(
+                                    "counts",
+                                    "blocks"),
+                                visible="(omni)",
+                                columns=list(
+                                    list(
+                                        `name`="term", 
+                                        `title`="Predictor", 
+                                        `type`="text"),
+                                    list(
+                                        `name`="chi", 
+                                        `title`="\u03C7\u00B2", 
+                                        `type`="number"),
+                                    list(
+                                        `name`="df", 
+                                        `title`="df", 
+                                        `type`="integer"),
+                                    list(
+                                        `name`="p", 
+                                        `title`="p", 
+                                        `type`="number", 
+                                        `format`="zto,pvalue"))))
+                            self$add(jmvcore::Table$new(
+                                options=options,
+                                name="coef",
+                                title="Model Coefficients",
+                                clearWith=list(
+                                    "counts",
+                                    "blocks",
+                                    "refLevels"),
+                                columns=list(
+                                    list(
+                                        `name`="term", 
+                                        `title`="Predictor", 
+                                        `type`="text"),
+                                    list(
+                                        `name`="est", 
+                                        `title`="Estimate", 
+                                        `type`="number"),
+                                    list(
+                                        `name`="lower", 
+                                        `title`="Lower", 
+                                        `type`="number", 
+                                        `visible`="(ci)"),
+                                    list(
+                                        `name`="upper", 
+                                        `title`="Upper", 
+                                        `type`="number", 
+                                        `visible`="(ci)"),
+                                    list(
+                                        `name`="se", 
+                                        `title`="SE", 
+                                        `type`="number"),
+                                    list(
+                                        `name`="z", 
+                                        `title`="Z", 
+                                        `type`="number"),
+                                    list(
+                                        `name`="p", 
+                                        `title`="p", 
+                                        `type`="number", 
+                                        `format`="zto,pvalue"),
+                                    list(
+                                        `name`="rate", 
+                                        `title`="Rate ratio", 
+                                        `type`="number", 
+                                        `visible`="(RR)"),
+                                    list(
+                                        `name`="rateLower", 
+                                        `title`="Lower", 
+                                        `type`="number", 
+                                        `visible`="(ciRR && RR)"),
+                                    list(
+                                        `name`="rateUpper", 
+                                        `title`="Upper", 
+                                        `type`="number", 
+                                        `visible`="(ciRR && RR)"))))
+                            self$add(jmvcore::Array$new(
+                                options=options,
+                                name="emm",
+                                title="Estimated Marginal Means",
+                                clearWith=list(
+                                    "counts",
+                                    "blocks",
+                                    "emMeans"),
+                                template=R6::R6Class(
+                                    inherit = jmvcore::Group,
+                                    active = list(
+                                        emmPlot = function() private$.items[["emmPlot"]],
+                                        emmTable = function() private$.items[["emmTable"]]),
+                                    private = list(),
+                                    public=list(
+                                        initialize=function(options) {
+                                            super$initialize(
+                                                options=options,
+                                                name="undefined",
+                                                title="")
+                                            self$add(jmvcore::Image$new(
+                                                options=options,
+                                                name="emmPlot",
+                                                title="",
+                                                width=450,
+                                                height=400,
+                                                renderFun=".emmPlot",
+                                                visible="(emmPlots)",
+                                                clearWith=list(
+                                                    "counts",
+                                                    "blocks",
+                                                    "refLevels",
+                                                    "ciEmm",
+                                                    "ciWidthEmm",
+                                                    "emmWeights")))
+                                            self$add(jmvcore::Table$new(
+                                                options=options,
+                                                name="emmTable",
+                                                title="",
+                                                visible="(emmTables)",
+                                                columns=list(),
+                                                clearWith=list(
+                                                    "counts",
+                                                    "blocks",
+                                                    "refLevels",
+                                                    "ciWidthEmm",
+                                                    "emmWeights")))}))$new(options=options)))}))$new(options=options)))}))
 
 logLinearBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "logLinearBase",
@@ -113,50 +513,171 @@ logLinearBase <- if (requireNamespace('jmvcore')) R6::R6Class(
                 analysisId = analysisId,
                 revision = revision,
                 pause = NULL,
-                completeWhenFilled = TRUE)
+                completeWhenFilled = FALSE)
         }))
 
 #' Log-Linear Regression
 #'
-#' 
+#' Log-Linear Regression
+#'
+#' @examples
+#' data('mtcars')
+#'
+#' tab <- table('gear'=mtcars$gear, 'cyl'=mtcars$cyl)
+#' dat <- as.data.frame(tab)
+#'
+#' logLinear(data = dat, factors = c("gear", "cyl"),  counts = "Freq",
+#'           blocks = list(list("gear", "cyl", c("gear", "cyl"))),
+#'           refLevels = list(
+#'               list(var="gear", ref="3"),
+#'               list(var="cyl", ref="4")))
+#'
+#' #
+#' #  LOG-LINEAR REGRESSION
+#' #
+#' #  Model Fit Measures
+#' #  ---------------------------------------
+#' #    Model    Deviance    AIC     R²-McF
+#' #  ---------------------------------------
+#' #        1    4.12e-10    41.4     1.000
+#' #  ---------------------------------------
+#' #
+#' #
+#' #  MODEL SPECIFIC RESULTS
+#' #
+#' #  MODEL 1
+#' #
+#' #  Model Coefficients
+#' #  ------------------------------------------------------------------
+#' #    Predictor          Estimate     SE          Z            p
+#' #  ------------------------------------------------------------------
+#' #    Intercept          -4.71e-16        1.00    -4.71e-16    1.000
+#' #    gear:
+#' #    4 – 3                  2.079        1.06        1.961    0.050
+#' #    5 – 3                  0.693        1.22        0.566    0.571
+#' #    cyl:
+#' #    6 – 4                  0.693        1.22        0.566    0.571
+#' #    8 – 4                  2.485        1.04        2.387    0.017
+#' #    gear:cyl:
+#' #    (4 – 3):(6 – 4)       -1.386        1.37       -1.012    0.311
+#' #    (5 – 3):(6 – 4)       -1.386        1.73       -0.800    0.423
+#' #    (4 – 3):(8 – 4)      -26.867    42247.17    -6.36e -4    0.999
+#' #    (5 – 3):(8 – 4)       -2.485        1.44       -1.722    0.085
+#' #  ------------------------------------------------------------------
+#' #
+#' #
+#'
 #' @param data the data as a data frame
-#' @param counts The counts
-#' @param factors The factors
-#' @param modelTerms The model terms
-#' @param est Estimates
-#' @param ci Confidence Intervals
-#' @param ciWidth .
+#' @param factors a vector of strings naming the factors from \code{data}
+#' @param counts a string naming a variable in \code{data} containing counts,
+#'   or NULL if each row represents a single observation
+#' @param blocks a list containing vectors of strings that name the predictors
+#'   that are added to the model. The elements are added to the model according
+#'   to their order in the list
+#' @param refLevels a list of lists specifying reference levels of the
+#'   dependent variable and all the factors
+#' @param modelTest \code{TRUE} or \code{FALSE} (default), provide the model
+#'   comparison between the models and the NULL model
+#' @param dev \code{TRUE} (default) or \code{FALSE}, provide the deviance (or
+#'   -2LogLikelihood) for the models
+#' @param aic \code{TRUE} (default) or \code{FALSE}, provide Aikaike's
+#'   Information Criterion (AIC) for the models
+#' @param bic \code{TRUE} or \code{FALSE} (default), provide Bayesian
+#'   Information Criterion (BIC) for the models
+#' @param pseudoR2 one or more of \code{'r2mf'}, \code{'r2cs'}, or
+#'   \code{'r2n'}; use McFadden's, Cox & Snell, and Nagelkerke pseudo-R²,
+#'   respectively
+#' @param omni \code{TRUE} or \code{FALSE} (default), provide the omnibus
+#'   likelihood ratio tests for the predictors
+#' @param ci \code{TRUE} or \code{FALSE} (default), provide a confidence
+#'   interval for the model coefficient estimates
+#' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the
+#'   confidence interval width
+#' @param RR \code{TRUE} or \code{FALSE} (default), provide the exponential of
+#'   the log-rate ratio estimate, or the rate ratio estimate
+#' @param ciRR \code{TRUE} or \code{FALSE} (default), provide a confidence
+#'   interval for the model coefficient rate ratio estimates
+#' @param ciWidthRR a number between 50 and 99.9 (default: 95) specifying the
+#'   confidence interval width
+#' @param emMeans a list of lists specifying the variables for which the
+#'   estimated marginal means need to be calculate. Supports up to three
+#'   variables per term.
+#' @param ciEmm \code{TRUE} (default) or \code{FALSE}, provide a confidence
+#'   interval for the estimated marginal means
+#' @param ciWidthEmm a number between 50 and 99.9 (default: 95) specifying the
+#'   confidence interval width for the estimated marginal means
+#' @param emmPlots \code{TRUE} (default) or \code{FALSE}, provide estimated
+#'   marginal means plots
+#' @param emmTables \code{TRUE} or \code{FALSE} (default), provide estimated
+#'   marginal means tables
+#' @param emmWeights \code{TRUE} (default) or \code{FALSE}, weigh each cell
+#'   equally or weigh them according to the cell frequency
 #' @return A results object containing:
 #' \tabular{llllll}{
-#'   \code{results$table} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$modelFit} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$modelComp} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$models} \tab \tab \tab \tab \tab an array of model specific results \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
 #'
-#' \code{results$table$asDF}
+#' \code{results$modelFit$asDF}
 #'
-#' \code{as.data.frame(results$table)}
+#' \code{as.data.frame(results$modelFit)}
 #'
 #' @export
 logLinear <- function(
     data,
-    counts,
     factors = NULL,
-    modelTerms = NULL,
-    est = FALSE,
+    counts = NULL,
+    blocks = list(
+                list()),
+    refLevels = NULL,
+    modelTest = FALSE,
+    dev = TRUE,
+    aic = TRUE,
+    bic = FALSE,
+    pseudoR2 = list(
+                "r2mf"),
+    omni = FALSE,
     ci = FALSE,
-    ciWidth = 95) {
+    ciWidth = 95,
+    RR = FALSE,
+    ciRR = FALSE,
+    ciWidthRR = 95,
+    emMeans = list(
+                list()),
+    ciEmm = TRUE,
+    ciWidthEmm = 95,
+    emmPlots = TRUE,
+    emmTables = FALSE,
+    emmWeights = TRUE) {
 
     if ( ! requireNamespace('jmvcore'))
         stop('logLinear requires jmvcore to be installed (restart may be required)')
 
     options <- logLinearOptions$new(
-        counts = counts,
         factors = factors,
-        modelTerms = modelTerms,
-        est = est,
+        counts = counts,
+        blocks = blocks,
+        refLevels = refLevels,
+        modelTest = modelTest,
+        dev = dev,
+        aic = aic,
+        bic = bic,
+        pseudoR2 = pseudoR2,
+        omni = omni,
         ci = ci,
-        ciWidth = ciWidth)
+        ciWidth = ciWidth,
+        RR = RR,
+        ciRR = ciRR,
+        ciWidthRR = ciWidthRR,
+        emMeans = emMeans,
+        ciEmm = ciEmm,
+        ciWidthEmm = ciWidthEmm,
+        emmPlots = emmPlots,
+        emmTables = emmTables,
+        emmWeights = emmWeights)
 
     results <- logLinearResults$new(
         options = options)

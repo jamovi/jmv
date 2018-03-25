@@ -1,79 +1,283 @@
-name:  logLinear
+name: logLinear
 title: Log-Linear Regression
-jus:   '2.0'
-stage: 1
+jus: '2.0'
+stage: 0
 compilerMode: tame
 events:
-    update: ./loglinear.events::update
-
+  update: './loglinear.events::update'
 children:
   - type: VariableSupplier
-    name: variablesupplier
-    suggested:
-      - continuous
-      - nominal
-      - ordinal
-    persistentItems: false
     stretchFactor: 1
     children:
       - type: TargetLayoutBox
-        children:
-          - type: VariablesListBox
-            name: counts
-            isTarget: true
-            maxItemCount: 1
-      - type: TargetLayoutBox
+        label: Factors
         children:
           - type: VariablesListBox
             name: factors
             isTarget: true
             events:
-                change: ./loglinear.events::onChange_factors
+              change: './loglinear.events::onChange_factors'
+      - type: TargetLayoutBox
+        label: Counts (optional)
+        children:
+          - type: VariablesListBox
+            name: counts
+            isTarget: true
+            maxItemCount: 1
   - type: CollapseBox
-    label: Model
+    label: Model Builder
     collapsed: true
     stretchFactor: 1
     children:
       - type: Supplier
         name: modelSupplier
-        label: Components
-        format: term
+        label: Predictors
         persistentItems: true
         stretchFactor: 1
+        format: term
         children:
           - type: TargetLayoutBox
             transferAction: interactions
             children:
               - type: ListBox
-                name: modelTerms
-                valueFilter: unique
-                isTarget: true
-                itemDropBehaviour: emptyspace
+                name: blocks
+                height: normal
+                addButton: Add New Block
                 events:
-                    change: ./loglinear.events::onChange_modelTerms
-                    #preprocess: ./loglinear.events::onEvent_modelTerms_preprocess
+                  change: './loglinear.events::onChange_blocks'
+                  listItemAdded: './loglinear.events::onEvent_test_listItemsChanged'
+                  listItemRemoved: './loglinear.events::onEvent_test_listItemsChanged'
+                selectable: true
+                templateName: linreg-block-template
                 template:
-                    type: TermLabel
-
+                  type: LayoutBox
+                  margin: normal
+                  targetArea: true
+                  children:
+                    - type: Label
+                      label: Block 1
+                      name: blockName
+                      stretchFactor: 1
+                      margin: normal
+                    - type: ListBox
+                      name: blockList
+                      isTarget: true
+                      valueFilter: unique
+                      height: auto
+                      ghostText: drag variables here
+                      events:
+                        change: './loglinear.events::onChange_block'
+                      template:
+                        type: TermLabel
   - type: CollapseBox
-    label: Statistics
+    label: Reference Levels
     collapsed: true
     stretchFactor: 1
     children:
-      - type: Label
-        label: Regression Coefficients
+      - type: ListBox
+        name: refLevels
+        showColumnHeaders: true
+        fullRowSelect: true
+        stretchFactor: 1
+        height: large
+        events:
+          change: './loglinear.events::onChange_refLevels'
+        columns:
+          - name: var
+            label: Variable
+            selectable: false
+            stretchFactor: 1
+            maxWidth: 300
+            template:
+              type: VariableLabel
+          - name: ref
+            label: Reference Level
+            selectable: false
+            stretchFactor: 0.5
+            template:
+              type: LevelSelector
+              label: ''
+  - type: CollapseBox
+    label: Model Fit
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
         children:
-          - type: CheckBox
-            name: est
-
-          - type: CheckBox
-            name: ci
-            label: Confidence intervals
+          - type: LayoutBox
+            cell:
+              column: 0
+              row: 0
+            stretchFactor: 1
             children:
-              - type: TextBox
-                name: ciWidth
-                label: Interval
-                suffix: "%"
-                format: number
-                inputPattern: "[0-9]+"
-                enable: (ci)
+              - type: Label
+                label: Fit Measures
+                children:
+                  - type: CheckBox
+                    name: dev
+                  - type: CheckBox
+                    name: aic
+                  - type: CheckBox
+                    name: bic
+                  - type: CheckBox
+                    name: modelTest
+          - type: LayoutBox
+            cell:
+              column: 1
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Pseudo R²
+                children:
+                  - name: pseudoR2_r2mf
+                    type: CheckBox
+                    optionName: pseudoR2
+                    optionPart: r2mf
+                  - name: pseudoR2_r2cs
+                    type: CheckBox
+                    optionName: pseudoR2
+                    optionPart: r2cs
+                  - name: pseudoR2_r2n
+                    type: CheckBox
+                    optionName: pseudoR2
+                    optionPart: r2n
+                name: pseudoR2
+  - type: CollapseBox
+    label: Model Coefficients
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        children:
+          - type: LayoutBox
+            cell:
+              column: 0
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Omnibus Tests
+                children:
+                  - type: CheckBox
+                    name: omni
+              - type: Label
+                label: Estimate (Log Rate Ratio)
+                children:
+                  - type: CheckBox
+                    name: ci
+                    children:
+                      - type: TextBox
+                        name: ciWidth
+                        label: Interval
+                        suffix: '%'
+                        format: number
+                        inputPattern: '[0-9]+'
+                        enable: (ci)
+          - type: LayoutBox
+            cell:
+              column: 1
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Rate Ratio
+                children:
+                  - type: CheckBox
+                    name: RR
+                  - type: CheckBox
+                    name: ciRR
+                    enable: (RR)
+                    children:
+                      - type: TextBox
+                        name: ciWidthRR
+                        label: Interval
+                        suffix: '%'
+                        format: number
+                        inputPattern: '[0-9]+'
+                        enable: (ciRR)
+  - type: CollapseBox
+    label: Estimated Marginal Means
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        children:
+          - type: Supplier
+            name: emMeansSupplier
+            format: variable
+            persistentItems: true
+            stretchFactor: 1
+            children:
+              - type: TargetLayoutBox
+                children:
+                  - type: ListBox
+                    name: emMeans
+                    height: large
+                    addButton: Add New Term
+                    events:
+                      listItemAdded: './loglinear.events::onEvent_emMeans_listItemsChanged'
+                      listItemRemoved: './loglinear.events::onEvent_emMeans_listItemsChanged'
+                    selectable: true
+                    templateName: linreg-block-template
+                    template:
+                      type: LayoutBox
+                      margin: normal
+                      targetArea: true
+                      children:
+                        - type: Label
+                          label: Term 1
+                          name: blockName
+                          stretchFactor: 1
+                          margin: normal
+                        - type: VariablesListBox
+                          name: blockList
+                          isTarget: true
+                          valueFilter: unique
+                          height: auto
+                          maxItemCount: 3
+                          ghostText: drag variables here
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        children:
+          - type: LayoutBox
+            cell:
+              column: 0
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: General Options
+                children:
+                  - type: CheckBox
+                    name: emmWeights
+                  - type: CheckBox
+                    name: ciEmm
+                    children:
+                      - type: TextBox
+                        name: ciWidthEmm
+                        label: Interval
+                        suffix: '%'
+                        format: number
+                        inputPattern: '[0-9]+'
+                        enable: (ciEmm)
+          - type: LayoutBox
+            cell:
+              column: 1
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Output
+                children:
+                  - type: CheckBox
+                    name: emmPlots
+                  - type: CheckBox
+                    name: emmTables
