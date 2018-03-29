@@ -236,7 +236,7 @@ linRegClass <- R6::R6Class(
                 if (length(modelTerms) < 1) {
                     terms <- ''
                 } else {
-                    terms <- self$options$dep
+                    terms <- c('Fitted', self$options$dep)
                     for (term in modelTerms) {
                         if (length(term) == 1 && term %in% covs)
                             terms <- c(terms, term)
@@ -704,7 +704,13 @@ linRegClass <- R6::R6Class(
 
                 images <- groups$get(key=i)$assump$resPlots
                 for (term in images$itemKeys) {
-                    x <- data[[jmvcore::toB64(term)]]
+
+                    if (term == 'Fitted') {
+                        x <- model$fitted.values
+                    } else {
+                        x <- data[[jmvcore::toB64(term)]]
+                    }
+
                     df <- data.frame(y=res, x=x)
 
                     image <- images$get(key=term)
