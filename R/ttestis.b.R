@@ -205,12 +205,43 @@ ttestISClass <- R6::R6Class(
 
                 if (self$options$mann) {
 
-                    if (is.factor(dataTTest$dep))
+                    if (is.factor(dataTTest$dep)) {
                         res <- createError('Variable is not numeric')
-                    else if (any(is.infinite(dataTTest$dep)))
+                    }
+                    else if (any(is.infinite(dataTTest$dep))) {
                         res <- createError('Variable contains infinite values')
-                    else
-                        res <- try(suppressWarnings(wilcox.test(dep ~ group, data=dataTTest, alternative=Ha, paired=FALSE, conf.int=TRUE, conf.level=confInt)), silent=TRUE)
+                    }
+                    else {
+
+                        x <- dataTTest$dep[dataTTest$group == groupLevels[1]]
+                        y <- dataTTest$dep[dataTTest$group == groupLevels[2]]
+
+                        res <- try(suppressWarnings(
+                            wilcox.test(
+                                x=x,
+                                y=y,
+                                alternative=Ha,
+                                paired=FALSE,
+                                conf.int=TRUE,
+                                conf.level=confInt)
+                            ), silent=TRUE)
+
+                        res2 <- try(suppressWarnings(
+                            wilcox.test(
+                                x=y,
+                                y=x,
+                                alternative=Ha,
+                                paired=FALSE,
+                                conf.int=TRUE,
+                                conf.level=confInt)
+                            ), silent=TRUE)
+
+                        m1 <- res$statistic
+                        m2 <- res2$statistic
+
+                        if ( ! is.na(m1) && m2 < m1)
+                            res <- res2
+                    }
 
                     if ( ! isError(res)) {
 
