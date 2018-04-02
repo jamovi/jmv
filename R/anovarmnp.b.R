@@ -3,6 +3,7 @@ anovaRMNPClass <- R6::R6Class(
   "anovaRMNPClass",
   inherit=anovaRMNPBase,
   private=list(
+    desc = list(),
     .run=function() {
 
         measureNames <- self$options$get('measures')
@@ -47,6 +48,12 @@ anovaRMNPClass <- R6::R6Class(
 
         private$.preparePlot(data)
 
+        desc <- self$results$get('desc')
+        descData <- private$desc
+
+        for (i in seq_along(measureNames))
+            desc$setRow(rowKey=i, list(mean=descData$mean[i], median=descData$median[i]))
+
     },
     .init=function() {
 
@@ -64,6 +71,11 @@ anovaRMNPClass <- R6::R6Class(
                 i1=combns[1,i],
                 i2=combns[2,i]))
         }
+
+        desc <- self$results$get('desc')
+
+        for (i in seq_along(measureNames))
+            desc$addRow(rowKey=i, list(level=measureNames[i]))
     },
     .preparePlot=function(data) {
 
@@ -79,6 +91,8 @@ anovaRMNPClass <- R6::R6Class(
         medians <- aggregate(dep, by=by, median, simplify=FALSE)
 
         plotData <- data.frame(group=means$group, mean=unlist(means$x), median=unlist(medians$x))
+
+        private$desc <- plotData
 
         image <- self$results$get('plot')
         image$setState(plotData)

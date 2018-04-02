@@ -72,6 +72,7 @@ anovaRMNPResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     active = list(
         table = function() private$.items[["table"]],
         comp = function() private$.items[["comp"]],
+        desc = function() private$.items[["desc"]],
         plot = function() private$.items[["plot"]]),
     private = list(),
     public=list(
@@ -132,6 +133,26 @@ anovaRMNPResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="p", 
                         `type`="number", 
                         `format`="zto,pvalue"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="desc",
+                title="Descriptives",
+                visible="(desc)",
+                clearWith=list(
+                    "measures"),
+                columns=list(
+                    list(
+                        `name`="level", 
+                        `title`="", 
+                        `type`="text"),
+                    list(
+                        `name`="mean", 
+                        `title`="Mean", 
+                        `type`="number"),
+                    list(
+                        `name`="median", 
+                        `title`="Median", 
+                        `type`="number"))))
             self$add(jmvcore::Image$new(
                 options=options,
                 name="plot",
@@ -195,6 +216,7 @@ anovaRMNPBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' \tabular{llllll}{
 #'   \code{results$table} \tab \tab \tab \tab \tab a table of the Friedman test results \cr
 #'   \code{results$comp} \tab \tab \tab \tab \tab a table of the pairwise comparisons \cr
+#'   \code{results$desc} \tab \tab \tab \tab \tab a table containing the descriptives \cr
 #'   \code{results$plot} \tab \tab \tab \tab \tab a descriptives plot \cr
 #' }
 #'

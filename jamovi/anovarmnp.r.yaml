@@ -58,6 +58,27 @@ items:
           type: number
           format: zto,pvalue
 
+    - name: desc
+      title: Descriptives
+      type: Table
+      description: a table containing the descriptives
+      visible: (desc)
+      clearWith:
+        - measures
+
+      columns:
+        - name: level
+          title: ""
+          type: text
+
+        - name: mean
+          title: Mean
+          type: number
+
+        - name: median
+          title: Median
+          type: number
+
     - name: plot
       title: Descriptive Plot
       visible: (plots)
