@@ -9,8 +9,9 @@ test_that('corrmatrix works', {
 
     data <- data.frame(x = x, y = y, z = z, w = w)
 
-    # expect_error(jmv::corrMatrix(data, c("x","y","z","w")), "'x' must be a numeric vector", fixed=TRUE)
+    corrmatrix <- jmv::corrMatrix(data, c("y","z","w"))
 
-    corrmatrix <- jmv::corrMatrix(data, c("y","w"))
+    expect_equal(0.0834, as.numeric(corrmatrix$matrix$getCell(rowKey="y", "z[r]")$value), tolerance = 1e-3)
+    expect_equal(0.0315, as.numeric(corrmatrix$matrix$getCell(rowKey="z", "w[rp]")$value), tolerance = 1e-3)
 
 })
