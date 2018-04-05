@@ -9,13 +9,22 @@ test_that('descriptives works', {
     z <- c(NA,NaN,3,-1,-2,1,1,-2,2,-2,-3,3)
 
     data <- data.frame(w=w, x=x, y=y, z=z)
-    # desc <- jmv::descriptives(data, vars=c("y", "z"), splitBy = c("x","w"), freq=TRUE, median=TRUE, mode=TRUE, skew=TRUE, kurt=TRUE, quart=TRUE)
+    desc <- jmv::descriptives(data, vars=c("w", "y", "z"), splitBy = "x", freq=TRUE, median=TRUE, mode=TRUE, skew=TRUE, kurt=TRUE, quart=TRUE)
+
+    freq <- desc$frequencies[[1]]$asDF
+    descr <- desc$descriptives$asDF
 
     # Test frequency table numerical values
-    # expect_equal(4, desc$frequencies$get('x')$getCell(rowNo=1,"counts")$value)
+    expect_equal(1, freq[1,3], tolerance = 1e-3)
+    expect_equal(2, freq[3,4], tolerance = 1e-3)
 
-    # expect_false(is.numeric(desc$descriptives$getCell(rowNo=1, "stat[mean]")$value))
-
-    # expect_error(descriptives(data.frame(x=c(Inf,-Inf)),c("x")), "Argument 'vars' specifies column 'x' which contains (and must not) infinite values", fixed=TRUE)
+    # Test descriptives table numerical values
+    expect_equal(2.619, descr$`y[seKurtb]`, tolerance = 1e-3)
+    expect_equal(-1.289, descr$`z[kurtc]`, tolerance = 1e-3)
+    expect_equal(1, descr$`z[missinga]`, tolerance = 1e-3)
+    expect_equal(5.750, descr$`y[meana]`, tolerance = 1e-3)
+    expect_equal(-2, descr$`z[modeb]`, tolerance = 1e-3)
+    expect_equal(4, descr$`y[mina]`, tolerance = 1e-3)
+    expect_equal(2.25, descr$`y[quart1c]`, tolerance = 1e-3)
 
 })
