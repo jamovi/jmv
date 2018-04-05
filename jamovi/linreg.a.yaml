@@ -10,7 +10,7 @@ description:
     R:
         dontrun: false
         usage: |
-            data('Prestige', package='car')
+            data('Prestige', package='carData')
 
             linReg(data = Prestige, dep = 'income',
                    covs = c('education', 'prestige', 'women'),

@@ -756,7 +756,7 @@ linRegBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' Linear Regression
 #'
 #' @examples
-#' data('Prestige', package='car')
+#' data('Prestige', package='carData')
 #'
 #' linReg(data = Prestige, dep = 'income',
 #'        covs = c('education', 'prestige', 'women'),
