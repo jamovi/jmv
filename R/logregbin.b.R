@@ -798,7 +798,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                         if (self$options$emmWeights)
                             weights <- 'equal'
                         else
-                            weights <- 'cell'
+                            weights <- 'cells'
 
                         suppressMessages({
                             mm <- try(
