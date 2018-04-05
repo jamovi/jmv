@@ -257,8 +257,8 @@ anovaRMClass <- R6::R6Class(
                     index <- which(sapply(modelRows, function(x) setequal(toB64(rmRows[[i]]), x)))
 
                     row <- list()
-                    row[['ss[none]']] <- row[['ss[GG]']] <- row[['ss[HF]']] <- model[index,'SS']
-                    row[['F[none]']] <- row[['F[GG]']] <- row[['F[HF]']] <- model[index,'F']
+                    row[['ss[none]']] <- row[['ss[GG]']] <- row[['ss[HF]']] <- model[index,'Sum Sq']
+                    row[['F[none]']] <- row[['F[GG]']] <- row[['F[HF]']] <- model[index,'F value']
 
                     row[['df[none]']] <- model[index,'num Df']
                     row[['ms[none]']] <- row[['ss[none]']] / row[['df[none]']]
@@ -350,15 +350,15 @@ anovaRMClass <- R6::R6Class(
                     index <- which(sapply(modelRows, function(x) setequal(toB64(bsRows[[i]]), x)))
 
                     row <- list()
-                    row[['ss']] <- model[index,'SS']
+                    row[['ss']] <- model[index,'Sum Sq']
                     row[['df']] <- model[index,'num Df']
                     row[['ms']] <- row[['ss']] / row[['df']]
-                    row[['F']] <- model[index,'F']
+                    row[['F']] <- model[index,'F value']
                     row[['p']] <- model[index,'Pr(>F)']
 
                     # Add effect sizes
                     SSr <- model[index,'Error SS']
-                    SSt <- sum(model[bsIndices,'SS']) + SSr
+                    SSt <- sum(model[bsIndices,'Sum Sq']) + SSr
                     MSr <- SSr/model[index,'den Df']
                     row[['eta']] <- row[['ss']] / SSt
                     row[['partEta']] <- row[['ss']] / (row[['ss']] + SSr)
@@ -1064,7 +1064,7 @@ anovaRMClass <- R6::R6Class(
             modelRows <- jmvcore::decomposeTerms(as.list(rownames(model)))
             indicesTotal <- sapply(termsIndex, function(x) which(sapply(modelRows, function(y) setequal(y,x))))
 
-            termsTotal <- sum(model[indicesTotal,'SS'])
+            termsTotal <- sum(model[indicesTotal,'Sum Sq'])
 
             return(termsTotal)
         },
