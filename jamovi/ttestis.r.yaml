@@ -62,11 +62,6 @@ items:
           type: number
           visible: (meanDiff && students)
 
-        - name: es[stud]
-          title: Cohen's d
-          type: number
-          visible: (effectSize && students)
-
         - name: cil[stud]
           title: Lower
           type: number
@@ -76,6 +71,11 @@ items:
           title: Upper
           type: number
           visible: (ci && students)
+
+        - name: es[stud]
+          title: Cohen's d
+          type: number
+          visible: (effectSize && students)
 
         - name: var[bf]
           title: ""
@@ -125,12 +125,6 @@ items:
           visible: (meanDiff && bf)
           content: ''
 
-        - name: es[bf]
-          title: Cohen's d
-          type: number
-          visible: (effectSize && bf)
-          content: ''
-
         - name: cil[bf]
           title: Lower
           type: number
@@ -141,6 +135,12 @@ items:
           title: Upper
           type: number
           visible: (ci && bf)
+          content: ''
+
+        - name: es[bf]
+          title: Cohen's d
+          type: number
+          visible: (effectSize && bf)
           content: ''
 
         - name: var[welc]
@@ -187,11 +187,6 @@ items:
           type: number
           visible: (meanDiff && welchs)
 
-        - name: es[welc]
-          title: Cohen's d
-          type: number
-          visible: (effectSize && welchs)
-
         - name: cil[welc]
           title: Lower
           type: number
@@ -201,6 +196,11 @@ items:
           title: Upper
           type: number
           visible: (ci && welchs)
+
+        - name: es[welc]
+          title: Cohen's d
+          type: number
+          visible: (effectSize && welchs)
 
         - name: var[mann]
           title: ""
@@ -242,11 +242,6 @@ items:
           type: number
           visible: (meanDiff && mann)
 
-        - name: es[mann]
-          title: Cohen's d
-          type: number
-          visible: (effectSize && mann)
-
         - name: cil[mann]
           title: Lower
           type: number
@@ -256,6 +251,11 @@ items:
           title: Upper
           type: number
           visible: (ci && mann)
+
+        - name: es[mann]
+          title: Cohen's d
+          type: number
+          visible: (effectSize && mann)
 
     - name: assum
       title: Assumptions
