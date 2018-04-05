@@ -246,11 +246,6 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `type`="number", 
                         `visible`="(meanDiff && students)"),
                     list(
-                        `name`="es[stud]", 
-                        `title`="Cohen's d", 
-                        `type`="number", 
-                        `visible`="(effectSize && students)"),
-                    list(
                         `name`="cil[stud]", 
                         `title`="Lower", 
                         `type`="number", 
@@ -260,6 +255,11 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="Upper", 
                         `type`="number", 
                         `visible`="(ci && students)"),
+                    list(
+                        `name`="es[stud]", 
+                        `title`="Cohen's d", 
+                        `type`="number", 
+                        `visible`="(effectSize && students)"),
                     list(
                         `name`="var[bf]", 
                         `title`="", 
@@ -309,12 +309,6 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(meanDiff && bf)", 
                         `content`=""),
                     list(
-                        `name`="es[bf]", 
-                        `title`="Cohen's d", 
-                        `type`="number", 
-                        `visible`="(effectSize && bf)", 
-                        `content`=""),
-                    list(
                         `name`="cil[bf]", 
                         `title`="Lower", 
                         `type`="number", 
@@ -325,6 +319,12 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="Upper", 
                         `type`="number", 
                         `visible`="(ci && bf)", 
+                        `content`=""),
+                    list(
+                        `name`="es[bf]", 
+                        `title`="Cohen's d", 
+                        `type`="number", 
+                        `visible`="(effectSize && bf)", 
                         `content`=""),
                     list(
                         `name`="var[welc]", 
@@ -371,11 +371,6 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `type`="number", 
                         `visible`="(meanDiff && welchs)"),
                     list(
-                        `name`="es[welc]", 
-                        `title`="Cohen's d", 
-                        `type`="number", 
-                        `visible`="(effectSize && welchs)"),
-                    list(
                         `name`="cil[welc]", 
                         `title`="Lower", 
                         `type`="number", 
@@ -385,6 +380,11 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="Upper", 
                         `type`="number", 
                         `visible`="(ci && welchs)"),
+                    list(
+                        `name`="es[welc]", 
+                        `title`="Cohen's d", 
+                        `type`="number", 
+                        `visible`="(effectSize && welchs)"),
                     list(
                         `name`="var[mann]", 
                         `title`="", 
@@ -426,11 +426,6 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `type`="number", 
                         `visible`="(meanDiff && mann)"),
                     list(
-                        `name`="es[mann]", 
-                        `title`="Cohen's d", 
-                        `type`="number", 
-                        `visible`="(effectSize && mann)"),
-                    list(
                         `name`="cil[mann]", 
                         `title`="Lower", 
                         `type`="number", 
@@ -439,7 +434,12 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="ciu[mann]", 
                         `title`="Upper", 
                         `type`="number", 
-                        `visible`="(ci && mann)"))))
+                        `visible`="(ci && mann)"),
+                    list(
+                        `name`="es[mann]", 
+                        `title`="Cohen's d", 
+                        `type`="number", 
+                        `visible`="(effectSize && mann)"))))
             self$add(R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(

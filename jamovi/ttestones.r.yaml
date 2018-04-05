@@ -56,11 +56,6 @@ items:
           type: number
           visible: (meanDiff && students)
 
-        - name: es[stud]
-          title: Cohen's d
-          type: number
-          visible: (effectSize && students)
-
         - name: cil[stud]
           title: Lower
           type: number
@@ -70,6 +65,11 @@ items:
           title: Upper
           type: number
           visible: (ci && students)
+
+        - name: es[stud]
+          title: Cohen's d
+          type: number
+          visible: (effectSize && students)
 
         - name: var[bf]
           title: ""
@@ -119,12 +119,6 @@ items:
           visible: (meanDiff && bf)
           content: ''
 
-        - name: es[bf]
-          title: Cohen's d
-          type: number
-          visible: (effectSize && bf)
-          content: ''
-
         - name: cil[bf]
           title: Lower
           type: number
@@ -135,6 +129,12 @@ items:
           title: Upper
           type: number
           visible: (ci && bf)
+          content: ''
+
+        - name: es[bf]
+          title: Cohen's d
+          type: number
+          visible: (effectSize && bf)
           content: ''
 
         - name: var[mann]
@@ -171,11 +171,6 @@ items:
           type: number
           visible: (meanDiff && mann)
 
-        - name: es[mann]
-          title: Cohen's d
-          type: number
-          visible: (effectSize && mann)
-
         - name: cil[mann]
           title: Lower
           type: number
@@ -185,6 +180,11 @@ items:
           title: Upper
           type: number
           visible: (ci && mann)
+
+        - name: es[mann]
+          title: Cohen's d
+          type: number
+          visible: (effectSize && mann)
 
     - name: normality
       title: Test of Normality (Shapiro-Wilk)
