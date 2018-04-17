@@ -216,11 +216,24 @@ ttestISClass <- R6::R6Class(
                         x <- dataTTest$dep[dataTTest$group == groupLevels[1]]
                         y <- dataTTest$dep[dataTTest$group == groupLevels[2]]
 
+                        if (self$options$hypothesis == 'oneGreater') {
+                            Ha1 <- "greater"
+                            Ha2 <- "less"
+                        }
+                        else if (self$options$hypothesis == 'twoGreater') {
+                            Ha1 <- "less"
+                            Ha2 <- "greater"
+                        }
+                        else {
+                            Ha1 <- "two.sided"
+                            Ha2 <- "two.sided"
+                        }
+
                         res <- try(suppressWarnings(
                             wilcox.test(
                                 x=x,
                                 y=y,
-                                alternative=Ha,
+                                alternative=Ha1,
                                 paired=FALSE,
                                 conf.int=TRUE,
                                 conf.level=confInt)
@@ -230,7 +243,7 @@ ttestISClass <- R6::R6Class(
                             wilcox.test(
                                 x=y,
                                 y=x,
-                                alternative=Ha,
+                                alternative=Ha2,
                                 paired=FALSE,
                                 conf.int=TRUE,
                                 conf.level=confInt)
