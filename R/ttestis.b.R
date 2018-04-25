@@ -251,6 +251,7 @@ ttestISClass <- R6::R6Class(
 
                         m1 <- res$statistic
                         m2 <- res2$statistic
+                        mm <- res$estimate
 
                         if ( ! is.na(m1) && m2 < m1)
                             res <- res2
@@ -262,7 +263,7 @@ ttestISClass <- R6::R6Class(
                             "stat[mann]"=res$statistic,
                             "df[mann]"=res$parameter,
                             "p[mann]"=res$p.value,
-                            "md[mann]"=res$estimate,
+                            "md[mann]"=mm,
                             "sed[mann]"='',
                             "es[mann]"=d,
                             "cil[mann]"=res$conf.int[1],
