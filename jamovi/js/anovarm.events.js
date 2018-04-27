@@ -166,14 +166,6 @@ var updateModelTerms = function(ui, context) {
         }
     }
 
-    for (let i = 0; i < termsList.length; i++) {
-        if (termsList[i].length > 1 && containsCovariate(termsList[i], covariatesList)) {
-            termsList.splice(i, 1);
-            i -= 1;
-            termsChanged = true;
-        }
-    }
-
     for (var a = 0; a < diff.added.length; a++) {
         let item = diff.added[a];
         var listLength = termsList.length;

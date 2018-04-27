@@ -45,7 +45,6 @@ var calcModelTerms = function(ui, context) {
     var diff2 = context.findChanges("covariatesList", covariatesList, true, FormatDef.variable);
     var combinedDiff = context.findChanges("combinedList", combinedList, true, FormatDef.variable);
 
-
     var termsList = context.cloneArray(ui.modelTerms.value(), []);
     var termsChanged = false;
 
@@ -56,14 +55,6 @@ var calcModelTerms = function(ui, context) {
                 termsChanged = true;
                 j -= 1;
             }
-        }
-    }
-
-    for (let i = 0; i < termsList.length; i++) {
-        if (termsList[i].length > 1 && containsCovariate(termsList[i], covariatesList)) {
-            termsList.splice(i, 1);
-            i -= 1;
-            termsChanged = true;
         }
     }
 
