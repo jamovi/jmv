@@ -10,7 +10,7 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             students = TRUE,
             bf = FALSE,
             bfPrior = 0.707,
-            mann = FALSE,
+            wilcoxon = FALSE,
             testValue = 0,
             hypothesis = "dt",
             norm = FALSE,
@@ -52,9 +52,9 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 default=0.707,
                 min=0.5,
                 max=2)
-            private$..mann <- jmvcore::OptionBool$new(
-                "mann",
-                mann,
+            private$..wilcoxon <- jmvcore::OptionBool$new(
+                "wilcoxon",
+                wilcoxon,
                 default=FALSE)
             private$..testValue <- jmvcore::OptionNumber$new(
                 "testValue",
@@ -110,7 +110,7 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..students)
             self$.addOption(private$..bf)
             self$.addOption(private$..bfPrior)
-            self$.addOption(private$..mann)
+            self$.addOption(private$..wilcoxon)
             self$.addOption(private$..testValue)
             self$.addOption(private$..hypothesis)
             self$.addOption(private$..norm)
@@ -127,7 +127,7 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         students = function() private$..students$value,
         bf = function() private$..bf$value,
         bfPrior = function() private$..bfPrior$value,
-        mann = function() private$..mann$value,
+        wilcoxon = function() private$..wilcoxon$value,
         testValue = function() private$..testValue$value,
         hypothesis = function() private$..hypothesis$value,
         norm = function() private$..norm$value,
@@ -143,7 +143,7 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..students = NA,
         ..bf = NA,
         ..bfPrior = NA,
-        ..mann = NA,
+        ..wilcoxon = NA,
         ..testValue = NA,
         ..hypothesis = NA,
         ..norm = NA,
@@ -193,6 +193,7 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="name[stud]", 
                         `title`="", 
                         `content`="Student's t", 
+                        `type`="text", 
                         `visible`="(students)"),
                     list(
                         `name`="stat[stud]", 
@@ -303,54 +304,55 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(effectSize && bf)", 
                         `content`=""),
                     list(
-                        `name`="var[mann]", 
+                        `name`="var[wilc]", 
                         `title`="", 
                         `content`="($key)", 
                         `type`="text", 
                         `combineBelow`=TRUE, 
-                        `visible`="(mann)"),
+                        `visible`="(wilcoxon)"),
                     list(
-                        `name`="name[mann]", 
+                        `name`="name[wilc]", 
                         `title`="", 
-                        `content`="Mann-Whitney U", 
-                        `visible`="(mann)"),
+                        `content`="Wilcoxon W", 
+                        `type`="text", 
+                        `visible`="(wilcoxon)"),
                     list(
-                        `name`="stat[mann]", 
+                        `name`="stat[wilc]", 
                         `title`="stat", 
                         `type`="number", 
-                        `visible`="(mann)"),
+                        `visible`="(wilcoxon)"),
                     list(
-                        `name`="err[mann]", 
+                        `name`="err[wilc]", 
                         `title`="\u00B1%", 
                         `type`="number", 
-                        `visible`="(mann && bf)", 
+                        `visible`="(wilcoxon && bf)", 
                         `content`=""),
                     list(
-                        `name`="p[mann]", 
+                        `name`="p[wilc]", 
                         `title`="p", 
                         `type`="number", 
                         `format`="zto,pvalue", 
-                        `visible`="(mann)"),
+                        `visible`="(wilcoxon)"),
                     list(
-                        `name`="md[mann]", 
+                        `name`="md[wilc]", 
                         `title`="Mean difference", 
                         `type`="number", 
-                        `visible`="(meanDiff && mann)"),
+                        `visible`="(meanDiff && wilcoxon)"),
                     list(
-                        `name`="cil[mann]", 
+                        `name`="cil[wilc]", 
                         `title`="Lower", 
                         `type`="number", 
-                        `visible`="(ci && mann)"),
+                        `visible`="(ci && wilcoxon)"),
                     list(
-                        `name`="ciu[mann]", 
+                        `name`="ciu[wilc]", 
                         `title`="Upper", 
                         `type`="number", 
-                        `visible`="(ci && mann)"),
+                        `visible`="(ci && wilcoxon)"),
                     list(
-                        `name`="es[mann]", 
+                        `name`="es[wilc]", 
                         `title`="Cohen's d", 
                         `type`="number", 
-                        `visible`="(effectSize && mann)"))))
+                        `visible`="(effectSize && wilcoxon)"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="normality",
@@ -467,8 +469,8 @@ ttestOneSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param bf \code{TRUE} or \code{FALSE} (default), provide Bayes factors
 #' @param bfPrior a number between 0.5 and 2 (default 0.707), the prior width
 #'   to use in calculating Bayes factors
-#' @param mann \code{TRUE} or \code{FALSE} (default), perform Mann-Whitney U
-#'   test
+#' @param wilcoxon \code{TRUE} or \code{FALSE} (default), perform Wilcoxon
+#'   signed rank tests
 #' @param testValue a number specifying the value of the null hypothesis
 #' @param hypothesis \code{'dt'} (default), \code{'gt'} or \code{'lt'}, the
 #'   alternative hypothesis; different to \code{testValue}, greater than
@@ -512,7 +514,7 @@ ttestOneS <- function(
     students = TRUE,
     bf = FALSE,
     bfPrior = 0.707,
-    mann = FALSE,
+    wilcoxon = FALSE,
     testValue = 0,
     hypothesis = "dt",
     norm = FALSE,
@@ -532,7 +534,7 @@ ttestOneS <- function(
         students = students,
         bf = bf,
         bfPrior = bfPrior,
-        mann = mann,
+        wilcoxon = wilcoxon,
         testValue = testValue,
         hypothesis = hypothesis,
         norm = norm,

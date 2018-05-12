@@ -46,8 +46,8 @@ children:
                         inputPattern: '[0-9]+'
                         enable: (bf)
               - type: CheckBox
-                name: mann
-                label: Mann-Whitney U
+                name: wilcoxon
+                label: Wilcoxon rank
           - type: Label
             label: Hypothesis
             children:

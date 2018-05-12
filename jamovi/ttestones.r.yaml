@@ -27,6 +27,7 @@ items:
         - name: name[stud]
           title: ''
           content: Student's t
+          type: text
           visible: (students)
 
         - name: stat[stud]
@@ -137,54 +138,55 @@ items:
           visible: (effectSize && bf)
           content: ''
 
-        - name: var[mann]
+        - name: var[wilc]
           title: ""
           content: ($key)
           type: text
           combineBelow: true
-          visible: (mann)
+          visible: (wilcoxon)
 
-        - name: name[mann]
+        - name: name[wilc]
           title: ''
-          content: Mann-Whitney U
-          visible: (mann)
+          content: Wilcoxon W
+          type: text
+          visible: (wilcoxon)
 
-        - name: stat[mann]
+        - name: stat[wilc]
           title: stat
           type: number
-          visible: (mann)
+          visible: (wilcoxon)
 
-        - name: err[mann]
+        - name: err[wilc]
           title: '±%'
           type: number
-          visible: (mann && bf)
+          visible: (wilcoxon && bf)
           content: ''
 
-        - name: p[mann]
+        - name: p[wilc]
           title: p
           type: number
           format: zto,pvalue
-          visible: (mann)
+          visible: (wilcoxon)
 
-        - name: md[mann]
+        - name: md[wilc]
           title: Mean difference
           type: number
-          visible: (meanDiff && mann)
+          visible: (meanDiff && wilcoxon)
 
-        - name: cil[mann]
+        - name: cil[wilc]
           title: Lower
           type: number
-          visible: (ci && mann)
+          visible: (ci && wilcoxon)
 
-        - name: ciu[mann]
+        - name: ciu[wilc]
           title: Upper
           type: number
-          visible: (ci && mann)
+          visible: (ci && wilcoxon)
 
-        - name: es[mann]
+        - name: es[wilc]
           title: Cohen's d
           type: number
-          visible: (effectSize && mann)
+          visible: (effectSize && wilcoxon)
 
     - name: normality
       title: Test of Normality (Shapiro-Wilk)

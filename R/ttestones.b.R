@@ -97,7 +97,7 @@ ttestOneSClass <- R6::R6Class(
                     }
                 }
 
-                if (self$options$get("mann")) {
+                if (self$options$get("wilcoxon")) {
 
                     if (is.factor(column))
                         res <- createError('Variable is not numeric')
@@ -109,27 +109,27 @@ ttestOneSClass <- R6::R6Class(
                     if ( ! isError(res)) {
 
                         ttest$setRow(rowNo=i, list(
-                            "stat[mann]"=res$statistic,
-                            "p[mann]"=res$p.value,
-                            "md[mann]"=res$estimate - testValue,
-                            "es[mann]"=d,
-                            "cil[mann]"=res$conf.int[1],
-                            "ciu[mann]"=res$conf.int[2]))
+                            "stat[wilc]"=res$statistic,
+                            "p[wilc]"=res$p.value,
+                            "md[wilc]"=res$estimate - testValue,
+                            "es[wilc]"=d,
+                            "cil[wilc]"=res$conf.int[1],
+                            "ciu[wilc]"=res$conf.int[2]))
 
                     } else {
 
                         ttest$setRow(rowNo=i, list(
-                            "stat[mann]"=NaN,
-                            "p[mann]"='',
-                            "md[mann]"='',
-                            "es[mann]"='',
-                            "cil[mann]"='',
-                            "ciu[mann]"=''))
+                            "stat[wilc]"=NaN,
+                            "p[wilc]"='',
+                            "md[wilc]"='',
+                            "es[wilc]"='',
+                            "cil[wilc]"='',
+                            "ciu[wilc]"=''))
 
                         message <- extractErrorMessage(res)
                         if (message == 'cannot compute confidence interval when all observations are tied')
                             message <- 'All observations are tied'
-                        ttest$addFootnote(rowNo=i, 'stat[mann]', message)
+                        ttest$addFootnote(rowNo=i, 'stat[wilc]', message)
                     }
                 }
 
@@ -246,8 +246,8 @@ ttestOneSClass <- R6::R6Class(
             table$getColumn('cil[stud]')$setSuperTitle(ciTitle)
             table$getColumn('ciu[bf]')$setSuperTitle(ciTitle)
             table$getColumn('cil[bf]')$setSuperTitle(ciTitle)
-            table$getColumn('ciu[mann]')$setSuperTitle(ciTitle)
-            table$getColumn('cil[mann]')$setSuperTitle(ciTitle)
+            table$getColumn('ciu[wilc]')$setSuperTitle(ciTitle)
+            table$getColumn('cil[wilc]')$setSuperTitle(ciTitle)
 
             if (hypothesis == 'dt' && testValue == 0)
                 table$setNote("hyp", NULL)

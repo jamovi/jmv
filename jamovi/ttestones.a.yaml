@@ -73,13 +73,13 @@ options:
             a number between 0.5 and 2 (default 0.707), the prior width to use
             in calculating Bayes factors
 
-    - name: mann
-      title: Mann-Whitney U
+    - name: wilcoxon
+      title: Wilcoxon signed rank test
       type: Bool
       default: false
       description:
           R: >
-            `TRUE` or `FALSE` (default), perform Mann-Whitney U test
+            `TRUE` or `FALSE` (default), perform Wilcoxon signed rank tests
 
     - name: testValue
       title: Test Value
