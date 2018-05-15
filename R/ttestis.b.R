@@ -308,7 +308,10 @@ ttestISClass <- R6::R6Class(
                         values[['p']] <- ''
                         footnote <- 'Too many samples to compute statistic (N > 5000)'
                     } else {
-                        res <- try(shapiro.test(dataTTest$dep), silent=TRUE)
+                        residuals <- tapply(dataTTest$dep, dataTTest$group, function(x) x - mean(x))
+                        residuals <- unlist(residuals, use.names=FALSE)
+                        res <- try(shapiro.test(residuals), silent=TRUE)
+
                         if ( ! isError(res)) {
                             values[['w']] <- res$statistic
                             values[['p']] <- res$p.value
