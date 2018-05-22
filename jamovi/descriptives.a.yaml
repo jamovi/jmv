@@ -57,6 +57,12 @@ options:
     - name: vars
       title: Variables
       type: Variables
+      permitted:
+        - continuous
+        - nominal
+        - ordinal
+        - nominaltext
+        - id
       description:
           R: a vector of strings naming the variables of interest in `data`
 

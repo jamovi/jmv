@@ -67,6 +67,7 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..factors <- jmvcore::OptionVariables$new(
                 "factors",
                 factors,
+                rejectUnusedLevels=TRUE,
                 suggested=list(
                     "nominal"),
                 permitted=list(

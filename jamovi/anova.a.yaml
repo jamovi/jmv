@@ -39,6 +39,7 @@ options:
     - name: dep
       title: Dependent Variable
       type: Variable
+      required: true
       suggested:
         - continuous
       permitted:
@@ -53,6 +54,8 @@ options:
     - name: factors
       title: Fixed Factors
       type: Variables
+      required: true
+      rejectUnusedLevels: true
       suggested:
         - nominal
         - ordinal

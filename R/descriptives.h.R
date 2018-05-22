@@ -43,7 +43,13 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             private$..vars <- jmvcore::OptionVariables$new(
                 "vars",
-                vars)
+                vars,
+                permitted=list(
+                    "continuous",
+                    "nominal",
+                    "ordinal",
+                    "nominaltext",
+                    "id"))
             private$..splitBy <- jmvcore::OptionVariables$new(
                 "splitBy",
                 splitBy,

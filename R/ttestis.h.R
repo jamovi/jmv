@@ -43,6 +43,7 @@ ttestISOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..group <- jmvcore::OptionVariable$new(
                 "group",
                 group,
+                rejectUnusedLevels=TRUE,
                 suggested=list(
                     "nominal",
                     "ordinal"))

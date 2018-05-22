@@ -78,6 +78,7 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..bs <- jmvcore::OptionVariables$new(
                 "bs",
                 bs,
+                rejectUnusedLevels=TRUE,
                 suggested=list(
                     "nominal",
                     "ordinal"),

@@ -68,6 +68,7 @@ options:
     - name: factors
       title: Factors
       type: Variables
+      rejectUnusedLevels: true
       suggested:
         - nominal
       permitted:

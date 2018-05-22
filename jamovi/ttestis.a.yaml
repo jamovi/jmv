@@ -48,6 +48,7 @@ options:
     - name: group
       title: Grouping Variable
       type: Variable
+      rejectUnusedLevels: true
       suggested:
         - nominal
         - ordinal

@@ -33,6 +33,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..dep <- jmvcore::OptionVariable$new(
                 "dep",
                 dep,
+                required=TRUE,
                 suggested=list(
                     "continuous"),
                 permitted=list(
@@ -42,6 +43,8 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..factors <- jmvcore::OptionVariables$new(
                 "factors",
                 factors,
+                required=TRUE,
+                rejectUnusedLevels=TRUE,
                 suggested=list(
                     "nominal",
                     "ordinal"),

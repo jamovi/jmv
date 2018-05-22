@@ -105,6 +105,7 @@ options:
     - name: bs
       title: Between Subject Factors
       type: Variables
+      rejectUnusedLevels: true
       suggested:
         - nominal
         - ordinal

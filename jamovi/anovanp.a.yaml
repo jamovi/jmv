@@ -41,6 +41,7 @@ options:
     - name: deps
       title: Dependent Variables
       type: Variables
+      required: true
       suggested:
         - continuous
       permitted:
@@ -53,6 +54,8 @@ options:
     - name: group
       title: Grouping Variable
       type: Variable
+      required: true
+      rejectUnusedLevels: true
       suggested:
         - nominal
         - ordinal
