@@ -9,11 +9,11 @@ test_that('ttestOneS works', {
     w <- c(0,4,19,5,9,15,1,4,19,10,13,7,5)
 
     data <- data.frame(x=x,y=y,z=z,w=w)
-    ttest <- ttestOneS(data, c("y","z","w"), testValue=0.5, hypothesis="dt", mann=TRUE, meanDiff=TRUE, effectSize=TRUE, ci=TRUE, desc=TRUE)
+    ttest <- ttestOneS(data, c("y","z","w"), testValue=0.5, hypothesis="dt", wilcox=TRUE, meanDiff=TRUE, effectSize=TRUE, ci=TRUE, desc=TRUE)
 
     # Main table
     expect_equal(-0.142815511749496, ttest$ttest$getCell(rowNo=2, "es[stud]")$value)
-    expect_equal(0.00233653321941677, ttest$ttest$getCell(rowNo=3, "p[mann]")$value)
+    expect_equal(0.00233653321941677, ttest$ttest$getCell(rowNo=3, "p[wilc]")$value)
 
     # Descriptives
     expect_equal(27.7692307692308, ttest$descriptives$getCell(rowNo=1, "mean")$value)
