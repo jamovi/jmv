@@ -2,7 +2,7 @@
 name:    anovaRM
 title:   Repeated Measures ANOVA
 menuGroup: ANOVA
-version: '1.0.0'
+version: '2.0.0'
 jas: '1.2'
 
 description:
@@ -334,4 +334,60 @@ options:
       description:
           R: >
             `TRUE` or `FALSE` (default), provide descriptive statistics
+
+    - name: emMeans
+      title: Marginal Means
+      type: Array
+      default: [[]]
+      template:
+          type: Variables
+      description:
+          R: >
+            a list of lists specifying the variables for which the estimated marginal
+            means need to be calculate. Supports up to three variables per term.
+
+    - name: ciEmm
+      title: Confidence interval
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide a confidence interval
+            for the estimated marginal means
+
+    - name: ciWidthEmm
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width for the estimated marginal means
+
+    - name: emmPlots
+      title: Marginal means plots
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide estimated marginal means plots
+
+    - name: emmTables
+      title: Marginal means tables
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide estimated marginal means tables
+
+    - name: emmWeights
+      title: Equal cell weights
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, weigh each cell equally or weigh them according to
+            the cell frequency
 ...

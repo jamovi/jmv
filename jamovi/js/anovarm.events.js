@@ -12,6 +12,7 @@ const events = {
         updateModelTerms(ui, this);
         filterModelRMTerms(ui, this);
         filterModelTerms(ui, this);
+        updateModelLabels(ui.emMeans, 'Term');
     },
 
     onChange_rm: function(ui) {
@@ -39,17 +40,42 @@ const events = {
         filterModelTerms(ui, this);
     },
 
-    onChange_plotsSupplier: function(ui) {
+    /*onChange_plotsSupplier: function(ui) {
         let values = this.itemsToValues(ui.plotsSupplier.value());
         this.checkValue(ui.plotHAxis, false, values, FormatDef.variable);
         this.checkValue(ui.plotSepLines, false, values, FormatDef.variable);
         this.checkValue(ui.plotSepPlots, false, values, FormatDef.variable);
+    },*/
+    onChange_emMeansSupplier: function(ui) {
+        let values = this.itemsToValues(ui.emMeansSupplier.value());
+        this.checkValue(ui.emMeans, 2, values, FormatDef.variable);
     },
 
     onChange_postHocSupplier: function(ui) {
         let values = this.itemsToValues(ui.postHocSupplier.value());
         this.checkValue(ui.postHoc, true, values, FormatDef.term);
+    },
+
+    onEvent_emMeans_listItemsChanged: function(ui) {
+        updateModelLabels(ui.emMeans, 'Term');
     }
+};
+
+let updateModelLabels = function(list, blockName) {
+    list.applyToItems(0, (item, index) => {
+        item.controls[0].setPropertyValue("label", blockName + " " + (index + 1) );
+    });
+};
+
+let calcMarginalMeansSupplier = function(ui, context) {
+
+    let b1 = context.cloneArray(ui.bs.value(), []);
+    let b2 = context.itemsToValues(ui.rmcModelSupplier.value());
+
+    b1 = context.valuesToItems(b2.concat(b1), FormatDef.variable);
+
+    if (ui.emMeansSupplier)
+        ui.emMeansSupplier.setValue(b1);
 };
 
 var updateFactorCells = function(ui, context) {
@@ -118,7 +144,7 @@ var calcRMTerms = function(ui, factorList, context) {
         ui.rmTerms.setValue(termsList);
 };
 
-var updateRMModelTerms = function(ui, context, variableList) {
+var updateRMModelTerms = function(ui, context, variableList, updateEMMeans) {
     if (variableList === undefined)
         variableList = context.cloneArray(ui.bs.value(), []);
 
@@ -134,9 +160,12 @@ var updateRMModelTerms = function(ui, context, variableList) {
     var combinedList2 = factorList.concat(variableList);
 
     ui.rmcModelSupplier.setValue(context.valuesToItems(factorList, FormatDef.variable))
-    ui.plotsSupplier.setValue(context.valuesToItems(combinedList2, FormatDef.variable));
+    //ui.plotsSupplier.setValue(context.valuesToItems(combinedList2, FormatDef.variable));
 
     calcRMTerms(ui, factorList, context);
+
+    if (updateEMMeans === undefined || updateEMMeans)
+        calcMarginalMeansSupplier(ui, context);
 
     updateContrasts(ui, combinedList2, context);
 };
@@ -145,10 +174,12 @@ var updateModelTerms = function(ui, context) {
     var variableList = context.cloneArray(ui.bs.value(), []);
     var covariatesList = context.cloneArray(ui.cov.value(), []);
 
-    updateRMModelTerms(ui, context, variableList);
+    updateRMModelTerms(ui, context, variableList, false);
 
     var combinedList = variableList.concat(covariatesList);
     ui.bscModelSupplier.setValue(context.valuesToItems(combinedList, FormatDef.variable));
+
+    calcMarginalMeansSupplier(ui, context);
 
     var diff = context.findChanges("variableList", variableList, true, FormatDef.variable);
     var diff2 = context.findChanges("covariatesList", covariatesList, true, FormatDef.variable);

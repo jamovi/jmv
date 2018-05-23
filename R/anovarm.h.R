@@ -30,7 +30,14 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             plotSepPlots = NULL,
             plotError = "ci",
             ciWidth = 95,
-            descStats = FALSE, ...) {
+            descStats = FALSE,
+            emMeans = list(
+                list()),
+            ciEmm = TRUE,
+            ciWidthEmm = 95,
+            emmPlots = TRUE,
+            emmTables = FALSE,
+            emmWeights = TRUE, ...) {
 
             super$initialize(
                 package='jmv',
@@ -208,6 +215,36 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "descStats",
                 descStats,
                 default=FALSE)
+            private$..emMeans <- jmvcore::OptionArray$new(
+                "emMeans",
+                emMeans,
+                default=list(
+                    list()),
+                template=jmvcore::OptionVariables$new(
+                    "emMeans",
+                    NULL))
+            private$..ciEmm <- jmvcore::OptionBool$new(
+                "ciEmm",
+                ciEmm,
+                default=TRUE)
+            private$..ciWidthEmm <- jmvcore::OptionNumber$new(
+                "ciWidthEmm",
+                ciWidthEmm,
+                min=50,
+                max=99.9,
+                default=95)
+            private$..emmPlots <- jmvcore::OptionBool$new(
+                "emmPlots",
+                emmPlots,
+                default=TRUE)
+            private$..emmTables <- jmvcore::OptionBool$new(
+                "emmTables",
+                emmTables,
+                default=FALSE)
+            private$..emmWeights <- jmvcore::OptionBool$new(
+                "emmWeights",
+                emmWeights,
+                default=TRUE)
 
             self$.addOption(private$..rm)
             self$.addOption(private$..rmCells)
@@ -229,6 +266,12 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..plotError)
             self$.addOption(private$..ciWidth)
             self$.addOption(private$..descStats)
+            self$.addOption(private$..emMeans)
+            self$.addOption(private$..ciEmm)
+            self$.addOption(private$..ciWidthEmm)
+            self$.addOption(private$..emmPlots)
+            self$.addOption(private$..emmTables)
+            self$.addOption(private$..emmWeights)
         }),
     active = list(
         rm = function() private$..rm$value,
@@ -250,7 +293,13 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         plotSepPlots = function() private$..plotSepPlots$value,
         plotError = function() private$..plotError$value,
         ciWidth = function() private$..ciWidth$value,
-        descStats = function() private$..descStats$value),
+        descStats = function() private$..descStats$value,
+        emMeans = function() private$..emMeans$value,
+        ciEmm = function() private$..ciEmm$value,
+        ciWidthEmm = function() private$..ciWidthEmm$value,
+        emmPlots = function() private$..emmPlots$value,
+        emmTables = function() private$..emmTables$value,
+        emmWeights = function() private$..emmWeights$value),
     private = list(
         ..rm = NA,
         ..rmCells = NA,
@@ -271,7 +320,13 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..plotSepPlots = NA,
         ..plotError = NA,
         ..ciWidth = NA,
-        ..descStats = NA)
+        ..descStats = NA,
+        ..emMeans = NA,
+        ..ciEmm = NA,
+        ..ciWidthEmm = NA,
+        ..emmPlots = NA,
+        ..emmTables = NA,
+        ..emmWeights = NA)
 )
 
 anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
@@ -283,7 +338,8 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
         contrasts = function() private$.items[["contrasts"]],
         postHoc = function() private$.items[["postHoc"]],
         descPlot = function() private$.items[["descPlot"]],
-        descPlots = function() private$.items[["descPlots"]]),
+        descPlots = function() private$.items[["descPlots"]],
+        emm = function() private$.items[["emm"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -695,7 +751,62 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         "rm",
                         "rmCells",
                         "plotError",
-                        "ciWidth"))))}))
+                        "ciWidth"))))
+            self$add(jmvcore::Array$new(
+                options=options,
+                name="emm",
+                title="Estimated Marginal Means",
+                clearWith=list(
+                    "emMeans"),
+                template=R6::R6Class(
+                    inherit = jmvcore::Group,
+                    active = list(
+                        emmPlot = function() private$.items[["emmPlot"]],
+                        emmTable = function() private$.items[["emmTable"]]),
+                    private = list(),
+                    public=list(
+                        initialize=function(options) {
+                            super$initialize(
+                                options=options,
+                                name="undefined",
+                                title="")
+                            self$add(jmvcore::Image$new(
+                                options=options,
+                                name="emmPlot",
+                                title="",
+                                width=450,
+                                height=400,
+                                renderFun=".emmPlot",
+                                visible="(emmPlots)",
+                                clearWith=list(
+                                    "ciEmm",
+                                    "ciWidthEmm",
+                                    "emmWeights",
+                                    "rmCells",
+                                    "rmcModelTerms",
+                                    "bscModelTerms",
+                                    "bs",
+                                    "rm",
+                                    "cov",
+                                    "rmTerms",
+                                    "bsTerms")))
+                            self$add(jmvcore::Table$new(
+                                options=options,
+                                name="emmTable",
+                                title="",
+                                visible="(emmTables)",
+                                columns=list(),
+                                clearWith=list(
+                                    "ciWidthEmm",
+                                    "emmWeights",
+                                    "rmCells",
+                                    "rmcModelTerms",
+                                    "bscModelTerms",
+                                    "bs",
+                                    "rm",
+                                    "cov",
+                                    "rmTerms",
+                                    "bsTerms")))}))$new(options=options)))}))
 
 anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "anovaRMBase",
@@ -705,7 +816,7 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
             super$initialize(
                 package = 'jmv',
                 name = 'anovaRM',
-                version = c(1,0,0),
+                version = c(2,0,0),
                 options = options,
                 results = anovaRMResults$new(options=options),
                 data = data,
@@ -811,6 +922,19 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   confidence interval width
 #' @param descStats \code{TRUE} or \code{FALSE} (default), provide descriptive
 #'   statistics
+#' @param emMeans a list of lists specifying the variables for which the
+#'   estimated marginal means need to be calculate. Supports up to three
+#'   variables per term.
+#' @param ciEmm \code{TRUE} (default) or \code{FALSE}, provide a confidence
+#'   interval for the estimated marginal means
+#' @param ciWidthEmm a number between 50 and 99.9 (default: 95) specifying the
+#'   confidence interval width for the estimated marginal means
+#' @param emmPlots \code{TRUE} (default) or \code{FALSE}, provide estimated
+#'   marginal means plots
+#' @param emmTables \code{TRUE} or \code{FALSE} (default), provide estimated
+#'   marginal means tables
+#' @param emmWeights \code{TRUE} (default) or \code{FALSE}, weigh each cell
+#'   equally or weigh them according to the cell frequency
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$rmTable} \tab \tab \tab \tab \tab a table \cr
@@ -821,6 +945,7 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{results$postHoc} \tab \tab \tab \tab \tab an array of tables \cr
 #'   \code{results$descPlot} \tab \tab \tab \tab \tab an image \cr
 #'   \code{results$descPlots} \tab \tab \tab \tab \tab an array of images \cr
+#'   \code{results$emm} \tab \tab \tab \tab \tab an array of the estimated marginal means plots + tables \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -856,7 +981,14 @@ anovaRM <- function(
     plotSepPlots = NULL,
     plotError = "ci",
     ciWidth = 95,
-    descStats = FALSE) {
+    descStats = FALSE,
+    emMeans = list(
+                list()),
+    ciEmm = TRUE,
+    ciWidthEmm = 95,
+    emmPlots = TRUE,
+    emmTables = FALSE,
+    emmWeights = TRUE) {
 
     if ( ! requireNamespace('jmvcore'))
         stop('anovaRM requires jmvcore to be installed (restart may be required)')
@@ -881,7 +1013,13 @@ anovaRM <- function(
         plotSepPlots = plotSepPlots,
         plotError = plotError,
         ciWidth = ciWidth,
-        descStats = descStats)
+        descStats = descStats,
+        emMeans = emMeans,
+        ciEmm = ciEmm,
+        ciWidthEmm = ciWidthEmm,
+        emmPlots = emmPlots,
+        emmTables = emmTables,
+        emmWeights = emmWeights)
 
     results <- anovaRMResults$new(
         options = options)

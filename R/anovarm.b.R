@@ -4,8 +4,9 @@ anovaRMClass <- R6::R6Class(
     inherit=anovaRMBase,
     private=list(
         #### Member variables ----
-        .model=NA,
-        .postHocRows=NA,
+        .model = NA,
+        .postHocRows = NA,
+        emMeans = list(),
 
         #### Init + run functions ----
         .init=function() {
@@ -16,6 +17,8 @@ anovaRMClass <- R6::R6Class(
             private$.initLeveneTable()
             private$.initPostHocTables()
             private$.initDescPlots()
+            private$.initEmm()
+            private$.initEmmTable()
 
             measures <- lapply(self$options$rmCells, function(x) x$measure)
             areNull  <- vapply(measures, is.null, FALSE, USE.NAMES=FALSE)
@@ -49,8 +52,12 @@ anovaRMClass <- R6::R6Class(
                 private$.populateEffectsTables(result)
                 private$.populateSpericityTable(result)
                 private$.populateLeveneTable()
+
                 private$.populatePostHocTables(result)
-                private$.prepareDescPlots(data)
+                # private$.prepareDescPlots(data)
+
+                private$.prepareEmmPlots(result, data)
+                private$.populateEmmTables()
             }
         },
 
@@ -228,6 +235,72 @@ anovaRMClass <- R6::R6Class(
 
                 for (level in sepPlotsLevels)
                     array$addItem(level)
+            }
+        },
+        .initEmm = function() {
+
+            emMeans <- self$options$emMeans
+            group <- self$results$emm
+
+            for (j in seq_along(emMeans)) {
+
+                emm <- emMeans[[j]]
+
+                if ( ! is.null(emm)) {
+                    group$addItem(key=j)
+                    emmGroup <- group$get(key=j)
+                    emmGroup$setTitle(jmvcore::stringifyTerm(emm))
+
+                    image <- emmGroup$emmPlot
+                    size <- private$.emmPlotSize(emm)
+                    image$setSize(size[1], size[2])
+                }
+            }
+        },
+        .initEmmTable = function() {
+
+            emMeans <- self$options$emMeans
+            rmFactors <- self$options$rm
+
+            rmNames <- sapply(rmFactors, function(x) return(x$label))
+            rmLevels <- lapply(rmFactors, function(x) return(x$levels))
+
+            group <- self$results$emm
+
+            for (j in seq_along(emMeans)) {
+
+                emm <- emMeans[[j]]
+
+                if ( ! is.null(emm)) {
+
+                    emmGroup <- group$get(key=j)
+
+                    table <- emmGroup$emmTable
+                    table$setTitle(paste0('Estimated Marginal Means - ', jmvcore::stringifyTerm(emm)))
+
+                    nLevels <- numeric(length(emm))
+                    for (k in rev(seq_along(emm))) {
+                        table$addColumn(name=emm[k], title=emm[k], type='text', combineBelow=TRUE)
+
+                        if (emm[k] %in% rmNames) {
+                            nLevels[k] <- length(rmLevels[[which(emm[k] == rmNames)]])
+                        } else {
+                            nLevels[k] <- length(levels(self$data[[ emm[k] ]]))
+                        }
+                    }
+
+                    table$addColumn(name='mean', title='Mean', type='number')
+                    table$addColumn(name='se', title='SE', type='number')
+                    table$addColumn(name='lower', title='Lower', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Confidence Interval'), visibl="(ciEmm)")
+                    table$addColumn(name='upper', title='Upper', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Confidence Interval'), visibl="(ciEmm)")
+
+                    nRows <- prod(nLevels)
+
+                    for (k in 1:nRows) {
+                        row <- list()
+                        table$addRow(rowKey=k, row)
+                    }
+                }
             }
         },
 
@@ -542,6 +615,43 @@ anovaRMClass <- R6::R6Class(
                 table$setStatus('complete')
             }
         },
+        .populateEmmTables = function() {
+
+            emMeans <- self$options$emMeans
+            emmTables <- private$emMeans
+
+            group <- self$results$emm
+
+            for (j in seq_along(emMeans)) {
+
+                emm <- emMeans[[j]]
+
+                if ( ! is.null(emm)) {
+
+                    emmGroup <- group$get(key=j)
+                    table <- emmGroup$emmTable
+
+                    emmTable <- emmTables[[j]]
+
+                    for (k in 1:nrow(emmTable)) {
+                        row <- list()
+                        sign <- list()
+
+                        for (l in seq_along(emm)) {
+                            value <- emmTable[k, jmvcore::toB64(emm[l])]
+                            row[[emm[l]]] <- jmvcore::fromB64(value)
+                        }
+
+                        row[['mean']] <- emmTable[k, 'emmean']
+                        row[['se']] <- emmTable[k, 'SE']
+                        row[['lower']] <- emmTable[k, 'lower.CL']
+                        row[['upper']] <- emmTable[k, 'upper.CL']
+
+                        table$setRow(rowNo=k, values=row)
+                    }
+                }
+            }
+        },
 
         #### Plot functions ----
         .prepareDescPlots=function(data) {
@@ -670,6 +780,94 @@ anovaRMClass <- R6::R6Class(
 
                 print(p)
             }
+
+            TRUE
+        },
+        .prepareEmmPlots = function(model, data) {
+
+            emMeans <- self$options$emMeans
+
+            group <- self$results$emm
+            emmTables <- list()
+
+            for (j in seq_along(emMeans)) {
+
+                term <- emMeans[[j]]
+
+                if ( ! is.null(term)) {
+
+                    image <- group$get(key=j)$emmPlot
+
+                    termB64 <- jmvcore::toB64(term)
+                    formula <- formula(paste('~', jmvcore::composeTerm(termB64)))
+
+                    if (self$options$emmWeights)
+                        weights <- 'equal'
+                    else
+                        weights <- 'cells'
+
+                    print(model)
+                    print(formula)
+
+                    suppressMessages({
+                        mm <- try(
+                            emmeans::emmeans(model, formula, options=list(level=self$options$ciWidthEmm / 100), weights = weights),
+                            silent = TRUE
+                        )
+                    })
+
+                    d <- as.data.frame(summary(mm))
+                    emmTables[[ j ]] <- d
+
+                    for (k in 1:3) {
+                        if ( ! is.na(termB64[k])) {
+                            d[[ termB64[k] ]] <- factor(jmvcore::fromB64(d[[ termB64[k] ]]),
+                                                        jmvcore::fromB64(levels(d[[ termB64[k] ]])))
+                        }
+                    }
+
+                    names <- list('x'=termB64[1], 'y'='emmean', 'lines'=termB64[2], 'plots'=termB64[3], 'lower'='lower.CL', 'upper'='upper.CL')
+                    names <- lapply(names, function(x) if (is.na(x)) NULL else x)
+
+                    labels <- list('x'=term[1], 'y'='Marginal Mean', 'lines'=term[2], 'plots'=term[3])
+                    labels <- lapply(labels, function(x) if (is.na(x)) NULL else x)
+
+                    image$setState(list(data=d, names=names, labels=labels))
+
+                }
+            }
+
+            private$emMeans <- emmTables
+        },
+        .emmPlot = function(image, ggtheme, theme, ...) {
+
+            if (is.null(image$state))
+                return(FALSE)
+
+            data <- image$state$data
+            names <- image$state$names
+            labels <- image$state$labels
+
+            dodge <- position_dodge(0.2)
+
+            p <- ggplot(data=data, aes_string(x=names$x, y=names$y, color=names$lines, fill=names$lines, group=names$lines), inherit.aes = FALSE) +
+                geom_line(size=.8, position=dodge)
+
+            if (self$options$ciEmm)
+                p <- p + geom_errorbar(aes_string(x=names$x, ymin=names$lower, ymax=names$upper), width=.1, size=.8, position=dodge)
+
+            p <- p + geom_point(shape=21, fill='white', size=3, position=dodge)
+
+            if ( ! is.null(names$plots)) {
+                formula <- as.formula(paste(". ~", names$plots))
+                p <- p + facet_grid(formula)
+            }
+
+            p <- p +
+                labs(list(x=labels$x, y=labels$y, fill=labels$lines, color=labels$lines)) +
+                ggtheme + theme(panel.spacing = unit(2, "lines"))
+
+            print(p)
 
             TRUE
         },
@@ -921,125 +1119,42 @@ anovaRMClass <- R6::R6Class(
 
             }
         },
-        .summarySE=function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE, conf.interval=.95, .drop=TRUE, errorBarType='confidenceInterval') {
+        .emmPlotSize = function(emm) {
 
-            # New version of length which can handle NA's: if na.rm==T, don't count them
-            length2 <- function (x, na.rm=FALSE) {
-                if (na.rm) {
-                    sum(!is.na(x))
+            data <- self$data
+            bsFactors <- self$options$bs
+            rmFactors <- self$options$rm
+
+            rmNames <- sapply(rmFactors, function(x) return(x$label))
+            rmLevels <- lapply(rmFactors, function(x) return(x$levels))
+
+            levels <- list()
+            for (i in seq_along(emm)) {
+                if (emm[i] %in% rmNames) {
+                    levels[[ emm[i] ]] <- rmLevels[[which(emm[i] == rmNames)]]
                 } else {
-                    length(x)
+                    levels[[ emm[i] ]] <- levels(data[[ emm[i] ]])
                 }
             }
 
-            # This does the summary. For each group's data frame, return a vector with
-            # N, mean, and sd
-            datac <- plyr::ddply(data, groupvars, .drop=.drop,
-                                 .fun = function(xx, col) {
-                                     c(N    = length2(xx[[col]], na.rm=na.rm),
-                                       mean = mean   (xx[[col]], na.rm=na.rm),
-                                       sd   = sd     (xx[[col]], na.rm=na.rm)
-                                     )
-                                 },
-                                 measurevar
-            )
+            nLevels <- as.numeric(sapply(levels, length))
+            nLevels <- ifelse(is.na(nLevels[1:3]), 1, nLevels[1:3])
+            nCharLevels <- as.numeric(sapply(lapply(levels, nchar), max))
+            nCharLevels <- ifelse(is.na(nCharLevels[1:3]), 0, nCharLevels[1:3])
+            nCharNames <- as.numeric(nchar(names(levels)))
+            nCharNames <- ifelse(is.na(nCharNames[1:3]), 0, nCharNames[1:3])
 
-            # Rename the 'mean' column
-            datac <- plyr::rename(datac, c('mean' = measurevar))
+            xAxis <- 30 + 20
+            yAxis <- 30 + 20
 
-            datac$se <- datac$sd / sqrt(datac$N)  # Calculate standard error of the mean
+            width <- max(350, 25 * nLevels[1] * nLevels[2] * nLevels[3])
+            height <- 300 + ifelse(nLevels[3] > 1, 20, 0)
 
-            # Confidence interval multiplier for standard error
-            # Calculate t-statistic for confidence interval:
-            # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
-            ciMult <- qt(conf.interval/2 + .5, datac$N-1)
-            datac$ci <- datac$se * ciMult
+            legend <- max(25 + 21 + 3.5 + 8.3 * nCharLevels[2] + 28, 25 + 10 * nCharNames[2] + 28)
+            width <- yAxis + width + ifelse(nLevels[2] > 1, legend, 0)
+            height <- xAxis + height
 
-            if (errorBarType == 'confidenceInterval') {
-
-                datac$ciLower <- datac[,measurevar] - datac[,'ci']
-                datac$ciUpper <- datac[,measurevar] + datac[,'ci']
-
-            } else {
-
-                datac$ciLower <- datac[,measurevar] - datac[,'se']
-                datac$ciUpper <- datac[,measurevar] + datac[,'se']
-
-            }
-
-            return(datac)
-        },
-        .normDataWithin=function(data=NULL, idvar, measurevar, betweenvars=NULL, na.rm=FALSE, .drop=TRUE) {
-
-            # Measure var on left, idvar + between vars on right of formula.
-            data.subjMean <- plyr::ddply(data, c(idvar, betweenvars), .drop=.drop,
-                                         .fun = function(xx, col, na.rm) {
-                                             c(subjMean = mean(xx[,col], na.rm=na.rm))
-                                         },
-                                         measurevar,
-                                         na.rm
-            )
-
-
-
-            # Put the subject means with original data
-            data <- base::merge(data, data.subjMean)
-
-            # Get the normalized data in a new column
-            measureNormedVar <- paste(measurevar, '_norm', sep='')
-            data[,measureNormedVar] <- data[,measurevar] - data[,'subjMean'] +
-                mean(data[,measurevar], na.rm=na.rm)
-
-            # Remove this subject mean column
-            data$subjMean <- NULL
-
-            return(data)
-        },
-        .summarySEwithin=function(data=NULL, measurevar, betweenvars=NULL, withinvars=NULL, idvar=NULL, na.rm=FALSE, conf.interval=.95, .drop=TRUE, errorBarType='confidenceInterval') {
-
-            # Get the means from the un-normed data
-            datac <- .summarySE(data, measurevar, groupvars=c(betweenvars, withinvars), na.rm=na.rm, conf.interval=conf.interval, .drop=.drop, errorBarType=errorBarType)
-
-            # Drop all the unused columns (these will be calculated with normed data)
-            datac$sd <- NULL
-            datac$se <- NULL
-            datac$ci <- NULL
-            datac$ciLower <- NULL
-            datac$ciUpper <- NULL
-
-            # Norm each subject's data
-            ndata <- .normDataWithin(data, idvar, measurevar, betweenvars, na.rm, .drop=.drop)
-
-            # This is the name of the new column
-            measurevar_n <- paste(measurevar, '_norm', sep='')
-
-            # Collapse the normed data - now we can treat between and within vars the same
-            ndatac <- .summarySE(ndata, measurevar_n, groupvars=c(betweenvars, withinvars), na.rm=na.rm, conf.interval=conf.interval, .drop=.drop, errorBarType=errorBarType)
-
-            # Apply correction from Morey (2008) to the standard error and confidence interval
-            # Get the product of the number of conditions of within-S variables
-            nWithinGroups    <- prod(vapply(ndatac[,withinvars, drop=FALSE], FUN=nlevels, FUN.VALUE=numeric(1)))
-            correctionFactor <- sqrt( nWithinGroups / (nWithinGroups-1) )
-
-            # Apply the correction factor
-            ndatac$sd <- ndatac$sd * correctionFactor
-            ndatac$se <- ndatac$se * correctionFactor
-            ndatac$ci <- ndatac$ci * correctionFactor
-
-            if (errorBarType == 'confidenceInterval') {
-
-                ndatac$ciLower <- datac[,measurevar] - ndatac[,'ci']
-                ndatac$ciUpper <- datac[,measurevar] + ndatac[,'ci']
-
-            } else {
-
-                ndatac$ciLower <- datac[,measurevar] - ndatac[,'se']
-                ndatac$ciUpper <- datac[,measurevar] + ndatac[,'se']
-
-            }
-
-            # Combine the un-normed means with the normed results
-            merge(datac, ndatac)
+            return(c(width, height))
         },
         .getTermsTotal=function (x, y, z, model) {
             for(i in x:1) {

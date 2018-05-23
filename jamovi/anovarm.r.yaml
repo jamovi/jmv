@@ -397,3 +397,53 @@ items:
               - rmCells
               - plotError
               - ciWidth
+
+    - name: emm
+      title: Estimated Marginal Means
+      type: Array
+      description: an array of the estimated marginal means plots + tables
+      clearWith:
+        - emMeans
+      template:
+
+          title: ''
+          type: Group
+          items:
+
+            - name: emmPlot
+              title: ''
+              type: Image
+              width: 450
+              height: 400
+              renderFun: .emmPlot
+              visible: (emmPlots)
+              clearWith:
+                - ciEmm
+                - ciWidthEmm
+                - emmWeights
+                - rmCells
+                - rmcModelTerms
+                - bscModelTerms
+                - bs
+                - rm
+                - cov
+                - rmTerms
+                - bsTerms
+
+            - name: emmTable
+              title: ''
+              type: Table
+              description: a table containing estimated marginal means
+              visible: (emmTables)
+              columns: []
+              clearWith:
+                - ciWidthEmm
+                - emmWeights
+                - rmCells
+                - rmcModelTerms
+                - bscModelTerms
+                - bs
+                - rm
+                - cov
+                - rmTerms
+                - bsTerms

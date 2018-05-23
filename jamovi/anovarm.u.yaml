@@ -22,25 +22,26 @@ children:
             name: rmCells
             height: large
             events:
-                change: './anovarm.events::onChange_rmCells'
+              change: './anovarm.events::onChange_rmCells'
             templateName: rmcell-template
             template:
-                type: LayoutBox
-                targetArea: true
-                children:
-                  - type: VariablesListBox
-                    fullRowSelect: true
-                    maxItemCount: 1
-                    isTarget: true
-                    valueKey: ["measure"]
-                    ghostText: 'drag variable here'
-                  - type: Label
-                    format: './rmacell'
-                    valueKey: ["cell"]
-                    margin: normal
-                    stretchFactor: 1
-                    horizontalAlignment: right
-
+              type: LayoutBox
+              targetArea: true
+              children:
+                - type: VariablesListBox
+                  fullRowSelect: true
+                  maxItemCount: 1
+                  isTarget: true
+                  valueKey:
+                    - measure
+                  ghostText: drag variable here
+                - type: Label
+                  format: ./rmacell
+                  valueKey:
+                    - cell
+                  margin: normal
+                  stretchFactor: 1
+                  horizontalAlignment: right
       - type: TargetLayoutBox
         children:
           - type: VariablesListBox
@@ -61,24 +62,31 @@ children:
               change: './anovarm.events::onChange_cov'
   - type: LayoutBox
     margin: large
+    stretchFactor: 1
     children:
-      - type: Label
-        label: Effect Size
-        margin: large
-        style: list-inline
+      - type: LayoutBox
+        cell:
+          column: 0
+          row: 0
+        stretchFactor: 1
         children:
-          - name: effectSize_eta
-            type: CheckBox
-            optionPart: eta
-            optionName: effectSize
-          - name: effectSize_partEta
-            type: CheckBox
-            optionPart: partEta
-            optionName: effectSize
-          - name: effectSize_omega
-            type: CheckBox
-            optionPart: omega
-            optionName: effectSize
+          - type: Label
+            label: Effect Size
+            margin: large
+            style: list-inline
+            children:
+              - name: effectSize_eta
+                type: CheckBox
+                optionPart: eta
+                optionName: effectSize
+              - name: effectSize_partEta
+                type: CheckBox
+                optionPart: partEta
+                optionName: effectSize
+              - name: effectSize_omega
+                type: CheckBox
+                optionPart: omega
+                optionName: effectSize
   - type: CollapseBox
     label: Model
     collapsed: true
@@ -102,7 +110,7 @@ children:
                 events:
                   change: './anovarm.events::onChange_rmTerms'
                 template:
-                    type: TermLabel
+                  type: TermLabel
       - type: Supplier
         name: bscModelSupplier
         label: Between Subjects Components
@@ -121,7 +129,7 @@ children:
                 events:
                   change: './anovarm.events::onChange_bsTerms'
                 template:
-                    type: TermLabel
+                  type: TermLabel
       - type: LayoutBox
         children:
           - type: ComboBox
@@ -172,13 +180,13 @@ children:
             stretchFactor: 1
             maxWidth: 300
             template:
-                type: VariableLabel
+              type: VariableLabel
           - name: type
             label: null
             selectable: false
             stretchFactor: 0.5
             template:
-                type: ComboBox
+              type: ComboBox
   - type: CollapseBox
     label: Post Hoc Tests
     collapsed: true
@@ -199,7 +207,7 @@ children:
                 name: postHoc
                 isTarget: true
                 template:
-                    type: TermLabel
+                  type: TermLabel
       - type: LayoutBox
         margin: large
         children:
@@ -227,6 +235,7 @@ children:
                 optionPart: holm
                 optionName: postHocCorr
   - type: CollapseBox
+    stage: 3
     label: Descriptive Plots
     collapsed: true
     stretchFactor: 1
@@ -291,3 +300,86 @@ children:
         children:
           - type: CheckBox
             name: descStats
+  - type: CollapseBox
+    label: Estimated Marginal Means
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        children:
+          - type: Supplier
+            name: emMeansSupplier
+            format: variable
+            persistentItems: true
+            stretchFactor: 1
+            events:
+                change: './anovarm.events::onChange_emMeansSupplier'
+            children:
+              - type: TargetLayoutBox
+                children:
+                  - type: ListBox
+                    name: emMeans
+                    height: large
+                    addButton: Add New Term
+                    events:
+                      listItemAdded: './anovarm.events::onEvent_emMeans_listItemsChanged'
+                      listItemRemoved: './anovarm.events::onEvent_emMeans_listItemsChanged'
+                    selectable: true
+                    templateName: linreg-block-template
+                    template:
+                      type: LayoutBox
+                      margin: normal
+                      targetArea: true
+                      children:
+                        - type: Label
+                          label: Term 1
+                          name: blockName
+                          stretchFactor: 1
+                          margin: normal
+                        - type: VariablesListBox
+                          name: blockList
+                          isTarget: true
+                          valueFilter: unique
+                          height: auto
+                          maxItemCount: 3
+                          ghostText: drag variables here
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        children:
+          - type: LayoutBox
+            cell:
+              column: 0
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: General Options
+                children:
+                  - type: CheckBox
+                    name: emmWeights
+                  - type: CheckBox
+                    name: ciEmm
+                    children:
+                      - type: TextBox
+                        name: ciWidthEmm
+                        label: Interval
+                        suffix: '%'
+                        format: number
+                        inputPattern: '[0-9]+'
+                        enable: (ciEmm)
+          - type: LayoutBox
+            cell:
+              column: 1
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Output
+                children:
+                  - type: CheckBox
+                    name: emmPlots
+                  - type: CheckBox
+                    name: emmTables
