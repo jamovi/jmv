@@ -1049,7 +1049,7 @@ anovaRMClass <- R6::R6Class(
                 data[[var]] <- jmvcore::toNumeric(self$data[[var]])
 
             for (var in bsVars)
-                data[[var]] <- self$data[[var]]
+                data[[var]] <- factor(self$data[[var]])
 
             attr(data, 'row.names') <- seq_len(length(data[[1]]))
             attr(data, 'class') <- 'data.frame'
