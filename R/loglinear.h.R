@@ -44,18 +44,14 @@ logLinearOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 suggested=list(
                     "nominal"),
                 permitted=list(
-                    "nominal",
-                    "nominaltext",
-                    "ordinal"),
+                    "factor"),
                 default=NULL)
             private$..counts <- jmvcore::OptionVariable$new(
                 "counts",
                 counts,
                 default=NULL,
                 permitted=list(
-                    "continuous",
-                    "nominal",
-                    "ordinal"))
+                    "numeric"))
             private$..blocks <- jmvcore::OptionArray$new(
                 "blocks",
                 blocks,

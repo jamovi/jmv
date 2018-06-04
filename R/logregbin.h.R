@@ -55,18 +55,14 @@ logRegBinOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 suggested=list(
                     "nominal"),
                 permitted=list(
-                    "nominal",
-                    "nominaltext",
-                    "ordinal"))
+                    "factor"))
             private$..covs <- jmvcore::OptionVariables$new(
                 "covs",
                 covs,
                 suggested=list(
                     "continuous"),
                 permitted=list(
-                    "continuous",
-                    "nominal",
-                    "ordinal"),
+                    "numeric"),
                 default=NULL)
             private$..factors <- jmvcore::OptionVariables$new(
                 "factors",
@@ -75,9 +71,7 @@ logRegBinOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 suggested=list(
                     "nominal"),
                 permitted=list(
-                    "nominal",
-                    "nominaltext",
-                    "ordinal"),
+                    "factor"),
                 default=NULL)
             private$..blocks <- jmvcore::OptionArray$new(
                 "blocks",

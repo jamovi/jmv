@@ -72,9 +72,7 @@ options:
       suggested:
         - nominal
       permitted:
-        - nominal
-        - nominaltext
-        - ordinal
+        - factor
       default:
       description:
           R: a vector of strings naming the factors from `data`
@@ -84,9 +82,7 @@ options:
       type: Variable
       default:
       permitted:
-        - continuous
-        - nominal
-        - ordinal
+        - numeric
       description:
           R: >
             a string naming a variable in `data` containing counts, or NULL if

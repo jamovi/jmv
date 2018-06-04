@@ -24,17 +24,13 @@ propTestNOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "nominal",
                     "ordinal"),
                 permitted=list(
-                    "nominal",
-                    "ordinal",
-                    "nominaltext"))
+                    "factor"))
             private$..counts <- jmvcore::OptionVariable$new(
                 "counts",
                 counts,
                 default=NULL,
                 permitted=list(
-                    "continuous",
-                    "nominal",
-                    "ordinal"))
+                    "numeric"))
             private$..expected <- jmvcore::OptionBool$new(
                 "expected",
                 expected,

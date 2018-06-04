@@ -24,9 +24,7 @@ anovaRMNPOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 suggested=list(
                     "continuous"),
                 permitted=list(
-                    "continuous",
-                    "nominal",
-                    "ordinal"))
+                    "numeric"))
             private$..pairs <- jmvcore::OptionBool$new(
                 "pairs",
                 pairs,

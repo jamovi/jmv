@@ -8,9 +8,7 @@ children:
     suggested:
       - continuous
     permitted:
-      - continuous
-      - nominal
-      - ordinal
+      - numeric
     persistentItems: false
     stretchFactor: 1
     children:

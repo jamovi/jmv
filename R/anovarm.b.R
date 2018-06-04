@@ -35,6 +35,9 @@ anovaRMClass <- R6::R6Class(
                 data <- private$.wideToLong()
                 modelFormula <- private$.modelFormula()
 
+                for (name in self$options$bsTerms)
+                    data[[name]] <- as.factor(data[[name]])
+
                 suppressMessages({
                     suppressWarnings({
 

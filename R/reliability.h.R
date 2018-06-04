@@ -32,9 +32,7 @@ reliabilityOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "ordinal",
                     "continuous"),
                 permitted=list(
-                    "continuous",
-                    "nominal",
-                    "ordinal"),
+                    "numeric"),
                 rejectInf=FALSE)
             private$..alphaScale <- jmvcore::OptionBool$new(
                 "alphaScale",

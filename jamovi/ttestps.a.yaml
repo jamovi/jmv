@@ -38,9 +38,7 @@ options:
       suggested:
         - continuous
       permitted:
-        - continuous
-        - nominal
-        - ordinal
+        - numeric
       description:
           R: a list of lists specifying the pairs of measurement in `data`
 

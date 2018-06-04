@@ -58,10 +58,8 @@ options:
       title: Variables
       type: Variables
       permitted:
-        - continuous
-        - nominal
-        - ordinal
-        - nominaltext
+        - numeric
+        - factor
         - id
       description:
           R: a vector of strings naming the variables of interest in `data`
@@ -72,9 +70,7 @@ options:
       suggested:
         - nominal
       permitted:
-        - nominal
-        - ordinal
-        - nominaltext
+        - factor
       default: null
       description:
           R: a vector of strings naming the variables used to split `vars`

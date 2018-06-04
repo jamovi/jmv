@@ -42,9 +42,7 @@ options:
       suggested:
         - continuous
       permitted:
-        - continuous
-        - nominal
-        - ordinal
+        - numeric
       description:
           R: >
             a string naming the dependent variable from `data`, variable
@@ -57,6 +55,8 @@ options:
       suggested:
         - nominal
         - ordinal
+      permitted:
+        - factor
       default:
       description:
           R: a vector of strings naming the fixed factors from `data`
@@ -68,9 +68,7 @@ options:
         - continuous
         - ordinal
       permitted:
-        - continuous
-        - nominal
-        - ordinal
+        - numeric
       default:
       description:
           R: a vector of strings naming the covariates from `data`

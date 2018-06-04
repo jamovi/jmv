@@ -109,6 +109,8 @@ options:
       suggested:
         - nominal
         - ordinal
+      permitted:
+        - factor
       default:
       description:
           R: >
@@ -121,9 +123,7 @@ options:
       suggested:
         - continuous
       permitted:
-        - continuous
-        - nominal
-        - ordinal
+        - numeric
       default:
       description:
           R: >

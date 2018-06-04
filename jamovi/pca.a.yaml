@@ -42,9 +42,7 @@ options:
         - ordinal
         - continuous
       permitted:
-        - continuous
-        - nominal
-        - ordinal
+        - numeric
       rejectInf: false
       description:
           R: a vector of strings naming the variables of interest in `data`

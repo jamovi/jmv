@@ -22,10 +22,6 @@ children:
         children:
           - type: VariablesListBox
             name: counts
-            permitted:
-              - continuous
-              - nominal
-              - ordinal
             maxItemCount: 1
             isTarget: true
   - type: LayoutBox

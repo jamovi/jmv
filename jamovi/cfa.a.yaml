@@ -96,9 +96,7 @@ options:
               suggested:
                 - continuous
               permitted:
-                - continuous
-                - nominal
-                - ordinal
+                - numeric
       description:
           R: >
             a list containing named lists that define the `label` of
