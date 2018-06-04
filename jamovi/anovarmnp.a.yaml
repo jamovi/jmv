@@ -44,9 +44,7 @@ options:
       suggested:
         - continuous
       permitted:
-        - continuous
-        - nominal
-        - ordinal
+        - numeric
       description:
           R: a vector of strings naming the repeated measures variables
 

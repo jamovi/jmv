@@ -57,9 +57,7 @@ options:
         - nominal
         - ordinal
       permitted:
-        - nominal
-        - ordinal
-        - nominaltext
+        - factor
       description:
           R: a string naming the variable of interest in `data`
 
@@ -68,9 +66,7 @@ options:
       type: Variable
       default:
       permitted:
-        - continuous
-        - nominal
-        - ordinal
+        - numeric
       description:
           R: >
             a string naming a variable in `data` containing counts, or NULL if

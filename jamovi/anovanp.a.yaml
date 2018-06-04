@@ -45,9 +45,7 @@ options:
       suggested:
         - continuous
       permitted:
-        - continuous
-        - nominal
-        - ordinal
+        - numeric
       description:
           R: a string naming the dependent variable in `data`
 
@@ -59,6 +57,8 @@ options:
       suggested:
         - nominal
         - ordinal
+      permitted:
+        - factor
       description:
           R: a string naming the grouping or independent variable in `data`
 

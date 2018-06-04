@@ -9,9 +9,7 @@ children:
       - continuous
       - ordinal
     permitted:
-      - continuous
-      - ordinal
-      - nominal
+      - numeric
     persistentItems: false
     stretchFactor: 1
     children:

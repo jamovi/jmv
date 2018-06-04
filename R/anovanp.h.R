@@ -23,9 +23,7 @@ anovaNPOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 suggested=list(
                     "continuous"),
                 permitted=list(
-                    "continuous",
-                    "nominal",
-                    "ordinal"))
+                    "numeric"))
             private$..group <- jmvcore::OptionVariable$new(
                 "group",
                 group,
@@ -33,7 +31,9 @@ anovaNPOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 rejectUnusedLevels=TRUE,
                 suggested=list(
                     "nominal",
-                    "ordinal"))
+                    "ordinal"),
+                permitted=list(
+                    "factor"))
             private$..pairs <- jmvcore::OptionBool$new(
                 "pairs",
                 pairs,

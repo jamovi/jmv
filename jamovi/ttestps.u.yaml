@@ -7,9 +7,7 @@ children:
     suggested:
       - continuous
     permitted:
-      - continuous
-      - nominal
-      - ordinal
+      - numeric
     persistentItems: true
     stretchFactor: 1
     children:

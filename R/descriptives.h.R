@@ -45,10 +45,8 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "vars",
                 vars,
                 permitted=list(
-                    "continuous",
-                    "nominal",
-                    "ordinal",
-                    "nominaltext",
+                    "numeric",
+                    "factor",
                     "id"))
             private$..splitBy <- jmvcore::OptionVariables$new(
                 "splitBy",
@@ -56,9 +54,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 suggested=list(
                     "nominal"),
                 permitted=list(
-                    "nominal",
-                    "ordinal",
-                    "nominaltext"),
+                    "factor"),
                 default=NULL)
             private$..freq <- jmvcore::OptionBool$new(
                 "freq",

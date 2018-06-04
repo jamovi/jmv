@@ -38,9 +38,7 @@ options:
       suggested:
         - continuous
       permitted:
-        - continuous
-        - nominal
-        - ordinal
+        - numeric
       rejectInf: false
       description:
           R: a vector of strings naming the dependent variables
@@ -48,10 +46,11 @@ options:
     - name: group
       title: Grouping Variable
       type: Variable
-      rejectUnusedLevels: true
       suggested:
         - nominal
         - ordinal
+      permitted:
+        - factor
       description:
           R: a string naming the grouping variable, must have 2 levels
 

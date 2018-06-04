@@ -54,9 +54,7 @@ cfaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                             suggested=list(
                                 "continuous"),
                             permitted=list(
-                                "continuous",
-                                "nominal",
-                                "ordinal")))))
+                                "numeric")))))
             private$..resCov <- jmvcore::OptionPairs$new(
                 "resCov",
                 resCov)

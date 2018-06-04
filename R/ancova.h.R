@@ -38,9 +38,7 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 suggested=list(
                     "continuous"),
                 permitted=list(
-                    "continuous",
-                    "nominal",
-                    "ordinal"))
+                    "numeric"))
             private$..factors <- jmvcore::OptionVariables$new(
                 "factors",
                 factors,
@@ -48,6 +46,8 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 suggested=list(
                     "nominal",
                     "ordinal"),
+                permitted=list(
+                    "factor"),
                 default=NULL)
             private$..covs <- jmvcore::OptionVariables$new(
                 "covs",
@@ -56,9 +56,7 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "continuous",
                     "ordinal"),
                 permitted=list(
-                    "continuous",
-                    "nominal",
-                    "ordinal"),
+                    "numeric"),
                 default=NULL)
             private$..modelTerms <- jmvcore::OptionTerms$new(
                 "modelTerms",

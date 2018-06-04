@@ -33,9 +33,7 @@ efaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "ordinal",
                     "continuous"),
                 permitted=list(
-                    "continuous",
-                    "nominal",
-                    "ordinal"),
+                    "numeric"),
                 rejectInf=FALSE)
             private$..nFactorMethod <- jmvcore::OptionList$new(
                 "nFactorMethod",

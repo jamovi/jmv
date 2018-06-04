@@ -37,9 +37,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 suggested=list(
                     "continuous"),
                 permitted=list(
-                    "continuous",
-                    "nominal",
-                    "ordinal"))
+                    "numeric"))
             private$..factors <- jmvcore::OptionVariables$new(
                 "factors",
                 factors,
@@ -48,6 +46,8 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 suggested=list(
                     "nominal",
                     "ordinal"),
+                permitted=list(
+                    "factor"),
                 default=NULL)
             private$..modelTerms <- jmvcore::OptionTerms$new(
                 "modelTerms",

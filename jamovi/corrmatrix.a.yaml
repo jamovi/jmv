@@ -48,9 +48,7 @@ options:
         - continuous
         - ordinal
       permitted:
-        - continuous
-        - ordinal
-        - nominal
+        - numeric
       description:
           R: >
             a vector of strings naming the variables to correlate in `data`

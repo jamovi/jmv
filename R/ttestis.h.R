@@ -36,17 +36,16 @@ ttestISOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 suggested=list(
                     "continuous"),
                 permitted=list(
-                    "continuous",
-                    "nominal",
-                    "ordinal"),
+                    "numeric"),
                 rejectInf=FALSE)
             private$..group <- jmvcore::OptionVariable$new(
                 "group",
                 group,
-                rejectUnusedLevels=TRUE,
                 suggested=list(
                     "nominal",
-                    "ordinal"))
+                    "ordinal"),
+                permitted=list(
+                    "factor"))
             private$..students <- jmvcore::OptionBool$new(
                 "students",
                 students,

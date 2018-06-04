@@ -12,9 +12,7 @@ children:
       - continuous
       - ordinal
     permitted:
-      - continuous
-      - nominal
-      - ordinal
+      - numeric
     children:
       - type: TargetLayoutBox
         label: Factors

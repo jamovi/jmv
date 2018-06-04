@@ -39,27 +39,31 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 rows,
                 suggested=list(
                     "nominal",
-                    "ordinal"))
+                    "ordinal"),
+                permitted=list(
+                    "factor"))
             private$..cols <- jmvcore::OptionVariable$new(
                 "cols",
                 cols,
                 suggested=list(
                     "nominal",
-                    "ordinal"))
+                    "ordinal"),
+                permitted=list(
+                    "factor"))
             private$..counts <- jmvcore::OptionVariable$new(
                 "counts",
                 counts,
                 suggested=list(
                     "continuous"),
                 permitted=list(
-                    "continuous",
-                    "nominal",
-                    "ordinal"),
+                    "numeric"),
                 default=NULL)
             private$..layers <- jmvcore::OptionVariables$new(
                 "layers",
                 layers,
-                default=NULL)
+                default=NULL,
+                permitted=list(
+                    "factor"))
             private$..chiSq <- jmvcore::OptionBool$new(
                 "chiSq",
                 chiSq,
