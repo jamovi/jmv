@@ -8,7 +8,7 @@ menuTitle: N Outcomes
 menuSubtitle: χ² Goodness of fit
 
 version: '1.0.0'
-jas: '1.1'
+jas: '1.2'
 
 description:
     main: χ² Goodness of fit

@@ -3,7 +3,7 @@ name:    anovaRM
 title:   Repeated Measures ANOVA
 menuGroup: ANOVA
 version: '1.0.0'
-jas: '1.1'
+jas: '1.2'
 
 description:
     R:

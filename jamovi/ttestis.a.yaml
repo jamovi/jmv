@@ -3,7 +3,7 @@ name: ttestIS
 title: Independent Samples T-Test
 menuGroup: T-Tests
 version: '1.0.0'
-jas: '1.1'
+jas: '1.2'
 
 description:
     R:

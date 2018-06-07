@@ -8,7 +8,7 @@ menuTitle: One Way ANOVA
 menuSubtitle: Kruskal-Wallis
 
 version: '1.0.0'
-jas: '1.1'
+jas: '1.2'
 
 completeWhenFilled: true
 

@@ -3,7 +3,7 @@ name:  cfa
 title: Confirmatory Factor Analysis
 menuGroup: Factor
 version: '1.0.0'
-jas: '1.1'
+jas: '1.2'
 
 description:
     main: Confirmatory Factor Analysis

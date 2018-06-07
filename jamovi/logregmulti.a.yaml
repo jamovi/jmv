@@ -6,7 +6,7 @@ menuSubgroup: Logistic Regression
 menuTitle: N Outcomes
 menuSubtitle: Multinomial
 version: '1.0.0'
-jas: '1.1'
+jas: '1.2'
 
 description:
     main: Multinomial Logistic Regression

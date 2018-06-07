@@ -3,7 +3,7 @@ name: linReg
 title: Linear Regression
 menuGroup: Regression
 version: '2.0.0'
-jas: '1.1'
+jas: '1.2'
 
 description:
     main: Linear Regression
