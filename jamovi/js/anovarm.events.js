@@ -152,7 +152,7 @@ var updateRMModelTerms = function(ui, context, variableList, updateEMMeans) {
 
     let customVariables = [];
     for(let i = 0; i < factorList.length; i++) {
-        customVariables.push( { name: factorList[i].label, measureType: 'none', levels: [] } );
+        customVariables.push( { name: factorList[i].label, measureType: 'none', dataType: 'none', levels: [] } );
         factorList[i] = factorList[i].label;
     }
     context.setCustomVariables(customVariables);
