@@ -87,6 +87,7 @@ children:
                 type: CheckBox
                 optionPart: omega
                 optionName: effectSize
+                stage: 3
   - type: CollapseBox
     label: Model
     collapsed: true
