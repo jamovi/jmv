@@ -662,8 +662,9 @@ cfaClass <- R6::R6Class(
 
             } else {
 
-                warning("In order to get the path diagram you need to install the R package \"semplot\"")
-
+                warning('The path diagram requires a working version of "semplot"')
+                # Now throw error
+                require('semPlot')
             }
 
             TRUE
