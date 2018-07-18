@@ -173,5 +173,12 @@ analyses:
     menuSubgroup: Data Reduction
     menuTitle: Confirmatory Factor Analysis
     description: Confirmatory Factor Analysis
+  - title: Ordinal Logistic Regression
+    name: logRegOrd
+    ns: jmv
+    menuGroup: Regression
+    menuSubgroup: Logistic Regression
+    menuTitle: Ordinal Outcomes
+    description: Ordinal Logistic Regression
 
 ...
