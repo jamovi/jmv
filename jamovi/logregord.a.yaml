@@ -1,0 +1,244 @@
+---
+name:  logRegOrd
+title: Ordinal Logistic Regression
+menuGroup: Regression
+menuSubgroup: Logistic Regression
+menuTitle: Ordinal Outcomes
+version: '1.0.0'
+jas: '1.2'
+
+description:
+    main: Ordinal Logistic Regression
+    R:
+        dontrun: false
+        usage: |
+            set.seed(1337)
+
+            y <- factor(sample(1:3, 100, replace = TRUE))
+            x1 <- rnorm(100)
+            x2 <- rnorm(100)
+
+            df <- data.frame(y=y, x1=x1, x2=x2)
+
+            logRegOrd(data = df, dep = "y",
+                      covs = c("x1", "x2"),
+                      blocks = list(list("x1", "x2")))
+
+            #
+            #  ORDINAL LOGISTIC REGRESSION
+            #
+            #  Model Fit Measures
+            #  ───────────────────────────────────────
+            #    Model    Deviance    AIC    R²-McF
+            #  ───────────────────────────────────────
+            #        1         218    226    5.68e-4
+            #  ───────────────────────────────────────
+            #
+            #
+            #  MODEL SPECIFIC RESULTS
+            #
+            #  MODEL 1
+            #
+            #  Model Coefficients
+            #  ────────────────────────────────────────────────────
+            #    Predictor    Estimate    SE       Z        p
+            #  ────────────────────────────────────────────────────
+            #    x1             0.0579    0.193    0.300    0.764
+            #    x2             0.0330    0.172    0.192    0.848
+            #  ────────────────────────────────────────────────────
+            #
+            #
+
+
+options:
+    - name: data
+      type: Data
+      description:
+          R: the data as a data frame
+
+    - name: dep
+      type: Variable
+      title: Dependent Variable
+      suggested:
+        - ordinal
+      permitted:
+        - factor
+      description:
+          R: >
+            a string naming the dependent variable from `data`, variable
+            must be a factor
+
+    - name: covs
+      title: Covariates
+      type: Variables
+      suggested:
+        - continuous
+      permitted:
+        - numeric
+      default:
+      description:
+          R: a vector of strings naming the covariates from `data`
+
+    - name: factors
+      title: Factors
+      type: Variables
+      suggested:
+        - nominal
+      permitted:
+        - factor
+      default:
+      description:
+          R: a vector of strings naming the fixed factors from `data`
+
+    - name: blocks
+      title: Blocks
+      type: Array
+      default: [[]]
+      template:
+          type: Terms
+      description:
+          R: >
+            a list containing vectors of strings that name the
+            predictors that are added to the model. The elements
+            are added to the model according to their order in the
+            list
+
+    - name: refLevels
+      title: Reference Levels
+      type: Array
+      items: (factors)
+      default:
+      template:
+          type: Group
+          elements:
+              - name: var
+                type: Variable
+                content: $key
+              - name: ref
+                type: Level
+      description:
+          R: >
+            a list of lists specifying reference levels of the dependent variable
+            and all the factors
+
+    - name: modelTest
+      title: Overall model test
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the model comparison between
+            the models and the NULL model
+
+    - name: dev
+      title: Deviance
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide the deviance (or -2LogLikelihood)
+            for the models
+
+    - name: aic
+      title: AIC
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide Aikaike's Information Criterion (AIC)
+            for the models
+
+    - name: bic
+      title: BIC
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Bayesian Information Criterion (BIC)
+            for the models
+
+    - name: pseudoR2
+      title: Pseudo R²
+      type: NMXList
+      options:
+          - name: r2mf
+            title: McFadden's R²
+          - name: r2cs
+            title: Cox & Snell's R²
+          - name: r2n
+            title: Nagelkerke's R²
+      default:
+          - r2mf
+      description:
+          R: >
+            one or more of `'r2mf'`, `'r2cs'`, or `'r2n'`;
+            use McFadden's, Cox & Snell, and Nagelkerke pseudo-R²,
+            respectively
+
+    - name: omni
+      title: Likelihood ratio tests
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the omnibus likelihood ratio tests
+            for the predictors
+
+    - name: thres
+      title: Model thresholds
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the thresholds that are used as
+            cut-off scores for the levels of the dependent variable
+
+    - name: ci
+      title: Confidence interval
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a confidence interval
+            for the model coefficient estimates
+
+    - name: ciWidth
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width
+
+    - name: OR
+      title: Odds ratio
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the exponential of the log-odds
+            ratio estimate, or the odds ratio estimate
+
+    - name: ciOR
+      title: Confidence interval
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a confidence interval
+            for the model coefficient odds ratio estimates
+
+    - name: ciWidthOR
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width
+...

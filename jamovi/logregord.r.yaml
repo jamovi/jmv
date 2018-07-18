@@ -1,0 +1,240 @@
+---
+name:  logRegOrd
+title: Ordinal Logistic Regression
+jrs:   '1.1'
+
+items:
+    - name: modelFit
+      title: Model Fit Measures
+      type: Table
+      clearWith:
+        - dep
+        - blocks
+      visible: (dev || aic || bic || pseudoR2:r2mf || pseudoR2:r2cs || pseudoR2:r2n || modelTest)
+
+      columns:
+        - name: model
+          title: "Model"
+          type: text
+
+        - name: dev
+          title: Deviance
+          type: number
+          visible: (dev)
+
+        - name: aic
+          title: AIC
+          type: number
+          visible: (aic)
+
+        - name: bic
+          title: BIC
+          type: number
+          visible: (bic)
+
+        - name: r2mf
+          title: R²<sub>McF</sub>
+          type: number
+          visible: (pseudoR2:r2mf)
+
+        - name: r2cs
+          title: R²<sub>CS</sub>
+          type: number
+          visible: (pseudoR2:r2cs)
+
+        - name: r2n
+          title: R²<sub>N</sub>
+          type: number
+          visible: (pseudoR2:r2n)
+
+        - name: chi
+          title: χ²
+          type: number
+          superTitle: Overall Model Test
+          visible: (modelTest)
+
+        - name: df
+          title: df
+          type: integer
+          superTitle: Overall Model Test
+          visible: (modelTest)
+
+        - name: p
+          title: p
+          type: number
+          format: zto,pvalue
+          superTitle: Overall Model Test
+          visible: (modelTest)
+
+    - name: modelComp
+      title: Model Comparisons
+      type: Table
+      clearWith:
+        - dep
+        - blocks
+
+      columns:
+        - name: model1
+          title: 'Model'
+          content: .
+          type: text
+          superTitle: Comparison
+
+        - name: sep
+          title: ""
+          content: "-"
+          type: text
+          format: narrow
+          superTitle: Comparison
+
+        - name: model2
+          title: 'Model'
+          content: .
+          type: text
+          superTitle: Comparison
+
+        - name: chi
+          title: χ²
+          type: number
+
+        - name: df
+          title: df
+          type: integer
+
+        - name: p
+          title: p
+          type: number
+          format: zto,pvalue
+
+    - name: models
+      title: Model Specific Results
+      type: Array
+      layout: listSelect
+      hideHeadingOnlyChild: true
+      description: an array of model specific results
+      template:
+
+        title: ''
+        type: Group
+        items:
+
+          - name: lrt
+            title: Omnibus Likelihood Ratio Tests
+            type: Table
+            clearWith:
+                - dep
+                - blocks
+            description: a table of likelihood ratio tests
+            visible: (omni)
+            columns:
+
+              - name: term
+                title: "Predictor"
+                type: text
+
+              - name: chi
+                title: χ²
+                type: number
+
+              - name: df
+                title: df
+                type: integer
+
+              - name: p
+                title: p
+                type: number
+                format: zto,pvalue
+
+          - name: coef
+            title: Model Coefficients
+            type: Table
+            clearWith:
+                - dep
+                - blocks
+                - refLevels
+            description: a table of model coefficients
+            columns:
+
+              - name: term
+                title: "Predictor"
+                type: text
+
+              - name: est
+                title: Estimate
+                type: number
+
+              - name: lower
+                title: Lower
+                type: number
+                visible: (ci)
+
+              - name: upper
+                title: Upper
+                type: number
+                visible: (ci)
+
+              - name: se
+                title: SE
+                type: number
+
+              - name: z
+                title: Z
+                type: number
+
+              - name: p
+                title: p
+                type: number
+                format: zto,pvalue
+
+              - name: odds
+                title: Odds ratio
+                type: number
+                visible: (OR)
+
+              - name: oddsLower
+                title: Lower
+                type: number
+                visible: (ciOR && OR)
+
+              - name: oddsUpper
+                title: Upper
+                type: number
+                visible: (ciOR && OR)
+
+          - name: thres
+            title: Model Thresholds
+            type: Table
+            clearWith:
+                - dep
+                - blocks
+                - refLevels
+            description: a table of model coefficient thresholds
+            visible: (thres)
+            columns:
+
+              - name: term
+                title: "Threshold"
+                type: text
+
+              - name: est
+                title: Estimate
+                type: number
+
+              - name: se
+                title: SE
+                type: number
+
+              - name: z
+                title: Z
+                type: number
+
+              - name: p
+                title: p
+                type: number
+                format: zto,pvalue
+
+              - name: odds
+                title: Odds ratio
+                type: number
+                visible: (OR)
+...
