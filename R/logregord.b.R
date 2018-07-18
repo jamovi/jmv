@@ -357,10 +357,18 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                     row[["z"]] <- wald[index]
                     row[["p"]] <- p[index]
 
-                    row[["lower"]] <- CI[index, 1]
-                    row[["upper"]] <- CI[index, 2]
-                    row[["oddsLower"]] <- CIOR[index, 1]
-                    row[["oddsUpper"]] <- CIOR[index, 2]
+                    if (length(terms[[k]]) == 1) {
+                        row[["lower"]] <- CI[1]
+                        row[["upper"]] <- CI[2]
+                        row[["oddsLower"]] <- CIOR[1]
+                        row[["oddsUpper"]] <- CIOR[2]
+                    } else {
+                        row[["lower"]] <- CI[index, 1]
+                        row[["upper"]] <- CI[index, 2]
+                        row[["oddsLower"]] <- CIOR[index, 1]
+                        row[["oddsUpper"]] <- CIOR[index, 2]
+                    }
+
 
                     table$setRow(rowKey=jmvcore::composeTerm(terms[[k]]), values = row)
                 }
