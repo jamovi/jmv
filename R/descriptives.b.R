@@ -215,7 +215,7 @@ descriptivesClass <- R6::R6Class(
                             table$addColumn(name=paste0(lev), title=lev, type='integer', superTitle=splitBy[1])
 
                         prev <- NULL
-                        for (j in 1:nrow(grid)) {
+                        for (j in seq_len(nrow(grid))) {
 
                             row <- list()
                             for (k in seq_along(cols))
@@ -460,7 +460,7 @@ descriptivesClass <- R6::R6Class(
                         grid <- rev(do.call(expandGrid, rev(c(list(levels), private$levels[-1]))))
                         cols <- c(var, splitBy[-1])
 
-                        for (j in 1:nrow(grid)) {
+                        for (j in seq_len(nrow(grid))) {
 
                             row <- list()
                             for (lev in private$levels[[1]]) {
