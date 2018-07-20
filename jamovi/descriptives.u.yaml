@@ -140,6 +140,11 @@ children:
                 name: skew
               - type: CheckBox
                 name: kurt
+          - type: Label
+            label: Normality
+            children:
+              - type: CheckBox
+                name: sw
   - type: CollapseBox
     label: Plots
     collapsed: true

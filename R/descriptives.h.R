@@ -31,6 +31,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             se = FALSE,
             skew = FALSE,
             kurt = FALSE,
+            sw = FALSE,
             quart = FALSE,
             pcEqGr = FALSE,
             pcNEqGr = 4, ...) {
@@ -152,6 +153,10 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "kurt",
                 kurt,
                 default=FALSE)
+            private$..sw <- jmvcore::OptionBool$new(
+                "sw",
+                sw,
+                default=FALSE)
             private$..quart <- jmvcore::OptionBool$new(
                 "quart",
                 quart,
@@ -192,6 +197,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..se)
             self$.addOption(private$..skew)
             self$.addOption(private$..kurt)
+            self$.addOption(private$..sw)
             self$.addOption(private$..quart)
             self$.addOption(private$..pcEqGr)
             self$.addOption(private$..pcNEqGr)
@@ -222,6 +228,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         se = function() private$..se$value,
         skew = function() private$..skew$value,
         kurt = function() private$..kurt$value,
+        sw = function() private$..sw$value,
         quart = function() private$..quart$value,
         pcEqGr = function() private$..pcEqGr$value,
         pcNEqGr = function() private$..pcNEqGr$value),
@@ -251,6 +258,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..se = NA,
         ..skew = NA,
         ..kurt = NA,
+        ..sw = NA,
         ..quart = NA,
         ..pcEqGr = NA,
         ..pcNEqGr = NA)
@@ -407,6 +415,7 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param se \code{TRUE} or \code{FALSE} (default), provide the standard error
 #' @param skew \code{TRUE} or \code{FALSE} (default), provide the skewness
 #' @param kurt \code{TRUE} or \code{FALSE} (default), provide the kurtosis
+#' @param sw \code{TRUE} or \code{FALSE} (default), provide normality tests
 #' @param quart \code{TRUE} or \code{FALSE} (default), provide quartiles
 #' @param pcEqGr \code{TRUE} or \code{FALSE} (default), provide quantiles
 #' @param pcNEqGr an integer (default: 4) specifying the number of equal
@@ -452,6 +461,7 @@ descriptives <- function(
     se = FALSE,
     skew = FALSE,
     kurt = FALSE,
+    sw = FALSE,
     quart = FALSE,
     pcEqGr = FALSE,
     pcNEqGr = 4) {
@@ -485,6 +495,7 @@ descriptives <- function(
         se = se,
         skew = skew,
         kurt = kurt,
+        sw = sw,
         quart = quart,
         pcEqGr = pcEqGr,
         pcNEqGr = pcNEqGr)

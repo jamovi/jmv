@@ -264,6 +264,14 @@ options:
           R: >
             `TRUE` or `FALSE` (default), provide the kurtosis
 
+    - name: sw
+      title: Shapiro-Wilk
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Shapiro-Wilk p-value
+
     - name: quart
       title: Quartiles
       type: Bool
