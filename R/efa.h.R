@@ -248,6 +248,11 @@ efa <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('efa requires jmvcore to be installed (restart may be required)')
 
+    if (missing(data))
+        data <- jmvcore:::marshalData(
+            parent.frame(),
+            `if`( ! missing(vars), vars, NULL))
+
     options <- efaOptions$new(
         vars = vars,
         nFactorMethod = nFactorMethod,

@@ -993,6 +993,15 @@ anovaRM <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('anovaRM requires jmvcore to be installed (restart may be required)')
 
+    if (missing(data))
+        data <- jmvcore:::marshalData(
+            parent.frame(),
+            `if`( ! missing(bs), bs, NULL),
+            `if`( ! missing(cov), cov, NULL),
+            `if`( ! missing(plotHAxis), plotHAxis, NULL),
+            `if`( ! missing(plotSepLines), plotSepLines, NULL),
+            `if`( ! missing(plotSepPlots), plotSepPlots, NULL))
+
     options <- anovaRMOptions$new(
         rm = rm,
         rmCells = rmCells,

@@ -872,6 +872,10 @@ cfa <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('cfa requires jmvcore to be installed (restart may be required)')
 
+    if (missing(data))
+        data <- jmvcore:::marshalData(
+            parent.frame())
+
     options <- cfaOptions$new(
         factors = factors,
         resCov = resCov,

@@ -978,6 +978,13 @@ logRegBin <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('logRegBin requires jmvcore to be installed (restart may be required)')
 
+    if (missing(data))
+        data <- jmvcore:::marshalData(
+            parent.frame(),
+            `if`( ! missing(dep), dep, NULL),
+            `if`( ! missing(covs), covs, NULL),
+            `if`( ! missing(factors), factors, NULL))
+
     options <- logRegBinOptions$new(
         dep = dep,
         covs = covs,

@@ -191,6 +191,12 @@ anovaNP <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('anovaNP requires jmvcore to be installed (restart may be required)')
 
+    if (missing(data))
+        data <- jmvcore:::marshalData(
+            parent.frame(),
+            `if`( ! missing(deps), deps, NULL),
+            `if`( ! missing(group), group, NULL))
+
     options <- anovaNPOptions$new(
         deps = deps,
         group = group,

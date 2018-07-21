@@ -224,6 +224,12 @@ propTestN <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('propTestN requires jmvcore to be installed (restart may be required)')
 
+    if (missing(data))
+        data <- jmvcore:::marshalData(
+            parent.frame(),
+            `if`( ! missing(var), var, NULL),
+            `if`( ! missing(counts), counts, NULL))
+
     options <- propTestNOptions$new(
         var = var,
         counts = counts,

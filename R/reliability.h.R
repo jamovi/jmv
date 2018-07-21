@@ -307,6 +307,12 @@ reliability <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('reliability requires jmvcore to be installed (restart may be required)')
 
+    if (missing(data))
+        data <- jmvcore:::marshalData(
+            parent.frame(),
+            `if`( ! missing(vars), vars, NULL),
+            `if`( ! missing(revItems), revItems, NULL))
+
     options <- reliabilityOptions$new(
         vars = vars,
         alphaScale = alphaScale,

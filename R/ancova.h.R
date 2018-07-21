@@ -553,6 +553,16 @@ ancova <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('ancova requires jmvcore to be installed (restart may be required)')
 
+    if (missing(data))
+        data <- jmvcore:::marshalData(
+            parent.frame(),
+            `if`( ! missing(dep), dep, NULL),
+            `if`( ! missing(factors), factors, NULL),
+            `if`( ! missing(covs), covs, NULL),
+            `if`( ! missing(plotHAxis), plotHAxis, NULL),
+            `if`( ! missing(plotSepLines), plotSepLines, NULL),
+            `if`( ! missing(plotSepPlots), plotSepPlots, NULL))
+
     options <- ancovaOptions$new(
         dep = dep,
         factors = factors,

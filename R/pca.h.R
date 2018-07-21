@@ -498,6 +498,11 @@ pca <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('pca requires jmvcore to be installed (restart may be required)')
 
+    if (missing(data))
+        data <- jmvcore:::marshalData(
+            parent.frame(),
+            `if`( ! missing(vars), vars, NULL))
+
     options <- pcaOptions$new(
         vars = vars,
         nFactorMethod = nFactorMethod,

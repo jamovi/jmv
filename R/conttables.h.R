@@ -619,6 +619,14 @@ contTables <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('contTables requires jmvcore to be installed (restart may be required)')
 
+    if (missing(data))
+        data <- jmvcore:::marshalData(
+            parent.frame(),
+            `if`( ! missing(rows), rows, NULL),
+            `if`( ! missing(cols), cols, NULL),
+            `if`( ! missing(counts), counts, NULL),
+            `if`( ! missing(layers), layers, NULL))
+
     options <- contTablesOptions$new(
         rows = rows,
         cols = cols,

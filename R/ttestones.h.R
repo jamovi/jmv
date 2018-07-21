@@ -527,6 +527,11 @@ ttestOneS <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('ttestOneS requires jmvcore to be installed (restart may be required)')
 
+    if (missing(data))
+        data <- jmvcore:::marshalData(
+            parent.frame(),
+            `if`( ! missing(vars), vars, NULL))
+
     options <- ttestOneSOptions$new(
         vars = vars,
         students = students,

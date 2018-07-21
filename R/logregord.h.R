@@ -581,6 +581,13 @@ logRegOrd <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('logRegOrd requires jmvcore to be installed (restart may be required)')
 
+    if (missing(data))
+        data <- jmvcore:::marshalData(
+            parent.frame(),
+            `if`( ! missing(dep), dep, NULL),
+            `if`( ! missing(covs), covs, NULL),
+            `if`( ! missing(factors), factors, NULL))
+
     options <- logRegOrdOptions$new(
         dep = dep,
         covs = covs,

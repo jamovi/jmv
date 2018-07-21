@@ -552,6 +552,10 @@ ttestPS <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('ttestPS requires jmvcore to be installed (restart may be required)')
 
+    if (missing(data))
+        data <- jmvcore:::marshalData(
+            parent.frame())
+
     options <- ttestPSOptions$new(
         pairs = pairs,
         students = students,

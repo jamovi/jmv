@@ -653,6 +653,12 @@ logLinear <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('logLinear requires jmvcore to be installed (restart may be required)')
 
+    if (missing(data))
+        data <- jmvcore:::marshalData(
+            parent.frame(),
+            `if`( ! missing(factors), factors, NULL),
+            `if`( ! missing(counts), counts, NULL))
+
     options <- logLinearOptions$new(
         factors = factors,
         counts = counts,

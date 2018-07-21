@@ -485,6 +485,13 @@ mancova <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('mancova requires jmvcore to be installed (restart may be required)')
 
+    if (missing(data))
+        data <- jmvcore:::marshalData(
+            parent.frame(),
+            `if`( ! missing(deps), deps, NULL),
+            `if`( ! missing(factors), factors, NULL),
+            `if`( ! missing(covs), covs, NULL))
+
     options <- mancovaOptions$new(
         deps = deps,
         factors = factors,

@@ -371,6 +371,11 @@ corrMatrix <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('corrMatrix requires jmvcore to be installed (restart may be required)')
 
+    if (missing(data))
+        data <- jmvcore:::marshalData(
+            parent.frame(),
+            `if`( ! missing(vars), vars, NULL))
+
     options <- corrMatrixOptions$new(
         vars = vars,
         pearson = pearson,
