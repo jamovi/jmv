@@ -17,6 +17,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             violin = FALSE,
             dot = FALSE,
             dotType = "jitter",
+            qq = FALSE,
             n = TRUE,
             missing = TRUE,
             mean = TRUE,
@@ -97,6 +98,10 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "jitter",
                     "stack"),
                 default="jitter")
+            private$..qq <- jmvcore::OptionBool$new(
+                "qq",
+                qq,
+                default=FALSE)
             private$..n <- jmvcore::OptionBool$new(
                 "n",
                 n,
@@ -183,6 +188,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..violin)
             self$.addOption(private$..dot)
             self$.addOption(private$..dotType)
+            self$.addOption(private$..qq)
             self$.addOption(private$..n)
             self$.addOption(private$..missing)
             self$.addOption(private$..mean)
@@ -214,6 +220,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         violin = function() private$..violin$value,
         dot = function() private$..dot$value,
         dotType = function() private$..dotType$value,
+        qq = function() private$..qq$value,
         n = function() private$..n$value,
         missing = function() private$..missing$value,
         mean = function() private$..mean$value,
@@ -244,6 +251,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..violin = NA,
         ..dot = NA,
         ..dotType = NA,
+        ..qq = NA,
         ..n = NA,
         ..missing = NA,
         ..mean = NA,
@@ -399,6 +407,8 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param dot \code{TRUE} or \code{FALSE} (default), provide dot plots
 #'   (continuous variables only)
 #' @param dotType .
+#' @param qq \code{TRUE} or \code{FALSE} (default), provide Q-Q plots
+#'   (continuous variables only)
 #' @param n \code{TRUE} (default) or \code{FALSE}, provide the sample size
 #' @param missing \code{TRUE} (default) or \code{FALSE}, provide the number of
 #'   missing values
@@ -415,7 +425,8 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param se \code{TRUE} or \code{FALSE} (default), provide the standard error
 #' @param skew \code{TRUE} or \code{FALSE} (default), provide the skewness
 #' @param kurt \code{TRUE} or \code{FALSE} (default), provide the kurtosis
-#' @param sw \code{TRUE} or \code{FALSE} (default), provide normality tests
+#' @param sw \code{TRUE} or \code{FALSE} (default), provide Shapiro-Wilk
+#'   p-value
 #' @param quart \code{TRUE} or \code{FALSE} (default), provide quartiles
 #' @param pcEqGr \code{TRUE} or \code{FALSE} (default), provide quantiles
 #' @param pcNEqGr an integer (default: 4) specifying the number of equal
@@ -447,6 +458,7 @@ descriptives <- function(
     violin = FALSE,
     dot = FALSE,
     dotType = "jitter",
+    qq = FALSE,
     n = TRUE,
     missing = TRUE,
     mean = TRUE,
@@ -481,6 +493,7 @@ descriptives <- function(
         violin = violin,
         dot = dot,
         dotType = dotType,
+        qq = qq,
         n = n,
         missing = missing,
         mean = mean,

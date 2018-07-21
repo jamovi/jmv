@@ -286,7 +286,21 @@ descriptivesClass <- R6::R6Class(
                                                     clearWith=list("splitBy", "hist", "dens"))
 
                         group$add(image)
+                    }
 
+                    if (self$options$qq) {
+
+                        size <- private$.plotSize(levels, 'qq')
+
+                        image <- jmvcore::Image$new(options=self$options,
+                                                    name="qq",
+                                                    renderFun=".qq",
+                                                    requiresData=TRUE,
+                                                    width=size[1],
+                                                    height=size[2],
+                                                    clearWith=list("splitBy"))
+
+                        group$add(image)
                     }
 
                     if (self$options$box || self$options$violin || self$options$dot) {
@@ -535,7 +549,11 @@ descriptivesClass <- R6::R6Class(
                 } else {
 
                     hist  <- group$get('hist')
-                    box  <- group$get('box')
+                    box   <- group$get('box')
+                    qq    <- group$get('qq')
+
+                    if (self$options$qq)
+                        qq$setState(var)
 
                     if (self$options$hist || self$options$dens || self$options$box || self$options$violin || self$options$dot) {
 
@@ -575,6 +593,67 @@ descriptivesClass <- R6::R6Class(
                     }
                 }
             }
+        },
+        .qq = function(image, ggtheme, theme, ...) {
+
+            if (is.null(image$state))
+                return(FALSE)
+
+            var <- image$state
+            data <- self$data
+            splitBy <- self$options$splitBy
+
+            if (length(splitBy) > 3)
+                splitBy <- splitBy[1:3]
+
+            nSplits <- length(splitBy)
+            splitNames <- paste0('s', seq_len(nSplits))
+
+            grid <- list()
+            for (i in seq_along(splitBy))
+                grid[[ splitNames[i] ]] <- data[[ splitBy[[i]] ]]
+            grid <- as.data.frame(grid)
+
+            y <- data[[var]]
+
+            if (nSplits > 0) {
+                # split into groups
+                pieces <- split(y, grid)
+                # scale groups individually
+                pieces <- lapply(pieces, function(x) as.vector(scale(x)))
+                # join back together
+                y <- unsplit(pieces, grid)
+                data <- cbind(grid, y=y)
+            } else {
+                y <- as.vector(scale(y))
+                data <- data.frame(y=y)
+            }
+
+            data <- na.omit(data)
+
+            plot <- ggplot(data=data) +
+                geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
+                stat_qq(aes(sample=y), size=2, colour=theme$color[1]) +
+                xlab("Theoretical Quantiles") +
+                ylab("Standardized Residuals") +
+                ggtheme
+
+            if (nSplits == 0) {
+                facetFmla <- NULL
+            } else if (nSplits == 1) {
+                facetFmla <- . ~ s1
+            } else if (nSplits == 2) {
+                facetFmla <- s1 ~ s2
+            } else {
+                facetFmla <- s3 ~ s2 * s1
+            }
+
+            if ( ! is.null(facetFmla))
+                plot <- plot + facet_grid(as.formula(facetFmla), drop=FALSE)
+
+            print(plot)
+
+            return(TRUE)
         },
         .histogram = function(image, ggtheme, theme, ...) {
 
@@ -933,6 +1012,28 @@ descriptivesClass <- R6::R6Class(
                 legend <- max(25 + 21 + 3.5 + 8.3 * nCharLevels[1] + 28, 25 + 10 * nCharNames[1] + 28)
 
                 width <- yAxis + width + ifelse(nLevels[1] > 1, legend, 0)
+                height <- xAxis + height
+
+            } else if (plot == "qq") {
+
+                xAxis <- 30 + 20
+                yAxis <- 45 + 11 + 8.3 * nCharLevels[1]
+
+                if (nLevels[1] == 1) {
+                    width <- 300
+                    height <- 300
+                } else if (nLevels[2] == 1) {
+                    width <- 200 * nLevels[1]
+                    height <- 200
+                } else if (nLevels[3] == 1) {
+                    width <- 200 * nLevels[2]
+                    height <- 200 * nLevels[1]
+                } else {
+                    width <- 200 * nLevels[1] * nLevels[2]
+                    height <- 200 * nLevels[3]
+                }
+
+                width <- yAxis + width
                 height <- xAxis + height
 
             } else {

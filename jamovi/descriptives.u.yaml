@@ -154,17 +154,29 @@ children:
         style: inline
         stretchFactor: 1
         children:
-          - type: Label
-            label: Histograms
+          - type: LayoutBox
+            margin: small
             stretchFactor: 1
-            icons:
-              - variable-continuous
-            iconPosition: right
             children:
-              - type: CheckBox
-                name: hist
-              - type: CheckBox
-                name: dens
+              - type: Label
+                label: Histograms
+                icons:
+                  - variable-continuous
+                iconPosition: right
+                children:
+                  - type: CheckBox
+                    name: hist
+                  - type: CheckBox
+                    name: dens
+              - type: Label
+                label: Q-Q Plots
+                icons:
+                  - variable-continuous
+                iconPosition: right
+                children:
+                  - type: CheckBox
+                    name: qq
+                    label: Q-Q
           - type: Label
             label: Box Plots
             stretchFactor: 1

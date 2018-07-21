@@ -152,6 +152,14 @@ options:
           title: "Stacked"
       default: jitter
 
+    - name: qq
+      title: Q-Q plot
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Q-Q plots (continuous variables only)
+
     - name: n
       title: N
       type: Bool
