@@ -46,6 +46,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..vars <- jmvcore::OptionVariables$new(
                 "vars",
                 vars,
+                takeFromDataIfMissing=TRUE,
                 permitted=list(
                     "numeric",
                     "factor",
@@ -487,6 +488,7 @@ descriptives <- function(
             `if`( ! missing(vars), vars, NULL),
             `if`( ! missing(splitBy), splitBy, NULL))
 
+    vars <- `if`( ! missing(vars), vars, colnames(data))
     options <- descriptivesOptions$new(
         vars = vars,
         splitBy = splitBy,
