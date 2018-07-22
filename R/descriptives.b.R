@@ -288,6 +288,20 @@ descriptivesClass <- R6::R6Class(
                         group$add(image)
                     }
 
+                    if (self$options$box || self$options$violin || self$options$dot) {
+
+                        size <- private$.plotSize(levels, 'box')
+
+                        image <- jmvcore::Image$new(options=self$options,
+                                                    name="box",
+                                                    renderFun=".boxPlot",
+                                                    width=size[1],
+                                                    height=size[2],
+                                                    clearWith=list("splitBy", "box", "violin", "dot", "dotType"))
+
+                        group$add(image)
+                    }
+
                     if (self$options$qq) {
 
                         size <- private$.plotSize(levels, 'qq')
@@ -299,20 +313,6 @@ descriptivesClass <- R6::R6Class(
                                                     width=size[1],
                                                     height=size[2],
                                                     clearWith=list("splitBy"))
-
-                        group$add(image)
-                    }
-
-                    if (self$options$box || self$options$violin || self$options$dot) {
-
-                        size <- private$.plotSize(levels, 'box')
-
-                        image <- jmvcore::Image$new(options=self$options,
-                                                    name="box",
-                                                    renderFun=".boxPlot",
-                                                    width=size[1],
-                                                    height=size[2],
-                                                    clearWith=list("splitBy", "box", "violin", "dot", "dotType"))
 
                         group$add(image)
                     }
