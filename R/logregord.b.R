@@ -107,6 +107,16 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             for (i in seq_along(self$options$blocks))
                 table$addRow(rowKey=i, values=list(model = i))
 
+            dep <- self$options$dep
+
+            if ( ! is.null(dep) ) {
+                depLevels <- levels(self$data[[dep]])
+            } else {
+                return()
+            }
+
+            table$setNote("note", jmvcore::format("The dependent variable \'{}\' has the following order: {}", dep, paste(depLevels, collapse = ' | ')))
+
         },
         .initModelCompTable = function() {
 
