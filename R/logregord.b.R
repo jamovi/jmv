@@ -357,7 +357,7 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                     row[["z"]] <- wald[index]
                     row[["p"]] <- p[index]
 
-                    if (length(terms[[k]]) == 1) {
+                    if (length(terms) == 1) {
                         row[["lower"]] <- CI[1]
                         row[["upper"]] <- CI[2]
                         row[["oddsLower"]] <- CIOR[1]
