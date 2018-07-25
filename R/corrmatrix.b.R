@@ -240,7 +240,7 @@ corrMatrixClass <- R6::R6Class(
             columnLabels=columns,
             lower=lower,
             upper=upper,
-            diag=diag) + ggtheme +
+            diag=diag) + ggtheme[[1]] +
             theme(axis.text = element_text(size = 9))
 
         print(p)
