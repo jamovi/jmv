@@ -258,7 +258,7 @@ ttestOneSClass <- R6::R6Class(
             else if (hypothesis == 'lt')
                 table$setNote("hyp", jmvcore::format("H\u2090 population mean < {}", testValue))
         },
-        .plot=function(image, ggtheme, theme, ...) {
+        .desc=function(image, ggtheme, theme, ...) {
 
             if (is.null(image$state))
                 return(FALSE)
@@ -277,6 +277,25 @@ ttestOneSClass <- R6::R6Class(
                               plot.margin = ggplot2::margin(5.5, 5.5, 5.5, 5.5))
 
             suppressWarnings(print(plot))
+
+            return(TRUE)
+        },
+        .qq=function(image, ggtheme, theme, ...) {
+
+            y <- self$data[[image$key]]
+            y <- toNumeric(y)
+            y <- scale(y)
+
+            data <- data.frame(y=y)
+
+            plot <- ggplot(data=data) +
+                geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
+                stat_qq(aes(sample=y), size=2, colour=theme$color[1]) +
+                xlab("Theoretical Quantiles") +
+                ylab("Standardized Residuals") +
+                ggtheme
+
+            print(plot)
 
             return(TRUE)
         }

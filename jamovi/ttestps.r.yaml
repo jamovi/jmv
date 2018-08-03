@@ -283,11 +283,25 @@ items:
     - name: plots
       title: Plots
       description: an array of the descriptive plots
-      visible: (plots)
       type: Array
       items: (pairs)
+      clearWith:
+        - miss
       template:
-          type: Image
-          renderFun: .plot
-          clearWith:
-              - miss
+          type: Group
+          items:
+            - name: desc
+              type: Image
+              description: descriptives plot
+              visible: (plots)
+              renderFun: .desc
+              clearWith: []
+            - name: qq
+              type: Image
+              description: Q-Q plot
+              visible: (qq)
+              width: 350
+              height: 300
+              requiresData: true
+              renderFun: .qq
+              clearWith: []

@@ -14,6 +14,7 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             testValue = 0,
             hypothesis = "dt",
             norm = FALSE,
+            qq = FALSE,
             meanDiff = FALSE,
             effectSize = FALSE,
             ci = FALSE,
@@ -70,6 +71,10 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "norm",
                 norm,
                 default=FALSE)
+            private$..qq <- jmvcore::OptionBool$new(
+                "qq",
+                qq,
+                default=FALSE)
             private$..meanDiff <- jmvcore::OptionBool$new(
                 "meanDiff",
                 meanDiff,
@@ -112,6 +117,7 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..testValue)
             self$.addOption(private$..hypothesis)
             self$.addOption(private$..norm)
+            self$.addOption(private$..qq)
             self$.addOption(private$..meanDiff)
             self$.addOption(private$..effectSize)
             self$.addOption(private$..ci)
@@ -129,6 +135,7 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         testValue = function() private$..testValue$value,
         hypothesis = function() private$..hypothesis$value,
         norm = function() private$..norm$value,
+        qq = function() private$..qq$value,
         meanDiff = function() private$..meanDiff$value,
         effectSize = function() private$..effectSize$value,
         ci = function() private$..ci$value,
@@ -145,6 +152,7 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..testValue = NA,
         ..hypothesis = NA,
         ..norm = NA,
+        ..qq = NA,
         ..meanDiff = NA,
         ..effectSize = NA,
         ..ci = NA,
@@ -160,7 +168,8 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
         ttest = function() private$.items[["ttest"]],
         normality = function() private$.items[["normality"]],
         descriptives = function() private$.items[["descriptives"]],
-        plots = function() private$.items[["plots"]]),
+        plots = function() private$.items[["plots"]],
+        qq = function() private$.items[["qq"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -414,10 +423,25 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name="plots",
                 title="Plots",
                 visible="(plots)",
-                renderFun=".plot",
+                renderFun=".desc",
                 clearWith=list(
                     "vars",
-                    "miss")))}))
+                    "miss")))
+            self$add(jmvcore::Array$new(
+                options=options,
+                name="qq",
+                title="Q-Q plots",
+                visible="(qq)",
+                items="(vars)",
+                clearWith=list(
+                    "miss"),
+                template=jmvcore::Image$new(
+                    options=options,
+                    width=350,
+                    height=300,
+                    requiresData=TRUE,
+                    renderFun=".qq",
+                    clearWith=list())))}))
 
 ttestOneSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "ttestOneSBase",
@@ -475,6 +499,8 @@ ttestOneSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{testValue}, and less than \code{testValue} respectively
 #' @param norm \code{TRUE} or \code{FALSE} (default), perform Shapiro-wilk
 #'   tests of normality
+#' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
+#'   residuals
 #' @param meanDiff \code{TRUE} or \code{FALSE} (default), provide means and
 #'   standard deviations
 #' @param effectSize \code{TRUE} or \code{FALSE} (default), provide effect
@@ -497,6 +523,7 @@ ttestOneSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{results$normality} \tab \tab \tab \tab \tab a table containing the normality test results \cr
 #'   \code{results$descriptives} \tab \tab \tab \tab \tab a table containing the descriptives \cr
 #'   \code{results$plots} \tab \tab \tab \tab \tab an image of the descriptive plots \cr
+#'   \code{results$qq} \tab \tab \tab \tab \tab an array of Q-Q plots \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -516,6 +543,7 @@ ttestOneS <- function(
     testValue = 0,
     hypothesis = "dt",
     norm = FALSE,
+    qq = FALSE,
     meanDiff = FALSE,
     effectSize = FALSE,
     ci = FALSE,
@@ -541,6 +569,7 @@ ttestOneS <- function(
         testValue = testValue,
         hypothesis = hypothesis,
         norm = norm,
+        qq = qq,
         meanDiff = meanDiff,
         effectSize = effectSize,
         ci = ci,

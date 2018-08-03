@@ -503,7 +503,7 @@ ttestISClass <- R6::R6Class(
             if (is.null(image$state))
                 return(FALSE)
 
-            y <- self$data[[image$state]]
+            y <- toNumeric(self$data[[image$state]])
             x <- self$data[[self$options$group]]
 
             pieces <- split(y, x)
