@@ -15,6 +15,7 @@ ttestISOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             mann = FALSE,
             hypothesis = "different",
             norm = FALSE,
+            qq = FALSE,
             eqv = FALSE,
             meanDiff = FALSE,
             effectSize = FALSE,
@@ -80,6 +81,10 @@ ttestISOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "norm",
                 norm,
                 default=FALSE)
+            private$..qq <- jmvcore::OptionBool$new(
+                "qq",
+                qq,
+                default=FALSE)
             private$..eqv <- jmvcore::OptionBool$new(
                 "eqv",
                 eqv,
@@ -127,6 +132,7 @@ ttestISOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..mann)
             self$.addOption(private$..hypothesis)
             self$.addOption(private$..norm)
+            self$.addOption(private$..qq)
             self$.addOption(private$..eqv)
             self$.addOption(private$..meanDiff)
             self$.addOption(private$..effectSize)
@@ -146,6 +152,7 @@ ttestISOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         mann = function() private$..mann$value,
         hypothesis = function() private$..hypothesis$value,
         norm = function() private$..norm$value,
+        qq = function() private$..qq$value,
         eqv = function() private$..eqv$value,
         meanDiff = function() private$..meanDiff$value,
         effectSize = function() private$..effectSize$value,
@@ -164,6 +171,7 @@ ttestISOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..mann = NA,
         ..hypothesis = NA,
         ..norm = NA,
+        ..qq = NA,
         ..eqv = NA,
         ..meanDiff = NA,
         ..effectSize = NA,
@@ -573,15 +581,37 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 options=options,
                 name="plots",
                 title="Plots",
-                visible="(plots)",
                 items="(vars)",
-                template=jmvcore::Image$new(
-                    options=options,
-                    title="$key",
-                    renderFun=".plot",
-                    clearWith=list(
-                        "group",
-                        "miss"))))}))
+                clearWith=list(
+                    "group",
+                    "miss"),
+                template=R6::R6Class(
+                    inherit = jmvcore::Group,
+                    active = list(
+                        desc = function() private$.items[["desc"]],
+                        qq = function() private$.items[["qq"]]),
+                    private = list(),
+                    public=list(
+                        initialize=function(options) {
+                            super$initialize(
+                                options=options,
+                                name="undefined",
+                                title="$key")
+                            self$add(jmvcore::Image$new(
+                                options=options,
+                                name="desc",
+                                visible="(plots)",
+                                renderFun=".desc",
+                                clearWith=list()))
+                            self$add(jmvcore::Image$new(
+                                options=options,
+                                name="qq",
+                                width=450,
+                                height=264,
+                                requiresData=TRUE,
+                                visible="(qq)",
+                                renderFun=".qq",
+                                clearWith=list()))}))$new(options=options)))}))
 
 ttestISBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "ttestISBase",
@@ -640,6 +670,8 @@ ttestISBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   respectively
 #' @param norm \code{TRUE} or \code{FALSE} (default), perform Shapiro-Wilk
 #'   test of normality
+#' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
+#'   residuals
 #' @param eqv \code{TRUE} or \code{FALSE} (default), perform Levene's test for
 #'   equality of variances
 #' @param meanDiff \code{TRUE} or \code{FALSE} (default), provide means and
@@ -664,7 +696,7 @@ ttestISBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{results$assum$norm} \tab \tab \tab \tab \tab a table containing the normality tests \cr
 #'   \code{results$assum$eqv} \tab \tab \tab \tab \tab a table containing the equality of variances tests \cr
 #'   \code{results$desc} \tab \tab \tab \tab \tab a table containing the group descriptives \cr
-#'   \code{results$plots} \tab \tab \tab \tab \tab an array of the descriptive plots \cr
+#'   \code{results$plots} \tab \tab \tab \tab \tab an array of groups of plots \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -685,6 +717,7 @@ ttestIS <- function(
     mann = FALSE,
     hypothesis = "different",
     norm = FALSE,
+    qq = FALSE,
     eqv = FALSE,
     meanDiff = FALSE,
     effectSize = FALSE,
@@ -713,6 +746,7 @@ ttestIS <- function(
         mann = mann,
         hypothesis = hypothesis,
         norm = norm,
+        qq = qq,
         eqv = eqv,
         meanDiff = meanDiff,
         effectSize = effectSize,

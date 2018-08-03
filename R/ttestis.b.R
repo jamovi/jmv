@@ -403,9 +403,14 @@ ttestISClass <- R6::R6Class(
                     }
                 }
 
+                if (self$options$qq) {
+                    image <- self$results$plots$get(key=depName)$qq
+                    image$setState(depName)
+                }
+
                 if (self$options$plots) {
 
-                    image <- self$results$plots$get(key=depName)
+                    image <- self$results$plots$get(key=depName)$desc
 
                     if (nrow(dataTTest) > 0) {
 
@@ -470,7 +475,7 @@ ttestISClass <- R6::R6Class(
             else
                 table$setNote("hyp", NULL)
         },
-        .plot=function(image, ggtheme, theme, ...) {
+        .desc=function(image, ggtheme, theme, ...) {
 
             if (is.null(image$state))
                 return(FALSE)
@@ -490,6 +495,34 @@ ttestISClass <- R6::R6Class(
                               plot.margin = ggplot2::margin(5.5, 5.5, 5.5, 5.5))
 
             suppressWarnings(print(plot))
+
+            return(TRUE)
+        },
+        .qq = function(image, ggtheme, theme, ...) {
+
+            if (is.null(image$state))
+                return(FALSE)
+
+            y <- self$data[[image$state]]
+            x <- self$data[[self$options$group]]
+
+            pieces <- split(y, x)
+            # scale groups individually
+            pieces <- lapply(pieces, function(x) as.vector(scale(x)))
+            # join back together
+            y <- unsplit(pieces, x)
+
+            data <- data.frame(x=x, y=y)
+
+            plot <- ggplot(data=data) +
+                geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
+                stat_qq(aes(sample=y), size=2, colour=theme$color[1]) +
+                xlab("Theoretical Quantiles") +
+                ylab("Standardized Residuals") +
+                facet_grid(. ~ x, drop=FALSE) +
+                ggtheme
+
+            print(plot)
 
             return(TRUE)
         }

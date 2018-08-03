@@ -133,7 +133,9 @@ children:
             children:
               - type: CheckBox
                 name: norm
-                label: Normality
+
+              - type: CheckBox
+                name: qq
 
               - type: CheckBox
                 name: eqv
