@@ -508,9 +508,10 @@ ttestISClass <- R6::R6Class(
 
             pieces <- split(y, x)
             # scale groups individually
-            pieces <- lapply(pieces, function(x) as.vector(scale(x)))
+            pieces <- lapply(pieces, function(y) y - mean(y))
             # join back together
             y <- unsplit(pieces, x)
+            y <- scale(y)
 
             data <- data.frame(x=x, y=y)
 
@@ -519,7 +520,6 @@ ttestISClass <- R6::R6Class(
                 stat_qq(aes(sample=y), size=2, colour=theme$color[1]) +
                 xlab("Theoretical Quantiles") +
                 ylab("Standardized Residuals") +
-                facet_grid(. ~ x, drop=FALSE) +
                 ggtheme
 
             print(plot)

@@ -402,8 +402,8 @@ items:
             - name: qq
               type: Image
               description: Q-Q plot
-              width: 450
-              height: 264
+              width: 350
+              height: 300
               requiresData: true
               visible: (qq)
               renderFun: .qq

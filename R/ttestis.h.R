@@ -606,8 +606,8 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                             self$add(jmvcore::Image$new(
                                 options=options,
                                 name="qq",
-                                width=450,
-                                height=264,
+                                width=350,
+                                height=300,
                                 requiresData=TRUE,
                                 visible="(qq)",
                                 renderFun=".qq",
