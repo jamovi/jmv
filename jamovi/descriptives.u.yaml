@@ -6,6 +6,10 @@ children:
   - type: VariableSupplier
     persistentItems: false
     stretchFactor: 1
+    permitted:
+      - numeric
+      - factor
+      - id
     children:
       - type: TargetLayoutBox
         label: Variables
