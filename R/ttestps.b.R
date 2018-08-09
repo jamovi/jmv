@@ -238,9 +238,15 @@ ttestPSClass <- R6::R6Class(
                     }
                 }
 
-                if (self$options$get('plots')) {
+                if (self$options$qq) {
 
-                    image <- plots$get(key=pair)
+                    image <- plots$get(key=pair)$qq
+                    image$setState(pair)
+                }
+
+                if (self$options$plots) {
+
+                    image <- plots$get(key=pair)$desc
 
                     ciWidth <- self$options$get('ciWidth')
                     tail <- qnorm(1 - (100 - ciWidth) / 200)
@@ -294,8 +300,9 @@ ttestPSClass <- R6::R6Class(
                 ttestTable$setNote("hyp", NULL)
 
 
-            pairs <- self$options$get('pairs')
-            descTable <- self$results$get('desc')
+            pairs <- self$options$pairs
+            descTable <- self$results$desc
+            plots <- self$results$plots
 
             for (i in seq_along(pairs)) {
 
@@ -313,9 +320,11 @@ ttestPSClass <- R6::R6Class(
                 row2Key <- paste0(pair$i2, i)
                 descTable$addRow(row1Key)
                 descTable$addRow(row2Key)
+
+                plots$get(pair)$setTitle(paste0(pair, collapse=' - '))
             }
         },
-        .plot=function(image, ggtheme, theme, ...) {
+        .desc=function(image, ggtheme, theme, ...) {
 
             if (is.null(image$state))
                 return(FALSE)
@@ -334,6 +343,29 @@ ttestPSClass <- R6::R6Class(
                               plot.margin = ggplot2::margin(5.5, 5.5, 5.5, 5.5))
 
             suppressWarnings(print(plot))
+
+            return(TRUE)
+        },
+        .qq=function(image, ggtheme, theme, ...) {
+            if (is.null(image$state))
+                return(FALSE)
+
+            pair <- image$state
+            y1 <- toNumeric(self$data[[ pair[[1]] ]])
+            y2 <- toNumeric(self$data[[ pair[[2]] ]])
+            y  <- y2 - y1
+            y  <- scale(y)
+
+            data <- data.frame(y=y)
+
+            plot <- ggplot(data=data) +
+                geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
+                stat_qq(aes(sample=y), size=2, colour=theme$color[1]) +
+                xlab("Theoretical Quantiles") +
+                ylab("Standardized Residuals") +
+                ggtheme
+
+            print(plot)
 
             return(TRUE)
         }

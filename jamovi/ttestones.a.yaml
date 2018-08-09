@@ -101,12 +101,20 @@ options:
             `testValue`, and less than `testValue` respectively
 
     - name: norm
-      title: Normality assumption check
+      title: Normality (Shapiro-Wilk)
       type: Bool
       default: false
       description:
           R: >
             `TRUE` or `FALSE` (default), perform Shapiro-wilk tests of normality
+
+    - name: qq
+      title: Normality (Q-Q plot)
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a Q-Q plot of residuals
 
     - name: meanDiff
       title: Mean and standard error difference

@@ -253,7 +253,24 @@ items:
       description: an image of the descriptive plots
       visible: (plots)
       type: Image
-      renderFun: .plot
+      renderFun: .desc
       clearWith:
         - vars
         - miss
+
+    - name: qq
+      title: Q-Q plots
+      type: Array
+      description: an array of Q-Q plots
+      visible: (qq)
+      items: (vars)
+      clearWith:
+        - miss
+      template:
+        type: Image
+        description: Q-Q plot
+        width: 350
+        height: 300
+        requiresData: true
+        renderFun: .qq
+        clearWith: []
