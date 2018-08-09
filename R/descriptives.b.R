@@ -268,7 +268,7 @@ descriptivesClass <- R6::R6Class(
 
                     }
 
-                } else {
+                } else if (canBeNumeric(column)) {
 
                     names <- na.omit(splitBy[1:3])
                     df <- data[names]
@@ -546,7 +546,7 @@ descriptivesClass <- R6::R6Class(
                         bar$setState(list(data=plotData, names=names, labels=labels))
                     }
 
-                } else {
+                } else if (canBeNumeric(column)) {
 
                     hist  <- group$get('hist')
                     box   <- group$get('box')
