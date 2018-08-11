@@ -16,7 +16,6 @@ anovaRMClass <- R6::R6Class(
             private$.initSpericityTable()
             private$.initLeveneTable()
             private$.initPostHocTables()
-            private$.initDescPlots()
             private$.initEmm()
             private$.initEmmTable()
 
@@ -54,7 +53,6 @@ anovaRMClass <- R6::R6Class(
                 private$.populateLeveneTable()
 
                 private$.populatePostHocTables(result)
-                # private$.prepareDescPlots(data)
 
                 private$.prepareEmmPlots(result, data)
                 private$.populateEmmTables()
@@ -210,32 +208,6 @@ anovaRMClass <- R6::R6Class(
                 }
             }
             private$.postHocRows <- postHocRows
-        },
-        .initDescPlots=function() {
-            isAxis <- ! is.null(self$options$plotHAxis)
-            isMulti <- ! is.null(self$options$plotSepPlots)
-
-            self$results$get('descPlot')$setVisible( ! isMulti && isAxis)
-            self$results$get('descPlots')$setVisible(isMulti)
-
-            if (isMulti) {
-
-                sepPlotsName <- self$options$plotSepPlots
-
-                if (sepPlotsName %in% self$options$bs) {
-                    sepPlotsVar <- self$data[[sepPlotsName]]
-                    sepPlotsLevels <- levels(sepPlotsVar)
-                } else  {
-                    rmLabels <- sapply(self$options$rm, function(x) return(x$label))
-                    rmLevels <- lapply(self$options$rm, function(x) return(x$levels))
-                    sepPlotsLevels <- rmLevels[[which(rmLabels %in% sepPlotsName)]]
-                }
-
-                array <- self$results$descPlots
-
-                for (level in sepPlotsLevels)
-                    array$addItem(level)
-            }
         },
         .initEmm = function() {
 
@@ -652,137 +624,6 @@ anovaRMClass <- R6::R6Class(
                 }
             }
         },
-
-        #### Plot functions ----
-        .prepareDescPlots=function(data) {
-
-            depName <- '.DEPENDENT'
-            groupName <- self$options$plotHAxis
-            linesName <- self$options$plotSepLines
-            plotsName <- self$options$plotSepPlots
-
-            ciWidth   <- self$options$ciWidth
-            errorBarType <- self$options$plotError
-
-            if (length(depName) == 0 || length(groupName) == 0)
-                return()
-
-            by <- list()
-            by[['group']] <- data[[toB64(groupName)]]
-            levels(by[['group']]) <- fromB64(levels(by[['group']]))
-
-            if ( ! is.null(linesName)) {
-                by[['lines']] <- data[[toB64(linesName)]]
-                levels(by[['lines']]) <- fromB64(levels(by[['lines']]))
-            }
-
-            if ( ! is.null(plotsName)) {
-                by[['plots']] <- data[[toB64(plotsName)]]
-                levels(by[['plots']]) <- fromB64(levels(by[['plots']]))
-            }
-
-
-            dep <- data[[toB64(depName)]]
-
-            ciMult <- qt(ciWidth / 200 + .5, nrow(data)-1)
-
-            means <- aggregate(dep, by=by, mean, simplify=FALSE)
-            ses   <- aggregate(dep, by=by, function(x) { sd(x) / sqrt(length(x)) }, simplify=FALSE)
-            cis   <- aggregate(dep, by=by, function(x) { sd(x) / sqrt(length(x)) * ciMult }, simplify=FALSE)
-
-            plotData <- data.frame(group=means$group)
-            if ( ! is.null(linesName))
-                plotData <- cbind(plotData, lines=means$lines)
-            if ( ! is.null(plotsName))
-                plotData <- cbind(plotData, plots=means$plots)
-
-            plotData <- cbind(plotData, mean=unlist(means$x))
-
-            if (errorBarType == 'ci')
-                plotData <- cbind(plotData, err=unlist(cis$x))
-            else
-                plotData <- cbind(plotData, err=unlist(ses$x))
-
-            plotData <- cbind(plotData, lower=plotData$mean-plotData$err, upper=plotData$mean+plotData$err)
-
-            if (self$options$plotError != 'none') {
-                yAxisRange <- pretty(c(plotData$lower, plotData$upper))
-            } else {
-                yAxisRange <- plotData$mean
-            }
-
-            if (is.null(plotsName)) {
-
-                image <- self$results$get('descPlot')
-                image$setState(list(data=plotData, range=yAxisRange))
-
-            } else {
-
-                images <- self$results$descPlots
-                for (level in images$itemKeys) {
-                    image <- images$get(key=level)
-                    image$setState(list(data=subset(plotData, plots == level), range=yAxisRange))
-                }
-            }
-        },
-        .descPlot=function(image, ggtheme, theme, ...) {
-
-            if (is.null(image$state))
-                return(FALSE)
-
-            groupName <- self$options$plotHAxis
-            linesName <- self$options$plotSepLines
-            plotsName <- self$options$plotSepPlots
-
-            if (self$options$plotError != 'none')
-                dodge <- position_dodge(0.2)
-            else
-                dodge <- position_dodge(0)
-
-
-            errorType <- ''
-            if (self$options$plotError != 'none') {
-                if (self$options$plotError == 'ci') {
-                    ciWidth <- self$options$ciWidth
-                    errorType <- paste0('(', ciWidth, '% CI)')
-                } else {
-                    errorType <- '(SE)'
-                }
-            }
-
-            if ( ! is.null(linesName)) {
-
-                p <- ggplot(data=image$state$data, aes(x=group, y=mean, group=lines, colour=lines)) +
-                    geom_line(size=.8, position=dodge) +
-                    labs(x=groupName, y="", colour=paste(linesName, errorType)) +
-                    scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
-                    ggtheme
-
-                if (self$options$plotError != 'none')
-                    p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, width=.1, group=lines), size=.8, position=dodge)
-
-                p <- p + geom_point(shape=21, fill='white', size=3, position=dodge)
-
-                print(p)
-
-            } else {
-
-                p <- ggplot(data=image$state$data) +
-                    labs(x=groupName, y="", colour=paste("", errorType)) +
-                    scale_colour_manual(name=paste("", errorType), values=c(colour=theme$color[1]), labels='') +
-                    scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
-                    ggtheme
-
-                if (self$options$plotError != 'none')
-                    p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, colour='colour', width=.1), size=.8)
-
-                p <- p + geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill=theme$fill[1], size=3)
-
-                print(p)
-            }
-
-            TRUE
-        },
         .prepareEmmPlots = function(model, data) {
 
             emMeans <- self$options$emMeans
@@ -805,9 +646,6 @@ anovaRMClass <- R6::R6Class(
                         weights <- 'equal'
                     else
                         weights <- 'cells'
-
-                    print(model)
-                    print(formula)
 
                     suppressMessages({
                         mm <- try(

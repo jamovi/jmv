@@ -365,39 +365,6 @@ items:
             - rmTerms
             - bsTerms
 
-    - name: descPlot
-      title: Descriptive Plot
-      visible: (plotHAxis)
-      type: Image
-      width: 500
-      height: 300
-      renderFun: .descPlot
-      clearWith:
-        - plotHAxis
-        - plotSepLines
-        - plotSepPlots
-        - rm
-        - rmCells
-        - plotError
-        - ciWidth
-
-    - name: descPlots
-      title: Descriptive Plots
-      visible: (plotSepPlots)
-      type: Array
-      template:
-          title: $key
-          type: Image
-          renderFun: .descPlot
-          clearWith:
-              - plotHAxis
-              - plotSepLines
-              - plotSepPlots
-              - rm
-              - rmCells
-              - plotError
-              - ciWidth
-
     - name: emm
       title: Estimated Marginal Means
       type: Array
