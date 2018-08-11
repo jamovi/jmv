@@ -25,11 +25,6 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             postHoc = NULL,
             postHocCorr = list(
                 "tukey"),
-            plotHAxis = NULL,
-            plotSepLines = NULL,
-            plotSepPlots = NULL,
-            plotError = "ci",
-            ciWidth = 95,
             descStats = FALSE,
             emMeans = list(
                 list()),
@@ -185,32 +180,6 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "holm"),
                 default=list(
                     "tukey"))
-            private$..plotHAxis <- jmvcore::OptionVariable$new(
-                "plotHAxis",
-                plotHAxis,
-                default=NULL)
-            private$..plotSepLines <- jmvcore::OptionVariable$new(
-                "plotSepLines",
-                plotSepLines,
-                default=NULL)
-            private$..plotSepPlots <- jmvcore::OptionVariable$new(
-                "plotSepPlots",
-                plotSepPlots,
-                default=NULL)
-            private$..plotError <- jmvcore::OptionList$new(
-                "plotError",
-                plotError,
-                options=list(
-                    "none",
-                    "ci",
-                    "se"),
-                default="ci")
-            private$..ciWidth <- jmvcore::OptionNumber$new(
-                "ciWidth",
-                ciWidth,
-                min=50,
-                max=99.9,
-                default=95)
             private$..descStats <- jmvcore::OptionBool$new(
                 "descStats",
                 descStats,
@@ -260,11 +229,6 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..contrasts)
             self$.addOption(private$..postHoc)
             self$.addOption(private$..postHocCorr)
-            self$.addOption(private$..plotHAxis)
-            self$.addOption(private$..plotSepLines)
-            self$.addOption(private$..plotSepPlots)
-            self$.addOption(private$..plotError)
-            self$.addOption(private$..ciWidth)
             self$.addOption(private$..descStats)
             self$.addOption(private$..emMeans)
             self$.addOption(private$..ciEmm)
@@ -288,11 +252,6 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         contrasts = function() private$..contrasts$value,
         postHoc = function() private$..postHoc$value,
         postHocCorr = function() private$..postHocCorr$value,
-        plotHAxis = function() private$..plotHAxis$value,
-        plotSepLines = function() private$..plotSepLines$value,
-        plotSepPlots = function() private$..plotSepPlots$value,
-        plotError = function() private$..plotError$value,
-        ciWidth = function() private$..ciWidth$value,
         descStats = function() private$..descStats$value,
         emMeans = function() private$..emMeans$value,
         ciEmm = function() private$..ciEmm$value,
@@ -315,11 +274,6 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..contrasts = NA,
         ..postHoc = NA,
         ..postHocCorr = NA,
-        ..plotHAxis = NA,
-        ..plotSepLines = NA,
-        ..plotSepPlots = NA,
-        ..plotError = NA,
-        ..ciWidth = NA,
         ..descStats = NA,
         ..emMeans = NA,
         ..ciEmm = NA,
@@ -337,8 +291,6 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
         assump = function() private$.items[["assump"]],
         contrasts = function() private$.items[["contrasts"]],
         postHoc = function() private$.items[["postHoc"]],
-        descPlot = function() private$.items[["descPlot"]],
-        descPlots = function() private$.items[["descPlots"]],
         emm = function() private$.items[["emm"]]),
     private = list(),
     public=list(
@@ -719,39 +671,6 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         "cov",
                         "rmTerms",
                         "bsTerms"))))
-            self$add(jmvcore::Image$new(
-                options=options,
-                name="descPlot",
-                title="Descriptive Plot",
-                visible="(plotHAxis)",
-                width=500,
-                height=300,
-                renderFun=".descPlot",
-                clearWith=list(
-                    "plotHAxis",
-                    "plotSepLines",
-                    "plotSepPlots",
-                    "rm",
-                    "rmCells",
-                    "plotError",
-                    "ciWidth")))
-            self$add(jmvcore::Array$new(
-                options=options,
-                name="descPlots",
-                title="Descriptive Plots",
-                visible="(plotSepPlots)",
-                template=jmvcore::Image$new(
-                    options=options,
-                    title="$key",
-                    renderFun=".descPlot",
-                    clearWith=list(
-                        "plotHAxis",
-                        "plotSepLines",
-                        "plotSepPlots",
-                        "rm",
-                        "rmCells",
-                        "plotError",
-                        "ciWidth"))))
             self$add(jmvcore::Array$new(
                 options=options,
                 name="emm",
@@ -909,17 +828,6 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param postHocCorr one or more of \code{'none'}, \code{'tukey'} (default),
 #'   \code{'scheffe'}, \code{'bonf'}, or \code{'holm'}; use no, Tukey, Scheffe,
 #'   Bonferroni and Holm posthoc corrections, respectively
-#' @param plotHAxis a string naming the variable placed on the horizontal axis
-#'   of the plot
-#' @param plotSepLines a string naming the variable represented as separate
-#'   lines on the plot
-#' @param plotSepPlots a string naming the variable to separate over to form
-#'   multiple plots
-#' @param plotError \code{'none'}, \code{'ci'} (default), or \code{'se'}. Use
-#'   no error bars, use confidence intervals, or use standard errors on the
-#'   plots, respectively
-#' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the
-#'   confidence interval width
 #' @param descStats \code{TRUE} or \code{FALSE} (default), provide descriptive
 #'   statistics
 #' @param emMeans a list of lists specifying the variables for which the
@@ -943,8 +851,6 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{results$assump$leveneTable} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$contrasts} \tab \tab \tab \tab \tab an array of tables \cr
 #'   \code{results$postHoc} \tab \tab \tab \tab \tab an array of tables \cr
-#'   \code{results$descPlot} \tab \tab \tab \tab \tab an image \cr
-#'   \code{results$descPlots} \tab \tab \tab \tab \tab an array of images \cr
 #'   \code{results$emm} \tab \tab \tab \tab \tab an array of the estimated marginal means plots + tables \cr
 #' }
 #'
@@ -976,11 +882,6 @@ anovaRM <- function(
     postHoc = NULL,
     postHocCorr = list(
                 "tukey"),
-    plotHAxis = NULL,
-    plotSepLines = NULL,
-    plotSepPlots = NULL,
-    plotError = "ci",
-    ciWidth = 95,
     descStats = FALSE,
     emMeans = list(
                 list()),
@@ -997,10 +898,7 @@ anovaRM <- function(
         data <- jmvcore:::marshalData(
             parent.frame(),
             `if`( ! missing(bs), bs, NULL),
-            `if`( ! missing(cov), cov, NULL),
-            `if`( ! missing(plotHAxis), plotHAxis, NULL),
-            `if`( ! missing(plotSepLines), plotSepLines, NULL),
-            `if`( ! missing(plotSepPlots), plotSepPlots, NULL))
+            `if`( ! missing(cov), cov, NULL))
 
     options <- anovaRMOptions$new(
         rm = rm,
@@ -1017,11 +915,6 @@ anovaRM <- function(
         contrasts = contrasts,
         postHoc = postHoc,
         postHocCorr = postHocCorr,
-        plotHAxis = plotHAxis,
-        plotSepLines = plotSepLines,
-        plotSepPlots = plotSepPlots,
-        plotError = plotError,
-        ciWidth = ciWidth,
         descStats = descStats,
         emMeans = emMeans,
         ciEmm = ciEmm,

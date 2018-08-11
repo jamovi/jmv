@@ -236,61 +236,6 @@ children:
                 optionPart: holm
                 optionName: postHocCorr
   - type: CollapseBox
-    stage: 3
-    label: Descriptive Plots
-    collapsed: true
-    stretchFactor: 1
-    children:
-      - type: VariableSupplier
-        name: plotsSupplier
-        populate: manual
-        stretchFactor: 1
-        persistentItems: false
-        events:
-          change: './anovarm.events::onChange_plotsSupplier'
-        children:
-          - type: TargetLayoutBox
-            children:
-              - type: VariablesListBox
-                name: plotHAxis
-                isTarget: true
-                maxItemCount: 1
-          - type: TargetLayoutBox
-            children:
-              - type: VariablesListBox
-                name: plotSepLines
-                isTarget: true
-                maxItemCount: 1
-          - type: TargetLayoutBox
-            children:
-              - type: VariablesListBox
-                name: plotSepPlots
-                isTarget: true
-                maxItemCount: 1
-      - type: Label
-        label: Error bars
-        children:
-          - type: RadioButton
-            name: plotError_none
-            optionName: plotError
-            optionPart: none
-          - type: RadioButton
-            name: plotError_ci
-            optionName: plotError
-            optionPart: ci
-            children:
-              - type: TextBox
-                name: ciWidth
-                label: Interval
-                suffix: '%'
-                format: number
-                inputPattern: '[0-9]+'
-                enable: (plotError_ci)
-          - type: RadioButton
-            name: plotError_se
-            optionName: plotError
-            optionPart: se
-  - type: CollapseBox
     label: Additional Options
     stage: 2
     collapsed: true
@@ -316,7 +261,7 @@ children:
             persistentItems: true
             stretchFactor: 1
             events:
-                change: './anovarm.events::onChange_emMeansSupplier'
+              change: './anovarm.events::onChange_emMeansSupplier'
             children:
               - type: TargetLayoutBox
                 children:
