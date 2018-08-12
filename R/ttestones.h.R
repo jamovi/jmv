@@ -21,7 +21,8 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             ciWidth = 95,
             desc = FALSE,
             plots = FALSE,
-            miss = "perAnalysis", ...) {
+            miss = "perAnalysis",
+            mann = FALSE, ...) {
 
             super$initialize(
                 package='jmv',
@@ -108,6 +109,11 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "perAnalysis",
                     "listwise"),
                 default="perAnalysis")
+            private$..mann <- jmvcore::OptionBool$new(
+                "mann",
+                mann,
+                default=FALSE,
+                hidden=TRUE)
 
             self$.addOption(private$..vars)
             self$.addOption(private$..students)
@@ -125,6 +131,7 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..desc)
             self$.addOption(private$..plots)
             self$.addOption(private$..miss)
+            self$.addOption(private$..mann)
         }),
     active = list(
         vars = function() private$..vars$value,
@@ -142,7 +149,8 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ciWidth = function() private$..ciWidth$value,
         desc = function() private$..desc$value,
         plots = function() private$..plots$value,
-        miss = function() private$..miss$value),
+        miss = function() private$..miss$value,
+        mann = function() private$..mann$value),
     private = list(
         ..vars = NA,
         ..students = NA,
@@ -159,7 +167,8 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..ciWidth = NA,
         ..desc = NA,
         ..plots = NA,
-        ..miss = NA)
+        ..miss = NA,
+        ..mann = NA)
 )
 
 ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
@@ -316,50 +325,50 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `content`="($key)", 
                         `type`="text", 
                         `combineBelow`=TRUE, 
-                        `visible`="(wilcoxon)"),
+                        `visible`="(wilcoxon || mann)"),
                     list(
                         `name`="name[wilc]", 
                         `title`="", 
                         `content`="Wilcoxon W", 
                         `type`="text", 
-                        `visible`="(wilcoxon)"),
+                        `visible`="(wilcoxon || mann)"),
                     list(
                         `name`="stat[wilc]", 
                         `title`="stat", 
                         `type`="number", 
-                        `visible`="(wilcoxon)"),
+                        `visible`="(wilcoxon || mann)"),
                     list(
                         `name`="err[wilc]", 
                         `title`="\u00B1%", 
                         `type`="number", 
-                        `visible`="(wilcoxon && bf)", 
+                        `visible`="(bf && (wilcoxon || mann))", 
                         `content`=""),
                     list(
                         `name`="p[wilc]", 
                         `title`="p", 
                         `type`="number", 
                         `format`="zto,pvalue", 
-                        `visible`="(wilcoxon)"),
+                        `visible`="(wilcoxon || mann)"),
                     list(
                         `name`="md[wilc]", 
                         `title`="Mean difference", 
                         `type`="number", 
-                        `visible`="(meanDiff && wilcoxon)"),
+                        `visible`="(meanDiff && (wilcoxon || mann))"),
                     list(
                         `name`="cil[wilc]", 
                         `title`="Lower", 
                         `type`="number", 
-                        `visible`="(ci && wilcoxon)"),
+                        `visible`="(ci && (wilcoxon || mann))"),
                     list(
                         `name`="ciu[wilc]", 
                         `title`="Upper", 
                         `type`="number", 
-                        `visible`="(ci && wilcoxon)"),
+                        `visible`="(ci && (wilcoxon || mann))"),
                     list(
                         `name`="es[wilc]", 
                         `title`="Cohen's d", 
                         `type`="number", 
-                        `visible`="(effectSize && wilcoxon)"))))
+                        `visible`="(effectSize && (wilcoxon || mann))"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="normality",
@@ -517,6 +526,7 @@ ttestOneSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   missing values; \code{'perAnalysis'} excludes missing values for individual
 #'   dependent variables, \code{'listwise'} excludes a row from all analyses if
 #'   one of its entries is missing.
+#' @param mann deprecated
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$ttest} \tab \tab \tab \tab \tab a table containing the t-test results \cr
@@ -550,7 +560,8 @@ ttestOneS <- function(
     ciWidth = 95,
     desc = FALSE,
     plots = FALSE,
-    miss = "perAnalysis") {
+    miss = "perAnalysis",
+    mann = FALSE) {
 
     if ( ! requireNamespace('jmvcore'))
         stop('ttestOneS requires jmvcore to be installed (restart may be required)')
@@ -576,7 +587,8 @@ ttestOneS <- function(
         ciWidth = ciWidth,
         desc = desc,
         plots = plots,
-        miss = miss)
+        miss = miss,
+        mann = mann)
 
     results <- ttestOneSResults$new(
         options = options)

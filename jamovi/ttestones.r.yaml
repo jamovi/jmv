@@ -143,50 +143,50 @@ items:
           content: ($key)
           type: text
           combineBelow: true
-          visible: (wilcoxon)
+          visible: (wilcoxon || mann)
 
         - name: name[wilc]
           title: ''
           content: Wilcoxon W
           type: text
-          visible: (wilcoxon)
+          visible: (wilcoxon || mann)
 
         - name: stat[wilc]
           title: stat
           type: number
-          visible: (wilcoxon)
+          visible: (wilcoxon || mann)
 
         - name: err[wilc]
           title: '±%'
           type: number
-          visible: (wilcoxon && bf)
+          visible: (bf && (wilcoxon || mann))
           content: ''
 
         - name: p[wilc]
           title: p
           type: number
           format: zto,pvalue
-          visible: (wilcoxon)
+          visible: (wilcoxon || mann)
 
         - name: md[wilc]
           title: Mean difference
           type: number
-          visible: (meanDiff && wilcoxon)
+          visible: (meanDiff && (wilcoxon || mann))
 
         - name: cil[wilc]
           title: Lower
           type: number
-          visible: (ci && wilcoxon)
+          visible: (ci && (wilcoxon || mann))
 
         - name: ciu[wilc]
           title: Upper
           type: number
-          visible: (ci && wilcoxon)
+          visible: (ci && (wilcoxon || mann))
 
         - name: es[wilc]
           title: Cohen's d
           type: number
-          visible: (effectSize && wilcoxon)
+          visible: (effectSize && (wilcoxon || mann))
 
     - name: normality
       title: Test of Normality (Shapiro-Wilk)

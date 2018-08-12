@@ -97,7 +97,7 @@ ttestOneSClass <- R6::R6Class(
                     }
                 }
 
-                if (self$options$get("wilcoxon")) {
+                if (self$options$wilcoxon || self$options$mann) {
 
                     if (is.factor(column))
                         res <- createError('Variable is not numeric')
