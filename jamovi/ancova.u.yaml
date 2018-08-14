@@ -75,7 +75,7 @@ children:
                 events:
                   change: './ancova.events::onChange_modelTerms'
                 template:
-                    type: TermLabel
+                  type: TermLabel
       - type: LayoutBox
         children:
           - type: ComboBox
@@ -107,13 +107,13 @@ children:
             stretchFactor: 1
             maxWidth: 300
             template:
-                type: VariableLabel
+              type: VariableLabel
           - name: type
             label: null
             selectable: false
             stretchFactor: 0.5
             template:
-                type: ComboBox
+              type: ComboBox
   - type: CollapseBox
     label: Post Hoc Tests
     collapsed: true
@@ -134,7 +134,7 @@ children:
                 name: postHoc
                 isTarget: true
                 template:
-                    type: TermLabel
+                  type: TermLabel
       - type: LayoutBox
         margin: large
         children:
@@ -162,66 +162,88 @@ children:
                 optionPart: holm
                 optionName: postHocCorr
   - type: CollapseBox
-    label: Descriptive Plots
+    label: Estimated Marginal Means
     collapsed: true
     stretchFactor: 1
     children:
-      - type: VariableSupplier
-        name: plotsSupplier
-        populate: manual
+      - type: LayoutBox
+        margin: large
         stretchFactor: 1
-        persistentItems: false
-        events:
-          change: './ancova.events::onChange_plotsSupplier'
         children:
-          - type: TargetLayoutBox
+          - type: Supplier
+            name: emMeansSupplier
+            format: variable
+            persistentItems: true
+            stretchFactor: 1
+            events:
+              change: './ancova.events::onChange_emMeansSupplier'
             children:
-              - type: VariablesListBox
-                name: plotHAxis
-                isTarget: true
-                maxItemCount: 1
-          - type: TargetLayoutBox
-            children:
-              - type: VariablesListBox
-                name: plotSepLines
-                isTarget: true
-                maxItemCount: 1
-          - type: TargetLayoutBox
-            children:
-              - type: VariablesListBox
-                name: plotSepPlots
-                isTarget: true
-                maxItemCount: 1
-      - type: Label
-        label: Display
+              - type: TargetLayoutBox
+                children:
+                  - type: ListBox
+                    name: emMeans
+                    height: large
+                    addButton: Add New Term
+                    events:
+                      listItemAdded: './ancova.events::onEvent_emMeans_listItemsChanged'
+                      listItemRemoved: './ancova.events::onEvent_emMeans_listItemsChanged'
+                    selectable: true
+                    templateName: linreg-block-template
+                    template:
+                      type: LayoutBox
+                      margin: normal
+                      targetArea: true
+                      children:
+                        - type: Label
+                          label: Term 1
+                          name: blockName
+                          stretchFactor: 1
+                          margin: normal
+                        - type: VariablesListBox
+                          name: blockList
+                          isTarget: true
+                          valueFilter: unique
+                          height: auto
+                          maxItemCount: 3
+                          ghostText: drag variables here
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
         children:
-          - type: RadioButton
-            name: errBarDef_none
-            optionName: plotError
-            optionPart: none
-          - type: RadioButton
-            name: errBarDef_ci
-            optionName: plotError
-            optionPart: ci
+          - type: LayoutBox
+            cell:
+              column: 0
+              row: 0
+            stretchFactor: 1
             children:
-              - type: TextBox
-                name: ciWidth
-                label: Interval
-                suffix: '%'
-                format: number
-                inputPattern: '[0-9]+'
-                enable: (errBarDef_ci)
-          - type: RadioButton
-            name: errBarDef_se
-            optionName: plotError
-            optionPart: se
-  - type: CollapseBox
-    label: Additional Options
-    collapsed: true
-    stretchFactor: 1
-    children:
-      - type: Label
-        label: Display
-        children:
-          - type: CheckBox
-            name: descStats
+              - type: Label
+                label: General Options
+                children:
+                  - type: CheckBox
+                    name: emmWeights
+                  - type: TextBox
+                    name: ciWidthEmm
+                    label: Confidence interval
+                    suffix: '%'
+                    format: number
+                    inputPattern: '[0-9]+'
+          - type: LayoutBox
+            cell:
+              column: 1
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Output
+                children:
+                  - type: CheckBox
+                    name: emmPlots
+                  - type: CheckBox
+                    name: emmTables
+              - type: Label
+                label: Plot
+                children:
+                  - type: ComboBox
+                    name: emmPlotError
+                  - type: CheckBox
+                    name: emmPlotData

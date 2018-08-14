@@ -4,35 +4,14 @@ ancovaClass <- R6::R6Class(
     "ancovaClass",
     inherit=ancovaBase,
     private=list(
-        .model=NA,
-        .postHocRows=NA,
-        .cleanData=function() {
+        #### Member variables ----
+        .model = NA,
+        .postHocRows = NA,
+        emMeans = list(),
 
-            dep <- self$options$dep
-            factors <- self$options$factors
-
-            covs <- NULL
-            if ('covs' %in% names(self$options))
-                covs <- self$options$covs
-
-            data <- self$data
-
-            if ( ! is.null(dep))
-                data[[dep]] <- jmvcore::toNumeric(data[[dep]])
-
-            for (factor in factors)
-                data[[factor]] <- as.factor(data[[factor]])
-
-            for (covariate in covs)
-                data[[covariate]] <- jmvcore::toNumeric(data[[covariate]])
-
-            data <- na.omit(data)
-
-            data
-        },
+        #### Init + run functions ----
         .init=function() {
 
-            dep <- self$options$dep
             factors <- self$options$factors
             modelTerms <- private$.modelTerms()
 
@@ -41,33 +20,142 @@ ancovaClass <- R6::R6Class(
 
             data <- private$.cleanData()
 
-            anovaTable    <- self$results$main
-            postHocTables <- self$results$postHoc
-            contrastsTables <- self$results$contrasts
+            private$.initMainTable()
+            private$.initContrastTables(data)
+            private$.initPostHoc(data)
+            private$.initEmm()
+            private$.initEmmTable()
 
-            # main table
+        },
+        .run=function() {
+
+            dep <- self$options$dep
+            factors <- self$options$factors
+            modelTerms <- private$.modelTerms()
+
+            if (is.null(dep) || length(factors) == 0 || length(modelTerms) == 0)
+                return()
+
+            data <- private$.cleanData()
+
+            dataB64 <- lapply(data, function(x) {
+                if (is.factor(x))
+                    levels(x) <- toB64(levels(x))
+                return(x)
+            })
+
+            private$.errorCheck(dataB64)
+
+            results <- private$.compute(dataB64)
+
+            private$.populateMainTable(results)
+            private$.populateContrasts(dataB64)
+            private$.populateLevenes(dataB64)
+            private$.populatePostHoc(dataB64)
+            private$.prepareEmmPlots(data)
+            private$.populateEmmTables()
+        },
+
+        #### Compute results ----
+        .compute = function(data) {
+
+            dep <- self$options$dep
+            factors <- self$options$factors
+            modelTerms <- private$.modelTerms()
+
+            suppressWarnings({
+
+                base::options(contrasts = c("contr.sum","contr.poly"))
+
+                for (contrast in self$options$contrasts) {
+                    levels <- base::levels(data[[contrast$var]])
+                    stats::contrasts(data[[contrast$var]]) <- private$.createContrasts(levels, contrast$type)
+                }
+
+                formula <- jmvcore::constructFormula(dep, modelTerms)
+                formula <- stats::as.formula(formula)
+
+                model <- stats::aov(formula, data)
+                private$.model <- model
+                self$results$.setModel(model)
+
+                singular <- NULL
+
+                if (self$options$ss == '1') {
+
+                    results <- try(stats::anova(private$.model), silent=TRUE)
+
+                } else if (self$options$ss == '2') {
+
+                    results <- try(car::Anova(private$.model, type=2, singular.ok=FALSE), silent=TRUE)
+                    if (isError(results)) {
+                        message <- extractErrorMessage(results)
+                        if (message == 'there are aliased coefficients in the model')
+                            singular <- 'Singular fit encountered; one or more predictor variables are a linear combination of other predictor variables'
+                        results <- try(car::Anova(private$.model, type=2, singular.ok=TRUE), silent=TRUE)
+                    }
+
+                } else {
+
+                    results <- try({
+                        r <- car::Anova(private$.model, type=3, singular.ok=FALSE, silent=TRUE)
+                        r <- r[-1,]
+                    })
+
+                    if (isError(results)) {
+                        message <- extractErrorMessage(results)
+                        if (message == 'there are aliased coefficients in the model')
+                            singular <- 'Singular fit encountered; one or more predictor variables are a linear combination of other predictor variables'
+                        results <- try({
+                            r <- car::Anova(private$.model, type=3, singular.ok=TRUE, silent=TRUE)
+                            r <- r[-1,]
+                        })
+                    }
+                }
+
+                if (isError(results)) {
+                    message <- extractErrorMessage(results)
+                    if (message == 'residual df = 0')
+                        reject('Residual sum of squares and/or degrees of freedom is zero, indicating a perfect fit')
+                }
+
+                if (results['Residuals', 'Sum Sq'] == 0 || results['Residuals', 'Df'] == 0)
+                    reject('Residual sum of squares and/or degrees of freedom is zero, indicating a perfect fit')
+
+            }) # suppressWarnings
+
+            return(list(r=results, singular=singular))
+
+        },
+
+        #### Init tables/plots functions ----
+        .initMainTable = function() {
+
+            table    <- self$results$main
 
             modelTerms <- private$.modelTerms()
             if (length(modelTerms) > 0) {
                 for (term in modelTerms)
-                    anovaTable$addRow(rowKey=term, list(name=stringifyTerm(term)))
-                anovaTable$addFormat(col=1, rowNo=1,                  format=Cell.BEGIN_GROUP)
-                anovaTable$addFormat(col=1, rowNo=length(modelTerms), format=Cell.END_GROUP)
+                    table$addRow(rowKey=term, list(name=stringifyTerm(term)))
+                table$addFormat(col=1, rowNo=1,                  format=Cell.BEGIN_GROUP)
+                table$addFormat(col=1, rowNo=length(modelTerms), format=Cell.END_GROUP)
             } else {
-                anovaTable$addRow(rowKey='.', list(name='.'))
-                anovaTable$addFormat(col=1, rowKey='.', format=Cell.BEGIN_END_GROUP)
+                table$addRow(rowKey='.', list(name='.'))
+                table$addFormat(col=1, rowKey='.', format=Cell.BEGIN_END_GROUP)
             }
 
-            anovaTable$addRow(rowKey='', list(name='Residuals'))
-            anovaTable$addFormat(col=1, rowKey='', format=Cell.BEGIN_END_GROUP)
+            table$addRow(rowKey='', list(name='Residuals'))
+            table$addFormat(col=1, rowKey='', format=Cell.BEGIN_END_GROUP)
 
+        },
+        .initContrastTables = function(data) {
 
-            # contrasts
+            tables <- self$results$contrasts
 
             for (contrast in self$options$contrasts) {
                 if (contrast$type == 'none')
                     next()
-                table <- contrastsTables$addItem(contrast)
+                table <- tables$addItem(contrast)
 
                 var <- data[[contrast$var]]
                 levels <- base::levels(var)
@@ -77,193 +165,6 @@ ancovaClass <- R6::R6Class(
                     table$addRow(rowKey=label, list(contrast=label))
             }
 
-
-            # post hoc
-            private$.initPostHoc(data)
-
-            # descriptives
-
-            descTable <- self$results$desc
-            factorNames <- self$options$factors
-
-            if (length(factorNames) > 0) {
-
-                data <- select(data, rev(factorNames))
-                al <- as.list(data)
-                names(al) <- rev(paste0('f', seq_len(length(al))))
-                ll <- sapply(al, base::levels, simplify=FALSE)
-                ll$stringsAsFactors <- FALSE
-                grid <- do.call(base::expand.grid, ll)
-                grid <- rev(grid)
-
-                for (i in seq_len(ncol(grid))) {
-                    colName <- colnames(grid)[[i]]
-                    descTable$addColumn(name=colName, title=factorNames[[i]], index=i)
-                }
-
-                for (rowNo in seq_len(nrow(grid))) {
-                    row <- grid[rowNo,]
-                    if ( ! is.list(row))
-                        row <- list(f1=row)
-                    descTable$addRow(rowKey=row, values=row)
-                }
-            }
-
-            # descriptives plots
-            private$.initDescPlots(data)
-
-        },
-        .run=function() {
-
-            suppressWarnings({
-
-            dep <- self$options$dep
-            factors <- self$options$factors
-            modelTerms <- private$.modelTerms()
-
-            if (is.null(dep) || length(factors) == 0 || length(modelTerms) == 0)
-                return()
-
-            base::options(contrasts = c("contr.sum","contr.poly"))
-
-            data <- private$.cleanData()
-
-            data <- lapply(data, function(x) {
-                if (is.factor(x))
-                    levels(x) <- toB64(levels(x))
-                return(x)
-            })
-
-            if (is.factor(data[[dep]]))
-                reject('Dependent variable must be numeric')
-
-            for (factorName in factors) {
-                lvls <- base::levels(data[[factorName]])
-                if (length(lvls) == 1)
-                    reject("Factor '{}' contains only a single level", factorName=factorName)
-                else if (length(lvls) == 0)
-                    reject("Factor '{}' contains no data", factorName=factorName)
-            }
-
-            for (contrast in self$options$contrasts) {
-               levels <- base::levels(data[[contrast$var]])
-               stats::contrasts(data[[contrast$var]]) <- private$.createContrasts(levels, contrast$type)
-            }
-
-            formula <- jmvcore::constructFormula(dep, modelTerms)
-            formula <- stats::as.formula(formula)
-
-            model <- stats::aov(formula, data)
-            private$.model <- model
-            self$results$.setModel(model)
-
-            singular <- NULL
-
-            if (self$options$ss == '1') {
-
-                results <- try(stats::anova(private$.model), silent=TRUE)
-
-            } else if (self$options$ss == '2') {
-
-                results <- try(car::Anova(private$.model, type=2, singular.ok=FALSE), silent=TRUE)
-                if (isError(results)) {
-                    message <- extractErrorMessage(results)
-                    if (message == 'there are aliased coefficients in the model')
-                        singular <- 'Singular fit encountered; one or more predictor variables are a linear combination of other predictor variables'
-                    results <- try(car::Anova(private$.model, type=2, singular.ok=TRUE), silent=TRUE)
-                }
-
-            } else {
-
-                results <- try({
-                    r <- car::Anova(private$.model, type=3, singular.ok=FALSE, silent=TRUE)
-                    r <- r[-1,]
-                })
-
-                if (isError(results)) {
-                    message <- extractErrorMessage(results)
-                    if (message == 'there are aliased coefficients in the model')
-                        singular <- 'Singular fit encountered; one or more predictor variables are a linear combination of other predictor variables'
-                    results <- try({
-                        r <- car::Anova(private$.model, type=3, singular.ok=TRUE, silent=TRUE)
-                        r <- r[-1,]
-                    })
-                }
-            }
-
-            if (isError(results)) {
-                message <- extractErrorMessage(results)
-                if (message == 'residual df = 0')
-                    reject('Residual sum of squares and/or degrees of freedom is zero, indicating a perfect fit')
-            }
-
-            if (results['Residuals', 'Sum Sq'] == 0 || results['Residuals', 'Df'] == 0)
-                reject('Residual sum of squares and/or degrees of freedom is zero, indicating a perfect fit')
-
-            anovaTable <- self$results$main
-
-            if ( ! is.null(singular))
-                anovaTable$setNote('singular', singular)
-
-            rowCount <- dim(results)[1]
-            rowNames <- dimnames(results)[[1]]
-
-            errIndex <- nrow(results)
-            errSS <- results[errIndex,'Sum Sq']
-            errDF <- results[errIndex,'Df']
-            errMS <- errSS / errDF
-            totalSS <- sum(results[['Sum Sq']], na.rm=TRUE)
-
-            for (i in seq_len(rowCount)) {
-                rowName <- rowNames[i]
-
-                ss <- results[i,'Sum Sq']
-                df <- results[i,'Df']
-                ms <- ss / df
-                F  <- results[i,'F value']
-                p  <- results[i,'Pr(>F)']
-
-                if ( is.finite(F)) {
-                    e <- ss / totalSS
-                    ep <- ss / (ss + errSS)
-                    w <- (ss - (df * errMS)) / (totalSS + errMS)
-                } else {
-                    e <- ''
-                    ep <- ''
-                    w <- ''
-                }
-
-                if ( ! is.finite(ss))
-                    ss <- 0
-                if ( ! is.finite(ms))
-                    ms <- ''
-                if ( ! is.finite(F))
-                    F <- ''
-                if ( ! is.finite(p))
-                    p <- ''
-
-                tableRow <- list(ss=ss, df=df, ms=ms, F=F, p=p, etaSq=e, etaSqP=ep, omegaSq=w)
-
-                if (i < rowCount) {
-                    anovaTable$setRow(rowNo=i, tableRow)
-                }
-                else {
-                    if (rowCount < anovaTable$rowCount) {
-                        blankRow <- list(ss=0, df=0, ms='', F='', p='', etaSq='', etaSqP='', omegaSq='')
-                        for (j in seq(i, anovaTable$rowCount-1))
-                            anovaTable$setRow(rowNo=j, blankRow)
-                    }
-                    anovaTable$setRow(rowKey='', tableRow) # residual
-                }
-            }
-
-            private$.populateContrasts(data)
-            private$.populateLevenes(data)
-            private$.populatePostHoc(data)
-            private$.prepareDescPlots(data)
-            private$.populateDescriptives(data)
-
-            }) # suppressWarnings
         },
         .initPostHoc=function(data) {
 
@@ -340,6 +241,126 @@ ancovaClass <- R6::R6Class(
                 }
             }
             private$.postHocRows <- postHocRows
+        },
+        .initEmm = function() {
+
+            emMeans <- self$options$emMeans
+            group <- self$results$emm
+
+            for (j in seq_along(emMeans)) {
+
+                emm <- emMeans[[j]]
+
+                if ( ! is.null(emm)) {
+                    group$addItem(key=j)
+                    emmGroup <- group$get(key=j)
+                    emmGroup$setTitle(jmvcore::stringifyTerm(emm))
+
+                    image <- emmGroup$emmPlot
+                    size <- private$.emmPlotSize(emm)
+                    image$setSize(size[1], size[2])
+                }
+            }
+        },
+        .initEmmTable = function() {
+
+            emMeans <- self$options$emMeans
+            group <- self$results$emm
+
+            for (j in seq_along(emMeans)) {
+
+                emm <- emMeans[[j]]
+
+                if ( ! is.null(emm)) {
+
+                    emmGroup <- group$get(key=j)
+
+                    table <- emmGroup$emmTable
+                    table$setTitle(paste0('Estimated Marginal Means - ', jmvcore::stringifyTerm(emm)))
+
+                    nLevels <- numeric(length(emm))
+                    for (k in rev(seq_along(emm))) {
+                        table$addColumn(name=emm[k], title=emm[k], type='text', combineBelow=TRUE)
+                        nLevels[k] <- length(levels(self$data[[ emm[k] ]]))
+                    }
+
+                    table$addColumn(name='mean', title='Mean', type='number')
+                    table$addColumn(name='se', title='SE', type='number')
+                    table$addColumn(name='lower', title='Lower', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Confidence Interval'))
+                    table$addColumn(name='upper', title='Upper', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Confidence Interval'))
+
+                    nRows <- prod(nLevels)
+
+                    for (k in 1:nRows) {
+                        row <- list()
+                        table$addRow(rowKey=k, row)
+                    }
+                }
+            }
+        },
+
+        #### Populate tables functions ----
+        .populateMainTable = function(results) {
+
+            table <- self$results$main
+
+            r <- results$r
+            singular <- results$singular
+
+            if ( ! is.null(singular))
+                table$setNote('singular', singular)
+
+            rowCount <- dim(r)[1]
+            rowNames <- dimnames(r)[[1]]
+
+            errIndex <- nrow(r)
+            errSS <- r[errIndex,'Sum Sq']
+            errDF <- r[errIndex,'Df']
+            errMS <- errSS / errDF
+            totalSS <- sum(r[['Sum Sq']], na.rm=TRUE)
+
+            for (i in seq_len(rowCount)) {
+                rowName <- rowNames[i]
+
+                ss <- r[i,'Sum Sq']
+                df <- r[i,'Df']
+                ms <- ss / df
+                F  <- r[i,'F value']
+                p  <- r[i,'Pr(>F)']
+
+                if ( is.finite(F)) {
+                    e <- ss / totalSS
+                    ep <- ss / (ss + errSS)
+                    w <- (ss - (df * errMS)) / (totalSS + errMS)
+                } else {
+                    e <- ''
+                    ep <- ''
+                    w <- ''
+                }
+
+                if ( ! is.finite(ss))
+                    ss <- 0
+                if ( ! is.finite(ms))
+                    ms <- ''
+                if ( ! is.finite(F))
+                    F <- ''
+                if ( ! is.finite(p))
+                    p <- ''
+
+                tableRow <- list(ss=ss, df=df, ms=ms, F=F, p=p, etaSq=e, etaSqP=ep, omegaSq=w)
+
+                if (i < rowCount) {
+                    table$setRow(rowNo=i, tableRow)
+                }
+                else {
+                    if (rowCount < table$rowCount) {
+                        blankRow <- list(ss=0, df=0, ms='', F='', p='', etaSq='', etaSqP='', omegaSq='')
+                        for (j in seq(i, table$rowCount-1))
+                            table$setRow(rowNo=j, blankRow)
+                    }
+                    table$setRow(rowKey='', tableRow) # residual
+                }
+            }
         },
         .populatePostHoc=function(data) {
 
@@ -465,30 +486,182 @@ ancovaClass <- R6::R6Class(
                 df2=result[2,'Df'],
                 p=result[1,'Pr(>F)']))
         },
-        .populateDescriptives=function(data) {
+        .populateEmmTables = function() {
 
-            if ( ! self$options$descStats)
-                return()
+            emMeans <- self$options$emMeans
+            emmTables <- private$emMeans
 
-            descTable <- self$results$desc
+            group <- self$results$emm
+
+            for (j in seq_along(emMeans)) {
+
+                emm <- emMeans[[j]]
+
+                if ( ! is.null(emm)) {
+
+                    emmGroup <- group$get(key=j)
+                    table <- emmGroup$emmTable
+
+                    emmTable <- emmTables[[j]]
+
+                    for (k in 1:nrow(emmTable)) {
+                        row <- list()
+                        sign <- list()
+
+                        for (l in seq_along(emm)) {
+                            value <- emmTable[k, emm[l]]
+                            row[[emm[l]]] <- jmvcore::fromB64(value)
+                        }
+
+                        row[['mean']] <- emmTable[k, 'emmean']
+                        row[['se']] <- emmTable[k, 'SE']
+                        row[['lower']] <- emmTable[k, 'lower.CL']
+                        row[['upper']] <- emmTable[k, 'upper.CL']
+
+                        table$setRow(rowNo=k, values=row)
+                    }
+                }
+            }
+        },
+
+        #### Plot functions ----
+        .qqPlot=function(image, ggtheme, theme, ...) {
+
             dep <- self$options$dep
-            dependent <- data[[dep]]
-            factorNames <- rev(self$options$factors)
-            factors <- as.list(select(data, factorNames))
+            factors <- self$options$factors
+            modelTerms <- private$.modelTerms()
 
-            means <- aggregate(dependent, by=factors, base::mean, drop=FALSE)
-            sds    <- aggregate(dependent, by=factors, stats::sd, drop=FALSE)
-            ns <- aggregate(dependent, by=factors, base::length, drop=FALSE)
+            if (is.null(dep) || length(factors) == 0 || length(modelTerms) == 0)
+                return(FALSE)
 
-            stat <- data.frame(mean=means$x, sd=sds$x, n=ns$x)
+            data <- private$.cleanData()
 
-            for (i in seq_len(nrow(stat))) {
-                values <- stat[i,]
-                values[is.na(values)] <- NaN
-                descTable$setRow(rowNo=i, values)
+            formula <- jmvcore::constructFormula(dep, modelTerms)
+            formula <- stats::as.formula(formula)
+            model <- stats::aov(formula, data)
+
+            residuals <- rstandard(model)
+            df <- as.data.frame(qqnorm(residuals, plot.it=FALSE))
+
+            print(ggplot(data=df, aes(y=y, x=x)) +
+                      geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
+                      geom_point(aes(x=x,y=y), size=2, colour=theme$color[1]) +
+                      xlab("Theoretical Quantiles") +
+                      ylab("Standardized Residuals") +
+                      ggtheme)
+
+            TRUE
+        },
+        .prepareEmmPlots = function(data) {
+
+            emMeans <- self$options$emMeans
+
+            group <- self$results$emm
+            emmTables <- list()
+            model <- private$.model
+
+            dep <- self$options$dep
+
+            for (j in seq_along(emMeans)) {
+
+                term <- emMeans[[j]]
+
+                if ( ! is.null(term)) {
+
+                    image <- group$get(key=j)$emmPlot
+
+                    # termB64 <- jmvcore::toB64(term)
+                    termB64 <- jmvcore::composeTerms(term)
+                    formula <- formula(paste('~', jmvcore::composeTerm(term)))
+
+                    if (self$options$emmWeights)
+                        weights <- 'equal'
+                    else
+                        weights <- 'cells'
+
+                    suppressMessages({
+                        mm <- try(
+                            emmeans::emmeans(model, formula, options=list(level=self$options$ciWidthEmm / 100), weights = weights),
+                            silent = TRUE
+                        )
+                    })
+
+                    d <- as.data.frame(summary(mm))
+                    emmTables[[ j ]] <- d
+
+                    for (k in 1:3) {
+                        if ( ! is.na(termB64[k])) {
+                            d[[ term[k] ]] <- factor(jmvcore::fromB64(d[[ term[k] ]]),
+                                                        jmvcore::fromB64(levels(d[[ term[k] ]])))
+                        }
+                    }
+
+                    names <- list('x'=termB64[1], 'y'='emmean', 'lines'=termB64[2], 'plots'=termB64[3], 'lower'='lower.CL', 'upper'='upper.CL')
+                    names <- lapply(names, function(x) if (is.na(x)) NULL else x)
+
+                    labels <- list('x'=term[1], 'y'=dep, 'lines'=term[2], 'plots'=term[3])
+                    labels <- lapply(labels, function(x) if (is.na(x)) NULL else x)
+
+                    image$setState(list(emm=d, data=data, names=names, labels=labels))
+
+                }
             }
 
+            private$emMeans <- emmTables
         },
+        .emmPlot = function(image, ggtheme, theme, ...) {
+
+            if (is.null(image$state))
+                return(FALSE)
+
+            data <- as.data.frame(image$state$data)
+            emm <- image$state$emm
+            names <- image$state$names
+            labels <- image$state$labels
+
+            emm$lowerSE <- emm[names$y] - emm['SE']
+            emm$upperSE <- emm[names$y] + emm['SE']
+
+            if (self$options$emmPlotData)
+                dodge <- position_dodge(0.7)
+            else
+                dodge <- position_dodge(0.3)
+
+            if (is.null(names$lines))
+                jitterdodge <- position_jitter(width = 0.1)
+            else
+                jitterdodge <- position_jitterdodge(dodge.width = 0.7, jitter.width = 0.4)
+
+
+            p <- ggplot(data=emm, aes_string(x=names$x, y=names$y, color=names$lines, fill=names$lines, group=names$lines), inherit.aes = FALSE)
+
+            if (self$options$emmPlotData)
+                p <- p + geom_point(data=data, aes_string(y=labels$y), alpha=0.3, position=jitterdodge)
+
+            p <- p + geom_line(size=.8, position=dodge)
+
+            if (self$options$emmPlotError == 'ci')
+                p <- p + geom_errorbar(aes_string(x=names$x, ymin=names$lower, ymax=names$upper), width=.1, size=.8, position=dodge)
+            else if (self$options$emmPlotError == 'se')
+                p <- p + geom_errorbar(aes_string(x=names$x, ymin='lowerSE', ymax='upperSE'), width=.1, size=.8, position=dodge)
+
+            p <- p + geom_point(shape=21, fill='white', size=3, position=dodge)
+
+            if ( ! is.null(names$plots)) {
+                formula <- as.formula(paste(". ~", names$plots))
+                p <- p + facet_grid(formula)
+            }
+
+            p <- p +
+                labs(list(x=labels$x, y=labels$y, fill=labels$lines, color=labels$lines)) +
+                ggtheme + theme(panel.spacing = unit(2, "lines"))
+
+            print(p)
+
+            TRUE
+        },
+
+        #### Helper functions ----
         .contrastLabels=function(levels, type) {
 
             nLevels <- length(levels)
@@ -637,179 +810,8 @@ ancovaClass <- R6::R6Class(
 
             modelTerms
         },
-        .initDescPlots=function(data) {
-            isAxis <- ! is.null(self$options$plotHAxis)
-            isMulti <- ! is.null(self$options$plotSepPlots)
 
-            self$results$get('descPlot')$setVisible( ! isMulti && isAxis)
-            self$results$get('descPlots')$setVisible(isMulti)
 
-            if (isMulti) {
-
-                sepPlotsName <- self$options$plotSepPlots
-                sepPlotsVar <- data[[sepPlotsName]]
-                sepPlotsLevels <- levels(sepPlotsVar)
-
-                array <- self$results$descPlots
-
-                for (level in sepPlotsLevels)
-                    array$addItem(level)
-            }
-        },
-        .prepareDescPlots=function(data) {
-
-            depName <- self$options$dep
-            groupName <- self$options$plotHAxis
-            linesName <- self$options$plotSepLines
-            plotsName <- self$options$plotSepPlots
-
-            ciWidth   <- self$options$ciWidth
-            errorBarType <- self$options$plotError
-
-            if (length(depName) == 0 || length(groupName) == 0)
-                return()
-
-            by <- list()
-            by[['group']] <- data[[groupName]]
-            levels(by[['group']]) <- fromB64(levels(by[['group']]))
-
-            if ( ! is.null(linesName)) {
-                by[['lines']] <- data[[linesName]]
-                levels(by[['lines']]) <- fromB64(levels(by[['lines']]))
-            }
-
-            if ( ! is.null(plotsName)) {
-                by[['plots']] <- data[[plotsName]]
-                levels(by[['plots']]) <- fromB64(levels(by[['plots']]))
-            }
-
-            dep <- data[[depName]]
-
-            means <- aggregate(dep, by=by, mean, simplify=FALSE)
-            ses   <- aggregate(dep, by=by, function(x) { sd(x) / sqrt(length(x)) }, simplify=FALSE)
-            cis   <- aggregate(dep, by=by, function(x) { sd(x) / sqrt(length(x)) * qt(ciWidth / 200 + .5, length(x)-1) }, simplify=FALSE)
-
-            plotData <- data.frame(group=means$group)
-            if ( ! is.null(linesName))
-                plotData <- cbind(plotData, lines=means$lines)
-            if ( ! is.null(plotsName))
-                plotData <- cbind(plotData, plots=means$plots)
-
-            plotData <- cbind(plotData, mean=unlist(means$x))
-
-            if (errorBarType == 'ci')
-                plotData <- cbind(plotData, err=unlist(cis$x))
-            else
-                plotData <- cbind(plotData, err=unlist(ses$x))
-
-            plotData <- cbind(plotData, lower=plotData$mean-plotData$err, upper=plotData$mean+plotData$err)
-
-            if (self$options$plotError != 'none') {
-                yAxisRange <- pretty(c(plotData$lower, plotData$upper))
-            } else {
-                yAxisRange <- plotData$mean
-            }
-
-            if (is.null(plotsName)) {
-
-                image <- self$results$get('descPlot')
-                image$setState(list(data=plotData, range=yAxisRange))
-
-            } else {
-
-                images <- self$results$descPlots
-
-                for (level in images$itemKeys) {
-                    image <- images$get(key=level)
-                    image$setState(list(data=subset(plotData, plots == level), range=yAxisRange))
-                }
-            }
-        },
-        .descPlot=function(image, ggtheme, theme, ...) {
-
-            if (is.null(image$state))
-                return(FALSE)
-
-            depName <- self$options$dep
-            groupName <- self$options$plotHAxis
-            linesName <- self$options$plotSepLines
-            plotsName <- self$options$plotSepPlots
-
-            if (self$options$plotError != 'none')
-                dodge <- position_dodge(0.2)
-            else
-                dodge <- position_dodge(0)
-
-            errorType <- ''
-            if (self$options$plotError != 'none') {
-                if (self$options$plotError == 'ci') {
-                    ciWidth <- self$options$ciWidth
-                    errorType <- paste0('(', ciWidth, '% CI)')
-                } else {
-                    errorType <- '(SE)'
-                }
-            }
-
-            if ( ! is.null(linesName)) {
-
-                p <- ggplot(data=image$state$data, aes(x=group, y=mean, group=lines, colour=lines)) +
-                    geom_line(size=.8, position=dodge) +
-                    labs(x=groupName, y=depName, colour=paste(linesName, errorType)) +
-                    scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
-                    ggtheme
-
-                if (self$options$plotError != 'none')
-                    p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, width=.1, group=lines), size=.8, position=dodge)
-
-                p <- p + geom_point(shape=21, fill='white', size=3, position=dodge)
-
-                print(p)
-
-            } else {
-
-                p <- ggplot(data=image$state$data) +
-                    labs(x=groupName, y=depName, colour=paste("", errorType)) +
-                    scale_colour_manual(name=paste("", errorType), values=c(colour=theme$color[1]), labels='') +
-                    scale_y_continuous(limits=c(min(image$state$range), max(image$state$range))) +
-                    ggtheme
-
-                if (self$options$plotError != 'none')
-                    p <- p + geom_errorbar(aes(x=group, ymin=lower, ymax=upper, colour='colour', width=.1), size=.8)
-
-                p <- p + geom_point(aes(x=group, y=mean, colour='colour'), shape=21, fill=theme$fill[1], size=3)
-
-                print(p)
-            }
-
-            TRUE
-        },
-        .qqPlot=function(image, ggtheme, theme, ...) {
-
-            dep <- self$options$dep
-            factors <- self$options$factors
-            modelTerms <- private$.modelTerms()
-
-            if (is.null(dep) || length(factors) == 0 || length(modelTerms) == 0)
-                return(FALSE)
-
-            data <- private$.cleanData()
-
-            formula <- jmvcore::constructFormula(dep, modelTerms)
-            formula <- stats::as.formula(formula)
-            model <- stats::aov(formula, data)
-
-            residuals <- rstandard(model)
-            df <- as.data.frame(qqnorm(residuals, plot.it=FALSE))
-
-            print(ggplot(data=df, aes(y=y, x=x)) +
-                geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
-                geom_point(aes(x=x,y=y), size=2, colour=theme$color[1]) +
-                xlab("Theoretical Quantiles") +
-                ylab("Standardized Residuals") +
-                ggtheme)
-
-            TRUE
-        },
         .sourcifyOption = function(option) {
 
             name <- option$name
@@ -835,5 +837,73 @@ ancovaClass <- R6::R6Class(
             }
 
             super$.sourcifyOption(option)
+        },
+        .emmPlotSize = function(emm) {
+
+            data <- self$data
+
+            levels <- list()
+            for (i in seq_along(emm))
+                levels[[ emm[i] ]] <- levels(data[[ emm[i] ]])
+
+            nLevels <- as.numeric(sapply(levels, length))
+            nLevels <- ifelse(is.na(nLevels[1:3]), 1, nLevels[1:3])
+            nCharLevels <- as.numeric(sapply(lapply(levels, nchar), max))
+            nCharLevels <- ifelse(is.na(nCharLevels[1:3]), 0, nCharLevels[1:3])
+            nCharNames <- as.numeric(nchar(names(levels)))
+            nCharNames <- ifelse(is.na(nCharNames[1:3]), 0, nCharNames[1:3])
+
+            xAxis <- 30 + 20
+            yAxis <- 30 + 20
+
+            width <- max(350, 25 * nLevels[1] * nLevels[2] * nLevels[3])
+            height <- 300 + ifelse(nLevels[3] > 1, 20, 0)
+
+            legend <- max(25 + 21 + 3.5 + 8.3 * nCharLevels[2] + 28, 25 + 10 * nCharNames[2] + 28)
+            width <- yAxis + width + ifelse(nLevels[2] > 1, legend, 0)
+            height <- xAxis + height
+
+            return(c(width, height))
+        },
+        .errorCheck = function(data) {
+
+            dep <- self$options$dep
+            factors <- self$options$factors
+
+            if (is.factor(data[[dep]]))
+                reject('Dependent variable must be numeric')
+
+            for (factorName in factors) {
+                lvls <- base::levels(data[[factorName]])
+                if (length(lvls) == 1)
+                    reject("Factor '{}' contains only a single level", factorName=factorName)
+                else if (length(lvls) == 0)
+                    reject("Factor '{}' contains no data", factorName=factorName)
+            }
+
+        },
+        .cleanData=function() {
+
+            dep <- self$options$dep
+            factors <- self$options$factors
+
+            covs <- NULL
+            if ('covs' %in% names(self$options))
+                covs <- self$options$covs
+
+            data <- self$data
+
+            if ( ! is.null(dep))
+                data[[dep]] <- jmvcore::toNumeric(data[[dep]])
+
+            for (factor in factors)
+                data[[factor]] <- as.factor(data[[factor]])
+
+            for (covariate in covs)
+                data[[covariate]] <- jmvcore::toNumeric(data[[covariate]])
+
+            data <- na.omit(data)
+
+            data
         })
 )

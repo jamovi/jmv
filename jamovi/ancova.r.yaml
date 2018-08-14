@@ -150,58 +150,43 @@ items:
             - dep
             - modelTerms
 
-    - name: desc
-      title: Descriptives
-      type: Table
-      description: a table of descriptives
-      visible: (descStats)
-      clearWith:
-        - dep
-        - modelTerms
-        - ss
-
-      columns:
-        - name: 'n'
-          title: 'N'
-          type: integer
-
-        - name: mean
-          title: Mean
-          type: text
-
-        - name: sd
-          title: SD
-          type: number
-
-    - name: descPlot
-      title: Descriptive Plot
-      visible: (plotHAxis)
-      type: Image
-      description: a descriptives plot
-      width: 500
-      height: 300
-      renderFun: .descPlot
-      clearWith:
-        - dep
-        - plotHAxis
-        - plotSepLines
-        - plotSepPlots
-        - plotError
-        - ciWidth
-
-    - name: descPlots
-      title: Descriptive Plots
+    - name: emm
+      title: Estimated Marginal Means
       type: Array
-      description: an array of descriptives plots
-      visible: (plotSepPlots)
+      description: an array of the estimated marginal means plots + tables
+      clearWith:
+        - emMeans
       template:
-          title: $key
-          type: Image
-          renderFun: .descPlot
-          clearWith:
-              - dep
-              - plotHAxis
-              - plotSepLines
-              - plotSepPlots
-              - plotError
-              - ciWidth
+
+          title: ''
+          type: Group
+          items:
+
+            - name: emmPlot
+              title: ''
+              type: Image
+              width: 450
+              height: 400
+              renderFun: .emmPlot
+              visible: (emmPlots)
+              clearWith:
+                - ciEmm
+                - ciWidthEmm
+                - emmWeights
+                - dep
+                - modelTerms
+                - emmPlotData
+                - emmPlotError
+
+            - name: emmTable
+              title: ''
+              type: Table
+              description: a table containing estimated marginal means
+              visible: (emmTables)
+              columns: []
+              clearWith:
+                - ciEmm
+                - ciWidthEmm
+                - emmWeights
+                - dep
+                - modelTerms

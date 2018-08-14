@@ -2,7 +2,7 @@
 name: anova
 title: ANOVA
 menuGroup: ANOVA
-version: '1.0.0'
+version: '2.0.0'
 jas: '1.2'
 
 description:
@@ -133,32 +133,6 @@ options:
             one of `'deviation'`, `'simple'`, `'difference'`, `'helmert'`,
             `'repeated'` or `'polynomial'`
 
-    - name: plotHAxis
-      title: Horizontal axis
-      type: Variable
-      default:
-      description:
-          R: >
-            a string naming the variable placed on the horizontal axis of the
-            plot
-
-    - name: plotSepLines
-      title: Separate lines
-      type: Variable
-      default:
-      description:
-          R: >
-            a string naming the variable represented as separate lines on the
-            plot
-
-    - name: plotSepPlots
-      title: Separate plots
-      type: Variable
-      default:
-      description:
-          R: >
-            a string naming the variable to separate over to form multiple plots
-
     - name: postHoc
       title: Post Hoc Tests
       type: Terms
@@ -188,14 +162,6 @@ options:
             `'holm'`; provide no, Tukey, Scheffe, Bonferroni, and
             Holm Post Hoc corrections respectively
 
-    - name: descStats
-      title: Descriptive statistics
-      type: Bool
-      default: false
-      description:
-          R: >
-            `TRUE` or `FALSE` (default), provide descriptive statistics
-
     - name: homo
       title: Homogeneity tests
       type: Bool
@@ -212,8 +178,46 @@ options:
           R: >
             `TRUE` or `FALSE` (default), provide a Q-Q plot of residuals
 
-    - name: plotError
-      title: Error Bar Definition
+    - name: emMeans
+      title: Marginal Means
+      type: Array
+      default: [[]]
+      template:
+          type: Variables
+      description:
+          R: >
+            a list of lists specifying the variables for which the estimated marginal
+            means need to be calculate. Supports up to three variables per term.
+
+    - name: ciWidthEmm
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width for the estimated marginal means
+
+    - name: emmPlots
+      title: Marginal means plots
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide estimated marginal means plots
+
+    - name: emmPlotData
+      title: Data
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), plot the data on top of the marginal means
+
+    - name: emmPlotError
+      title: Error bars
       type: List
       options:
         - name: none
@@ -227,16 +231,22 @@ options:
           R: >
             `'none'`, `'ci'` (default), or `'se'`. Use no error
             bars, use confidence intervals, or use standard errors on the
-            plots, respectively
+            marginal mean plots, respectively
 
-    - name: ciWidth
-      title: Confidence level
-      type: Number
-      min: 50
-      max: 99.9
-      default: 95
+    - name: emmTables
+      title: Marginal means tables
+      type: Bool
+      default: false
       description:
           R: >
-            a number between 50 and 99.9 (default: 95) specifying the confidence
-            interval width
+            `TRUE` or `FALSE` (default), provide estimated marginal means tables
+
+    - name: emmWeights
+      title: Equal cell weights
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, weigh each cell equally or weigh them according to
+            the cell frequency
 ...
