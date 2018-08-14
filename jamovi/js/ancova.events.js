@@ -4,6 +4,7 @@ const events = {
         calcModelTerms(ui, this);
         filterModelTerms(ui, this);
         updatePostHocSupplier(ui, this);
+        updateModelLabels(ui.emMeans, 'Term');
     },
 
     onChange_factors: function(ui) {
@@ -19,17 +20,41 @@ const events = {
         updatePostHocSupplier(ui, this);
     },
 
-    onChange_plotsSupplier: function(ui) {
+    /*onChange_plotsSupplier: function(ui) {
         let values = this.itemsToValues(ui.plotsSupplier.value());
         this.checkValue(ui.plotHAxis, false, values, FormatDef.variable);
         this.checkValue(ui.plotSepLines, false, values, FormatDef.variable);
         this.checkValue(ui.plotSepPlots, false, values, FormatDef.variable);
+    },*/
+
+    onChange_emMeansSupplier: function(ui) {
+        let values = this.itemsToValues(ui.emMeansSupplier.value());
+        this.checkValue(ui.emMeans, 2, values, FormatDef.variable);
     },
 
     onChange_postHocSupplier: function(ui) {
         let values = this.itemsToValues(ui.postHocSupplier.value());
         this.checkValue(ui.postHoc, true, values, FormatDef.term);
+    },
+
+    onEvent_emMeans_listItemsChanged: function(ui) {
+        updateModelLabels(ui.emMeans, 'Term');
     }
+};
+
+let calcMarginalMeansSupplier = function(ui, context) {
+
+    let b1 = context.cloneArray(ui.factors.value(), []);
+    b1 = context.valuesToItems(b1, FormatDef.variable);
+
+    if (ui.emMeansSupplier)
+        ui.emMeansSupplier.setValue(b1);
+};
+
+let updateModelLabels = function(list, blockName) {
+    list.applyToItems(0, (item, index) => {
+        item.controls[0].setPropertyValue("label", blockName + " " + (index + 1) );
+    });
 };
 
 var calcModelTerms = function(ui, context) {
@@ -39,7 +64,9 @@ var calcModelTerms = function(ui, context) {
     var combinedList = variableList.concat(covariatesList);
 
     ui.modelSupplier.setValue(context.valuesToItems(combinedList, FormatDef.variable));
-    ui.plotsSupplier.setValue(context.valuesToItems(variableList, FormatDef.variable));
+    //ui.plotsSupplier.setValue(context.valuesToItems(variableList, FormatDef.variable));
+
+    calcMarginalMeansSupplier(ui, context);
 
     var diff = context.findChanges("variableList", variableList, true, FormatDef.variable);
     var diff2 = context.findChanges("covariatesList", covariatesList, true, FormatDef.variable);

@@ -13,17 +13,19 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             ss = "3",
             effectSize = NULL,
             contrasts = NULL,
-            plotHAxis = NULL,
-            plotSepLines = NULL,
-            plotSepPlots = NULL,
             postHoc = NULL,
             postHocCorr = list(
                 "tukey"),
-            descStats = FALSE,
             homo = FALSE,
             qq = FALSE,
-            plotError = "ci",
-            ciWidth = 95, ...) {
+            emMeans = list(
+                list()),
+            ciWidthEmm = 95,
+            emmPlots = TRUE,
+            emmPlotData = FALSE,
+            emmPlotError = "ci",
+            emmTables = FALSE,
+            emmWeights = TRUE, ...) {
 
             super$initialize(
                 package='jmv',
@@ -102,18 +104,6 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 "helmert",
                                 "repeated",
                                 "polynomial")))))
-            private$..plotHAxis <- jmvcore::OptionVariable$new(
-                "plotHAxis",
-                plotHAxis,
-                default=NULL)
-            private$..plotSepLines <- jmvcore::OptionVariable$new(
-                "plotSepLines",
-                plotSepLines,
-                default=NULL)
-            private$..plotSepPlots <- jmvcore::OptionVariable$new(
-                "plotSepPlots",
-                plotSepPlots,
-                default=NULL)
             private$..postHoc <- jmvcore::OptionTerms$new(
                 "postHoc",
                 postHoc,
@@ -129,10 +119,6 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "holm"),
                 default=list(
                     "tukey"))
-            private$..descStats <- jmvcore::OptionBool$new(
-                "descStats",
-                descStats,
-                default=FALSE)
             private$..homo <- jmvcore::OptionBool$new(
                 "homo",
                 homo,
@@ -141,20 +127,44 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "qq",
                 qq,
                 default=FALSE)
-            private$..plotError <- jmvcore::OptionList$new(
-                "plotError",
-                plotError,
+            private$..emMeans <- jmvcore::OptionArray$new(
+                "emMeans",
+                emMeans,
+                default=list(
+                    list()),
+                template=jmvcore::OptionVariables$new(
+                    "emMeans",
+                    NULL))
+            private$..ciWidthEmm <- jmvcore::OptionNumber$new(
+                "ciWidthEmm",
+                ciWidthEmm,
+                min=50,
+                max=99.9,
+                default=95)
+            private$..emmPlots <- jmvcore::OptionBool$new(
+                "emmPlots",
+                emmPlots,
+                default=TRUE)
+            private$..emmPlotData <- jmvcore::OptionBool$new(
+                "emmPlotData",
+                emmPlotData,
+                default=FALSE)
+            private$..emmPlotError <- jmvcore::OptionList$new(
+                "emmPlotError",
+                emmPlotError,
                 options=list(
                     "none",
                     "ci",
                     "se"),
                 default="ci")
-            private$..ciWidth <- jmvcore::OptionNumber$new(
-                "ciWidth",
-                ciWidth,
-                min=50,
-                max=99.9,
-                default=95)
+            private$..emmTables <- jmvcore::OptionBool$new(
+                "emmTables",
+                emmTables,
+                default=FALSE)
+            private$..emmWeights <- jmvcore::OptionBool$new(
+                "emmWeights",
+                emmWeights,
+                default=TRUE)
 
             self$.addOption(private$..dep)
             self$.addOption(private$..factors)
@@ -163,16 +173,17 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..ss)
             self$.addOption(private$..effectSize)
             self$.addOption(private$..contrasts)
-            self$.addOption(private$..plotHAxis)
-            self$.addOption(private$..plotSepLines)
-            self$.addOption(private$..plotSepPlots)
             self$.addOption(private$..postHoc)
             self$.addOption(private$..postHocCorr)
-            self$.addOption(private$..descStats)
             self$.addOption(private$..homo)
             self$.addOption(private$..qq)
-            self$.addOption(private$..plotError)
-            self$.addOption(private$..ciWidth)
+            self$.addOption(private$..emMeans)
+            self$.addOption(private$..ciWidthEmm)
+            self$.addOption(private$..emmPlots)
+            self$.addOption(private$..emmPlotData)
+            self$.addOption(private$..emmPlotError)
+            self$.addOption(private$..emmTables)
+            self$.addOption(private$..emmWeights)
         }),
     active = list(
         dep = function() private$..dep$value,
@@ -182,16 +193,17 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ss = function() private$..ss$value,
         effectSize = function() private$..effectSize$value,
         contrasts = function() private$..contrasts$value,
-        plotHAxis = function() private$..plotHAxis$value,
-        plotSepLines = function() private$..plotSepLines$value,
-        plotSepPlots = function() private$..plotSepPlots$value,
         postHoc = function() private$..postHoc$value,
         postHocCorr = function() private$..postHocCorr$value,
-        descStats = function() private$..descStats$value,
         homo = function() private$..homo$value,
         qq = function() private$..qq$value,
-        plotError = function() private$..plotError$value,
-        ciWidth = function() private$..ciWidth$value),
+        emMeans = function() private$..emMeans$value,
+        ciWidthEmm = function() private$..ciWidthEmm$value,
+        emmPlots = function() private$..emmPlots$value,
+        emmPlotData = function() private$..emmPlotData$value,
+        emmPlotError = function() private$..emmPlotError$value,
+        emmTables = function() private$..emmTables$value,
+        emmWeights = function() private$..emmWeights$value),
     private = list(
         ..dep = NA,
         ..factors = NA,
@@ -200,16 +212,17 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..ss = NA,
         ..effectSize = NA,
         ..contrasts = NA,
-        ..plotHAxis = NA,
-        ..plotSepLines = NA,
-        ..plotSepPlots = NA,
         ..postHoc = NA,
         ..postHocCorr = NA,
-        ..descStats = NA,
         ..homo = NA,
         ..qq = NA,
-        ..plotError = NA,
-        ..ciWidth = NA)
+        ..emMeans = NA,
+        ..ciWidthEmm = NA,
+        ..emmPlots = NA,
+        ..emmPlotData = NA,
+        ..emmPlotError = NA,
+        ..emmTables = NA,
+        ..emmWeights = NA)
 )
 
 ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
@@ -220,9 +233,7 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
         assump = function() private$.items[["assump"]],
         contrasts = function() private$.items[["contrasts"]],
         postHoc = function() private$.items[["postHoc"]],
-        desc = function() private$.items[["desc"]],
-        descPlot = function() private$.items[["descPlot"]],
-        descPlots = function() private$.items[["descPlots"]]),
+        emm = function() private$.items[["emm"]]),
     private = list(
         ..model = NA),
     public=list(
@@ -376,59 +387,52 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     clearWith=list(
                         "dep",
                         "modelTerms"))))
-            self$add(jmvcore::Table$new(
-                options=options,
-                name="desc",
-                title="Descriptives",
-                visible="(descStats)",
-                clearWith=list(
-                    "dep",
-                    "modelTerms",
-                    "ss"),
-                columns=list(
-                    list(
-                        `name`="n", 
-                        `title`="N", 
-                        `type`="integer"),
-                    list(
-                        `name`="mean", 
-                        `title`="Mean", 
-                        `type`="text"),
-                    list(
-                        `name`="sd", 
-                        `title`="SD", 
-                        `type`="number"))))
-            self$add(jmvcore::Image$new(
-                options=options,
-                name="descPlot",
-                title="Descriptive Plot",
-                visible="(plotHAxis)",
-                width=500,
-                height=300,
-                renderFun=".descPlot",
-                clearWith=list(
-                    "dep",
-                    "plotHAxis",
-                    "plotSepLines",
-                    "plotSepPlots",
-                    "plotError",
-                    "ciWidth")))
             self$add(jmvcore::Array$new(
                 options=options,
-                name="descPlots",
-                title="Descriptive Plots",
-                visible="(plotSepPlots)",
-                template=jmvcore::Image$new(
-                    options=options,
-                    title="$key",
-                    renderFun=".descPlot",
-                    clearWith=list(
-                        "dep",
-                        "plotHAxis",
-                        "plotSepLines",
-                        "plotSepPlots",
-                        "plotError",
-                        "ciWidth"))))},
+                name="emm",
+                title="Estimated Marginal Means",
+                clearWith=list(
+                    "emMeans"),
+                template=R6::R6Class(
+                    inherit = jmvcore::Group,
+                    active = list(
+                        emmPlot = function() private$.items[["emmPlot"]],
+                        emmTable = function() private$.items[["emmTable"]]),
+                    private = list(),
+                    public=list(
+                        initialize=function(options) {
+                            super$initialize(
+                                options=options,
+                                name="undefined",
+                                title="")
+                            self$add(jmvcore::Image$new(
+                                options=options,
+                                name="emmPlot",
+                                title="",
+                                width=450,
+                                height=400,
+                                renderFun=".emmPlot",
+                                visible="(emmPlots)",
+                                clearWith=list(
+                                    "ciEmm",
+                                    "ciWidthEmm",
+                                    "emmWeights",
+                                    "dep",
+                                    "modelTerms",
+                                    "emmPlotData",
+                                    "emmPlotError")))
+                            self$add(jmvcore::Table$new(
+                                options=options,
+                                name="emmTable",
+                                title="",
+                                visible="(emmTables)",
+                                columns=list(),
+                                clearWith=list(
+                                    "ciEmm",
+                                    "ciWidthEmm",
+                                    "emmWeights",
+                                    "dep",
+                                    "modelTerms")))}))$new(options=options)))},
         .setModel=function(x) private$..model <- x))
 
 ancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
@@ -439,7 +443,7 @@ ancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
             super$initialize(
                 package = 'jmv',
                 name = 'ancova',
-                version = c(1,0,0),
+                version = c(2,0,0),
                 options = options,
                 results = ancovaResults$new(options=options),
                 data = data,
@@ -488,27 +492,30 @@ ancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param contrasts a list of lists specifying the factor and type of contrast
 #'   to use, one of \code{'deviation'}, \code{'simple'}, \code{'difference'},
 #'   \code{'helmert'}, \code{'repeated'} or \code{'polynomial'}
-#' @param plotHAxis a string naming the variable placed on the horizontal axis
-#'   of the plot
-#' @param plotSepLines a string naming the variable represented as separate
-#'   lines on the plot
-#' @param plotSepPlots a string naming the variable to separate over to form
-#'   multiple plots
 #' @param postHoc a list of terms to perform post-hoc tests on
 #' @param postHocCorr one or more of \code{'none'}, \code{'tukey'},
 #'   \code{'scheffe'}, \code{'bonf'}, or \code{'holm'}; provide no, Tukey,
 #'   Scheffe, Bonferroni, and Holm Post Hoc corrections respectively
-#' @param descStats \code{TRUE} or \code{FALSE} (default), provide descriptive
-#'   statistics
 #' @param homo \code{TRUE} or \code{FALSE} (default), perform homogeneity
 #'   tests
 #' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
 #'   residuals
-#' @param plotError \code{'none'}, \code{'ci'} (default), or \code{'se'}. Use
-#'   no error bars, use confidence intervals, or use standard errors on the
-#'   plots, respectively
-#' @param ciWidth a number between 50 and 99.9 (default: 95) specifying the
-#'   confidence interval width
+#' @param emMeans a list of lists specifying the variables for which the
+#'   estimated marginal means need to be calculate. Supports up to three
+#'   variables per term.
+#' @param ciWidthEmm a number between 50 and 99.9 (default: 95) specifying the
+#'   confidence interval width for the estimated marginal means
+#' @param emmPlots \code{TRUE} (default) or \code{FALSE}, provide estimated
+#'   marginal means plots
+#' @param emmPlotData \code{TRUE} or \code{FALSE} (default), plot the data on
+#'   top of the marginal means
+#' @param emmPlotError \code{'none'}, \code{'ci'} (default), or \code{'se'}.
+#'   Use no error bars, use confidence intervals, or use standard errors on the
+#'   marginal mean plots, respectively
+#' @param emmTables \code{TRUE} or \code{FALSE} (default), provide estimated
+#'   marginal means tables
+#' @param emmWeights \code{TRUE} (default) or \code{FALSE}, weigh each cell
+#'   equally or weigh them according to the cell frequency
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$main} \tab \tab \tab \tab \tab a table of ANCOVA results \cr
@@ -517,9 +524,7 @@ ancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{results$assump$qq} \tab \tab \tab \tab \tab a q-q plot \cr
 #'   \code{results$contrasts} \tab \tab \tab \tab \tab an array of contrasts tables \cr
 #'   \code{results$postHoc} \tab \tab \tab \tab \tab an array of post-hoc tables \cr
-#'   \code{results$desc} \tab \tab \tab \tab \tab a table of descriptives \cr
-#'   \code{results$descPlot} \tab \tab \tab \tab \tab a descriptives plot \cr
-#'   \code{results$descPlots} \tab \tab \tab \tab \tab an array of descriptives plots \cr
+#'   \code{results$emm} \tab \tab \tab \tab \tab an array of the estimated marginal means plots + tables \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -538,17 +543,19 @@ ancova <- function(
     ss = "3",
     effectSize = NULL,
     contrasts = NULL,
-    plotHAxis = NULL,
-    plotSepLines = NULL,
-    plotSepPlots = NULL,
     postHoc = NULL,
     postHocCorr = list(
                 "tukey"),
-    descStats = FALSE,
     homo = FALSE,
     qq = FALSE,
-    plotError = "ci",
-    ciWidth = 95) {
+    emMeans = list(
+                list()),
+    ciWidthEmm = 95,
+    emmPlots = TRUE,
+    emmPlotData = FALSE,
+    emmPlotError = "ci",
+    emmTables = FALSE,
+    emmWeights = TRUE) {
 
     if ( ! requireNamespace('jmvcore'))
         stop('ancova requires jmvcore to be installed (restart may be required)')
@@ -558,10 +565,7 @@ ancova <- function(
             parent.frame(),
             `if`( ! missing(dep), dep, NULL),
             `if`( ! missing(factors), factors, NULL),
-            `if`( ! missing(covs), covs, NULL),
-            `if`( ! missing(plotHAxis), plotHAxis, NULL),
-            `if`( ! missing(plotSepLines), plotSepLines, NULL),
-            `if`( ! missing(plotSepPlots), plotSepPlots, NULL))
+            `if`( ! missing(covs), covs, NULL))
 
     options <- ancovaOptions$new(
         dep = dep,
@@ -571,16 +575,17 @@ ancova <- function(
         ss = ss,
         effectSize = effectSize,
         contrasts = contrasts,
-        plotHAxis = plotHAxis,
-        plotSepLines = plotSepLines,
-        plotSepPlots = plotSepPlots,
         postHoc = postHoc,
         postHocCorr = postHocCorr,
-        descStats = descStats,
         homo = homo,
         qq = qq,
-        plotError = plotError,
-        ciWidth = ciWidth)
+        emMeans = emMeans,
+        ciWidthEmm = ciWidthEmm,
+        emmPlots = emmPlots,
+        emmPlotData = emmPlotData,
+        emmPlotError = emmPlotError,
+        emmTables = emmTables,
+        emmWeights = emmWeights)
 
     results <- ancovaResults$new(
         options = options)

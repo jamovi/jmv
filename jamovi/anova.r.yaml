@@ -50,22 +50,46 @@ items:
         type: Table
         columns: []
 
-    - name: desc
-      title: Descriptives
-      type: Table
-      description: a table of descriptive statistics
-      columns: []
-
-    - name: descPlot
-      title: Descriptive Plot
-      type: Image
-      description: a descriptives plot
-
-    - name: descPlots
-      title: Descriptive Plots
+    - name: emm
+      title: Estimated Marginal Means
       type: Array
-      description: an array of descriptives plots
+      description: an array of the estimated marginal means plots + tables
+      clearWith:
+        - dep
+        - blocks
+        - emMeans
       template:
-          title: $key
-          type: Image
-          renderFun: .descPlot
+
+          title: ''
+          type: Group
+          items:
+
+            - name: emmPlot
+              title: ''
+              type: Image
+              width: 450
+              height: 400
+              renderFun: .emmPlot
+              visible: (emmPlots)
+              clearWith:
+                - dep
+                - blocks
+                - refLevels
+                - ciEmm
+                - ciWidthEmm
+                - emmWeights
+                - emmPlotData
+                - emmPlotError
+
+            - name: emmTable
+              title: ''
+              type: Table
+              description: a table containing estimated marginal means
+              visible: (emmTables)
+              columns: []
+              clearWith:
+                - dep
+                - blocks
+                - refLevels
+                - ciWidthEmm
+                - emmWeights

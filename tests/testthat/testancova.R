@@ -8,18 +8,12 @@ test_that('ancova works', {
 
     data <- data.frame(f = factor, c =cov, dep = dep)
 
-    r <- jmv::ancova(data, dep='dep', factors='f', covs='c', descStats = TRUE)
+    r <- jmv::ancova(data, dep='dep', factors='f', covs='c')
 
     main <- as.data.frame(r$main)
-    desc <- as.data.frame(r$desc)
 
     # Test anova table
     expect_equal(734.999, main$ss[3], tolerance = 1e-3)
     expect_equal(1, main$df[2], tolerance = 1e-3)
     expect_equal(0.871, main$p[1], tolerance = 1e-3)
-
-    # Test desc table
-    expect_equal(mean(data$dep[data$f == 'a']), desc$mean[1])
-    expect_equal(sd(data$dep[data$f == 'b']), desc$sd[2])
-    expect_equal(length(data$dep[data$f == 'c']), desc$n[3])
 })
