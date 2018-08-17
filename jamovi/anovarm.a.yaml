@@ -162,6 +162,15 @@ options:
             `'2'` or `'3'` (default), the sum of squares
             to use
 
+    - name: depLabel
+      title: ''
+      type: String
+      default: 'Dependent'
+      description:
+          R: >
+            a string (default: 'Dependent') describing the label used for
+            the dependent variable throughout the analysis
+
     - name: effectSize
       title: Effect Size
       type: NMXList
@@ -292,15 +301,6 @@ options:
             a list of lists specifying the variables for which the estimated marginal
             means need to be calculate. Supports up to three variables per term.
 
-    - name: ciEmm
-      title: Confidence interval
-      type: Bool
-      default: true
-      description:
-          R: >
-            `TRUE` (default) or `FALSE`, provide a confidence interval
-            for the estimated marginal means
-
     - name: ciWidthEmm
       title: Confidence level
       type: Number
@@ -319,6 +319,31 @@ options:
       description:
           R: >
             `TRUE` (default) or `FALSE`, provide estimated marginal means plots
+
+    - name: emmPlotData
+      title: Observed scores
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), plot the data on top of the marginal means
+
+    - name: emmPlotError
+      title: Error bars
+      type: List
+      options:
+        - name: none
+          title: None
+        - name: ci
+          title: Confidence interval
+        - name: se
+          title: Standard error
+      default: ci
+      description:
+          R: >
+            `'none'`, `'ci'` (default), or `'se'`. Use no error
+            bars, use confidence intervals, or use standard errors on the
+            marginal mean plots, respectively
 
     - name: emmTables
       title: Marginal means tables

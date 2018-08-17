@@ -385,7 +385,6 @@ items:
               renderFun: .emmPlot
               visible: (emmPlots)
               clearWith:
-                - ciEmm
                 - ciWidthEmm
                 - emmWeights
                 - rmCells
@@ -396,6 +395,9 @@ items:
                 - cov
                 - rmTerms
                 - bsTerms
+                - emmPlotData
+                - emmPlotError
+                - depLabel
 
             - name: emmTable
               title: ''

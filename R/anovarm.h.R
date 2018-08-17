@@ -16,6 +16,7 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             rmTerms = NULL,
             bsTerms = NULL,
             ss = "3",
+            depLabel = "Dependent",
             effectSize = NULL,
             spherTests = FALSE,
             spherCorr = list(
@@ -28,9 +29,10 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             descStats = FALSE,
             emMeans = list(
                 list()),
-            ciEmm = TRUE,
             ciWidthEmm = 95,
             emmPlots = TRUE,
+            emmPlotData = FALSE,
+            emmPlotError = "ci",
             emmTables = FALSE,
             emmWeights = TRUE, ...) {
 
@@ -110,6 +112,10 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "2",
                     "3"),
                 default="3")
+            private$..depLabel <- jmvcore::OptionString$new(
+                "depLabel",
+                depLabel,
+                default="Dependent")
             private$..effectSize <- jmvcore::OptionNMXList$new(
                 "effectSize",
                 effectSize,
@@ -192,10 +198,6 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 template=jmvcore::OptionVariables$new(
                     "emMeans",
                     NULL))
-            private$..ciEmm <- jmvcore::OptionBool$new(
-                "ciEmm",
-                ciEmm,
-                default=TRUE)
             private$..ciWidthEmm <- jmvcore::OptionNumber$new(
                 "ciWidthEmm",
                 ciWidthEmm,
@@ -206,6 +208,18 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "emmPlots",
                 emmPlots,
                 default=TRUE)
+            private$..emmPlotData <- jmvcore::OptionBool$new(
+                "emmPlotData",
+                emmPlotData,
+                default=FALSE)
+            private$..emmPlotError <- jmvcore::OptionList$new(
+                "emmPlotError",
+                emmPlotError,
+                options=list(
+                    "none",
+                    "ci",
+                    "se"),
+                default="ci")
             private$..emmTables <- jmvcore::OptionBool$new(
                 "emmTables",
                 emmTables,
@@ -222,6 +236,7 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..rmTerms)
             self$.addOption(private$..bsTerms)
             self$.addOption(private$..ss)
+            self$.addOption(private$..depLabel)
             self$.addOption(private$..effectSize)
             self$.addOption(private$..spherTests)
             self$.addOption(private$..spherCorr)
@@ -231,9 +246,10 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..postHocCorr)
             self$.addOption(private$..descStats)
             self$.addOption(private$..emMeans)
-            self$.addOption(private$..ciEmm)
             self$.addOption(private$..ciWidthEmm)
             self$.addOption(private$..emmPlots)
+            self$.addOption(private$..emmPlotData)
+            self$.addOption(private$..emmPlotError)
             self$.addOption(private$..emmTables)
             self$.addOption(private$..emmWeights)
         }),
@@ -245,6 +261,7 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         rmTerms = function() private$..rmTerms$value,
         bsTerms = function() private$..bsTerms$value,
         ss = function() private$..ss$value,
+        depLabel = function() private$..depLabel$value,
         effectSize = function() private$..effectSize$value,
         spherTests = function() private$..spherTests$value,
         spherCorr = function() private$..spherCorr$value,
@@ -254,9 +271,10 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         postHocCorr = function() private$..postHocCorr$value,
         descStats = function() private$..descStats$value,
         emMeans = function() private$..emMeans$value,
-        ciEmm = function() private$..ciEmm$value,
         ciWidthEmm = function() private$..ciWidthEmm$value,
         emmPlots = function() private$..emmPlots$value,
+        emmPlotData = function() private$..emmPlotData$value,
+        emmPlotError = function() private$..emmPlotError$value,
         emmTables = function() private$..emmTables$value,
         emmWeights = function() private$..emmWeights$value),
     private = list(
@@ -267,6 +285,7 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..rmTerms = NA,
         ..bsTerms = NA,
         ..ss = NA,
+        ..depLabel = NA,
         ..effectSize = NA,
         ..spherTests = NA,
         ..spherCorr = NA,
@@ -276,9 +295,10 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..postHocCorr = NA,
         ..descStats = NA,
         ..emMeans = NA,
-        ..ciEmm = NA,
         ..ciWidthEmm = NA,
         ..emmPlots = NA,
+        ..emmPlotData = NA,
+        ..emmPlotError = NA,
         ..emmTables = NA,
         ..emmWeights = NA)
 )
@@ -698,7 +718,6 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 renderFun=".emmPlot",
                                 visible="(emmPlots)",
                                 clearWith=list(
-                                    "ciEmm",
                                     "ciWidthEmm",
                                     "emmWeights",
                                     "rmCells",
@@ -708,7 +727,10 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     "rm",
                                     "cov",
                                     "rmTerms",
-                                    "bsTerms")))
+                                    "bsTerms",
+                                    "emmPlotData",
+                                    "emmPlotError",
+                                    "depLabel")))
                             self$add(jmvcore::Table$new(
                                 options=options,
                                 name="emmTable",
@@ -811,6 +833,8 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param bsTerms a list of character vectors describing the between subjects
 #'   terms to go into the model
 #' @param ss \code{'2'} or \code{'3'} (default), the sum of squares to use
+#' @param depLabel a string (default: 'Dependent') describing the label used
+#'   for the dependent variable throughout the analysis
 #' @param effectSize one or more of \code{'eta'}, \code{'partEta'}, or
 #'   \code{'omega'}; use eta², partial eta², and omega² effect sizes,
 #'   respectively
@@ -833,12 +857,15 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param emMeans a list of lists specifying the variables for which the
 #'   estimated marginal means need to be calculate. Supports up to three
 #'   variables per term.
-#' @param ciEmm \code{TRUE} (default) or \code{FALSE}, provide a confidence
-#'   interval for the estimated marginal means
 #' @param ciWidthEmm a number between 50 and 99.9 (default: 95) specifying the
 #'   confidence interval width for the estimated marginal means
 #' @param emmPlots \code{TRUE} (default) or \code{FALSE}, provide estimated
 #'   marginal means plots
+#' @param emmPlotData \code{TRUE} or \code{FALSE} (default), plot the data on
+#'   top of the marginal means
+#' @param emmPlotError \code{'none'}, \code{'ci'} (default), or \code{'se'}.
+#'   Use no error bars, use confidence intervals, or use standard errors on the
+#'   marginal mean plots, respectively
 #' @param emmTables \code{TRUE} or \code{FALSE} (default), provide estimated
 #'   marginal means tables
 #' @param emmWeights \code{TRUE} (default) or \code{FALSE}, weigh each cell
@@ -873,6 +900,7 @@ anovaRM <- function(
     rmTerms = NULL,
     bsTerms = NULL,
     ss = "3",
+    depLabel = "Dependent",
     effectSize = NULL,
     spherTests = FALSE,
     spherCorr = list(
@@ -885,9 +913,10 @@ anovaRM <- function(
     descStats = FALSE,
     emMeans = list(
                 list()),
-    ciEmm = TRUE,
     ciWidthEmm = 95,
     emmPlots = TRUE,
+    emmPlotData = FALSE,
+    emmPlotError = "ci",
     emmTables = FALSE,
     emmWeights = TRUE) {
 
@@ -908,6 +937,7 @@ anovaRM <- function(
         rmTerms = rmTerms,
         bsTerms = bsTerms,
         ss = ss,
+        depLabel = depLabel,
         effectSize = effectSize,
         spherTests = spherTests,
         spherCorr = spherCorr,
@@ -917,9 +947,10 @@ anovaRM <- function(
         postHocCorr = postHocCorr,
         descStats = descStats,
         emMeans = emMeans,
-        ciEmm = ciEmm,
         ciWidthEmm = ciWidthEmm,
         emmPlots = emmPlots,
+        emmPlotData = emmPlotData,
+        emmPlotError = emmPlotError,
         emmTables = emmTables,
         emmWeights = emmWeights)
 
