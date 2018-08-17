@@ -292,7 +292,8 @@ anovaRMClass <- R6::R6Class(
             bsRows <- bsTable$rowKeys
             modelRows <- jmvcore::decomposeTerms(as.list(rownames(model)))
             epsilonRows <- jmvcore::decomposeTerms(as.list(rownames(epsilon)))
-            resIndices <- which(sapply(rmRows, function(x) '.RES' %in% x))
+
+            SSt <- private$.getSSt(model)
 
             # Populate RM table
             for (i in seq_along(rmRows)) {
@@ -332,9 +333,7 @@ anovaRMClass <- R6::R6Class(
                     row[['p[HF]']] <- pf(row[['F[HF]']], row[['df[HF]']], dfResHF, lower.tail=FALSE)
 
                     # Add effect sizes
-                    termsTotal <- private$.getTermsTotal(i, rmRows, resIndices, model)
                     SSr <- model[index,'Error SS']
-                    SSt <- termsTotal + SSr
                     MSr <- SSr/dfRes
                     row[['eta[none]']] <- row[['eta[GG]']] <- row[['eta[HF]']] <- row[['ss[none]']] / SSt
                     row[['partEta[none]']] <- row[['partEta[GG]']] <- row[['partEta[HF]']] <- row[['ss[none]']] / (row[['ss[none]']] + SSr)
@@ -403,7 +402,6 @@ anovaRMClass <- R6::R6Class(
 
                     # Add effect sizes
                     SSr <- model[index,'Error SS']
-                    SSt <- sum(model[bsIndices,'Sum Sq']) + SSr
                     MSr <- SSr/model[index,'den Df']
                     row[['eta']] <- row[['ss']] / SSt
                     row[['partEta']] <- row[['ss']] / (row[['ss']] + SSr)
@@ -1020,32 +1018,33 @@ anovaRMClass <- R6::R6Class(
 
             return(c(width, height))
         },
-        .getTermsTotal=function (x, y, z, model) {
-            for(i in x:1) {
-                if (i %in% z) {
-                    lower <- i + 1
-                    break
-                } else if (i == 1) {
-                    lower <- i
-                    break
-                }
-            }
-            for(i in x:length(y)) {
-                if (i %in% z) {
-                    upper <- i - 1
-                    break
-                } else if (i == length(y)) {
-                    upper <- i
-                    break
-                }
-            }
-            termsIndex <- lapply(y[lower:upper], toB64)
+        .getSSt=function (model) {
+
+            rmTerms <- lapply(self$options$rmTerms, jmvcore::toB64)
+            bsTerms <- lapply(self$options$bsTerms, jmvcore::toB64)
+
+            if (length(bsTerms) == 0)
+                bsTerms <- list('(Intercept)')
+
+            terms <- c(rmTerms, bsTerms)
+
             modelRows <- jmvcore::decomposeTerms(as.list(rownames(model)))
-            indicesTotal <- sapply(termsIndex, function(x) which(sapply(modelRows, function(y) setequal(y,x))))
 
-            termsTotal <- sum(model[indicesTotal,'Sum Sq'])
+            termSSt <- sum(model[-1, 'Sum Sq'])
 
-            return(termsTotal)
+            errorSSt <- 0
+            for (i in seq_along(terms)) {
+                for (j in seq_along(modelRows)) {
+                    if (all(terms[[i]] %in% modelRows[[j]]) && length(terms[[i]]) == length(modelRows[[j]])) {
+                        errorSSt <- errorSSt + model[j, 'Error SS']
+                        break
+                    }
+                }
+            }
+
+            SSt <- termSSt + errorSSt
+
+            return(SSt)
         },
         .sourcifyOption = function(option) {
 
