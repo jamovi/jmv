@@ -170,7 +170,6 @@ items:
               renderFun: .emmPlot
               visible: (emmPlots)
               clearWith:
-                - ciEmm
                 - ciWidthEmm
                 - emmWeights
                 - dep
@@ -185,7 +184,6 @@ items:
               visible: (emmTables)
               columns: []
               clearWith:
-                - ciEmm
                 - ciWidthEmm
                 - emmWeights
                 - dep

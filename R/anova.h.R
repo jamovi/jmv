@@ -305,7 +305,6 @@ anovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     "dep",
                                     "blocks",
                                     "refLevels",
-                                    "ciEmm",
                                     "ciWidthEmm",
                                     "emmWeights",
                                     "emmPlotData",

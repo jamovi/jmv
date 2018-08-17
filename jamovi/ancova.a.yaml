@@ -219,7 +219,7 @@ options:
             `TRUE` (default) or `FALSE`, provide estimated marginal means plots
 
     - name: emmPlotData
-      title: Data
+      title: Observed scores
       type: Bool
       default: false
       description:
