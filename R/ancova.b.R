@@ -632,7 +632,6 @@ ancovaClass <- R6::R6Class(
             else
                 jitterdodge <- position_jitterdodge(dodge.width = 0.7, jitter.width = 0.4)
 
-
             p <- ggplot(data=emm, aes_string(x=names$x, y=names$y, color=names$lines, fill=names$lines, group=names$lines), inherit.aes = FALSE)
 
             if (self$options$emmPlotData)

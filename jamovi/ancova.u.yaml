@@ -217,6 +217,13 @@ children:
             stretchFactor: 1
             children:
               - type: Label
+                label: Output
+                children:
+                  - type: CheckBox
+                    name: emmPlots
+                  - type: CheckBox
+                    name: emmTables
+              - type: Label
                 label: General Options
                 children:
                   - type: CheckBox
@@ -233,13 +240,6 @@ children:
               row: 0
             stretchFactor: 1
             children:
-              - type: Label
-                label: Output
-                children:
-                  - type: CheckBox
-                    name: emmPlots
-                  - type: CheckBox
-                    name: emmTables
               - type: Label
                 label: Plot
                 children:

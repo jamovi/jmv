@@ -414,7 +414,6 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 renderFun=".emmPlot",
                                 visible="(emmPlots)",
                                 clearWith=list(
-                                    "ciEmm",
                                     "ciWidthEmm",
                                     "emmWeights",
                                     "dep",
@@ -428,7 +427,6 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 visible="(emmTables)",
                                 columns=list(),
                                 clearWith=list(
-                                    "ciEmm",
                                     "ciWidthEmm",
                                     "emmWeights",
                                     "dep",
