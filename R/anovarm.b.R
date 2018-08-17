@@ -263,8 +263,8 @@ anovaRMClass <- R6::R6Class(
 
                     table$addColumn(name='mean', title='Mean', type='number')
                     table$addColumn(name='se', title='SE', type='number')
-                    table$addColumn(name='lower', title='Lower', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Confidence Interval'), visibl="(ciEmm)")
-                    table$addColumn(name='upper', title='Upper', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Confidence Interval'), visibl="(ciEmm)")
+                    table$addColumn(name='lower', title='Lower', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Confidence Interval'))
+                    table$addColumn(name='upper', title='Upper', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Confidence Interval'))
 
                     nRows <- prod(nLevels)
 
@@ -624,6 +624,8 @@ anovaRMClass <- R6::R6Class(
                 }
             }
         },
+
+        #### Plot functions ----
         .prepareEmmPlots = function(model, data) {
 
             emMeans <- self$options$emMeans
@@ -667,10 +669,16 @@ anovaRMClass <- R6::R6Class(
                     names <- list('x'=termB64[1], 'y'='emmean', 'lines'=termB64[2], 'plots'=termB64[3], 'lower'='lower.CL', 'upper'='upper.CL')
                     names <- lapply(names, function(x) if (is.na(x)) NULL else x)
 
-                    labels <- list('x'=term[1], 'y'='Marginal Mean', 'lines'=term[2], 'plots'=term[3])
+                    labels <- list('x'=term[1], 'y'=self$options$depLabel, 'lines'=term[2], 'plots'=term[3])
                     labels <- lapply(labels, function(x) if (is.na(x)) NULL else x)
 
-                    image$setState(list(data=d, names=names, labels=labels))
+                    dataNew <- lapply(data, function(x) {
+                        if (is.factor(x))
+                            levels(x) <- jmvcore::fromB64(levels(x))
+                        return(x)
+                    })
+
+                    image$setState(list(emm=d, data=dataNew, names=names, labels=labels))
 
                 }
             }
@@ -682,17 +690,35 @@ anovaRMClass <- R6::R6Class(
             if (is.null(image$state))
                 return(FALSE)
 
-            data <- image$state$data
+            data <- as.data.frame(image$state$data)
+            emm <- image$state$emm
             names <- image$state$names
             labels <- image$state$labels
 
-            dodge <- position_dodge(0.2)
+            emm$lowerSE <- emm[names$y] - emm['SE']
+            emm$upperSE <- emm[names$y] + emm['SE']
 
-            p <- ggplot(data=data, aes_string(x=names$x, y=names$y, color=names$lines, fill=names$lines, group=names$lines), inherit.aes = FALSE) +
-                geom_line(size=.8, position=dodge)
+            if (self$options$emmPlotData)
+                dodge <- position_dodge(0.7)
+            else
+                dodge <- position_dodge(0.3)
 
-            if (self$options$ciEmm)
+            if (is.null(names$lines))
+                jitterdodge <- position_jitter(width = 0.1)
+            else
+                jitterdodge <- position_jitterdodge(dodge.width = 0.7, jitter.width = 0.4)
+
+            p <- ggplot(data=emm, aes_string(x=names$x, y=names$y, color=names$lines, fill=names$lines, group=names$lines), inherit.aes = FALSE)
+
+            if (self$options$emmPlotData)
+                p <- p + geom_point(data=data, aes_string(y=jmvcore::toB64('.DEPENDENT')), alpha=0.3, position=jitterdodge)
+
+            p <- p + geom_line(size=.8, position=dodge)
+
+            if (self$options$emmPlotError == 'ci')
                 p <- p + geom_errorbar(aes_string(x=names$x, ymin=names$lower, ymax=names$upper), width=.1, size=.8, position=dodge)
+            else if (self$options$emmPlotError == 'se')
+                p <- p + geom_errorbar(aes_string(x=names$x, ymin='lowerSE', ymax='upperSE'), width=.1, size=.8, position=dodge)
 
             p <- p + geom_point(shape=21, fill='white', size=3, position=dodge)
 
