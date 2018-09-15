@@ -270,7 +270,7 @@ contTablesPairedBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param chiSqCorr \code{TRUE} or \code{FALSE} (default), provide X² with
 #'   continuity correction
 #' @param exact \code{TRUE} or \code{FALSE} (default), provide an exact log
-#'   odds ratio
+#'   odds ratio (requires exact2x2 to be installed)
 #' @param pcRow \code{TRUE} or \code{FALSE} (default), provide row percentages
 #' @param pcCol \code{TRUE} or \code{FALSE} (default), provide column
 #'   percentages

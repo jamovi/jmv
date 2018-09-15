@@ -131,6 +131,8 @@ contTablesPairedClass <- R6::R6Class(
                 values[['value[exa]']] <- NaN
                 values[['df[exa]']] <- ''
                 values[['p[exa]']]  <- ''
+                if (self$options$exact && ! requireNamespace('exact2x2', quietly=TRUE))
+                    stop('exact2x2 must be installed to calculate an exact log odds ratio', call.=FALSE)
             } else {
                 values[['value[exa]']] <- log(exact$estimate)
                 values[['df[exa]']] <- ''

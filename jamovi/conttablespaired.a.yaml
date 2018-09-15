@@ -115,6 +115,7 @@ options:
       description:
           R: >
             `TRUE` or `FALSE` (default), provide an exact log odds ratio
+            (requires exact2x2 to be installed)
 
     - name: pcRow
       title: Row
