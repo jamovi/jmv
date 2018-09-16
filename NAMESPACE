@@ -3,6 +3,7 @@
 export(ancova)
 export(anova)
 export(anovaNP)
+export(anovaOneW)
 export(anovaRM)
 export(anovaRMNP)
 export(cfa)
