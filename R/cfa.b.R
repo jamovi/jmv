@@ -58,7 +58,7 @@ cfaClass <- R6::R6Class(
                 fit <- lavaan::cfa(model = model, data=data, std.lv=std.lv, missing=missing, meanstructure=TRUE)
                 estimates <- lavaan::parameterestimates(fit, standardized = TRUE, level = self$options$ciWidth / 100)
                 fitMeasures <- lavaan::fitMeasures(fit)
-                residuals <- lavaan::residuals(fit, type = "cor")$cor
+                residuals <- lavaan::residuals(fit, type = "cor")[[2]]
                 modIndices <- lavaan::modificationIndices(fit, sort.=FALSE, minimum.value=0)
 
             }) # suppressWarnings
@@ -626,7 +626,7 @@ cfaClass <- R6::R6Class(
             fit@ParTable$lhs <- jmvcore::fromB64(fit@ParTable$lhs)
 
             if (self$options$pathDiagram) {
-                semPlotModel <- try(semPlot::semPlotModel(fit), silent = TRUE)
+                semPlotModel <- try(semPlot::semPlotModel(fit))
             } else {
                 semPlotModel <- NULL
             }
