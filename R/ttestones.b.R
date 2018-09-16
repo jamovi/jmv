@@ -74,8 +74,8 @@ ttestOneSClass <- R6::R6Class(
                             "p[stud]"=res$p.value,
                             "md[stud]"=res$estimate - testValue,
                             "es[stud]"=d,
-                            "cil[stud]"=res$conf.int[1],
-                            "ciu[stud]"=res$conf.int[2]))
+                            "cil[stud]"=res$conf.int[1] - testValue,
+                            "ciu[stud]"=res$conf.int[2] - testValue))
 
                     } else {
 

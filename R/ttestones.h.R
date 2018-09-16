@@ -515,7 +515,7 @@ ttestOneSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param effectSize \code{TRUE} or \code{FALSE} (default), provide effect
 #'   sizes
 #' @param ci \code{TRUE} or \code{FALSE} (default), provide confidence
-#'   intervals
+#'   intervals for the mean difference
 #' @param ciWidth a number between 50 and 99.9 (default: 95), the width of
 #'   confidence intervals
 #' @param desc \code{TRUE} or \code{FALSE} (default), provide descriptive
