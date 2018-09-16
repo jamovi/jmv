@@ -1,0 +1,176 @@
+---
+name:  anovaOneW
+title: One-Way ANOVA
+menuGroup: ANOVA
+version: '1.0.0'
+jas: '1.2'
+
+completeWhenFilled: true
+
+description:
+    main: One-Way ANOVA
+    R:
+        dontrun: false
+        usage: |
+            data('ToothGrowth')
+            dat <- ToothGrowth
+            dat$dose <- factor(dat$dose)
+
+            anovaOneW(dat, deps = "len", group = "dose")
+
+            #
+            #  ONE-WAY ANOVA
+            #
+            #  One-Way ANOVA (Welch's)
+            #  ────────────────────────────────────────
+            #           F       df1    df2     p
+            #  ────────────────────────────────────────
+            #    len    68.4      2    37.7    < .001
+            #  ────────────────────────────────────────
+            #
+
+
+options:
+    - name: data
+      type: Data
+      description:
+          R: the data as a data frame
+
+    - name: deps
+      title: Dependent Variables
+      type: Variables
+      required: true
+      suggested:
+        - continuous
+      permitted:
+        - numeric
+      description:
+          R: a string naming the dependent variables in `data`
+
+    - name: group
+      title: Grouping Variable
+      type: Variable
+      required: true
+      rejectUnusedLevels: true
+      suggested:
+        - nominal
+        - ordinal
+      permitted:
+        - factor
+      description:
+          R: a string naming the grouping or independent variable in `data`
+
+    - name: welchs
+      title: Welch's
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, perform Welch's one-way ANOVA which does
+            not assume equal variances
+
+    - name: fishers
+      title: Fisher's
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), perform Fisher's one-way ANOVA which
+            assumes equal variances
+
+    - name: miss
+      title: Missing values exclusion method
+      type: List
+      options:
+        - perAnalysis
+        - listwise
+      default: perAnalysis
+      description:
+          R: >
+            `'perAnalysis'` or `'listwise'`, how to handle missing
+            values; `'perAnalysis'` excludes missing values for individual
+            dependent variables, `'listwise'` excludes a row from all
+            analyses if one of its entries is missing.
+
+    - name: desc
+      title: Descriptives table
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide descriptive statistics
+
+    - name: descPlot
+      title: Descriptives plots
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide descriptive plots
+
+    - name: qq
+      title: Normality (Q-Q plot)
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a Q-Q plot of residuals
+
+    - name: eqv
+      title: Equality of Variances assumption check
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), perform Levene's test for equality of
+            variances
+
+    - name: phMethod
+      title: Post-Hoc Tests
+      type: List
+      options:
+        - none
+        - gamesHowell
+        - tukey
+      default: none
+      description:
+          R: >
+            `'none'`, `'gamesHowell'` or `'tukey'`, which post-hoc tests to
+            provide; `'none'` shows no post-hoc tests, `'gamesHowell'` shows
+            Games-Howell post-hoc tests where no equivalence of variances is
+            assumed, and `'tukey'` shows Tukey post-hoc tests where equivalence
+            of variances is assumed
+
+    - name: phMeanDif
+      title: Mean difference
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide mean differences for post-hoc tests
+
+    - name: phSig
+      title: Report significance
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide significance levels for post-hoc tests
+
+    - name: phTest
+      title: Test results (t and df)
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide test results (t-value and degrees of freedom)
+            for post-hoc tests
+
+    - name: phFlag
+      title: Flag significant comparisons
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), flag significant post-hoc comparisons
+...

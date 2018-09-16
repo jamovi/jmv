@@ -1,0 +1,124 @@
+title: One-Way ANOVA
+name: anovaOneW
+jus: '2.0'
+stage: 0
+compilerMode: tame
+children:
+  - type: VariableSupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: TargetLayoutBox
+        label: Dependent Variables
+        children:
+          - type: VariablesListBox
+            name: deps
+            isTarget: true
+      - type: TargetLayoutBox
+        label: Grouping Variable
+        children:
+          - type: VariablesListBox
+            name: group
+            maxItemCount: 1
+            isTarget: true
+  - type: LayoutBox
+    margin: large
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        cell:
+          column: 0
+          row: 0
+        stretchFactor: 1
+        children:
+          - type: Label
+            label: Test
+            children:
+              - type: CheckBox
+                name: welchs
+              - type: CheckBox
+                name: fishers
+          - type: Label
+            label: Missing Values
+            children:
+              - type: RadioButton
+                name: miss_perAnalysis
+                optionName: miss
+                optionPart: perAnalysis
+                label: Exclude cases analysis by analysis
+              - type: RadioButton
+                name: miss_listwise
+                optionName: miss
+                optionPart: listwise
+                label: Exclude cases listwise
+      - type: LayoutBox
+        cell:
+          column: 1
+          row: 0
+        stretchFactor: 1
+        children:
+          - type: Label
+            label: Additional Statistics
+            children:
+              - type: CheckBox
+                name: desc
+              - type: CheckBox
+                name: descPlot
+          - type: Label
+            label: Assumption Checks
+            children:
+              - type: CheckBox
+                name: qq
+              - type: CheckBox
+                name: eqv
+                label: Equality of variances
+  - type: CollapseBox
+    label: Post-Hoc Tests
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        children:
+          - type: LayoutBox
+            cell:
+              column: 0
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Post-Hoc Test
+                children:
+                  - type: RadioButton
+                    name: phMethod_none
+                    optionName: phMethod
+                    optionPart: none
+                    label: None
+                  - type: RadioButton
+                    name: phMethod_gamesHowell
+                    optionName: phMethod
+                    optionPart: gamesHowell
+                    label: Games-Howell (unequal variances)
+                  - type: RadioButton
+                    name: phMethod_tukey
+                    optionName: phMethod
+                    optionPart: tukey
+                    label: Tukey (equal variances)
+          - type: LayoutBox
+            cell:
+              column: 1
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Statistics
+                children:
+                  - type: CheckBox
+                    name: phMeanDif
+                  - type: CheckBox
+                    name: phSig
+                  - type: CheckBox
+                    name: phTest
+                  - type: CheckBox
+                    name: phFlag

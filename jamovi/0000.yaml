@@ -38,6 +38,12 @@ analyses:
     menuGroup: T-Tests
     menuTitle: One Sample T-Test
     description: null
+  - title: One-Way ANOVA
+    name: anovaOneW
+    ns: jmv
+    menuGroup: ANOVA
+    menuTitle: One-Way ANOVA
+    description: One-Way ANOVA
   - title: ANOVA
     name: anova
     ns: jmv
