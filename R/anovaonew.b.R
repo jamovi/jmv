@@ -327,7 +327,13 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             for (dep in self$options$deps) {
 
                 image <- plots$get(key=dep)$qq
-                image$setState(results[[dep]]$residuals)
+                r <- scale(results[[dep]]$residuals)
+                df <- as.data.frame(qqnorm(r, plot.it=FALSE))
+
+                if (nrow(df) > 10000)
+                    df <- df[ ! duplicated(round(df$x,2)), ]
+
+                image$setState(df)
 
             }
         },
@@ -336,9 +342,7 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             if (is.null(image$state))
                 return(FALSE)
 
-            df <- as.data.frame(qqnorm(image$state, plot.it=FALSE))
-
-            p <- ggplot2::ggplot(data=df, ggplot2::aes(y=y, x=x)) +
+            p <- ggplot2::ggplot(data=image$state, ggplot2::aes(y=y, x=x)) +
                 ggplot2::geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
                 ggplot2::geom_point(size=2, colour=theme$color[1]) +
                 ggplot2::xlab("Theoretical Quantiles") +

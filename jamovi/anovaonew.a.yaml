@@ -61,7 +61,7 @@ options:
           R: a string naming the grouping or independent variable in `data`
 
     - name: welchs
-      title: Welch's
+      title: Don't assume equal (Welch's)
       type: Bool
       default: true
       description:
@@ -70,7 +70,7 @@ options:
             not assume equal variances
 
     - name: fishers
-      title: Fisher's
+      title: Assume equal (Fisher's)
       type: Bool
       default: false
       description:

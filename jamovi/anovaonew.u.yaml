@@ -32,7 +32,7 @@ children:
         stretchFactor: 1
         children:
           - type: Label
-            label: Test
+            label: Variances
             children:
               - type: CheckBox
                 name: welchs

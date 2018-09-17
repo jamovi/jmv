@@ -21,31 +21,26 @@ items:
           type: text
           combineBelow: true
 
-        - name: test[fisher]
-          title: ""
-          content: "Fisher's"
-          type: text
-          visible: (fishers && welchs)
-
         - name: test[welch]
           title: ""
           content: "Welch's"
           type: text
           visible: (fishers && welchs)
 
-        - name: F[fisher]
-          title: F
-          type: number
-          visible: (fishers)
+        - name: test[fisher]
+          title: ""
+          content: "Fisher's"
+          type: text
+          visible: (fishers && welchs)
 
         - name: F[welch]
           title: F
           type: number
           visible: (welchs)
 
-        - name: df1[fisher]
-          title: df1
-          type: integer
+        - name: F[fisher]
+          title: F
+          type: number
           visible: (fishers)
 
         - name: df1[welch]
@@ -53,8 +48,8 @@ items:
           type: integer
           visible: (welchs)
 
-        - name: df2[fisher]
-          title: df2
+        - name: df1[fisher]
+          title: df1
           type: integer
           visible: (fishers)
 
@@ -63,10 +58,9 @@ items:
           type: number
           visible: (welchs)
 
-        - name: p[fisher]
-          title: p
-          type: number
-          format: zto,pvalue
+        - name: df2[fisher]
+          title: df2
+          type: integer
           visible: (fishers)
 
         - name: p[welch]
@@ -74,6 +68,12 @@ items:
           type: number
           format: zto,pvalue
           visible: (welchs)
+
+        - name: p[fisher]
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (fishers)
 
     - name: desc
       title: Group Descriptives
@@ -176,15 +176,15 @@ items:
       description: an array of post-hoc tables
       items: (deps)
       visible: (phMethod:gamesHowell || phMethod:tukey)
-      clearWith:
-        - group
-        - miss
-        - phMethod
       template:
           title: Post Hoc Tests – $key
           type: Table
           description: a post-hoc table
           rows: (levels(group))
+          clearWith:
+            - group
+            - miss
+            - phMethod
           columns:
               - name: .name[md]
                 title: ""

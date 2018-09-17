@@ -180,31 +180,26 @@ anovaOneWResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
-                        `name`="test[fisher]", 
-                        `title`="", 
-                        `content`="Fisher's", 
-                        `type`="text", 
-                        `visible`="(fishers && welchs)"),
-                    list(
                         `name`="test[welch]", 
                         `title`="", 
                         `content`="Welch's", 
                         `type`="text", 
                         `visible`="(fishers && welchs)"),
                     list(
-                        `name`="F[fisher]", 
-                        `title`="F", 
-                        `type`="number", 
-                        `visible`="(fishers)"),
+                        `name`="test[fisher]", 
+                        `title`="", 
+                        `content`="Fisher's", 
+                        `type`="text", 
+                        `visible`="(fishers && welchs)"),
                     list(
                         `name`="F[welch]", 
                         `title`="F", 
                         `type`="number", 
                         `visible`="(welchs)"),
                     list(
-                        `name`="df1[fisher]", 
-                        `title`="df1", 
-                        `type`="integer", 
+                        `name`="F[fisher]", 
+                        `title`="F", 
+                        `type`="number", 
                         `visible`="(fishers)"),
                     list(
                         `name`="df1[welch]", 
@@ -212,8 +207,8 @@ anovaOneWResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `type`="integer", 
                         `visible`="(welchs)"),
                     list(
-                        `name`="df2[fisher]", 
-                        `title`="df2", 
+                        `name`="df1[fisher]", 
+                        `title`="df1", 
                         `type`="integer", 
                         `visible`="(fishers)"),
                     list(
@@ -222,17 +217,22 @@ anovaOneWResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `type`="number", 
                         `visible`="(welchs)"),
                     list(
-                        `name`="p[fisher]", 
-                        `title`="p", 
-                        `type`="number", 
-                        `format`="zto,pvalue", 
+                        `name`="df2[fisher]", 
+                        `title`="df2", 
+                        `type`="integer", 
                         `visible`="(fishers)"),
                     list(
                         `name`="p[welch]", 
                         `title`="p", 
                         `type`="number", 
                         `format`="zto,pvalue", 
-                        `visible`="(welchs)"))))
+                        `visible`="(welchs)"),
+                    list(
+                        `name`="p[fisher]", 
+                        `title`="p", 
+                        `type`="number", 
+                        `format`="zto,pvalue", 
+                        `visible`="(fishers)"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="desc",
@@ -346,14 +346,14 @@ anovaOneWResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 title="Post Hoc Tests",
                 items="(deps)",
                 visible="(phMethod:gamesHowell || phMethod:tukey)",
-                clearWith=list(
-                    "group",
-                    "miss",
-                    "phMethod"),
                 template=jmvcore::Table$new(
                     options=options,
                     title="Post Hoc Tests \u2013 $key",
                     rows="(levels(group))",
+                    clearWith=list(
+                        "group",
+                        "miss",
+                        "phMethod"),
                     columns=list(
                         list(
                             `name`=".name[md]", 
