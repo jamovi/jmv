@@ -68,6 +68,8 @@ children:
             label: Assumption Checks
             children:
               - type: CheckBox
+                name: norm
+              - type: CheckBox
                 name: qq
               - type: CheckBox
                 name: eqv

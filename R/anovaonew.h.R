@@ -13,6 +13,7 @@ anovaOneWOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             miss = "perAnalysis",
             desc = FALSE,
             descPlot = FALSE,
+            norm = FALSE,
             qq = FALSE,
             eqv = FALSE,
             phMethod = "none",
@@ -68,6 +69,10 @@ anovaOneWOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "descPlot",
                 descPlot,
                 default=FALSE)
+            private$..norm <- jmvcore::OptionBool$new(
+                "norm",
+                norm,
+                default=FALSE)
             private$..qq <- jmvcore::OptionBool$new(
                 "qq",
                 qq,
@@ -108,6 +113,7 @@ anovaOneWOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..miss)
             self$.addOption(private$..desc)
             self$.addOption(private$..descPlot)
+            self$.addOption(private$..norm)
             self$.addOption(private$..qq)
             self$.addOption(private$..eqv)
             self$.addOption(private$..phMethod)
@@ -124,6 +130,7 @@ anovaOneWOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         miss = function() private$..miss$value,
         desc = function() private$..desc$value,
         descPlot = function() private$..descPlot$value,
+        norm = function() private$..norm$value,
         qq = function() private$..qq$value,
         eqv = function() private$..eqv$value,
         phMethod = function() private$..phMethod$value,
@@ -139,6 +146,7 @@ anovaOneWOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..miss = NA,
         ..desc = NA,
         ..descPlot = NA,
+        ..norm = NA,
         ..qq = NA,
         ..eqv = NA,
         ..phMethod = NA,
@@ -271,6 +279,7 @@ anovaOneWResults <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$add(R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
+                    norm = function() private$.items[["norm"]],
                     eqv = function() private$.items[["eqv"]]),
                 private = list(),
                 public=list(
@@ -279,6 +288,32 @@ anovaOneWResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                             options=options,
                             name="assump",
                             title="Assumption Checks")
+                        self$add(jmvcore::Table$new(
+                            options=options,
+                            name="norm",
+                            title="Test of Normality (Shapiro-Wilk)",
+                            visible="(norm)",
+                            rows="(deps)",
+                            clearWith=list(
+                                "miss",
+                                "group"),
+                            notes=list(
+                                `p`="A low p-value suggests a violation of the assumption of normality"),
+                            columns=list(
+                                list(
+                                    `name`="name", 
+                                    `title`="", 
+                                    `content`="($key)", 
+                                    `type`="text"),
+                                list(
+                                    `name`="w", 
+                                    `title`="W", 
+                                    `type`="number"),
+                                list(
+                                    `name`="p", 
+                                    `title`="p", 
+                                    `type`="number", 
+                                    `format`="zto,pvalue"))))
                         self$add(jmvcore::Table$new(
                             options=options,
                             name="eqv",
@@ -465,6 +500,8 @@ anovaOneWBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   statistics
 #' @param descPlot \code{TRUE} or \code{FALSE} (default), provide descriptive
 #'   plots
+#' @param norm \code{TRUE} or \code{FALSE} (default), perform Shapiro-Wilk
+#'   test of normality
 #' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
 #'   residuals
 #' @param eqv \code{TRUE} or \code{FALSE} (default), perform Levene's test for
@@ -486,6 +523,7 @@ anovaOneWBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' \tabular{llllll}{
 #'   \code{results$anova} \tab \tab \tab \tab \tab a table of the test results \cr
 #'   \code{results$desc} \tab \tab \tab \tab \tab a table containing the group descriptives \cr
+#'   \code{results$assump$norm} \tab \tab \tab \tab \tab a table containing the normality tests \cr
 #'   \code{results$assump$eqv} \tab \tab \tab \tab \tab a table of equality of variances tests \cr
 #'   \code{results$plots} \tab \tab \tab \tab \tab an array of groups of plots \cr
 #'   \code{results$postHoc} \tab \tab \tab \tab \tab an array of post-hoc tables \cr
@@ -507,6 +545,7 @@ anovaOneW <- function(
     miss = "perAnalysis",
     desc = FALSE,
     descPlot = FALSE,
+    norm = FALSE,
     qq = FALSE,
     eqv = FALSE,
     phMethod = "none",
@@ -532,6 +571,7 @@ anovaOneW <- function(
         miss = miss,
         desc = desc,
         descPlot = descPlot,
+        norm = norm,
         qq = qq,
         eqv = eqv,
         phMethod = phMethod,

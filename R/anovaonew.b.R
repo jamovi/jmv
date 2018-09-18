@@ -26,6 +26,7 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 private$.populateAnovaTable(results)
                 private$.populateDescTable(results)
                 private$.populateLevenesTable(results)
+                private$.populateShapiroWilkTable(results)
                 private$.populatePostHocTables(results)
                 private$.prepareDescPlot(results)
                 private$.prepareQQPlot(results)
@@ -237,6 +238,49 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             }
 
         },
+        .populateShapiroWilkTable = function(results) {
+
+            table <- self$results$assump$norm
+
+            for (dep in self$options$deps) {
+
+                r <- results[[dep]]$residuals
+
+                row <- list()
+                footnote <- NULL
+
+                if (length(r) < 3) {
+
+                    row[['w']] <- NaN
+                    row[['p']] <- ''
+                    footnote <- 'Too few samples to compute statistic (N < 3)'
+
+                } else if (length(r) > 5000) {
+
+                    row[['w']] <- NaN
+                    row[['p']] <- ''
+                    footnote <- 'Too many samples to compute statistic (N > 5000)'
+
+                } else {
+
+                    sw <- try(shapiro.test(r), silent=TRUE)
+
+
+                    if ( ! isError(sw)) {
+                        row[['w']] <- sw$statistic
+                        row[['p']] <- sw$p.value
+                    }
+                    else {
+                        row[['w']] <- NaN
+                        row[['p']] <- ''
+                    }
+                }
+
+                table$setRow(rowKey=dep, row)
+                if ( ! is.null(footnote))
+                    table$addFootnote(rowKey=dep, 'w', footnote)
+            }
+        },
         .populatePostHocTables = function(results) {
 
             tables <- self$results$postHoc
@@ -327,7 +371,7 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             for (dep in self$options$deps) {
 
                 image <- plots$get(key=dep)$qq
-                r <- scale(results[[dep]]$residuals)
+                r <- results[[dep]]$residuals
                 df <- as.data.frame(qqnorm(r, plot.it=FALSE))
 
                 if (nrow(df) > 10000)

@@ -115,6 +115,33 @@ items:
       title: Assumption Checks
       type: Group
       items:
+        - name: norm
+          title: Test of Normality (Shapiro-Wilk)
+          type: Table
+          description: a table containing the normality tests
+          visible: (norm)
+          rows: (deps)
+          clearWith:
+            - miss
+            - group
+          notes:
+              p: A low p-value suggests a violation of the assumption of normality
+
+          columns:
+            - name: name
+              title: ""
+              content: ($key)
+              type: text
+
+            - name: w
+              title: "W"
+              type: number
+
+            - name: p
+              title: p
+              type: number
+              format: zto,pvalue
+
         - name: eqv
           title: Test for Equality of Variances (Levene's)
           type: Table

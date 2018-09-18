@@ -108,6 +108,14 @@ options:
           R: >
             `TRUE` or `FALSE` (default), provide descriptive plots
 
+    - name: norm
+      title: Normality (Shapiro-Wilk)
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), perform Shapiro-Wilk test of normality
+
     - name: qq
       title: Normality (Q-Q plot)
       type: Bool
