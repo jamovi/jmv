@@ -1,0 +1,268 @@
+---
+name:  anovaOneW
+title: One-Way ANOVA
+jrs:   '1.1'
+
+items:
+    - name: anova
+      title: One-Way ANOVA
+      type: Table
+      description: a table of the test results
+      rows: (deps)
+      visible: (fishers || welchs)
+      clearWith:
+        - group
+        - miss
+
+      columns:
+        - name: dep
+          title: ""
+          content: ($key)
+          type: text
+          combineBelow: true
+
+        - name: test[welch]
+          title: ""
+          content: "Welch's"
+          type: text
+          visible: (fishers && welchs)
+
+        - name: test[fisher]
+          title: ""
+          content: "Fisher's"
+          type: text
+          visible: (fishers && welchs)
+
+        - name: F[welch]
+          title: F
+          type: number
+          visible: (welchs)
+
+        - name: F[fisher]
+          title: F
+          type: number
+          visible: (fishers)
+
+        - name: df1[welch]
+          title: df1
+          type: integer
+          visible: (welchs)
+
+        - name: df1[fisher]
+          title: df1
+          type: integer
+          visible: (fishers)
+
+        - name: df2[welch]
+          title: df2
+          type: number
+          visible: (welchs)
+
+        - name: df2[fisher]
+          title: df2
+          type: integer
+          visible: (fishers)
+
+        - name: p[welch]
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (welchs)
+
+        - name: p[fisher]
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (fishers)
+
+    - name: desc
+      title: Group Descriptives
+      type: Table
+      description: a table containing the group descriptives
+      rows: 0
+      visible: (desc)
+      clearWith:
+        - group
+        - miss
+
+      columns:
+        - name: dep
+          title: ""
+          type: text
+          combineBelow: true
+
+        - name: group
+          title: ""
+          type: text
+
+        - name: num
+          title: "N"
+          type: integer
+
+        - name: mean
+          title: Mean
+          type: number
+
+        - name: sd
+          title: SD
+          type: number
+
+        - name: se
+          title: SE
+          type: number
+
+    - name: assump
+      title: Assumption Checks
+      type: Group
+      items:
+        - name: norm
+          title: Test of Normality (Shapiro-Wilk)
+          type: Table
+          description: a table containing the normality tests
+          visible: (norm)
+          rows: (deps)
+          clearWith:
+            - miss
+            - group
+          notes:
+              p: A low p-value suggests a violation of the assumption of normality
+
+          columns:
+            - name: name
+              title: ""
+              content: ($key)
+              type: text
+
+            - name: w
+              title: "W"
+              type: number
+
+            - name: p
+              title: p
+              type: number
+              format: zto,pvalue
+
+        - name: eqv
+          title: Test for Equality of Variances (Levene's)
+          type: Table
+          description: a table of equality of variances tests
+          visible: (eqv)
+          rows: (deps)
+          columns:
+            - name: dep
+              title: ""
+              content: ($key)
+              type: text
+
+            - name: F
+              type: number
+
+            - name: df1
+              type: integer
+
+            - name: df2
+              type: integer
+
+            - name: p
+              type: number
+              format: zto,pvalue
+
+    - name: plots
+      title: Plots
+      type: Array
+      description: an array of groups of plots
+      items: (deps)
+      clearWith:
+        - group
+        - miss
+      template:
+          title: $key
+          type: Group
+          items:
+            - name: desc
+              type: Image
+              description: descriptives plot
+              height: 350
+              visible: (descPlot)
+              renderFun: .desc
+              clearWith: []
+
+            - name: qq
+              type: Image
+              description: Q-Q plot
+              width: 350
+              height: 300
+              requiresData: true
+              visible: (qq)
+              renderFun: .qq
+              clearWith: []
+
+    - name: postHoc
+      title: Post Hoc Tests
+      type: Array
+      description: an array of post-hoc tables
+      items: (deps)
+      visible: (phMethod:gamesHowell || phMethod:tukey)
+      template:
+          title: Post Hoc Tests – $key
+          type: Table
+          description: a post-hoc table
+          rows: (levels(group))
+          clearWith:
+            - group
+            - miss
+            - phMethod
+          columns:
+              - name: .name[md]
+                title: ""
+                type: text
+                content: ($key)
+                combineBelow: true
+                visible: (phMeanDif)
+
+              - name: .stat[md]
+                title: ""
+                type: text
+                content: Mean difference
+                visible: (phMeanDif)
+
+              - name: .name[t]
+                title: ""
+                type: text
+                content: ($key)
+                combineBelow: true
+                visible: (phTest)
+
+              - name: .stat[t]
+                title: ""
+                type: text
+                content: t-value
+                visible: (phTest)
+
+              - name: .name[df]
+                title: ""
+                type: text
+                content: ($key)
+                combineBelow: true
+                visible: (phTest)
+
+              - name: .stat[df]
+                title: ""
+                type: text
+                content: df
+                visible: (phTest)
+
+              - name: .name[p]
+                title: ""
+                type: text
+                content: ($key)
+                combineBelow: true
+                visible: (phSig)
+
+              - name: .stat[p]
+                title: ""
+                type: text
+                content: p-value
+                visible: (phSig)
+
+...
