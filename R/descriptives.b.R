@@ -75,7 +75,7 @@ descriptivesClass <- R6::R6Class(
 
                 column <- data[[var]]
 
-                if (is.factor(column)) {
+                if (private$.treatAsFactor(column)) {
 
                     if (length(splitBy) > 0) {
 
@@ -186,10 +186,14 @@ descriptivesClass <- R6::R6Class(
                 var <- vars[i]
                 column <- self$data[[var]]
 
-                if (is.factor(column)) {
+                if (private$.treatAsFactor(column)) {
 
                     table <- tables$get(var)
                     levels <- base::levels(column)
+                    if (is.null(levels)) {
+                        levels <- levels(factor(naOmit(column)))
+                        table$setVisible(TRUE)
+                    }
 
                     if (length(splitBy) == 0) {
 
@@ -204,7 +208,6 @@ descriptivesClass <- R6::R6Class(
                     } else {
 
                         expandGrid <- function(...) expand.grid(..., stringsAsFactors = FALSE)
-                        levels <- base::levels(column)
                         grid <- rev(do.call(expandGrid, rev(c(list(levels), private$levels[-1]))))
                         cols <- c(var, splitBy[-1])
 
@@ -270,7 +273,11 @@ descriptivesClass <- R6::R6Class(
 
                 } else if (canBeNumeric(column)) {
 
-                    names <- na.omit(splitBy[1:3])
+                    if (is.null(splitBy))
+                        names <- NULL
+                    else
+                        names <- na.omit(splitBy[1:3])
+
                     df <- data[names]
                     levels <- lapply(df, levels)
 
@@ -448,10 +455,18 @@ descriptivesClass <- R6::R6Class(
                 var <- vars[i]
                 column <- self$data[[var]]
 
-                if (is.factor(column)) {
+                if (private$.treatAsFactor(column)) {
 
                     table <- tables$get(var)
+
+                    if ( !  table$visible)
+                        next()
+
                     levels <- base::levels(column)
+                    if (is.null(levels)) {
+                        levels <- levels(factor(naOmit(column)))
+                        table$setVisible(TRUE)
+                    }
                     freq <- freqs[[var]]
 
                     if (length(splitBy) == 0) {
@@ -887,6 +902,17 @@ descriptivesClass <- R6::R6Class(
                 if (length(levels(data[[var]])) == 0)
                     jmvcore::reject(jmvcore::format('The \'split by\' variable \'{}\' contains no data.', var), code='')
             }
+        },
+        .treatAsFactor = function(column) {
+
+            if (is.factor(column))
+                return(TRUE)
+
+            nUniques <- length(unique(column))
+            if (nUniques > 0 && nUniques <= 10)
+                return(TRUE)
+            else
+                return(FALSE)
         },
         .addQuantiles = function() {
 
