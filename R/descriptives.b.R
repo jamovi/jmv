@@ -702,7 +702,12 @@ descriptivesClass <- R6::R6Class(
                 max <- max(data[names$x])
 
                 range <- max - min
-                binWidth <- range / nBins
+
+                nUniques <- length(unique(data[[names$x]]))
+                if (nUniques > nBins)
+                    binWidth <- range / nBins
+                else
+                    binWidth <- range / (nUniques - 1)
 
                 plot <- ggplot(data=data, aes_string(x=names$x)) +
                     labs(list(x=labels$x, y='density'))
