@@ -933,7 +933,6 @@ linRegClass <- R6::R6Class(
             } else {
                 for (i in seq_along(blocks)) {
                     terms[[i]] <- unlist(blocks[1:i], recursive = FALSE)
-                    terms[[i]][sapply(terms[[i]], is.null)] <- NULL
                 }
             }
 
