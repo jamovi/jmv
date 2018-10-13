@@ -693,8 +693,8 @@ anovaRMClass <- R6::R6Class(
             names <- image$state$names
             labels <- image$state$labels
 
-            emm$lowerSE <- emm[names$y] - emm['SE']
-            emm$upperSE <- emm[names$y] + emm['SE']
+            emm$lowerSE <- emm[[names$y]] - emm[['SE']]
+            emm$upperSE <- emm[[names$y]] + emm[['SE']]
 
             if (self$options$emmPlotData)
                 dodge <- position_dodge(0.7)
