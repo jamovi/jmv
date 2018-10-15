@@ -59,7 +59,7 @@ children:
             selectable: false
             template:
                 type: TextBox
-                inputPattern: '[0-9]+'
+                inputPattern: '^\-?[0-9]*\.?[0-9]+$'
                 format: number
           - name: proportion
             label: Proportion

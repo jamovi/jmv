@@ -39,7 +39,7 @@ children:
                   - type: TextBox
                     name: testValue
                     format: number
-                    inputPattern: '[0-9]+'
+                    inputPattern: '^\-?[0-9]*\.?[0-9]+$'
           - type: Label
             label: Hypothesis
             children:
@@ -76,7 +76,7 @@ children:
                     label: Interval
                     suffix: '%'
                     format: number
-                    inputPattern: '[0-9]+'
+                    inputPattern: '^\-?[0-9]*\.?[0-9]+$'
                     enable: (ci)
   - type: CollapseBox
     label: Bayesian Statistics
@@ -97,12 +97,12 @@ children:
                 name: priorA
                 label: a parameter
                 format: number
-                inputPattern: '[0-9]+'
+                inputPattern: '^\-?[0-9]*\.?[0-9]+$'
               - type: TextBox
                 name: priorB
                 label: b parameter
                 format: number
-                inputPattern: '[0-9]+'
+                inputPattern: '^\-?[0-9]*\.?[0-9]+$'
           - type: Label
             label: Plots
             children:
@@ -128,6 +128,6 @@ children:
                     label: Interval
                     suffix: '%'
                     format: number
-                    inputPattern: '[0-9]+'
+                    inputPattern: '^\-?[0-9]*\.?[0-9]+$'
                     enable: (ciBayes)
 

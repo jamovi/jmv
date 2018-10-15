@@ -87,7 +87,7 @@ children:
                             name: ciWidth
                             suffix: '%'
                             format: number
-                            inputPattern: '[0-9]+'
+                            inputPattern: '^\-?[0-9]*\.?[0-9]+$'
                             enable: (ci)
           - type: LayoutBox
             margin: large

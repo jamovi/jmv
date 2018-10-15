@@ -233,7 +233,7 @@ children:
                     label: Confidence interval
                     suffix: '%'
                     format: number
-                    inputPattern: '[0-9]+'
+                    inputPattern: '^\-?[0-9]*\.?[0-9]+$'
           - type: LayoutBox
             cell:
               column: 1

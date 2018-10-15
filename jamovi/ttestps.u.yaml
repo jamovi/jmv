@@ -52,7 +52,7 @@ children:
                         name: bfPrior
                         label: Prior
                         format: number
-                        inputPattern: '[0-9]+'
+                        inputPattern: '^\-?[0-9]*\.?[0-9]+$'
                         enable: (bf)
               - type: CheckBox
                 name: wilcoxon
@@ -112,7 +112,7 @@ children:
                     label: Interval
                     suffix: '%'
                     format: number
-                    inputPattern: '[0-9]+'
+                    inputPattern: '^\-?[0-9]*\.?[0-9]+$'
                     enable: (ci)
               - type: CheckBox
                 name: desc
