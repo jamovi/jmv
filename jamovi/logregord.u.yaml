@@ -196,7 +196,6 @@ children:
                         label: Interval
                         suffix: '%'
                         format: number
-                        inputPattern: '[0-9]+'
                         enable: (ci)
               - type: Label
                 label: Odds Ratio
@@ -212,5 +211,4 @@ children:
                         label: Interval
                         suffix: '%'
                         format: number
-                        inputPattern: '[0-9]+'
                         enable: (ciOR)

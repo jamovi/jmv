@@ -195,7 +195,6 @@ children:
                         label: Interval
                         suffix: '%'
                         format: number
-                        inputPattern: '[0-9]+'
                         enable: (ci)
           - type: LayoutBox
             cell:
@@ -217,7 +216,6 @@ children:
                         label: Interval
                         suffix: '%'
                         format: number
-                        inputPattern: '[0-9]+'
                         enable: (ciOR)
   - type: CollapseBox
     label: Estimated Marginal Means
@@ -285,7 +283,6 @@ children:
                         label: Interval
                         suffix: '%'
                         format: number
-                        inputPattern: '[0-9]+'
                         enable: (ciEmm)
           - type: LayoutBox
             cell:
@@ -323,7 +320,6 @@ children:
                   - type: TextBox
                     name: cutOff
                     format: number
-                    inputPattern: '[0-9]+'
           - type: LayoutBox
             cell:
               column: 1

@@ -176,7 +176,6 @@ children:
                         label: Interval
                         suffix: '%'
                         format: number
-                        inputPattern: '[0-9]+'
                         enable: (ci)
           - type: LayoutBox
             cell:
@@ -198,7 +197,6 @@ children:
                         label: Interval
                         suffix: '%'
                         format: number
-                        inputPattern: '[0-9]+'
                         enable: (ciRR)
   - type: CollapseBox
     label: Estimated Marginal Means
@@ -266,7 +264,6 @@ children:
                         label: Interval
                         suffix: '%'
                         format: number
-                        inputPattern: '[0-9]+'
                         enable: (ciEmm)
           - type: LayoutBox
             cell:
