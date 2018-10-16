@@ -37,7 +37,6 @@ children:
               - name: hideLoadings
                 type: TextBox
                 format: number
-                inputPattern: '^\-?[0-9]*\.?[0-9]+$'
       - type: LayoutBox
         margin: large
         cell:
@@ -63,7 +62,6 @@ children:
                     type: TextBox
                     label: 'Eigenvalues greater than'
                     format: number
-                    inputPattern: '^\-?[0-9]*\.?[0-9]+$'
                     enable: (nFactorMethod_eigen)
               - type: RadioButton
                 name: nFactorMethod_fixed
@@ -76,7 +74,6 @@ children:
                     label: ''
                     suffix: component(s)
                     format: number
-                    inputPattern: '^\-?[0-9]*\.?[0-9]+$'
                     enable: (nFactorMethod_fixed)
       - type: LayoutBox
         margin: large

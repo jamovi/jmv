@@ -76,7 +76,6 @@ children:
                         label: ''
                         suffix: equal groups
                         format: number
-                        inputPattern: '^\-?[0-9]*\.?[0-9]+$'
                         enable: (pcEqGr)
       - type: LayoutBox
         stretchFactor: 1
