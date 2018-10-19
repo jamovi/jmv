@@ -141,18 +141,43 @@ pcaClass <- R6::R6Class(
                     table$addColumn(name=paste0("pc",i), title=as.character(i), type='number', superTitle=jmvcore::format('{}', type), index=i+1)
             }
 
-            for (var in vars) {
+            class(loadings) <- "matrix"
+            loadings <- as.data.frame(loadings)
+
+            if (self$options$sortLoadings) {
+
+                max <- apply(loadings, 1, max)
+                whichMax <- apply(loadings, 1, which.max)
+                loadings$uniqueness <- uniqueness
+
+                loadings <- loadings[order(whichMax, -max), ]
+
+            } else {
+
+                varOrder <- match(jmvcore::toB64(vars), rownames(loadings))
+                loadings$uniqueness <- uniqueness
+
+                loadings <- loadings[order(varOrder), ]
+
+            }
+
+            rowNames <- jmvcore::fromB64(rownames(loadings))
+
+            for (i in seq_along(vars)) {
 
                 row <- list()
+
+                row[['name']] <- rowNames[i]
                 for (j in 1:nFactors) {
 
-                    l <- loadings[jmvcore::toB64(var), j]
+                    l <- loadings[i, j]
                     row[[paste0("pc", j)]] <- if (abs(l) < hide) "" else l
                 }
 
-                row[["uniq"]] <- as.numeric(uniqueness[jmvcore::toB64(var)])
+                row[["uniq"]] <- as.numeric(loadings$uniqueness[i])
 
-                table$setRow(rowKey=var, values=row)
+                table$setRow(rowNo=i, values=row)
+
             }
         },
         .populateEigenTable = function(results) {
