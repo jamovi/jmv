@@ -108,6 +108,14 @@ options:
           R: >
             a number (default: 0.3), hide loadings below this value
 
+    - name: sortLoadings
+      title: Sort loadings by size
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), sort the factor loadings by size
+
     - name: screePlot
       title: Scree plot
       type: Bool

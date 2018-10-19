@@ -37,6 +37,8 @@ children:
               - name: hideLoadings
                 type: TextBox
                 format: number
+              - type: CheckBox
+                name: sortLoadings
       - type: LayoutBox
         margin: large
         cell:
@@ -58,7 +60,7 @@ children:
                 children:
                   - name: minEigen
                     type: TextBox
-                    label: 'Eigenvalues greater than'
+                    label: Eigenvalues greater than
                     format: number
                     enable: (nFactorMethod_eigen)
               - type: RadioButton
