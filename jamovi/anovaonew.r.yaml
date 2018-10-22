@@ -212,6 +212,7 @@ items:
             - group
             - miss
             - phMethod
+            - phFlag
           columns:
               - name: .name[md]
                 title: ""
