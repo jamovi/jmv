@@ -52,7 +52,7 @@ pcaClass <- R6::R6Class(
                 if (private$analysis == 'pca')
                     r <- psych::principal(data, nfactors = nFactors, rotate = self$options$rotation)
                 else
-                    r <- psych::fa(data, nfactors = nFactors, rotate = self$options$rotation)
+                    r <- psych::fa(data, nfactors = nFactors, rotate = self$options$rotation, fm = self$options$extraction)
 
                 devnull <- '/dev/null'
                 if (Sys.info()['sysname'] == 'Windows')
@@ -87,8 +87,26 @@ pcaClass <- R6::R6Class(
         .initLoadingsTable = function() {
 
             table <- self$results$loadings
-            table$setNote("note", jmvcore::format("\'{}\' rotation was used", self$options$rotation))
 
+            if (private$analysis == 'pca') {
+
+                table$setNote("note", jmvcore::format("\'{}\' rotation was used", self$options$rotation))
+
+            } else {
+
+                extr <- self$options$extraction
+
+                if (extr == 'pa')
+                    extrName <- 'Principal axis factoring'
+                else if (extr == 'ml')
+                    extrName <- 'Maximum likelihood'
+                else
+                    extrName <- 'Minimum residual'
+
+
+                table$setNote("note", jmvcore::format("\'{}\' extraction method was used in combination with a \'{}\' rotation", extrName, self$options$rotation))
+
+            }
         },
         .initModelFitTable = function() {
 
@@ -347,10 +365,7 @@ pcaClass <- R6::R6Class(
             p <- ggplot(data=data, aes(x=comp, y=eigen, group=type, linetype=factor(type))) +
                         geom_line(size=.8, colour=theme$color[1]) +
                         geom_point(aes(fill=factor(type), colour=factor(type)), shape=21, size=3) +
-                        scale_fill_manual(values=c(theme$color[1], theme$fill[1])) +
-                        scale_color_manual(values=c(theme$color[1], theme$color[1])) +
-                        xlab(type) +
-                        ylab("Eigenvalue") +
+                        xlab(type) + ylab("Eigenvalue") +
                         ggtheme + themeSpec
 
             if (nFactorMethod != "parallel")

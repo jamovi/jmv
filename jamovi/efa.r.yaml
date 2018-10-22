@@ -13,5 +13,6 @@ items:
         - nFactors
         - hideLoadings
         - rotation
+        - factorMethod
 
 ...

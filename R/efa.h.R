@@ -10,6 +10,7 @@ efaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             nFactorMethod = "parallel",
             nFactors = 1,
             minEigen = 1,
+            extraction = "minres",
             rotation = "oblimin",
             hideLoadings = 0.3,
             sortLoadings = FALSE,
@@ -53,6 +54,14 @@ efaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "minEigen",
                 minEigen,
                 default=1)
+            private$..extraction <- jmvcore::OptionList$new(
+                "extraction",
+                extraction,
+                options=list(
+                    "minres",
+                    "ml",
+                    "pa"),
+                default="minres")
             private$..rotation <- jmvcore::OptionList$new(
                 "rotation",
                 rotation,
@@ -105,6 +114,7 @@ efaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..nFactorMethod)
             self$.addOption(private$..nFactors)
             self$.addOption(private$..minEigen)
+            self$.addOption(private$..extraction)
             self$.addOption(private$..rotation)
             self$.addOption(private$..hideLoadings)
             self$.addOption(private$..sortLoadings)
@@ -121,6 +131,7 @@ efaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         nFactorMethod = function() private$..nFactorMethod$value,
         nFactors = function() private$..nFactors$value,
         minEigen = function() private$..minEigen$value,
+        extraction = function() private$..extraction$value,
         rotation = function() private$..rotation$value,
         hideLoadings = function() private$..hideLoadings$value,
         sortLoadings = function() private$..sortLoadings$value,
@@ -136,6 +147,7 @@ efaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..nFactorMethod = NA,
         ..nFactors = NA,
         ..minEigen = NA,
+        ..extraction = NA,
         ..rotation = NA,
         ..hideLoadings = NA,
         ..sortLoadings = NA,
@@ -168,7 +180,8 @@ efaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "nFactorMethod",
                     "nFactors",
                     "hideLoadings",
-                    "rotation")))}))
+                    "rotation",
+                    "factorMethod")))}))
 
 efaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "efaBase",
@@ -221,10 +234,14 @@ efaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param nFactors an integer (default: 1), the number of factors in the model
 #' @param minEigen a number (default: 1), the minimal eigenvalue for a factor
 #'   to be included in the model
+#' @param extraction \code{'minres'} (default), \code{'ml'}, or \code{'pa'}
+#'   use respectively 'minimum residual', 'maximum likelihood', or 'prinicipal
+#'   axis' as the factor extraction method
 #' @param rotation \code{'none'}, \code{'varimax'} (default),
 #'   \code{'quartimax'}, \code{'promax'}, \code{'oblimin'}, or
 #'   \code{'simplimax'}, the rotation to use in estimation
-#' @param hideLoadings a number (default: 0.3), hide loadings below this value
+#' @param hideLoadings a number (default: 0.3), hide factor loadings below
+#'   this value
 #' @param sortLoadings \code{TRUE} or \code{FALSE} (default), sort the factor
 #'   loadings by size
 #' @param screePlot \code{TRUE} or \code{FALSE} (default), show scree plot
@@ -251,6 +268,7 @@ efa <- function(
     nFactorMethod = "parallel",
     nFactors = 1,
     minEigen = 1,
+    extraction = "minres",
     rotation = "oblimin",
     hideLoadings = 0.3,
     sortLoadings = FALSE,
@@ -275,6 +293,7 @@ efa <- function(
         nFactorMethod = nFactorMethod,
         nFactors = nFactors,
         minEigen = minEigen,
+        extraction = extraction,
         rotation = rotation,
         hideLoadings = hideLoadings,
         sortLoadings = sortLoadings,
