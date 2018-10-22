@@ -39,6 +39,7 @@ options:
     - name: vars
       title: Variables
       type: Variables
+      takeFromDataIfMissing: true
       suggested:
         - ordinal
         - continuous
