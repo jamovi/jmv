@@ -32,20 +32,10 @@ children:
           - type: Label
             label: Method
             children:
+              - name: extraction
+                type: ComboBox
               - name: rotation
                 type: ComboBox
-              - name: hideLoadings
-                type: TextBox
-                format: number
-              - type: CheckBox
-                name: sortLoadings
-      - type: LayoutBox
-        margin: large
-        cell:
-          column: 0
-          row: 1
-        stretchFactor: 1
-        children:
           - type: Label
             label: Number of Factors
             children:
@@ -88,13 +78,14 @@ children:
                 type: CheckBox
               - name: kmo
                 type: CheckBox
-      - type: LayoutBox
-        margin: large
-        cell:
-          column: 1
-          row: 1
-        stretchFactor: 1
-        children:
+          - type: Label
+            label: Factor Loadings
+            children:
+              - name: hideLoadings
+                type: TextBox
+                format: number
+              - type: CheckBox
+                name: sortLoadings
           - type: Label
             label: Additional Output
             children:

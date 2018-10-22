@@ -81,6 +81,22 @@ options:
           R: >
             a number (default: 1), the minimal eigenvalue for a factor to be included in the model
 
+    - name: extraction
+      title: Extraction
+      type: List
+      options:
+        - title: Minimum residuals
+          name: minres
+        - title: Maximum likelihood
+          name: ml
+        - title: Principal axis
+          name: pa
+      default: minres
+      description:
+          R: >
+            `'minres'` (default), `'ml'`, or `'pa'` use respectively 'minimum residual',
+            'maximum likelihood', or 'prinicipal axis' as the factor extraction method
+
     - name: rotation
       title: Rotation
       type: List
@@ -110,7 +126,7 @@ options:
       default: 0.3
       description:
           R: >
-            a number (default: 0.3), hide loadings below this value
+            a number (default: 0.3), hide factor loadings below this value
 
     - name: sortLoadings
       title: Sort loadings by size
