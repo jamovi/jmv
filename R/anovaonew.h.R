@@ -388,7 +388,8 @@ anovaOneWResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     clearWith=list(
                         "group",
                         "miss",
-                        "phMethod"),
+                        "phMethod",
+                        "phFlag"),
                     columns=list(
                         list(
                             `name`=".name[md]", 
