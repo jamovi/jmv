@@ -238,9 +238,9 @@ efaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param extraction \code{'minres'} (default), \code{'ml'}, or \code{'pa'}
 #'   use respectively 'minimum residual', 'maximum likelihood', or 'prinicipal
 #'   axis' as the factor extraction method
-#' @param rotation \code{'none'}, \code{'varimax'} (default),
-#'   \code{'quartimax'}, \code{'promax'}, \code{'oblimin'}, or
-#'   \code{'simplimax'}, the rotation to use in estimation
+#' @param rotation \code{'none'}, \code{'varimax'}, \code{'quartimax'},
+#'   \code{'promax'}, \code{'oblimin'} (default), or \code{'simplimax'}, the
+#'   rotation to use in estimation
 #' @param hideLoadings a number (default: 0.3), hide factor loadings below
 #'   this value
 #' @param sortLoadings \code{TRUE} or \code{FALSE} (default), sort the factor
