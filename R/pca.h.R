@@ -29,6 +29,7 @@ pcaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..vars <- jmvcore::OptionVariables$new(
                 "vars",
                 vars,
+                takeFromDataIfMissing=TRUE,
                 suggested=list(
                     "ordinal",
                     "continuous"),
@@ -514,6 +515,7 @@ pca <- function(
             parent.frame(),
             `if`( ! missing(vars), vars, NULL))
 
+    vars <- `if`( ! missing(vars), vars, colnames(data))
     options <- pcaOptions$new(
         vars = vars,
         nFactorMethod = nFactorMethod,
