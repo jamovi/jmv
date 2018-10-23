@@ -117,8 +117,8 @@ options:
       default: oblimin
       description:
           R: >
-            `'none'`, `'varimax'` (default), `'quartimax'`, `'promax'`,
-            `'oblimin'`, or `'simplimax'`, the rotation to use
+            `'none'`, `'varimax'`, `'quartimax'`, `'promax'`,
+            `'oblimin'` (default), or `'simplimax'`, the rotation to use
             in estimation
 
     - name: hideLoadings
