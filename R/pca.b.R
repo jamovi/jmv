@@ -442,7 +442,7 @@ pcaClass <- R6::R6Class(
             if (private$analysis == 'pca')
                 eigen <- eigen(corMatrix)$values
             else
-                eigen<- psych::fa(corMatrix, fm="minres", warnings=FALSE)$values
+                eigen<- psych::fa(corMatrix, fm=self$options$extraction, warnings=FALSE)$values
 
             nSub <- dim(data)[1]
             nVar <- dim(data)[2]
@@ -465,7 +465,7 @@ pcaClass <- R6::R6Class(
                 if (private$analysis == 'pca')
                     eigen(simCor)$values
                 else
-                    psych::fa(simCor, fm="minres", warnings=FALSE)$values
+                    psych::fa(simCor, fm=self$options$extraction, warnings=FALSE)$values
 
             })
 
