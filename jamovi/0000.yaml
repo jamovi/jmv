@@ -68,12 +68,12 @@ analyses:
     menuGroup: ANOVA
     menuTitle: MANCOVA
     description: Multivariate Analysis of Covariance
-  - title: One Way ANOVA (Non-parametric)
+  - title: One-Way ANOVA (Non-parametric)
     name: anovaNP
     ns: jmv
     menuGroup: ANOVA
     menuSubgroup: Non-Parametric
-    menuTitle: One Way ANOVA
+    menuTitle: One-Way ANOVA
     menuSubtitle: Kruskal-Wallis
     description: Kruskal-Wallis
   - title: Repeated Measures ANOVA (Non-parametric)
