@@ -1,10 +1,10 @@
 ---
 name:  anovaNP
-title: One Way ANOVA (Non-parametric)
+title: One-Way ANOVA (Non-parametric)
 
 menuGroup: ANOVA
 menuSubgroup: Non-Parametric
-menuTitle: One Way ANOVA
+menuTitle: One-Way ANOVA
 menuSubtitle: Kruskal-Wallis
 
 version: '1.0.0'

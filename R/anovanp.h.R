@@ -64,7 +64,7 @@ anovaNPResults <- if (requireNamespace('jmvcore')) R6::R6Class(
             super$initialize(
                 options=options,
                 name="",
-                title="One-way ANOVA (Non-parametric)")
+                title="One-Way ANOVA (Non-parametric)")
             self$add(jmvcore::Table$new(
                 options=options,
                 name="table",
@@ -143,7 +143,7 @@ anovaNPBase <- if (requireNamespace('jmvcore')) R6::R6Class(
                 completeWhenFilled = TRUE)
         }))
 
-#' One Way ANOVA (Non-parametric)
+#' One-Way ANOVA (Non-parametric)
 #'
 #' Kruskal-Wallis
 #'
