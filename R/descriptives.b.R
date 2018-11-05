@@ -666,9 +666,7 @@ descriptivesClass <- R6::R6Class(
             if ( ! is.null(facetFmla))
                 plot <- plot + facet_grid(as.formula(facetFmla), drop=FALSE)
 
-            print(plot)
-
-            return(TRUE)
+            return(plot)
         },
         .histogram = function(image, ggtheme, theme, ...) {
 
@@ -745,13 +743,7 @@ descriptivesClass <- R6::R6Class(
 
             plot <- plot + ggtheme + themeSpec
 
-            suppressWarnings(
-                suppressMessages(
-                    print(plot)
-                )
-            )
-
-            TRUE
+            return(plot)
         },
         .barPlot = function(image, ggtheme, theme, ...) {
 
@@ -798,13 +790,7 @@ descriptivesClass <- R6::R6Class(
 
             plot <- plot + ggtheme + themeSpec
 
-            suppressWarnings(
-                suppressMessages(
-                    print(plot)
-                )
-            )
-
-            TRUE
+            return(plot)
         },
         .boxPlot = function(image, ggtheme, theme, ...) {
 
@@ -889,13 +875,7 @@ descriptivesClass <- R6::R6Class(
 
             plot <- plot + ggtheme + themeSpec
 
-            suppressWarnings(
-                suppressMessages(
-                    print(plot)
-                )
-            )
-
-            TRUE
+            return(plot)
         },
 
         #### Helper functions ----

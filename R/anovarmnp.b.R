@@ -110,8 +110,6 @@ anovaRMNPClass <- R6::R6Class(
         else
             p <- p + geom_point(aes(x=group, y=median), shape=21, color=theme$color[1], fill=theme$fill[1], size=3)
 
-        print(p)
-
-        TRUE
+        return(p)
     })
 )

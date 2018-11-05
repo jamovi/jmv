@@ -234,14 +234,12 @@ mancovaClass <- R6::R6Class(
             if (is.null(image$state))
                 return(FALSE)
 
-            print(ggplot(data=image$state, aes(x=chi, y=dist)) +
+            return(ggplot(data=image$state, aes(x=chi, y=dist)) +
                       geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
                       geom_point(aes(x=chi,y=dist), size=2, colour=theme$color[1]) +
                       xlab("Chi-Square Quantiles") +
                       ylab("Squared Mahalanobis Distance") +
                       ggtheme)
-
-            TRUE
         },
 
         #### Helper functions ----

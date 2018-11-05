@@ -543,14 +543,12 @@ ancovaClass <- R6::R6Class(
             residuals <- rstandard(model)
             df <- as.data.frame(qqnorm(residuals, plot.it=FALSE))
 
-            print(ggplot(data=df, aes(y=y, x=x)) +
+            return(ggplot(data=df, aes(y=y, x=x)) +
                       geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
                       geom_point(aes(x=x,y=y), size=2, colour=theme$color[1]) +
                       xlab("Theoretical Quantiles") +
                       ylab("Standardized Residuals") +
                       ggtheme)
-
-            TRUE
         },
         .prepareEmmPlots = function(data) {
 
@@ -655,9 +653,7 @@ ancovaClass <- R6::R6Class(
                 labs(list(x=labels$x, y=labels$y, fill=labels$lines, color=labels$lines)) +
                 ggtheme + theme(panel.spacing = unit(2, "lines"))
 
-            print(p)
-
-            TRUE
+            return(p)
         },
 
         #### Helper functions ----

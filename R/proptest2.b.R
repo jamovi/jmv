@@ -262,13 +262,7 @@ propTest2Class <- R6::R6Class(
                 ggtheme + themeSpec
 
 
-            suppressWarnings(
-                suppressMessages(
-                    print(p)
-                )
-            )
-
-            TRUE
+            return(p)
         },
 
         #### Helper functions ----

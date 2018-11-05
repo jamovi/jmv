@@ -374,9 +374,7 @@ pcaClass <- R6::R6Class(
             if (nFactorMethod == "eigen")
                 p <- p + geom_hline(aes(yintercept=self$options$minEigen), linetype = 2, colour=theme$color[1])
 
-            print(p)
-
-            TRUE
+            return(p)
         },
 
         #### Helper functions ----

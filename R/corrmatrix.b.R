@@ -243,8 +243,6 @@ corrMatrixClass <- R6::R6Class(
             diag=diag) + ggtheme[[1]] +
             theme(axis.text = element_text(size = 9))
 
-        print(p)
-
-        TRUE
+        return(p)
     })
 )

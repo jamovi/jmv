@@ -276,9 +276,7 @@ ttestOneSClass <- R6::R6Class(
                 ggtheme + theme(plot.title = ggplot2::element_text(margin=ggplot2::margin(b = 5.5 * 1.2)),
                               plot.margin = ggplot2::margin(5.5, 5.5, 5.5, 5.5))
 
-            suppressWarnings(print(plot))
-
-            return(TRUE)
+            return(plot)
         },
         .qq=function(image, ggtheme, theme, ...) {
 

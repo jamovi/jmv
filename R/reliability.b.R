@@ -170,9 +170,7 @@ reliabilityClass <- R6::R6Class(
                                                      title.position = "top", title.hjust = 0.5)) +
                         the
 
-            print(p)
-
-            TRUE
+            return(p)
         },
 
         #### Helper functions ----

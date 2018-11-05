@@ -688,9 +688,7 @@ linRegClass <- R6::R6Class(
                       ylab("Standardized Residuals") +
                       ggtheme
 
-            print(p)
-
-            TRUE
+            return(p)
         },
         .prepareResPlots = function(data, results) {
 
@@ -729,9 +727,7 @@ linRegClass <- R6::R6Class(
                       ylab("Residuals") +
                       ggtheme
 
-            print(p)
-
-            TRUE
+            return(p)
         },
         .prepareCoefPlot = function(results) {
 
@@ -773,9 +769,7 @@ linRegClass <- R6::R6Class(
                 coord_flip() +
                 ggtheme + themeSpec
 
-            print(p)
-
-            TRUE
+            return(p)
         },
         .prepareEmmPlots = function(models, data) {
 
@@ -916,9 +910,7 @@ linRegClass <- R6::R6Class(
                 labs(list(x=labels$x, y=labels$y, fill=labels$lines, color=labels$lines)) +
                 ggtheme + theme(panel.spacing = unit(2, "lines"))
 
-            print(p)
-
-            TRUE
+            return(p)
         },
 
         #### Helper functions ----

@@ -359,9 +359,7 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 ggtheme + ggplot2::theme(legend.title = ggplot2::element_blank(),
                                          legend.justification = 0.5, legend.position = 'top')
 
-            suppressWarnings(print(p))
-
-            return(TRUE)
+            return(p)
         },
         .prepareQQPlot = function(results) {
 
@@ -393,9 +391,7 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 ggplot2::ylab("Standardized Residuals") +
                 ggtheme
 
-            print(p)
-
-            return(TRUE)
+            return(p)
         },
 
         #### Helper functions ----

@@ -672,9 +672,7 @@ logRegMultiClass <- R6::R6Class(
                 labs(list(x=labels$x, y=labels$y, fill=labels$lines, color=labels$lines)) +
                 ggtheme + theme(panel.spacing = unit(2, "lines"))
 
-            print(p)
-
-            TRUE
+            return(p)
         },
 
         #### Helper functions ----
