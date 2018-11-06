@@ -726,7 +726,7 @@ anovaRMClass <- R6::R6Class(
             }
 
             p <- p +
-                labs(list(x=labels$x, y=labels$y, fill=labels$lines, color=labels$lines)) +
+                labs(x=labels$x, y=labels$y, fill=labels$lines, color=labels$lines) +
                 ggtheme + theme(panel.spacing = unit(2, "lines"))
 
             return(p)
