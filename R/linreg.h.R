@@ -907,6 +907,8 @@ linReg <- function(
             `if`( ! missing(covs), covs, NULL),
             `if`( ! missing(factors), factors, NULL))
 
+    for (v in factors) data[[v]] <- as.factor(data[[v]])
+
     options <- linRegOptions$new(
         dep = dep,
         covs = covs,

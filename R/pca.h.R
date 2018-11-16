@@ -516,6 +516,7 @@ pca <- function(
             `if`( ! missing(vars), vars, NULL))
 
     vars <- `if`( ! missing(vars), vars, colnames(data))
+
     options <- pcaOptions$new(
         vars = vars,
         nFactorMethod = nFactorMethod,

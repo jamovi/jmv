@@ -565,6 +565,8 @@ ancova <- function(
             `if`( ! missing(factors), factors, NULL),
             `if`( ! missing(covs), covs, NULL))
 
+    for (v in factors) data[[v]] <- as.factor(data[[v]])
+
     options <- ancovaOptions$new(
         dep = dep,
         factors = factors,

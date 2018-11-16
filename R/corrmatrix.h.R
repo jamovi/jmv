@@ -378,6 +378,7 @@ corrMatrix <- function(
             `if`( ! missing(vars), vars, NULL))
 
     vars <- `if`( ! missing(vars), vars, colnames(data))
+
     options <- corrMatrixOptions$new(
         vars = vars,
         pearson = pearson,

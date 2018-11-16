@@ -929,6 +929,8 @@ anovaRM <- function(
             `if`( ! missing(bs), bs, NULL),
             `if`( ! missing(cov), cov, NULL))
 
+    for (v in bs) data[[v]] <- as.factor(data[[v]])
+
     options <- anovaRMOptions$new(
         rm = rm,
         rmCells = rmCells,

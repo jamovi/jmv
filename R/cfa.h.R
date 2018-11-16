@@ -876,6 +876,7 @@ cfa <- function(
         data <- jmvcore:::marshalData(
             parent.frame())
 
+
     options <- cfaOptions$new(
         factors = factors,
         resCov = resCov,

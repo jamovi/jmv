@@ -453,6 +453,8 @@ anova <- function(
             `if`( ! missing(dep), dep, NULL),
             `if`( ! missing(factors), factors, NULL))
 
+    for (v in factors) data[[v]] <- as.factor(data[[v]])
+
     options <- anovaOptions$new(
         dep = dep,
         factors = factors,

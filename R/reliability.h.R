@@ -315,6 +315,7 @@ reliability <- function(
             `if`( ! missing(revItems), revItems, NULL))
 
     vars <- `if`( ! missing(vars), vars, colnames(data))
+
     options <- reliabilityOptions$new(
         vars = vars,
         alphaScale = alphaScale,

@@ -985,6 +985,9 @@ logRegBin <- function(
             `if`( ! missing(covs), covs, NULL),
             `if`( ! missing(factors), factors, NULL))
 
+    for (v in dep) data[[v]] <- as.factor(data[[v]])
+    for (v in factors) data[[v]] <- as.factor(data[[v]])
+
     options <- logRegBinOptions$new(
         dep = dep,
         covs = covs,

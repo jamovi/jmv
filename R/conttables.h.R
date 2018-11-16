@@ -627,6 +627,10 @@ contTables <- function(
             `if`( ! missing(counts), counts, NULL),
             `if`( ! missing(layers), layers, NULL))
 
+    for (v in rows) data[[v]] <- as.factor(data[[v]])
+    for (v in cols) data[[v]] <- as.factor(data[[v]])
+    for (v in layers) data[[v]] <- as.factor(data[[v]])
+
     options <- contTablesOptions$new(
         rows = rows,
         cols = cols,

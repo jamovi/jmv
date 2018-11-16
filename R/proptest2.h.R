@@ -334,6 +334,8 @@ propTest2 <- function(
             parent.frame(),
             `if`( ! missing(vars), vars, NULL))
 
+    for (v in vars) data[[v]] <- as.factor(data[[v]])
+
     options <- propTest2Options$new(
         vars = vars,
         areCounts = areCounts,

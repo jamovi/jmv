@@ -571,6 +571,7 @@ ttestOneS <- function(
             parent.frame(),
             `if`( ! missing(vars), vars, NULL))
 
+
     options <- ttestOneSOptions$new(
         vars = vars,
         students = students,

@@ -659,6 +659,8 @@ logLinear <- function(
             `if`( ! missing(factors), factors, NULL),
             `if`( ! missing(counts), counts, NULL))
 
+    for (v in factors) data[[v]] <- as.factor(data[[v]])
+
     options <- logLinearOptions$new(
         factors = factors,
         counts = counts,

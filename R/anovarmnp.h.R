@@ -241,6 +241,7 @@ anovaRMNP <- function(
             parent.frame(),
             `if`( ! missing(measures), measures, NULL))
 
+
     options <- anovaRMNPOptions$new(
         measures = measures,
         pairs = pairs,
