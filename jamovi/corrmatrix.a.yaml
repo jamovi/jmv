@@ -6,6 +6,24 @@ version: '1.0.0'
 jas: '1.2'
 
 description:
+    main: |
+        Correlation matrices are a way to examine linear relationships between
+        two or more continuous variables.
+
+        For each pair of variables, a Pearson's r value indicates the strength
+        and direction of the relationship between those two variables. A
+        positive value indicates a positive relationship (higher values of one
+        variable predict higher values of the other variable). A negative
+        Pearson's r indicates a negative relationship (higher values of one
+        variable predict lower values of the other variable, and vice-versa).
+        A value of zero indicates no relationship (whether a variable is high
+        or low, does not tell us anything about the value of the other
+        variable).
+
+        More formally, it is possible to test the null hypothesis that the
+        correlation is zero using and calculate a p-value. If the p-value is
+        low, it suggests the correlation co-efficient is not zero, and there is
+        a linear (or more complex) relationship between the two variables.
     R:
         usage: |
             data('mtcars')
@@ -51,22 +69,28 @@ options:
       permitted:
         - numeric
       description:
+          ui: >
+            the variables of interest.
           R: >
             a vector of strings naming the variables to correlate in `data`
 
     - name: pearson
-      title: Pearson's R
+      title: Pearson
       type: Bool
       default: true
       description:
+          ui: >
+            provide a Pearson's r for each combination of variables.
           R: >
             `TRUE` (default) or `FALSE`, provide Pearson's R
 
     - name: spearman
-      title: Spearman's rho
+      title: Spearman
       type: Bool
       default: false
       description:
+          ui: >
+            provide a Spearman's rho for each combination of variables.
           R: >
             `TRUE` or `FALSE` (default), provide Spearman's rho
 
@@ -75,14 +99,18 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            provide a Kendall's tau-b for each combination of variables.
           R: >
             `TRUE` or `FALSE` (default), provide Kendall's tau-b
 
     - name: sig
-      title: Report Significance
+      title: Report significance
       type: Bool
       default: true
       description:
+          ui: >
+            provide a p-value for each correlation co-efficient.
           R: >
             `TRUE` (default) or `FALSE`, provide significance levels
 
@@ -91,24 +119,30 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            flag significant correlations (p < .05) with symbols.
           R: >
             `TRUE` or `FALSE` (default), flag significant correlations
 
     - name: ci
-      title: Confidence Intervals
+      title: Confidence intervals
       type: Bool
       default: false
       description:
+          ui: >
+            provide confidence intervals for Pearson's r.
           R: >
             `TRUE` or `FALSE` (default), provide confidence intervals
 
     - name: ciWidth
-      title: Confidence level
+      title: Confidence interval width
       type: Number
       min: 50
       max: 99.9
       default: 95
       description:
+          ui: >
+            the confidence interval width.
           R: >
             a number between 50 and 99.9 (default: 95), the width of
             confidence intervals to provide
@@ -118,6 +152,8 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            provide a correlation matrix plot.
           R: >
             `TRUE` or `FALSE` (default), provide a correlation matrix plot
 
@@ -126,6 +162,8 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            plot densities along the diagonal of the correlation matrix plot.
           R: >
             `TRUE` or `FALSE` (default), provide densities in the correlation
             matrix plot
@@ -135,6 +173,8 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            provide correlation co-efficients in the correlation matrix plot.
           R: >
             `TRUE` or `FALSE` (default), provide statistics in the correlation
             matrix plot
@@ -151,6 +191,8 @@ options:
           title: Correlated negatively
       default: corr
       description:
+        ui: >
+            the alternative hypothesis. Allows for one-tailed tests.
         R: >
             one of `'corr'` (default), `'pos'`, `'neg'`
             specifying the alernative hypothesis; correlated, correlated

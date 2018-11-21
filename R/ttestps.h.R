@@ -496,6 +496,18 @@ ttestPSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 
 #' Paired Samples T-Test
 #'
+#' The Student's paired samples t-test (sometimes called a
+#' dependent-samples t-test) is used to test the null hypothesis that the
+#' difference between pairs of measurements is equal to zero. A low p-value
+#' suggests that the null hypothesis is not true, and that the
+#' difference between the measurement pairs is not zero.
+#' 
+#' The Student's paired samples t-test assumes that pair differences follow
+#' a normal distribution -- in the case that one is unwilling to assume
+#' this, the non-parametric Wilcoxon signed-rank can be used in it's place
+#' (However, note that the Wilcoxon signed-rank has a slightly different
+#' null hypothesis; that the two groups of measurements follow the same
+#' distribution).
 #' 
 #'
 #' @examples
@@ -549,7 +561,7 @@ ttestPSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param miss \code{'perAnalysis'} or \code{'listwise'}, how to handle
 #'   missing values; \code{'perAnalysis'} excludes missing values for individual
 #'   dependent variables, \code{'listwise'} excludes a row from all analyses if
-#'   one of its entries is missing.
+#'   one of its entries is missing
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$ttest} \tab \tab \tab \tab \tab a table containing the t-test results \cr

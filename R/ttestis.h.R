@@ -634,6 +634,19 @@ ttestISBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 
 #' Independent Samples T-Test
 #'
+#' The Student's Independent samples t-test (sometimes called a two-samples
+#' t-test) is used to test the null hypothesis that two groups have the
+#' same mean. A low p-value suggests that the null hypothesis is not true,
+#' and therefore the group means are different.
+#' 
+#' The Student's independent t-test assumes that the data from each group
+#' are from a normal distribution, and that the variances of these groups
+#' are equal. If unwilling to assume the groups have equal variances, the
+#' Welch's t-test can be used in it's place. If one is additionally
+#' unwilling to assume the data from each group are from a normal
+#' distribution, the non-parametric Mann-Whitney U test can be used instead
+#' (However, note that the Mann-Whitney U test has a slightly different
+#' null hypothesis; that the distributions of each group is equal).
 #' 
 #'
 #' @examples
@@ -669,11 +682,11 @@ ttestISBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   2, group 1 greater than group 2, and group 2 greater than group 1
 #'   respectively
 #' @param norm \code{TRUE} or \code{FALSE} (default), perform Shapiro-Wilk
-#'   test of normality
-#' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
+#'   tests of normality
+#' @param qq \code{TRUE} or \code{FALSE} (default), provide Q-Q plots of
 #'   residuals
-#' @param eqv \code{TRUE} or \code{FALSE} (default), perform Levene's test for
-#'   equality of variances
+#' @param eqv \code{TRUE} or \code{FALSE} (default), perform Levene's tests
+#'   for equality of variances
 #' @param meanDiff \code{TRUE} or \code{FALSE} (default), provide means and
 #'   standard errors
 #' @param effectSize \code{TRUE} or \code{FALSE} (default), provide effect

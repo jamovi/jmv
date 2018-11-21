@@ -473,6 +473,16 @@ ttestOneSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 
 #' One Sample T-Test
 #'
+#' The Student's One-sample t-test is used to test the null hypothesis that
+#' the true mean is equal to a particular value (typically zero). A low
+#' p-value suggests that the null hypothesis is not true, and therefore
+#' the true mean must be different from the test value.
+#' 
+#' The Student's One-sample t-test assumes that the data are from a normal
+#' distribution -- in the case that one is unwilling to assume this, the
+#' non-parametric Wilcoxon signed-rank can be used in it's place (However,
+#' note that the Wilcoxon signed-rank has a slightly different null
+#' hypothesis; that the *median* is equal to the test value).
 #' 
 #'
 #' @examples
@@ -498,8 +508,8 @@ ttestOneSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param students \code{TRUE} (default) or \code{FALSE}, perform Student's
 #'   t-tests
 #' @param bf \code{TRUE} or \code{FALSE} (default), provide Bayes factors
-#' @param bfPrior a number between 0.5 and 2 (default 0.707), the prior width
-#'   to use in calculating Bayes factors
+#' @param bfPrior a number between 0.5 and 2.0 (default 0.707), the prior
+#'   width to use in calculating Bayes factors
 #' @param wilcoxon \code{TRUE} or \code{FALSE} (default), perform Wilcoxon
 #'   signed rank tests
 #' @param testValue a number specifying the value of the null hypothesis
@@ -512,8 +522,8 @@ ttestOneSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   residuals
 #' @param meanDiff \code{TRUE} or \code{FALSE} (default), provide means and
 #'   standard deviations
-#' @param effectSize \code{TRUE} or \code{FALSE} (default), provide effect
-#'   sizes
+#' @param effectSize \code{TRUE} or \code{FALSE} (default), provide Cohen's d
+#'   effect sizes
 #' @param ci \code{TRUE} or \code{FALSE} (default), provide confidence
 #'   intervals for the mean difference
 #' @param ciWidth a number between 50 and 99.9 (default: 95), the width of

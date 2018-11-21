@@ -25,19 +25,54 @@ analyses:
     ns: jmv
     menuGroup: T-Tests
     menuTitle: Independent Samples T-Test
-    description: null
+    description: |
+      The Student's Independent samples t-test (sometimes called a two-samples
+      t-test) is used to test the null hypothesis that two groups have the
+      same mean. A low p-value suggests that the null hypothesis is not true,
+      and therefore the group means are different.
+
+      The Student's independent t-test assumes that the data from each group
+      are from a normal distribution, and that the variances of these groups
+      are equal. If unwilling to assume the groups have equal variances, the
+      Welch's t-test can be used in it's place. If one is additionally
+      unwilling to assume the data from each group are from a normal
+      distribution, the non-parametric Mann-Whitney U test can be used instead
+      (However, note that the Mann-Whitney U test has a slightly different
+      null hypothesis; that the distributions of each group is equal).
   - title: Paired Samples T-Test
     name: ttestPS
     ns: jmv
     menuGroup: T-Tests
     menuTitle: Paired Samples T-Test
-    description: Provides a range of descriptive statistics
+    description: |
+      The Student's paired samples t-test (sometimes called a
+      dependent-samples t-test) is used to test the null hypothesis that the
+      difference between pairs of measurements is equal to zero. A low p-value
+      suggests that the null hypothesis is not true, and that the
+      difference between the measurement pairs is not zero.
+
+      The Student's paired samples t-test assumes that pair differences follow
+      a normal distribution -- in the case that one is unwilling to assume
+      this, the non-parametric Wilcoxon signed-rank can be used in it's place
+      (However, note that the Wilcoxon signed-rank has a slightly different
+      null hypothesis; that the two groups of measurements follow the same
+      distribution).
   - title: One Sample T-Test
     name: ttestOneS
     ns: jmv
     menuGroup: T-Tests
     menuTitle: One Sample T-Test
-    description: null
+    description: |
+      The Student's One-sample t-test is used to test the null hypothesis that
+      the true mean is equal to a particular value (typically zero). A low
+      p-value suggests that the null hypothesis is not true, and therefore
+      the true mean must be different from the test value.
+
+      The Student's One-sample t-test assumes that the data are from a normal
+      distribution -- in the case that one is unwilling to assume this, the
+      non-parametric Wilcoxon signed-rank can be used in it's place (However,
+      note that the Wilcoxon signed-rank has a slightly different null
+      hypothesis; that the *median* is equal to the test value).
   - title: One-Way ANOVA
     name: anovaOneW
     ns: jmv
@@ -89,7 +124,24 @@ analyses:
     menuGroup: Regression
     menuTitle: Correlation Matrix
     ns: jmv
-    description: null
+    description: |
+      Correlation matrices are a way to examine linear relationships between
+      two or more continuous variables.
+
+      For each pair of variables, a Pearson's r value indicates the strength
+      and direction of the relationship between those two variables. A
+      positive value indicates a positive relationship (higher values of one
+      variable predict higher values of the other variable). A negative
+      Pearson's r indicates a negative relationship (higher values of one
+      variable predict lower values of the other variable, and vice-versa).
+      A value of zero indicates no relationship (whether a variable is high
+      or low, does not tell us anything about the value of the other
+      variable).
+
+      More formally, it is possible to test the null hypothesis that the
+      correlation is zero using and calculate a p-value. If the p-value is
+      low, it suggests the correlation co-efficient is not zero, and there is
+      a linear (or more complex) relationship between the two variables.
   - title: Linear Regression
     name: linReg
     ns: jmv

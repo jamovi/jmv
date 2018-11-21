@@ -6,6 +6,17 @@ version: '1.0.0'
 jas: '1.2'
 
 description:
+    main: |
+        The Student's One-sample t-test is used to test the null hypothesis that
+        the true mean is equal to a particular value (typically zero). A low
+        p-value suggests that the null hypothesis is not true, and therefore
+        the true mean must be different from the test value.
+
+        The Student's One-sample t-test assumes that the data are from a normal
+        distribution -- in the case that one is unwilling to assume this, the
+        non-parametric Wilcoxon signed-rank can be used in it's place (However,
+        note that the Wilcoxon signed-rank has a slightly different null
+        hypothesis; that the *median* is equal to the test value).
     R:
         dontrun: false
         usage: |
@@ -42,13 +53,19 @@ options:
         - numeric
       rejectInf: false
       description:
-          R: a vector of strings naming the variables of interest in `data`
+          ui: >
+            the variables of interest -- a separate t-test is performed for
+            each variable specified.
+          R: >
+            a vector of strings naming the variables of interest in `data`
 
     - name: students
       title: Student's test
       type: Bool
       default: true
       description:
+          ui: >
+            perform Student's one-sample t-tests.
           R: >
             `TRUE` (default) or `FALSE`, perform Student's t-tests
 
@@ -57,6 +74,8 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            provide Bayes factors for the Student's one-sample t-tests.
           R: >
             `TRUE` or `FALSE` (default), provide Bayes factors
 
@@ -67,8 +86,11 @@ options:
       min: 0.5
       max: 2.0
       description:
+          ui: >
+            the prior width for the Student's t-test's Bayes factors.
+            Requires a value between 0.5 and 2.0, default 0.707.
           R: >
-            a number between 0.5 and 2 (default 0.707), the prior width to use
+            a number between 0.5 and 2.0 (default 0.707), the prior width to use
             in calculating Bayes factors
 
     - name: wilcoxon
@@ -76,6 +98,8 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            perform Wilcoxon signed rank tests.
           R: >
             `TRUE` or `FALSE` (default), perform Wilcoxon signed rank tests
 
@@ -84,6 +108,7 @@ options:
       type: Number
       default: 0
       description:
+          ui: the test value to test against (typically zero).
           R: a number specifying the value of the null hypothesis
 
     - name: hypothesis
@@ -95,6 +120,15 @@ options:
         - lt
       default: dt
       description:
+          ui: |
+            the alternative and null hypotheses;
+
+            |              | Alternative (Hₐ)  | Null (H₀)          |
+            |--------------|-------------------|--------------------|
+            | ≠ Test value | Mean ≠ Test value | Mean = Test value  |
+            | > Test value | Mean > Test value | Mean <= Test value |
+            | < Test value | Mean < Test value | Mean >= Test value |
+
           R: >
             `'dt'` (default), `'gt'` or `'lt'`, the alternative
             hypothesis; different to `testValue`, greater than
@@ -105,6 +139,9 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            perform a Shapiro-Wilk test of normality. A low p-value suggests the
+            data is not from a normal distribution.
           R: >
             `TRUE` or `FALSE` (default), perform Shapiro-wilk tests of normality
 
@@ -113,14 +150,22 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            provide a Q-Q plot of residuals -- a plot of the actual residuals
+            against what would be expected if the data were *perfectly* normally
+            distributed. Large deviations from the diagonal line suggest the
+            data is not from a normal distribution.
           R: >
             `TRUE` or `FALSE` (default), provide a Q-Q plot of residuals
 
     - name: meanDiff
-      title: Mean and standard error difference
+      title: Mean difference
       type: Bool
       default: false
       description:
+          ui: >
+            provide mean differences, and standard errors of the mean
+            differences, between the mean estimate, and the test value.
           R: >
             `TRUE` or `FALSE` (default), provide means and standard deviations
 
@@ -129,14 +174,19 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            provide effect-sizes (Cohen's d).
           R: >
-            `TRUE` or `FALSE` (default), provide effect sizes
+            `TRUE` or `FALSE` (default), provide Cohen's d effect sizes
 
     - name: ci
       title: Confidence Interval
       type: Bool
       default: false
       description:
+          ui: >
+            provide a confidence interval for the difference between the
+            mean estimate and the test value.
           R: >
             `TRUE` or `FALSE` (default), provide confidence intervals for
             the mean difference
@@ -148,6 +198,8 @@ options:
       max: 99.9
       default: 95
       description:
+          ui: >
+            the confidence interval width.
           R: >
             a number between 50 and 99.9 (default: 95), the width of confidence
             intervals
@@ -157,6 +209,8 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            provide a table of descriptives for each variable.
           R: >
             `TRUE` or `FALSE` (default), provide descriptive statistics
 
@@ -165,17 +219,23 @@ options:
       type: Bool
       default: false
       description:
+          ui:
+            provide descriptive plots for each variable.
           R: >
             `TRUE` or `FALSE` (default), provide descriptive plots
 
     - name: miss
-      title: Missing values exclusion method
+      title: Missing values
       type: List
       options:
         - perAnalysis
         - listwise
       default: perAnalysis
       description:
+          ui: >
+            the missing value exclusion method. `Analysis by analysis`
+            excludes missing values from each variable. `Listwise` excludes
+            a row from all analyses if one of its values is missing.
           R: >
             `'perAnalysis'` or `'listwise'`, how to handle missing
             values; `'perAnalysis'` excludes missing values for individual
