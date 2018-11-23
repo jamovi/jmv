@@ -84,7 +84,18 @@ analyses:
     ns: jmv
     menuGroup: ANOVA
     menuTitle: ANOVA
-    description: Analysis of Variance
+    description: |
+      The Analysis of Variance (ANOVA) is used to explore the relationship
+      between a continuous dependent variable, and one or more categorical
+      explanatory variables.
+
+      ANOVA assumes that the residuals are normally distributed, and that the
+      variances of all groups are equal. If one is unwilling to assume that
+      the variances are equal, then a Welch's test can be used instead
+      (However, the Welch's test does not support more than one explanatory
+      factor). Alternatively, if one is unwilling to assume that the data is
+      normally distributed, a non-parametric approach (such as Kruskal-Wallis)
+      can be used.
   - title: Repeated Measures ANOVA
     name: anovaRM
     ns: jmv

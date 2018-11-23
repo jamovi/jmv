@@ -8,15 +8,15 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         initialize = function(
             dep = NULL,
             factors = NULL,
+            effectSize = NULL,
             modelTerms = NULL,
             ss = "3",
-            effectSize = NULL,
+            homo = FALSE,
+            qq = FALSE,
             contrasts = NULL,
             postHoc = NULL,
             postHocCorr = list(
                 "tukey"),
-            homo = FALSE,
-            qq = FALSE,
             emMeans = list(
                 list()),
             ciWidthEmm = 95,
@@ -51,6 +51,14 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 permitted=list(
                     "factor"),
                 default=NULL)
+            private$..effectSize <- jmvcore::OptionNMXList$new(
+                "effectSize",
+                effectSize,
+                options=list(
+                    "eta",
+                    "partEta",
+                    "omega"),
+                default=NULL)
             private$..modelTerms <- jmvcore::OptionTerms$new(
                 "modelTerms",
                 modelTerms,
@@ -63,14 +71,14 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "2",
                     "3"),
                 default="3")
-            private$..effectSize <- jmvcore::OptionNMXList$new(
-                "effectSize",
-                effectSize,
-                options=list(
-                    "eta",
-                    "partEta",
-                    "omega"),
-                default=NULL)
+            private$..homo <- jmvcore::OptionBool$new(
+                "homo",
+                homo,
+                default=FALSE)
+            private$..qq <- jmvcore::OptionBool$new(
+                "qq",
+                qq,
+                default=FALSE)
             private$..contrasts <- jmvcore::OptionArray$new(
                 "contrasts",
                 contrasts,
@@ -110,14 +118,6 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "holm"),
                 default=list(
                     "tukey"))
-            private$..homo <- jmvcore::OptionBool$new(
-                "homo",
-                homo,
-                default=FALSE)
-            private$..qq <- jmvcore::OptionBool$new(
-                "qq",
-                qq,
-                default=FALSE)
             private$..emMeans <- jmvcore::OptionArray$new(
                 "emMeans",
                 emMeans,
@@ -159,14 +159,14 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             self$.addOption(private$..dep)
             self$.addOption(private$..factors)
+            self$.addOption(private$..effectSize)
             self$.addOption(private$..modelTerms)
             self$.addOption(private$..ss)
-            self$.addOption(private$..effectSize)
+            self$.addOption(private$..homo)
+            self$.addOption(private$..qq)
             self$.addOption(private$..contrasts)
             self$.addOption(private$..postHoc)
             self$.addOption(private$..postHocCorr)
-            self$.addOption(private$..homo)
-            self$.addOption(private$..qq)
             self$.addOption(private$..emMeans)
             self$.addOption(private$..ciWidthEmm)
             self$.addOption(private$..emmPlots)
@@ -178,14 +178,14 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
     active = list(
         dep = function() private$..dep$value,
         factors = function() private$..factors$value,
+        effectSize = function() private$..effectSize$value,
         modelTerms = function() private$..modelTerms$value,
         ss = function() private$..ss$value,
-        effectSize = function() private$..effectSize$value,
+        homo = function() private$..homo$value,
+        qq = function() private$..qq$value,
         contrasts = function() private$..contrasts$value,
         postHoc = function() private$..postHoc$value,
         postHocCorr = function() private$..postHocCorr$value,
-        homo = function() private$..homo$value,
-        qq = function() private$..qq$value,
         emMeans = function() private$..emMeans$value,
         ciWidthEmm = function() private$..ciWidthEmm$value,
         emmPlots = function() private$..emmPlots$value,
@@ -196,14 +196,14 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
     private = list(
         ..dep = NA,
         ..factors = NA,
+        ..effectSize = NA,
         ..modelTerms = NA,
         ..ss = NA,
-        ..effectSize = NA,
+        ..homo = NA,
+        ..qq = NA,
         ..contrasts = NA,
         ..postHoc = NA,
         ..postHocCorr = NA,
-        ..homo = NA,
-        ..qq = NA,
         ..emMeans = NA,
         ..ciWidthEmm = NA,
         ..emmPlots = NA,
@@ -344,7 +344,18 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 
 #' ANOVA
 #'
-#' Analysis of Variance
+#' The Analysis of Variance (ANOVA) is used to explore the relationship
+#' between a continuous dependent variable, and one or more categorical
+#' explanatory variables.
+#' 
+#' ANOVA assumes that the residuals are normally distributed, and that the
+#' variances of all groups are equal. If one is unwilling to assume that
+#' the variances are equal, then a Welch's test can be used instead
+#' (However, the Welch's test does not support more than one explanatory
+#' factor). Alternatively, if one is unwilling to assume that the data is
+#' normally distributed, a non-parametric approach (such as Kruskal-Wallis)
+#' can be used.
+#' 
 #'
 #' @examples
 #' data('ToothGrowth')
@@ -370,13 +381,17 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   variable must be numeric
 #' @param factors a vector of strings naming the fixed factors from
 #'   \code{data}
+#' @param effectSize one or more of \code{'eta'}, \code{'partEta'}, or
+#'   \code{'omega'}; use eta², partial eta², and omega² effect sizes,
+#'   respectively
 #' @param modelTerms a list of character vectors describing the terms to go
 #'   into the model
 #' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default), the sum of
 #'   squares to use
-#' @param effectSize one or more of \code{'eta'}, \code{'partEta'}, or
-#'   \code{'omega'}; use eta², partial eta², and omega² effect sizes,
-#'   respectively
+#' @param homo \code{TRUE} or \code{FALSE} (default), perform homogeneity
+#'   tests
+#' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
+#'   residuals
 #' @param contrasts a list of lists specifying the factor and type of contrast
 #'   to use, one of \code{'deviation'}, \code{'simple'}, \code{'difference'},
 #'   \code{'helmert'}, \code{'repeated'} or \code{'polynomial'}
@@ -384,10 +399,6 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param postHocCorr one or more of \code{'none'}, \code{'tukey'},
 #'   \code{'scheffe'}, \code{'bonf'}, or \code{'holm'}; provide no, Tukey,
 #'   Scheffe, Bonferroni, and Holm Post Hoc corrections respectively
-#' @param homo \code{TRUE} or \code{FALSE} (default), perform homogeneity
-#'   tests
-#' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
-#'   residuals
 #' @param emMeans a list of lists specifying the variables for which the
 #'   estimated marginal means need to be calculate. Supports up to three
 #'   variables per term.
@@ -426,15 +437,15 @@ anova <- function(
     data,
     dep,
     factors = NULL,
+    effectSize = NULL,
     modelTerms = NULL,
     ss = "3",
-    effectSize = NULL,
+    homo = FALSE,
+    qq = FALSE,
     contrasts = NULL,
     postHoc = NULL,
     postHocCorr = list(
                 "tukey"),
-    homo = FALSE,
-    qq = FALSE,
     emMeans = list(
                 list()),
     ciWidthEmm = 95,
@@ -458,14 +469,14 @@ anova <- function(
     options <- anovaOptions$new(
         dep = dep,
         factors = factors,
+        effectSize = effectSize,
         modelTerms = modelTerms,
         ss = ss,
-        effectSize = effectSize,
+        homo = homo,
+        qq = qq,
         contrasts = contrasts,
         postHoc = postHoc,
         postHocCorr = postHocCorr,
-        homo = homo,
-        qq = qq,
         emMeans = emMeans,
         ciWidthEmm = ciWidthEmm,
         emmPlots = emmPlots,

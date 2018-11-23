@@ -6,7 +6,18 @@ version: '2.0.0'
 jas: '1.2'
 
 description:
-    main: Analysis of Variance
+    main: |
+        The Analysis of Variance (ANOVA) is used to explore the relationship
+        between a continuous dependent variable, and one or more categorical
+        explanatory variables.
+
+        ANOVA assumes that the residuals are normally distributed, and that the
+        variances of all groups are equal. If one is unwilling to assume that
+        the variances are equal, then a Welch's test can be used instead
+        (However, the Welch's test does not support more than one explanatory
+        factor). Alternatively, if one is unwilling to assume that the data is
+        normally distributed, a non-parametric approach (such as Kruskal-Wallis)
+        can be used.
     R:
         dontrun: false
         usage: |
@@ -35,7 +46,6 @@ options:
       type: Data
       description:
           R: the data as a data frame
-
     - name: dep
       title: Dependent Variable
       type: Variable
@@ -45,10 +55,11 @@ options:
       permitted:
         - numeric
       description:
+          ui: >
+            the dependent variable. For ANOVA, these will be continuous.
           R: >
             a string naming the dependent variable from `data`, variable
             must be numeric
-
     - name: factors
       title: Fixed Factors
       type: Variables
@@ -59,19 +70,41 @@ options:
         - ordinal
       permitted:
         - factor
-      default:
+      default: null
       description:
-          R: a vector of strings naming the fixed factors from `data`
-
+          ui: >
+            the explanatory or independent variables. For ANOVA these will be
+            categorical.
+          R: >
+            a vector of strings naming the fixed factors from `data`
+    - name: effectSize
+      title: Effect Size
+      type: NMXList
+      options:
+        - name: eta
+          title: η²
+        - name: partEta
+          title: partial η²
+        - name: omega
+          title: ω²
+      default: null
+      description:
+          ui: >
+            provide measures of effect size; η², partial η², or ω²
+          R: >
+            one or more of `'eta'`, `'partEta'`, or `'omega'`; use η², partial η²,
+            and ω² effect sizes, respectively
     - name: modelTerms
       title: Model Terms
       type: Terms
-      default:
+      default: null
       description:
+          ui: >
+            the model terms which make up the model. By default a full factorial
+            model is created, but here the exact terms making up the model can be
+            adjusted.
           R: >
-            a list of character vectors describing the terms to go into the
-            model
-
+            a list of character vectors describing the terms to go into the model
     - name: ss
       title: Sum of squares
       type: List
@@ -84,138 +117,137 @@ options:
           name: '3'
       default: '3'
       description:
+          ui: >
+            the type of sums of squares to use; Type 1, 2, or 3.
           R: >
-            `'1'`, `'2'` or `'3'` (default), the sum of squares
-            to use
-
-    - name: effectSize
-      title: Effect Size
-      type: NMXList
-      options:
-          - name: eta
-            title: η²
-          - name: partEta
-            title: partial η²
-          - name: omega
-            title: ω²
-      default:
-      description:
-          R: >
-            one or more of `'eta'`, `'partEta'`, or `'omega'`;
-            use η², partial η², and ω² effect sizes, respectively
-
-    - name: contrasts
-      title: Contrasts
-      type: Array
-      items: (factors)
-      default:
-      template:
-          type: Group
-          elements:
-
-              - name: var
-                type: Variable
-                content: $key
-
-              - name: type
-                type: List
-                options:
-                  - none
-                  - deviation
-                  - simple
-                  - difference
-                  - helmert
-                  - repeated
-                  - polynomial
-      description:
-          R: >
-            a list of lists specifying the factor and type of contrast to use,
-            one of `'deviation'`, `'simple'`, `'difference'`, `'helmert'`,
-            `'repeated'` or `'polynomial'`
-
-    - name: postHoc
-      title: Post Hoc Tests
-      type: Terms
-      default:
-      description:
-          R: a list of terms to perform post-hoc tests on
-
-    - name: postHocCorr
-      title: Correction
-      type: NMXList
-      options:
-          - name: none
-            title: No correction
-          - name: tukey
-            title: Tukey
-          - name: scheffe
-            title: Scheffe
-          - name: bonf
-            title: Bonferroni
-          - name: holm
-            title: Holm
-      default:
-          - tukey
-      description:
-          R: >
-            one or more of `'none'`, `'tukey'`, `'scheffe'`, `'bonf'`, or
-            `'holm'`; provide no, Tukey, Scheffe, Bonferroni, and
-            Holm Post Hoc corrections respectively
-
+            `'1'`, `'2'` or `'3'` (default), the sum of squares to use
     - name: homo
       title: Homogeneity tests
       type: Bool
       default: false
       description:
+          ui: >
+            provide Levene's test for homogeneity of variances. A low p-value
+            suggests the groups have unequal variances.
           R: >
             `TRUE` or `FALSE` (default), perform homogeneity tests
-
     - name: qq
       title: Q-Q plot of residuals
       type: Bool
       default: false
       description:
+          ui: >
+            provide Q-Q plots of residuals -- a plot of the actual residuals against
+            what would be expected if the data were *perfectly* normally
+            distributed. Large deviations from the diagonal line suggest the data is
+            not from a normal distribution.
           R: >
             `TRUE` or `FALSE` (default), provide a Q-Q plot of residuals
-
+    - name: contrasts
+      title: Contrasts
+      type: Array
+      items: (factors)
+      default: null
+      template:
+        type: Group
+        elements:
+          - name: var
+            type: Variable
+            content: $key
+          - name: type
+            type: List
+            options:
+              - none
+              - deviation
+              - simple
+              - difference
+              - helmert
+              - repeated
+              - polynomial
+      description:
+          ui: >
+            the contrasts to use.
+          R: >
+            a list of lists specifying the factor and type of contrast to use, one
+            of `'deviation'`, `'simple'`, `'difference'`, `'helmert'`, `'repeated'`
+            or `'polynomial'`
+    - name: postHoc
+      title: Post Hoc Tests
+      type: Terms
+      default: null
+      description:
+          ui: >
+            provide post-hoc tests.
+          R: >
+            a list of terms to perform post-hoc tests on
+    - name: postHocCorr
+      title: Correction
+      type: NMXList
+      options:
+        - name: none
+          title: No correction
+        - name: tukey
+          title: Tukey
+        - name: scheffe
+          title: Scheffe
+        - name: bonf
+          title: Bonferroni
+        - name: holm
+          title: Holm
+      default:
+        - tukey
+      description:
+          ui: >
+            the post-hoc multiple comparisons corrections to use.
+          R: >
+            one or more of `'none'`, `'tukey'`, `'scheffe'`, `'bonf'`, or `'holm'`;
+            provide no, Tukey, Scheffe, Bonferroni, and Holm Post Hoc corrections
+            respectively
     - name: emMeans
       title: Marginal Means
       type: Array
-      default: [[]]
+      default:
+        - []
       template:
-          type: Variables
+        type: Variables
       description:
+          ui: >
+            the terms to provide estimated marginal means for. Here you can specify
+            multiple terms.
           R: >
-            a list of lists specifying the variables for which the estimated marginal
-            means need to be calculate. Supports up to three variables per term.
-
+            a list of lists specifying the variables for which the estimated
+            marginal means need to be calculate. Supports up to three variables per
+            term.
     - name: ciWidthEmm
-      title: Confidence level
+      title: Confidence interval width
       type: Number
       min: 50
       max: 99.9
       default: 95
       description:
+          ui: >
+            the width for the Confidence intervals.
           R: >
             a number between 50 and 99.9 (default: 95) specifying the confidence
             interval width for the estimated marginal means
-
     - name: emmPlots
       title: Marginal means plots
       type: Bool
       default: true
       description:
+          ui: >
+            provide plots of the estimated marginal means.
           R: >
             `TRUE` (default) or `FALSE`, provide estimated marginal means plots
-
     - name: emmPlotData
       title: Observed scores
       type: Bool
       default: false
       description:
+          ui: >
+            plot the data along with the marginal means.
           R: >
             `TRUE` or `FALSE` (default), plot the data on top of the marginal means
-
     - name: emmPlotError
       title: Error bars
       type: List
@@ -228,25 +260,29 @@ options:
           title: Standard Error
       default: ci
       description:
+          ui: >
+            the error bars to plot on the marginal means.
           R: >
-            `'none'`, `'ci'` (default), or `'se'`. Use no error
-            bars, use confidence intervals, or use standard errors on the
-            marginal mean plots, respectively
-
+            `'none'`, `'ci'` (default), or `'se'`. Use no error bars, use confidence
+            intervals, or use standard errors on the marginal mean plots, respectively
     - name: emmTables
       title: Marginal means tables
       type: Bool
       default: false
       description:
+          ui: >
+            provide a table of the estimated marginal means.
           R: >
             `TRUE` or `FALSE` (default), provide estimated marginal means tables
-
     - name: emmWeights
       title: Equal cell weights
       type: Bool
       default: true
       description:
+          ui: >
+            weigh each cell equally. (Cells are weighed according to the cell
+            frequency by default.)
           R: >
-            `TRUE` (default) or `FALSE`, weigh each cell equally or weigh them according to
-            the cell frequency
+            `TRUE` (default) or `FALSE`, weigh each cell equally or weigh them
+            according to the cell frequency
 ...
