@@ -197,6 +197,8 @@ anovaNP <- function(
             `if`( ! missing(deps), deps, NULL),
             `if`( ! missing(group), group, NULL))
 
+    deps <- jmvcore:::resolveQuo(rlang::enquo(deps))
+    group <- jmvcore:::resolveQuo(rlang::enquo(group))
     for (v in group) data[[v]] <- as.factor(data[[v]])
 
     options <- anovaNPOptions$new(

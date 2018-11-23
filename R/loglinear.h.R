@@ -659,7 +659,10 @@ logLinear <- function(
             `if`( ! missing(factors), factors, NULL),
             `if`( ! missing(counts), counts, NULL))
 
+    factors <- jmvcore:::resolveQuo(rlang::enquo(factors))
+    counts <- jmvcore:::resolveQuo(rlang::enquo(counts))
     for (v in factors) data[[v]] <- as.factor(data[[v]])
+    if (inherits(emMeans, 'formula')) emMeans <- jmvcore:::decomposeFormula(emMeans)
 
     options <- logLinearOptions$new(
         factors = factors,

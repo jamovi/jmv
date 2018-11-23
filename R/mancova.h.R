@@ -492,6 +492,9 @@ mancova <- function(
             `if`( ! missing(factors), factors, NULL),
             `if`( ! missing(covs), covs, NULL))
 
+    deps <- jmvcore:::resolveQuo(rlang::enquo(deps))
+    factors <- jmvcore:::resolveQuo(rlang::enquo(factors))
+    covs <- jmvcore:::resolveQuo(rlang::enquo(covs))
     for (v in factors) data[[v]] <- as.factor(data[[v]])
 
     options <- mancovaOptions$new(

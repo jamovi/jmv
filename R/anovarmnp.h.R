@@ -241,6 +241,7 @@ anovaRMNP <- function(
             parent.frame(),
             `if`( ! missing(measures), measures, NULL))
 
+    measures <- jmvcore:::resolveQuo(rlang::enquo(measures))
 
     options <- anovaRMNPOptions$new(
         measures = measures,

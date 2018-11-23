@@ -464,7 +464,12 @@ anova <- function(
             `if`( ! missing(dep), dep, NULL),
             `if`( ! missing(factors), factors, NULL))
 
+    dep <- jmvcore:::resolveQuo(rlang::enquo(dep))
+    factors <- jmvcore:::resolveQuo(rlang::enquo(factors))
     for (v in factors) data[[v]] <- as.factor(data[[v]])
+    if (inherits(modelTerms, 'formula')) modelTerms <- jmvcore:::decomposeFormula(modelTerms)
+    if (inherits(postHoc, 'formula')) postHoc <- jmvcore:::decomposeFormula(postHoc)
+    if (inherits(emMeans, 'formula')) emMeans <- jmvcore:::decomposeFormula(emMeans)
 
     options <- anovaOptions$new(
         dep = dep,

@@ -581,6 +581,7 @@ ttestOneS <- function(
             parent.frame(),
             `if`( ! missing(vars), vars, NULL))
 
+    vars <- jmvcore:::resolveQuo(rlang::enquo(vars))
 
     options <- ttestOneSOptions$new(
         vars = vars,

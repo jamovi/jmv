@@ -489,6 +489,8 @@ descriptives <- function(
             `if`( ! missing(splitBy), splitBy, NULL))
 
     vars <- `if`( ! missing(vars), vars, colnames(data))
+    vars <- jmvcore:::resolveQuo(rlang::enquo(vars))
+    splitBy <- jmvcore:::resolveQuo(rlang::enquo(splitBy))
     for (v in splitBy) data[[v]] <- as.factor(data[[v]])
 
     options <- descriptivesOptions$new(

@@ -334,6 +334,7 @@ propTest2 <- function(
             parent.frame(),
             `if`( ! missing(vars), vars, NULL))
 
+    vars <- jmvcore:::resolveQuo(rlang::enquo(vars))
     for (v in vars) data[[v]] <- as.factor(data[[v]])
 
     options <- propTest2Options$new(

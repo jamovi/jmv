@@ -230,6 +230,8 @@ propTestN <- function(
             `if`( ! missing(var), var, NULL),
             `if`( ! missing(counts), counts, NULL))
 
+    var <- jmvcore:::resolveQuo(rlang::enquo(var))
+    counts <- jmvcore:::resolveQuo(rlang::enquo(counts))
     for (v in var) data[[v]] <- as.factor(data[[v]])
 
     options <- propTestNOptions$new(

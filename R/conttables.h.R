@@ -627,6 +627,10 @@ contTables <- function(
             `if`( ! missing(counts), counts, NULL),
             `if`( ! missing(layers), layers, NULL))
 
+    rows <- jmvcore:::resolveQuo(rlang::enquo(rows))
+    cols <- jmvcore:::resolveQuo(rlang::enquo(cols))
+    counts <- jmvcore:::resolveQuo(rlang::enquo(counts))
+    layers <- jmvcore:::resolveQuo(rlang::enquo(layers))
     for (v in rows) data[[v]] <- as.factor(data[[v]])
     for (v in cols) data[[v]] <- as.factor(data[[v]])
     for (v in layers) data[[v]] <- as.factor(data[[v]])

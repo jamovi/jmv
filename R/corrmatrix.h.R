@@ -395,6 +395,7 @@ corrMatrix <- function(
             `if`( ! missing(vars), vars, NULL))
 
     vars <- `if`( ! missing(vars), vars, colnames(data))
+    vars <- jmvcore:::resolveQuo(rlang::enquo(vars))
 
     options <- corrMatrixOptions$new(
         vars = vars,

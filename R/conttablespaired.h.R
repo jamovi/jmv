@@ -308,6 +308,9 @@ contTablesPaired <- function(
             `if`( ! missing(cols), cols, NULL),
             `if`( ! missing(counts), counts, NULL))
 
+    rows <- jmvcore:::resolveQuo(rlang::enquo(rows))
+    cols <- jmvcore:::resolveQuo(rlang::enquo(cols))
+    counts <- jmvcore:::resolveQuo(rlang::enquo(counts))
     for (v in rows) data[[v]] <- as.factor(data[[v]])
     for (v in cols) data[[v]] <- as.factor(data[[v]])
 

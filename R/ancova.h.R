@@ -565,7 +565,13 @@ ancova <- function(
             `if`( ! missing(factors), factors, NULL),
             `if`( ! missing(covs), covs, NULL))
 
+    dep <- jmvcore:::resolveQuo(rlang::enquo(dep))
+    factors <- jmvcore:::resolveQuo(rlang::enquo(factors))
+    covs <- jmvcore:::resolveQuo(rlang::enquo(covs))
     for (v in factors) data[[v]] <- as.factor(data[[v]])
+    if (inherits(modelTerms, 'formula')) modelTerms <- jmvcore:::decomposeFormula(modelTerms)
+    if (inherits(postHoc, 'formula')) postHoc <- jmvcore:::decomposeFormula(postHoc)
+    if (inherits(emMeans, 'formula')) emMeans <- jmvcore:::decomposeFormula(emMeans)
 
     options <- ancovaOptions$new(
         dep = dep,

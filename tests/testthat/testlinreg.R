@@ -23,7 +23,7 @@ test_that('linreg works', {
     covs <- c("var1", "var 2", "var3")
     blocks = list(list("var1", "var 2", "var3"))
 
-    linreg <- jmv::linReg(data, dep=dep, covs=covs, blocks=blocks, stdEst = TRUE)
+    linreg <- jmv::linReg(data, dep=!!dep, covs=!!covs, blocks=blocks, stdEst = TRUE)
 
     modelFit <- linreg$modelFit$asDF
     coef <- linreg$models[[1]]$coef$asDF

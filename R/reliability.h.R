@@ -315,6 +315,8 @@ reliability <- function(
             `if`( ! missing(revItems), revItems, NULL))
 
     vars <- `if`( ! missing(vars), vars, colnames(data))
+    vars <- jmvcore:::resolveQuo(rlang::enquo(vars))
+    revItems <- jmvcore:::resolveQuo(rlang::enquo(revItems))
 
     options <- reliabilityOptions$new(
         vars = vars,

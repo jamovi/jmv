@@ -749,6 +749,8 @@ ttestIS <- function(
             `if`( ! missing(vars), vars, NULL),
             `if`( ! missing(group), group, NULL))
 
+    vars <- jmvcore:::resolveQuo(rlang::enquo(vars))
+    group <- jmvcore:::resolveQuo(rlang::enquo(group))
     for (v in group) data[[v]] <- as.factor(data[[v]])
 
     options <- ttestISOptions$new(

@@ -588,6 +588,9 @@ logRegOrd <- function(
             `if`( ! missing(covs), covs, NULL),
             `if`( ! missing(factors), factors, NULL))
 
+    dep <- jmvcore:::resolveQuo(rlang::enquo(dep))
+    covs <- jmvcore:::resolveQuo(rlang::enquo(covs))
+    factors <- jmvcore:::resolveQuo(rlang::enquo(factors))
     for (v in dep) data[[v]] <- as.factor(data[[v]])
     for (v in factors) data[[v]] <- as.factor(data[[v]])
 

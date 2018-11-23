@@ -1,7 +1,7 @@
 Package: jmv
 Type: Package
 Title: The 'jamovi' Analyses
-Version: 0.9.5
+Version: 0.9.5.1
 Date: 2018-11-16
 Author: Ravi Selker, Jonathon Love, Damian Dropmann
 Maintainer: Jonathon Love <jon@thon.cc>
@@ -14,8 +14,9 @@ License: GPL (>= 2)
 Depends:
     R (>= 3.2)
 Imports:
-    jmvcore (>= 0.9.5),
+    jmvcore (>= 0.9.5.1),
     R6,
+    rlang (>= 3.0),
     car (>= 3.0.0),
     multcomp,
     ggplot2 (>= 2.2.1),
