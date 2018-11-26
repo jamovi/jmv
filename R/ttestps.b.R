@@ -59,6 +59,7 @@ ttestPSClass <- R6::R6Class(
                 se2  <- sqrt(var2/n)
                 sd1  <- tryNaN(stats::sd(column1))
                 sd2  <- tryNaN(stats::sd(column2))
+                nTies <- sum((column1 - column2) == 0, na.rm=TRUE)
 
                 pooledSD <- tryNaN(stats::sd(column1-column2))
                 sediff <- pooledSD/sqrt(n)
@@ -116,6 +117,11 @@ ttestPSClass <- R6::R6Class(
                         'es[wilc]'=d,
                         'cil[wilc]'=wilc$conf.int[1],
                         'ciu[wilc]'=wilc$conf.int[2]))
+
+                    if (nTies > 0) {
+                        message <- paste0(nTies, ' pair(s) of values were tied')
+                        ttestTable$addFootnote(rowKey=pair, 'stat[wilc]', message)
+                    }
 
                 } else {
 
