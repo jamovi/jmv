@@ -19,12 +19,12 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "tukey"),
             emMeans = list(
                 list()),
-            ciWidthEmm = 95,
             emmPlots = TRUE,
             emmPlotData = FALSE,
             emmPlotError = "ci",
             emmTables = FALSE,
-            emmWeights = TRUE, ...) {
+            emmWeights = TRUE,
+            ciWidthEmm = 95, ...) {
 
             super$initialize(
                 package='jmv',
@@ -126,12 +126,6 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 template=jmvcore::OptionVariables$new(
                     "emMeans",
                     NULL))
-            private$..ciWidthEmm <- jmvcore::OptionNumber$new(
-                "ciWidthEmm",
-                ciWidthEmm,
-                min=50,
-                max=99.9,
-                default=95)
             private$..emmPlots <- jmvcore::OptionBool$new(
                 "emmPlots",
                 emmPlots,
@@ -156,6 +150,12 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "emmWeights",
                 emmWeights,
                 default=TRUE)
+            private$..ciWidthEmm <- jmvcore::OptionNumber$new(
+                "ciWidthEmm",
+                ciWidthEmm,
+                min=50,
+                max=99.9,
+                default=95)
 
             self$.addOption(private$..dep)
             self$.addOption(private$..factors)
@@ -168,12 +168,12 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..postHoc)
             self$.addOption(private$..postHocCorr)
             self$.addOption(private$..emMeans)
-            self$.addOption(private$..ciWidthEmm)
             self$.addOption(private$..emmPlots)
             self$.addOption(private$..emmPlotData)
             self$.addOption(private$..emmPlotError)
             self$.addOption(private$..emmTables)
             self$.addOption(private$..emmWeights)
+            self$.addOption(private$..ciWidthEmm)
         }),
     active = list(
         dep = function() private$..dep$value,
@@ -187,12 +187,12 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         postHoc = function() private$..postHoc$value,
         postHocCorr = function() private$..postHocCorr$value,
         emMeans = function() private$..emMeans$value,
-        ciWidthEmm = function() private$..ciWidthEmm$value,
         emmPlots = function() private$..emmPlots$value,
         emmPlotData = function() private$..emmPlotData$value,
         emmPlotError = function() private$..emmPlotError$value,
         emmTables = function() private$..emmTables$value,
-        emmWeights = function() private$..emmWeights$value),
+        emmWeights = function() private$..emmWeights$value,
+        ciWidthEmm = function() private$..ciWidthEmm$value),
     private = list(
         ..dep = NA,
         ..factors = NA,
@@ -205,12 +205,12 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..postHoc = NA,
         ..postHocCorr = NA,
         ..emMeans = NA,
-        ..ciWidthEmm = NA,
         ..emmPlots = NA,
         ..emmPlotData = NA,
         ..emmPlotError = NA,
         ..emmTables = NA,
-        ..emmWeights = NA)
+        ..emmWeights = NA,
+        ..ciWidthEmm = NA)
 )
 
 anovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
@@ -402,8 +402,6 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param emMeans a list of lists specifying the variables for which the
 #'   estimated marginal means need to be calculate. Supports up to three
 #'   variables per term.
-#' @param ciWidthEmm a number between 50 and 99.9 (default: 95) specifying the
-#'   confidence interval width for the estimated marginal means
 #' @param emmPlots \code{TRUE} (default) or \code{FALSE}, provide estimated
 #'   marginal means plots
 #' @param emmPlotData \code{TRUE} or \code{FALSE} (default), plot the data on
@@ -415,6 +413,8 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   marginal means tables
 #' @param emmWeights \code{TRUE} (default) or \code{FALSE}, weigh each cell
 #'   equally or weigh them according to the cell frequency
+#' @param ciWidthEmm a number between 50 and 99.9 (default: 95) specifying the
+#'   confidence interval width for the estimated marginal means
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$main} \tab \tab \tab \tab \tab a table of ANOVA results \cr
@@ -448,12 +448,12 @@ anova <- function(
                 "tukey"),
     emMeans = list(
                 list()),
-    ciWidthEmm = 95,
     emmPlots = TRUE,
     emmPlotData = FALSE,
     emmPlotError = "ci",
     emmTables = FALSE,
-    emmWeights = TRUE) {
+    emmWeights = TRUE,
+    ciWidthEmm = 95) {
 
     if ( ! requireNamespace('jmvcore'))
         stop('anova requires jmvcore to be installed (restart may be required)')
@@ -483,12 +483,12 @@ anova <- function(
         postHoc = postHoc,
         postHocCorr = postHocCorr,
         emMeans = emMeans,
-        ciWidthEmm = ciWidthEmm,
         emmPlots = emmPlots,
         emmPlotData = emmPlotData,
         emmPlotError = emmPlotError,
         emmTables = emmTables,
-        emmWeights = emmWeights)
+        emmWeights = emmWeights,
+        ciWidthEmm = ciWidthEmm)
 
     results <- anovaResults$new(
         options = options)

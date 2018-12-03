@@ -6,6 +6,22 @@ version: '2.0.0'
 jas: '1.2'
 
 description:
+    main: |
+        The Repeated Measures ANOVA is used to explore the relationship
+        between a continuous dependent variable and one or more categorical
+        explanatory variables, where one or more of the explanatory variables
+        are 'within subjects' (where multiple measurements are from the same
+        subject). Additionally, this analysis allows the inclusion of
+        covariates, allowing for repeated measures ANCOVAs as well.
+
+        This analysis requires that the data be in 'wide format', where each
+        row represents a subject (as opposed to long format, where each
+        measurement of the dependent variable is represented as a row).
+
+        A non-parametric equivalent of the repeated measures ANOVA also exists;
+        the Friedman test. However, it has the limitation of only being able to
+        test a single factor.
+
     R:
         usage: |
 
@@ -77,6 +93,8 @@ options:
             template:
               type: String
       description:
+          ui: >
+            the repeated measures design.
           R: >
             a list of lists, where each list describes the `label` (as a
             string) and the `levels` (as vector of strings) of a particular
@@ -96,6 +114,8 @@ options:
             template:
               type: String
       description:
+          ui: >
+            the repeated measures measurements.
           R: >
             a list of lists, where each list decribes a repeated measure (as a
             string) from `data` defined as `measure` and the
@@ -113,6 +133,8 @@ options:
         - factor
       default:
       description:
+          ui: >
+            the between subjects factors (optional).
           R: >
             a vector of strings naming the between subjects factors from
             `data`
@@ -126,15 +148,48 @@ options:
         - numeric
       default:
       description:
+          ui: >
+            the covariates (specifying these makes this an ANCOVA)
           R: >
             a vector of strings naming the covariates from `data`.
             Variables must be numeric
+
+    - name: effectSize
+      title: Effect Size
+      type: NMXList
+      options:
+          - name: eta
+            title: η²
+          - name: partEta
+            title: partial η²
+          - name: omega
+            title: ω²
+      default:
+      description:
+          ui: >
+            provide measures of effect size; η², partial η², or ω².
+          R: >
+            one or more of `'eta'`, `'partEta'`, or `'omega'`;
+            use η², partial η², and ω² effect sizes, respectively
+
+    - name: depLabel
+      title: ''
+      type: String
+      default: 'Dependent'
+      description:
+          ui: >
+            the label to use for the dependent variable.
+          R: >
+            a string (default: 'Dependent') describing the label used for
+            the dependent variable throughout the analysis
 
     - name: rmTerms
       title: Model Terms
       type: Terms
       default:
       description:
+          ui: >
+            the repeated measures terms of the model.
           R: >
             a list of character vectors describing the repeated measures terms
             to go into the model
@@ -144,6 +199,8 @@ options:
       type: Terms
       default:
       description:
+          ui: >
+            the between subjects terms of the model.
           R: >
             a list of character vectors describing the between subjects terms to
             go into the model
@@ -158,40 +215,19 @@ options:
           name: '3'
       default: '3'
       description:
+          ui: >
+            the type of sums of squares to use; Type 2, or 3.
           R: >
             `'2'` or `'3'` (default), the sum of squares
             to use
-
-    - name: depLabel
-      title: ''
-      type: String
-      default: 'Dependent'
-      description:
-          R: >
-            a string (default: 'Dependent') describing the label used for
-            the dependent variable throughout the analysis
-
-    - name: effectSize
-      title: Effect Size
-      type: NMXList
-      options:
-          - name: eta
-            title: η²
-          - name: partEta
-            title: partial η²
-          - name: omega
-            title: ω²
-      default:
-      description:
-          R: >
-            one or more of `'eta'`, `'partEta'`, or `'omega'`;
-            use η², partial η², and ω² effect sizes, respectively
 
     - name: spherTests
       title: Sphericity tests
       type: Bool
       default: false
       description:
+          ui: >
+            provide sphericity tests.
           R: >
             `TRUE` or `FALSE` (default), perform sphericity tests
 
@@ -208,6 +244,8 @@ options:
       default:
           - none
       description:
+          ui: >
+            provide p-value corrections for sphericity.
           R: >
             one or more of `'none'` (default), `'GG'`, or ``HF``;
             use no p-value correction, the Greenhouse-Geisser p-value
@@ -219,11 +257,15 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            provide Levene's test for homogeneity of variances. A low p-value
+            suggests the groups have unequal variances.
           R: >
             `TRUE` or `FALSE` (default), test for equality of variances (i.e.,
             Levene's test)
 
     - name: contrasts
+      hidden: true
       title: Contrasts
       type: Array
       items: (bs)
@@ -256,6 +298,8 @@ options:
               type: String
       default:
       description:
+          ui: >
+            provide post-hoc tests.
           R: >
             a list of character vectors describing the post-hoc tests that
             need to be computed
@@ -277,18 +321,12 @@ options:
       default:
           - tukey
       description:
+          ui: >
+            the post-hoc multiple comparisons corrections to use.
           R: >
             one or more of `'none'`, `'tukey'` (default), `'scheffe'`,
             `'bonf'`, or `'holm'`; use no, Tukey, Scheffe, Bonferroni and
             Holm posthoc corrections, respectively
-
-    - name: descStats
-      title: Descriptive statistics
-      type: Bool
-      default: false
-      description:
-          R: >
-            `TRUE` or `FALSE` (default), provide descriptive statistics
 
     - name: emMeans
       title: Marginal Means
@@ -297,9 +335,44 @@ options:
       template:
           type: Variables
       description:
+          ui: >
+            the terms to provide estimated marginal means for. Here you can specify
+            multiple terms.
           R: >
             a list of lists specifying the variables for which the estimated marginal
             means need to be calculate. Supports up to three variables per term.
+
+    - name: emmPlots
+      title: Marginal means plots
+      type: Bool
+      default: true
+      description:
+          ui: >
+            provide plots of the estimated marginal means.
+          R: >
+            `TRUE` (default) or `FALSE`, provide estimated marginal means plots
+
+    - name: emmTables
+      title: Marginal means tables
+      type: Bool
+      default: false
+      description:
+          ui: >
+            provide a table of the estimated marginal means.
+          R: >
+            `TRUE` or `FALSE` (default), provide estimated marginal means tables
+
+    - name: emmWeights
+      title: Equal cell weights
+      type: Bool
+      default: true
+      description:
+          ui: >
+            weigh each cell equally. (Cells are weighed according to the cell
+            frequency by default.)
+          R: >
+            `TRUE` (default) or `FALSE`, weigh each cell equally or weigh them according to
+            the cell frequency
 
     - name: ciWidthEmm
       title: Confidence level
@@ -308,23 +381,20 @@ options:
       max: 99.9
       default: 95
       description:
+          ui: >
+            the width for the Confidence intervals.
           R: >
             a number between 50 and 99.9 (default: 95) specifying the confidence
             interval width for the estimated marginal means
 
-    - name: emmPlots
-      title: Marginal means plots
-      type: Bool
-      default: true
-      description:
-          R: >
-            `TRUE` (default) or `FALSE`, provide estimated marginal means plots
 
     - name: emmPlotData
       title: Observed scores
       type: Bool
       default: false
       description:
+          ui: >
+            plot the data along with the marginal means.
           R: >
             `TRUE` or `FALSE` (default), plot the data on top of the marginal means
 
@@ -340,25 +410,11 @@ options:
           title: Standard error
       default: ci
       description:
+          ui: >
+            the error bars to plot on the marginal means.
           R: >
             `'none'`, `'ci'` (default), or `'se'`. Use no error
             bars, use confidence intervals, or use standard errors on the
             marginal mean plots, respectively
 
-    - name: emmTables
-      title: Marginal means tables
-      type: Bool
-      default: false
-      description:
-          R: >
-            `TRUE` or `FALSE` (default), provide estimated marginal means tables
-
-    - name: emmWeights
-      title: Equal cell weights
-      type: Bool
-      default: true
-      description:
-          R: >
-            `TRUE` (default) or `FALSE`, weigh each cell equally or weigh them according to
-            the cell frequency
 ...

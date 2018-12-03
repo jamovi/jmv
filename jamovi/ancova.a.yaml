@@ -6,7 +6,12 @@ version: '2.0.0'
 jas: '1.2'
 
 description:
-    main: Analysis of Covariance
+    main: |
+        The Analysis of Covariance (ANCOVA) is used to explore the relationship
+        between a continuous dependent variable, one or more categorical
+        explanatory variables, and one or more continuous explanatory variables
+        (or covariates). It is essentially the same analysis as ANOVA, but
+        with the addition of covariates.
     R:
         dontrun: false
         usage: |
@@ -44,6 +49,8 @@ options:
       permitted:
         - numeric
       description:
+          ui: >
+            the dependent variable. For ANCOVA, these will be continuous.
           R: >
             a string naming the dependent variable from `data`, variable
             must be numeric
@@ -59,7 +66,10 @@ options:
         - factor
       default:
       description:
-          R: a vector of strings naming the fixed factors from `data`
+          ui: >
+            the categorical explanatory (or independent) variables.
+          R: >
+            a vector of strings naming the fixed factors from `data`
 
     - name: covs
       title: Covariates
@@ -71,13 +81,37 @@ options:
         - numeric
       default:
       description:
-          R: a vector of strings naming the covariates from `data`
+          ui: >
+            the continuous explanatory (or independent) variables, also known
+            as covariates.
+          R: >
+            a vector of strings naming the covariates from `data`
+
+    - name: effectSize
+      title: Effect Size
+      type: NMXList
+      options:
+          - name: eta
+            title: η²
+          - name: partEta
+            title: partial η²
+          - name: omega
+            title: ω²
+      default:
+      description:
+          ui: >
+            provide measures of effect size; η², partial η², or ω².
+          R: >
+            one or more of `'eta'`, `'partEta'`, or `'omega'`;
+            use η², partial η², and ω² effect sizes, respectively
 
     - name: modelTerms
       title: Model Terms
       type: Terms
       default:
       description:
+          ui: >
+            the model terms which make up the model.
           R: >
             a list of character vectors describing the terms to go into the
             model
@@ -94,25 +128,35 @@ options:
           name: '3'
       default: '3'
       description:
+          ui: >
+            the type of sums of squares to use; Type 1, 2, or 3.
           R: >
             `'1'`, `'2'` or `'3'` (default), the sum of squares
             to use
 
-    - name: effectSize
-      title: Effect Size
-      type: NMXList
-      options:
-          - name: eta
-            title: η²
-          - name: partEta
-            title: partial η²
-          - name: omega
-            title: ω²
-      default:
+    - name: homo
+      title: Homogeneity tests
+      type: Bool
+      default: false
       description:
+          ui: >
+            provide Levene's test for homogeneity of variances. A low p-value
+            suggests the groups have unequal variances.
           R: >
-            one or more of `'eta'`, `'partEta'`, or `'omega'`;
-            use η², partial η², and ω² effect sizes, respectively
+            `TRUE` or `FALSE` (default), perform homogeneity tests
+
+    - name: qq
+      title: Q-Q plot of residuals
+      type: Bool
+      default: false
+      description:
+          ui: >
+            provide Q-Q plots of residuals -- a plot of the actual residuals against
+            what would be expected if the data were *perfectly* normally
+            distributed. Large deviations from the diagonal line suggest the data is
+            not from a normal distribution.
+          R: >
+            `TRUE` or `FALSE` (default), provide a Q-Q plot of residuals
 
     - name: contrasts
       title: Contrasts
@@ -122,7 +166,6 @@ options:
       template:
           type: Group
           elements:
-
               - name: var
                 type: Variable
                 content: $key
@@ -138,6 +181,8 @@ options:
                   - repeated
                   - polynomial
       description:
+          ui: >
+            the contrasts to use.
           R: >
             a list of lists specifying the factor and type of contrast to use,
             one of `'deviation'`, `'simple'`, `'difference'`, `'helmert'`,
@@ -148,7 +193,10 @@ options:
       type: Terms
       default:
       description:
-          R: a list of terms to perform post-hoc tests on
+          ui: >
+            provide post-hoc tests.
+          R: >
+            a list of terms to perform post-hoc tests on
 
     - name: postHocCorr
       title: Correction
@@ -167,26 +215,12 @@ options:
       default:
           - tukey
       description:
+          ui: >
+            the post-hoc multiple comparisons corrections to use.
           R: >
             one or more of `'none'`, `'tukey'`, `'scheffe'`, `'bonf'`, or
             `'holm'`; provide no, Tukey, Scheffe, Bonferroni, and
             Holm Post Hoc corrections respectively
-
-    - name: homo
-      title: Homogeneity tests
-      type: Bool
-      default: false
-      description:
-          R: >
-            `TRUE` or `FALSE` (default), perform homogeneity tests
-
-    - name: qq
-      title: Q-Q plot of residuals
-      type: Bool
-      default: false
-      description:
-          R: >
-            `TRUE` or `FALSE` (default), provide a Q-Q plot of residuals
 
     - name: emMeans
       title: Marginal Means
@@ -195,26 +229,20 @@ options:
       template:
           type: Variables
       description:
+          ui: >
+            the terms to provide estimated marginal means for. Here you can specify
+            multiple terms.
           R: >
             a list of lists specifying the variables for which the estimated marginal
             means need to be calculate. Supports up to three variables per term.
-
-    - name: ciWidthEmm
-      title: Confidence level
-      type: Number
-      min: 50
-      max: 99.9
-      default: 95
-      description:
-          R: >
-            a number between 50 and 99.9 (default: 95) specifying the confidence
-            interval width for the estimated marginal means
 
     - name: emmPlots
       title: Marginal means plots
       type: Bool
       default: true
       description:
+          ui: >
+            provide plots of the estimated marginal means.
           R: >
             `TRUE` (default) or `FALSE`, provide estimated marginal means plots
 
@@ -223,6 +251,8 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            plot the data along with the marginal means.
           R: >
             `TRUE` or `FALSE` (default), plot the data on top of the marginal means
 
@@ -238,6 +268,8 @@ options:
           title: Standard error
       default: ci
       description:
+          ui: >
+            the error bars to plot on the marginal means.
           R: >
             `'none'`, `'ci'` (default), or `'se'`. Use no error
             bars, use confidence intervals, or use standard errors on the
@@ -248,6 +280,8 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            provide a table of the estimated marginal means.
           R: >
             `TRUE` or `FALSE` (default), provide estimated marginal means tables
 
@@ -256,7 +290,23 @@ options:
       type: Bool
       default: true
       description:
+          ui: >
+            weigh each cell equally. (Cells are weighed according to the cell
+            frequency by default.)
           R: >
             `TRUE` (default) or `FALSE`, weigh each cell equally or weigh them according to
             the cell frequency
+
+    - name: ciWidthEmm
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          ui: >
+            the width for the Confidence intervals.
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width for the estimated marginal means
 ...

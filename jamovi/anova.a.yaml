@@ -60,6 +60,7 @@ options:
           R: >
             a string naming the dependent variable from `data`, variable
             must be numeric
+
     - name: factors
       title: Fixed Factors
       type: Variables
@@ -77,6 +78,7 @@ options:
             categorical.
           R: >
             a vector of strings naming the fixed factors from `data`
+
     - name: effectSize
       title: Effect Size
       type: NMXList
@@ -90,10 +92,11 @@ options:
       default: null
       description:
           ui: >
-            provide measures of effect size; η², partial η², or ω²
+            provide measures of effect size; η², partial η², or ω².
           R: >
             one or more of `'eta'`, `'partEta'`, or `'omega'`; use η², partial η²,
             and ω² effect sizes, respectively
+
     - name: modelTerms
       title: Model Terms
       type: Terms
@@ -105,6 +108,7 @@ options:
             adjusted.
           R: >
             a list of character vectors describing the terms to go into the model
+
     - name: ss
       title: Sum of squares
       type: List
@@ -121,6 +125,7 @@ options:
             the type of sums of squares to use; Type 1, 2, or 3.
           R: >
             `'1'`, `'2'` or `'3'` (default), the sum of squares to use
+
     - name: homo
       title: Homogeneity tests
       type: Bool
@@ -131,6 +136,7 @@ options:
             suggests the groups have unequal variances.
           R: >
             `TRUE` or `FALSE` (default), perform homogeneity tests
+
     - name: qq
       title: Q-Q plot of residuals
       type: Bool
@@ -143,6 +149,7 @@ options:
             not from a normal distribution.
           R: >
             `TRUE` or `FALSE` (default), provide a Q-Q plot of residuals
+
     - name: contrasts
       title: Contrasts
       type: Array
@@ -171,6 +178,7 @@ options:
             a list of lists specifying the factor and type of contrast to use, one
             of `'deviation'`, `'simple'`, `'difference'`, `'helmert'`, `'repeated'`
             or `'polynomial'`
+
     - name: postHoc
       title: Post Hoc Tests
       type: Terms
@@ -180,6 +188,7 @@ options:
             provide post-hoc tests.
           R: >
             a list of terms to perform post-hoc tests on
+
     - name: postHocCorr
       title: Correction
       type: NMXList
@@ -203,6 +212,7 @@ options:
             one or more of `'none'`, `'tukey'`, `'scheffe'`, `'bonf'`, or `'holm'`;
             provide no, Tukey, Scheffe, Bonferroni, and Holm Post Hoc corrections
             respectively
+
     - name: emMeans
       title: Marginal Means
       type: Array
@@ -218,18 +228,7 @@ options:
             a list of lists specifying the variables for which the estimated
             marginal means need to be calculate. Supports up to three variables per
             term.
-    - name: ciWidthEmm
-      title: Confidence interval width
-      type: Number
-      min: 50
-      max: 99.9
-      default: 95
-      description:
-          ui: >
-            the width for the Confidence intervals.
-          R: >
-            a number between 50 and 99.9 (default: 95) specifying the confidence
-            interval width for the estimated marginal means
+
     - name: emmPlots
       title: Marginal means plots
       type: Bool
@@ -239,6 +238,7 @@ options:
             provide plots of the estimated marginal means.
           R: >
             `TRUE` (default) or `FALSE`, provide estimated marginal means plots
+
     - name: emmPlotData
       title: Observed scores
       type: Bool
@@ -248,6 +248,7 @@ options:
             plot the data along with the marginal means.
           R: >
             `TRUE` or `FALSE` (default), plot the data on top of the marginal means
+
     - name: emmPlotError
       title: Error bars
       type: List
@@ -265,6 +266,7 @@ options:
           R: >
             `'none'`, `'ci'` (default), or `'se'`. Use no error bars, use confidence
             intervals, or use standard errors on the marginal mean plots, respectively
+
     - name: emmTables
       title: Marginal means tables
       type: Bool
@@ -274,6 +276,8 @@ options:
             provide a table of the estimated marginal means.
           R: >
             `TRUE` or `FALSE` (default), provide estimated marginal means tables
+
+
     - name: emmWeights
       title: Equal cell weights
       type: Bool
@@ -285,4 +289,17 @@ options:
           R: >
             `TRUE` (default) or `FALSE`, weigh each cell equally or weigh them
             according to the cell frequency
+
+    - name: ciWidthEmm
+      title: Confidence interval width
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          ui: >
+            the width for the Confidence intervals.
+          R: >
+            a number between 50 and 99.9 (default: 95) specifying the confidence
+            interval width for the estimated marginal means
 ...

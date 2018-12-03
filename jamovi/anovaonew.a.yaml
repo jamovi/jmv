@@ -8,7 +8,20 @@ jas: '1.2'
 completeWhenFilled: true
 
 description:
-    main: One-Way ANOVA
+    main: |
+        The Analysis of Variance (ANOVA) is used to explore the relationship
+        between a continuous dependent variable, and one or more categorical
+        explanatory variables. This 'One-Way ANOVA' is a simplified version of
+        the 'normal' ANOVA, allowing only a single explanatory factor, however
+        also providing a Welch's ANOVA. The Welch's ANOVA has the advantage that
+        it need not assume that the variances of all groups are equal.
+
+        For convenience, this method allows specifying multiple dependent
+        variables, resulting in multiple independent tests.
+
+        Note that the Welch's ANOVA is the same procedure as the Welch's
+        independent samples t-test.
+
     R:
         dontrun: false
         usage: |
@@ -45,7 +58,10 @@ options:
       permitted:
         - numeric
       description:
-          R: a string naming the dependent variables in `data`
+          ui: >
+            the dependent variables. For ANOVA, these will be continuous.
+          R: >
+            a string naming the dependent variables in `data`
 
     - name: group
       title: Grouping Variable
@@ -58,13 +74,19 @@ options:
       permitted:
         - factor
       description:
-          R: a string naming the grouping or independent variable in `data`
+          ui: >
+            the explanatory or independent variable. For ANOVA this will be
+            categorical.
+          R: >
+            a string naming the grouping or independent variable in `data`
 
     - name: welchs
       title: Don't assume equal (Welch's)
       type: Bool
       default: true
       description:
+          ui: >
+            perform Welch's ANOVAs.
           R: >
             `TRUE` (default) or `FALSE`, perform Welch's one-way ANOVA which does
             not assume equal variances
@@ -74,6 +96,8 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            perform Fisher's (or what might be call 'normal') ANOVAs.
           R: >
             `TRUE` or `FALSE` (default), perform Fisher's one-way ANOVA which
             assumes equal variances
@@ -86,6 +110,10 @@ options:
         - listwise
       default: perAnalysis
       description:
+          ui: >
+            the missing value exclusion method. `Analysis by analysis`
+            excludes missing values from each analysis. `Listwise` excludes
+            a row from all analyses if one of its values is missing.
           R: >
             `'perAnalysis'` or `'listwise'`, how to handle missing
             values; `'perAnalysis'` excludes missing values for individual
@@ -97,6 +125,8 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            provide descriptives for each group.
           R: >
             `TRUE` or `FALSE` (default), provide descriptive statistics
 
@@ -105,6 +135,8 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            provide descriptive plots for each group.
           R: >
             `TRUE` or `FALSE` (default), provide descriptive plots
 
@@ -121,6 +153,11 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            provide Q-Q plots of residuals -- a plot of the actual residuals
+            against what would be expected if the data were *perfectly* normally
+            distributed. Large deviations from the diagonal line suggest the
+            data is not from a normal distribution.
           R: >
             `TRUE` or `FALSE` (default), provide a Q-Q plot of residuals
 
@@ -129,6 +166,9 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            provide Levene's tests for the equality of variances. A low
+            p-value suggests the groups have unequal variances.
           R: >
             `TRUE` or `FALSE` (default), perform Levene's test for equality of
             variances
@@ -142,6 +182,8 @@ options:
         - tukey
       default: none
       description:
+          ui: >
+            provide post-hoc tests.
           R: >
             `'none'`, `'gamesHowell'` or `'tukey'`, which post-hoc tests to
             provide; `'none'` shows no post-hoc tests, `'gamesHowell'` shows
@@ -154,6 +196,8 @@ options:
       type: Bool
       default: true
       description:
+          ui: >
+            provide mean differences with the post-hoc tests.
           R: >
             `TRUE` (default) or `FALSE`, provide mean differences for post-hoc tests
 
@@ -162,6 +206,8 @@ options:
       type: Bool
       default: true
       description:
+          ui: >
+            provide significance levels for the post-hoc tests.
           R: >
             `TRUE` (default) or `FALSE`, provide significance levels for post-hoc tests
 
@@ -170,6 +216,9 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            provide test results (t-value and degrees of freedom) for post-hoc
+            tests.
           R: >
             `TRUE` or `FALSE` (default), provide test results (t-value and degrees of freedom)
             for post-hoc tests
@@ -179,6 +228,8 @@ options:
       type: Bool
       default: false
       description:
+          ui: >
+            flag significant post-hoc comparisons.
           R: >
             `TRUE` or `FALSE` (default), flag significant post-hoc comparisons
 ...

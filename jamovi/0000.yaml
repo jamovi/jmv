@@ -25,89 +25,76 @@ analyses:
     ns: jmv
     menuGroup: T-Tests
     menuTitle: Independent Samples T-Test
-    description: |
+    description: |-
       The Student's Independent samples t-test (sometimes called a two-samples
       t-test) is used to test the null hypothesis that two groups have the
       same mean. A low p-value suggests that the null hypothesis is not true,
       and therefore the group means are different.
-
-      The Student's independent t-test assumes that the data from each group
-      are from a normal distribution, and that the variances of these groups
-      are equal. If unwilling to assume the groups have equal variances, the
-      Welch's t-test can be used in it's place. If one is additionally
-      unwilling to assume the data from each group are from a normal
-      distribution, the non-parametric Mann-Whitney U test can be used instead
-      (However, note that the Mann-Whitney U test has a slightly different
-      null hypothesis; that the distributions of each group is equal).
   - title: Paired Samples T-Test
     name: ttestPS
     ns: jmv
     menuGroup: T-Tests
     menuTitle: Paired Samples T-Test
-    description: |
+    description: |-
       The Student's paired samples t-test (sometimes called a
       dependent-samples t-test) is used to test the null hypothesis that the
       difference between pairs of measurements is equal to zero. A low p-value
       suggests that the null hypothesis is not true, and that the
       difference between the measurement pairs is not zero.
-
-      The Student's paired samples t-test assumes that pair differences follow
-      a normal distribution -- in the case that one is unwilling to assume
-      this, the non-parametric Wilcoxon signed-rank can be used in it's place
-      (However, note that the Wilcoxon signed-rank has a slightly different
-      null hypothesis; that the two groups of measurements follow the same
-      distribution).
   - title: One Sample T-Test
     name: ttestOneS
     ns: jmv
     menuGroup: T-Tests
     menuTitle: One Sample T-Test
-    description: |
+    description: |-
       The Student's One-sample t-test is used to test the null hypothesis that
       the true mean is equal to a particular value (typically zero). A low
       p-value suggests that the null hypothesis is not true, and therefore
       the true mean must be different from the test value.
-
-      The Student's One-sample t-test assumes that the data are from a normal
-      distribution -- in the case that one is unwilling to assume this, the
-      non-parametric Wilcoxon signed-rank can be used in it's place (However,
-      note that the Wilcoxon signed-rank has a slightly different null
-      hypothesis; that the *median* is equal to the test value).
   - title: One-Way ANOVA
     name: anovaOneW
     ns: jmv
     menuGroup: ANOVA
     menuTitle: One-Way ANOVA
-    description: One-Way ANOVA
+    description: |-
+      The Analysis of Variance (ANOVA) is used to explore the relationship
+      between a continuous dependent variable, and one or more categorical
+      explanatory variables. This 'One-Way ANOVA' is a simplified version of
+      the 'normal' ANOVA, allowing only a single explanatory factor, however
+      also providing a Welch's ANOVA. The Welch's ANOVA has the advantage that
+      it need not assume that the variances of all groups are equal.
   - title: ANOVA
     name: anova
     ns: jmv
     menuGroup: ANOVA
     menuTitle: ANOVA
-    description: |
+    description: |-
       The Analysis of Variance (ANOVA) is used to explore the relationship
       between a continuous dependent variable, and one or more categorical
       explanatory variables.
-
-      ANOVA assumes that the residuals are normally distributed, and that the
-      variances of all groups are equal. If one is unwilling to assume that
-      the variances are equal, then a Welch's test can be used instead
-      (However, the Welch's test does not support more than one explanatory
-      factor). Alternatively, if one is unwilling to assume that the data is
-      normally distributed, a non-parametric approach (such as Kruskal-Wallis)
-      can be used.
   - title: Repeated Measures ANOVA
     name: anovaRM
     ns: jmv
     menuGroup: ANOVA
     menuTitle: Repeated Measures ANOVA
-    description: null
+    description: |-
+      The Repeated Measures ANOVA is used to explore the relationship
+      between a continuous dependent variable and one or more categorical
+      explanatory variables, where one or more of the explanatory variables
+      are 'within subjects' (where multiple measurements are from the same
+      subject). Additionally, this analysis allows the inclusion of
+      covariates, allowing for repeated measures ANCOVAs as well.
   - title: ANCOVA
     name: ancova
     ns: jmv
     menuGroup: ANOVA
     menuTitle: ANCOVA
-    description: Analysis of Covariance
+    description: |
+      The Analysis of Covariance (ANCOVA) is used to explore the relationship
+      between a continuous dependent variable, one or more categorical
+      explanatory variables, and one or more continuous explanatory variables
+      (or covariates). It is essentially the same analysis as ANOVA, but
+      with the addition of covariates.
   - title: MANCOVA
     name: mancova
     ns: jmv
@@ -135,24 +122,9 @@ analyses:
     menuGroup: Regression
     menuTitle: Correlation Matrix
     ns: jmv
-    description: |
+    description: |-
       Correlation matrices are a way to examine linear relationships between
       two or more continuous variables.
-
-      For each pair of variables, a Pearson's r value indicates the strength
-      and direction of the relationship between those two variables. A
-      positive value indicates a positive relationship (higher values of one
-      variable predict higher values of the other variable). A negative
-      Pearson's r indicates a negative relationship (higher values of one
-      variable predict lower values of the other variable, and vice-versa).
-      A value of zero indicates no relationship (whether a variable is high
-      or low, does not tell us anything about the value of the other
-      variable).
-
-      More formally, it is possible to test the null hypothesis that the
-      correlation is zero using and calculate a p-value. If the p-value is
-      low, it suggests the correlation co-efficient is not zero, and there is
-      a linear (or more complex) relationship between the two variables.
   - title: Linear Regression
     name: linReg
     ns: jmv

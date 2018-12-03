@@ -177,7 +177,7 @@ options:
       default: false
       description:
           ui: >
-            provide a Levene's test for the equality of variances. A low
+            provide Levene's tests for the equality of variances. A low
             p-value suggests the groups have unequal variances.
           R: >
             `TRUE` or `FALSE` (default), perform Levene's tests for equality of

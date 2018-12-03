@@ -181,29 +181,6 @@ children:
         name: leveneTest
         label: Equality of variances test (Levene's)
   - type: CollapseBox
-    label: Contrasts
-    stage: 2
-    collapsed: true
-    stretchFactor: 1
-    children:
-      - type: ListBox
-        name: contrasts
-        stretchFactor: 1
-        columns:
-          - name: var
-            label: null
-            selectable: false
-            stretchFactor: 1
-            maxWidth: 300
-            template:
-              type: VariableLabel
-          - name: type
-            label: null
-            selectable: false
-            stretchFactor: 0.5
-            template:
-              type: ComboBox
-  - type: CollapseBox
     label: Post Hoc Tests
     collapsed: true
     stretchFactor: 1
@@ -250,17 +227,6 @@ children:
                 type: CheckBox
                 optionPart: holm
                 optionName: postHocCorr
-  - type: CollapseBox
-    label: Additional Options
-    stage: 2
-    collapsed: true
-    stretchFactor: 1
-    children:
-      - type: Label
-        label: Display
-        children:
-          - type: CheckBox
-            name: descStats
   - type: CollapseBox
     label: Estimated Marginal Means
     collapsed: true

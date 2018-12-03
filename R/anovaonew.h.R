@@ -465,7 +465,19 @@ anovaOneWBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 
 #' One-Way ANOVA
 #'
-#' One-Way ANOVA
+#' The Analysis of Variance (ANOVA) is used to explore the relationship
+#' between a continuous dependent variable, and one or more categorical
+#' explanatory variables. This 'One-Way ANOVA' is a simplified version of
+#' the 'normal' ANOVA, allowing only a single explanatory factor, however
+#' also providing a Welch's ANOVA. The Welch's ANOVA has the advantage that
+#' it need not assume that the variances of all groups are equal.
+#' 
+#' For convenience, this method allows specifying multiple dependent
+#' variables, resulting in multiple independent tests.
+#' 
+#' Note that the Welch's ANOVA is the same procedure as the Welch's
+#' independent samples t-test.
+#' 
 #'
 #' @examples
 #' data('ToothGrowth')
