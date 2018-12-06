@@ -233,10 +233,14 @@ contTablesClass <- R6::R6Class(
                     else
                         exp <- test$expected
 
-                    df <- as.data.frame(as.table(mat))
-                    v1 <- rep(as.numeric(df[[1]]), df$Freq)
-                    v2 <- rep(as.numeric(df[[2]]), df$Freq)
-                    tau <- try(cor.test(v1, v2, method="kendall", conf.level=ciWidth))
+                    if (self$options$taub) {
+                        df <- as.data.frame(as.table(mat))
+                        v1 <- rep(as.numeric(df[[1]]), df$Freq)
+                        v2 <- rep(as.numeric(df[[2]]), df$Freq)
+
+                        # this can be slow
+                        tau <- try(cor.test(v1, v2, method="kendall", conf.level=ciWidth))
+                    }
 
                     lor <- NULL
                     fish <- NULL
@@ -367,14 +371,16 @@ contTablesClass <- R6::R6Class(
                     ciu=gamm$CI[2])
                 gamma$setRow(rowNo=othRowNo, values=values)
 
-                if (base::inherits(tau, 'try-error') || is.na(tau$estimate))
-                    values <- list(taub=NaN, t='', p='')
-                else
-                    values <- list(
-                        taub=tau$estimate,
-                        t=unname(tau$statistic),
-                        p=tau$p.value)
-                taub$setRow(rowNo=othRowNo, values=values)
+                if (self$options$taub) {
+                    if (base::inherits(tau, 'try-error') || is.na(tau$estimate))
+                        values <- list(taub=NaN, t='', p='')
+                    else
+                        values <- list(
+                            taub=tau$estimate,
+                            t=unname(tau$statistic),
+                            p=tau$p.value)
+                    taub$setRow(rowNo=othRowNo, values=values)
+                }
 
                 if ( ! is.null(lor)) {
                     ci <- confint(lor, level=ciWidth)
