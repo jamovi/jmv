@@ -11,7 +11,7 @@ anovaClass <- R6::R6Class(
     ),
     public = list(
         asSource=function() {
-            paste0(private$.package, '::', 'anova', '(', private$.asArgs(), ')')
+            paste0(private$.package, '::', 'ANOVA', '(', private$.asArgs(), ')')
         },
         initialize=function(...) {
             super$initialize(...)

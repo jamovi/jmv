@@ -360,7 +360,7 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @examples
 #' data('ToothGrowth')
 #'
-#' anova(ToothGrowth, dep = 'len', factors = c('dose', 'supp'))
+#' ANOVA(ToothGrowth, dep = 'len', factors = c('dose', 'supp'))
 #'
 #' #
 #' #  ANOVA
@@ -433,7 +433,7 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' \code{as.data.frame(results$main)}
 #'
 #' @export
-anova <- function(
+ANOVA <- function(
     data,
     dep,
     factors = NULL,
@@ -456,7 +456,7 @@ anova <- function(
     ciWidthEmm = 95) {
 
     if ( ! requireNamespace('jmvcore'))
-        stop('anova requires jmvcore to be installed (restart may be required)')
+        stop('ANOVA requires jmvcore to be installed (restart may be required)')
 
     if (missing(data))
         data <- jmvcore:::marshalData(

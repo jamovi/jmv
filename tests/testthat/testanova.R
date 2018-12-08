@@ -5,7 +5,7 @@ data('ToothGrowth')
 
 test_that('anova works', {
 
-    r <- jmv::anova(ToothGrowth, dep='len', factors=c('dose', 'supp'))
+    r <- jmv::ANOVA(ToothGrowth, dep='len', factors=c('dose', 'supp'))
 
     main <- as.data.frame(r$main)
 
