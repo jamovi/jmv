@@ -24,7 +24,7 @@ description:
         usage: |
             data('ToothGrowth')
 
-            ANOVA(ToothGrowth, dep = 'len', factors = c('dose', 'supp'))
+            ANOVA(formula = len ~ dose * supp, data = ToothGrowth)
 
             #
             #  ANOVA
@@ -40,7 +40,24 @@ description:
             #  ───────────────────────────────────────────────────────────────────────
             #
 
+            ANOVA(
+                formula = len ~ dose * supp,
+                data = ToothGrowth,
+                emMeans = ~supp + supp:dose,  # est. marginal means for supp and supp:dose
+                emmPlots = TRUE,              # produce plots of those marginal means
+                emmTables = TRUE)             # produce tables of those marginal means
+
 completeWhenFilled: true
+
+formula:
+    dep:
+        from: lhs
+    factors:
+        from: rhs
+        type: vars
+    modelTerms:
+        from: rhs
+        type: terms
 
 options:
     - name: data

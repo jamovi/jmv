@@ -17,7 +17,7 @@ description:
         usage: |
             data('ToothGrowth')
 
-            ancova(ToothGrowth, dep = 'len', factors = 'supp', covs = 'dose')
+            ancova(formula = len ~ supp + dose, data = ToothGrowth)
 
             #
             #  ANCOVA
@@ -33,6 +33,21 @@ description:
             #
 
 completeWhenFilled: true
+
+formula:
+    dep:
+        from: lhs
+    factors:
+        from: rhs
+        type: vars
+        permitted: factor
+    covs:
+        from: rhs
+        type: vars
+        permitted: numeric
+    modelTerms:
+        from: rhs
+        type: terms
 
 options:
     - name: data

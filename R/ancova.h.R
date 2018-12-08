@@ -464,7 +464,7 @@ ancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @examples
 #' data('ToothGrowth')
 #'
-#' ancova(ToothGrowth, dep = 'len', factors = 'supp', covs = 'dose')
+#' ancova(formula = len ~ supp + dose, data = ToothGrowth)
 #'
 #' #
 #' #  ANCOVA
@@ -519,6 +519,7 @@ ancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   equally or weigh them according to the cell frequency
 #' @param ciWidthEmm a number between 50 and 99.9 (default: 95) specifying the
 #'   confidence interval width for the estimated marginal means
+#' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$main} \tab \tab \tab \tab \tab a table of ANCOVA results \cr
@@ -558,10 +559,39 @@ ancova <- function(
     emmPlotError = "ci",
     emmTables = FALSE,
     emmWeights = TRUE,
-    ciWidthEmm = 95) {
+    ciWidthEmm = 95,
+    formula) {
 
     if ( ! requireNamespace('jmvcore'))
         stop('ancova requires jmvcore to be installed (restart may be required)')
+
+    if ( ! missing(formula)) {
+        if (missing(dep))
+            dep <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=data,
+                from='lhs')
+        if (missing(factors))
+            factors <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=data,
+                from='rhs',
+                type='vars',
+                permitted='factor')
+        if (missing(covs))
+            covs <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=data,
+                from='rhs',
+                type='vars',
+                permitted='numeric')
+        if (missing(modelTerms))
+            modelTerms <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=data,
+                from='rhs',
+                type='terms')
+    }
 
     if ( ! missing(dep)) dep <- jmvcore:::resolveQuo(jmvcore:::enquo(dep))
     if ( ! missing(factors)) factors <- jmvcore:::resolveQuo(jmvcore:::enquo(factors))

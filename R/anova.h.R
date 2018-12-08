@@ -360,7 +360,7 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @examples
 #' data('ToothGrowth')
 #'
-#' ANOVA(ToothGrowth, dep = 'len', factors = c('dose', 'supp'))
+#' ANOVA(formula = len ~ dose * supp, data = ToothGrowth)
 #'
 #' #
 #' #  ANOVA
@@ -375,6 +375,13 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #    Residuals               712    54           13.2
 #' #  -----------------------------------------------------------------------
 #' #
+#'
+#' ANOVA(
+#'     formula = len ~ dose * supp,
+#'     data = ToothGrowth,
+#'     emMeans = ~supp + supp:dose,  # est. marginal means for supp and supp:dose
+#'     emmPlots = TRUE,              # produce plots of those marginal means
+#'     emmTables = TRUE)             # produce tables of those marginal means
 #'
 #' @param data the data as a data frame
 #' @param dep a string naming the dependent variable from \code{data},
@@ -415,6 +422,7 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   equally or weigh them according to the cell frequency
 #' @param ciWidthEmm a number between 50 and 99.9 (default: 95) specifying the
 #'   confidence interval width for the estimated marginal means
+#' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$main} \tab \tab \tab \tab \tab a table of ANOVA results \cr
@@ -453,10 +461,31 @@ ANOVA <- function(
     emmPlotError = "ci",
     emmTables = FALSE,
     emmWeights = TRUE,
-    ciWidthEmm = 95) {
+    ciWidthEmm = 95,
+    formula) {
 
     if ( ! requireNamespace('jmvcore'))
         stop('ANOVA requires jmvcore to be installed (restart may be required)')
+
+    if ( ! missing(formula)) {
+        if (missing(dep))
+            dep <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=data,
+                from='lhs')
+        if (missing(factors))
+            factors <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=data,
+                from='rhs',
+                type='vars')
+        if (missing(modelTerms))
+            modelTerms <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=data,
+                from='rhs',
+                type='terms')
+    }
 
     if ( ! missing(dep)) dep <- jmvcore:::resolveQuo(jmvcore:::enquo(dep))
     if ( ! missing(factors)) factors <- jmvcore:::resolveQuo(jmvcore:::enquo(factors))
