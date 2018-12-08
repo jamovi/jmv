@@ -670,6 +670,9 @@ logRegMulti <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('logRegMulti requires jmvcore to be installed (restart may be required)')
 
+    if ( ! missing(dep)) dep <- jmvcore:::resolveQuo(jmvcore:::enquo(dep))
+    if ( ! missing(covs)) covs <- jmvcore:::resolveQuo(jmvcore:::enquo(covs))
+    if ( ! missing(factors)) factors <- jmvcore:::resolveQuo(jmvcore:::enquo(factors))
     if (missing(data))
         data <- jmvcore:::marshalData(
             parent.frame(),
@@ -677,9 +680,6 @@ logRegMulti <- function(
             `if`( ! missing(covs), covs, NULL),
             `if`( ! missing(factors), factors, NULL))
 
-    dep <- jmvcore:::resolveQuo(rlang::enquo(dep))
-    covs <- jmvcore:::resolveQuo(rlang::enquo(covs))
-    factors <- jmvcore:::resolveQuo(rlang::enquo(factors))
     for (v in dep) data[[v]] <- as.factor(data[[v]])
     for (v in factors) data[[v]] <- as.factor(data[[v]])
     if (inherits(emMeans, 'formula')) emMeans <- jmvcore:::decomposeFormula(emMeans)

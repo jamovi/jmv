@@ -14,9 +14,8 @@ License: GPL (>= 2)
 Depends:
     R (>= 3.2)
 Imports:
-    jmvcore (>= 0.9.5.1),
+    jmvcore (>= 0.9.5.2),
     R6,
-    rlang (>= 3.0),
     car (>= 3.0.0),
     multcomp,
     ggplot2 (>= 2.2.1),
@@ -41,4 +40,4 @@ Suggests:
     semPlot,
     carData
 Encoding: UTF-8
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

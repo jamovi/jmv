@@ -301,6 +301,9 @@ contTablesPaired <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('contTablesPaired requires jmvcore to be installed (restart may be required)')
 
+    if ( ! missing(rows)) rows <- jmvcore:::resolveQuo(jmvcore:::enquo(rows))
+    if ( ! missing(cols)) cols <- jmvcore:::resolveQuo(jmvcore:::enquo(cols))
+    if ( ! missing(counts)) counts <- jmvcore:::resolveQuo(jmvcore:::enquo(counts))
     if (missing(data))
         data <- jmvcore:::marshalData(
             parent.frame(),
@@ -308,9 +311,6 @@ contTablesPaired <- function(
             `if`( ! missing(cols), cols, NULL),
             `if`( ! missing(counts), counts, NULL))
 
-    rows <- jmvcore:::resolveQuo(rlang::enquo(rows))
-    cols <- jmvcore:::resolveQuo(rlang::enquo(cols))
-    counts <- jmvcore:::resolveQuo(rlang::enquo(counts))
     for (v in rows) data[[v]] <- as.factor(data[[v]])
     for (v in cols) data[[v]] <- as.factor(data[[v]])
 

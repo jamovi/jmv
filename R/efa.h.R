@@ -284,13 +284,13 @@ efa <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('efa requires jmvcore to be installed (restart may be required)')
 
+    if ( ! missing(vars)) vars <- jmvcore:::resolveQuo(jmvcore:::enquo(vars))
     if (missing(data))
         data <- jmvcore:::marshalData(
             parent.frame(),
             `if`( ! missing(vars), vars, NULL))
 
     vars <- `if`( ! missing(vars), vars, colnames(data))
-    vars <- jmvcore:::resolveQuo(rlang::enquo(vars))
 
     options <- efaOptions$new(
         vars = vars,

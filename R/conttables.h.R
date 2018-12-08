@@ -619,6 +619,10 @@ contTables <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('contTables requires jmvcore to be installed (restart may be required)')
 
+    if ( ! missing(rows)) rows <- jmvcore:::resolveQuo(jmvcore:::enquo(rows))
+    if ( ! missing(cols)) cols <- jmvcore:::resolveQuo(jmvcore:::enquo(cols))
+    if ( ! missing(counts)) counts <- jmvcore:::resolveQuo(jmvcore:::enquo(counts))
+    if ( ! missing(layers)) layers <- jmvcore:::resolveQuo(jmvcore:::enquo(layers))
     if (missing(data))
         data <- jmvcore:::marshalData(
             parent.frame(),
@@ -627,10 +631,6 @@ contTables <- function(
             `if`( ! missing(counts), counts, NULL),
             `if`( ! missing(layers), layers, NULL))
 
-    rows <- jmvcore:::resolveQuo(rlang::enquo(rows))
-    cols <- jmvcore:::resolveQuo(rlang::enquo(cols))
-    counts <- jmvcore:::resolveQuo(rlang::enquo(counts))
-    layers <- jmvcore:::resolveQuo(rlang::enquo(layers))
     for (v in rows) data[[v]] <- as.factor(data[[v]])
     for (v in cols) data[[v]] <- as.factor(data[[v]])
     for (v in layers) data[[v]] <- as.factor(data[[v]])

@@ -743,14 +743,14 @@ ttestIS <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('ttestIS requires jmvcore to be installed (restart may be required)')
 
+    if ( ! missing(vars)) vars <- jmvcore:::resolveQuo(jmvcore:::enquo(vars))
+    if ( ! missing(group)) group <- jmvcore:::resolveQuo(jmvcore:::enquo(group))
     if (missing(data))
         data <- jmvcore:::marshalData(
             parent.frame(),
             `if`( ! missing(vars), vars, NULL),
             `if`( ! missing(group), group, NULL))
 
-    vars <- jmvcore:::resolveQuo(rlang::enquo(vars))
-    group <- jmvcore:::resolveQuo(rlang::enquo(group))
     for (v in group) data[[v]] <- as.factor(data[[v]])
 
     options <- ttestISOptions$new(

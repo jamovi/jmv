@@ -224,14 +224,14 @@ propTestN <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('propTestN requires jmvcore to be installed (restart may be required)')
 
+    if ( ! missing(var)) var <- jmvcore:::resolveQuo(jmvcore:::enquo(var))
+    if ( ! missing(counts)) counts <- jmvcore:::resolveQuo(jmvcore:::enquo(counts))
     if (missing(data))
         data <- jmvcore:::marshalData(
             parent.frame(),
             `if`( ! missing(var), var, NULL),
             `if`( ! missing(counts), counts, NULL))
 
-    var <- jmvcore:::resolveQuo(rlang::enquo(var))
-    counts <- jmvcore:::resolveQuo(rlang::enquo(counts))
     for (v in var) data[[v]] <- as.factor(data[[v]])
 
     options <- propTestNOptions$new(

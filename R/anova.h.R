@@ -458,14 +458,14 @@ ANOVA <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('ANOVA requires jmvcore to be installed (restart may be required)')
 
+    if ( ! missing(dep)) dep <- jmvcore:::resolveQuo(jmvcore:::enquo(dep))
+    if ( ! missing(factors)) factors <- jmvcore:::resolveQuo(jmvcore:::enquo(factors))
     if (missing(data))
         data <- jmvcore:::marshalData(
             parent.frame(),
             `if`( ! missing(dep), dep, NULL),
             `if`( ! missing(factors), factors, NULL))
 
-    dep <- jmvcore:::resolveQuo(rlang::enquo(dep))
-    factors <- jmvcore:::resolveQuo(rlang::enquo(factors))
     for (v in factors) data[[v]] <- as.factor(data[[v]])
     if (inherits(modelTerms, 'formula')) modelTerms <- jmvcore:::decomposeFormula(modelTerms)
     if (inherits(postHoc, 'formula')) postHoc <- jmvcore:::decomposeFormula(postHoc)

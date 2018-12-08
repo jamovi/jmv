@@ -191,14 +191,14 @@ anovaNP <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('anovaNP requires jmvcore to be installed (restart may be required)')
 
+    if ( ! missing(deps)) deps <- jmvcore:::resolveQuo(jmvcore:::enquo(deps))
+    if ( ! missing(group)) group <- jmvcore:::resolveQuo(jmvcore:::enquo(group))
     if (missing(data))
         data <- jmvcore:::marshalData(
             parent.frame(),
             `if`( ! missing(deps), deps, NULL),
             `if`( ! missing(group), group, NULL))
 
-    deps <- jmvcore:::resolveQuo(rlang::enquo(deps))
-    group <- jmvcore:::resolveQuo(rlang::enquo(group))
     for (v in group) data[[v]] <- as.factor(data[[v]])
 
     options <- anovaNPOptions$new(

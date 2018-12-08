@@ -485,6 +485,9 @@ mancova <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('mancova requires jmvcore to be installed (restart may be required)')
 
+    if ( ! missing(deps)) deps <- jmvcore:::resolveQuo(jmvcore:::enquo(deps))
+    if ( ! missing(factors)) factors <- jmvcore:::resolveQuo(jmvcore:::enquo(factors))
+    if ( ! missing(covs)) covs <- jmvcore:::resolveQuo(jmvcore:::enquo(covs))
     if (missing(data))
         data <- jmvcore:::marshalData(
             parent.frame(),
@@ -492,9 +495,6 @@ mancova <- function(
             `if`( ! missing(factors), factors, NULL),
             `if`( ! missing(covs), covs, NULL))
 
-    deps <- jmvcore:::resolveQuo(rlang::enquo(deps))
-    factors <- jmvcore:::resolveQuo(rlang::enquo(factors))
-    covs <- jmvcore:::resolveQuo(rlang::enquo(covs))
     for (v in factors) data[[v]] <- as.factor(data[[v]])
 
     options <- mancovaOptions$new(

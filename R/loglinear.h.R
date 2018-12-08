@@ -653,14 +653,14 @@ logLinear <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('logLinear requires jmvcore to be installed (restart may be required)')
 
+    if ( ! missing(factors)) factors <- jmvcore:::resolveQuo(jmvcore:::enquo(factors))
+    if ( ! missing(counts)) counts <- jmvcore:::resolveQuo(jmvcore:::enquo(counts))
     if (missing(data))
         data <- jmvcore:::marshalData(
             parent.frame(),
             `if`( ! missing(factors), factors, NULL),
             `if`( ! missing(counts), counts, NULL))
 
-    factors <- jmvcore:::resolveQuo(rlang::enquo(factors))
-    counts <- jmvcore:::resolveQuo(rlang::enquo(counts))
     for (v in factors) data[[v]] <- as.factor(data[[v]])
     if (inherits(emMeans, 'formula')) emMeans <- jmvcore:::decomposeFormula(emMeans)
 

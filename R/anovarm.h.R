@@ -927,14 +927,14 @@ anovaRM <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('anovaRM requires jmvcore to be installed (restart may be required)')
 
+    if ( ! missing(bs)) bs <- jmvcore:::resolveQuo(jmvcore:::enquo(bs))
+    if ( ! missing(cov)) cov <- jmvcore:::resolveQuo(jmvcore:::enquo(cov))
     if (missing(data))
         data <- jmvcore:::marshalData(
             parent.frame(),
             `if`( ! missing(bs), bs, NULL),
             `if`( ! missing(cov), cov, NULL))
 
-    bs <- jmvcore:::resolveQuo(rlang::enquo(bs))
-    cov <- jmvcore:::resolveQuo(rlang::enquo(cov))
     for (v in bs) data[[v]] <- as.factor(data[[v]])
     if (inherits(rmTerms, 'formula')) rmTerms <- jmvcore:::decomposeFormula(rmTerms)
     if (inherits(bsTerms, 'formula')) bsTerms <- jmvcore:::decomposeFormula(bsTerms)
