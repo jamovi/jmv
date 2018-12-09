@@ -46,7 +46,7 @@ logLinearClass <- R6::R6Class(
         #### Compute results ----
         .compute = function(data) {
 
-            formulas <- private$.formula()
+            formulas <- private$.formulas()
 
             globalContr <- options('contrasts')$contrasts
             options('contrasts' = c('contr.treatment', 'contr.poly'))
@@ -585,7 +585,7 @@ logLinearClass <- R6::R6Class(
 
             return(list(coefNames=coefNames, coefTerms=coefTerms))
         },
-        .formula = function() {
+        .formulas = function() {
 
             terms <- private$terms
 

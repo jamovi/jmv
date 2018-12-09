@@ -56,7 +56,7 @@ linRegClass <- R6::R6Class(
         #### Compute results ----
         .compute = function(data) {
 
-            formulas <- private$.formula()
+            formulas <- private$.formulas()
 
             models <- list(); modelsBF <- list(); anovaTerms <- list()
             for (i in seq_along(formulas)) {
@@ -979,7 +979,7 @@ linRegClass <- R6::R6Class(
 
             return(list(coefNames=coefNames, coefTerms=coefTerms))
         },
-        .formula = function() {
+        .formulas = function() {
 
             dep <- self$options$dep
             depB64 <- jmvcore::toB64(dep)

@@ -58,7 +58,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         #### Compute results ----
         .compute = function(data) {
 
-            formulas <- private$.formula()
+            formulas <- private$.formulas()
 
             suppressWarnings({
                 suppressMessages({
@@ -1034,7 +1034,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             return(list(coefNames=coefNames, coefTerms=coefTerms))
         },
-        .formula = function() {
+        .formulas = function() {
 
             dep <- self$options$dep
             depB64 <- jmvcore::toB64(dep)
