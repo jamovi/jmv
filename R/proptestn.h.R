@@ -232,7 +232,7 @@ propTestN <- function(
             `if`( ! missing(var), var, NULL),
             `if`( ! missing(counts), counts, NULL))
 
-    for (v in var) data[[v]] <- as.factor(data[[v]])
+    for (v in var) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
 
     options <- propTestNOptions$new(
         var = var,

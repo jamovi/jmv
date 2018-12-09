@@ -491,7 +491,7 @@ descriptives <- function(
             `if`( ! missing(splitBy), splitBy, NULL))
 
     vars <- `if`( ! missing(vars), vars, colnames(data))
-    for (v in splitBy) data[[v]] <- as.factor(data[[v]])
+    for (v in splitBy) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
 
     options <- descriptivesOptions$new(
         vars = vars,

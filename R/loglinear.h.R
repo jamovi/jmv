@@ -661,7 +661,7 @@ logLinear <- function(
             `if`( ! missing(factors), factors, NULL),
             `if`( ! missing(counts), counts, NULL))
 
-    for (v in factors) data[[v]] <- as.factor(data[[v]])
+    for (v in factors) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
     if (inherits(emMeans, 'formula')) emMeans <- jmvcore:::decomposeFormula(emMeans)
 
     options <- logLinearOptions$new(

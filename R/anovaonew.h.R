@@ -578,7 +578,7 @@ anovaOneW <- function(
             `if`( ! missing(deps), deps, NULL),
             `if`( ! missing(group), group, NULL))
 
-    for (v in group) data[[v]] <- as.factor(data[[v]])
+    for (v in group) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
 
     options <- anovaOneWOptions$new(
         deps = deps,

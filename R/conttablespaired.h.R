@@ -311,8 +311,8 @@ contTablesPaired <- function(
             `if`( ! missing(cols), cols, NULL),
             `if`( ! missing(counts), counts, NULL))
 
-    for (v in rows) data[[v]] <- as.factor(data[[v]])
-    for (v in cols) data[[v]] <- as.factor(data[[v]])
+    for (v in rows) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
+    for (v in cols) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
 
     options <- contTablesPairedOptions$new(
         rows = rows,

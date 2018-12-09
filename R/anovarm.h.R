@@ -935,7 +935,7 @@ anovaRM <- function(
             `if`( ! missing(bs), bs, NULL),
             `if`( ! missing(cov), cov, NULL))
 
-    for (v in bs) data[[v]] <- as.factor(data[[v]])
+    for (v in bs) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
     if (inherits(rmTerms, 'formula')) rmTerms <- jmvcore:::decomposeFormula(rmTerms)
     if (inherits(bsTerms, 'formula')) bsTerms <- jmvcore:::decomposeFormula(bsTerms)
     if (inherits(emMeans, 'formula')) emMeans <- jmvcore:::decomposeFormula(emMeans)
