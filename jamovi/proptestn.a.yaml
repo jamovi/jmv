@@ -11,7 +11,13 @@ version: '1.0.0'
 jas: '1.2'
 
 description:
-    main: χ² Goodness of fit
+    main: >
+        The χ² Goodness of fit test (not to be confused with the χ² test of
+        independence), tests the Null hypothesis that the proportions of
+        observations match some expected proportions. If the p-value is low,
+        this suggests that the Null hypothesis is false, and that the
+        true proportions are different to those tested.
+
     R:
         dontrun: false
         usage: |
@@ -67,7 +73,9 @@ options:
       permitted:
         - factor
       description:
-          R: a string naming the variable of interest in `data`
+          R: >
+            the variable of interest in `data` (not necessary when using a
+            formula, see the examples)
 
     - name: counts
       title: Counts (optional)
@@ -77,8 +85,7 @@ options:
         - numeric
       description:
           R: >
-            a string naming a variable in `data` containing counts, or NULL if
-            each row represents a single observation
+            the counts in `data`
 
     - name: expected
       title: Expected counts

@@ -45,6 +45,12 @@ description:
             #  ─────────────────────────────────────────────────────
             #
 
+
+            # Alternatively, omit the left of the formula (`Counts`) from the
+            # formula if each row represents a single observation:
+
+            contTablesPaired(formula = ~ `1st survey`:`2nd survey`, data = dat)
+
 completeWhenFilled: true
 
 formula:
@@ -77,8 +83,8 @@ options:
         - factor
       description:
           R: >
-              a string naming the variable to use as the rows in the
-              contingency table
+              the variable to use as the rows in the contingency table (not
+              necessary when providing a formula, see the examples)
 
     - name: cols
       title: Columns
@@ -90,8 +96,8 @@ options:
         - factor
       description:
           R: >
-            a string naming the variable to use as the columns in the
-            contingency table
+              the variable to use as the columns in the contingency table (not
+              necessary when providing a formula, see the examples)
 
     - name: counts
       title: Counts (optional)
@@ -103,8 +109,8 @@ options:
       default:
       description:
           R: >
-            a string naming the variable to use as counts, or NULL if each row
-            represents a single observation
+              the variable to use as the counts in the contingency table (not
+              necessary when providing a formula, see the examples)
 
     - name: chiSq
       title: χ²

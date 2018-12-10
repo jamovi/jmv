@@ -66,7 +66,9 @@ options:
           ui: >
             the dependent variables -- a separate t-test is performed for each
             dependent variable specified.
-          R: a vector of strings naming the dependent variables
+          R: >
+            the dependent variables (not necessary when using a formula, see
+            the examples)
 
     - name: group
       title: Grouping Variable
@@ -79,7 +81,9 @@ options:
       description:
           ui: >
             the variable specifying the groups; must have 2 levels.
-          R: a string naming the grouping variable, must have 2 levels
+          R: >
+            the grouping variable with two levels (not necessary when
+            using a formula, see the examples)
 
     - name: students
       title: Student's

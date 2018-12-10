@@ -6,7 +6,12 @@ version: '1.0.0'
 jas: '1.2'
 
 description:
-    main: Provides a range of descriptive statistics
+    main: >
+        Descriptives are an assortment of summarising statistics, and
+        visualizations which allow exploring the shape and distribution of
+        data. It is good practice to explore your data with descriptives before
+        proceeding to more formal tests.
+
     R:
         usage: |
             data('mtcars')

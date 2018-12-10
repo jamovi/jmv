@@ -13,7 +13,14 @@ jas: '1.2'
 completeWhenFilled: true
 
 description:
-    main: Kruskal-Wallis
+    main: >
+        The Kruskal-Wallis test is used to explore the relationship between a
+        continuous dependent variable, and a categorical explanatory variable.
+        It is analagous to ANOVA, but with the advantage of being
+        non-parametric and having fewer assumptions. However, it has the
+        limitation that it can only test a single explanatory variable at a
+        time.
+
     R:
         dontrun: false
         usage: |

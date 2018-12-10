@@ -666,8 +666,10 @@ ttestISBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #
 #'
 #' @param data the data as a data frame
-#' @param vars a vector of strings naming the dependent variables
-#' @param group a string naming the grouping variable, must have 2 levels
+#' @param vars the dependent variables (not necessary when using a formula,
+#'   see the examples)
+#' @param group the grouping variable with two levels (not necessary when
+#'   using a formula, see the examples)
 #' @param students \code{TRUE} (default) or \code{FALSE}, perform Student's
 #'   t-tests
 #' @param bf \code{TRUE} or \code{FALSE} (default), provide Bayes factors

@@ -58,8 +58,7 @@ options:
         - numeric
       description:
           R: >
-            a string naming the dependent variable from `data`, variable
-            must be numeric
+            the dependent variable from `data`, variable must be numeric
 
     - name: covs
       title: Covariates
@@ -70,7 +69,7 @@ options:
         - numeric
       default:
       description:
-          R: a vector of strings naming the covariates from `data`
+          R: the covariates from `data`
 
     - name: factors
       title: Factors
@@ -82,7 +81,7 @@ options:
         - factor
       default:
       description:
-          R: a vector of strings naming the fixed factors from `data`
+          R: the fixed factors from `data`
 
     - name: blocks
       title: Blocks
@@ -296,8 +295,8 @@ options:
           type: Variables
       description:
           R: >
-            a list of lists specifying the variables for which the estimated marginal
-            means need to be calculate. Supports up to three variables per term.
+            a formula containing the terms to estimate marginal means for,
+            supports up to three variables per term
 
     - name: ciEmm
       title: Confidence interval

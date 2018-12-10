@@ -32,6 +32,13 @@ description:
             #  ───────────────────────────────────────────────────────────────────────
             #
 
+            ancova(
+                formula = len ~ supp + dose,
+                data = ToothGrowth,
+                postHoc = ~ supp,
+                emMeans = ~ supp)
+
+
 completeWhenFilled: true
 
 formula:
@@ -69,8 +76,8 @@ options:
           ui: >
             the dependent variable. For ANCOVA, these will be continuous.
           R: >
-            a string naming the dependent variable from `data`, variable
-            must be numeric
+            the dependent variable from `data`, variable must be numeric (not
+            necessary when providing a formula, see examples)
 
     - name: factors
       title: Fixed Factors
@@ -86,7 +93,8 @@ options:
           ui: >
             the categorical explanatory (or independent) variables.
           R: >
-            a vector of strings naming the fixed factors from `data`
+            the explanatory factors in `data` (not necessary when providing a
+            formula, see examples)
 
     - name: covs
       title: Covariates
@@ -102,7 +110,8 @@ options:
             the continuous explanatory (or independent) variables, also known
             as covariates.
           R: >
-            a vector of strings naming the covariates from `data`
+            the explanatory covariates (not necessary when providing a formula,
+            see examples)
 
     - name: effectSize
       title: Effect Size
@@ -130,8 +139,8 @@ options:
           ui: >
             the model terms which make up the model.
           R: >
-            a list of character vectors describing the terms to go into the
-            model
+            a formula describing the terms to go into the model (not necessary
+            when providing a formula, see examples)
 
     - name: ss
       title: Sum of squares
@@ -213,7 +222,8 @@ options:
           ui: >
             provide post-hoc tests.
           R: >
-            a list of terms to perform post-hoc tests on
+            a formula containing the terms to perform post-hoc tests on (see
+            the examples)
 
     - name: postHocCorr
       title: Correction
@@ -250,8 +260,8 @@ options:
             the terms to provide estimated marginal means for. Here you can specify
             multiple terms.
           R: >
-            a list of lists specifying the variables for which the estimated marginal
-            means need to be calculate. Supports up to three variables per term.
+            a formula containing the terms to estimate marginal means for (see
+            the examples)
 
     - name: emmPlots
       title: Marginal means plots

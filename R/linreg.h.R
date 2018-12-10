@@ -785,11 +785,10 @@ linRegBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #
 #'
 #' @param data the data as a data frame
-#' @param dep a string naming the dependent variable from \code{data},
-#'   variable must be numeric
-#' @param covs a vector of strings naming the covariates from \code{data}
-#' @param factors a vector of strings naming the fixed factors from
-#'   \code{data}
+#' @param dep the dependent variable from \code{data}, variable must be
+#'   numeric
+#' @param covs the covariates from \code{data}
+#' @param factors the fixed factors from \code{data}
 #' @param blocks a list containing vectors of strings that name the predictors
 #'   that are added to the model. The elements are added to the model according
 #'   to their order in the list
@@ -835,9 +834,8 @@ linRegBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   tolerence collinearity statistics
 #' @param cooks \code{TRUE} or \code{FALSE} (default), provide summary
 #'   statistics for the Cook's distance
-#' @param emMeans a list of lists specifying the variables for which the
-#'   estimated marginal means need to be calculate. Supports up to three
-#'   variables per term.
+#' @param emMeans a formula containing the terms to estimate marginal means
+#'   for, supports up to three variables per term
 #' @param ciEmm \code{TRUE} (default) or \code{FALSE}, provide a confidence
 #'   interval for the estimated marginal means
 #' @param ciWidthEmm a number between 50 and 99.9 (default: 95) specifying the

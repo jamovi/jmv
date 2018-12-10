@@ -346,7 +346,11 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 
 #' Descriptives
 #'
-#' Provides a range of descriptive statistics
+#' Descriptives are an assortment of summarising statistics, and 
+#' visualizations which allow exploring the shape and distribution of data. It 
+#' is good practice to explore your data with descriptives before proceeding 
+#' to more formal tests.
+#' 
 #'
 #' @examples
 #' \dontrun{

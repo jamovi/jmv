@@ -256,7 +256,11 @@ propTest2Base <- if (requireNamespace('jmvcore')) R6::R6Class(
 
 #' Proportion Test (2 Outcomes)
 #'
-#' Binomial test
+#' The Binomial test is used to test the Null hypothesis that the proportion 
+#' of observations match some expected value. If the p-value is low, this 
+#' suggests that the Null hypothesis is false, and that the true proportion 
+#' must be some other value.
+#' 
 #'
 #' @examples
 #' \dontrun{

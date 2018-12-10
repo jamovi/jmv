@@ -44,6 +44,11 @@ description:
             #  ───────────────────────────────
             #
 
+            # Alternatively, omit the left of the formula (`Freq`) if each row
+            # represents a single observation:
+
+            contTables(formula = ~ Hair:Eye, dat)
+
 completeWhenFilled: true
 
 formula:
@@ -80,8 +85,8 @@ options:
         - factor
       description:
           R: >
-              a string naming the variable to use as the rows in the
-              contingency table
+              the variable to use as the rows in the contingency table (not
+              necessary when providing a formula, see the examples)
 
     - name: cols
       title: Columns
@@ -93,8 +98,8 @@ options:
         - factor
       description:
           R: >
-            a string naming the variable to use as the columns in the
-            contingency table
+              the variable to use as the columns in the contingency table (not
+              necessary when providing a formula, see the examples)
 
     - name: counts
       title: Counts (optional)
@@ -106,8 +111,8 @@ options:
       default:
       description:
           R: >
-            a string naming the variable to use as counts, or NULL if each row
-            represents a single observation
+              the variable to use as the counts in the contingency table (not
+              necessary when providing a formula, see the examples)
 
     - name: layers
       title: Layers
@@ -117,8 +122,8 @@ options:
         - factor
       description:
           R: >
-            a character vector naming variables to split the contingency table
-            across
+              the variables to use to split the contingency table (not
+              necessary when providing a formula, see the examples)
 
     - name: chiSq
       title: χ²

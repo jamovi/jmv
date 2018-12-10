@@ -536,15 +536,20 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #  -------------------------------
 #' #
 #'
+#' # Alternatively, omit the left of the formula (`Freq`) if each row
+#' # represents a single observation:
+#'
+#' contTables(formula = ~ Hair:Eye, dat)
+#'
 #' @param data the data as a data frame
-#' @param rows a string naming the variable to use as the rows in the
-#'   contingency table
-#' @param cols a string naming the variable to use as the columns in the
-#'   contingency table
-#' @param counts a string naming the variable to use as counts, or NULL if
-#'   each row represents a single observation
-#' @param layers a character vector naming variables to split the contingency
-#'   table across
+#' @param rows the variable to use as the rows in the contingency table (not
+#'   necessary when providing a formula, see the examples)
+#' @param cols the variable to use as the columns in the contingency table
+#'   (not necessary when providing a formula, see the examples)
+#' @param counts the variable to use as the counts in the contingency table
+#'   (not necessary when providing a formula, see the examples)
+#' @param layers the variables to use to split the contingency table (not
+#'   necessary when providing a formula, see the examples)
 #' @param chiSq \code{TRUE} (default) or \code{FALSE}, provide X²
 #' @param chiSqCorr \code{TRUE} or \code{FALSE} (default), provide X² with
 #'   continuity correction

@@ -164,7 +164,12 @@ propTestNBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 
 #' Proportion Test (N Outcomes)
 #'
-#' X² Goodness of fit
+#' The X² Goodness of fit test (not to be confused with the X² test of 
+#' independence), tests the Null hypothesis that the proportions of 
+#' observations match some expected proportions. If the p-value is low, this 
+#' suggests that the Null hypothesis is false, and that the true proportions 
+#' are different to those tested.
+#' 
 #'
 #' @examples
 #' data('HairEyeColor')
@@ -195,9 +200,9 @@ propTestNBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #
 #'
 #' @param data the data as a data frame
-#' @param var a string naming the variable of interest in \code{data}
-#' @param counts a string naming a variable in \code{data} containing counts,
-#'   or NULL if each row represents a single observation
+#' @param var the variable of interest in \code{data} (not necessary when
+#'   using a formula, see the examples)
+#' @param counts the counts in \code{data}
 #' @param expected \code{TRUE} or \code{FALSE} (default), whether expected
 #'   counts should be displayed
 #' @param ratio a vector of numbers: the expected proportions

@@ -19,7 +19,11 @@ analyses:
     ns: jmv
     menuGroup: Exploration
     menuTitle: Descriptives
-    description: Provides a range of descriptive statistics
+    description: >
+      Descriptives are an assortment of summarising statistics, and
+      visualizations which allow exploring the shape and distribution of data.
+      It is good practice to explore your data with descriptives before
+      proceeding to more formal tests.
   - title: Independent Samples T-Test
     name: ttestIS
     ns: jmv
@@ -108,7 +112,12 @@ analyses:
     menuSubgroup: Non-Parametric
     menuTitle: One-Way ANOVA
     menuSubtitle: Kruskal-Wallis
-    description: Kruskal-Wallis
+    description: >
+      The Kruskal-Wallis test is used to explore the relationship between a
+      continuous dependent variable, and a categorical explanatory variable. It
+      is analagous to ANOVA, but with the advantage of being non-parametric and
+      having fewer assumptions. However, it has the limitation that it can only
+      test a single explanatory variable at a time.
   - title: Repeated Measures ANOVA (Non-parametric)
     name: anovaRMNP
     ns: jmv
@@ -116,7 +125,14 @@ analyses:
     menuSubgroup: Non-Parametric
     menuTitle: Repeated Measures ANOVA
     menuSubtitle: Friedman
-    description: Friedman
+    description: >
+      The Friedman test is used to explore the relationship between a continuous
+      dependent variable and a categorical explanatory variable, where the
+      explanatory variable is 'within subjects' (where multiple measurements are
+      from the same subject). It is analagous to Repeated Measures ANOVA, but
+      with the advantage of being non-parametric, and not requiring the
+      assumptions of normality or homogeneity of variances. However, it has the
+      limitation that it can only test a single explanatory variable at a time.
   - title: Correlation Matrix
     name: corrMatrix
     menuGroup: Regression
@@ -154,7 +170,11 @@ analyses:
     menuSubgroup: One Sample Proportion Tests
     menuTitle: 2 Outcomes
     menuSubtitle: Binomial test
-    description: Binomial test
+    description: >
+      The Binomial test is used to test the Null hypothesis that the proportion
+      of observations match some expected value. If the p-value is low, this
+      suggests that the Null hypothesis is false, and that the true proportion
+      must be some other value.
   - title: Proportion Test (N Outcomes)
     name: propTestN
     ns: jmv
@@ -162,7 +182,12 @@ analyses:
     menuSubgroup: One Sample Proportion Tests
     menuTitle: N Outcomes
     menuSubtitle: χ² Goodness of fit
-    description: χ² Goodness of fit
+    description: >
+      The χ² Goodness of fit test (not to be confused with the χ² test of
+      independence), tests the Null hypothesis that the proportions of
+      observations match some expected proportions. If the p-value is low, this
+      suggests that the Null hypothesis is false, and that the true proportions
+      are different to those tested.
   - title: Contingency Tables
     name: contTables
     ns: jmv

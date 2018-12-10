@@ -78,8 +78,8 @@ options:
           ui: >
             the dependent variable. For ANOVA, these will be continuous.
           R: >
-            a string naming the dependent variable from `data`, variable
-            must be numeric
+            the dependent variable from `data`, variable must be numeric (not
+            necessary when providing a formula, see examples)
 
     - name: factors
       title: Fixed Factors
@@ -97,7 +97,8 @@ options:
             the explanatory or independent variables. For ANOVA these will be
             categorical.
           R: >
-            a vector of strings naming the fixed factors from `data`
+            the explanatory factors in `data` (not necessary when providing a
+            formula, see examples)
 
     - name: effectSize
       title: Effect Size
@@ -127,7 +128,8 @@ options:
             model is created, but here the exact terms making up the model can be
             adjusted.
           R: >
-            a list of character vectors describing the terms to go into the model
+            a formula describing the terms to go into the model (not necessary
+            when providing a formula, see examples)
 
     - name: ss
       title: Sum of squares
@@ -207,7 +209,8 @@ options:
           ui: >
             provide post-hoc tests.
           R: >
-            a list of terms to perform post-hoc tests on
+            a formula containing the terms to perform post-hoc tests on (see
+            the examples)
 
     - name: postHocCorr
       title: Correction
@@ -245,9 +248,8 @@ options:
             the terms to provide estimated marginal means for. Here you can specify
             multiple terms.
           R: >
-            a list of lists specifying the variables for which the estimated
-            marginal means need to be calculate. Supports up to three variables per
-            term.
+            a formula containing the terms to estimate marginal means for (see
+            the examples)
 
     - name: emmPlots
       title: Marginal means plots

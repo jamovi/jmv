@@ -384,15 +384,15 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'     emmTables = TRUE)             # produce tables of those marginal means
 #'
 #' @param data the data as a data frame
-#' @param dep a string naming the dependent variable from \code{data},
-#'   variable must be numeric
-#' @param factors a vector of strings naming the fixed factors from
-#'   \code{data}
+#' @param dep the dependent variable from \code{data}, variable must be
+#'   numeric (not necessary when providing a formula, see examples)
+#' @param factors the explanatory factors in \code{data} (not necessary when
+#'   providing a formula, see examples)
 #' @param effectSize one or more of \code{'eta'}, \code{'partEta'}, or
 #'   \code{'omega'}; use eta², partial eta², and omega² effect sizes,
 #'   respectively
-#' @param modelTerms a list of character vectors describing the terms to go
-#'   into the model
+#' @param modelTerms a formula describing the terms to go into the model (not
+#'   necessary when providing a formula, see examples)
 #' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default), the sum of
 #'   squares to use
 #' @param homo \code{TRUE} or \code{FALSE} (default), perform homogeneity
@@ -402,13 +402,13 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param contrasts a list of lists specifying the factor and type of contrast
 #'   to use, one of \code{'deviation'}, \code{'simple'}, \code{'difference'},
 #'   \code{'helmert'}, \code{'repeated'} or \code{'polynomial'}
-#' @param postHoc a list of terms to perform post-hoc tests on
+#' @param postHoc a formula containing the terms to perform post-hoc tests on
+#'   (see the examples)
 #' @param postHocCorr one or more of \code{'none'}, \code{'tukey'},
 #'   \code{'scheffe'}, \code{'bonf'}, or \code{'holm'}; provide no, Tukey,
 #'   Scheffe, Bonferroni, and Holm Post Hoc corrections respectively
-#' @param emMeans a list of lists specifying the variables for which the
-#'   estimated marginal means need to be calculate. Supports up to three
-#'   variables per term.
+#' @param emMeans a formula containing the terms to estimate marginal means
+#'   for (see the examples)
 #' @param emmPlots \code{TRUE} (default) or \code{FALSE}, provide estimated
 #'   marginal means plots
 #' @param emmPlotData \code{TRUE} or \code{FALSE} (default), plot the data on

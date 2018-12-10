@@ -145,7 +145,12 @@ anovaNPBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 
 #' One-Way ANOVA (Non-parametric)
 #'
-#' Kruskal-Wallis
+#' The Kruskal-Wallis test is used to explore the relationship between a 
+#' continuous dependent variable, and a categorical explanatory variable. It 
+#' is analagous to ANOVA, but with the advantage of being non-parametric and 
+#' having fewer assumptions. However, it has the limitation that it can only 
+#' test a single explanatory variable at a time.
+#' 
 #'
 #' @examples
 #' data('ToothGrowth')

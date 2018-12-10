@@ -8,7 +8,12 @@ menuTitle: 2 Outcomes
 menuSubtitle: Binomial test
 
 description:
-    main: Binomial test
+    main: >
+        The Binomial test is used to test the Null hypothesis that the
+        proportion of observations match some expected value. If the p-value is
+        low, this suggests that the Null hypothesis is false, and that the true
+        proportion must be some other value.
+
     R:
         usage: |
             dat <- data.frame(x=c(8, 15))
