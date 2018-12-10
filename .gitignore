@@ -6,5 +6,5 @@ man/
 .Rproj.user
 .DS_Store
 npm-debug.log
-
 *.jmo
+inst/doc

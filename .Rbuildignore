@@ -4,7 +4,8 @@
 ^.*\.jmo$
 
 ^temp$
-^build$
+^build/js$
+^build/R$
 ^jamovi$
 ^package.json$
 ^README.md$

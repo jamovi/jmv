@@ -1,0 +1,85 @@
+---
+title: "New syntax in 0.9.6+"
+author: "Jonathon Love"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{New syntax in 0.9.6+}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## New syntax
+
+In 0.9.6 we've begun transitioning `jmv` to a new syntax, using tidy evaluation and the use of formulas. Our intention is to do this in a phased way, to minimise disruption and breakage of existing code. Many `jmv` functions now support a `function = ` argument, and this is recommended where applicable. This document describes the changes, and explains how to port existing code to use the new `jmv`. If you've not used `jmv` before, then you don't need to worry about this.
+
+Previously the function `ANOVA` was run:
+
+```r
+jmv::anova(ToothGrowth, 'len', c('supp', 'dose'))
+```
+
+where as the new formula syntax is:
+
+```r
+jmv::ANOVA(formula = len ~ supp * dose, ToothGrowth)
+```
+
+In addition to the new formula syntax, many `jmv` functions support 'non-standard evaluation' of their arguments. For example, the following is now possible:
+
+```r
+jmv::ANOVA(ToothGrowth, len, vars(supp, dose))
+```
+
+(note that, unlike tidy evaluation, a `data` argument is almost always required -- we expect to be able to relax this in a future release.)
+
+Additionally, functions which used to accept complex terms arguments, can now use simple formulas. For example, the `emMeans` argument of `ANOVA()` previously required:
+
+```r
+jmv::ANOVA(..., emMeans = list("supp", c("dose", "supp")))
+
+```
+
+this can now be written:
+
+```r
+jmv::ANOVA(..., emMeans = ~ supp + dose:supp)
+
+```
+
+In all cases, refer to the examples in the documentation for the recommended syntax. The old syntax (demonstrated above) will continue to be supported into the future. 
+
+## Breakage
+
+The new syntax tidies up use of the `jmv` package considerably, but there are a few scenarios where code which used to work, no longer will. The following code will continue to work:
+
+```r
+jmv::ANOVA(ToothGrowth, 'len', c('supp', 'dose'))
+```
+
+However, the following will not:
+
+```r
+dep <- 'len'
+factors <- c('supp', 'dose')
+
+jmv::ANOVA(ToothGrowth, dep, factors)
+```
+
+In this case, jmv will look for variables in `ToothGrowth` called `'dep'` or `'factors'`. This is tidy evaluation. To instruct `jmv` to use the *contents* of it's arguments, rather than the symbol name, prefix them with the `!!` signifier. For example:
+
+```r
+dep <- 'len'
+factors <- c('supp', 'dose')
+
+jmv::ANOVA(ToothGrowth, !!dep, !!factors)
+```
+
+
