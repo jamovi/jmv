@@ -18,7 +18,7 @@ description:
             data('HairEyeColor')
             dat <- as.data.frame(HairEyeColor)
 
-            propTestN(dat, var = 'Eye', counts = 'Freq', ratio = c(1,1,1,1))
+            propTestN(formula = Freq ~ Eye, data = dat, ratio = c(1,1,1,1))
 
             #
             #  PROPORTION TEST (N OUTCOMES)
@@ -43,6 +43,14 @@ description:
             #
 
 completeWhenFilled: true
+
+formula:
+    counts:
+        from: lhs
+        subset: 1
+    var:
+        from: rhs
+        subset: 1
 
 options:
     - name: data

@@ -150,7 +150,7 @@ anovaNPBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @examples
 #' data('ToothGrowth')
 #'
-#' anovaNP(ToothGrowth, deps = 'len', group = 'dose')
+#' anovaNP(formula = len ~ dose, data=ToothGrowth)
 #'
 #' #
 #' #  ONE-WAY ANOVA (NON-PARAMETRIC)
@@ -169,6 +169,7 @@ anovaNPBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{data}
 #' @param pairs \code{TRUE} or \code{FALSE} (default), perform pairwise
 #'   comparisons
+#' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$table} \tab \tab \tab \tab \tab a table of the test results \cr
@@ -186,10 +187,26 @@ anovaNP <- function(
     data,
     deps,
     group,
-    pairs = FALSE) {
+    pairs = FALSE,
+    formula) {
 
     if ( ! requireNamespace('jmvcore'))
         stop('anovaNP requires jmvcore to be installed (restart may be required)')
+
+    if ( ! missing(formula)) {
+        if (missing(deps))
+            deps <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=`if`( ! missing(data), data, NULL),
+                from='lhs',
+                required=TRUE)
+        if (missing(group))
+            group <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=`if`( ! missing(data), data, NULL),
+                from='rhs',
+                subset='1')
+    }
 
     if ( ! missing(deps)) deps <- jmvcore:::resolveQuo(jmvcore:::enquo(deps))
     if ( ! missing(group)) group <- jmvcore:::resolveQuo(jmvcore:::enquo(group))

@@ -652,7 +652,7 @@ ttestISBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @examples
 #' data('ToothGrowth')
 #'
-#' ttestIS(data = ToothGrowth, vars = 'len', group = 'supp')
+#' ttestIS(formula = len ~ supp, data = ToothGrowth)
 #'
 #' #
 #' #  INDEPENDENT SAMPLES T-TEST
@@ -703,6 +703,7 @@ ttestISBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   missing values; \code{'perAnalysis'} excludes missing values for individual
 #'   dependent variables, \code{'listwise'} excludes a row from all analyses if
 #'   one of its entries is missing.
+#' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$ttest} \tab \tab \tab \tab \tab a table containing the t-test results \cr
@@ -738,10 +739,26 @@ ttestIS <- function(
     ciWidth = 95,
     desc = FALSE,
     plots = FALSE,
-    miss = "perAnalysis") {
+    miss = "perAnalysis",
+    formula) {
 
     if ( ! requireNamespace('jmvcore'))
         stop('ttestIS requires jmvcore to be installed (restart may be required)')
+
+    if ( ! missing(formula)) {
+        if (missing(vars))
+            vars <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=`if`( ! missing(data), data, NULL),
+                from='lhs',
+                required=TRUE)
+        if (missing(group))
+            group <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=`if`( ! missing(data), data, NULL),
+                from='rhs',
+                subset='1')
+    }
 
     if ( ! missing(vars)) vars <- jmvcore:::resolveQuo(jmvcore:::enquo(vars))
     if ( ! missing(group)) group <- jmvcore:::resolveQuo(jmvcore:::enquo(group))

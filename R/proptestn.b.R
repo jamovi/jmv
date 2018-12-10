@@ -64,5 +64,13 @@ propTestNClass <- R6::R6Class(
                     chi=NaN, df='', p=''))
             }
 
+        },
+        .sourcifyOption = function(option) {
+            if (option$name %in% c('var', 'counts'))
+                return('')
+            super$.sourcifyOption(option)
+        },
+        .formula=function() {
+            jmvcore:::composeFormula(self$options$counts, self$options$var)
         })
 )

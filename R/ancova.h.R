@@ -248,6 +248,8 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 title="ANCOVA",
                 clearWith=list(
                     "dep",
+                    "factors",
+                    "covs",
                     "modelTerms",
                     "ss"),
                 columns=list(
@@ -569,26 +571,28 @@ ancova <- function(
         if (missing(dep))
             dep <- jmvcore:::marshalFormula(
                 formula=formula,
-                data=data,
-                from='lhs')
+                data=`if`( ! missing(data), data, NULL),
+                from='lhs',
+                subset='1',
+                required=TRUE)
         if (missing(factors))
             factors <- jmvcore:::marshalFormula(
                 formula=formula,
-                data=data,
+                data=`if`( ! missing(data), data, NULL),
                 from='rhs',
                 type='vars',
                 permitted='factor')
         if (missing(covs))
             covs <- jmvcore:::marshalFormula(
                 formula=formula,
-                data=data,
+                data=`if`( ! missing(data), data, NULL),
                 from='rhs',
                 type='vars',
                 permitted='numeric')
         if (missing(modelTerms))
             modelTerms <- jmvcore:::marshalFormula(
                 formula=formula,
-                data=data,
+                data=`if`( ! missing(data), data, NULL),
                 from='rhs',
                 type='terms')
     }

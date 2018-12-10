@@ -262,7 +262,7 @@ propTest2Base <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' \dontrun{
 #' dat <- data.frame(x=c(8, 15))
 #'
-#' propTest2(dat, vars = 'x', areCounts = TRUE)
+#' propTest2(dat, vars = x, areCounts = TRUE)
 #'
 #' #
 #' #  PROPORTION TEST (2 OUTCOMES)

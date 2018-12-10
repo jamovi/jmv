@@ -523,6 +523,14 @@ ttestISClass <- R6::R6Class(
             print(plot)
 
             return(TRUE)
+        },
+        .sourcifyOption = function(option) {
+            if (option$name %in% c('deps', 'group'))
+                return('')
+            super$.sourcifyOption(option)
+        },
+        .formula=function() {
+            jmvcore:::composeFormula(self$options$vars, self$options$group)
         }
     )
 )

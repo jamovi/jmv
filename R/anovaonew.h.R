@@ -484,7 +484,7 @@ anovaOneWBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' dat <- ToothGrowth
 #' dat$dose <- factor(dat$dose)
 #'
-#' anovaOneW(dat, deps = "len", group = "dose")
+#' anovaOneW(formula = len ~ dose, data = dat)
 #'
 #' #
 #' #  ONE-WAY ANOVA
@@ -532,6 +532,7 @@ anovaOneWBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   (t-value and degrees of freedom) for post-hoc tests
 #' @param phFlag \code{TRUE} or \code{FALSE} (default), flag significant
 #'   post-hoc comparisons
+#' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$anova} \tab \tab \tab \tab \tab a table of the test results \cr
@@ -565,10 +566,25 @@ anovaOneW <- function(
     phMeanDif = TRUE,
     phSig = TRUE,
     phTest = FALSE,
-    phFlag = FALSE) {
+    phFlag = FALSE,
+    formula) {
 
     if ( ! requireNamespace('jmvcore'))
         stop('anovaOneW requires jmvcore to be installed (restart may be required)')
+
+    if ( ! missing(formula)) {
+        if (missing(deps))
+            deps <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=`if`( ! missing(data), data, NULL),
+                from='lhs',
+                required=TRUE)
+        if (missing(group))
+            group <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=`if`( ! missing(data), data, NULL),
+                from='rhs')
+    }
 
     if ( ! missing(deps)) deps <- jmvcore:::resolveQuo(jmvcore:::enquo(deps))
     if ( ! missing(group)) group <- jmvcore:::resolveQuo(jmvcore:::enquo(group))

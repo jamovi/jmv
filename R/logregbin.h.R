@@ -820,8 +820,8 @@ logRegBinBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'             age = birthwt$age,
 #'             bwt = birthwt$bwt)
 #'
-#' logRegBin(data = dat, dep = "low",
-#'           covs = c("age", "bwt"),
+#' logRegBin(data = dat, dep = low,
+#'           covs = vars(age, bwt),
 #'           blocks = list(list("age", "bwt")),
 #'           refLevels = list(list(var="low", ref="0")))
 #'

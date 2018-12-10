@@ -18,7 +18,7 @@ description:
             data('HairEyeColor')
             dat <- as.data.frame(HairEyeColor)
 
-            contTables(dat, rows = 'Hair', cols = 'Eye', counts = 'Freq')
+            contTables(formula = Freq ~ Hair:Eye, dat)
 
             #
             #  CONTINGENCY TABLES
@@ -45,6 +45,24 @@ description:
             #
 
 completeWhenFilled: true
+
+formula:
+    counts:
+        from: lhs
+        type: vars
+        subset: 1
+    rows:
+        from: rhs
+        type: vars
+        subset: 1
+    cols:
+        from: rhs
+        type: vars
+        subset: 2
+    layers:
+        from: rhs
+        type: vars
+        subset: '3:'
 
 options:
     - name: data

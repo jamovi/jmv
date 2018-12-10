@@ -15,7 +15,7 @@ description:
             # frequency tables can be provided for factors
             dat$gear <- as.factor(dat$gear)
 
-            descriptives(dat, vars = c('mpg', 'cyl', 'disp', 'gear'), freq = TRUE)
+            descriptives(dat, vars = vars(mpg, cyl, disp, gear), freq = TRUE)
 
             #
             #  DESCRIPTIVES
@@ -45,6 +45,24 @@ description:
             #  ────────────────────
             #
 
+            # spliting by a variable
+            descriptives(formula = disp + mpg ~ cyl, dat,
+                median=F, min=F, max=F, n=F, missing=F)
+
+            # providing histograms
+            descriptives(formula = mpg ~ cyl, dat, hist=T,
+                median=F, min=F, max=F, n=F, missing=F)
+
+            # splitting by multiple variables
+            descriptives(formula = mpg ~ cyl:gear, dat,
+                median=F, min=F, max=F, missing=F)
+
+formula:
+    vars:
+        from: lhs
+    splitBy:
+        from: rhs
+        subset: ':3'
 
 completeWhenFilled: true
 

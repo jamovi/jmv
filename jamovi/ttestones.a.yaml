@@ -22,7 +22,7 @@ description:
         usage: |
             data('ToothGrowth')
 
-            ttestOneS(ToothGrowth, vars = c('len', 'dose'))
+            ttestOneS(ToothGrowth, vars = vars(len, dose))
 
             #
             #  ONE SAMPLE T-TEST

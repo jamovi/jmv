@@ -12,7 +12,7 @@ description:
         usage: |
             data('iris')
 
-            pca(iris, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
+            pca(iris, vars = vars(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width))
 
             #
             #  PRINCIPAL COMPONENT ANALYSIS

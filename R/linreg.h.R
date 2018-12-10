@@ -753,8 +753,8 @@ linRegBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @examples
 #' data('Prestige', package='carData')
 #'
-#' linReg(data = Prestige, dep = 'income',
-#'        covs = c('education', 'prestige', 'women'),
+#' linReg(data = Prestige, dep = income,
+#'        covs = vars(education, prestige, women),
 #'        blocks = list(list('education', 'prestige', 'women')))
 #'
 #' #

@@ -356,7 +356,7 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' # frequency tables can be provided for factors
 #' dat$gear <- as.factor(dat$gear)
 #'
-#' descriptives(dat, vars = c('mpg', 'cyl', 'disp', 'gear'), freq = TRUE)
+#' descriptives(dat, vars = vars(mpg, cyl, disp, gear), freq = TRUE)
 #'
 #' #
 #' #  DESCRIPTIVES
@@ -385,6 +385,18 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' #    5              5
 #' #  --------------------
 #' #
+#'
+#' # spliting by a variable
+#' descriptives(formula = disp + mpg ~ cyl, dat,
+#'     median=F, min=F, max=F, n=F, missing=F)
+#'
+#' # providing histograms
+#' descriptives(formula = mpg ~ cyl, dat, hist=T,
+#'     median=F, min=F, max=F, n=F, missing=F)
+#'
+#' # splitting by multiple variables
+#' descriptives(formula = mpg ~ cyl:gear, dat,
+#'     median=F, min=F, max=F, missing=F)
 #'}
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in
@@ -432,6 +444,7 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param pcEqGr \code{TRUE} or \code{FALSE} (default), provide quantiles
 #' @param pcNEqGr an integer (default: 4) specifying the number of equal
 #'   groups
+#' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$descriptives} \tab \tab \tab \tab \tab a table of the descriptive statistics \cr
@@ -477,10 +490,25 @@ descriptives <- function(
     sw = FALSE,
     quart = FALSE,
     pcEqGr = FALSE,
-    pcNEqGr = 4) {
+    pcNEqGr = 4,
+    formula) {
 
     if ( ! requireNamespace('jmvcore'))
         stop('descriptives requires jmvcore to be installed (restart may be required)')
+
+    if ( ! missing(formula)) {
+        if (missing(vars))
+            vars <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=`if`( ! missing(data), data, NULL),
+                from='lhs')
+        if (missing(splitBy))
+            splitBy <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=`if`( ! missing(data), data, NULL),
+                from='rhs',
+                subset=':3')
+    }
 
     if ( ! missing(vars)) vars <- jmvcore:::resolveQuo(jmvcore:::enquo(vars))
     if ( ! missing(splitBy)) splitBy <- jmvcore:::resolveQuo(jmvcore:::enquo(splitBy))

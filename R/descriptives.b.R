@@ -1094,6 +1094,18 @@ descriptivesClass <- R6::R6Class(
             seSkew <- sqrt(varSkew)
 
             return(list(skew=skewness, seSkew=seSkew))
+        },
+        .sourcifyOption = function(option) {
+            if (option$name == 'vars' && length(self$options$splitBy) > 0)
+                return('')
+            if (option$name == 'splitBy')
+                return('')
+            super$.sourcifyOption(option)
+        },
+        .formula=function() {
+            if (length(self$options$splitBy) == 0)
+                return('')
+            jmvcore:::composeFormula(self$options$vars, list(self$options$splitBy))
         }
     )
 )

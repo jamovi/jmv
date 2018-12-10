@@ -510,7 +510,7 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' data('HairEyeColor')
 #' dat <- as.data.frame(HairEyeColor)
 #'
-#' contTables(dat, rows = 'Hair', cols = 'Eye', counts = 'Freq')
+#' contTables(formula = Freq ~ Hair:Eye, dat)
 #'
 #' #
 #' #  CONTINGENCY TABLES
@@ -575,6 +575,7 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   percentages
 #' @param pcTot \code{TRUE} or \code{FALSE} (default), provide total
 #'   percentages
+#' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$freqs} \tab \tab \tab \tab \tab a table of proportions \cr
@@ -614,10 +615,42 @@ contTables <- function(
     exp = FALSE,
     pcRow = FALSE,
     pcCol = FALSE,
-    pcTot = FALSE) {
+    pcTot = FALSE,
+    formula) {
 
     if ( ! requireNamespace('jmvcore'))
         stop('contTables requires jmvcore to be installed (restart may be required)')
+
+    if ( ! missing(formula)) {
+        if (missing(counts))
+            counts <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=`if`( ! missing(data), data, NULL),
+                from='lhs',
+                type='vars',
+                subset='1')
+        if (missing(rows))
+            rows <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=`if`( ! missing(data), data, NULL),
+                from='rhs',
+                type='vars',
+                subset='1')
+        if (missing(cols))
+            cols <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=`if`( ! missing(data), data, NULL),
+                from='rhs',
+                type='vars',
+                subset='2')
+        if (missing(layers))
+            layers <- jmvcore:::marshalFormula(
+                formula=formula,
+                data=`if`( ! missing(data), data, NULL),
+                from='rhs',
+                type='vars',
+                subset='3:')
+    }
 
     if ( ! missing(rows)) rows <- jmvcore:::resolveQuo(jmvcore:::enquo(rows))
     if ( ! missing(cols)) cols <- jmvcore:::resolveQuo(jmvcore:::enquo(cols))

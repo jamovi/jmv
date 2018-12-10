@@ -379,7 +379,7 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' ANOVA(
 #'     formula = len ~ dose * supp,
 #'     data = ToothGrowth,
-#'     emMeans = ~supp + supp:dose,  # est. marginal means for supp and supp:dose
+#'     emMeans = ~ supp + dose:supp, # est. marginal means for supp and dose:supp
 #'     emmPlots = TRUE,              # produce plots of those marginal means
 #'     emmTables = TRUE)             # produce tables of those marginal means
 #'
@@ -471,18 +471,20 @@ ANOVA <- function(
         if (missing(dep))
             dep <- jmvcore:::marshalFormula(
                 formula=formula,
-                data=data,
-                from='lhs')
+                data=`if`( ! missing(data), data, NULL),
+                from='lhs',
+                subset='1',
+                required=TRUE)
         if (missing(factors))
             factors <- jmvcore:::marshalFormula(
                 formula=formula,
-                data=data,
+                data=`if`( ! missing(data), data, NULL),
                 from='rhs',
                 type='vars')
         if (missing(modelTerms))
             modelTerms <- jmvcore:::marshalFormula(
                 formula=formula,
-                data=data,
+                data=`if`( ! missing(data), data, NULL),
                 from='rhs',
                 type='terms')
     }

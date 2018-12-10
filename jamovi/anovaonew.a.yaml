@@ -29,7 +29,7 @@ description:
             dat <- ToothGrowth
             dat$dose <- factor(dat$dose)
 
-            anovaOneW(dat, deps = "len", group = "dose")
+            anovaOneW(formula = len ~ dose, data = dat)
 
             #
             #  ONE-WAY ANOVA
@@ -42,6 +42,12 @@ description:
             #  ────────────────────────────────────────
             #
 
+formula:
+    deps:
+        from: lhs
+        required: true
+    group:
+        from: rhs
 
 options:
     - name: data

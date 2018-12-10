@@ -37,6 +37,8 @@ completeWhenFilled: true
 formula:
     dep:
         from: lhs
+        subset: 1
+        required: true
     factors:
         from: rhs
         type: vars

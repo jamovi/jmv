@@ -210,7 +210,7 @@ efaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @examples
 #' data('iris')
 #'
-#' efa(iris, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'))
+#' efa(iris, vars = vars(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width))
 #'
 #' #
 #' #  EXPLORATORY FACTOR ANALYSIS

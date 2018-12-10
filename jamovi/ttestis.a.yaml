@@ -25,7 +25,7 @@ description:
         usage: |
             data('ToothGrowth')
 
-            ttestIS(data = ToothGrowth, vars = 'len', group = 'supp')
+            ttestIS(formula = len ~ supp, data = ToothGrowth)
 
             #
             #  INDEPENDENT SAMPLES T-TEST
@@ -39,6 +39,14 @@ description:
             #
 
 completeWhenFilled: true
+
+formula:
+    vars:
+        from: lhs
+        required: true
+    group:
+        from: rhs
+        subset: 1
 
 options:
     - name: data

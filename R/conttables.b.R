@@ -548,5 +548,21 @@ contTablesClass <- R6::R6Class(
 
             return(list(rr=rr, lower=lower, upper=upper))
 
+        },
+        .sourcifyOption = function(option) {
+            if (option$name %in% c('rows', 'cols', 'counts'))
+                return('')
+            super$.sourcifyOption(option)
+        },
+        .formula=function() {
+            rhs <- list()
+            if ( ! is.null(self$options$rows)) {
+                rhs[[1]] <- self$options$rows
+                if ( ! is.null(self$options$cols)) {
+                    rhs[[2]] <- self$options$cols
+                    rhs <- c(rhs, self$options$layers)
+                }
+            }
+            jmvcore:::composeFormula(self$options$counts, list(rhs))
         })
 )

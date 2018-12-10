@@ -94,6 +94,14 @@ anovaNPClass <- R6::R6Class(
             }
 
             pairsList
+        },
+        .sourcifyOption = function(option) {
+            if (option$name %in% c('deps', 'group'))
+                return('')
+            super$.sourcifyOption(option)
+        },
+        .formula=function() {
+            jmvcore:::composeFormula(self$options$deps, self$options$group)
         })
 )
 

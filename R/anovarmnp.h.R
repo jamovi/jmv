@@ -187,7 +187,7 @@ anovaRMNPBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @examples
 #' data('bugs', package = 'jmv')
 #'
-#' anovaRMNP(bugs, measures = c('LDLF', 'LDHF', 'HDLF', 'HDHF'))
+#' anovaRMNP(bugs, measures = vars(LDLF, LDHF, HDLF, HDHF))
 #'
 #' #
 #' #  REPEATED MEASURES ANOVA (NON-PARAMETRIC)

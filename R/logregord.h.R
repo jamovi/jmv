@@ -477,8 +477,8 @@ logRegOrdBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'
 #' df <- data.frame(y=y, x1=x1, x2=x2)
 #'
-#' logRegOrd(data = df, dep = "y",
-#'           covs = c("x1", "x2"),
+#' logRegOrd(data = df, dep = y,
+#'           covs = vars(x1, x2),
 #'           blocks = list(list("x1", "x2")))
 #'
 #' #

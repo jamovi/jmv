@@ -296,5 +296,15 @@ contTablesPairedClass <- R6::R6Class(
             rows <- rev(expand.grid(expand))
 
             rows
+        },
+        .sourcifyOption = function(option) {
+            if (option$name %in% c('rows', 'cols', 'counts'))
+                return('')
+            super$.sourcifyOption(option)
+        },
+        .formula=function() {
+            if (is.null(self$options$rows) || is.null(self$options$cols))
+                return('~')
+            jmvcore:::composeFormula(self$options$counts, list(list(self$options$rows, self$options$cols)))
         })
 )

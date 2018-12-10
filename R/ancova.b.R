@@ -805,12 +805,16 @@ ancovaClass <- R6::R6Class(
 
             modelTerms
         },
-
-
+        .formula=function() {
+            jmvcore:::composeFormula(self$options$dep, self$options$modelTerms)
+        },
         .sourcifyOption = function(option) {
 
             name <- option$name
             value <- option$value
+
+            if (option$name %in% c('factors', 'dep', 'covs', 'modelTerms'))
+                return('')
 
             if (name == 'contrasts') {
                 i <- 1

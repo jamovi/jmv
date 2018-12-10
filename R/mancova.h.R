@@ -406,8 +406,8 @@ mancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' data('iris')
 #'
 #' mancova(data = iris,
-#'     deps = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'),
-#'     factors = 'Species')
+#'     deps = vars(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width),
+#'     factors = Species)
 #'
 #' #
 #' #  MANCOVA

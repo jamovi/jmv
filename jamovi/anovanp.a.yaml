@@ -19,7 +19,7 @@ description:
         usage: |
             data('ToothGrowth')
 
-            anovaNP(ToothGrowth, deps = 'len', group = 'dose')
+            anovaNP(formula = len ~ dose, data=ToothGrowth)
 
             #
             #  ONE-WAY ANOVA (NON-PARAMETRIC)
@@ -31,6 +31,14 @@ description:
             #    len    40.7     2    < .001
             #  ───────────────────────────────
             #
+
+formula:
+    deps:
+        from: lhs
+        required: true
+    group:
+        from: rhs
+        subset: 1
 
 options:
     - name: data

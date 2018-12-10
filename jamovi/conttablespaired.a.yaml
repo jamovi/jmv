@@ -21,7 +21,7 @@ description:
                 `Counts` = c(794, 150, 86, 570),
                 check.names=FALSE)
 
-            contTablesPaired(dat, rows = '1st survey', cols = '2nd survey', counts = 'Counts')
+            contTablesPaired(formula = Counts ~ `1st survey`:`2nd survey`, data = dat)
 
             #
             #  PAIRED SAMPLES CONTINGENCY TABLES
@@ -46,6 +46,20 @@ description:
             #
 
 completeWhenFilled: true
+
+formula:
+    counts:
+        from: lhs
+        type: vars
+        subset: 1
+    rows:
+        from: rhs
+        type: vars
+        subset: 1
+    cols:
+        from: rhs
+        type: vars
+        subset: 2
 
 options:
     - name: data

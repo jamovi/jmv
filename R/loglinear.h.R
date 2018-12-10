@@ -523,7 +523,7 @@ logLinearBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' tab <- table('gear'=mtcars$gear, 'cyl'=mtcars$cyl)
 #' dat <- as.data.frame(tab)
 #'
-#' logLinear(data = dat, factors = c("gear", "cyl"),  counts = "Freq",
+#' logLinear(data = dat, factors = vars(gear, cyl),  counts = Freq,
 #'           blocks = list(list("gear", "cyl", c("gear", "cyl"))),
 #'           refLevels = list(
 #'               list(var="gear", ref="3"),

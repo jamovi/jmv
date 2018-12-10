@@ -540,8 +540,8 @@ logRegMultiBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'             age = birthwt$age,
 #'             low = factor(birthwt$low))
 #'
-#' logRegMulti(data = dat, dep = "race",
-#'             covs = "age", factors = "low",
+#' logRegMulti(data = dat, dep = race,
+#'             covs = age, factors = low,
 #'             blocks = list(list("age", "low")),
 #'             refLevels = list(
 #'                 list(var="race", ref="1"),
