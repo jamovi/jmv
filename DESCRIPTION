@@ -39,8 +39,7 @@ Suggests:
     testthat,
     semPlot,
     carData,
-    knitr,
-    rmarkdown
+    knitr
 Encoding: UTF-8
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
