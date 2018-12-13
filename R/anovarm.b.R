@@ -70,15 +70,15 @@ anovaRMClass <- R6::R6Class(
 
             if (length(rmTerms) > 0) {
                 for (i in seq_along(rmTerms)) {
-                    name <- stringifyTerm(rmTerms[i])
+                    name <- stringifyTerm(rmTerms[[i]])
                     values <- list(
                         `name[none]`=name,
                         `name[GG]`=name,
                         `name[HF]`=name)
                     if (rmTerms[i] == 'Residual')
-                        key <- unlist(c(rmTerms[i-1],'.RES'))
+                        key <- unlist(c(rmTerms[[i-1]],'.RES'))
                     else
-                        key <- unlist(rmTerms[i])
+                        key <- unlist(rmTerms[[i]])
                     rmTable$addRow(rowKey=key, values)
                 }
             } else {
