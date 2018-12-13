@@ -163,6 +163,13 @@ analyses:
     menuTitle: N Outcomes
     menuSubtitle: Multinomial
     description: Multinomial Logistic Regression
+  - title: Ordinal Logistic Regression
+    name: logRegOrd
+    ns: jmv
+    menuGroup: Regression
+    menuSubgroup: Logistic Regression
+    menuTitle: Ordinal Outcomes
+    description: Ordinal Logistic Regression
   - title: Proportion Test (2 Outcomes)
     name: propTest2
     ns: jmv
@@ -239,12 +246,5 @@ analyses:
     menuSubgroup: Data Reduction
     menuTitle: Confirmatory Factor Analysis
     description: Confirmatory Factor Analysis
-  - title: Ordinal Logistic Regression
-    name: logRegOrd
-    ns: jmv
-    menuGroup: Regression
-    menuSubgroup: Logistic Regression
-    menuTitle: Ordinal Outcomes
-    description: Ordinal Logistic Regression
 
 ...
