@@ -748,7 +748,11 @@ linRegBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 
 #' Linear Regression
 #'
-#' Linear Regression
+#' Linear regression is used to explore the relationship between a continuous 
+#' dependent variable, and one or more continuous and/or categorical 
+#' explanatory variables. Other statistical methods, such as ANOVA and ANCOVA, 
+#' are in reality just forms of linear regression.
+#' 
 #'
 #' @examples
 #' data('Prestige', package='carData')

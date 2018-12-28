@@ -504,7 +504,11 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 
 #' Contingency Tables
 #'
-#' X² test of association
+#' The X² test of association (not to be confused with the X² goodness of fit) 
+#' is used to test whether two categorical variables are independent or 
+#' associated. If the p-value is low, it suggests the variables are not 
+#' independent, and that there is a relationship between the two variables.
+#' 
 #'
 #' @examples
 #' data('HairEyeColor')

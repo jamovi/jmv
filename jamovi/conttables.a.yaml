@@ -11,7 +11,11 @@ version: '1.0.0'
 jas: '1.2'
 
 description:
-    main: χ² test of association
+    main: >
+        The χ² test of association (not to be confused with the χ² goodness of
+        fit) is used to test whether two categorical variables are independent
+        or associated. If the p-value is low, it suggests the variables are not
+        independent, and that there is a relationship between the two variables.
     R:
         dontrun: false
         usage: |

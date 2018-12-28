@@ -116,9 +116,9 @@ options:
             the alternative hypothesis.
           R: >
             `'different'` (default), `'oneGreater'` or
-            `'twoGreater'`, the alternative hypothesis; group 1 different
-            to group 2, group 1 greater than group 2, and group 2 greater than
-            group 1 respectively
+            `'twoGreater'`, the alternative hypothesis; measure 1 different
+            to measure 2, measure 1 greater than measure 2, and measure 2
+            greater than measure 1 respectively
 
     - name: norm
       title: Normality (Shapiro-Wilk)

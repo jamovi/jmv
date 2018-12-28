@@ -7,7 +7,10 @@ version: '1.0.0'
 jas: '1.2'
 
 description:
-    main: Multivariate Analysis of Covariance
+    main: >
+        Multivariate Analysis of (Co)Variance (MANCOVA) is used to explore the
+        relationship between multiple dependent variables, and one or more
+        categorical and/or continuous explanatory variables.
     R:
         dontrun: false
         usage: |

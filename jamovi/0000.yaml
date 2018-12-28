@@ -104,7 +104,10 @@ analyses:
     ns: jmv
     menuGroup: ANOVA
     menuTitle: MANCOVA
-    description: Multivariate Analysis of Covariance
+    description: >
+      Multivariate Analysis of (Co)Variance (MANCOVA) is used to explore the
+      relationship between multiple dependent variables, and one or more
+      categorical and/or continuous explanatory variables.
   - title: One-Way ANOVA (Non-parametric)
     name: anovaNP
     ns: jmv
@@ -146,7 +149,11 @@ analyses:
     ns: jmv
     menuGroup: Regression
     menuTitle: Linear Regression
-    description: Linear Regression
+    description: >
+      Linear regression is used to explore the relationship between a continuous
+      dependent variable, and one or more continuous and/or categorical
+      explanatory variables. Other statistical methods, such as ANOVA and
+      ANCOVA, are in reality just forms of linear regression.
   - title: Binomial Logistic Regression
     name: logRegBin
     ns: jmv
@@ -202,7 +209,11 @@ analyses:
     menuSubgroup: Contingency Tables
     menuTitle: Independent Samples
     menuSubtitle: χ² test of association
-    description: χ² test of association
+    description: >
+      The χ² test of association (not to be confused with the χ² goodness of
+      fit) is used to test whether two categorical variables are independent or
+      associated. If the p-value is low, it suggests the variables are not
+      independent, and that there is a relationship between the two variables.
   - title: Paired Samples Contingency Tables
     name: contTablesPaired
     ns: jmv

@@ -6,7 +6,11 @@ version: '2.0.0'
 jas: '1.2'
 
 description:
-    main: Linear Regression
+    main: >
+        Linear regression is used to explore the relationship between a
+        continuous dependent variable, and one or more continuous and/or
+        categorical explanatory variables. Other statistical methods, such as
+        ANOVA and ANCOVA, are in reality just forms of linear regression.
     R:
         dontrun: false
         usage: |

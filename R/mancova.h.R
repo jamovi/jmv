@@ -400,7 +400,10 @@ mancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 
 #' MANCOVA
 #'
-#' Multivariate Analysis of Covariance
+#' Multivariate Analysis of (Co)Variance (MANCOVA) is used to explore the 
+#' relationship between multiple dependent variables, and one or more 
+#' categorical and/or continuous explanatory variables.
+#' 
 #'
 #' @examples
 #' data('iris')

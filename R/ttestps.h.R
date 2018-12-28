@@ -539,9 +539,9 @@ ttestPSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param wilcoxon \code{TRUE} or \code{FALSE} (default), perform Wilcoxon
 #'   signed rank tests
 #' @param hypothesis \code{'different'} (default), \code{'oneGreater'} or
-#'   \code{'twoGreater'}, the alternative hypothesis; group 1 different to group
-#'   2, group 1 greater than group 2, and group 2 greater than group 1
-#'   respectively
+#'   \code{'twoGreater'}, the alternative hypothesis; measure 1 different to
+#'   measure 2, measure 1 greater than measure 2, and measure 2 greater than
+#'   measure 1 respectively
 #' @param norm \code{TRUE} or \code{FALSE} (default), perform Shapiro-wilk
 #'   normality tests
 #' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
