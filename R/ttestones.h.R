@@ -215,7 +215,8 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="stat[stud]", 
                         `title`="statistic", 
                         `type`="number", 
-                        `visible`="(students)"),
+                        `visible`="(students)", 
+                        `refs`="R"),
                     list(
                         `name`="err[stud]", 
                         `title`="error %", 
@@ -270,7 +271,10 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="stat[bf]", 
                         `title`="statistic", 
                         `type`="number", 
-                        `visible`="(bf)"),
+                        `visible`="(bf)", 
+                        `refs`=list(
+                            "BF",
+                            "btt")),
                     list(
                         `name`="err[bf]", 
                         `title`="\u00B1%", 
@@ -334,9 +338,10 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(wilcoxon || mann)"),
                     list(
                         `name`="stat[wilc]", 
-                        `title`="stat", 
+                        `title`="statistic", 
                         `type`="number", 
-                        `visible`="(wilcoxon || mann)"),
+                        `visible`="(wilcoxon || mann)", 
+                        `refs`="R"),
                     list(
                         `name`="err[wilc]", 
                         `title`="\u00B1%", 

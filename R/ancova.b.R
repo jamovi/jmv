@@ -147,6 +147,11 @@ ancovaClass <- R6::R6Class(
             table$addRow(rowKey='', list(name='Residuals'))
             table$addFormat(col=1, rowKey='', format=Cell.BEGIN_END_GROUP)
 
+            if (self$options$ss == '1') {
+                table$setRefs('R')
+            } else {
+                table$setRefs('car')
+            }
         },
         .initContrastTables = function(data) {
 

@@ -8,6 +8,9 @@ items:
       title: ANCOVA
       type: Table
       description: a table of ANCOVA results
+
+      refs: R
+
       clearWith:
         - dep
         - factors
@@ -156,6 +159,9 @@ items:
       title: Estimated Marginal Means
       type: Array
       description: an array of the estimated marginal means plots + tables
+
+      refs: emmeans
+
       clearWith:
         - emMeans
       template:

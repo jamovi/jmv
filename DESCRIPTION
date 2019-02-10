@@ -14,7 +14,7 @@ License: GPL (>= 2)
 Depends:
     R (>= 3.2)
 Imports:
-    jmvcore (>= 0.9.5.2),
+    jmvcore (>= 0.9.5.18),
     R6,
     car (>= 3.0.0),
     multcomp,

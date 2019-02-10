@@ -1,0 +1,44 @@
+---
+refs:
+    emmeans:
+        authors: 'Lenth, R.'
+        year: 2018
+        title: 'emmeans: Estimated Marginal Means, aka Least-Squares Means'
+        publisher: '[R package]. Retrieved from https://cran.r-project.org/package=emmeans'
+        url: https://cran.r-project.org/package=emmeans
+
+    afex:
+        authors: 'Singmann, H.'
+        year: 2018
+        title: 'afex: Analysis of Factorial Experiments'
+        publisher: '[R package]. Retrieved from https://cran.r-project.org/package=afex'
+        url: https://cran.r-project.org/package=afex
+
+    R:
+        authors: R Core Team
+        year: 2018
+        title: 'A Language and Envionment for Statistical Computing'
+        publisher: '[Computer software]. Retrieved from https://cran.r-project.org/'
+        url: https://cran.r-project.org/
+
+    BF:
+        authors: Morey, R. D., & Rouder, J. N.
+        year: 2018
+        title: 'BayesFactor: Computation of Bayes Factors for Common Designs'
+        publisher: '[R package]. Retrieved from https://cran.r-project.org/package=BayesFactor'
+        url: https://cran.r-project.org/package=BayesFactor
+
+    btt:
+        authors: Rouder, J. N., Speckman, P. L., Sun, D., Morey, R. D., & Iverson, G.
+        year: 2009
+        title: Bayesian t tests for accepting and rejecting the null hypothesis
+        publisher: Psychonomic Bulletin & Review, 16, 225–237
+
+    car:
+        authors: Fox, J., & Weisberg, S.
+        year: 2018
+        title: 'car: Companion to Applied Regression'
+        publisher: '[R package]. Retrieved from https://cran.r-project.org/package=car'
+        url: https://cran.r-project.org/package=car
+
+...

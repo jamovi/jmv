@@ -225,7 +225,8 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="stat[stud]", 
                         `title`="statistic", 
                         `type`="number", 
-                        `visible`="(students)"),
+                        `visible`="(students)", 
+                        `refs`="R"),
                     list(
                         `name`="err[stud]", 
                         `title`="error %", 
@@ -285,7 +286,10 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="stat[bf]", 
                         `title`="statistic", 
                         `type`="number", 
-                        `visible`="(bf)"),
+                        `visible`="(bf)", 
+                        `refs`=list(
+                            "BF",
+                            "btt")),
                     list(
                         `name`="err[bf]", 
                         `title`="\u00B1%", 
@@ -350,7 +354,8 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     list(
                         `name`="stat[welc]", 
                         `title`="statistic", 
-                        `visible`="(welchs)"),
+                        `visible`="(welchs)", 
+                        `refs`="R"),
                     list(
                         `name`="err[welc]", 
                         `title`="\u00B1%", 
@@ -410,7 +415,8 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="stat[mann]", 
                         `title`="statistic", 
                         `content`=".", 
-                        `visible`="(mann)"),
+                        `visible`="(mann)", 
+                        `refs`="R"),
                     list(
                         `name`="err[mann]", 
                         `title`="\u00B1%", 
@@ -497,6 +503,7 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 "miss"),
                             notes=list(
                                 `p`="A low p-value suggests a violation of the assumption of equal variances"),
+                            refs="car",
                             columns=list(
                                 list(
                                     `name`="name", 

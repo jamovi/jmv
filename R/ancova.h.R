@@ -246,6 +246,7 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 options=options,
                 name="main",
                 title="ANCOVA",
+                refs="R",
                 clearWith=list(
                     "dep",
                     "factors",
@@ -393,6 +394,7 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 options=options,
                 name="emm",
                 title="Estimated Marginal Means",
+                refs="emmeans",
                 clearWith=list(
                     "emMeans"),
                 template=R6::R6Class(

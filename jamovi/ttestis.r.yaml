@@ -34,6 +34,7 @@ items:
           title: statistic
           type: number
           visible: (students)
+          refs: R
 
         - name: err[stud]
           title: 'error %'
@@ -94,6 +95,7 @@ items:
           title: statistic
           type: number
           visible: (bf)
+          refs: [ BF, btt ]
 
         - name: err[bf]
           title: '±%'
@@ -159,6 +161,7 @@ items:
         - name: stat[welc]
           title: statistic
           visible: (welchs)
+          refs: R
 
         - name: err[welc]
           title: '±%'
@@ -219,6 +222,7 @@ items:
           title: statistic
           content: .
           visible: (mann)
+          refs: R
 
         - name: err[mann]
           title: '±%'
@@ -299,6 +303,8 @@ items:
             - miss
           notes:
               p: A low p-value suggests a violation of the assumption of equal variances
+
+          refs: car
 
           columns:
             - name: name
