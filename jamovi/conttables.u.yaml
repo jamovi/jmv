@@ -146,6 +146,8 @@ children:
                     fitToGrid: true
                     children:
                       - type: CheckBox
+                        name: obs
+                      - type: CheckBox
                         name: exp
               - type: LayoutBox
                 cell:

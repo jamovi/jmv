@@ -23,6 +23,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             ciWidth = 95,
             gamma = FALSE,
             taub = FALSE,
+            obs = TRUE,
             exp = FALSE,
             pcRow = FALSE,
             pcCol = FALSE,
@@ -118,6 +119,10 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "taub",
                 taub,
                 default=FALSE)
+            private$..obs <- jmvcore::OptionBool$new(
+                "obs",
+                obs,
+                default=TRUE)
             private$..exp <- jmvcore::OptionBool$new(
                 "exp",
                 exp,
@@ -152,6 +157,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..ciWidth)
             self$.addOption(private$..gamma)
             self$.addOption(private$..taub)
+            self$.addOption(private$..obs)
             self$.addOption(private$..exp)
             self$.addOption(private$..pcRow)
             self$.addOption(private$..pcCol)
@@ -175,6 +181,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ciWidth = function() private$..ciWidth$value,
         gamma = function() private$..gamma$value,
         taub = function() private$..taub$value,
+        obs = function() private$..obs$value,
         exp = function() private$..exp$value,
         pcRow = function() private$..pcRow$value,
         pcCol = function() private$..pcCol$value,
@@ -197,6 +204,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..ciWidth = NA,
         ..gamma = NA,
         ..taub = NA,
+        ..obs = NA,
         ..exp = NA,
         ..pcRow = NA,
         ..pcCol = NA,
@@ -577,6 +585,8 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   confidence intervals to provide
 #' @param gamma \code{TRUE} or \code{FALSE} (default), provide gamma
 #' @param taub \code{TRUE} or \code{FALSE} (default), provide Kendall's tau-b
+#' @param obs \code{TRUE} or \code{FALSE} (default), provide the observed
+#'   counts
 #' @param exp \code{TRUE} or \code{FALSE} (default), provide the expected
 #'   counts
 #' @param pcRow \code{TRUE} or \code{FALSE} (default), provide row percentages
@@ -621,6 +631,7 @@ contTables <- function(
     ciWidth = 95,
     gamma = FALSE,
     taub = FALSE,
+    obs = TRUE,
     exp = FALSE,
     pcRow = FALSE,
     pcCol = FALSE,
@@ -695,6 +706,7 @@ contTables <- function(
         ciWidth = ciWidth,
         gamma = gamma,
         taub = taub,
+        obs = obs,
         exp = exp,
         pcRow = pcRow,
         pcCol = pcCol,

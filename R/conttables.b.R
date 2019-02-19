@@ -58,7 +58,7 @@ contTablesClass <- R6::R6Class(
 
             subNames  <- c('[count]', '[expected]', '[pcRow]', '[pcCol]', '[pcTot]')
             subTitles <- c('Observed', 'Expected', '% within row', '% within column', '% of total')
-            visible   <- c('TRUE', '(exp)', '(pcRow)', '(pcCol)', '(pcTot)')
+            visible   <- c('(obs)', '(exp)', '(pcRow)', '(pcCol)', '(pcTot)')
             types     <- c('integer', 'number', 'number', 'number', 'number')
             formats   <- c('', '', 'pc', 'pc', 'pc')
 
@@ -66,8 +66,8 @@ contTablesClass <- R6::R6Class(
 
             for (j in seq_along(subNames)) {
                 subName <- subNames[[j]]
-                if (j == 1)
-                    v <- '(exp || pcRow || pcCol || pcTot)'
+                if (subName == '[count]')
+                   v <- '(obs && (exp || pcRow || pcCol || pcTot))'
                 else
                     v <- visible[j]
 
@@ -95,10 +95,12 @@ contTablesClass <- R6::R6Class(
 
             # add the Total column
 
-            freqs$addColumn(
-                name='.total[count]',
-                title='Total',
-                type='integer')
+            if (self$options$obs) {
+                freqs$addColumn(
+                    name='.total[count]',
+                    title='Total',
+                    type='integer')
+            }
 
             # populate the first column with levels of the row variable
 

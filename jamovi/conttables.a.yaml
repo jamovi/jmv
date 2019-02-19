@@ -240,8 +240,16 @@ options:
           R: >
             `TRUE` or `FALSE` (default), provide Kendall's tau-b
 
+    - name: obs
+      title: Observed counts
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the observed counts
+
     - name: exp
-      title: Expected
+      title: Expected counts
       type: Bool
       default: false
       description:
