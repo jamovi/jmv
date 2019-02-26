@@ -873,7 +873,7 @@ cfa <- function(
         stop('cfa requires jmvcore to be installed (restart may be required)')
 
     if (missing(data))
-        data <- jmvcore:::marshalData(
+        data <- jmvcore::marshalData(
             parent.frame())
 
 

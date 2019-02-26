@@ -488,11 +488,11 @@ mancova <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('mancova requires jmvcore to be installed (restart may be required)')
 
-    if ( ! missing(deps)) deps <- jmvcore:::resolveQuo(jmvcore:::enquo(deps))
-    if ( ! missing(factors)) factors <- jmvcore:::resolveQuo(jmvcore:::enquo(factors))
-    if ( ! missing(covs)) covs <- jmvcore:::resolveQuo(jmvcore:::enquo(covs))
+    if ( ! missing(deps)) deps <- jmvcore::resolveQuo(jmvcore::enquo(deps))
+    if ( ! missing(factors)) factors <- jmvcore::resolveQuo(jmvcore::enquo(factors))
+    if ( ! missing(covs)) covs <- jmvcore::resolveQuo(jmvcore::enquo(covs))
     if (missing(data))
-        data <- jmvcore:::marshalData(
+        data <- jmvcore::marshalData(
             parent.frame(),
             `if`( ! missing(deps), deps, NULL),
             `if`( ! missing(factors), factors, NULL),

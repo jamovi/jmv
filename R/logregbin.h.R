@@ -978,11 +978,11 @@ logRegBin <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('logRegBin requires jmvcore to be installed (restart may be required)')
 
-    if ( ! missing(dep)) dep <- jmvcore:::resolveQuo(jmvcore:::enquo(dep))
-    if ( ! missing(covs)) covs <- jmvcore:::resolveQuo(jmvcore:::enquo(covs))
-    if ( ! missing(factors)) factors <- jmvcore:::resolveQuo(jmvcore:::enquo(factors))
+    if ( ! missing(dep)) dep <- jmvcore::resolveQuo(jmvcore::enquo(dep))
+    if ( ! missing(covs)) covs <- jmvcore::resolveQuo(jmvcore::enquo(covs))
+    if ( ! missing(factors)) factors <- jmvcore::resolveQuo(jmvcore::enquo(factors))
     if (missing(data))
-        data <- jmvcore:::marshalData(
+        data <- jmvcore::marshalData(
             parent.frame(),
             `if`( ! missing(dep), dep, NULL),
             `if`( ! missing(covs), covs, NULL),
@@ -990,7 +990,7 @@ logRegBin <- function(
 
     for (v in dep) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
     for (v in factors) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
-    if (inherits(emMeans, 'formula')) emMeans <- jmvcore:::decomposeFormula(emMeans)
+    if (inherits(emMeans, 'formula')) emMeans <- jmvcore::decomposeFormula(emMeans)
 
     options <- logRegBinOptions$new(
         dep = dep,

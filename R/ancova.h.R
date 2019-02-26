@@ -578,48 +578,48 @@ ancova <- function(
 
     if ( ! missing(formula)) {
         if (missing(dep))
-            dep <- jmvcore:::marshalFormula(
+            dep <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='lhs',
                 subset='1',
                 required=TRUE)
         if (missing(factors))
-            factors <- jmvcore:::marshalFormula(
+            factors <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='rhs',
                 type='vars',
                 permitted='factor')
         if (missing(covs))
-            covs <- jmvcore:::marshalFormula(
+            covs <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='rhs',
                 type='vars',
                 permitted='numeric')
         if (missing(modelTerms))
-            modelTerms <- jmvcore:::marshalFormula(
+            modelTerms <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='rhs',
                 type='terms')
     }
 
-    if ( ! missing(dep)) dep <- jmvcore:::resolveQuo(jmvcore:::enquo(dep))
-    if ( ! missing(factors)) factors <- jmvcore:::resolveQuo(jmvcore:::enquo(factors))
-    if ( ! missing(covs)) covs <- jmvcore:::resolveQuo(jmvcore:::enquo(covs))
+    if ( ! missing(dep)) dep <- jmvcore::resolveQuo(jmvcore::enquo(dep))
+    if ( ! missing(factors)) factors <- jmvcore::resolveQuo(jmvcore::enquo(factors))
+    if ( ! missing(covs)) covs <- jmvcore::resolveQuo(jmvcore::enquo(covs))
     if (missing(data))
-        data <- jmvcore:::marshalData(
+        data <- jmvcore::marshalData(
             parent.frame(),
             `if`( ! missing(dep), dep, NULL),
             `if`( ! missing(factors), factors, NULL),
             `if`( ! missing(covs), covs, NULL))
 
     for (v in factors) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
-    if (inherits(modelTerms, 'formula')) modelTerms <- jmvcore:::decomposeFormula(modelTerms)
-    if (inherits(postHoc, 'formula')) postHoc <- jmvcore:::decomposeFormula(postHoc)
-    if (inherits(emMeans, 'formula')) emMeans <- jmvcore:::decomposeFormula(emMeans)
+    if (inherits(modelTerms, 'formula')) modelTerms <- jmvcore::decomposeFormula(modelTerms)
+    if (inherits(postHoc, 'formula')) postHoc <- jmvcore::decomposeFormula(postHoc)
+    if (inherits(emMeans, 'formula')) emMeans <- jmvcore::decomposeFormula(emMeans)
 
     options <- ancovaOptions$new(
         dep = dep,

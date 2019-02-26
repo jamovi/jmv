@@ -233,23 +233,23 @@ propTestN <- function(
 
     if ( ! missing(formula)) {
         if (missing(counts))
-            counts <- jmvcore:::marshalFormula(
+            counts <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='lhs',
                 subset='1')
         if (missing(var))
-            var <- jmvcore:::marshalFormula(
+            var <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='rhs',
                 subset='1')
     }
 
-    if ( ! missing(var)) var <- jmvcore:::resolveQuo(jmvcore:::enquo(var))
-    if ( ! missing(counts)) counts <- jmvcore:::resolveQuo(jmvcore:::enquo(counts))
+    if ( ! missing(var)) var <- jmvcore::resolveQuo(jmvcore::enquo(var))
+    if ( ! missing(counts)) counts <- jmvcore::resolveQuo(jmvcore::enquo(counts))
     if (missing(data))
-        data <- jmvcore:::marshalData(
+        data <- jmvcore::marshalData(
             parent.frame(),
             `if`( ! missing(var), var, NULL),
             `if`( ! missing(counts), counts, NULL))

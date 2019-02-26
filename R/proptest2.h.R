@@ -333,9 +333,9 @@ propTest2 <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('propTest2 requires jmvcore to be installed (restart may be required)')
 
-    if ( ! missing(vars)) vars <- jmvcore:::resolveQuo(jmvcore:::enquo(vars))
+    if ( ! missing(vars)) vars <- jmvcore::resolveQuo(jmvcore::enquo(vars))
     if (missing(data))
-        data <- jmvcore:::marshalData(
+        data <- jmvcore::marshalData(
             parent.frame(),
             `if`( ! missing(vars), vars, NULL))
 

@@ -502,22 +502,22 @@ descriptives <- function(
 
     if ( ! missing(formula)) {
         if (missing(vars))
-            vars <- jmvcore:::marshalFormula(
+            vars <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='lhs')
         if (missing(splitBy))
-            splitBy <- jmvcore:::marshalFormula(
+            splitBy <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='rhs',
                 subset=':3')
     }
 
-    if ( ! missing(vars)) vars <- jmvcore:::resolveQuo(jmvcore:::enquo(vars))
-    if ( ! missing(splitBy)) splitBy <- jmvcore:::resolveQuo(jmvcore:::enquo(splitBy))
+    if ( ! missing(vars)) vars <- jmvcore::resolveQuo(jmvcore::enquo(vars))
+    if ( ! missing(splitBy)) splitBy <- jmvcore::resolveQuo(jmvcore::enquo(splitBy))
     if (missing(data))
-        data <- jmvcore:::marshalData(
+        data <- jmvcore::marshalData(
             parent.frame(),
             `if`( ! missing(vars), vars, NULL),
             `if`( ! missing(splitBy), splitBy, NULL))

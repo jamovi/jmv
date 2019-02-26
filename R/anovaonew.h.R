@@ -574,22 +574,22 @@ anovaOneW <- function(
 
     if ( ! missing(formula)) {
         if (missing(deps))
-            deps <- jmvcore:::marshalFormula(
+            deps <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='lhs',
                 required=TRUE)
         if (missing(group))
-            group <- jmvcore:::marshalFormula(
+            group <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='rhs')
     }
 
-    if ( ! missing(deps)) deps <- jmvcore:::resolveQuo(jmvcore:::enquo(deps))
-    if ( ! missing(group)) group <- jmvcore:::resolveQuo(jmvcore:::enquo(group))
+    if ( ! missing(deps)) deps <- jmvcore::resolveQuo(jmvcore::enquo(deps))
+    if ( ! missing(group)) group <- jmvcore::resolveQuo(jmvcore::enquo(group))
     if (missing(data))
-        data <- jmvcore:::marshalData(
+        data <- jmvcore::marshalData(
             parent.frame(),
             `if`( ! missing(deps), deps, NULL),
             `if`( ! missing(group), group, NULL))

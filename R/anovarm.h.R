@@ -927,18 +927,18 @@ anovaRM <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('anovaRM requires jmvcore to be installed (restart may be required)')
 
-    if ( ! missing(bs)) bs <- jmvcore:::resolveQuo(jmvcore:::enquo(bs))
-    if ( ! missing(cov)) cov <- jmvcore:::resolveQuo(jmvcore:::enquo(cov))
+    if ( ! missing(bs)) bs <- jmvcore::resolveQuo(jmvcore::enquo(bs))
+    if ( ! missing(cov)) cov <- jmvcore::resolveQuo(jmvcore::enquo(cov))
     if (missing(data))
-        data <- jmvcore:::marshalData(
+        data <- jmvcore::marshalData(
             parent.frame(),
             `if`( ! missing(bs), bs, NULL),
             `if`( ! missing(cov), cov, NULL))
 
     for (v in bs) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
-    if (inherits(rmTerms, 'formula')) rmTerms <- jmvcore:::decomposeFormula(rmTerms)
-    if (inherits(bsTerms, 'formula')) bsTerms <- jmvcore:::decomposeFormula(bsTerms)
-    if (inherits(emMeans, 'formula')) emMeans <- jmvcore:::decomposeFormula(emMeans)
+    if (inherits(rmTerms, 'formula')) rmTerms <- jmvcore::decomposeFormula(rmTerms)
+    if (inherits(bsTerms, 'formula')) bsTerms <- jmvcore::decomposeFormula(bsTerms)
+    if (inherits(emMeans, 'formula')) emMeans <- jmvcore::decomposeFormula(emMeans)
 
     options <- anovaRMOptions$new(
         rm = rm,

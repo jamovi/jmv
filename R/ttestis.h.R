@@ -756,23 +756,23 @@ ttestIS <- function(
 
     if ( ! missing(formula)) {
         if (missing(vars))
-            vars <- jmvcore:::marshalFormula(
+            vars <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='lhs',
                 required=TRUE)
         if (missing(group))
-            group <- jmvcore:::marshalFormula(
+            group <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='rhs',
                 subset='1')
     }
 
-    if ( ! missing(vars)) vars <- jmvcore:::resolveQuo(jmvcore:::enquo(vars))
-    if ( ! missing(group)) group <- jmvcore:::resolveQuo(jmvcore:::enquo(group))
+    if ( ! missing(vars)) vars <- jmvcore::resolveQuo(jmvcore::enquo(vars))
+    if ( ! missing(group)) group <- jmvcore::resolveQuo(jmvcore::enquo(group))
     if (missing(data))
-        data <- jmvcore:::marshalData(
+        data <- jmvcore::marshalData(
             parent.frame(),
             `if`( ! missing(vars), vars, NULL),
             `if`( ! missing(group), group, NULL))

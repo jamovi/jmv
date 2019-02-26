@@ -469,38 +469,38 @@ ANOVA <- function(
 
     if ( ! missing(formula)) {
         if (missing(dep))
-            dep <- jmvcore:::marshalFormula(
+            dep <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='lhs',
                 subset='1',
                 required=TRUE)
         if (missing(factors))
-            factors <- jmvcore:::marshalFormula(
+            factors <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='rhs',
                 type='vars')
         if (missing(modelTerms))
-            modelTerms <- jmvcore:::marshalFormula(
+            modelTerms <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='rhs',
                 type='terms')
     }
 
-    if ( ! missing(dep)) dep <- jmvcore:::resolveQuo(jmvcore:::enquo(dep))
-    if ( ! missing(factors)) factors <- jmvcore:::resolveQuo(jmvcore:::enquo(factors))
+    if ( ! missing(dep)) dep <- jmvcore::resolveQuo(jmvcore::enquo(dep))
+    if ( ! missing(factors)) factors <- jmvcore::resolveQuo(jmvcore::enquo(factors))
     if (missing(data))
-        data <- jmvcore:::marshalData(
+        data <- jmvcore::marshalData(
             parent.frame(),
             `if`( ! missing(dep), dep, NULL),
             `if`( ! missing(factors), factors, NULL))
 
     for (v in factors) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
-    if (inherits(modelTerms, 'formula')) modelTerms <- jmvcore:::decomposeFormula(modelTerms)
-    if (inherits(postHoc, 'formula')) postHoc <- jmvcore:::decomposeFormula(postHoc)
-    if (inherits(emMeans, 'formula')) emMeans <- jmvcore:::decomposeFormula(emMeans)
+    if (inherits(modelTerms, 'formula')) modelTerms <- jmvcore::decomposeFormula(modelTerms)
+    if (inherits(postHoc, 'formula')) postHoc <- jmvcore::decomposeFormula(postHoc)
+    if (inherits(emMeans, 'formula')) emMeans <- jmvcore::decomposeFormula(emMeans)
 
     options <- anovaOptions$new(
         dep = dep,

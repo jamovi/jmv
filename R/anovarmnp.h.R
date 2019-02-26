@@ -243,9 +243,9 @@ anovaRMNP <- function(
     if ( ! requireNamespace('jmvcore'))
         stop('anovaRMNP requires jmvcore to be installed (restart may be required)')
 
-    if ( ! missing(measures)) measures <- jmvcore:::resolveQuo(jmvcore:::enquo(measures))
+    if ( ! missing(measures)) measures <- jmvcore::resolveQuo(jmvcore::enquo(measures))
     if (missing(data))
-        data <- jmvcore:::marshalData(
+        data <- jmvcore::marshalData(
             parent.frame(),
             `if`( ! missing(measures), measures, NULL))
 

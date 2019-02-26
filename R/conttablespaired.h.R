@@ -311,21 +311,21 @@ contTablesPaired <- function(
 
     if ( ! missing(formula)) {
         if (missing(counts))
-            counts <- jmvcore:::marshalFormula(
+            counts <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='lhs',
                 type='vars',
                 subset='1')
         if (missing(rows))
-            rows <- jmvcore:::marshalFormula(
+            rows <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='rhs',
                 type='vars',
                 subset='1')
         if (missing(cols))
-            cols <- jmvcore:::marshalFormula(
+            cols <- jmvcore::marshalFormula(
                 formula=formula,
                 data=`if`( ! missing(data), data, NULL),
                 from='rhs',
@@ -333,11 +333,11 @@ contTablesPaired <- function(
                 subset='2')
     }
 
-    if ( ! missing(rows)) rows <- jmvcore:::resolveQuo(jmvcore:::enquo(rows))
-    if ( ! missing(cols)) cols <- jmvcore:::resolveQuo(jmvcore:::enquo(cols))
-    if ( ! missing(counts)) counts <- jmvcore:::resolveQuo(jmvcore:::enquo(counts))
+    if ( ! missing(rows)) rows <- jmvcore::resolveQuo(jmvcore::enquo(rows))
+    if ( ! missing(cols)) cols <- jmvcore::resolveQuo(jmvcore::enquo(cols))
+    if ( ! missing(counts)) counts <- jmvcore::resolveQuo(jmvcore::enquo(counts))
     if (missing(data))
-        data <- jmvcore:::marshalData(
+        data <- jmvcore::marshalData(
             parent.frame(),
             `if`( ! missing(rows), rows, NULL),
             `if`( ! missing(cols), cols, NULL),
