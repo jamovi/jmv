@@ -59,8 +59,7 @@ options:
       required: true
       suggested:
         - continuous
-      permitted:
-        - numeric
+        - ordinal
       description:
           R: a string naming the dependent variable in `data`
 
