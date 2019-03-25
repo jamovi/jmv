@@ -318,6 +318,7 @@ anovaOneWResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                             options=options,
                             name="eqv",
                             title="Test for Equality of Variances (Levene's)",
+                            refs="car",
                             visible="(eqv)",
                             rows="(deps)",
                             columns=list(

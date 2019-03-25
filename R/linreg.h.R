@@ -458,6 +458,7 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 name="anova",
                                 title="Omnibus ANOVA Test",
                                 visible="(anova)",
+                                refs="car",
                                 clearWith=list(
                                     "dep",
                                     "blocks"),
@@ -619,6 +620,7 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                             title="Durbin\u2013Watson Test for Autocorrelation",
                                             rows=1,
                                             visible="(durbin)",
+                                            refs="car",
                                             clearWith=list(
                                                 "dep",
                                                 "blocks"),
@@ -641,6 +643,7 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                             name="collin",
                                             title="Collinearity Statistics",
                                             visible="(collin)",
+                                            refs="car",
                                             clearWith=list(
                                                 "dep",
                                                 "blocks"),
@@ -683,6 +686,7 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 options=options,
                                 name="emm",
                                 title="Estimated Marginal Means",
+                                refs="emmeans",
                                 clearWith=list(
                                     "dep",
                                     "blocks",

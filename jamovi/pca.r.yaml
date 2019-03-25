@@ -8,6 +8,7 @@ items:
       title: Component Loadings
       type: Table
       rows: (vars)
+      refs: psych
       clearWith:
         - vars
         - nFactorMethod

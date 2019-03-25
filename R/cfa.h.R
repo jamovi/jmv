@@ -229,6 +229,7 @@ cfaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 options=options,
                 name="factorLoadings",
                 title="Factor Loadings",
+                refs="lavaan",
                 clearWith=list(
                     "factors",
                     "resCov",
@@ -681,6 +682,7 @@ cfaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 height=600,
                 renderFun=".pathDiagram",
                 visible="(pathDiagram)",
+                refs="semPlot",
                 clearWith=list(
                     "factors",
                     "resCov",

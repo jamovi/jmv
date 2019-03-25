@@ -34,7 +34,6 @@ items:
           title: statistic
           type: number
           visible: (students)
-          refs: R
 
         - name: err[stud]
           title: 'error %'
@@ -157,7 +156,6 @@ items:
           title: statistic
           type: number
           visible: (wilcoxon || mann)
-          refs: R
 
         - name: err[wilc]
           title: '±%'

@@ -233,6 +233,7 @@ items:
           type: Table
           visible: (shapiro)
           rows: 1
+          refs: mvnormtest
           clearWith:
             - deps
           columns:

@@ -246,7 +246,6 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 options=options,
                 name="main",
                 title="ANCOVA",
-                refs="R",
                 clearWith=list(
                     "dep",
                     "factors",
@@ -314,6 +313,7 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                             options=options,
                             name="homo",
                             title="Test for Homogeneity of Variances (Levene's)",
+                            refs="car",
                             visible="(homo)",
                             rows=1,
                             columns=list(
@@ -383,6 +383,7 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 clearWith=list(
                     "dep",
                     "modelTerms"),
+                refs="emmeans",
                 template=jmvcore::Table$new(
                     options=options,
                     title="",

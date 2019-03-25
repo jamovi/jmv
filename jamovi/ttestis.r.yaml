@@ -34,7 +34,6 @@ items:
           title: statistic
           type: number
           visible: (students)
-          refs: R
 
         - name: err[stud]
           title: 'error %'
@@ -161,7 +160,6 @@ items:
         - name: stat[welc]
           title: statistic
           visible: (welchs)
-          refs: R
 
         - name: err[welc]
           title: '±%'
@@ -222,7 +220,6 @@ items:
           title: statistic
           content: .
           visible: (mann)
-          refs: R
 
         - name: err[mann]
           title: '±%'

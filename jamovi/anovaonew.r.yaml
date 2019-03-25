@@ -10,6 +10,7 @@ items:
       description: a table of the test results
       rows: (deps)
       visible: (fishers || welchs)
+
       clearWith:
         - group
         - miss
@@ -146,6 +147,7 @@ items:
           title: Test for Equality of Variances (Levene's)
           type: Table
           description: a table of equality of variances tests
+          refs: car
           visible: (eqv)
           rows: (deps)
           columns:

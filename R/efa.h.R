@@ -9,7 +9,7 @@ efaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             vars = NULL,
             nFactorMethod = "parallel",
             nFactors = 1,
-            minEigen = 1,
+            minEigen = 0,
             extraction = "minres",
             rotation = "oblimin",
             hideLoadings = 0.3,
@@ -54,7 +54,7 @@ efaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..minEigen <- jmvcore::OptionNumber$new(
                 "minEigen",
                 minEigen,
-                default=1)
+                default=0)
             private$..extraction <- jmvcore::OptionList$new(
                 "extraction",
                 extraction,
@@ -233,7 +233,7 @@ efaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param nFactorMethod \code{'parallel'} (default), \code{'eigen'} or
 #'   \code{'fixed'}, the way to determine the number of factors
 #' @param nFactors an integer (default: 1), the number of factors in the model
-#' @param minEigen a number (default: 1), the minimal eigenvalue for a factor
+#' @param minEigen a number (default: 0), the minimal eigenvalue for a factor
 #'   to be included in the model
 #' @param extraction \code{'minres'} (default), \code{'ml'}, or \code{'pa'}
 #'   use respectively 'minimum residual', 'maximum likelihood', or 'prinicipal
@@ -268,7 +268,7 @@ efa <- function(
     vars,
     nFactorMethod = "parallel",
     nFactors = 1,
-    minEigen = 1,
+    minEigen = 0,
     extraction = "minres",
     rotation = "oblimin",
     hideLoadings = 0.3,

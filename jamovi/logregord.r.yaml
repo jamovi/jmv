@@ -126,6 +126,7 @@ items:
                 - blocks
             description: a table of likelihood ratio tests
             visible: (omni)
+            refs: car
             columns:
 
               - name: term
@@ -153,6 +154,7 @@ items:
                 - blocks
                 - refLevels
             description: a table of model coefficients
+            refs: MASS
             columns:
 
               - name: term

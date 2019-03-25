@@ -373,6 +373,7 @@ logLinearResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     "counts",
                                     "blocks"),
                                 visible="(omni)",
+                                refs="car",
                                 columns=list(
                                     list(
                                         `name`="term", 
@@ -450,6 +451,7 @@ logLinearResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 options=options,
                                 name="emm",
                                 title="Estimated Marginal Means",
+                                refs="emmeans",
                                 clearWith=list(
                                     "counts",
                                     "blocks",

@@ -9,8 +9,6 @@ items:
       type: Table
       description: a table of ANCOVA results
 
-      refs: R
-
       clearWith:
         - dep
         - factors
@@ -74,6 +72,7 @@ items:
           title: Test for Homogeneity of Variances (Levene's)
           type: Table
           description: a table of homogeneity tests
+          refs: car
           visible: (homo)
           rows: 1
           columns:
@@ -146,6 +145,8 @@ items:
       clearWith:
         - dep
         - modelTerms
+
+      refs: emmeans
 
       template:
         title: ""

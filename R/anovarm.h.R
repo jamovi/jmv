@@ -316,6 +316,7 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 options=options,
                 name="rmTable",
                 title="Within Subjects Effects",
+                refs="afex",
                 clearWith=list(
                     "dependent",
                     "ss",
@@ -669,6 +670,7 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name="postHoc",
                 title="Post Hoc Tests",
                 items="(postHoc)",
+                refs="emmeans",
                 template=jmvcore::Table$new(
                     options=options,
                     title="",
@@ -688,6 +690,7 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 options=options,
                 name="emm",
                 title="Estimated Marginal Means",
+                refs="emmeans",
                 clearWith=list(
                     "emMeans"),
                 template=R6::R6Class(

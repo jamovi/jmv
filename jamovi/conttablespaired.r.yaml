@@ -71,6 +71,7 @@ items:
           type: 'text'
           content: Log odds ratio exact
           visible: (exact)
+          refs: exact2x2
 
         - name: value[exa]
           title: Value

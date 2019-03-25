@@ -356,6 +356,7 @@ mancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                             title="Shapiro-Wilk Multivariate Normality Test",
                             visible="(shapiro)",
                             rows=1,
+                            refs="mvnormtest",
                             clearWith=list(
                                 "deps"),
                             columns=list(

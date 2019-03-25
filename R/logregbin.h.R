@@ -480,6 +480,7 @@ logRegBinResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     "dep",
                                     "blocks"),
                                 visible="(omni)",
+                                refs="car",
                                 columns=list(
                                     list(
                                         `name`="term", 
@@ -613,6 +614,7 @@ logRegBinResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                             name="collin",
                                             title="Collinearity Statistics",
                                             visible="(collin)",
+                                            refs="car",
                                             clearWith=list(
                                                 "dep",
                                                 "blocks"),
@@ -660,6 +662,7 @@ logRegBinResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 options=options,
                                 name="emm",
                                 title="Estimated Marginal Means",
+                                refs="emmeans",
                                 clearWith=list(
                                     "dep",
                                     "blocks",
@@ -784,6 +787,7 @@ logRegBinResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                             height=400,
                                             renderFun=".rocPlot",
                                             visible="(rocPlot)",
+                                            refs="ROCR",
                                             clearWith=list(
                                                 "dep",
                                                 "blocks",

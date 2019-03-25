@@ -8,6 +8,7 @@ items:
       title: Scale Reliability Statistics
       type: Table
       rows: 1
+      refs: psych
       clearWith:
         - vars
         - revItems

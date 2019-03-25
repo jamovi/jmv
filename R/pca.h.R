@@ -161,6 +161,7 @@ pcaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name="loadings",
                 title="Component Loadings",
                 rows="(vars)",
+                refs="psych",
                 clearWith=list(
                     "vars",
                     "nFactorMethod",

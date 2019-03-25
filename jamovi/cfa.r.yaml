@@ -8,6 +8,7 @@ items:
       title: Factor Loadings
       type: Table
       description: a table containing the factor loadings
+      refs: lavaan
       clearWith:
         - factors
         - resCov
@@ -419,6 +420,7 @@ items:
       height: 600
       renderFun: .pathDiagram
       visible: (pathDiagram)
+      refs: semPlot
       clearWith:
         - factors
         - resCov

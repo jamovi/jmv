@@ -139,6 +139,7 @@ items:
               type: Table
               description: a table of ANOVA results
               visible: (anova)
+              refs: car
               clearWith:
                 - dep
                 - blocks
@@ -284,6 +285,7 @@ items:
                   type: Table
                   rows: 1
                   visible: (durbin)
+                  refs: car
                   clearWith:
                     - dep
                     - blocks
@@ -306,6 +308,7 @@ items:
                   title: Collinearity Statistics
                   type: Table
                   visible: (collin)
+                  refs: car
                   clearWith:
                     - dep
                     - blocks
@@ -349,6 +352,9 @@ items:
               title: Estimated Marginal Means
               type: Array
               description: an array of the estimated marginal means plots + tables
+
+              refs: emmeans
+
               clearWith:
                 - dep
                 - blocks

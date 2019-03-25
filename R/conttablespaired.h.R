@@ -172,7 +172,8 @@ contTablesPairedResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="", 
                         `type`="text", 
                         `content`="Log odds ratio exact", 
-                        `visible`="(exact)"),
+                        `visible`="(exact)", 
+                        `refs`="exact2x2"),
                     list(
                         `name`="value[exa]", 
                         `title`="Value", 

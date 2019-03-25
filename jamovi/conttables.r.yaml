@@ -74,6 +74,7 @@ items:
           type: text
           content: Likelihood ratio
           visible: (likeRat)
+          refs: vcd
 
         - name: value[likeRat]
           title: Value
@@ -134,6 +135,7 @@ items:
           type: text
           content: Log odds ratio
           visible: (logOdds)
+          refs: vcd
 
         - name: v[lo]
           title: Value
@@ -231,6 +233,7 @@ items:
       type: Table
       description: a table of the gamma test results
       visible: (gamma)
+      refs: vcdExtra
 
       clearWith:
         - rows

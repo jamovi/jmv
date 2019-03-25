@@ -129,6 +129,7 @@ items:
                 - blocks
             description: a table of likelihood ratio tests
             visible: (omni)
+            refs: car
             columns:
 
               - name: term
@@ -208,6 +209,9 @@ items:
             title: Estimated Marginal Means
             type: Array
             description: an array of the estimated marginal means plots + tables
+
+            refs: emmeans
+
             clearWith:
               - counts
               - blocks

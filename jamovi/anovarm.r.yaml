@@ -7,6 +7,7 @@ items:
     - name: rmTable
       title: Within Subjects Effects
       type: Table
+      refs: afex
       clearWith:
         - dependent
         - ss
@@ -349,6 +350,8 @@ items:
       type: Array
       items: (postHoc)
 
+      refs: emmeans
+
       template:
         title: ""
         type: Table
@@ -369,6 +372,9 @@ items:
       title: Estimated Marginal Means
       type: Array
       description: an array of the estimated marginal means plots + tables
+
+      refs: emmeans
+
       clearWith:
         - emMeans
       template:

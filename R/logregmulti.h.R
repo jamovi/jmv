@@ -383,6 +383,7 @@ logRegMultiResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     "dep",
                                     "blocks"),
                                 visible="(omni)",
+                                refs="car",
                                 columns=list(
                                     list(
                                         `name`="term", 
@@ -409,6 +410,7 @@ logRegMultiResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     "dep",
                                     "blocks",
                                     "refLevels"),
+                                refs="nnet",
                                 columns=list(
                                     list(
                                         `name`="dep", 
@@ -465,6 +467,7 @@ logRegMultiResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 options=options,
                                 name="emm",
                                 title="Estimated Marginal Means",
+                                refs="emmeans",
                                 clearWith=list(
                                     "dep",
                                     "blocks",

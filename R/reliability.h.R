@@ -139,6 +139,7 @@ reliabilityResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name="scale",
                 title="Scale Reliability Statistics",
                 rows=1,
+                refs="psych",
                 clearWith=list(
                     "vars",
                     "revItems"),

@@ -294,7 +294,8 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="", 
                         `type`="text", 
                         `content`="Likelihood ratio", 
-                        `visible`="(likeRat)"),
+                        `visible`="(likeRat)", 
+                        `refs`="vcd"),
                     list(
                         `name`="value[likeRat]", 
                         `title`="Value", 
@@ -352,7 +353,8 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="", 
                         `type`="text", 
                         `content`="Log odds ratio", 
-                        `visible`="(logOdds)"),
+                        `visible`="(logOdds)", 
+                        `refs`="vcd"),
                     list(
                         `name`="v[lo]", 
                         `title`="Value", 
@@ -448,6 +450,7 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name="gamma",
                 title="Gamma",
                 visible="(gamma)",
+                refs="vcdExtra",
                 clearWith=list(
                     "rows",
                     "cols",

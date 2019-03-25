@@ -335,6 +335,7 @@ logRegOrdResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     "dep",
                                     "blocks"),
                                 visible="(omni)",
+                                refs="car",
                                 columns=list(
                                     list(
                                         `name`="term", 
@@ -361,6 +362,7 @@ logRegOrdResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     "dep",
                                     "blocks",
                                     "refLevels"),
+                                refs="MASS",
                                 columns=list(
                                     list(
                                         `name`="term", 
