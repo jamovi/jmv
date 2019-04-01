@@ -42,7 +42,7 @@ items:
 
           - name: count[exp]
             title: Count
-            type: integer
+            type: number
             visible: (expected)
 
           - name: prop[exp]

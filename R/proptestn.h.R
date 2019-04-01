@@ -112,7 +112,7 @@ propTestNResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     list(
                         `name`="count[exp]", 
                         `title`="Count", 
-                        `type`="integer", 
+                        `type`="number", 
                         `visible`="(expected)"),
                     list(
                         `name`="prop[exp]", 
