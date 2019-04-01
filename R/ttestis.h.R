@@ -515,6 +515,9 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     `name`="df", 
                                     `type`="number"),
                                 list(
+                                    `name`="df2", 
+                                    `type`="number"),
+                                list(
                                     `name`="p", 
                                     `type`="number", 
                                     `format`="zto,pvalue"))))}))$new(options=options))

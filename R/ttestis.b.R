@@ -90,12 +90,12 @@ ttestISClass <- R6::R6Class(
 
                 if (isError(levene)) {
 
-                    eqvTable$setRow(rowKey=depName, list("f"=NaN, "df"="", "p"=""))
+                    eqvTable$setRow(rowKey=depName, list("f"=NaN, "df"="", "df2"="", "p"=""))
                     eqvTable$addFootnote(rowKey=depName, "f", "F-statistic could not be calculated")
 
                 } else if (is.na(levene[1,"F value"])) {
 
-                    eqvTable$setRow(rowKey=depName, list("f"=NaN, "df"="", "p"=""))
+                    eqvTable$setRow(rowKey=depName, list("f"=NaN, "df"="", "df2"="", "p"=""))
                     eqvTable$addFootnote(rowKey=depName, "f", "F-statistic could not be calculated")
 
                 } else {
@@ -103,6 +103,7 @@ ttestISClass <- R6::R6Class(
                     eqvTable$setRow(rowKey=depName, list(
                         "f"=levene[1,"F value"],
                         "df"=levene[1,"Df"],
+                        "df2"=levene[2,"Df"],
                         "p"=levene[1,"Pr(>F)"]))
                 }
 

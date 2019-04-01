@@ -316,6 +316,9 @@ items:
             - name: df
               type: number
 
+            - name: df2
+              type: number
+
             - name: p
               type: number
               format: zto,pvalue
