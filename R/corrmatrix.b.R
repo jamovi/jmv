@@ -157,7 +157,8 @@ corrMatrixClass <- R6::R6Class(
 
         suppressWarnings({
 
-            res <- try(cor.test(var1, var2, alternative=hyp, method='pearson'))
+            ciw <- self$options$ciWidth / 100
+            res <- try(cor.test(var1, var2, alternative=hyp, method='pearson', conf.level=ciw))
             if ( ! base::inherits(res, 'try-error')) {
                 results$r  <- res$estimate
                 results$rp <- res$p.value
