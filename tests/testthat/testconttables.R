@@ -2,6 +2,7 @@ context('conttables')
 
 test_that('conttables works', {
 
+    suppressWarnings(RNGversion("3.5.0"))
     set.seed(100)
 
     x <- factor(sample(c("A","B"), 100, replace = TRUE), c("A","B"))

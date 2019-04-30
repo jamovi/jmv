@@ -3,6 +3,7 @@ context('anovarm')
 test_that('anovarm works', {
 
     # simulate data set
+    suppressWarnings(RNGversion("3.5.0"))
     set.seed(210)
     data <- list(between = factor(sample(c("A", "B", "C"), 60, replace = TRUE)),
                  'm o n' = rnorm(60, .5),
