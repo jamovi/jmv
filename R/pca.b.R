@@ -164,8 +164,9 @@ pcaClass <- R6::R6Class(
 
             if (self$options$sortLoadings) {
 
-                max <- apply(loadings, 1, max)
-                whichMax <- apply(loadings, 1, which.max)
+                absLoadings <- abs(loadings)
+                max <- apply(absLoadings, 1, max)
+                whichMax <- apply(absLoadings, 1, which.max)
                 loadings$uniqueness <- uniqueness
 
                 loadings <- loadings[order(whichMax, -max), ]
