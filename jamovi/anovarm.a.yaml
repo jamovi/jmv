@@ -161,7 +161,9 @@ options:
           - name: eta
             title: η²
           - name: partEta
-            title: partial η²
+            title: Partial η²
+          - name: ges
+            title: Generalised η²
           - name: omega
             title: ω²
       default:

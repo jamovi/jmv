@@ -75,6 +75,10 @@ children:
             margin: large
             style: list-inline
             children:
+              - name: effectSize_ges
+                type: CheckBox
+                optionPart: ges
+                optionName: effectSize
               - name: effectSize_eta
                 type: CheckBox
                 optionPart: eta

@@ -102,6 +102,7 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 options=list(
                     "eta",
                     "partEta",
+                    "ges",
                     "omega"),
                 default=NULL)
             private$..depLabel <- jmvcore::OptionString$new(
@@ -368,6 +369,12 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `format`="zto,pvalue", 
                         `visible`="(spherCorr:none)"),
                     list(
+                        `name`="ges[none]", 
+                        `title`="\u03B7\u00B2<sub>G</sub>", 
+                        `type`="number", 
+                        `format`="zto", 
+                        `visible`="(effectSize:ges && spherCorr:none)"),
+                    list(
                         `name`="eta[none]", 
                         `title`="\u03B7\u00B2", 
                         `type`="number", 
@@ -375,7 +382,7 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(effectSize:eta && spherCorr:none)"),
                     list(
                         `name`="partEta[none]", 
-                        `title`="partial \u03B7\u00B2", 
+                        `title`="\u03B7\u00B2<sub>p</sub>", 
                         `type`="number", 
                         `format`="zto", 
                         `visible`="(effectSize:partEta && spherCorr:none)"),
@@ -424,6 +431,12 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `format`="zto,pvalue", 
                         `visible`="(spherCorr:GG)"),
                     list(
+                        `name`="ges[GG]", 
+                        `title`="\u03B7\u00B2<sub>G</sub>", 
+                        `type`="number", 
+                        `format`="zto", 
+                        `visible`="(effectSize:ges && spherCorr:GG)"),
+                    list(
                         `name`="eta[GG]", 
                         `title`="\u03B7\u00B2", 
                         `type`="number", 
@@ -431,7 +444,7 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(effectSize:eta && spherCorr:GG)"),
                     list(
                         `name`="partEta[GG]", 
-                        `title`="partial \u03B7\u00B2", 
+                        `title`="\u03B7\u00B2<sub>p</sub>", 
                         `type`="number", 
                         `format`="zto", 
                         `visible`="(effectSize:partEta && spherCorr:GG)"),
@@ -480,6 +493,12 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `format`="zto,pvalue", 
                         `visible`="(spherCorr:HF)"),
                     list(
+                        `name`="ges[HF]", 
+                        `title`="\u03B7\u00B2<sub>G</sub>", 
+                        `type`="number", 
+                        `format`="zto", 
+                        `visible`="(effectSize:ges && spherCorr:HF)"),
+                    list(
                         `name`="eta[HF]", 
                         `title`="\u03B7\u00B2", 
                         `type`="number", 
@@ -487,7 +506,7 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(effectSize:eta && spherCorr:HF)"),
                     list(
                         `name`="partEta[HF]", 
-                        `title`="partial \u03B7\u00B2", 
+                        `title`="\u03B7\u00B2<sub>p</sub>", 
                         `type`="number", 
                         `format`="zto", 
                         `visible`="(effectSize:partEta && spherCorr:HF)"),
@@ -540,6 +559,12 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `type`="number", 
                         `format`="zto,pvalue"),
                     list(
+                        `name`="ges", 
+                        `title`="\u03B7\u00B2<sub>G</sub>", 
+                        `type`="number", 
+                        `format`="zto", 
+                        `visible`="(effectSize:ges)"),
+                    list(
                         `name`="eta", 
                         `title`="\u03B7\u00B2", 
                         `type`="number", 
@@ -547,7 +572,7 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(effectSize:eta)"),
                     list(
                         `name`="partEta", 
-                        `title`="partial \u03B7\u00B2", 
+                        `title`="\u03B7\u00B2<sub>p</sub>", 
                         `type`="number", 
                         `format`="zto", 
                         `visible`="(effectSize:partEta)"),

@@ -59,6 +59,12 @@ items:
           format: zto,pvalue
           visible: (spherCorr:none)
 
+        - name: ges[none]
+          title: η²<sub>G</sub>
+          type: number
+          format: zto
+          visible: (effectSize:ges && spherCorr:none)
+
         - name: eta[none]
           title: η²
           type: number
@@ -66,7 +72,7 @@ items:
           visible: (effectSize:eta && spherCorr:none)
 
         - name: partEta[none]
-          title: partial η²
+          title: η²<sub>p</sub>
           type: number
           format: zto
           visible: (effectSize:partEta && spherCorr:none)
@@ -115,6 +121,12 @@ items:
           format: zto,pvalue
           visible: (spherCorr:GG)
 
+        - name: ges[GG]
+          title: η²<sub>G</sub>
+          type: number
+          format: zto
+          visible: (effectSize:ges && spherCorr:GG)
+
         - name: eta[GG]
           title: η²
           type: number
@@ -122,7 +134,7 @@ items:
           visible: (effectSize:eta && spherCorr:GG)
 
         - name: partEta[GG]
-          title: partial η²
+          title: η²<sub>p</sub>
           type: number
           format: zto
           visible: (effectSize:partEta && spherCorr:GG)
@@ -171,6 +183,12 @@ items:
           format: zto,pvalue
           visible: (spherCorr:HF)
 
+        - name: ges[HF]
+          title: η²<sub>G</sub>
+          type: number
+          format: zto
+          visible: (effectSize:ges && spherCorr:HF)
+
         - name: eta[HF]
           title: η²
           type: number
@@ -178,7 +196,7 @@ items:
           visible: (effectSize:eta && spherCorr:HF)
 
         - name: partEta[HF]
-          title: partial η²
+          title: η²<sub>p</sub>
           type: number
           format: zto
           visible: (effectSize:partEta && spherCorr:HF)
@@ -231,6 +249,12 @@ items:
           type: number
           format: zto,pvalue
 
+        - name: ges
+          title: η²<sub>G</sub>
+          type: number
+          format: zto
+          visible: (effectSize:ges)
+
         - name: eta
           title: η²
           type: number
@@ -238,7 +262,7 @@ items:
           visible: (effectSize:eta)
 
         - name: partEta
-          title: partial η²
+          title: η²<sub>p</sub>
           type: number
           format: zto
           visible: (effectSize:partEta)

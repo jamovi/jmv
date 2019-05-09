@@ -287,11 +287,13 @@ anovaRMClass <- R6::R6Class(
             })
             model <- summaryResult$univariate.tests
             epsilon <- summaryResult$pval.adjustments
+            ges <- result$anova_table
 
             rmRows <- rmTable$rowKeys
             bsRows <- bsTable$rowKeys
             modelRows <- jmvcore::decomposeTerms(as.list(rownames(model)))
             epsilonRows <- jmvcore::decomposeTerms(as.list(rownames(epsilon)))
+            gesRows <- jmvcore::decomposeTerms(as.list(rownames(ges)))
 
             SSt <- private$.getSSt(model)
 
@@ -332,10 +334,15 @@ anovaRMClass <- R6::R6Class(
                     dfResHF <- dfRes * HF
                     row[['p[HF]']] <- pf(row[['F[HF]']], row[['df[HF]']], dfResHF, lower.tail=FALSE)
 
+                    gesIndex <- which(sapply(gesRows, function(x) setequal(toB64(rmRows[[i]]), x)))
+                    gesValue <- ges[gesIndex, 'ges']
+
                     # Add effect sizes
                     SSr <- model[index,'Error SS']
                     MSr <- SSr/dfRes
+
                     row[['eta[none]']] <- row[['eta[GG]']] <- row[['eta[HF]']] <- row[['ss[none]']] / SSt
+                    row[['ges[none]']] <- row[['ges[GG]']] <- row[['ges[HF]']] <- gesValue
                     row[['partEta[none]']] <- row[['partEta[GG]']] <- row[['partEta[HF]']] <- row[['ss[none]']] / (row[['ss[none]']] + SSr)
 
                     omega <- (row[['ss[none]']] - (row[['df[none]']] * MSr)) / (SSt + MSr)
@@ -355,6 +362,7 @@ anovaRMClass <- R6::R6Class(
                     row[['ms[none]']] <- row[['ss[none]']] / row[['df[none]']]
                     row[['F[none]']] <- row[['F[GG]']]  <- row[['F[HF]']] <- ''
                     row[['p[none]']] <- row[['p[GG]']] <- row[['p[HF]']] <- ''
+                    row[['ges[none]']] <- row[['ges[GG]']] <- row[['ges[HF]']] <- ''
                     row[['eta[none]']] <- row[['eta[GG]']] <- row[['eta[HF]']] <- ''
                     row[['partEta[none]']] <- row[['partEta[GG]']] <- row[['partEta[HF]']] <- ''
                     row[['omega[none]']] <- row[['omega[GG]']] <- row[['omega[HF]']] <- ''
@@ -392,6 +400,7 @@ anovaRMClass <- R6::R6Class(
                 if (! bsRows[[i]][1] == 'Residual') { # if the row is not a residual
 
                     index <- which(sapply(modelRows, function(x) setequal(toB64(bsRows[[i]]), x)))
+                    gesIndex <- which(sapply(gesRows, function(x) setequal(toB64(rmRows[[i]]), x)))
 
                     row <- list()
                     row[['ss']] <- model[index,'Sum Sq']
@@ -403,6 +412,7 @@ anovaRMClass <- R6::R6Class(
                     # Add effect sizes
                     SSr <- model[index,'Error SS']
                     MSr <- SSr/model[index,'den Df']
+                    row[['ges']] <- ges[gesIndex, 'ges']
                     row[['eta']] <- row[['ss']] / SSt
                     row[['partEta']] <- row[['ss']] / (row[['ss']] + SSr)
                     omega <- (row[['ss']] - (row[['df']] * MSr)) / (SSt + MSr)
@@ -416,7 +426,7 @@ anovaRMClass <- R6::R6Class(
                     row[['ss']] <- model['(Intercept)','Error SS']
                     row[['df']] <- model['(Intercept)','den Df']
                     row[['ms']] <- row[['ss']] / row[['df']]
-                    row[['F']] <- row[['p']] <- row[['eta']] <- row[['partEta']] <- row[['omega']] <-''
+                    row[['F']] <- row[['p']] <- row[['ges']] <- row[['eta']] <- row[['partEta']] <- row[['omega']] <-''
 
                     bsTable$setRow(rowNo=i, values=row)
                 }
