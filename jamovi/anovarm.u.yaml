@@ -312,3 +312,13 @@ children:
                     name: emmPlotError
                   - type: CheckBox
                     name: emmPlotData
+  - type: CollapseBox
+    label: Options
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        children:
+          - type: CheckBox
+            name: groupSumm

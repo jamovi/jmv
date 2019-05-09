@@ -417,4 +417,13 @@ options:
             bars, use confidence intervals, or use standard errors on the
             marginal mean plots, respectively
 
+    - name: groupSumm
+      title: Group summary
+      type: Bool
+      default: false
+      description:
+          ui: >
+            include a summary of the groups
+          R: >
+            `TRUE` or `FALSE` (default), report a summary of the different groups
 ...

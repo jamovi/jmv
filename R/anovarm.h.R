@@ -33,7 +33,8 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             emmWeights = TRUE,
             ciWidthEmm = 95,
             emmPlotData = FALSE,
-            emmPlotError = "ci", ...) {
+            emmPlotError = "ci",
+            groupSumm = FALSE, ...) {
 
             super$initialize(
                 package='jmv',
@@ -224,6 +225,10 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "ci",
                     "se"),
                 default="ci")
+            private$..groupSumm <- jmvcore::OptionBool$new(
+                "groupSumm",
+                groupSumm,
+                default=FALSE)
 
             self$.addOption(private$..rm)
             self$.addOption(private$..rmCells)
@@ -247,6 +252,7 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..ciWidthEmm)
             self$.addOption(private$..emmPlotData)
             self$.addOption(private$..emmPlotError)
+            self$.addOption(private$..groupSumm)
         }),
     active = list(
         rm = function() private$..rm$value,
@@ -270,7 +276,8 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         emmWeights = function() private$..emmWeights$value,
         ciWidthEmm = function() private$..ciWidthEmm$value,
         emmPlotData = function() private$..emmPlotData$value,
-        emmPlotError = function() private$..emmPlotError$value),
+        emmPlotError = function() private$..emmPlotError$value,
+        groupSumm = function() private$..groupSumm$value),
     private = list(
         ..rm = NA,
         ..rmCells = NA,
@@ -293,7 +300,8 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..emmWeights = NA,
         ..ciWidthEmm = NA,
         ..emmPlotData = NA,
-        ..emmPlotError = NA)
+        ..emmPlotError = NA,
+        ..groupSumm = NA)
 )
 
 anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
@@ -304,7 +312,8 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
         assump = function() private$.items[["assump"]],
         contrasts = function() private$.items[["contrasts"]],
         postHoc = function() private$.items[["postHoc"]],
-        emm = function() private$.items[["emm"]]),
+        emm = function() private$.items[["emm"]],
+        groupSummary = function() private$.items[["groupSummary"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -743,7 +752,25 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     "rm",
                                     "cov",
                                     "rmTerms",
-                                    "bsTerms")))}))$new(options=options)))}))
+                                    "bsTerms")))}))$new(options=options)))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="groupSummary",
+                title="Group Summary",
+                visible="(groupSumm)",
+                clearWith=list(
+                    "dep",
+                    "factors",
+                    "covs"),
+                columns=list(
+                    list(
+                        `name`="n", 
+                        `title`="N", 
+                        `type`="integer"),
+                    list(
+                        `name`="ex", 
+                        `title`="Excluded", 
+                        `type`="integer"))))}))
 
 anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "anovaRMBase",
@@ -878,6 +905,8 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param emmPlotError \code{'none'}, \code{'ci'} (default), or \code{'se'}.
 #'   Use no error bars, use confidence intervals, or use standard errors on the
 #'   marginal mean plots, respectively
+#' @param groupSumm \code{TRUE} or \code{FALSE} (default), report a summary of
+#'   the different groups
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$rmTable} \tab \tab \tab \tab \tab a table \cr
@@ -887,6 +916,7 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{results$contrasts} \tab \tab \tab \tab \tab an array of tables \cr
 #'   \code{results$postHoc} \tab \tab \tab \tab \tab an array of tables \cr
 #'   \code{results$emm} \tab \tab \tab \tab \tab an array of the estimated marginal means plots + tables \cr
+#'   \code{results$groupSummary} \tab \tab \tab \tab \tab a summary of the groups \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -925,7 +955,8 @@ anovaRM <- function(
     emmWeights = TRUE,
     ciWidthEmm = 95,
     emmPlotData = FALSE,
-    emmPlotError = "ci") {
+    emmPlotError = "ci",
+    groupSumm = FALSE) {
 
     if ( ! requireNamespace('jmvcore'))
         stop('anovaRM requires jmvcore to be installed (restart may be required)')
@@ -965,7 +996,8 @@ anovaRM <- function(
         emmWeights = emmWeights,
         ciWidthEmm = ciWidthEmm,
         emmPlotData = emmPlotData,
-        emmPlotError = emmPlotError)
+        emmPlotError = emmPlotError,
+        groupSumm = groupSumm)
 
     results <- anovaRMResults$new(
         options = options)

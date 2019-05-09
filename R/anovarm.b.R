@@ -18,6 +18,7 @@ anovaRMClass <- R6::R6Class(
             private$.initPostHocTables()
             private$.initEmm()
             private$.initEmmTable()
+            private$.initGroupSummary()
 
             measures <- lapply(self$options$rmCells, function(x) x$measure)
             areNull  <- vapply(measures, is.null, FALSE, USE.NAMES=FALSE)
@@ -56,6 +57,7 @@ anovaRMClass <- R6::R6Class(
 
                 private$.prepareEmmPlots(result, data)
                 private$.populateEmmTables()
+                private$.populateGroupSummaryTable()
             }
         },
 
@@ -273,6 +275,41 @@ anovaRMClass <- R6::R6Class(
                         table$addRow(rowKey=k, row)
                     }
                 }
+            }
+        },
+
+        .initGroupSummary = function() {
+
+            table <- self$results$groupSummary
+            bs <- self$options$bs
+
+            bs <- lapply(bs, function(x) self$data[[x]])
+            levels <- lapply(bs, levels)
+            groups <- expand.grid(levels)
+            if (nrow(groups) == 0) {
+                groups <- data.frame(x='')
+                colnames(groups) <- ''
+            } else {
+                colnames(groups) = self$options$bs
+            }
+
+            titles = colnames(groups)
+            names = paste0('group:', titles)
+
+            for (i in seq_len(ncol(groups))) {
+                table$addColumn(
+                    index=1,
+                    name=names[i],
+                    title=titles[i],
+                    type='text',
+                    combineBelow=TRUE
+                )
+            }
+
+            for (i in seq_len(nrow(groups))) {
+                values <- apply(groups[i,,drop=FALSE], 2, paste)
+                names(values) <- names
+                table$addRow(rowKey=unname(values), values=values)
             }
         },
 
@@ -620,6 +657,28 @@ anovaRMClass <- R6::R6Class(
                         table$setRow(rowNo=k, values=row)
                     }
                 }
+            }
+        },
+
+        .populateGroupSummaryTable = function() {
+
+            table <- self$results$groupSummary
+            data <- self$data
+            bs <- self$options$bs
+            complete <- complete.cases(data)
+
+            if (length(bs) == 0) {
+                n <- sum(complete)
+                ex <- length(complete) - n
+                table$setRow(rowNo=1, values=list(n=n, ex=ex))
+            } else {
+                by <- lapply(bs, function(x) self$data[[x]])
+                rm <- lapply(self$options$rmCells, function(x) x$measure)
+                nt <- aggregate(complete, by=by, length)$x
+                n <- aggregate(complete, by=by, sum)$x
+                ex <- nt - n
+                for (i in seq_along(n))
+                    table$setRow(rowNo=i, values=list(n=n[i], ex=ex[i]))
             }
         },
 

@@ -422,3 +422,24 @@ items:
                 - cov
                 - rmTerms
                 - bsTerms
+
+    - name: groupSummary
+      title: Group Summary
+      type: Table
+      description: a summary of the groups
+      visible: (groupSumm)
+
+      clearWith:
+        - dep
+        - factors
+        - covs
+
+      columns:
+
+        - name: n
+          title: 'N'
+          type: integer
+
+        - name: ex
+          title: Excluded
+          type: integer
