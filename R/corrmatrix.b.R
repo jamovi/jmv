@@ -28,10 +28,14 @@ corrMatrixClass <- R6::R6Class(
                 type='number', format='zto', visible='(kendall)')
             matrix$addColumn(name=paste0(var, '[taup]'), title=var,
                 type='number', format='zto,pvalue', visible='(kendall && sig)')
+        }
 
+        for (i in seq_along(vars)) {
+
+            var <- vars[[i]]
             values <- list()
 
-            for (j in seq(1, i)) {
+            for (j in seq(i, nVars)) {
                 v <- vars[[j]]
                 values[[paste0(v, '[r]')]] <- ''
                 values[[paste0(v, '[rp]')]] <- ''
@@ -101,10 +105,10 @@ corrMatrixClass <- R6::R6Class(
             hyp <- 'two.sided'
 
         if (nVars > 1) {
-            for (i in 1:(nVars-1)) {
+            for (i in 2:nVars) {
                 rowVarName <- vars[[i]]
                 rowVar <- jmvcore::toNumeric(self$data[[rowVarName]])
-                for (j in seq(i+1, nVars)) {
+                for (j in seq_len(i-1)) {
                     values <- list()
 
                     colVarName <- vars[[j]]

@@ -11,7 +11,7 @@ test_that('corrmatrix works', {
 
     corrmatrix <- jmv::corrMatrix(data, c("y","z","w"))
 
-    expect_equal(0.0834, as.numeric(corrmatrix$matrix$getCell(rowKey="y", "z[r]")$value), tolerance = 1e-3)
-    expect_equal(0.0315, as.numeric(corrmatrix$matrix$getCell(rowKey="z", "w[rp]")$value), tolerance = 1e-3)
+    expect_equal(0.0834, as.numeric(corrmatrix$matrix$getCell(rowKey="z", "y[r]")$value), tolerance = 1e-3)
+    expect_equal(0.0315, as.numeric(corrmatrix$matrix$getCell(rowKey="w", "z[rp]")$value), tolerance = 1e-3)
 
 })
