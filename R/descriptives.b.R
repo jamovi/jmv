@@ -250,28 +250,25 @@ descriptivesClass <- R6::R6Class(
                 group <- plots$get(var)
                 column <- data[[var]]
 
-                if (is.factor(column)) {
+                if (self$options$bar) {
 
-                    if (self$options$bar) {
+                    names <- na.omit(c(var, splitBy[1:3]))
+                    df <- data[names]
+                    levels <- lapply(df, levels)
 
-                        names <- na.omit(c(var, splitBy[1:3]))
-                        df <- data[names]
-                        levels <- lapply(df, levels)
+                    size <- private$.plotSize(levels, 'bar')
 
-                        size <- private$.plotSize(levels, 'bar')
+                    image <- jmvcore::Image$new(options=self$options,
+                                                name="bar",
+                                                renderFun=".barPlot",
+                                                width=size[1],
+                                                height=size[2],
+                                                clearWith=list("splitBy", "bar"))
 
-                        image <- jmvcore::Image$new(options=self$options,
-                                                    name="bar",
-                                                    renderFun=".barPlot",
-                                                    width=size[1],
-                                                    height=size[2],
-                                                    clearWith=list("splitBy", "bar"))
+                    group$add(image)
+                }
 
-                        group$add(image)
-
-                    }
-
-                } else if (canBeNumeric(column)) {
+                if (canBeNumeric(column)) {
 
                     if (is.null(splitBy))
                         names <- NULL
@@ -520,46 +517,91 @@ descriptivesClass <- R6::R6Class(
                 group <- plots$get(var)
                 column <- data[[var]]
 
-                if (is.factor(column)) {
+                if (self$options$bar) {
 
                     levels <- base::levels(column)
                     bar  <- group$get('bar')
 
-                    if (self$options$bar) {
+                    if ( ! is.factor(column)) {
 
-                        if (length(levels) > 0) {
+                        values <- data[[var]]
 
-                            columns <- na.omit(c(var, splitBy[1:3]))
-                            groups <- data[columns]
+                        nSplits <- length(splitBy)
+                        if (nSplits > 1)  # limit to one for now
+                            nSplits <- 1
 
-                            if (length(splitBy) >= 3) {
-                                names <- list("x"="x", "s1"="s1", "s2"="s2", "s3"="s3", "y"="y")
-                                labels <- list("x"=var, "s1"=splitBy[1], "s2"=splitBy[2], "s3"=splitBy[3])
-                            } else if (length(splitBy) == 2) {
-                                names <- list("x"="x", "s1"="s1", "s2"="s2", "s3"=NULL, "y"="y")
-                                labels <- list("x"=var, "s1"=splitBy[1], "s2"=splitBy[2], "s3"=NULL)
-                            } else if (length(splitBy) == 1) {
-                                names <- list("x"="x", "s1"="s1", "s2"=NULL, "s3"=NULL, "y"="y")
-                                labels <- list("x"=var, "s1"=splitBy[1], "s2"=NULL, "s3"=NULL)
-                            } else {
-                                names <- list("x"="x", "s1"=NULL, "s2"=NULL, "s3"=NULL, "y"="y")
-                                labels <- list("x"=var, "s1"=NULL, "s2"=NULL, "s3"=NULL)
-                            }
+                        by <- splitBy[seq_len(nSplits)]
+                        by <- as.list(data[by])
+                        names(by) <- c('s1', 's2', 's3')[seq_len(nSplits)]
 
-                            plotData <- as.data.frame(table(groups))
+                        meanfun <- function(x) mean(x, na.rm=TRUE)
+                        sefun <- function(x) sd(x, na.rm=TRUE)/sqrt(sum( ! is.na(x)))
+
+                        if (length(by) > 0) {
+
+                            plotData <- aggregate(x=values, by=by, FUN=meanfun)
+                            names(plotData)[length(plotData)] <- 'y'
+
+                            ses <- aggregate(x=values, by=by, FUN=sefun)$x
+
+                            plotData <- cbind(x='', plotData)
+                            plotData <- cbind(plotData, sel=plotData$y-ses)
+                            plotData <- cbind(plotData, seu=plotData$y+ses)
 
                         } else {
+                            m <- meanfun(values)
+                            ses <- sefun(values)
+                            plotData <- data.frame(x='', y=m, sel=m-ses, seu=m+ses)
+                        }
 
-                            plotData <- data.frame(x=character(), y=numeric())
+                        if (length(splitBy) >= 3) {
+                            names <- list("x"="x", "s1"="s1", "s2"="s2", "s3"="s3", "y"="y")
+                            labels <- list("x"=var, "s1"=splitBy[1], "s2"=splitBy[2], "s3"=splitBy[3])
+                        } else if (length(splitBy) == 2) {
+                            names <- list("x"="x", "s1"="s1", "s2"="s2", "s3"=NULL, "y"="y")
+                            labels <- list("x"=var, "s1"=splitBy[1], "s2"=splitBy[2], "s3"=NULL)
+                        } else if (length(splitBy) == 1) {
+                            names <- list("x"="x", "s1"="s1", "s2"=NULL, "s3"=NULL, "y"="y")
+                            labels <- list("x"=var, "s1"=splitBy[1], "s2"=NULL, "s3"=NULL)
+                        } else {
                             names <- list("x"="x", "s1"=NULL, "s2"=NULL, "s3"=NULL, "y"="y")
                             labels <- list("x"=var, "s1"=NULL, "s2"=NULL, "s3"=NULL)
-
                         }
+
+                    } else if (length(levels) > 0) {
+
+                        columns <- na.omit(c(var, splitBy[1:3]))
+                        groups <- data[columns]
+
+                        if (length(splitBy) >= 3) {
+                            names <- list("x"="x", "s1"="s1", "s2"="s2", "s3"="s3", "y"="y")
+                            labels <- list("x"=var, "s1"=splitBy[1], "s2"=splitBy[2], "s3"=splitBy[3])
+                        } else if (length(splitBy) == 2) {
+                            names <- list("x"="x", "s1"="s1", "s2"="s2", "s3"=NULL, "y"="y")
+                            labels <- list("x"=var, "s1"=splitBy[1], "s2"=splitBy[2], "s3"=NULL)
+                        } else if (length(splitBy) == 1) {
+                            names <- list("x"="x", "s1"="s1", "s2"=NULL, "s3"=NULL, "y"="y")
+                            labels <- list("x"=var, "s1"=splitBy[1], "s2"=NULL, "s3"=NULL)
+                        } else {
+                            names <- list("x"="x", "s1"=NULL, "s2"=NULL, "s3"=NULL, "y"="y")
+                            labels <- list("x"=var, "s1"=NULL, "s2"=NULL, "s3"=NULL)
+                        }
+
+                        plotData <- as.data.frame(table(groups))
 
                         colnames(plotData) <- as.character(unlist(names))
 
-                        bar$setState(list(data=plotData, names=names, labels=labels))
+                    } else {
+
+                        plotData <- data.frame(x=character(), y=numeric())
+                        names <- list("x"="x", "s1"=NULL, "s2"=NULL, "s3"=NULL, "y"="y")
+                        labels <- list("x"=var, "s1"=NULL, "s2"=NULL, "s3"=NULL)
                     }
+
+
+                    type <- `if`(is.factor(column), 'categorical', 'continuous')
+
+                    bar$setState(list(data=plotData, names=names, labels=labels, type=type))
 
                 } else if (canBeNumeric(column)) {
 
@@ -754,41 +796,56 @@ descriptivesClass <- R6::R6Class(
             names <- image$state$names
             labels <- image$state$labels
             splitBy <- self$options$splitBy
+            type <- `if`(identical(image$state$type, 'continuous'), 'continuous', 'categorical')
 
             fill <- theme$fill[2]
             color <- theme$color[1]
-            if (length(splitBy) == 2) {
-                formula <- as.formula(paste(". ~", names$s2))
-            } else if (length(splitBy) > 2) {
-                formula <- as.formula(paste(names$s3, "~", names$s2))
-            }
-
-            themeSpec <- NULL
 
             if (is.null(splitBy)) {
 
-                plot <- ggplot(data=data, aes_string(x=names$x, y=names$y)) +
-                    geom_bar(stat="identity", position="dodge", width = 0.7, fill=fill, color=color) +
-                    labs(x=labels$x, y='counts')
+                if (type == 'categorical') {
 
-                # if (self$options$barCounts)
-                #     plot <- plot + geom_text(aes_string(label=names$y), vjust=-0.3)
+                    plot <- ggplot(data=data, aes_string(x=names$x, y=names$y)) +
+                        geom_bar(stat="identity", position="dodge", width = 0.7, fill=fill, color=color) +
+                        labs(x=labels$x, y='counts')
+
+                } else {
+
+                    plot <- ggplot(data=data, aes_string(x=names$x, y=names$y)) +
+                        geom_col(position="dodge", width = 0.7, fill=fill, color=color) +
+                        geom_errorbar(aes_string(x=names$x, ymin='sel', ymax='seu'), width=.1) +
+                        labs(x=labels$x, y='')
+                }
 
             } else {
 
-                plot <- ggplot(data=data, aes_string(x=names$x, y=names$y, fill=names$s1)) +
-                    geom_bar(stat="identity", position=position_dodge(0.85), width = 0.7, color='#333333') +
-                    labs(x=labels$x, y='counts', fill=labels$s1)
+                pd <- position_dodge(0.85)
 
-                # if (self$options$barCounts)
-                #     plot <- plot + geom_text(aes_string(label=names$y), position=position_dodge(.75), vjust=-0.3)
+                if (type == 'categorical') {
 
+                    plot <- ggplot(data=data, aes_string(x=names$x, y=names$y, fill=names$s1)) +
+                        geom_bar(stat="identity", position=pd, width = 0.7, color='#333333') +
+                        labs(x=labels$x, y='counts', fill=labels$s1)
+
+                    if (length(splitBy) >= 2) {
+                        if (length(splitBy) == 2) {
+                            formula <- as.formula(paste(". ~", names$s2))
+                        } else if (length(splitBy) > 2) {
+                            formula <- as.formula(paste(names$s3, "~", names$s2))
+                        }
+                        plot <- plot + facet_grid(formula)
+                    }
+
+                } else {
+
+                    plot <- ggplot(data=data, aes_string(x=names$x, y=names$y, fill=names$s1)) +
+                        geom_col(position=pd, width = 0.7, color='#333333') +
+                        geom_errorbar(position=pd, aes_string(ymin='sel', ymax='seu'), width=.1) +
+                        labs(x=labels$x, y='', fill=labels$s1)
+                }
             }
 
-            if (length(splitBy) > 1)
-                plot <- plot + facet_grid(formula)
-
-            plot <- plot + ggtheme + themeSpec
+            plot <- plot + ggtheme
 
             return(plot)
         },

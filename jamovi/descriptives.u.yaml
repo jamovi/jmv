@@ -200,10 +200,6 @@ children:
           - type: Label
             label: Bar Plots
             stretchFactor: 1
-            icons:
-              - variable-nominal
-              - variable-ordinal
-            iconPosition: right
             children:
               - type: CheckBox
                 name: bar
