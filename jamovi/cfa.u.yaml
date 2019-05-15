@@ -61,6 +61,7 @@ children:
         stretchFactor: 1
         events:
           change: './cfa.events::onChange_resCovSupplier'
+          update: './cfa.events::onUpdate_resCovSupplier'
         children:
           - type: TargetLayoutBox
             label: Residual Covariances

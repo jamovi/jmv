@@ -7,6 +7,10 @@ const events = {
     onChange_revItemsSupplier: function(ui) {
         let values = this.itemsToValues(ui.revItemsSupplier.value());
         this.checkValue(ui.revItems, true, values, FormatDef.variable);
+    },
+
+    onUpdate_revItemsSupplier: function(ui) {
+        ui.revItemsSupplier.setValue(this.valuesToItems(ui.vars.value(), FormatDef.variable));
     }
 };
 

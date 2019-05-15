@@ -18,6 +18,21 @@ const events = {
         calcModelTerms(ui, this);
     },
 
+    onUpdate_modelSupplier: function(ui) {
+        let variableList = this.cloneArray(ui.covs.value(), []);
+        variableList = variableList.concat(this.cloneArray(ui.factors.value(), []));
+        ui.modelSupplier.setValue(this.valuesToItems(variableList, FormatDef.variable));
+    },
+
+    onUpdate_emMeansSupplier: function(ui) {
+        calcMarginalMeansSupplier(ui, this);
+    },
+
+    onChange_emMeansSupplier: function(ui) {
+        let values = this.itemsToValues(ui.emMeansSupplier.value());
+        this.checkValue(ui.emMeans, 2, values, FormatDef.variable);
+    },
+
     onChange_factors: function(ui) {
         calcBlocks(ui, this);
         calcModelTerms(ui, this);

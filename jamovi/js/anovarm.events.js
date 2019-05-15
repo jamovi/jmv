@@ -40,12 +40,28 @@ const events = {
         filterModelTerms(ui, this);
     },
 
-    /*onChange_plotsSupplier: function(ui) {
-        let values = this.itemsToValues(ui.plotsSupplier.value());
-        this.checkValue(ui.plotHAxis, false, values, FormatDef.variable);
-        this.checkValue(ui.plotSepLines, false, values, FormatDef.variable);
-        this.checkValue(ui.plotSepPlots, false, values, FormatDef.variable);
-    },*/
+    onUpdate_emMeansSupplier: function(ui) {
+        calcMarginalMeansSupplier(ui, this);
+    },
+
+    onUpdate_rmcModelSupplier: function(ui) {
+        let factorList = this.cloneArray(ui.rm.value(), []);
+        for(let i = 0; i < factorList.length; i++)
+            factorList[i] = factorList[i].label;
+        ui.rmcModelSupplier.setValue(this.valuesToItems(factorList, FormatDef.variable));
+    },
+
+    onUpdate_bscModelSupplier: function(ui) {
+        let variableList = this.cloneArray(ui.bs.value(), []);
+        let covariatesList = this.cloneArray(ui.cov.value(), []);
+        let combinedList = variableList.concat(covariatesList);
+        ui.bscModelSupplier.setValue(this.valuesToItems(combinedList, FormatDef.variable));
+    },
+
+    onUpdate_postHocSupplier: function(ui) {
+        updatePostHocSupplier(ui, this);
+    },
+
     onChange_emMeansSupplier: function(ui) {
         let values = this.itemsToValues(ui.emMeansSupplier.value());
         this.checkValue(ui.emMeans, 2, values, FormatDef.variable);

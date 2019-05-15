@@ -24,6 +24,10 @@ const events = {
         this.checkPairsValue(ui.resCov, values);
     },
 
+    onUpdate_resCovSupplier: function(ui) {
+        calcModelTerms(ui, this);
+    },
+
     onEvent_factorNameChange : function(ui) {
         updateModelLabels(ui);
     }

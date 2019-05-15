@@ -44,6 +44,8 @@ children:
         persistentItems: true
         stretchFactor: 1
         format: term
+        events:
+            update: './logregord.events::onUpdate_modelSupplier'
         children:
           - type: TargetLayoutBox
             transferAction: interactions

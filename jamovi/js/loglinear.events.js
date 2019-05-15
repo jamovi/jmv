@@ -24,6 +24,20 @@ const events = {
         calcMarginalMeansSupplier(ui, this);
     },
 
+    onUpdate_modelSupplier: function(ui) {
+        let variableList = this.cloneArray(ui.factors.value(), []);
+        ui.modelSupplier.setValue(this.valuesToItems(variableList, FormatDef.variable));
+    },
+
+    onUpdate_emMeansSupplier: function(ui) {
+        calcMarginalMeansSupplier(ui, this);
+    },
+
+    onChange_emMeansSupplier: function(ui) {
+        let values = this.itemsToValues(ui.emMeansSupplier.value());
+        this.checkValue(ui.emMeans, 2, values, FormatDef.variable);
+    },
+
     onChange_refLevels: function(ui) {
         updateLevelControls(ui, this);
     },

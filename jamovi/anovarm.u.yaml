@@ -118,6 +118,8 @@ children:
         format: term
         persistentItems: true
         stretchFactor: 1
+        events:
+          update: './anovarm.events::onUpdate_rmcModelSupplier'
         children:
           - type: TargetLayoutBox
             transferAction: interactions
@@ -137,6 +139,8 @@ children:
         format: term
         persistentItems: true
         stretchFactor: 1
+        events:
+          update: './anovarm.events::onUpdate_bscModelSupplier'
         children:
           - type: TargetLayoutBox
             transferAction: interactions
@@ -196,6 +200,7 @@ children:
         stretchFactor: 1
         events:
           change: './anovarm.events::onChange_postHocSupplier'
+          update: './anovarm.events::onUpdate_postHocSupplier'
         children:
           - type: TargetLayoutBox
             label: ''
@@ -240,13 +245,14 @@ children:
         margin: large
         stretchFactor: 1
         children:
-          - type: Supplier
+          - type: VariableSupplier
             name: emMeansSupplier
-            format: variable
+            populate: manual
             persistentItems: true
             stretchFactor: 1
             events:
               change: './anovarm.events::onChange_emMeansSupplier'
+              update: './anovarm.events::onUpdate_emMeansSupplier'
             children:
               - type: TargetLayoutBox
                 children:

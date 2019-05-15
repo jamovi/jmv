@@ -20,12 +20,22 @@ const events = {
         updatePostHocSupplier(ui, this);
     },
 
-    /*onChange_plotsSupplier: function(ui) {
-        let values = this.itemsToValues(ui.plotsSupplier.value());
-        this.checkValue(ui.plotHAxis, false, values, FormatDef.variable);
-        this.checkValue(ui.plotSepLines, false, values, FormatDef.variable);
-        this.checkValue(ui.plotSepPlots, false, values, FormatDef.variable);
-    },*/
+    onUpdate_emMeansSupplier: function(ui) {
+        calcMarginalMeansSupplier(ui, this);
+    },
+
+    onUpdate_modelSupplier: function(ui) {
+        let variableList = this.cloneArray(ui.factors.value(), []);
+        let covariatesList = this.cloneArray(ui.covs.value(), []);
+
+        let combinedList = variableList.concat(covariatesList);
+
+        ui.modelSupplier.setValue(this.valuesToItems(combinedList, FormatDef.variable));
+    },
+
+    onUpdate_postHocSupplier: function(ui) {
+        updatePostHocSupplier(ui, this);
+    },
 
     onChange_emMeansSupplier: function(ui) {
         let values = this.itemsToValues(ui.emMeansSupplier.value());

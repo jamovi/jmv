@@ -54,6 +54,8 @@ children:
         persistentItems: true
         stretchFactor: 1
         format: term
+        events:
+          update: './anova.events::onUpdate_modelSupplier'
         children:
           - type: TargetLayoutBox
             transferAction: interactions
@@ -113,6 +115,7 @@ children:
         format: term
         events:
           change: './anova.events::onChange_postHocSupplier'
+          update: './anova.events::onUpdate_postHocSupplier'
         children:
           - type: TargetLayoutBox
             label: ''
@@ -157,13 +160,14 @@ children:
         margin: large
         stretchFactor: 1
         children:
-          - type: Supplier
+          - type: VariableSupplier
             name: emMeansSupplier
-            format: variable
+            populate: manual
             persistentItems: true
             stretchFactor: 1
             events:
               change: './anova.events::onChange_emMeansSupplier'
+              update: './anova.events::onUpdate_emMeansSupplier'
             children:
               - type: TargetLayoutBox
                 children:

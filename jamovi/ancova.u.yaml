@@ -63,6 +63,8 @@ children:
         persistentItems: true
         stretchFactor: 1
         format: term
+        events:
+          update: './ancova.events::onUpdate_modelSupplier'
         children:
           - type: TargetLayoutBox
             transferAction: interactions
@@ -126,6 +128,7 @@ children:
         format: term
         events:
           change: './ancova.events::onChange_postHocSupplier'
+          update: './ancova.events::onUpdate_postHocSupplier'
         children:
           - type: TargetLayoutBox
             label: ''
@@ -170,13 +173,14 @@ children:
         margin: large
         stretchFactor: 1
         children:
-          - type: Supplier
+          - type: VariableSupplier
             name: emMeansSupplier
-            format: variable
+            populate: manual
             persistentItems: true
             stretchFactor: 1
             events:
               change: './ancova.events::onChange_emMeansSupplier'
+              update: './ancova.events::onUpdate_emMeansSupplier'
             children:
               - type: TargetLayoutBox
                 children:

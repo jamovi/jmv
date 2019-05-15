@@ -35,6 +35,8 @@ children:
         persistentItems: true
         stretchFactor: 1
         format: term
+        events:
+            update: './loglinear.events::onUpdate_modelSupplier'
         children:
           - type: TargetLayoutBox
             transferAction: interactions
@@ -207,11 +209,14 @@ children:
         margin: large
         stretchFactor: 1
         children:
-          - type: Supplier
+          - type: VariableSupplier
             name: emMeansSupplier
-            format: variable
+            populate: manual
             persistentItems: true
             stretchFactor: 1
+            events:
+                change: './loglinear.events::onChange_emMeansSupplier'
+                update: './loglinear.events::onUpdate_emMeansSupplier'
             children:
               - type: TargetLayoutBox
                 children:

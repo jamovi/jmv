@@ -38,6 +38,12 @@ const events = {
         updateModelLabels(ui.blocks, 'Block');
         let blocks = this.cloneArray(ui.blocks.value(), []);
         this.workspace["blocks"] = blocks;
+    },
+
+    onUpdate_modelSupplier: function(ui) {
+        let variableList = this.cloneArray(ui.covs.value(), []);
+        variableList = variableList.concat(this.cloneArray(ui.factors.value(), []));
+        ui.modelSupplier.setValue(this.valuesToItems(variableList, FormatDef.variable));
     }
 };
 
