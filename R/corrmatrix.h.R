@@ -264,7 +264,10 @@ corrMatrixResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 clearWith=list(
                     "vars",
                     "plotDens",
-                    "plotStats")))}))
+                    "plotStats",
+                    "pearson",
+                    "spearman",
+                    "kendall")))}))
 
 corrMatrixBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "corrMatrixBase",

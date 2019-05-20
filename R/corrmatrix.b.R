@@ -217,9 +217,21 @@ corrMatrixClass <- R6::R6Class(
             discrete="facetbar",
             na = "na")
 
+        if (self$options$pearson) {
+            method <- 'pearson'
+        } else if (self$options$spearman) {
+            method <- 'spearman'
+        } else if (self$options$kendall) {
+            method <- 'kendall'
+        } else {
+            method <- 'pearson'
+        }
+
+        cor <- function(...) GGally::ggally_cor(..., method=method)
+
         if (self$options$get('plotStats'))
             upper <- list(
-                continuous="cor",
+                continuous=cor,
                 combo="box",
                 discrete="facetbar",
                 na="na")

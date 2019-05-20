@@ -132,3 +132,6 @@ items:
           - vars
           - plotDens
           - plotStats
+          - pearson
+          - spearman
+          - kendall
