@@ -257,5 +257,11 @@ analyses:
     menuSubgroup: Data Reduction
     menuTitle: Confirmatory Factor Analysis
     description: Confirmatory Factor Analysis
+  - title: HTML
+    name: html
+    ns: jmv
+    menuGroup: dev
+    menuTitle: HTML
+    hidden: true
 
 ...

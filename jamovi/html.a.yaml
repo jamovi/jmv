@@ -1,0 +1,14 @@
+---
+name:  html
+title: HTML
+menuGroup: dev
+version: '1.0.0'
+jas: '1.2'
+
+options:
+    - name: content
+      title: Content
+      type: String
+      default: '<p>the <em>fish</em> was <strong>delish</strong></p>'
+
+...
