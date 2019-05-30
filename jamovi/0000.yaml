@@ -1,7 +1,7 @@
 ---
 title: jamovi
 name: jmv
-version: 0.9.6
+version: 1.0.0
 jms: '1.0'
 authors:
   - Jonathon Love
