@@ -1,6 +1,6 @@
-name:  anovaNP
+name: anovaNP
 title: One-Way ANOVA (Non-parametric)
-jus:   '2.0'
+jus: '2.0'
 compilerMode: tame
 children:
   - type: VariableSupplier
@@ -24,5 +24,6 @@ children:
     margin: large
     children:
       - type: CheckBox
+        name: es
+      - type: CheckBox
         name: pairs
-        label: DSCF pairwise comparisons

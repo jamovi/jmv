@@ -31,6 +31,11 @@ items:
           type: number
           format: zto,pvalue
 
+        - name: es
+          title: ε²
+          type: number
+          visible: (es)
+
     - name: comparisons
       title: Dwass-Steel-Critchlow-Fligner pairwise comparisons
       type: Array

@@ -12,16 +12,20 @@ anovaNPClass <- R6::R6Class(
 
             data <- self$data
             table <- self$results$get('table')
-
             groupColumn  <- as.factor(data[[group]])
 
             for (depName in self$options$get('deps')) {
                 depColumn <- jmvcore::toNumeric(data[[depName]])
-                result <- kruskal.test(x=depColumn, g=groupColumn)
+                data <- data.frame(y=depColumn, x=groupColumn)
+                data <- na.omit(data)
+                n <- nrow(data)
+                result <- kruskal.test(y ~ x, data)
+                es <- result$statistic * (n+1) / (n^2-1)
                 table$setRow(rowKey=depName, values=list(
                     chiSq=result$statistic,
                     df=result$parameter,
-                    p=result$p.value
+                    p=result$p.value,
+                    es=es
                 ))
             }
 

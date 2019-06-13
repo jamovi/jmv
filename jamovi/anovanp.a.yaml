@@ -76,8 +76,16 @@ options:
       description:
           R: a string naming the grouping or independent variable in `data`
 
+    - name: es
+      title: Effect size
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide effect-sizes
+
     - name: pairs
-      title: DSCF Pairwise Comparisons
+      title: DSCF pairwise comparisons
       type: Bool
       default: false
       description:

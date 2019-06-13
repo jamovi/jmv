@@ -8,6 +8,7 @@ anovaNPOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         initialize = function(
             deps = NULL,
             group = NULL,
+            es = FALSE,
             pairs = FALSE, ...) {
 
             super$initialize(
@@ -33,6 +34,10 @@ anovaNPOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "ordinal"),
                 permitted=list(
                     "factor"))
+            private$..es <- jmvcore::OptionBool$new(
+                "es",
+                es,
+                default=FALSE)
             private$..pairs <- jmvcore::OptionBool$new(
                 "pairs",
                 pairs,
@@ -40,15 +45,18 @@ anovaNPOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             self$.addOption(private$..deps)
             self$.addOption(private$..group)
+            self$.addOption(private$..es)
             self$.addOption(private$..pairs)
         }),
     active = list(
         deps = function() private$..deps$value,
         group = function() private$..group$value,
+        es = function() private$..es$value,
         pairs = function() private$..pairs$value),
     private = list(
         ..deps = NA,
         ..group = NA,
+        ..es = NA,
         ..pairs = NA)
 )
 
@@ -89,7 +97,12 @@ anovaNPResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="p", 
                         `title`="p", 
                         `type`="number", 
-                        `format`="zto,pvalue"))))
+                        `format`="zto,pvalue"),
+                    list(
+                        `name`="es", 
+                        `title`="\u03B5\u00B2", 
+                        `type`="number", 
+                        `visible`="(es)"))))
             self$add(jmvcore::Array$new(
                 options=options,
                 name="comparisons",
@@ -171,6 +184,7 @@ anovaNPBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param deps a string naming the dependent variable in \code{data}
 #' @param group a string naming the grouping or independent variable in
 #'   \code{data}
+#' @param es \code{TRUE} or \code{FALSE} (default), provide effect-sizes
 #' @param pairs \code{TRUE} or \code{FALSE} (default), perform pairwise
 #'   comparisons
 #' @param formula (optional) the formula to use, see the examples
@@ -191,6 +205,7 @@ anovaNP <- function(
     data,
     deps,
     group,
+    es = FALSE,
     pairs = FALSE,
     formula) {
 
@@ -225,6 +240,7 @@ anovaNP <- function(
     options <- anovaNPOptions$new(
         deps = deps,
         group = group,
+        es = es,
         pairs = pairs)
 
     results <- anovaNPResults$new(
