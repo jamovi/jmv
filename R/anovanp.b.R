@@ -16,10 +16,10 @@ anovaNPClass <- R6::R6Class(
 
             for (depName in self$options$get('deps')) {
                 depColumn <- jmvcore::toNumeric(data[[depName]])
-                data <- data.frame(y=depColumn, x=groupColumn)
-                data <- na.omit(data)
-                n <- nrow(data)
-                result <- kruskal.test(y ~ x, data)
+                subset <- data.frame(y=depColumn, x=groupColumn)
+                subset <- na.omit(subset)
+                n <- nrow(subset)
+                result <- kruskal.test(y ~ x, subset)
                 es <- result$statistic * (n+1) / (n^2-1)
                 table$setRow(rowKey=depName, values=list(
                     chiSq=result$statistic,
