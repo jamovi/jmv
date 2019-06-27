@@ -1,9 +1,7 @@
 name: anova
 title: ANOVA
-jus: '2.0'
+jus: '3.0'
 compilerMode: tame
-events:
-  update: './anova.events::update'
 children:
   - type: VariableSupplier
     name: variablesupplier
@@ -21,8 +19,6 @@ children:
           - type: VariablesListBox
             name: factors
             isTarget: true
-            events:
-              change: './anova.events::onChange_factors'
   - type: LayoutBox
     margin: large
     children:
@@ -54,8 +50,6 @@ children:
         persistentItems: true
         stretchFactor: 1
         format: term
-        events:
-          update: './anova.events::onUpdate_modelSupplier'
         children:
           - type: TargetLayoutBox
             transferAction: interactions
@@ -65,8 +59,6 @@ children:
                 valueFilter: unique
                 isTarget: true
                 itemDropBehaviour: emptyspace
-                events:
-                  change: './anova.events::onChange_modelTerms'
                 template:
                   type: TermLabel
       - type: LayoutBox
@@ -113,9 +105,6 @@ children:
         persistentItems: false
         stretchFactor: 1
         format: term
-        events:
-          change: './anova.events::onChange_postHocSupplier'
-          update: './anova.events::onUpdate_postHocSupplier'
         children:
           - type: TargetLayoutBox
             label: ''
@@ -165,9 +154,6 @@ children:
             populate: manual
             persistentItems: true
             stretchFactor: 1
-            events:
-              change: './anova.events::onChange_emMeansSupplier'
-              update: './anova.events::onUpdate_emMeansSupplier'
             children:
               - type: TargetLayoutBox
                 children:
@@ -176,8 +162,8 @@ children:
                     height: large
                     addButton: Add New Term
                     events:
-                      listItemAdded: './anova.events::onEvent_emMeans_listItemsChanged'
-                      listItemRemoved: './anova.events::onEvent_emMeans_listItemsChanged'
+                      listItemAdded: 'emMeans_listItemsChanged'
+                      listItemRemoved: 'emMeans_listItemsChanged'
                     selectable: true
                     templateName: linreg-block-template
                     template:
