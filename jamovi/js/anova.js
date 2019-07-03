@@ -126,7 +126,8 @@ module.exports = {
     },
 
     updateContrasts: function(ui, variableList) {
-        var currentList = utils.clone(ui.contrasts.value(), []);
+        let value = ui.contrasts.value();
+        var currentList = utils.clone(value, []);
 
         var list3 = [];
         for (let i = 0; i < variableList.length; i++) {
@@ -143,7 +144,12 @@ module.exports = {
                 list3.push(found);
         }
 
-        ui.contrasts.setValue(list3);
+        let oldLength = value === null ? 0 : value.length;
+
+        let changed = oldLength !== list3.length || JSON.stringify(value) !== JSON.stringify(list3);
+
+        if (changed)
+            ui.contrasts.setValue(list3);
     }
 
 };
