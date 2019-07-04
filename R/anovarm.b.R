@@ -437,7 +437,7 @@ anovaRMClass <- R6::R6Class(
                 if (! bsRows[[i]][1] == 'Residual') { # if the row is not a residual
 
                     index <- which(sapply(modelRows, function(x) setequal(toB64(bsRows[[i]]), x)))
-                    gesIndex <- which(sapply(gesRows, function(x) setequal(toB64(rmRows[[i]]), x)))
+                    gesIndex <- which(sapply(gesRows, function(x) setequal(toB64(bsRows[[i]]), x)))
 
                     row <- list()
                     row[['ss']] <- model[index,'Sum Sq']
