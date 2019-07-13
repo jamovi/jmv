@@ -615,9 +615,6 @@ logRegOrd <- function(
         ciOR = ciOR,
         ciWidthOR = ciWidthOR)
 
-    results <- logRegOrdResults$new(
-        options = options)
-
     analysis <- logRegOrdClass$new(
         options = options,
         data = data)

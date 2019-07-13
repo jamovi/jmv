@@ -1031,9 +1031,6 @@ logRegBin <- function(
         boxTidwell = boxTidwell,
         cooks = cooks)
 
-    results <- logRegBinResults$new(
-        options = options)
-
     analysis <- logRegBinClass$new(
         options = options,
         data = data)

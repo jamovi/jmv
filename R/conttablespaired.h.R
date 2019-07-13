@@ -357,9 +357,6 @@ contTablesPaired <- function(
         pcRow = pcRow,
         pcCol = pcCol)
 
-    results <- contTablesPairedResults$new(
-        options = options)
-
     analysis <- contTablesPairedClass$new(
         options = options,
         data = data)

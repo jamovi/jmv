@@ -534,9 +534,6 @@ pca <- function(
         kmo = kmo,
         bartlett = bartlett)
 
-    results <- pcaResults$new(
-        options = options)
-
     analysis <- pcaClass$new(
         options = options,
         data = data)

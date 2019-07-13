@@ -623,9 +623,6 @@ ttestPS <- function(
         plots = plots,
         miss = miss)
 
-    results <- ttestPSResults$new(
-        options = options)
-
     analysis <- ttestPSClass$new(
         options = options,
         data = data)

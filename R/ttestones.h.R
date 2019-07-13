@@ -605,9 +605,6 @@ ttestOneS <- function(
         miss = miss,
         mann = mann)
 
-    results <- ttestOneSResults$new(
-        options = options)
-
     analysis <- ttestOneSClass$new(
         options = options,
         data = data)

@@ -414,9 +414,6 @@ corrMatrix <- function(
         plotStats = plotStats,
         hypothesis = hypothesis)
 
-    results <- corrMatrixResults$new(
-        options = options)
-
     analysis <- corrMatrixClass$new(
         options = options,
         data = data)

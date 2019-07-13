@@ -900,9 +900,6 @@ cfa <- function(
         mi = mi,
         hlMI = hlMI)
 
-    results <- cfaResults$new(
-        options = options)
-
     analysis <- cfaClass$new(
         options = options,
         data = data)

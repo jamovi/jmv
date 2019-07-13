@@ -82,9 +82,6 @@ html <- function(
     options <- htmlOptions$new(
         content = content)
 
-    results <- htmlResults$new(
-        options = options)
-
     analysis <- htmlClass$new(
         options = options,
         data = data)

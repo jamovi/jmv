@@ -510,9 +510,6 @@ mancova <- function(
         shapiro = shapiro,
         qqPlot = qqPlot)
 
-    results <- mancovaResults$new(
-        options = options)
-
     analysis <- mancovaClass$new(
         options = options,
         data = data)

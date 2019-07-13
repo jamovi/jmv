@@ -557,9 +557,6 @@ descriptives <- function(
         pcEqGr = pcEqGr,
         pcNEqGr = pcNEqGr)
 
-    results <- descriptivesResults$new(
-        options = options)
-
     analysis <- descriptivesClass$new(
         options = options,
         data = data)

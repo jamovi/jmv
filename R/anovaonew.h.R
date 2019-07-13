@@ -614,9 +614,6 @@ anovaOneW <- function(
         phTest = phTest,
         phFlag = phFlag)
 
-    results <- anovaOneWResults$new(
-        options = options)
-
     analysis <- anovaOneWClass$new(
         options = options,
         data = data)

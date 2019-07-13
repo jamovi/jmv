@@ -689,9 +689,6 @@ logLinear <- function(
         emmTables = emmTables,
         emmWeights = emmWeights)
 
-    results <- logLinearResults$new(
-        options = options)
-
     analysis <- logLinearClass$new(
         options = options,
         data = data)

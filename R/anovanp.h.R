@@ -243,9 +243,6 @@ anovaNP <- function(
         es = es,
         pairs = pairs)
 
-    results <- anovaNPResults$new(
-        options = options)
-
     analysis <- anovaNPClass$new(
         options = options,
         data = data)

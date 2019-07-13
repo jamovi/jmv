@@ -521,9 +521,6 @@ ANOVA <- function(
         emmWeights = emmWeights,
         ciWidthEmm = ciWidthEmm)
 
-    results <- anovaResults$new(
-        options = options)
-
     analysis <- anovaClass$new(
         options = options,
         data = data)

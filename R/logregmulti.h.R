@@ -711,9 +711,6 @@ logRegMulti <- function(
         emmTables = emmTables,
         emmWeights = emmWeights)
 
-    results <- logRegMultiResults$new(
-        options = options)
-
     analysis <- logRegMultiClass$new(
         options = options,
         data = data)

@@ -642,9 +642,6 @@ ancova <- function(
         emmWeights = emmWeights,
         ciWidthEmm = ciWidthEmm)
 
-    results <- ancovaResults$new(
-        options = options)
-
     analysis <- ancovaClass$new(
         options = options,
         data = data)

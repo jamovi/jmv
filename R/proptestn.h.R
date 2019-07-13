@@ -262,9 +262,6 @@ propTestN <- function(
         expected = expected,
         ratio = ratio)
 
-    results <- propTestNResults$new(
-        options = options)
-
     analysis <- propTestNClass$new(
         options = options,
         data = data)

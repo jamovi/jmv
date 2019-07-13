@@ -333,9 +333,6 @@ reliability <- function(
         itemRestCor = itemRestCor,
         revItems = revItems)
 
-    results <- reliabilityResults$new(
-        options = options)
-
     analysis <- reliabilityClass$new(
         options = options,
         data = data)

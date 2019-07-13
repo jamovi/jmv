@@ -258,9 +258,6 @@ anovaRMNP <- function(
         plots = plots,
         plotType = plotType)
 
-    results <- anovaRMNPResults$new(
-        options = options)
-
     analysis <- anovaRMNPClass$new(
         options = options,
         data = data)

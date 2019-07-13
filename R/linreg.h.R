@@ -951,9 +951,6 @@ linReg <- function(
         emmTables = emmTables,
         emmWeights = emmWeights)
 
-    results <- linRegResults$new(
-        options = options)
-
     analysis <- linRegClass$new(
         options = options,
         data = data)

@@ -715,9 +715,6 @@ contTables <- function(
         pcCol = pcCol,
         pcTot = pcTot)
 
-    results <- contTablesResults$new(
-        options = options)
-
     analysis <- contTablesClass$new(
         options = options,
         data = data)

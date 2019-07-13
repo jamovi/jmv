@@ -309,9 +309,6 @@ efa <- function(
         kmo = kmo,
         bartlett = bartlett)
 
-    results <- efaResults$new(
-        options = options)
-
     analysis <- efaClass$new(
         options = options,
         data = data)

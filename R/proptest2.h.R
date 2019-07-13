@@ -355,9 +355,6 @@ propTest2 <- function(
         ciBayesWidth = ciBayesWidth,
         postPlots = postPlots)
 
-    results <- propTest2Results$new(
-        options = options)
-
     analysis <- propTest2Class$new(
         options = options,
         data = data)

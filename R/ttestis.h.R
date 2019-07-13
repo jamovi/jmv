@@ -799,9 +799,6 @@ ttestIS <- function(
         plots = plots,
         miss = miss)
 
-    results <- ttestISResults$new(
-        options = options)
-
     analysis <- ttestISClass$new(
         options = options,
         data = data)

@@ -1024,9 +1024,6 @@ anovaRM <- function(
         emmPlotError = emmPlotError,
         groupSumm = groupSumm)
 
-    results <- anovaRMResults$new(
-        options = options)
-
     analysis <- anovaRMClass$new(
         options = options,
         data = data)
