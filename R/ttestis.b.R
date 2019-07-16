@@ -253,6 +253,8 @@ ttestISClass <- R6::R6Class(
                         m1 <- res$statistic
                         m2 <- res2$statistic
                         mm <- res$estimate
+                        cil <- res$conf.int[1]
+                        ciu <- res$conf.int[2]
 
                         if ( ! is.na(m1) && m2 < m1)
                             res <- res2
@@ -267,8 +269,8 @@ ttestISClass <- R6::R6Class(
                             "md[mann]"=mm,
                             "sed[mann]"='',
                             "es[mann]"=d,
-                            "cil[mann]"=res$conf.int[1],
-                            "ciu[mann]"=res$conf.int[2]))
+                            "cil[mann]"=cil,
+                            "ciu[mann]"=ciu))
 
                     } else {
 
