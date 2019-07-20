@@ -2,7 +2,6 @@
 
 export(ANOVA)
 export(ancova)
-export(anova)
 export(anovaNP)
 export(anovaOneW)
 export(anovaRM)
