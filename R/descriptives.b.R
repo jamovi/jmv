@@ -527,8 +527,8 @@ descriptivesClass <- R6::R6Class(
                         values <- data[[var]]
 
                         nSplits <- length(splitBy)
-                        if (nSplits > 1)  # limit to one for now
-                            nSplits <- 1
+                        if (nSplits > 3)  # limit to one for now
+                            nSplits <- 3
 
                         by <- splitBy[seq_len(nSplits)]
                         by <- as.list(data[by])
@@ -801,6 +801,12 @@ descriptivesClass <- R6::R6Class(
             fill <- theme$fill[2]
             color <- theme$color[1]
 
+            if (length(splitBy) == 2) {
+                formula <- as.formula(paste(". ~", names$s2))
+            } else if (length(splitBy) > 2) {
+                formula <- as.formula(paste(names$s3, "~", names$s2))
+            }
+
             if (is.null(splitBy)) {
 
                 if (type == 'categorical') {
@@ -827,15 +833,6 @@ descriptivesClass <- R6::R6Class(
                         geom_bar(stat="identity", position=pd, width = 0.7, color='#333333') +
                         labs(x=labels$x, y='counts', fill=labels$s1)
 
-                    if (length(splitBy) >= 2) {
-                        if (length(splitBy) == 2) {
-                            formula <- as.formula(paste(". ~", names$s2))
-                        } else if (length(splitBy) > 2) {
-                            formula <- as.formula(paste(names$s3, "~", names$s2))
-                        }
-                        plot <- plot + facet_grid(formula)
-                    }
-
                 } else {
 
                     plot <- ggplot(data=data, aes_string(x=names$x, y=names$y, fill=names$s1)) +
@@ -843,6 +840,9 @@ descriptivesClass <- R6::R6Class(
                         geom_errorbar(position=pd, aes_string(ymin='sel', ymax='seu'), width=.1) +
                         labs(x=labels$x, y='', fill=labels$s1)
                 }
+
+                if (length(splitBy) > 1)
+                    plot <- plot + facet_grid(formula)
             }
 
             plot <- plot + ggtheme
