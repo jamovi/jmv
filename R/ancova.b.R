@@ -1,5 +1,6 @@
 
 #' @import ggplot2
+#' @importFrom jmvcore matchSet
 ancovaClass <- R6::R6Class(
     "ancovaClass",
     inherit=ancovaBase,
@@ -324,47 +325,53 @@ ancovaClass <- R6::R6Class(
             errMS <- errSS / errDF
             totalSS <- sum(r[['Sum Sq']], na.rm=TRUE)
 
-            for (i in seq_len(rowCount)) {
-                rowName <- rowNames[i]
+            decomposed <- decomposeTerms(rowNames)
 
-                ss <- r[i,'Sum Sq']
-                df <- r[i,'Df']
-                ms <- ss / df
-                F  <- r[i,'F value']
-                p  <- r[i,'Pr(>F)']
+            for (rowKey in table$rowKeys) {
+                if (identical(rowKey, ''))
+                    index <- rowCount
+                else
+                    index <- matchSet(rowKey, decomposed)
 
-                if ( is.finite(F)) {
-                    e <- ss / totalSS
-                    ep <- ss / (ss + errSS)
-                    w <- (ss - (df * errMS)) / (totalSS + errMS)
+                if (index != -1) {
+                    ss <- r[index, 'Sum Sq']
+                    df <- r[index, 'Df']
+                    ms <- ss / df
+                    F  <- r[index, 'F value']
+                    p  <- r[index, 'Pr(>F)']
+
+                    if (length(F) == 1 && is.finite(F)) {
+                        e <- ss / totalSS
+                        ep <- ss / (ss + errSS)
+                        w <- (ss - (df * errMS)) / (totalSS + errMS)
+                    } else {
+                        e <- ''
+                        ep <- ''
+                        w <- ''
+                    }
+
+                    if ( ! is.finite(ss))
+                        ss <- 0
+                    if ( ! is.finite(ms))
+                        ms <- ''
+                    if (length(F) != 1 || ! is.finite(F))
+                        F <- ''
+                    if ( ! is.finite(p))
+                        p <- ''
                 } else {
+
+                    ss <- 0
+                    df <- NaN
+                    ms <- ''
+                    F  <- ''
+                    p  <- ''
                     e <- ''
                     ep <- ''
                     w <- ''
                 }
 
-                if ( ! is.finite(ss))
-                    ss <- 0
-                if ( ! is.finite(ms))
-                    ms <- ''
-                if ( ! is.finite(F))
-                    F <- ''
-                if ( ! is.finite(p))
-                    p <- ''
-
                 tableRow <- list(ss=ss, df=df, ms=ms, F=F, p=p, etaSq=e, etaSqP=ep, omegaSq=w)
-
-                if (i < rowCount) {
-                    table$setRow(rowNo=i, tableRow)
-                }
-                else {
-                    if (rowCount < table$rowCount) {
-                        blankRow <- list(ss=0, df=0, ms='', F='', p='', etaSq='', etaSqP='', omegaSq='')
-                        for (j in seq(i, table$rowCount-1))
-                            table$setRow(rowNo=j, blankRow)
-                    }
-                    table$setRow(rowKey='', tableRow) # residual
-                }
+                table$setRow(rowKey=rowKey, tableRow)
             }
         },
         .populatePostHoc=function(data) {
