@@ -5,7 +5,7 @@ jrs: '1.0'
 
 items:
     - name: main
-      title: ANCOVA
+      title: '`ANCOVA - ${dep}`'
       type: Table
       description: a table of ANCOVA results
 

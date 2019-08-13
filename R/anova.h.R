@@ -233,7 +233,7 @@ anovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$add(jmvcore::Table$new(
                 options=options,
                 name="main",
-                title="ANOVA",
+                title="`ANOVA - ${dep}`",
                 columns=list()))
             private$..model <- NULL
             self$add(R6::R6Class(

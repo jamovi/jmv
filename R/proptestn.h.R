@@ -77,7 +77,7 @@ propTestNResults <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$add(jmvcore::Table$new(
                 options=options,
                 name="props",
-                title="Proportions",
+                title="`Proportions - ${var}`",
                 rows="(levels(var))",
                 clearWith=list(
                     "var",

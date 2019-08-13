@@ -5,7 +5,7 @@ jrs:   '1.0'
 
 items:
     - name: props
-      title: Proportions
+      title: '`Proportions - ${var}`'
       type: Table
       description: a table of the proportions
       rows: (levels(var))

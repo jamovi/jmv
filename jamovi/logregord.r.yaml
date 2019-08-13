@@ -147,7 +147,7 @@ items:
                 format: zto,pvalue
 
           - name: coef
-            title: Model Coefficients
+            title: '`Model Coefficients - ${dep}`'
             type: Table
             clearWith:
                 - dep

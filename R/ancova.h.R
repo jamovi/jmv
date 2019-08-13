@@ -245,7 +245,7 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$add(jmvcore::Table$new(
                 options=options,
                 name="main",
-                title="ANCOVA",
+                title="`ANCOVA - ${dep}`",
                 clearWith=list(
                     "dep",
                     "factors",

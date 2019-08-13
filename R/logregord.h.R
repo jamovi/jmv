@@ -357,7 +357,7 @@ logRegOrdResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                             self$add(jmvcore::Table$new(
                                 options=options,
                                 name="coef",
-                                title="Model Coefficients",
+                                title="`Model Coefficients - ${dep}`",
                                 clearWith=list(
                                     "dep",
                                     "blocks",
