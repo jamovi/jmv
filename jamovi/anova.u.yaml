@@ -73,6 +73,8 @@ children:
       - type: CheckBox
         name: homo
       - type: CheckBox
+        name: norm
+      - type: CheckBox
         name: qq
   - type: CollapseBox
     label: Contrasts

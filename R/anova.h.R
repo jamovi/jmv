@@ -12,6 +12,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             modelTerms = NULL,
             ss = "3",
             homo = FALSE,
+            norm = FALSE,
             qq = FALSE,
             contrasts = NULL,
             postHoc = NULL,
@@ -74,6 +75,10 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..homo <- jmvcore::OptionBool$new(
                 "homo",
                 homo,
+                default=FALSE)
+            private$..norm <- jmvcore::OptionBool$new(
+                "norm",
+                norm,
                 default=FALSE)
             private$..qq <- jmvcore::OptionBool$new(
                 "qq",
@@ -163,6 +168,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..modelTerms)
             self$.addOption(private$..ss)
             self$.addOption(private$..homo)
+            self$.addOption(private$..norm)
             self$.addOption(private$..qq)
             self$.addOption(private$..contrasts)
             self$.addOption(private$..postHoc)
@@ -182,6 +188,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         modelTerms = function() private$..modelTerms$value,
         ss = function() private$..ss$value,
         homo = function() private$..homo$value,
+        norm = function() private$..norm$value,
         qq = function() private$..qq$value,
         contrasts = function() private$..contrasts$value,
         postHoc = function() private$..postHoc$value,
@@ -200,6 +207,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..modelTerms = NA,
         ..ss = NA,
         ..homo = NA,
+        ..norm = NA,
         ..qq = NA,
         ..contrasts = NA,
         ..postHoc = NA,
@@ -240,6 +248,7 @@ anovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
                     homo = function() private$.items[["homo"]],
+                    norm = function() private$.items[["norm"]],
                     qq = function() private$.items[["qq"]]),
                 private = list(),
                 public=list(
@@ -251,7 +260,14 @@ anovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         self$add(jmvcore::Table$new(
                             options=options,
                             name="homo",
-                            title="Test for Homogeneity of Variances (Levene's)",
+                            title="Homogeneity of Variances (Levene's)",
+                            columns=list()))
+                        self$add(jmvcore::Table$new(
+                            options=options,
+                            name="norm",
+                            title="Normality test (Shapiro-Wilk)",
+                            visible="(norm)",
+                            rows=1,
                             columns=list()))
                         self$add(jmvcore::Image$new(
                             options=options,
@@ -397,6 +413,8 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   squares to use
 #' @param homo \code{TRUE} or \code{FALSE} (default), perform homogeneity
 #'   tests
+#' @param norm \code{TRUE} or \code{FALSE} (default), perform Shapiro-Wilk
+#'   tests of normality
 #' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
 #'   residuals
 #' @param contrasts a list of lists specifying the factor and type of contrast
@@ -428,6 +446,7 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{results$main} \tab \tab \tab \tab \tab a table of ANOVA results \cr
 #'   \code{results$model} \tab \tab \tab \tab \tab The underlying \code{aov} object \cr
 #'   \code{results$assump$homo} \tab \tab \tab \tab \tab a table of homogeneity tests \cr
+#'   \code{results$assump$norm} \tab \tab \tab \tab \tab a table of normality tests \cr
 #'   \code{results$assump$qq} \tab \tab \tab \tab \tab a q-q plot \cr
 #'   \code{results$contrasts} \tab \tab \tab \tab \tab an array of contrasts tables \cr
 #'   \code{results$postHoc} \tab \tab \tab \tab \tab an array of post-hoc tables \cr
@@ -449,6 +468,7 @@ ANOVA <- function(
     modelTerms = NULL,
     ss = "3",
     homo = FALSE,
+    norm = FALSE,
     qq = FALSE,
     contrasts = NULL,
     postHoc = NULL,
@@ -509,6 +529,7 @@ ANOVA <- function(
         modelTerms = modelTerms,
         ss = ss,
         homo = homo,
+        norm = norm,
         qq = qq,
         contrasts = contrasts,
         postHoc = postHoc,

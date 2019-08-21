@@ -131,6 +131,8 @@ children:
                   - type: CheckBox
                     name: collin
                   - type: CheckBox
+                    name: norm
+                  - type: CheckBox
                     name: qqPlot
                   - type: CheckBox
                     name: resPlots

@@ -52,6 +52,7 @@ ancovaClass <- R6::R6Class(
             private$.populateMainTable(results)
             private$.populateContrasts(dataB64)
             private$.populateLevenes(dataB64)
+            private$.populateNormality()
             private$.populatePostHoc(dataB64)
             private$.prepareEmmPlots(data)
             private$.populateEmmTables()
@@ -498,6 +499,23 @@ ancovaClass <- R6::R6Class(
                 df2=result[2,'Df'],
                 p=result[1,'Pr(>F)']))
         },
+        .populateNormality = function() {
+            if ( ! self$options$norm)
+                return()
+
+            residuals <- self$residuals
+            if (is.null(residuals))
+                return()
+
+            res <- try(shapiro.test(residuals))
+            if (jmvcore::isError(res)) {
+                values <- list(`s[sw]`=NaN, `p[sw]`='')
+            } else {
+                values <- list(`s[sw]`=res$statistic, `p[sw]`=res$p.value)
+            }
+
+            self$results$assump$norm$setRow(rowNo=1, values)
+        },
         .populateEmmTables = function() {
 
             emMeans <- self$options$emMeans
@@ -538,21 +556,10 @@ ancovaClass <- R6::R6Class(
 
         #### Plot functions ----
         .qqPlot=function(image, ggtheme, theme, ...) {
+            residuals <- self$residuals
+            if (is.null(residuals))
+                return()
 
-            dep <- self$options$dep
-            factors <- self$options$factors
-            modelTerms <- private$.modelTerms()
-
-            if (is.null(dep) || length(factors) == 0 || length(modelTerms) == 0)
-                return(FALSE)
-
-            data <- private$.cleanData()
-
-            formula <- jmvcore::constructFormula(dep, modelTerms)
-            formula <- stats::as.formula(formula)
-            model <- stats::aov(formula, data)
-
-            residuals <- rstandard(model)
             df <- as.data.frame(qqnorm(residuals, plot.it=FALSE))
 
             return(ggplot(data=df, aes(y=y, x=x)) +
@@ -916,5 +923,24 @@ ancovaClass <- R6::R6Class(
             data <- na.omit(data)
 
             data
-        })
+        }),
+    active=list(
+        residuals=function() {
+            dep <- self$options$dep
+            factors <- self$options$factors
+            modelTerms <- private$.modelTerms()
+
+            if (is.null(dep) || length(factors) == 0 || length(modelTerms) == 0)
+                return(NULL)
+
+            data <- private$.cleanData()
+
+            formula <- jmvcore::constructFormula(dep, modelTerms)
+            formula <- stats::as.formula(formula)
+            model <- stats::aov(formula, data)
+
+            residuals <- rstandard(model)
+            return(residuals)
+        }
+    )
 )

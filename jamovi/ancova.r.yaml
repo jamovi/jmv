@@ -69,7 +69,7 @@ items:
       type: Group
       items:
         - name: homo
-          title: Test for Homogeneity of Variances (Levene's)
+          title: Homogeneity of Variances (Levene's)
           type: Table
           description: a table of homogeneity tests
           refs: car
@@ -87,6 +87,31 @@ items:
 
             - name: p
               type: number
+              format: zto,pvalue
+
+        - name: norm
+          title: Normality test (Shapiro-Wilk)
+          type: Table
+          description: a table of normality tests
+          visible: (norm)
+          rows: 1
+          clearWith:
+            - dep
+            - factors
+            - covs
+            - modelTerms
+          columns:
+            - name: t[sw]
+              title: ''
+              type: text
+              content: Shapiro-Wilk
+              visible: false
+
+            - name: s[sw]
+              title: statistic
+
+            - name: p[sw]
+              title: p
               format: zto,pvalue
 
         - name: qq

@@ -326,6 +326,29 @@ items:
                       title: Tolerance
                       type: number
 
+                - name: norm
+                  title: Normality test (Shapiro-Wilk)
+                  type: Table
+                  description: a table of normality tests
+                  visible: (norm)
+                  rows: 1
+                  clearWith:
+                    - dep
+                    - blocks
+                  columns:
+                    - name: t[sw]
+                      title: ''
+                      type: text
+                      content: Shapiro-Wilk
+                      visible: false
+
+                    - name: s[sw]
+                      title: statistic
+
+                    - name: p[sw]
+                      title: p
+                      format: zto,pvalue
+
                 - name: qqPlot
                   title: Q-Q Plot
                   type: Image

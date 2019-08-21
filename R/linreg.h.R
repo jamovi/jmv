@@ -26,6 +26,7 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             ciStdEst = FALSE,
             ciWidthStdEst = 95,
             coefPlot = FALSE,
+            norm = FALSE,
             qqPlot = FALSE,
             resPlots = FALSE,
             durbin = FALSE,
@@ -154,6 +155,10 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 coefPlot,
                 default=FALSE,
                 hidden=TRUE)
+            private$..norm <- jmvcore::OptionBool$new(
+                "norm",
+                norm,
+                default=FALSE)
             private$..qqPlot <- jmvcore::OptionBool$new(
                 "qqPlot",
                 qqPlot,
@@ -224,6 +229,7 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..ciStdEst)
             self$.addOption(private$..ciWidthStdEst)
             self$.addOption(private$..coefPlot)
+            self$.addOption(private$..norm)
             self$.addOption(private$..qqPlot)
             self$.addOption(private$..resPlots)
             self$.addOption(private$..durbin)
@@ -256,6 +262,7 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ciStdEst = function() private$..ciStdEst$value,
         ciWidthStdEst = function() private$..ciWidthStdEst$value,
         coefPlot = function() private$..coefPlot$value,
+        norm = function() private$..norm$value,
         qqPlot = function() private$..qqPlot$value,
         resPlots = function() private$..resPlots$value,
         durbin = function() private$..durbin$value,
@@ -287,6 +294,7 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..ciStdEst = NA,
         ..ciWidthStdEst = NA,
         ..coefPlot = NA,
+        ..norm = NA,
         ..qqPlot = NA,
         ..resPlots = NA,
         ..durbin = NA,
@@ -605,6 +613,7 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 active = list(
                                     durbin = function() private$.items[["durbin"]],
                                     collin = function() private$.items[["collin"]],
+                                    norm = function() private$.items[["norm"]],
                                     qqPlot = function() private$.items[["qqPlot"]],
                                     resPlots = function() private$.items[["resPlots"]]),
                                 private = list(),
@@ -660,6 +669,29 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                                     `name`="tol", 
                                                     `title`="Tolerance", 
                                                     `type`="number"))))
+                                        self$add(jmvcore::Table$new(
+                                            options=options,
+                                            name="norm",
+                                            title="Normality test (Shapiro-Wilk)",
+                                            visible="(norm)",
+                                            rows=1,
+                                            clearWith=list(
+                                                "dep",
+                                                "blocks"),
+                                            columns=list(
+                                                list(
+                                                    `name`="t[sw]", 
+                                                    `title`="", 
+                                                    `type`="text", 
+                                                    `content`="Shapiro-Wilk", 
+                                                    `visible`=FALSE),
+                                                list(
+                                                    `name`="s[sw]", 
+                                                    `title`="statistic"),
+                                                list(
+                                                    `name`="p[sw]", 
+                                                    `title`="p", 
+                                                    `format`="zto,pvalue"))))
                                         self$add(jmvcore::Image$new(
                                             options=options,
                                             name="qqPlot",
@@ -831,6 +863,8 @@ linRegBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param coefPlot \code{TRUE} or \code{FALSE} (default), provide a
 #'   coefficient plot where for each predictor the estimated coefficient and
 #'   confidence intervals are plotted.
+#' @param norm \code{TRUE} or \code{FALSE} (default), perform a Shapiro-Wilk
+#'   test on the residuals
 #' @param qqPlot \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
 #'   residuals
 #' @param resPlots \code{TRUE} or \code{FALSE} (default), provide residual
@@ -890,6 +924,7 @@ linReg <- function(
     ciStdEst = FALSE,
     ciWidthStdEst = 95,
     coefPlot = FALSE,
+    norm = FALSE,
     qqPlot = FALSE,
     resPlots = FALSE,
     durbin = FALSE,
@@ -939,6 +974,7 @@ linReg <- function(
         ciStdEst = ciStdEst,
         ciWidthStdEst = ciWidthStdEst,
         coefPlot = coefPlot,
+        norm = norm,
         qqPlot = qqPlot,
         resPlots = resPlots,
         durbin = durbin,
