@@ -89,10 +89,10 @@ children:
     children:
       - type: CheckBox
         name: homo
-        label: Homogeneity tests
+      - type: CheckBox
+        name: norm
       - type: CheckBox
         name: qq
-        label: Q-Q plot of residuals
   - type: CollapseBox
     label: Contrasts
     collapsed: true

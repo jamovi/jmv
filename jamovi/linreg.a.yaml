@@ -246,6 +246,15 @@ options:
             for each predictor the estimated coefficient and confidence
             intervals are plotted.
 
+    - name: norm
+      title: Shapiro-Wilk
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), perform a Shapiro-Wilk test on the
+            residuals
+
     - name: qqPlot
       title: Q-Q plot of residuals
       type: Bool

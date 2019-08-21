@@ -43,6 +43,7 @@ linRegClass <- R6::R6Class(
                 private$.populateCooksTable(results)
                 private$.populateCollinearityTable(results)
                 private$.populateDurbinWatsonTable(results)
+                private$.populateNormality(results)
                 private$.prepareQQPlot(results)
                 private$.prepareResPlots(data, results)
 
@@ -658,6 +659,27 @@ linRegClass <- R6::R6Class(
                     }
                 }
             }
+        },
+
+        .populateNormality = function(results) {
+
+            groups <- self$results$models
+            termsAll <- private$terms
+
+            for (i in seq_along(termsAll)) {
+
+                model <- results$models[[i]]
+                table <- groups$get(key=i)$assump$get('norm')
+
+                res <- try(shapiro.test(model$residuals))
+                if (jmvcore::isError(res)) {
+                    values <- list(`s[sw]`=NaN, `p[sw]`='')
+                } else {
+                    values <- list(`s[sw]`=res$statistic, `p[sw]`=res$p.value)
+                }
+                table$setRow(rowNo=1, values)
+            }
+
         },
 
         #### Plot functions ----
