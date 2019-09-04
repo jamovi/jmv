@@ -1103,14 +1103,9 @@ linRegClass <- R6::R6Class(
         },
         .createContrasts=function(levels) {
 
-            nLevels <- length(levels)
-
             dummy <- contr.treatment(levels)
             dimnames(dummy) <- NULL
-            coding <- matrix(rep(1/nLevels, prod(dim(dummy))), ncol=nLevels-1)
-            contrast <- (dummy - coding)
-
-            return(contrast)
+            return(dummy)
         },
         .stdEst = function(model) {
 
