@@ -39,6 +39,12 @@ ancovaClass <- R6::R6Class(
 
             data <- private$.cleanData()
 
+            for (name in colnames(data)) {
+                column <- data[[name]]
+                if (is.factor(column) && any(table(column) == 0))
+                    reject("Column '{}' contains unused levels (possibly only when rows with missing values are excluded)", name=name)
+            }
+
             dataB64 <- lapply(data, function(x) {
                 if (is.factor(x))
                     levels(x) <- toB64(levels(x))
@@ -427,25 +433,37 @@ ancovaClass <- R6::R6Class(
                             return(list(FALSE,FALSE))
                     })
 
+
                     index <- which(sapply(location, function(x) return(x[[1]])))
-                    reverse <- location[[index]][[2]]
 
-                    row <- list()
-                    row[['md']] <- if(reverse) -none[index,'estimate'] else none[index,'estimate']
-                    row[['se']] <- none[index,'SE']
-                    row[['df']] <- none[index,'df']
-                    row[['t']] <- if(reverse) -none[index,'t.ratio'] else none[index,'t.ratio']
+                    if (length(index) == 1) {
 
-                    row[['pnone']] <- none[index,'p.value']
-                    row[['ptukey']] <- tukey[index,'p.value']
-                    row[['pscheffe']] <- scheffe[index,'p.value']
-                    row[['pbonferroni']] <- bonferroni[index,'p.value']
-                    row[['pholm']] <- holm[index,'p.value']
+                        reverse <- location[[index]][[2]]
 
-                    table$setRow(rowNo=i, values=row)
-                    private$.checkpoint()
+                        row <- list()
+                        row[['md']] <- if(reverse) -none[index,'estimate'] else none[index,'estimate']
+                        row[['se']] <- none[index,'SE']
+                        row[['df']] <- none[index,'df']
+                        row[['t']] <- if(reverse) -none[index,'t.ratio'] else none[index,'t.ratio']
+
+                        row[['pnone']] <- none[index,'p.value']
+                        row[['ptukey']] <- tukey[index,'p.value']
+                        row[['pscheffe']] <- scheffe[index,'p.value']
+                        row[['pbonferroni']] <- bonferroni[index,'p.value']
+                        row[['pholm']] <- holm[index,'p.value']
+
+                        table$setRow(rowNo=i, values=row)
+
+                    } else {
+
+                        table$setRow(rowNo=i, values=list(
+                            md=NaN, se='', df='', t='',
+                            pnone='', ptukey='', pscheffe='', pbonferroni='', pholm=''))
+                    }
                 }
+
                 table$setStatus('complete')
+                private$.checkpoint()
             }
         },
         .populateContrasts=function(data) {
