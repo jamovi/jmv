@@ -36,4 +36,14 @@ test_that('linreg works', {
     expect_equal(1.008, coef$est[1], tolerance = 1e-3)
     expect_equal(0.958, coef$se[4], tolerance = 1e-3)
     expect_true(is.na(coef$stdEst[1]))
+
+    blocks2 = list(list("var1", "var 2", "var3", c("var1", "var 2")))
+    linreg2 <- jmv::linReg(data, dep=!!dep, covs=!!covs, blocks=blocks2, stdEst = TRUE, ciStdEst = TRUE)
+
+    coef2 <- linreg2$models[[1]]$coef$asDF
+
+    # Test coefficients table
+    expect_equal(0.903, coef2$stdEst[2], tolerance = 1e-3)
+    expect_equal(0.189, coef2$stdEstLower[3], tolerance = 1e-3)
+    expect_equal(0.394, coef2$stdEstUpper[3], tolerance = 1e-3)
 })
