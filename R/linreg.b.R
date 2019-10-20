@@ -85,6 +85,10 @@ linRegClass <- R6::R6Class(
                 else
                     VIF[[i]] <- NULL
 
+                if (self$options$durbin)
+                    dwTest[[i]] <- car::durbinWatsonTest(models[[i]])
+                else
+                    dwTest[[i]] <- NULL
             }
 
             return(list(models=models, modelsScaled=modelsScaled, ANOVA=ANOVA,
@@ -529,6 +533,9 @@ linRegClass <- R6::R6Class(
         },
         .populateDurbinWatsonTable = function(results) {
 
+            if (length(results$dwTest) == 0)
+                return()
+
             groups <- self$results$models
             termsAll <- private$terms
 
@@ -676,7 +683,7 @@ linRegClass <- R6::R6Class(
                 model <- results$models[[i]]
                 table <- groups$get(key=i)$assump$get('norm')
 
-                res <- try(shapiro.test(model$residuals))
+                res <- try(shapiro.test(model$residuals), silent=TRUE)
                 if (jmvcore::isError(res)) {
                     values <- list(`s[sw]`=NaN, `p[sw]`='')
                 } else {
@@ -684,7 +691,6 @@ linRegClass <- R6::R6Class(
                 }
                 table$setRow(rowNo=1, values)
             }
-
         },
 
         #### Plot functions ----
