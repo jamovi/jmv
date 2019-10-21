@@ -4,6 +4,7 @@ title: HTML
 menuGroup: dev
 version: '1.0.0'
 jas: '1.2'
+export: false
 
 options:
     - name: content

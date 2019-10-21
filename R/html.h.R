@@ -61,32 +61,3 @@ htmlBase <- if (requireNamespace('jmvcore')) R6::R6Class(
                 pause = NULL,
                 completeWhenFilled = FALSE)
         }))
-
-#' HTML
-#'
-#' 
-#' @param content .
-#' @return A results object containing:
-#' \tabular{llllll}{
-#'   \code{results$html} \tab \tab \tab \tab \tab a html \cr
-#' }
-#'
-#' @export
-html <- function(
-    content = "<p>the <em>fish</em> was <strong>delish</strong></p>") {
-
-    if ( ! requireNamespace('jmvcore'))
-        stop('html requires jmvcore to be installed (restart may be required)')
-
-
-    options <- htmlOptions$new(
-        content = content)
-
-    analysis <- htmlClass$new(
-        options = options,
-        data = data)
-
-    analysis$run()
-
-    analysis$results
-}
