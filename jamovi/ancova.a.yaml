@@ -260,6 +260,19 @@ options:
             `'holm'`; provide no, Tukey, Scheffe, Bonferroni, and
             Holm Post Hoc corrections respectively
 
+    - name: postHocES
+      title: Effect size
+      type: NMXList
+      options:
+          - name: d
+            title: Cohen's d
+      description:
+          ui: >
+            provide a Cohen's d measure of effect size for the post-hoc tests.
+          R: >
+            a possible value of `'d'`; provide cohen's d measure of effect size
+            for the post-hoc tests
+
     - name: emMeans
       title: Marginal Means
       type: Array

@@ -18,6 +18,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             postHoc = NULL,
             postHocCorr = list(
                 "tukey"),
+            postHocES = NULL,
             emMeans = list(
                 list()),
             emmPlots = TRUE,
@@ -123,6 +124,11 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "holm"),
                 default=list(
                     "tukey"))
+            private$..postHocES <- jmvcore::OptionNMXList$new(
+                "postHocES",
+                postHocES,
+                options=list(
+                    "d"))
             private$..emMeans <- jmvcore::OptionArray$new(
                 "emMeans",
                 emMeans,
@@ -173,6 +179,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..contrasts)
             self$.addOption(private$..postHoc)
             self$.addOption(private$..postHocCorr)
+            self$.addOption(private$..postHocES)
             self$.addOption(private$..emMeans)
             self$.addOption(private$..emmPlots)
             self$.addOption(private$..emmPlotData)
@@ -193,6 +200,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         contrasts = function() private$..contrasts$value,
         postHoc = function() private$..postHoc$value,
         postHocCorr = function() private$..postHocCorr$value,
+        postHocES = function() private$..postHocES$value,
         emMeans = function() private$..emMeans$value,
         emmPlots = function() private$..emmPlots$value,
         emmPlotData = function() private$..emmPlotData$value,
@@ -212,6 +220,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..contrasts = NA,
         ..postHoc = NA,
         ..postHocCorr = NA,
+        ..postHocES = NA,
         ..emMeans = NA,
         ..emmPlots = NA,
         ..emmPlotData = NA,
@@ -425,6 +434,8 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param postHocCorr one or more of \code{'none'}, \code{'tukey'},
 #'   \code{'scheffe'}, \code{'bonf'}, or \code{'holm'}; provide no, Tukey,
 #'   Scheffe, Bonferroni, and Holm Post Hoc corrections respectively
+#' @param postHocES a possible value of \code{'d'}; provide cohen's d measure
+#'   of effect size for the post-hoc tests
 #' @param emMeans a formula containing the terms to estimate marginal means
 #'   for (see the examples)
 #' @param emmPlots \code{TRUE} (default) or \code{FALSE}, provide estimated
@@ -474,6 +485,7 @@ ANOVA <- function(
     postHoc = NULL,
     postHocCorr = list(
                 "tukey"),
+    postHocES,
     emMeans = list(
                 list()),
     emmPlots = TRUE,
@@ -534,6 +546,7 @@ ANOVA <- function(
         contrasts = contrasts,
         postHoc = postHoc,
         postHocCorr = postHocCorr,
+        postHocES = postHocES,
         emMeans = emMeans,
         emmPlots = emmPlots,
         emmPlotData = emmPlotData,
