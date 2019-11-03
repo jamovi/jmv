@@ -18,7 +18,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             postHoc = NULL,
             postHocCorr = list(
                 "tukey"),
-            postHocES = NULL,
+            postHocES = list(),
             emMeans = list(
                 list()),
             emmPlots = TRUE,
@@ -128,7 +128,8 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "postHocES",
                 postHocES,
                 options=list(
-                    "d"))
+                    "d"),
+                default=list())
             private$..emMeans <- jmvcore::OptionArray$new(
                 "emMeans",
                 emMeans,
@@ -485,7 +486,7 @@ ANOVA <- function(
     postHoc = NULL,
     postHocCorr = list(
                 "tukey"),
-    postHocES,
+    postHocES = list(),
     emMeans = list(
                 list()),
     emmPlots = TRUE,

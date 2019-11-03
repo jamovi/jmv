@@ -19,7 +19,7 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             postHoc = NULL,
             postHocCorr = list(
                 "tukey"),
-            postHocES = NULL,
+            postHocES = list(),
             emMeans = list(
                 list()),
             emmPlots = TRUE,
@@ -137,7 +137,8 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "postHocES",
                 postHocES,
                 options=list(
-                    "d"))
+                    "d"),
+                default=list())
             private$..emMeans <- jmvcore::OptionArray$new(
                 "emMeans",
                 emMeans,
@@ -613,7 +614,7 @@ ancova <- function(
     postHoc = NULL,
     postHocCorr = list(
                 "tukey"),
-    postHocES,
+    postHocES = list(),
     emMeans = list(
                 list()),
     emmPlots = TRUE,
