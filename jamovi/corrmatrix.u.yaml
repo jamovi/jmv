@@ -55,6 +55,9 @@ children:
             name: flag
 
           - type: CheckBox
+            name: n
+
+          - type: CheckBox
             name: ci
             label: Confidence intervals
             children:

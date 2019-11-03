@@ -119,6 +119,19 @@ items:
             content: p-value
             visible: (kendall && sig)
 
+          - name: .name[n]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (n)
+
+          - name: .stat[n]
+            title: ""
+            type: text
+            content: N
+            visible: (n)
+
     - name: plot
       title: Plot
       type: Image
