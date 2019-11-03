@@ -253,6 +253,7 @@ options:
       options:
           - name: d
             title: Cohen's d
+      default: [ ]
       description:
           ui: >
             provide a Cohen's d measure of effect size for the post-hoc tests.
