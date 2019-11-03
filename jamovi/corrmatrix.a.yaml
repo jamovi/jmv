@@ -124,6 +124,16 @@ options:
           R: >
             `TRUE` or `FALSE` (default), flag significant correlations
 
+    - name: n
+      title: N
+      type: Bool
+      default: false
+      description:
+          ui: >
+            provide the number of cases.
+          R: >
+            `TRUE` or `FALSE` (default), provide the number of cases
+
     - name: ci
       title: Confidence intervals
       type: Bool

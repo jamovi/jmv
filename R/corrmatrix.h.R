@@ -12,6 +12,7 @@ corrMatrixOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             kendall = FALSE,
             sig = TRUE,
             flag = FALSE,
+            n = FALSE,
             ci = FALSE,
             ciWidth = 95,
             plots = FALSE,
@@ -54,6 +55,10 @@ corrMatrixOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "flag",
                 flag,
                 default=FALSE)
+            private$..n <- jmvcore::OptionBool$new(
+                "n",
+                n,
+                default=FALSE)
             private$..ci <- jmvcore::OptionBool$new(
                 "ci",
                 ci,
@@ -91,6 +96,7 @@ corrMatrixOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..kendall)
             self$.addOption(private$..sig)
             self$.addOption(private$..flag)
+            self$.addOption(private$..n)
             self$.addOption(private$..ci)
             self$.addOption(private$..ciWidth)
             self$.addOption(private$..plots)
@@ -105,6 +111,7 @@ corrMatrixOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         kendall = function() private$..kendall$value,
         sig = function() private$..sig$value,
         flag = function() private$..flag$value,
+        n = function() private$..n$value,
         ci = function() private$..ci$value,
         ciWidth = function() private$..ciWidth$value,
         plots = function() private$..plots$value,
@@ -118,6 +125,7 @@ corrMatrixOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..kendall = NA,
         ..sig = NA,
         ..flag = NA,
+        ..n = NA,
         ..ci = NA,
         ..ciWidth = NA,
         ..plots = NA,
@@ -251,7 +259,20 @@ corrMatrixResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="", 
                         `type`="text", 
                         `content`="p-value", 
-                        `visible`="(kendall && sig)"))))
+                        `visible`="(kendall && sig)"),
+                    list(
+                        `name`=".name[n]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="($key)", 
+                        `combineBelow`=TRUE, 
+                        `visible`="(n)"),
+                    list(
+                        `name`=".stat[n]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="N", 
+                        `visible`="(n)"))))
             self$add(jmvcore::Image$new(
                 options=options,
                 name="plot",
@@ -348,6 +369,7 @@ corrMatrixBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   levels
 #' @param flag \code{TRUE} or \code{FALSE} (default), flag significant
 #'   correlations
+#' @param n \code{TRUE} or \code{FALSE} (default), provide the number of cases
 #' @param ci \code{TRUE} or \code{FALSE} (default), provide confidence
 #'   intervals
 #' @param ciWidth a number between 50 and 99.9 (default: 95), the width of
@@ -382,6 +404,7 @@ corrMatrix <- function(
     kendall = FALSE,
     sig = TRUE,
     flag = FALSE,
+    n = FALSE,
     ci = FALSE,
     ciWidth = 95,
     plots = FALSE,
@@ -407,6 +430,7 @@ corrMatrix <- function(
         kendall = kendall,
         sig = sig,
         flag = flag,
+        n = n,
         ci = ci,
         ciWidth = ciWidth,
         plots = plots,

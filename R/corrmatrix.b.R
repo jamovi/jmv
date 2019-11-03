@@ -28,6 +28,8 @@ corrMatrixClass <- R6::R6Class(
                 type='number', format='zto', visible='(kendall)')
             matrix$addColumn(name=paste0(var, '[taup]'), title=var,
                 type='number', format='zto,pvalue', visible='(kendall && sig)')
+            matrix$addColumn(name=paste0(var, '[n]'), title=var,
+                type='integer', visible='(n)')
         }
 
         for (i in seq_along(vars)) {
@@ -45,6 +47,7 @@ corrMatrixClass <- R6::R6Class(
                 values[[paste0(v, '[rhop]')]] <- ''
                 values[[paste0(v, '[tau]')]] <- ''
                 values[[paste0(v, '[taup]')]] <- ''
+                values[[paste0(v, '[n]')]] <- ''
             }
 
             values[[paste0(var, '[r]')]] <- '\u2014'
@@ -55,6 +58,7 @@ corrMatrixClass <- R6::R6Class(
             values[[paste0(var, '[rhop]')]] <- '\u2014'
             values[[paste0(var, '[tau]')]] <- '\u2014'
             values[[paste0(var, '[taup]')]] <- '\u2014'
+            values[[paste0(var, '[n]')]] <- '\u2014'
 
             values[['.stat[rciu]']] <- paste0(ciw, '% CI Upper')
             values[['.stat[rcil]']] <- paste0(ciw, '% CI Lower')
@@ -124,6 +128,9 @@ corrMatrixClass <- R6::R6Class(
                     values[[paste0(colVarName, '[rhop]')]] <- result$rhop
                     values[[paste0(colVarName, '[tau]')]] <- result$tau
                     values[[paste0(colVarName, '[taup]')]] <- result$taup
+                    values[[paste0(colVarName, '[taup]')]] <- result$taup
+
+                    values[[paste0(colVarName, '[n]')]] <- sum( ! (is.na(colVar) | is.na(rowVar)))
 
                     matrix$setRow(rowNo=i, values)
 
