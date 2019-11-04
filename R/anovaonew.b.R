@@ -294,12 +294,14 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 r <- results[[deps[i]]]$postHoc
 
                 for (j in 1:(length(levels)-1)) {
-                    row <- list()
+
                     for (k in (j+1):length(levels)) {
                         g1 <- levels[j]
                         g2 <- levels[k]
 
                         index <- which(r$g1 == g1 & r$g2 == g2)
+
+                        row <- list()
 
                         row[paste0(g2, '[md]')] <- r[index, 'md']
                         row[paste0(g2, '[t]')] <- r[index, 't']
