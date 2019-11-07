@@ -2,6 +2,7 @@ context('mancova')
 
 test_that('mancova works', {
 
+    suppressWarnings(RNGversion("3.5.0"))
     set.seed(100)
 
     data <- list()
