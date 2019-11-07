@@ -2,6 +2,7 @@ context('logregord')
 
 test_that('logregord works', {
 
+    suppressWarnings(RNGversion("3.5.0"))
     set.seed(1337)
 
     y <- factor(sample(1:3, 100, replace = TRUE))

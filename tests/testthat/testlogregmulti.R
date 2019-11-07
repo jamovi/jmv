@@ -2,6 +2,7 @@ context('logregmulti')
 
 test_that('logregmulti works', {
 
+    suppressWarnings(RNGversion("3.5.0"))
     set.seed(1337)
 
     y <- sample(c('A', 'B', 'C'), 100, replace = TRUE)
