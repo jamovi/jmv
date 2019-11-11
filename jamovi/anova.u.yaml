@@ -118,9 +118,11 @@ children:
                   type: TermLabel
       - type: LayoutBox
         margin: large
+        stretchFactor: 1
         children:
           - type: Label
             label: Correction
+            stretchFactor: 1
             cell:
               column: 0
               row: 0
@@ -146,7 +148,8 @@ children:
                 optionPart: holm
                 optionName: postHocCorr
           - type: Label
-            label: Effect-size
+            label: Effect Size
+            stretchFactor: 1
             cell:
               column: 1
               row: 0
