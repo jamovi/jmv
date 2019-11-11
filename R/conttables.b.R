@@ -102,6 +102,37 @@ contTablesClass <- R6::R6Class(
                     type='integer')
             }
 
+            if (self$options$exp) {
+                freqs$addColumn(
+                    name='.total[exp]',
+                    title='Total',
+                    type='number')
+            }
+
+            if (self$options$pcRow) {
+                freqs$addColumn(
+                    name='.total[pcRow]',
+                    title='Total',
+                    type='number',
+                    format='pc')
+            }
+
+            if (self$options$pcCol) {
+                freqs$addColumn(
+                    name='.total[pcCol]',
+                    title='Total',
+                    type='number',
+                    format='pc')
+            }
+
+            if (self$options$pcTot) {
+                freqs$addColumn(
+                    name='.total[pcTot]',
+                    title='Total',
+                    type='number',
+                    format='pc')
+            }
+
             # populate the first column with levels of the row variable
 
             values <- list()
@@ -241,7 +272,7 @@ contTablesClass <- R6::R6Class(
                         v2 <- rep(as.numeric(df[[2]]), df$Freq)
 
                         # this can be slow
-                        tau <- try(cor.test(v1, v2, method="kendall", conf.level=ciWidth))
+                        tau <- try(cor.test(v1, v2, method='kendall', conf.level=ciWidth))
                     }
 
                     lor <- NULL
@@ -256,6 +287,7 @@ contTablesClass <- R6::R6Class(
 
                 total <- sum(mat)
                 colTotals <- apply(mat, 2, sum)
+                rowTotals <- apply(mat, 1, sum)
 
                 for (rowNo in seq_len(nRows)) {
 
@@ -271,15 +303,19 @@ contTablesClass <- R6::R6Class(
                     expValues <- exp[rowNo,]
                     expValues <- as.list(expValues)
                     names(expValues) <- paste0(1:nCols, '[expected]')
+                    expValues[['.total[exp]']] <- sum(exp[rowNo,])
 
                     pcRow <- as.list(pcRow)
                     names(pcRow) <- paste0(1:nCols, '[pcRow]')
+                    pcRow[['.total[pcRow]']] <- 1
 
                     pcCol <- as.list(mat[rowNo,] / colTotals)
                     names(pcCol) <- paste0(1:nCols, '[pcCol]')
+                    pcCol[['.total[pcCol]']] <- unname(rowTotals[rowNo] / total)
 
                     pcTot <- as.list(mat[rowNo,] / total)
                     names(pcTot) <- paste0(1:nCols, '[pcTot]')
+                    pcTot[['.total[pcTot]']] <- sum(mat[rowNo,] / total)
 
                     values <- c(values, expValues, pcRow, pcCol, pcTot)
 
@@ -308,6 +344,11 @@ contTablesClass <- R6::R6Class(
                 pcTot <- apply(mat, 2, sum) / total
                 pcTot <- as.list(pcTot)
                 names(pcTot) <- paste0(1:nCols, '[pcTot]')
+
+                expValues[['.total[exp]']] <- total
+                pcRow[['.total[pcRow]']] <- 1
+                pcCol[['.total[pcCol]']] <- 1
+                pcTot[['.total[pcTot]']] <- 1
 
                 values <- c(values, expValues, pcRow, pcCol, pcTot)
 
