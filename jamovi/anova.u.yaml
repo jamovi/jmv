@@ -118,9 +118,14 @@ children:
                   type: TermLabel
       - type: LayoutBox
         margin: large
+        stretchFactor: 1
         children:
           - type: Label
             label: Correction
+            stretchFactor: 1
+            cell:
+              column: 0
+              row: 0
             children:
               - name: postHocCorr_none
                 type: CheckBox
@@ -142,6 +147,17 @@ children:
                 type: CheckBox
                 optionPart: holm
                 optionName: postHocCorr
+          - type: Label
+            label: Effect Size
+            stretchFactor: 1
+            cell:
+              column: 1
+              row: 0
+            children:
+              - name: postHocES_d
+                type: CheckBox
+                optionPart: d
+                optionName: postHocES
   - type: CollapseBox
     label: Estimated Marginal Means
     collapsed: true

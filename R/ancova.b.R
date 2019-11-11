@@ -8,6 +8,7 @@ ancovaClass <- R6::R6Class(
         #### Member variables ----
         .model = NA,
         .postHocRows = NA,
+        .data = NA,
         emMeans = list(),
 
         #### Init + run functions ----
@@ -19,11 +20,11 @@ ancovaClass <- R6::R6Class(
             if (length(factors) == 0 || length(modelTerms) == 0)
                 return()
 
-            data <- private$.cleanData()
+            private$.data <- private$.cleanData()
 
             private$.initMainTable()
-            private$.initContrastTables(data)
-            private$.initPostHoc(data)
+            private$.initContrastTables()
+            private$.initPostHoc()
             private$.initEmm()
             private$.initEmmTable()
 
@@ -38,6 +39,7 @@ ancovaClass <- R6::R6Class(
                 return()
 
             data <- private$.cleanData()
+            private$.data <- data
 
             for (name in colnames(data)) {
                 column <- data[[name]]
@@ -161,8 +163,9 @@ ancovaClass <- R6::R6Class(
                 table$setRefs('car')
             }
         },
-        .initContrastTables = function(data) {
+        .initContrastTables = function() {
 
+            data <- private$.data
             tables <- self$results$contrasts
 
             for (contrast in self$options$contrasts) {
@@ -179,8 +182,9 @@ ancovaClass <- R6::R6Class(
             }
 
         },
-        .initPostHoc=function(data) {
+        .initPostHoc=function() {
 
+            data <- private$.data
             bs <- self$options$factors
             phTerms <- self$options$postHoc
 
@@ -216,6 +220,8 @@ ancovaClass <- R6::R6Class(
                 table$addColumn(name='pscheffe', title='p<sub>scheffe</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:scheffe)")
                 table$addColumn(name='pbonferroni', title='p<sub>bonferroni</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:bonf)")
                 table$addColumn(name='pholm', title='p<sub>holm</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:holm)")
+
+                table$addColumn(name='d', title='Cohen\'s d', type='number', visible="(postHocES:d)")
 
                 combin <- expand.grid(bsLevels[rev(ph)])
                 combin <- sapply(combin, as.character, simplify = 'matrix')
@@ -452,13 +458,17 @@ ancovaClass <- R6::R6Class(
                         row[['pbonferroni']] <- bonferroni[index,'p.value']
                         row[['pholm']] <- holm[index,'p.value']
 
+                        n <- nrow(private$.data)
+                        row[['d']] <- abs(row[['md']] / (n * sqrt(row[['se']])))
+
                         table$setRow(rowNo=i, values=row)
 
                     } else {
 
                         table$setRow(rowNo=i, values=list(
                             md=NaN, se='', df='', t='',
-                            pnone='', ptukey='', pscheffe='', pbonferroni='', pholm=''))
+                            pnone='', ptukey='', pscheffe='', pbonferroni='', pholm='',
+                            es=''))
                     }
                 }
 
