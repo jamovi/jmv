@@ -110,18 +110,17 @@ children:
               label: ''
       - type: Label
         label: Intercept
-        style: list-inline
         children:
-          - type: RadioButton
-            name: intercept_grandMean
-            optionName: intercept
-            optionPart: grandMean
-            label: Grand mean
           - type: RadioButton
             name: intercept_refLevel
             optionName: intercept
             optionPart: refLevel
-            label: Reference level
+            label: Reference level (dummy coding)
+          - type: RadioButton
+            name: intercept_grandMean
+            optionName: intercept
+            optionPart: grandMean
+            label: Grand mean (simple coding)
   - type: CollapseBox
     label: Assumption Checks
     collapsed: true

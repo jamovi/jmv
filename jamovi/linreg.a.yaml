@@ -122,14 +122,14 @@ options:
       title: Intercept
       type: List
       options:
-        - grandMean
         - refLevel
-      default: grandMean
+        - grandMean
+      default: refLevel
       description:
           R: >
-            `'grandMean'` (default) or `'refLevel'`, coding of the intercept. Either
-            creates contrast so that the intercept represents the grand mean or the
-            reference level
+            `'refLevel'` (default) or `'grandMean'`, coding of the intercept. Either
+            creates contrast so that the intercept represents the reference level or
+            the grand mean
 
     - name: r
       title: R

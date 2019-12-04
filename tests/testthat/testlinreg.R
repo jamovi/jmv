@@ -60,11 +60,11 @@ test_that('linreg works', {
     linreg3 <- jmv::linReg(data, dep=!!dep, factors=!!factors, blocks=blocks, refLevels=refLevels)
     coef3 <- linreg3$models[[1]]$coef$asDF
 
-    expect_equal(18.813, coef3$est[1], tolerance = 1e-3)
+    expect_equal(12.455, coef3$est[1], tolerance = 1e-3)
 
-    linreg4 <- jmv::linReg(data, dep=!!dep, factors=!!factors, blocks=blocks, refLevels=refLevels, intercept='refLevel')
+    linreg4 <- jmv::linReg(data, dep=!!dep, factors=!!factors, blocks=blocks, refLevels=refLevels, intercept='grandMean')
     coef4 <- linreg4$models[[1]]$coef$asDF
 
-    expect_equal(12.455, coef4$est[1], tolerance = 1e-3)
+    expect_equal(18.813, coef4$est[1], tolerance = 1e-3)
 
 })
