@@ -46,4 +46,25 @@ test_that('linreg works', {
     expect_equal(0.903, coef2$stdEst[2], tolerance = 1e-3)
     expect_equal(0.189, coef2$stdEstLower[3], tolerance = 1e-3)
     expect_equal(0.394, coef2$stdEstUpper[3], tolerance = 1e-3)
+
+    # Test different intercept codings
+    data <- ToothGrowth
+    data$dose <- factor(data$dose)
+
+    dep <- "len"
+    factors <- c("dose", "supp")
+    blocks = list(list("dose", "supp"))
+    refLevels = list(list(var="supp", ref="OJ"),
+                     list(var="dose", ref="0.5"))
+
+    linreg3 <- jmv::linReg(data, dep=!!dep, factors=!!factors, blocks=blocks, refLevels=refLevels)
+    coef3 <- linreg3$models[[1]]$coef$asDF
+
+    expect_equal(12.455, coef3$est[1], tolerance = 1e-3)
+
+    linreg4 <- jmv::linReg(data, dep=!!dep, factors=!!factors, blocks=blocks, refLevels=refLevels, intercept='grandMean')
+    coef4 <- linreg4$models[[1]]$coef$asDF
+
+    expect_equal(18.813, coef4$est[1], tolerance = 1e-3)
+
 })

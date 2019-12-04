@@ -175,6 +175,12 @@ linRegClass <- R6::R6Class(
                 table$addRow(rowKey="`(Intercept)`", values=list(term = "Intercept"))
                 coefTerms[[1]] <- "(Intercept)"
 
+                if ( ! is.null(factors)) {
+                    note <- ifelse(self$options$intercept == 'refLevel', 'Represents reference level',
+                                   'Represents grand mean')
+                    table$addFootnote(rowKey="`(Intercept)`", 'term', note)
+                }
+
                 terms <- termsAll[[i]]
 
                 for (j in seq_along(terms)) {
@@ -1114,12 +1120,20 @@ linRegClass <- R6::R6Class(
         },
         .createContrasts=function(levels) {
 
-            nLevels <- length(levels)
+            if (self$options$intercept == 'refLevel') {
 
-            dummy <- contr.treatment(levels)
-            dimnames(dummy) <- NULL
-            coding <- matrix(rep(1/nLevels, prod(dim(dummy))), ncol=nLevels-1)
-            contrast <- (dummy - coding)
+                contrast <- contr.treatment(levels)
+                dimnames(contrast) <- NULL
+
+            } else {
+
+                nLevels <- length(levels)
+                dummy <- contr.treatment(levels)
+                dimnames(dummy) <- NULL
+                coding <- matrix(rep(1/nLevels, prod(dim(dummy))), ncol=nLevels-1)
+                contrast <- (dummy - coding)
+
+            }
 
             return(contrast)
         },

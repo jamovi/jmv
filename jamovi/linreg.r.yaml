@@ -179,6 +179,7 @@ items:
                 - refLevels
                 - ciWidth
                 - ciWidthStdEst
+                - intercept
 
               columns:
                 - name: term
