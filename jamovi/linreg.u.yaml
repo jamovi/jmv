@@ -45,7 +45,7 @@ children:
         stretchFactor: 1
         format: term
         events:
-            update: './linreg.events::onUpdate_modelSupplier'
+          update: './linreg.events::onUpdate_modelSupplier'
         children:
           - type: TargetLayoutBox
             transferAction: interactions
@@ -108,6 +108,20 @@ children:
             template:
               type: LevelSelector
               label: ''
+      - type: Label
+        label: Intercept
+        style: list-inline
+        children:
+          - type: RadioButton
+            name: intercept_grandMean
+            optionName: intercept
+            optionPart: grandMean
+            label: Grand mean
+          - type: RadioButton
+            name: intercept_refLevel
+            optionName: intercept
+            optionPart: refLevel
+            label: Reference level
   - type: CollapseBox
     label: Assumption Checks
     collapsed: true
@@ -256,8 +270,8 @@ children:
             persistentItems: true
             stretchFactor: 1
             events:
-                change: './linreg.events::onChange_emMeansSupplier'
-                update: './linreg.events::onUpdate_emMeansSupplier'
+              change: './linreg.events::onChange_emMeansSupplier'
+              update: './linreg.events::onUpdate_emMeansSupplier'
             children:
               - type: TargetLayoutBox
                 children:

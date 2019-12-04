@@ -118,6 +118,19 @@ options:
             a list of lists specifying reference levels of the dependent variable
             and all the factors
 
+    - name: intercept
+      title: Intercept
+      type: List
+      options:
+        - grandMean
+        - refLevel
+      default: grandMean
+      description:
+          R: >
+            `'grandMean'` (default) or `'refLevel'`, coding of the intercept. Either
+            creates contrast so that the intercept represents the grand mean or the
+            reference level
+
     - name: r
       title: R
       type: Bool

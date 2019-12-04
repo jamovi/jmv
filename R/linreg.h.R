@@ -12,6 +12,7 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             blocks = list(
                 list()),
             refLevels = NULL,
+            intercept = "grandMean",
             r = TRUE,
             r2 = TRUE,
             r2Adj = FALSE,
@@ -94,6 +95,13 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                         jmvcore::OptionLevel$new(
                             "ref",
                             NULL))))
+            private$..intercept <- jmvcore::OptionList$new(
+                "intercept",
+                intercept,
+                options=list(
+                    "grandMean",
+                    "refLevel"),
+                default="grandMean")
             private$..r <- jmvcore::OptionBool$new(
                 "r",
                 r,
@@ -215,6 +223,7 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..factors)
             self$.addOption(private$..blocks)
             self$.addOption(private$..refLevels)
+            self$.addOption(private$..intercept)
             self$.addOption(private$..r)
             self$.addOption(private$..r2)
             self$.addOption(private$..r2Adj)
@@ -248,6 +257,7 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         factors = function() private$..factors$value,
         blocks = function() private$..blocks$value,
         refLevels = function() private$..refLevels$value,
+        intercept = function() private$..intercept$value,
         r = function() private$..r$value,
         r2 = function() private$..r2$value,
         r2Adj = function() private$..r2Adj$value,
@@ -280,6 +290,7 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..factors = NA,
         ..blocks = NA,
         ..refLevels = NA,
+        ..intercept = NA,
         ..r = NA,
         ..r2 = NA,
         ..r2Adj = NA,
@@ -505,7 +516,8 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     "blocks",
                                     "refLevels",
                                     "ciWidth",
-                                    "ciWidthStdEst"),
+                                    "ciWidthStdEst",
+                                    "intercept"),
                                 columns=list(
                                     list(
                                         `name`="term", 
@@ -834,6 +846,9 @@ linRegBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   to their order in the list
 #' @param refLevels a list of lists specifying reference levels of the
 #'   dependent variable and all the factors
+#' @param intercept \code{'grandMean'} (default) or \code{'refLevel'}, coding
+#'   of the intercept. Either creates contrast so that the intercept represents
+#'   the grand mean or the reference level
 #' @param r \code{TRUE} (default) or \code{FALSE}, provide the statistical
 #'   measure \code{R} for the models
 #' @param r2 \code{TRUE} (default) or \code{FALSE}, provide the statistical
@@ -910,6 +925,7 @@ linReg <- function(
     blocks = list(
                 list()),
     refLevels = NULL,
+    intercept = "grandMean",
     r = TRUE,
     r2 = TRUE,
     r2Adj = FALSE,
@@ -960,6 +976,7 @@ linReg <- function(
         factors = factors,
         blocks = blocks,
         refLevels = refLevels,
+        intercept = intercept,
         r = r,
         r2 = r2,
         r2Adj = r2Adj,
