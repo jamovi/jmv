@@ -840,7 +840,7 @@ linRegClass <- R6::R6Class(
 
                         termB64 <- jmvcore::toB64(term)
 
-                        FUN <- list(TRUE); FUN2 <- list(TRUE)
+                        FUN <- list(); FUN2 <- list()
                         cont <- FALSE
 
                         for(k in seq_along(termB64)) {

@@ -67,4 +67,11 @@ test_that('linreg works', {
 
     expect_equal(18.813, coef4$est[1], tolerance = 1e-3)
 
+    linreg4 <- jmv::linReg(data, dep=!!dep, factors=!!factors, blocks=blocks, refLevels=refLevels,
+                           emMeans=~ supp, emmTables=TRUE, emmPlots=FALSE)
+
+    emmeans <- linreg4$models[[1]]$emm[[1]]$emmTable$asDF
+
+    expect_equal(20.663, emmeans$emmean[1], tolerance = 1e-3)
+
 })

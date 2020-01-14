@@ -13,7 +13,8 @@ test_that('logregbin works', {
 
     logReg <- jmv::logRegBin(data = df, dep = "y", covs = c("x1", "x2"),
                              blocks = list(list("x1", "x2")),
-                             refLevels = list(list(var="y", ref="0")))
+                             refLevels = list(list(var="y", ref="0")),
+                             emMeans = ~x1)
 
     modelFit <- logReg$modelFit$asDF
     coef <- logReg$models[[1]]$coef$asDF

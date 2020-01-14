@@ -14,7 +14,8 @@ test_that('logregmulti works', {
     logReg <- jmv::logRegMulti(data = df, dep = "y",
                                covs = c("x1", "x2"),
                                blocks = list(list("x1", "x2")),
-                               refLevels = list(list(var="y", ref="A")))
+                               refLevels = list(list(var="y", ref="A")),
+                               emMeans = ~ x1)
 
     modelFit <- logReg$modelFit$asDF
     coef <- logReg$models[[1]]$coef$asDF
