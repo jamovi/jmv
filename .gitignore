@@ -1,6 +1,7 @@
 
 jamovi/ui/*.options.js
 build/
+build-*
 temp/
 man/
 .Rproj.user
