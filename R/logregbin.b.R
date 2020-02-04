@@ -88,12 +88,12 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                         # cooks[[i]] <- stats::cooks.distance(models[[i]])
 
                         CI[[i]] <- try(confint.default(models[[i]], level=self$options$ciWidth/100), silent=TRUE)
-                        # if (class(CI[[i]]) == 'try-error')
-                        #     CI[[i]] <- confint.default(models[[i]], level=self$options$ciWidth/100)
+                        if (jmvcore::isError(CI[[i]]))
+                            CI[[i]] <- confint.default(models[[i]], level=self$options$ciWidth/100)
 
                         CILO <- try(confint.default(models[[i]], level=self$options$ciWidthOR/100), silent=TRUE)
-                        # if (class(CILO) == 'try-error')
-                        #     CILO <- confint.default(models[[i]], level=self$options$ciWidthOR/100)
+                        if (jmvcore::isError(CILO))
+                            CILO <- confint.default(models[[i]], level=self$options$ciWidthOR/100)
 
                         CIOR[[i]] <- exp(CILO)
 
