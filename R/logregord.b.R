@@ -75,12 +75,12 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                         pseudoR[[i]] <- private$.pseudoR2(models[[i]], null)
 
                         CI[[i]] <- try(confint(models[[i]], level=self$options$ciWidth/100), silent=TRUE)
-                        if (class(CI[[i]]) == 'try-error')
-                            CI[[i]] <- confint.default(models[[i]], level=self$options$ciWidth/100)
+                        # if (class(CI[[i]]) == 'try-error')
+                        #     CI[[i]] <- confint.default(models[[i]], level=self$options$ciWidth/100)
 
                         CILO <- try(confint(models[[i]], level=self$options$ciWidthOR/100), silent=TRUE)
-                        if (class(CILO[[i]]) == 'try-error')
-                            CILO <- confint.default(models[[i]], level=self$options$ciWidthOR/100)
+                        # if (class(CILO[[i]]) == 'try-error')
+                        #     CILO <- confint.default(models[[i]], level=self$options$ciWidthOR/100)
 
                         CIOR[[i]] <- exp(CILO)
                     }
