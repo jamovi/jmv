@@ -512,20 +512,23 @@ ancovaClass <- R6::R6Class(
             if ( ! self$options$homo)
                 return()
 
-            dep <- self$options$dep
+            data[[".RES"]] = abs(private$.model$residuals)
+            modelTerms <- private$.modelTerms()
             factors <- self$options$factors
-            rhs <- paste0('`', factors, '`', collapse=':')
-            formula <- as.formula(paste0('`', dep, '`', '~', rhs))
 
-            result <- car::leveneTest(formula, data, center="mean")
+            rhs <- paste0('`', factors, '`', collapse=':')
+            formula <- as.formula(paste0('.RES ~', rhs))
+
+            model <- stats::aov(formula, data)
+            summary <- stats::anova(model)
 
             table <- self$results$get('assump')$get('homo')
 
             table$setRow(rowNo=1, values=list(
-                F=result[1,'F value'],
-                df1=result[1,'Df'],
-                df2=result[2,'Df'],
-                p=result[1,'Pr(>F)']))
+                F=summary$`F value`[1],
+                df1=summary$Df[1],
+                df2=summary$Df[2],
+                p=summary$`Pr(>F)`[1]))
         },
         .populateNormality = function() {
             if ( ! self$options$norm)
