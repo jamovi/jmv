@@ -6,7 +6,11 @@ anovaClass <- R6::R6Class(
         .init=function() {
             super$.init()
             self$results$setTitle('ANOVA')
-            self$results$main$setTitle('ANOVA')
+
+            if ( ! is.null(self$options$dep))
+                self$results$main$setTitle(paste0('ANOVA - ', self$options$dep))
+            else
+                self$results$main$setTitle('ANOVA - \u2026')
         }
     ),
     public = list(
