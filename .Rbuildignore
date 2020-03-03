@@ -6,6 +6,7 @@
 ^temp$
 ^build/js$
 ^build/R$
+^build/R.*$
 ^jamovi$
 ^package.json$
 ^README.md$
