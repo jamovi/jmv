@@ -9,6 +9,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             dep = NULL,
             factors = NULL,
             effectSize = NULL,
+            modelTest = FALSE,
             modelTerms = NULL,
             ss = "3",
             homo = FALSE,
@@ -61,6 +62,10 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "partEta",
                     "omega"),
                 default=NULL)
+            private$..modelTest <- jmvcore::OptionBool$new(
+                "modelTest",
+                modelTest,
+                default=FALSE)
             private$..modelTerms <- jmvcore::OptionTerms$new(
                 "modelTerms",
                 modelTerms,
@@ -172,6 +177,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..dep)
             self$.addOption(private$..factors)
             self$.addOption(private$..effectSize)
+            self$.addOption(private$..modelTest)
             self$.addOption(private$..modelTerms)
             self$.addOption(private$..ss)
             self$.addOption(private$..homo)
@@ -193,6 +199,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         dep = function() private$..dep$value,
         factors = function() private$..factors$value,
         effectSize = function() private$..effectSize$value,
+        modelTest = function() private$..modelTest$value,
         modelTerms = function() private$..modelTerms$value,
         ss = function() private$..ss$value,
         homo = function() private$..homo$value,
@@ -213,6 +220,7 @@ anovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..dep = NA,
         ..factors = NA,
         ..effectSize = NA,
+        ..modelTest = NA,
         ..modelTerms = NA,
         ..ss = NA,
         ..homo = NA,
@@ -417,6 +425,8 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param effectSize one or more of \code{'eta'}, \code{'partEta'}, or
 #'   \code{'omega'}; use eta², partial eta², and omega² effect sizes,
 #'   respectively
+#' @param modelTest \code{TRUE} or \code{FALSE} (default); whether a whole
+#'   model test should be performed
 #' @param modelTerms a formula describing the terms to go into the model (not
 #'   necessary when providing a formula, see examples)
 #' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default), the sum of
@@ -477,6 +487,7 @@ ANOVA <- function(
     dep,
     factors = NULL,
     effectSize = NULL,
+    modelTest = FALSE,
     modelTerms = NULL,
     ss = "3",
     homo = FALSE,
@@ -539,6 +550,7 @@ ANOVA <- function(
         dep = dep,
         factors = factors,
         effectSize = effectSize,
+        modelTest = modelTest,
         modelTerms = modelTerms,
         ss = ss,
         homo = homo,

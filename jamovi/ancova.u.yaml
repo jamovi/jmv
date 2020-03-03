@@ -34,7 +34,15 @@ children:
               change: './ancova.events::onChange_covariates'
   - type: LayoutBox
     margin: large
+    style: inline
     children:
+      - type: Label
+        label: Overall Model
+        margin: large
+        style: list-inline
+        children:
+          - name: modelTest
+            type: CheckBox
       - type: Label
         label: Effect Size
         margin: large

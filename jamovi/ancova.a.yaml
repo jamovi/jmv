@@ -131,6 +131,16 @@ options:
             one or more of `'eta'`, `'partEta'`, or `'omega'`;
             use η², partial η², and ω² effect sizes, respectively
 
+    - name: modelTest
+      title: Model Test
+      type: Bool
+      default: false
+      description:
+          ui: >
+            perform an overall model test.
+          R: >
+            `TRUE` or `FALSE` (default); perform an overall model test
+
     - name: modelTerms
       title: Model Terms
       type: Terms
