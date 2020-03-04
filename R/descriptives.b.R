@@ -6,14 +6,14 @@ descriptivesClass <- R6::R6Class(
         #### Member variables ----
         colArgs = list(
             name = c("n", "missing", "mean", "se", "median", "mode", "sum", "sd", "variance", "range",
-                     "min", "max", "skew", "seSkew", "kurt", "seKurt", "sw", "quart1", "quart2", "quart3"),
+                     "min", "max", "skew", "seSkew", "kurt", "seKurt", "sww", "sw", "quart1", "quart2", "quart3"),
             title = c("N", "Missing", "Mean", "Std. error mean", "Median", "Mode", "Sum", "Standard deviation", "Variance",
                       "Range", "Minimum", "Maximum", "Skewness", "Std. error skewness",
-                      "Kurtosis", "Std. error kurtosis", "Shapiro-Wilk p", "25th percentile", "50th percentile", "75th percentile"),
-            type = c(rep("integer", 2), rep("number", 18)),
-            format = c(rep("", 16), "zto,pvalue", rep("", 3)),
+                      "Kurtosis", "Std. error kurtosis", "Shapiro-Wilk W", "Shapiro-Wilk p", "25th percentile", "50th percentile", "75th percentile"),
+            type = c(rep("integer", 2), rep("number", 19)),
+            format = c(rep("", 17), "zto,pvalue", rep("", 3)),
             visible = c("(n)", "(missing)", "(mean)", "(se)", "(median)", "(mode)", "(sum)", "(sd)", "(variance)", "(range)",
-                        "(min)", "(max)", "(skew)", "(skew)", "(kurt)", "(kurt)", "(sw)", "(quart)", "(quart)", "(quart)")
+                        "(min)", "(max)", "(skew)", "(skew)", "(kurt)", "(kurt)", "(sw)", "(sw)", "(quart)", "(quart)", "(quart)")
         ),
         levels = NULL,
 
@@ -1002,10 +1002,12 @@ descriptivesClass <- R6::R6Class(
                 skew <- private$.skewness(column)
                 kurt <- private$.kurtosis(column)
                 norm <- jmvcore::tryNaN(shapiro.test(column)$p.value)
+                normw <- jmvcore::tryNaN(shapiro.test(column)$statistic)
                 stats[['skew']] <- skew$skew
                 stats[['seSkew']] <- skew$seSkew
                 stats[['kurt']] <- kurt$kurt
                 stats[['seKurt']] <- kurt$seKurt
+                stats[['sww']] <- normw
                 stats[['sw']] <- norm
 
                 stats[['quart1']] <- as.numeric(quantile(column, c(.25)))
