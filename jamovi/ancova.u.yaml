@@ -37,7 +37,11 @@ children:
     style: inline
     children:
       - type: Label
-        label: Overall Model
+        label: Model Fit
+        cell:
+            row: 0
+            column: 0
+        stretchFactor: 1
         margin: large
         style: list-inline
         children:
@@ -45,6 +49,10 @@ children:
             type: CheckBox
       - type: Label
         label: Effect Size
+        cell:
+            row: 0
+            column: 1
+        stretchFactor: 1
         margin: large
         style: list-inline
         children:

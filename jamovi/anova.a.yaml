@@ -119,7 +119,7 @@ options:
             and ω² effect sizes, respectively
 
     - name: modelTest
-      title: Model Test
+      title: Overall model test
       type: Bool
       default: false
       description:

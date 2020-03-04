@@ -425,8 +425,8 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param effectSize one or more of \code{'eta'}, \code{'partEta'}, or
 #'   \code{'omega'}; use eta², partial eta², and omega² effect sizes,
 #'   respectively
-#' @param modelTest \code{TRUE} or \code{FALSE} (default); whether a whole
-#'   model test should be performed
+#' @param modelTest \code{TRUE} or \code{FALSE} (default); perform an overall
+#'   model test
 #' @param modelTerms a formula describing the terms to go into the model (not
 #'   necessary when providing a formula, see examples)
 #' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default), the sum of

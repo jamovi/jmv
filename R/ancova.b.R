@@ -387,8 +387,6 @@ ancovaClass <- R6::R6Class(
                         p <- ''
                 } else if (index == 0) {
 
-                    # can't use default summary() dispatch here
-                    # aov takes precedence
                     summ <- summary.lm(private$.model)
                     fstat <- summ$fstatistic
 
@@ -549,7 +547,7 @@ ancovaClass <- R6::R6Class(
             rhs <- paste0('`', factors, '`', collapse=':')
             formula <- as.formula(paste0('.RES ~', rhs))
 
-            model <- stats::aov(formula, data)
+            model <- stats::lm(formula, data)
             summary <- stats::anova(model)
 
             table <- self$results$get('assump')$get('homo')
