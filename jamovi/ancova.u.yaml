@@ -35,6 +35,7 @@ children:
   - type: LayoutBox
     margin: large
     style: inline
+    stretchFactor: 1
     children:
       - type: Label
         label: Model Fit
