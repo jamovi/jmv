@@ -14,6 +14,8 @@ ancovaClass <- R6::R6Class(
         #### Init + run functions ----
         .init=function() {
 
+            private$.initMainTable()
+
             factors <- self$options$factors
             modelTerms <- private$.modelTerms()
 
@@ -22,7 +24,6 @@ ancovaClass <- R6::R6Class(
 
             private$.data <- private$.cleanData()
 
-            private$.initMainTable()
             private$.initContrastTables()
             private$.initPostHoc()
             private$.initEmm()
@@ -143,19 +144,29 @@ ancovaClass <- R6::R6Class(
 
             table    <- self$results$main
 
+            if (self$options$modelTest) {
+                table$addRow(rowKey='.', list(name='Overall model'))
+                table$addFormat(rowKey='.', col=1, format=Cell.BEGIN_END_GROUP)
+            }
+
             modelTerms <- private$.modelTerms()
             if (length(modelTerms) > 0) {
-                for (term in modelTerms)
+                for (i in seq_along(modelTerms)) {
+                    term <- modelTerms[[i]]
                     table$addRow(rowKey=term, list(name=stringifyTerm(term)))
-                table$addFormat(col=1, rowNo=1,                  format=Cell.BEGIN_GROUP)
-                table$addFormat(col=1, rowNo=length(modelTerms), format=Cell.END_GROUP)
+                    if (i == 1)
+                        table$addFormat(rowKey=term, col=1, format=Cell.BEGIN_GROUP)
+                    else if (i == length(modelTerms))
+                        table$addFormat(rowKey=term, col=1, format=Cell.END_GROUP)
+                }
+
             } else {
-                table$addRow(rowKey='.', list(name='.'))
-                table$addFormat(col=1, rowKey='.', format=Cell.BEGIN_END_GROUP)
+                table$addRow(rowKey='...', list(name='...'))
+                table$addFormat(rowKey='...', col=1, format=Cell.BEGIN_END_GROUP)
             }
 
             table$addRow(rowKey='', list(name='Residuals'))
-            table$addFormat(col=1, rowKey='', format=Cell.BEGIN_END_GROUP)
+            table$addFormat(rowKey='', col=1, format=Cell.BEGIN_END_GROUP)
 
             if (self$options$ss == '1') {
                 table$setRefs('R')
@@ -337,16 +348,19 @@ ancovaClass <- R6::R6Class(
             errDF <- r[errIndex,'Df']
             errMS <- errSS / errDF
             totalSS <- sum(r[['Sum Sq']], na.rm=TRUE)
+            modelSS <- totalSS - errSS
 
             decomposed <- decomposeTerms(rowNames)
 
             for (rowKey in table$rowKeys) {
                 if (identical(rowKey, ''))
                     index <- rowCount
+                else if (identical(rowKey, '.'))
+                    index <- 0
                 else
                     index <- matchSet(rowKey, decomposed)
 
-                if (index != -1) {
+                if (index > 0) {
                     ss <- r[index, 'Sum Sq']
                     df <- r[index, 'Df']
                     ms <- ss / df
@@ -371,6 +385,20 @@ ancovaClass <- R6::R6Class(
                         F <- ''
                     if ( ! is.finite(p))
                         p <- ''
+                } else if (index == 0) {
+
+                    summ <- summary.lm(private$.model)
+                    fstat <- summ$fstatistic
+
+                    ss <- modelSS
+                    df <- unname(fstat[2])
+                    ms <- modelSS / df
+                    F  <- unname(fstat[1])
+                    p <- stats::pf(fstat[1], fstat[2], fstat[3], lower.tail=FALSE)
+                    e <- ''
+                    ep <- ''
+                    w <- ''
+
                 } else {
 
                     ss <- 0
@@ -519,7 +547,7 @@ ancovaClass <- R6::R6Class(
             rhs <- paste0('`', factors, '`', collapse=':')
             formula <- as.formula(paste0('.RES ~', rhs))
 
-            model <- stats::aov(formula, data)
+            model <- stats::lm(formula, data)
             summary <- stats::anova(model)
 
             table <- self$results$get('assump')$get('homo')

@@ -10,6 +10,7 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             factors = NULL,
             covs = NULL,
             effectSize = NULL,
+            modelTest = FALSE,
             modelTerms = NULL,
             ss = "3",
             homo = FALSE,
@@ -70,6 +71,10 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "partEta",
                     "omega"),
                 default=NULL)
+            private$..modelTest <- jmvcore::OptionBool$new(
+                "modelTest",
+                modelTest,
+                default=FALSE)
             private$..modelTerms <- jmvcore::OptionTerms$new(
                 "modelTerms",
                 modelTerms,
@@ -182,6 +187,7 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..factors)
             self$.addOption(private$..covs)
             self$.addOption(private$..effectSize)
+            self$.addOption(private$..modelTest)
             self$.addOption(private$..modelTerms)
             self$.addOption(private$..ss)
             self$.addOption(private$..homo)
@@ -204,6 +210,7 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         factors = function() private$..factors$value,
         covs = function() private$..covs$value,
         effectSize = function() private$..effectSize$value,
+        modelTest = function() private$..modelTest$value,
         modelTerms = function() private$..modelTerms$value,
         ss = function() private$..ss$value,
         homo = function() private$..homo$value,
@@ -225,6 +232,7 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..factors = NA,
         ..covs = NA,
         ..effectSize = NA,
+        ..modelTest = NA,
         ..modelTerms = NA,
         ..ss = NA,
         ..homo = NA,
@@ -544,6 +552,8 @@ ancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param effectSize one or more of \code{'eta'}, \code{'partEta'}, or
 #'   \code{'omega'}; use eta², partial eta², and omega² effect sizes,
 #'   respectively
+#' @param modelTest \code{TRUE} or \code{FALSE} (default); perform an overall
+#'   model test
 #' @param modelTerms a formula describing the terms to go into the model (not
 #'   necessary when providing a formula, see examples)
 #' @param ss \code{'1'}, \code{'2'} or \code{'3'} (default), the sum of
@@ -605,6 +615,7 @@ ancova <- function(
     factors = NULL,
     covs = NULL,
     effectSize = NULL,
+    modelTest = FALSE,
     modelTerms = NULL,
     ss = "3",
     homo = FALSE,
@@ -678,6 +689,7 @@ ancova <- function(
         factors = factors,
         covs = covs,
         effectSize = effectSize,
+        modelTest = modelTest,
         modelTerms = modelTerms,
         ss = ss,
         homo = homo,
