@@ -373,7 +373,8 @@ anovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
                 analysisId = analysisId,
                 revision = revision,
                 pause = NULL,
-                completeWhenFilled = TRUE)
+                completeWhenFilled = TRUE,
+                requiresMissings = FALSE)
         }))
 
 #' ANOVA
