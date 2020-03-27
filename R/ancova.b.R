@@ -711,7 +711,7 @@ ancovaClass <- R6::R6Class(
             p <- ggplot(data=emm, aes_string(x=names$x, y=names$y, color=names$lines, fill=names$lines, group=names$lines), inherit.aes = FALSE)
 
             if (self$options$emmPlotData)
-                p <- p + geom_point(data=data, aes_string(y=labels$y), alpha=0.3, position=jitterdodge)
+                p <- p + geom_point(data=data, aes(y=!!data[[labels$y]]), alpha=0.3, position=jitterdodge)
 
             p <- p + geom_line(size=.8, position=dodge)
 
