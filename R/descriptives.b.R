@@ -723,14 +723,6 @@ descriptivesClass <- R6::R6Class(
             labels <- image$state$labels
             splitBy <- self$options$splitBy
 
-            fill <- theme$fill[2]
-            color <- theme$color[1]
-            if (length(splitBy) == 2) {
-                formula <- as.formula(paste(". ~", names$s2))
-            } else if (length(splitBy) > 2) {
-                formula <- as.formula(paste(names$s3, "~", names$s2))
-            }
-
             if (self$options$hist && self$options$dens)
                 alpha <- 0.4
             else
@@ -738,8 +730,12 @@ descriptivesClass <- R6::R6Class(
 
             themeSpec <- NULL
             nBins <- 18
+            nSplits <- length(splitBy)
 
-            if (is.null(splitBy)) {
+            if (nSplits == 0) {
+
+                fill <- theme$fill[2]
+                color <- theme$color[1]
 
                 min <- min(data[names$x])
                 max <- max(data[names$x])
@@ -765,11 +761,11 @@ descriptivesClass <- R6::R6Class(
                 themeSpec <- theme(axis.text.y=element_blank(),
                                    axis.ticks.y=element_blank())
 
-            } else {
+            } else {  # if (nSplits > 0) {
 
-                data$s1 <- factor(data$s1, rev(levels(data$s1)))
+                data$s1rev <- factor(data$s1, rev(levels(data$s1)))
 
-                plot <- ggplot(data=data, aes_string(x=names$x, y=names$s1, fill=names$s1)) +
+                plot <- ggplot(data=data, aes_string(x='x', y='s1rev', fill='s1')) +
                     labs(x=labels$x, y=labels$s1) +
                     scale_y_discrete(expand = c(0.05, 0)) +
                     scale_x_continuous(expand = c(0.01, 0))
@@ -780,11 +776,14 @@ descriptivesClass <- R6::R6Class(
                 if (self$options$dens)
                     plot <- plot + ggridges::geom_density_ridges(scale=0.9, alpha=alpha)
 
+                if (nSplits == 2) {
+                    plot <- plot + facet_grid(cols=vars(s2))
+                } else if (nSplits > 2) {
+                    plot <- plot + facet_grid(cols=vars(s2), rows=vars(s3))
+                }
+
                 themeSpec <- theme(legend.position = 'none')
             }
-
-            if (length(splitBy) > 1)
-                plot <- plot + facet_grid(formula)
 
             plot <- plot + ggtheme + themeSpec
 
