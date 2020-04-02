@@ -818,7 +818,7 @@ anovaRMClass <- R6::R6Class(
 
             dataNumeric <- list()
             for (i in seq_along(varsNumeric))
-                dataNumeric[[varsNumeric[i]]] <- data[[varsNumeric[i]]]
+                dataNumeric[[varsNumeric[i]]] <- jmvcore::toNumeric(data[[varsNumeric[i]]])
 
             # Check all values
             allNAItems <- sapply(c(dataFactors, dataNumeric), function(x) all(is.na(x)))
