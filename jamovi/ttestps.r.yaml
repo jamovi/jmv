@@ -14,6 +14,7 @@ items:
           - hypothesis
           - ciWidth
           - bfPrior
+          - ciWidthES
 
       columns:
         - name: var1[stud]
@@ -69,17 +70,27 @@ items:
         - name: cil[stud]
           title: Lower
           type: number
-          visible: (ci && students)
+          visible: (ci && meanDiff && students)
 
         - name: ciu[stud]
           title: Upper
           type: number
-          visible: (ci && students)
+          visible: (ci && meanDiff && students)
 
         - name: es[stud]
           title: Cohen's d
           type: number
           visible: (effectSize && students)
+
+        - name: ciles[stud]
+          title: Lower
+          type: number
+          visible: (ciES && effectSize && students)
+
+        - name: ciues[stud]
+          title: Upper
+          type: number
+          visible: (ciES && effectSize && students)
 
         - name: var1[bf]
           title: ""
@@ -138,19 +149,31 @@ items:
         - name: cil[bf]
           title: Lower
           type: number
-          visible: (ci && bf)
+          visible: (ci && meanDiff && bf)
           content: ''
 
         - name: ciu[bf]
           title: Upper
           type: number
-          visible: (ci && bf)
+          visible: (ci && meanDiff && bf)
           content: ''
 
         - name: es[bf]
           title: Cohen's d
           type: number
           visible: (effectSize && bf)
+          content: ''
+
+        - name: ciles[bf]
+          title: Lower
+          type: number
+          visible: (ciES && effectSize && bf)
+          content: ''
+
+        - name: ciues[bf]
+          title: Upper
+          type: number
+          visible: (ciES && effectSize && bf)
           content: ''
 
         - name: var1[wilc]
@@ -201,17 +224,27 @@ items:
         - name: cil[wilc]
           title: Lower
           type: number
-          visible: (ci && wilcoxon)
+          visible: (ci && meanDiff && wilcoxon)
 
         - name: ciu[wilc]
           title: Upper
           type: number
-          visible: (ci && wilcoxon)
+          visible: (ci && meanDiff && wilcoxon)
 
         - name: es[wilc]
           title: Cohen's d
           type: number
           visible: (effectSize && wilcoxon)
+
+        - name: ciles[wilc]
+          title: Lower
+          type: number
+          visible: (ciES && effectSize && wilcoxon)
+
+        - name: ciues[wilc]
+          title: Upper
+          type: number
+          visible: (ciES && effectSize && wilcoxon)
 
     - name: norm
       title: Test of Normality (Shapiro-Wilk)

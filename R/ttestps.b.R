@@ -22,7 +22,8 @@ ttestPSClass <- R6::R6Class(
             else
                 Ha <- "two.sided"
 
-            confInt <- self$options$get("ciWidth")/100
+            confInt <- self$options$get("ciWidth") / 100
+            confIntES <- 1 - self$options$ciWidthES / 100
 
             pairs <- self$options$get('pairs')
 
@@ -64,6 +65,7 @@ ttestPSClass <- R6::R6Class(
                 pooledSD <- tryNaN(stats::sd(column1-column2))
                 sediff <- pooledSD/sqrt(n)
                 d <- (m1-m2)/pooledSD #Cohen's d
+                dCI <- psych::d.ci(d, n1=n, alpha=confIntES)
 
                 if (is.factor(column1) || is.factor(column2)) {
                     stud <- createError('One or both variables are not numeric')
@@ -82,9 +84,11 @@ ttestPSClass <- R6::R6Class(
                         'p[stud]'=stud$p.value,
                         'md[stud]'=stud$estimate,
                         'sed[stud]'=sediff,
-                        'es[stud]'=d,
                         'cil[stud]'=stud$conf.int[1],
-                        'ciu[stud]'=stud$conf.int[2]))
+                        'ciu[stud]'=stud$conf.int[2],
+                        'es[stud]'=d,
+                        "ciles[stud]"=dCI[1],
+                        "ciues[stud]"=dCI[3]))
 
                 } else {
                     ttestTable$setRow(rowKey=pair, list(
@@ -93,9 +97,11 @@ ttestPSClass <- R6::R6Class(
                         'p[stud]'='',
                         'md[stud]'='',
                         'sed[stud]'='',
-                        'es[stud]'='',
                         'cil[stud]'='',
-                        'ciu[stud]'=''))
+                        'ciu[stud]'='',
+                        'es[stud]'='',
+                        "ciles[stud]"='',
+                        "ciues[stud]"=''))
 
                     message <- extractErrorMessage(stud)
                     if (message == "not enough 'x' observations")
@@ -114,9 +120,11 @@ ttestPSClass <- R6::R6Class(
                         'p[wilc]'=wilc$p.value,
                         'md[wilc]'=wilc$estimate,
                         'sed[wilc]'=sediff,
-                        'es[wilc]'=d,
                         'cil[wilc]'=wilc$conf.int[1],
-                        'ciu[wilc]'=wilc$conf.int[2]))
+                        'ciu[wilc]'=wilc$conf.int[2],
+                        'es[wilc]'=d,
+                        "ciles[wilc]"=dCI[1],
+                        "ciues[wilc]"=dCI[3]))
 
                     if (nTies > 0) {
                         message <- paste0(nTies, ' pair(s) of values were tied')
@@ -131,9 +139,11 @@ ttestPSClass <- R6::R6Class(
                         'p[wilc]'='',
                         'md[wilc]'='',
                         'sed[wilc]'='',
-                        'es[wilc]'='',
                         'cil[wilc]'='',
-                        'ciu[wilc]'=''))
+                        'ciu[wilc]'='',
+                        'es[wilc]'='',
+                        "ciles[wilc]"='',
+                        "ciues[wilc]"=''))
 
                     message <- extractErrorMessage(wilc)
                     if (message == "not enough 'x' observations")
@@ -297,6 +307,15 @@ ttestPSClass <- R6::R6Class(
             ttestTable$getColumn('cil[bf]')$setSuperTitle(ciTitle)
             ttestTable$getColumn('ciu[wilc]')$setSuperTitle(ciTitle)
             ttestTable$getColumn('cil[wilc]')$setSuperTitle(ciTitle)
+
+            ciTitleES <- paste0(self$options$ciWidthES, '% Confidence Interval')
+
+            ttestTable$getColumn('ciues[stud]')$setSuperTitle(ciTitleES)
+            ttestTable$getColumn('ciles[stud]')$setSuperTitle(ciTitleES)
+            ttestTable$getColumn('ciues[bf]')$setSuperTitle(ciTitleES)
+            ttestTable$getColumn('ciles[bf]')$setSuperTitle(ciTitleES)
+            ttestTable$getColumn('ciues[wilc]')$setSuperTitle(ciTitleES)
+            ttestTable$getColumn('ciles[wilc]')$setSuperTitle(ciTitleES)
 
             if (hypothesis == 'oneGreater')
                 ttestTable$setNote("hyp", "H\u2090 Measure 1 > Measure 2")
