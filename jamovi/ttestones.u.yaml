@@ -94,19 +94,41 @@ children:
               - type: CheckBox
                 name: meanDiff
                 label: Mean difference
+                children:
+                  - type: LayoutBox
+                    children:
+                    - type: CheckBox
+                      name: ci
+                      label: Confidence interval
+                      enable: (meanDiff)
+                      style: inline
+                      verticalAlignment: center
+                      children:
+                        - type: TextBox
+                          name: ciWidth
+                          label: ""
+                          suffix: "%"
+                          format: number
+                          enable: (meanDiff && ci)
               - type: CheckBox
                 name: effectSize
                 label: Effect size
-              - type: CheckBox
-                name: ci
-                label: Confidence interval
                 children:
-                  - type: TextBox
-                    name: ciWidth
-                    label: Interval
-                    suffix: '%'
-                    format: number
-                    enable: (ci)
+                  - type: LayoutBox
+                    children:
+                    - type: CheckBox
+                      name: ciES
+                      label: Confidence interval
+                      enable: (effectSize)
+                      style: inline
+                      verticalAlignment: center
+                      children:
+                        - type: TextBox
+                          name: ciWidthES
+                          label: ""
+                          suffix: "%"
+                          format: number
+                          enable: (effectSize && ciES)
               - type: CheckBox
                 name: desc
                 label: Descriptives

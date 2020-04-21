@@ -16,9 +16,11 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             norm = FALSE,
             qq = FALSE,
             meanDiff = FALSE,
-            effectSize = FALSE,
             ci = FALSE,
             ciWidth = 95,
+            effectSize = FALSE,
+            ciES = FALSE,
+            ciWidthES = 95,
             desc = FALSE,
             plots = FALSE,
             miss = "perAnalysis",
@@ -80,10 +82,6 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "meanDiff",
                 meanDiff,
                 default=FALSE)
-            private$..effectSize <- jmvcore::OptionBool$new(
-                "effectSize",
-                effectSize,
-                default=FALSE)
             private$..ci <- jmvcore::OptionBool$new(
                 "ci",
                 ci,
@@ -91,6 +89,20 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..ciWidth <- jmvcore::OptionNumber$new(
                 "ciWidth",
                 ciWidth,
+                min=50,
+                max=99.9,
+                default=95)
+            private$..effectSize <- jmvcore::OptionBool$new(
+                "effectSize",
+                effectSize,
+                default=FALSE)
+            private$..ciES <- jmvcore::OptionBool$new(
+                "ciES",
+                ciES,
+                default=FALSE)
+            private$..ciWidthES <- jmvcore::OptionNumber$new(
+                "ciWidthES",
+                ciWidthES,
                 min=50,
                 max=99.9,
                 default=95)
@@ -125,9 +137,11 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..norm)
             self$.addOption(private$..qq)
             self$.addOption(private$..meanDiff)
-            self$.addOption(private$..effectSize)
             self$.addOption(private$..ci)
             self$.addOption(private$..ciWidth)
+            self$.addOption(private$..effectSize)
+            self$.addOption(private$..ciES)
+            self$.addOption(private$..ciWidthES)
             self$.addOption(private$..desc)
             self$.addOption(private$..plots)
             self$.addOption(private$..miss)
@@ -144,9 +158,11 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         norm = function() private$..norm$value,
         qq = function() private$..qq$value,
         meanDiff = function() private$..meanDiff$value,
-        effectSize = function() private$..effectSize$value,
         ci = function() private$..ci$value,
         ciWidth = function() private$..ciWidth$value,
+        effectSize = function() private$..effectSize$value,
+        ciES = function() private$..ciES$value,
+        ciWidthES = function() private$..ciWidthES$value,
         desc = function() private$..desc$value,
         plots = function() private$..plots$value,
         miss = function() private$..miss$value,
@@ -162,9 +178,11 @@ ttestOneSOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..norm = NA,
         ..qq = NA,
         ..meanDiff = NA,
-        ..effectSize = NA,
         ..ci = NA,
         ..ciWidth = NA,
+        ..effectSize = NA,
+        ..ciES = NA,
+        ..ciWidthES = NA,
         ..desc = NA,
         ..plots = NA,
         ..miss = NA,
@@ -196,7 +214,8 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "testValue",
                     "miss",
                     "bfPrior",
-                    "ciWidth"),
+                    "ciWidth",
+                    "ciWidthES"),
                 columns=list(
                     list(
                         `name`="var[stud]", 
@@ -208,8 +227,8 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     list(
                         `name`="name[stud]", 
                         `title`="", 
-                        `content`="Student's t", 
                         `type`="text", 
+                        `content`="Student's t", 
                         `visible`="(students)"),
                     list(
                         `name`="stat[stud]", 
@@ -242,17 +261,27 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="cil[stud]", 
                         `title`="Lower", 
                         `type`="number", 
-                        `visible`="(ci && students)"),
+                        `visible`="(ci && meanDiff && students)"),
                     list(
                         `name`="ciu[stud]", 
                         `title`="Upper", 
                         `type`="number", 
-                        `visible`="(ci && students)"),
+                        `visible`="(ci && meanDiff && students)"),
                     list(
                         `name`="es[stud]", 
                         `title`="Cohen's d", 
                         `type`="number", 
                         `visible`="(effectSize && students)"),
+                    list(
+                        `name`="ciles[stud]", 
+                        `title`="Lower", 
+                        `type`="number", 
+                        `visible`="(ciES && effectSize && students)"),
+                    list(
+                        `name`="ciues[stud]", 
+                        `title`="Upper", 
+                        `type`="number", 
+                        `visible`="(ciES && effectSize && students)"),
                     list(
                         `name`="var[bf]", 
                         `title`="", 
@@ -299,28 +328,34 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(meanDiff && bf)", 
                         `content`=""),
                     list(
-                        `name`="sed[bf]", 
-                        `title`="SE difference", 
-                        `type`="number", 
-                        `visible`="(meanDiff && bf)", 
-                        `content`=""),
-                    list(
                         `name`="cil[bf]", 
                         `title`="Lower", 
                         `type`="number", 
-                        `visible`="(ci && bf)", 
+                        `visible`="(ci && meanDiff && bf)", 
                         `content`=""),
                     list(
                         `name`="ciu[bf]", 
                         `title`="Upper", 
                         `type`="number", 
-                        `visible`="(ci && bf)", 
+                        `visible`="(ci && meanDiff && bf)", 
                         `content`=""),
                     list(
                         `name`="es[bf]", 
                         `title`="Cohen's d", 
                         `type`="number", 
                         `visible`="(effectSize && bf)", 
+                        `content`=""),
+                    list(
+                        `name`="ciles[bf]", 
+                        `title`="Lower", 
+                        `type`="number", 
+                        `visible`="(ciES && effectSize && bf)", 
+                        `content`=""),
+                    list(
+                        `name`="ciues[bf]", 
+                        `title`="Upper", 
+                        `type`="number", 
+                        `visible`="(ciES && effectSize && bf)", 
                         `content`=""),
                     list(
                         `name`="var[wilc]", 
@@ -332,8 +367,8 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     list(
                         `name`="name[wilc]", 
                         `title`="", 
-                        `content`="Wilcoxon W", 
                         `type`="text", 
+                        `content`="Wilcoxon W", 
                         `visible`="(wilcoxon || mann)"),
                     list(
                         `name`="stat[wilc]", 
@@ -361,17 +396,27 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="cil[wilc]", 
                         `title`="Lower", 
                         `type`="number", 
-                        `visible`="(ci && (wilcoxon || mann))"),
+                        `visible`="(ci && meanDiff && (wilcoxon || mann))"),
                     list(
                         `name`="ciu[wilc]", 
                         `title`="Upper", 
                         `type`="number", 
-                        `visible`="(ci && (wilcoxon || mann))"),
+                        `visible`="(ci && meanDiff && (wilcoxon || mann))"),
                     list(
                         `name`="es[wilc]", 
                         `title`="Cohen's d", 
                         `type`="number", 
-                        `visible`="(effectSize && (wilcoxon || mann))"))))
+                        `visible`="(effectSize && (wilcoxon || mann))"),
+                    list(
+                        `name`="ciles[wilc]", 
+                        `title`="Lower", 
+                        `type`="number", 
+                        `visible`="(ciES && effectSize && (wilcoxon || mann))"),
+                    list(
+                        `name`="ciues[wilc]", 
+                        `title`="Upper", 
+                        `type`="number", 
+                        `visible`="(ciES && effectSize && (wilcoxon || mann))"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="normality",
@@ -526,12 +571,16 @@ ttestOneSBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   residuals
 #' @param meanDiff \code{TRUE} or \code{FALSE} (default), provide means and
 #'   standard deviations
-#' @param effectSize \code{TRUE} or \code{FALSE} (default), provide Cohen's d
-#'   effect sizes
 #' @param ci \code{TRUE} or \code{FALSE} (default), provide confidence
 #'   intervals for the mean difference
 #' @param ciWidth a number between 50 and 99.9 (default: 95), the width of
 #'   confidence intervals
+#' @param effectSize \code{TRUE} or \code{FALSE} (default), provide Cohen's d
+#'   effect sizes
+#' @param ciES \code{TRUE} or \code{FALSE} (default), provide confidence
+#'   intervals for the effect-sizes
+#' @param ciWidthES a number between 50 and 99.9 (default: 95), the width of
+#'   confidence intervals for the effect sizes
 #' @param desc \code{TRUE} or \code{FALSE} (default), provide descriptive
 #'   statistics
 #' @param plots \code{TRUE} or \code{FALSE} (default), provide descriptive
@@ -569,9 +618,11 @@ ttestOneS <- function(
     norm = FALSE,
     qq = FALSE,
     meanDiff = FALSE,
-    effectSize = FALSE,
     ci = FALSE,
     ciWidth = 95,
+    effectSize = FALSE,
+    ciES = FALSE,
+    ciWidthES = 95,
     desc = FALSE,
     plots = FALSE,
     miss = "perAnalysis",
@@ -598,9 +649,11 @@ ttestOneS <- function(
         norm = norm,
         qq = qq,
         meanDiff = meanDiff,
-        effectSize = effectSize,
         ci = ci,
         ciWidth = ciWidth,
+        effectSize = effectSize,
+        ciES = ciES,
+        ciWidthES = ciWidthES,
         desc = desc,
         plots = plots,
         miss = miss,

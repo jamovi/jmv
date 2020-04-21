@@ -16,6 +16,7 @@ ttestOneSClass <- R6::R6Class(
 
             testValue <- self$options$get("testValue")
             cl <- self$options$get("ciWidth")/100
+            confIntES <- 1 - self$options$ciWidthES / 100
 
             ## Listwise NA cleanup
             if (naHandling == "listwise")
@@ -47,6 +48,7 @@ ttestOneSClass <- R6::R6Class(
                 stdDev <- tryNaN(sd(column))
                 se <- stdDev/sqrt(n)
                 d <- (m-testValue)/stdDev #Cohen's d
+                dCI <- psych::d.ci(d, n1=n, alpha=confIntES)
 
                 if (is.na(m))
                     m <- NaN
@@ -64,7 +66,8 @@ ttestOneSClass <- R6::R6Class(
                     else if (any(is.infinite(column)))
                         res <- createError('Variable contains infinite values')
                     else
-                        res <- try(t.test(column, mu=testValue, paired=FALSE, conf.level=cl, alternative=Ha), silent=TRUE)
+                        res <- try(t.test(column, mu=testValue, paired=FALSE, conf.level=cl,
+                                          alternative=Ha), silent=TRUE)
 
                     if ( ! isError(res)) {
 
@@ -73,9 +76,11 @@ ttestOneSClass <- R6::R6Class(
                             "df[stud]"=res$parameter,
                             "p[stud]"=res$p.value,
                             "md[stud]"=res$estimate - testValue,
-                            "es[stud]"=d,
                             "cil[stud]"=res$conf.int[1] - testValue,
-                            "ciu[stud]"=res$conf.int[2] - testValue))
+                            "ciu[stud]"=res$conf.int[2] - testValue,
+                            "es[stud]"=d,
+                            "ciles[stud]"=dCI[1],
+                            "ciues[stud]"=dCI[3]))
 
                     } else {
 
@@ -84,9 +89,11 @@ ttestOneSClass <- R6::R6Class(
                             "df[stud]"='',
                             "p[stud]"='',
                             "md[stud]"='',
-                            "es[stud]"='',
                             "cil[stud]"='',
-                            "ciu[stud]"=''))
+                            "ciu[stud]"='',
+                            "es[stud]"='',
+                            "ciles[stud]"='',
+                            "ciues[stud]"=''))
 
                         message <- extractErrorMessage(res)
                         if (message == "not enough 'x' observations")
@@ -104,7 +111,11 @@ ttestOneSClass <- R6::R6Class(
                     else if (length(column) == 0)
                         res <- createError('Variable does not contain enough observations')
                     else
-                        res <- try(suppressWarnings(wilcox.test(column, mu=testValue, alternative=Ha, paired=FALSE, conf.int=TRUE, conf.level=cl)), silent=TRUE)
+                        res <- try(suppressWarnings(wilcox.test(column, mu=testValue,
+                                                                alternative=Ha,
+                                                                paired=FALSE,
+                                                                conf.int=TRUE,
+                                                                conf.level=cl)), silent=TRUE)
 
                     if ( ! isError(res)) {
 
@@ -112,9 +123,11 @@ ttestOneSClass <- R6::R6Class(
                             "stat[wilc]"=res$statistic,
                             "p[wilc]"=res$p.value,
                             "md[wilc]"=res$estimate - testValue,
-                            "es[wilc]"=d,
                             "cil[wilc]"=res$conf.int[1],
-                            "ciu[wilc]"=res$conf.int[2]))
+                            "ciu[wilc]"=res$conf.int[2],
+                            "es[wilc]"=d,
+                            "ciles[wilc]"=dCI[1],
+                            "ciues[wilc]"=dCI[3]))
 
                     } else {
 
@@ -122,9 +135,11 @@ ttestOneSClass <- R6::R6Class(
                             "stat[wilc]"=NaN,
                             "p[wilc]"='',
                             "md[wilc]"='',
-                            "es[wilc]"='',
                             "cil[wilc]"='',
-                            "ciu[wilc]"=''))
+                            "ciu[wilc]"='',
+                            "es[wilc]"='',
+                            "ciles[wilc]"='',
+                            "ciues[wilc]"=''))
 
                         message <- extractErrorMessage(res)
                         if (message == 'cannot compute confidence interval when all observations are tied')
@@ -136,12 +151,14 @@ ttestOneSClass <- R6::R6Class(
                 # Normality test table
                 if (n < 3) {
 
-                    normality$addFootnote(rowNo=i, "w", "Too few observations (N < 3) to compute statistic")
+                    normality$addFootnote(rowNo=i, "w",
+                                          "Too few observations (N < 3) to compute statistic")
                     res <- list(statistic=NaN, p.value='')
 
                 } else if (n > 5000) {
 
-                    normality$addFootnote(rowNo=i, "w", "Too many observations (N > 5000) to compute statistic")
+                    normality$addFootnote(rowNo=i, "w",
+                                          "Too many observations (N > 5000) to compute statistic")
                     res <- list(statistic=NaN, p.value='')
 
                 }
@@ -171,7 +188,8 @@ ttestOneSClass <- R6::R6Class(
                         cie=tail * tryNaN(sd(column)) / sqrt(length(column)),
                         type='mean',
                         var=name), stringsAsFactors=FALSE)
-                    plotData <- rbind(plotData, list(stat=med, cie=NA, type='median', var=name), stringsAsFactors=FALSE)
+                    plotData <- rbind(plotData, list(stat=med, cie=NA, type='median', var=name),
+                                      stringsAsFactors=FALSE)
 
                     if (all(is.na(plotData$stat)))
                         image$setState(NULL)
@@ -198,7 +216,8 @@ ttestOneSClass <- R6::R6Class(
                         data <- column - testValue
                         rscale <- self$options$get('bfPrior')
 
-                        res <- try(BayesFactor::ttestBF(x=data, nullInterval=nullInterval, rscale=rscale), silent=TRUE)
+                        res <- try(BayesFactor::ttestBF(x=data, nullInterval=nullInterval,
+                                                        rscale=rscale), silent=TRUE)
                     }
 
                     if (isError(res)) {
@@ -249,6 +268,15 @@ ttestOneSClass <- R6::R6Class(
             table$getColumn('ciu[wilc]')$setSuperTitle(ciTitle)
             table$getColumn('cil[wilc]')$setSuperTitle(ciTitle)
 
+            ciTitleES <- paste0(self$options$ciWidthES, '% Confidence Interval')
+
+            table$getColumn('ciues[stud]')$setSuperTitle(ciTitleES)
+            table$getColumn('ciles[stud]')$setSuperTitle(ciTitleES)
+            table$getColumn('ciues[bf]')$setSuperTitle(ciTitleES)
+            table$getColumn('ciles[bf]')$setSuperTitle(ciTitleES)
+            table$getColumn('ciues[wilc]')$setSuperTitle(ciTitleES)
+            table$getColumn('ciles[wilc]')$setSuperTitle(ciTitleES)
+
             if (hypothesis == 'dt' && testValue == 0)
                 table$setNote("hyp", NULL)
             else if (hypothesis == 'dt')
@@ -268,13 +296,17 @@ ttestOneSClass <- R6::R6Class(
             pd <- position_dodge(0.2)
 
             plot <- ggplot(data=image$state, aes(x=var, y=stat, shape=type)) +
-                geom_errorbar(aes(x=var, ymin=stat-cie, ymax=stat+cie, shape=type, width=.1), size=.8, colour=theme$color[1], position=pd) +
-                geom_point(aes(x=var, y=stat, colour=type, shape=type), fill=theme$fill[1], size=3, colour=theme$color[1], position=pd) +
+                geom_errorbar(aes(x=var, ymin=stat-cie, ymax=stat+cie, shape=type, width=.1),
+                              size=.8, colour=theme$color[1], position=pd) +
+                geom_point(aes(x=var, y=stat, colour=type, shape=type),
+                           fill=theme$fill[1], size=3, colour=theme$color[1], position=pd) +
                 labs(x='', y='') +
                 expand_limits(y=0) +
-                scale_shape_manual(name='', values=c(mean=21, median=22), labels=c(mean=paste0('Mean (', ciw, '% CI)'), median='Median')) +
-                ggtheme + theme(plot.title = ggplot2::element_text(margin=ggplot2::margin(b = 5.5 * 1.2)),
-                              plot.margin = ggplot2::margin(5.5, 5.5, 5.5, 5.5))
+                scale_shape_manual(name='', values=c(mean=21, median=22),
+                                   labels=c(mean=paste0('Mean (', ciw, '% CI)'), median='Median')) +
+                ggtheme +
+                theme(plot.title = ggplot2::element_text(margin=ggplot2::margin(b = 5.5 * 1.2)),
+                      plot.margin = ggplot2::margin(5.5, 5.5, 5.5, 5.5))
 
             return(plot)
         },
