@@ -15,6 +15,7 @@ items:
         - ciWidth
         - miss
         - bfPrior
+        - ciWidthES
 
       columns:
         - name: var[stud]
@@ -65,17 +66,27 @@ items:
         - name: cil[stud]
           title: Lower
           type: number
-          visible: (ci && students)
+          visible: (ci && meanDiff && students)
 
         - name: ciu[stud]
           title: Upper
           type: number
-          visible: (ci && students)
+          visible: (ci && meanDiff && students)
 
         - name: es[stud]
           title: Cohen's d
           type: number
           visible: (effectSize && students)
+
+        - name: ciles[stud]
+          title: Lower
+          type: number
+          visible: (ciES && effectSize && students)
+
+        - name: ciues[stud]
+          title: Upper
+          type: number
+          visible: (ciES && effectSize && students)
 
         - name: var[bf]
           title: ""
@@ -129,19 +140,31 @@ items:
         - name: cil[bf]
           title: Lower
           type: number
-          visible: (ci && bf)
+          visible: (ci && meanDiff && bf)
           content: ''
 
         - name: ciu[bf]
           title: Upper
           type: number
-          visible: (ci && bf)
+          visible: (ci && meanDiff && bf)
           content: ''
 
         - name: es[bf]
           title: Cohen's d
           type: number
           visible: (effectSize && bf)
+          content: ''
+
+        - name: ciles[bf]
+          title: Lower
+          type: number
+          visible: (ciES && effectSize && bf)
+          content: ''
+
+        - name: ciues[bf]
+          title: Upper
+          type: number
+          visible: (ciES && effectSize && bf)
           content: ''
 
         - name: var[welc]
@@ -191,17 +214,27 @@ items:
         - name: cil[welc]
           title: Lower
           type: number
-          visible: (ci && welchs)
+          visible: (ci && meanDiff && welchs)
 
         - name: ciu[welc]
           title: Upper
           type: number
-          visible: (ci && welchs)
+          visible: (ci && meanDiff && welchs)
 
         - name: es[welc]
           title: Cohen's d
           type: number
           visible: (effectSize && welchs)
+
+        - name: ciles[welc]
+          title: Lower
+          type: number
+          visible: (ciES && effectSize && welchs)
+
+        - name: ciues[welc]
+          title: Upper
+          type: number
+          visible: (ciES && effectSize && welchs)
 
         - name: var[mann]
           title: ""
@@ -246,17 +279,27 @@ items:
         - name: cil[mann]
           title: Lower
           type: number
-          visible: (ci && mann)
+          visible: (ci && meanDiff && mann)
 
         - name: ciu[mann]
           title: Upper
           type: number
-          visible: (ci && mann)
+          visible: (ci && meanDiff && mann)
 
         - name: es[mann]
           title: Cohen's d
           type: number
           visible: (effectSize && mann)
+
+        - name: ciles[mann]
+          title: Lower
+          type: number
+          visible: (ciES && effectSize && mann)
+
+        - name: ciues[mann]
+          title: Upper
+          type: number
+          visible: (ciES && effectSize && mann)
 
     - name: assum
       title: Assumptions

@@ -24,25 +24,30 @@ ttestISClass <- R6::R6Class(
             eqvTable <- self$results$assum$get('eqv')
 
             confInt <- self$options$ciWidth / 100
+            confIntES <- 1 - self$options$ciWidthES / 100
 
             if (any(depVarNames == groupVarName))
-                jmvcore::reject("Grouping variable '{a}' must not also be a dependent variable", code="a_is_dependent_variable", a=groupVarName)
+                jmvcore::reject("Grouping variable '{a}' must not also be a dependent variable",
+                                code="a_is_dependent_variable", a=groupVarName)
 
             # exclude rows with missings in the grouping variable
             data <- data[ ! is.na(data[[groupVarName]]),]
 
-            #if (dimn(data)[1] == 0)
-            #    jmvcore::reject("Grouping variable '{a}' must not also be a dependent variable", code="a_is_dependent_variable", a=groupVarName)
+            # if (dimn(data)[1] == 0)
+            #    jmvcore::reject("Grouping variable '{a}' must not also be a dependent variable",
+            #                    code="a_is_dependent_variable", a=groupVarName)
 
             groupLevels <- base::levels(data[[groupVarName]])
 
             if (length(groupLevels) != 2)
-                jmvcore::reject("Grouping variable '{a}' must have exactly 2 levels", code="grouping_var_must_have_2_levels", a=groupVarName)
+                jmvcore::reject("Grouping variable '{a}' must have exactly 2 levels",
+                                code="grouping_var_must_have_2_levels", a=groupVarName)
 
             if (self$options$miss == "listwise") {
                 data <- naOmit(data)
                 if (dim(data)[1] == 0)
-                    jmvcore::reject("Grouping variable '{a}' has less than 2 levels after missing values are excluded", code="grouping_var_must_have_2_levels", a=groupVarName)
+                    jmvcore::reject("Grouping variable '{a}' has less than 2 levels after missing values are excluded",
+                                    code="grouping_var_must_have_2_levels", a=groupVarName)
             }
 
             ## Hypothesis options checking
@@ -73,6 +78,7 @@ ttestISClass <- R6::R6Class(
                 sediffWELC <- tryNaN(sqrt((v[1]/n[1])+(v[2]/n[2])))
 
                 d <- (m[1]-m[2])/sqrt(pooledVAR) # Cohen's d
+                dCI <- psych::d.ci(d, n1=n[1], n2=n[2], alpha=confIntES)
 
                 n[is.na(n)] <- 0
                 m[is.na(m)] <- NaN
@@ -115,7 +121,8 @@ ttestISClass <- R6::R6Class(
                     else if (any(is.infinite(dataTTest$dep)))
                         res <- createError('Variable contains infinite values')
                     else
-                        res <- try(t.test(dep ~ group, data=dataTTest, var.equal=TRUE, paired=FALSE, alternative=Ha, conf.level=confInt), silent=TRUE)
+                        res <- try(t.test(dep ~ group, data=dataTTest, var.equal=TRUE, paired=FALSE,
+                                          alternative=Ha, conf.level=confInt), silent=TRUE)
 
                     if (isError(res)) {
 
@@ -125,9 +132,11 @@ ttestISClass <- R6::R6Class(
                             "p[stud]"='',
                             "md[stud]"='',
                             "sed[stud]"='',
-                            "es[stud]"='',
                             "cil[stud]"='',
-                            "ciu[stud]"=''))
+                            "ciu[stud]"='',
+                            "es[stud]"='',
+                            "ciles[stud]"='',
+                            "ciues[stud]"=''))
 
                         message <- extractErrorMessage(res)
                         if (message == 'grouping factor must have exactly 2 levels')
@@ -147,14 +156,17 @@ ttestISClass <- R6::R6Class(
                             "p[stud]"=res$p.value,
                             "md[stud]"=res$estimate[1]-res$estimate[2],
                             "sed[stud]"=sediffSTUD,
-                            "es[stud]"=d,
                             "cil[stud]"=res$conf.int[1],
-                            "ciu[stud]"=res$conf.int[2]))
+                            "ciu[stud]"=res$conf.int[2],
+                            "es[stud]"=d,
+                            "ciles[stud]"=dCI[1],
+                            "ciues[stud]"=dCI[3]))
                     }
 
                     # ## Inform if a student's t-test is appropriate using Levene's test
                     if (!isError(levene) && !is.na(levene[1,"Pr(>F)"]) && levene[1,"Pr(>F)"] < .05)
-                        ttestTable$addFootnote(rowKey=depName, "stat[stud]", "Levene's test is significant (p < .05), suggesting a violation of the assumption of equal variances")
+                        ttestTable$addFootnote(rowKey=depName, "stat[stud]",
+                                               "Levene's test is significant (p < .05), suggesting a violation of the assumption of equal variances")
                 }
 
                 if (self$options$welchs) {
@@ -164,7 +176,8 @@ ttestISClass <- R6::R6Class(
                     else if (any(is.infinite(dataTTest$dep)))
                         res <- createError('Variable contains infinite values')
                     else
-                        res <- try(t.test(dep ~ group, data=dataTTest, var.equal=FALSE, paired=FALSE, alternative=Ha, conf.level=confInt), silent=TRUE)
+                        res <- try(t.test(dep ~ group, data=dataTTest, var.equal=FALSE, paired=FALSE,
+                                          alternative=Ha, conf.level=confInt), silent=TRUE)
 
                     if ( ! isError(res)) {
 
@@ -174,9 +187,11 @@ ttestISClass <- R6::R6Class(
                             "p[welc]"=res$p.value,
                             "md[welc]"=res$estimate[1]-res$estimate[2],
                             "sed[welc]"=sediffWELC,
-                            "es[welc]"=d,
                             "cil[welc]"=res$conf.int[1],
-                            "ciu[welc]"=res$conf.int[2]))
+                            "ciu[welc]"=res$conf.int[2],
+                            "es[welc]"=d,
+                            "ciles[welc]"=dCI[1],
+                            "ciues[welc]"=dCI[3]))
 
                     } else {
 
@@ -186,9 +201,11 @@ ttestISClass <- R6::R6Class(
                             "p[welc]"='',
                             "md[welc]"='',
                             "sed[welc]"='',
-                            "es[welc]"='',
                             "cil[welc]"='',
-                            "ciu[welc]"=''))
+                            "ciu[welc]"='',
+                            "es[welc]"='',
+                            "ciles[welc]"='',
+                            "ciues[welc]"=''))
 
                         message <- extractErrorMessage(res)
                         if (message == 'grouping factor must have exactly 2 levels')
@@ -268,9 +285,11 @@ ttestISClass <- R6::R6Class(
                             "p[mann]"=res$p.value,
                             "md[mann]"=mm,
                             "sed[mann]"='',
-                            "es[mann]"=d,
                             "cil[mann]"=cil,
-                            "ciu[mann]"=ciu))
+                            "ciu[mann]"=ciu,
+                            "es[mann]"=d,
+                            "ciles[mann]"=dCI[1],
+                            "ciues[mann]"=dCI[3]))
 
                     } else {
 
@@ -280,9 +299,11 @@ ttestISClass <- R6::R6Class(
                             "p[mann]"='',
                             "md[mann]"='',
                             "sed[mann]"='',
-                            "es[mann]"='',
                             "cil[mann]"='',
-                            "ciu[mann]"=''))
+                            "ciu[mann]"='',
+                            "es[mann]"='',
+                            "ciles[mann]"='',
+                            "ciues[mann]"=''))
 
                         message <- extractErrorMessage(res)
                         if (message == 'grouping factor must have exactly 2 levels')
@@ -367,7 +388,8 @@ ttestISClass <- R6::R6Class(
 
                         rscale <- self$options$bfPrior
 
-                        res <- try(BayesFactor::ttestBF(formula=dep ~ group, data=dataTTest, paired=FALSE, nullInterval=nullInterval, rscale=rscale), silent=TRUE)
+                        res <- try(BayesFactor::ttestBF(formula=dep ~ group, data=dataTTest, paired=FALSE,
+                                                        nullInterval=nullInterval, rscale=rscale), silent=TRUE)
                     }
 
                     if (isError(res)) {
@@ -420,9 +442,12 @@ ttestISClass <- R6::R6Class(
                         ciWidth <- self$options$ciWidth
                         tail <- qnorm(1 - (100 - ciWidth) / 200)
 
-                        means <- aggregate(dataTTest$dep, by=list(dataTTest$group), function(x) tryNaN(mean(x)), simplify=FALSE)
-                        cies  <- aggregate(dataTTest$dep, by=list(dataTTest$group), function(x) { tail * tryNaN(sd(x)) / sqrt(length(x)) }, simplify=FALSE)
-                        medians <- aggregate(dataTTest$dep, by=list(dataTTest$group), function(x) tryNaN(median(x)), simplify=FALSE)
+                        means <- aggregate(dataTTest$dep, by=list(dataTTest$group),
+                                           function(x) tryNaN(mean(x)), simplify=FALSE)
+                        cies  <- aggregate(dataTTest$dep, by=list(dataTTest$group),
+                                           function(x) { tail * tryNaN(sd(x)) / sqrt(length(x)) }, simplify=FALSE)
+                        medians <- aggregate(dataTTest$dep, by=list(dataTTest$group),
+                                             function(x) tryNaN(median(x)), simplify=FALSE)
 
                         meanPlotData <- data.frame(group=means$Group.1)
                         meanPlotData <- cbind(meanPlotData, stat=unlist(means$x))
@@ -471,6 +496,16 @@ ttestISClass <- R6::R6Class(
             table$getColumn('ciu[mann]')$setSuperTitle(ciTitle)
             table$getColumn('cil[mann]')$setSuperTitle(ciTitle)
 
+            ciTitleES <- paste0(self$options$ciWidthES, '% Confidence Interval')
+            table$getColumn('ciues[stud]')$setSuperTitle(ciTitleES)
+            table$getColumn('ciles[stud]')$setSuperTitle(ciTitleES)
+            table$getColumn('ciues[bf]')$setSuperTitle(ciTitleES)
+            table$getColumn('ciles[bf]')$setSuperTitle(ciTitleES)
+            table$getColumn('ciues[welc]')$setSuperTitle(ciTitleES)
+            table$getColumn('ciles[welc]')$setSuperTitle(ciTitleES)
+            table$getColumn('ciues[mann]')$setSuperTitle(ciTitleES)
+            table$getColumn('ciles[mann]')$setSuperTitle(ciTitleES)
+
             if (hypothesis == 'oneGreater')
                 table$setNote("hyp", jmvcore::format("H\u2090 {} > {}", groups[1], groups[2]))
             else if (hypothesis == 'twoGreater')
@@ -490,12 +525,15 @@ ttestISClass <- R6::R6Class(
             pd <- position_dodge(0.2)
 
             plot <- ggplot(data=image$state, aes(x=group, y=stat, shape=type)) +
-                geom_errorbar(aes(x=group, ymin=stat-cie, ymax=stat+cie, width=.1), size=.8, colour=theme$color[2], position=pd) +
-                geom_point(aes(x=group, y=stat, shape=type), color=theme$color[1], fill=theme$fill[1], size=3, position=pd) +
+                geom_errorbar(aes(x=group, ymin=stat-cie, ymax=stat+cie, width=.1),
+                              size=.8, colour=theme$color[2], position=pd) +
+                geom_point(aes(x=group, y=stat, shape=type), color=theme$color[1],
+                           fill=theme$fill[1], size=3, position=pd) +
                 labs(x=groupName, y=image$key) +
-                scale_shape_manual(name='', values=c(mean=21, median=22), labels=c(mean=paste0('Mean (', ciw, '% CI)'), median='Median')) +
+                scale_shape_manual(name='', values=c(mean=21, median=22),
+                                   labels=c(mean=paste0('Mean (', ciw, '% CI)'), median='Median')) +
                 ggtheme + theme(plot.title = ggplot2::element_text(margin=ggplot2::margin(b = 5.5 * 1.2)),
-                              plot.margin = ggplot2::margin(5.5, 5.5, 5.5, 5.5))
+                                plot.margin = ggplot2::margin(5.5, 5.5, 5.5, 5.5))
 
             return(plot)
         },

@@ -206,16 +206,6 @@ options:
           R: >
             `TRUE` or `FALSE` (default), provide means and standard errors
 
-    - name: effectSize
-      title: Effect Size
-      type: Bool
-      default: false
-      description:
-          ui: >
-            provide effect-sizes (Cohen's D).
-          R: >
-            `TRUE` or `FALSE` (default), provide effect sizes
-
     - name: ci
       title: Confidence Interval
       type: Bool
@@ -238,6 +228,39 @@ options:
           R: >
             a number between 50 and 99.9 (default: 95), the width of confidence
             intervals
+
+    - name: effectSize
+      title: Effect Size
+      type: Bool
+      default: false
+      description:
+          ui: >
+            provide effect-sizes (Cohen's D).
+          R: >
+            `TRUE` or `FALSE` (default), provide effect sizes
+
+    - name: ciES
+      title: Confidence Interval
+      type: Bool
+      default: false
+      description:
+          ui: >
+            provide confidence intervals for the effect-sizes
+          R: >
+            `TRUE` or `FALSE` (default), provide confidence intervals for the effect-sizes
+
+    - name: ciWidthES
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          ui: >
+            the confidence interval width for the effect-sizes.
+          R: >
+            a number between 50 and 99.9 (default: 95), the width of confidence
+            intervals for the effect sizes
 
     - name: desc
       title: Descriptives Table
