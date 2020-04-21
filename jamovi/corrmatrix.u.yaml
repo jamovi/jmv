@@ -29,6 +29,7 @@ children:
         cell:
             column: 0
             row: 0
+        stretchFactor: 1
         children:
           - type: CheckBox
             name: pearson
@@ -47,6 +48,7 @@ children:
         cell:
             column: 1
             row: 0
+        stretchFactor: 1
         children:
           - type: CheckBox
             name: sig
@@ -74,6 +76,7 @@ children:
         cell:
             column: 0
             row: 1
+        stretchFactor: 1
         children:
           - type: RadioButton
             name: hypothesis_corr
@@ -96,6 +99,7 @@ children:
         cell:
             column: 1
             row: 1
+        stretchFactor: 1
         children:
           - type: CheckBox
             name: plots

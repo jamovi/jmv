@@ -168,7 +168,7 @@ corrMatrixResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="", 
                         `type`="text", 
                         `content`="Pearson's r", 
-                        `visible`="(pearson && (sig || spearman || kendall || ci))"),
+                        `visible`="(pearson && (sig || spearman || kendall || ci || n))"),
                     list(
                         `name`=".name[rp]", 
                         `title`="", 
@@ -220,7 +220,7 @@ corrMatrixResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="", 
                         `type`="text", 
                         `content`="Spearman's rho", 
-                        `visible`="(spearman && (sig || pearson || kendall))"),
+                        `visible`="(spearman && (sig || pearson || kendall || n))"),
                     list(
                         `name`=".name[rhop]", 
                         `title`="", 
@@ -246,7 +246,7 @@ corrMatrixResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="", 
                         `type`="text", 
                         `content`="Kendall's Tau B", 
-                        `visible`="(kendall && (sig || pearson || spearman))"),
+                        `visible`="(kendall && (sig || pearson || spearman || n))"),
                     list(
                         `name`=".name[taup]", 
                         `title`="", 
