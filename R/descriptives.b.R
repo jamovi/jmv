@@ -894,9 +894,14 @@ descriptivesClass <- R6::R6Class(
                                                        stackratio=0.9, dotsize=0.7)
                 }
 
-                if (self$options$box)
+                if (self$options$box) {
+                    # hide outliers it plotting the data
+                    outlier.shape <- `if`(self$options$dot, NA, 19)
+
                     plot <- plot + ggplot2::geom_boxplot(color=theme$color[1], width=0.3, alpha=0.9,
-                                                   fill=theme$fill[2], outlier.colour=theme$color[1])
+                                                   fill=theme$fill[2], outlier.colour=theme$color[1],
+                                                   outlier.shape=outlier.shape)
+                }
 
                 if (is.null(splitBy))
                     themeSpec <- theme(axis.text.x=element_blank(),
