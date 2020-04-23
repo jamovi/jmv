@@ -68,12 +68,11 @@ children:
             label: Assumption Checks
             children:
               - type: CheckBox
+                name: eqv
+              - type: CheckBox
                 name: norm
               - type: CheckBox
                 name: qq
-              - type: CheckBox
-                name: eqv
-                label: Equality of variances
   - type: CollapseBox
     label: Post-Hoc Tests
     collapsed: true

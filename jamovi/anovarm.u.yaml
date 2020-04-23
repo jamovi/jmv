@@ -187,7 +187,6 @@ children:
                 optionName: spherCorr
       - type: CheckBox
         name: leveneTest
-        label: Equality of variances test (Levene's)
   - type: CollapseBox
     label: Post Hoc Tests
     collapsed: true

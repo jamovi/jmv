@@ -147,7 +147,7 @@ options:
             `TRUE` or `FALSE` (default), provide descriptive plots
 
     - name: norm
-      title: Normality (Shapiro-Wilk)
+      title: Normality test
       type: Bool
       default: false
       description:
@@ -155,7 +155,7 @@ options:
             `TRUE` or `FALSE` (default), perform Shapiro-Wilk test of normality
 
     - name: qq
-      title: Normality (Q-Q plot)
+      title: Q-Q Plot
       type: Bool
       default: false
       description:
@@ -168,15 +168,15 @@ options:
             `TRUE` or `FALSE` (default), provide a Q-Q plot of residuals
 
     - name: eqv
-      title: Equality of Variances assumption check
+      title: Homogeneity test
       type: Bool
       default: false
       description:
           ui: >
-            provide Levene's tests for the equality of variances. A low
+            provide Levene's tests for the homogeneity of variances. A low
             p-value suggests the groups have unequal variances.
           R: >
-            `TRUE` or `FALSE` (default), perform Levene's test for equality of
+            `TRUE` or `FALSE` (default), perform Levene's test for homogeneity of
             variances
 
     - name: phMethod

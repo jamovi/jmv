@@ -117,7 +117,7 @@ items:
       type: Group
       items:
         - name: norm
-          title: Test of Normality (Shapiro-Wilk)
+          title: Normality Test (Shapiro-Wilk)
           type: Table
           description: a table containing the normality tests
           visible: (norm)
@@ -144,9 +144,9 @@ items:
               format: zto,pvalue
 
         - name: eqv
-          title: Test for Equality of Variances (Levene's)
+          title: Homogeneity of Variances Test (Levene's)
           type: Table
-          description: a table of equality of variances tests
+          description: a table of homogeneity of variances tests
           refs: car
           visible: (eqv)
           rows: (deps)

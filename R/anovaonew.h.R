@@ -291,7 +291,7 @@ anovaOneWResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         self$add(jmvcore::Table$new(
                             options=options,
                             name="norm",
-                            title="Test of Normality (Shapiro-Wilk)",
+                            title="Normality Test (Shapiro-Wilk)",
                             visible="(norm)",
                             rows="(deps)",
                             clearWith=list(
@@ -317,7 +317,7 @@ anovaOneWResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         self$add(jmvcore::Table$new(
                             options=options,
                             name="eqv",
-                            title="Test for Equality of Variances (Levene's)",
+                            title="Homogeneity of Variances Test (Levene's)",
                             refs="car",
                             visible="(eqv)",
                             rows="(deps)",
@@ -520,7 +520,7 @@ anovaOneWBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
 #'   residuals
 #' @param eqv \code{TRUE} or \code{FALSE} (default), perform Levene's test for
-#'   equality of variances
+#'   homogeneity of variances
 #' @param phMethod \code{'none'}, \code{'gamesHowell'} or \code{'tukey'},
 #'   which post-hoc tests to provide; \code{'none'} shows no post-hoc tests,
 #'   \code{'gamesHowell'} shows Games-Howell post-hoc tests where no equivalence
@@ -540,7 +540,7 @@ anovaOneWBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{results$anova} \tab \tab \tab \tab \tab a table of the test results \cr
 #'   \code{results$desc} \tab \tab \tab \tab \tab a table containing the group descriptives \cr
 #'   \code{results$assump$norm} \tab \tab \tab \tab \tab a table containing the normality tests \cr
-#'   \code{results$assump$eqv} \tab \tab \tab \tab \tab a table of equality of variances tests \cr
+#'   \code{results$assump$eqv} \tab \tab \tab \tab \tab a table of homogeneity of variances tests \cr
 #'   \code{results$plots} \tab \tab \tab \tab \tab an array of groups of plots \cr
 #'   \code{results$postHoc} \tab \tab \tab \tab \tab an array of post-hoc tables \cr
 #' }

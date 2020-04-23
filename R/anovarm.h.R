@@ -644,7 +644,7 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         self$add(jmvcore::Table$new(
                             options=options,
                             name="leveneTable",
-                            title="Equality of variances test (Levene's)",
+                            title="Homogeneity of Variances Test (Levene's)",
                             visible="(leveneTest)",
                             clearWith=list(
                                 "bs",
@@ -907,8 +907,8 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{}HF\code{}; use no p-value correction, the Greenhouse-Geisser p-value
 #'   correction, and the Huynh-Feldt p-value correction for shericity,
 #'   respectively
-#' @param leveneTest \code{TRUE} or \code{FALSE} (default), test for equality
-#'   of variances (i.e., Levene's test)
+#' @param leveneTest \code{TRUE} or \code{FALSE} (default), test for
+#'   homogeneity of variances (i.e., Levene's test)
 #' @param contrasts in development
 #' @param postHoc a list of character vectors describing the post-hoc tests
 #'   that need to be computed

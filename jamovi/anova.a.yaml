@@ -159,7 +159,7 @@ options:
             `'1'`, `'2'` or `'3'` (default), the sum of squares to use
 
     - name: homo
-      title: Homogeneity tests
+      title: Homogeneity test
       type: Bool
       default: false
       description:
@@ -170,7 +170,7 @@ options:
             `TRUE` or `FALSE` (default), perform homogeneity tests
 
     - name: norm
-      title: Normality (Shapiro-Wilk)
+      title: Normality test
       type: Bool
       default: false
       description:
@@ -181,7 +181,7 @@ options:
             `TRUE` or `FALSE` (default), perform Shapiro-Wilk tests of normality
 
     - name: qq
-      title: Normality (Q-Q plot)
+      title: Q-Q Plot
       type: Bool
       default: false
       description:

@@ -32,7 +32,7 @@ items:
           visible: (students)
 
         - name: stat[stud]
-          title: statistic
+          title: Statistic
           type: number
           visible: (students)
 
@@ -97,7 +97,7 @@ items:
           visible: (bf)
 
         - name: stat[bf]
-          title: statistic
+          title: Statistic
           type: number
           visible: (bf)
           refs: [ BF, btt ]
@@ -170,7 +170,7 @@ items:
           visible: (wilcoxon || mann)
 
         - name: stat[wilc]
-          title: statistic
+          title: Statistic
           type: number
           visible: (wilcoxon || mann)
 
@@ -217,7 +217,7 @@ items:
           visible: (ciES && effectSize && (wilcoxon || mann))
 
     - name: normality
-      title: Test of Normality (Shapiro-Wilk)
+      title: Normality Test (Shapiro-Wilk)
       type: Table
       description: a table containing the normality test results
       visible: (norm)

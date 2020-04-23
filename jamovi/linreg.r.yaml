@@ -328,7 +328,7 @@ items:
                       type: number
 
                 - name: norm
-                  title: Normality test (Shapiro-Wilk)
+                  title: Normality Test (Shapiro-Wilk)
                   type: Table
                   description: a table of normality tests
                   visible: (norm)
@@ -344,7 +344,7 @@ items:
                       visible: false
 
                     - name: s[sw]
-                      title: statistic
+                      title: Statistic
 
                     - name: p[sw]
                       title: p

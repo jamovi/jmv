@@ -121,7 +121,7 @@ options:
             greater than measure 1 respectively
 
     - name: norm
-      title: Normality (Shapiro-Wilk)
+      title: Normality test
       type: Bool
       default: false
       description:
@@ -132,7 +132,7 @@ options:
             `TRUE` or `FALSE` (default), perform Shapiro-wilk normality tests
 
     - name: qq
-      title: Normality (Q-Q plot)
+      title: Q-Q Plot
       type: Bool
       default: false
       description:

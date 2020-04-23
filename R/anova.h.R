@@ -278,12 +278,12 @@ anovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         self$add(jmvcore::Table$new(
                             options=options,
                             name="homo",
-                            title="Homogeneity of Variances (Levene's)",
+                            title="Homogeneity of Variances Test (Levene's)",
                             columns=list()))
                         self$add(jmvcore::Table$new(
                             options=options,
                             name="norm",
-                            title="Normality test (Shapiro-Wilk)",
+                            title="Normality Test (Shapiro-Wilk)",
                             visible="(norm)",
                             rows=1,
                             columns=list()))

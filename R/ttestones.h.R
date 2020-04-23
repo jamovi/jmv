@@ -232,7 +232,7 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(students)"),
                     list(
                         `name`="stat[stud]", 
-                        `title`="statistic", 
+                        `title`="Statistic", 
                         `type`="number", 
                         `visible`="(students)"),
                     list(
@@ -297,7 +297,7 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(bf)"),
                     list(
                         `name`="stat[bf]", 
-                        `title`="statistic", 
+                        `title`="Statistic", 
                         `type`="number", 
                         `visible`="(bf)", 
                         `refs`=list(
@@ -372,7 +372,7 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(wilcoxon || mann)"),
                     list(
                         `name`="stat[wilc]", 
-                        `title`="statistic", 
+                        `title`="Statistic", 
                         `type`="number", 
                         `visible`="(wilcoxon || mann)"),
                     list(
@@ -420,7 +420,7 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$add(jmvcore::Table$new(
                 options=options,
                 name="normality",
-                title="Test of Normality (Shapiro-Wilk)",
+                title="Normality Test (Shapiro-Wilk)",
                 visible="(norm)",
                 rows="(vars)",
                 notes=list(

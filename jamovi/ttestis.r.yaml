@@ -32,7 +32,7 @@ items:
           visible: (students)
 
         - name: stat[stud]
-          title: statistic
+          title: Statistic
           type: number
           visible: (students)
 
@@ -102,7 +102,7 @@ items:
           visible: (bf)
 
         - name: stat[bf]
-          title: statistic
+          title: Statistic
           type: number
           visible: (bf)
           refs: [ BF, btt ]
@@ -181,7 +181,7 @@ items:
           visible: (welchs)
 
         - name: stat[welc]
-          title: statistic
+          title: Statistic
           visible: (welchs)
 
         - name: err[welc]
@@ -250,7 +250,7 @@ items:
           visible: (mann)
 
         - name: stat[mann]
-          title: statistic
+          title: Statistic
           content: .
           visible: (mann)
 
@@ -306,7 +306,7 @@ items:
       type: Group
       items:
         - name: norm
-          title: Test of Normality (Shapiro-Wilk)
+          title: Normality Test (Shapiro-Wilk)
           type: Table
           description: a table containing the normality tests
           visible: (norm)
@@ -333,9 +333,9 @@ items:
               format: zto,pvalue
 
         - name: eqv
-          title: Test of Equality of Variances (Levene's)
+          title: Homogeneity of Variances Test (Levene's)
           type: Table
-          description: a table containing the equality of variances tests
+          description: a table containing the homogeneity of variances tests
           visible: (eqv)
           rows: (vars)
           clearWith:

@@ -684,7 +684,7 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                         self$add(jmvcore::Table$new(
                                             options=options,
                                             name="norm",
-                                            title="Normality test (Shapiro-Wilk)",
+                                            title="Normality Test (Shapiro-Wilk)",
                                             visible="(norm)",
                                             rows=1,
                                             clearWith=list(
@@ -699,7 +699,7 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                                     `visible`=FALSE),
                                                 list(
                                                     `name`="s[sw]", 
-                                                    `title`="statistic"),
+                                                    `title`="Statistic"),
                                                 list(
                                                     `name`="p[sw]", 
                                                     `title`="p", 

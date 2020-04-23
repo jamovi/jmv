@@ -242,7 +242,7 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(students)"),
                     list(
                         `name`="stat[stud]", 
-                        `title`="statistic", 
+                        `title`="Statistic", 
                         `type`="number", 
                         `visible`="(students)"),
                     list(
@@ -312,7 +312,7 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(bf)"),
                     list(
                         `name`="stat[bf]", 
-                        `title`="statistic", 
+                        `title`="Statistic", 
                         `type`="number", 
                         `visible`="(bf)", 
                         `refs`=list(
@@ -393,7 +393,7 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(welchs)"),
                     list(
                         `name`="stat[welc]", 
-                        `title`="statistic", 
+                        `title`="Statistic", 
                         `visible`="(welchs)"),
                     list(
                         `name`="err[welc]", 
@@ -462,7 +462,7 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(mann)"),
                     list(
                         `name`="stat[mann]", 
-                        `title`="statistic", 
+                        `title`="Statistic", 
                         `content`=".", 
                         `visible`="(mann)"),
                     list(
@@ -527,7 +527,7 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         self$add(jmvcore::Table$new(
                             options=options,
                             name="norm",
-                            title="Test of Normality (Shapiro-Wilk)",
+                            title="Normality Test (Shapiro-Wilk)",
                             visible="(norm)",
                             rows="(vars)",
                             clearWith=list(
@@ -553,7 +553,7 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         self$add(jmvcore::Table$new(
                             options=options,
                             name="eqv",
-                            title="Test of Equality of Variances (Levene's)",
+                            title="Homogeneity of Variances Test (Levene's)",
                             visible="(eqv)",
                             rows="(vars)",
                             clearWith=list(
@@ -757,7 +757,7 @@ ttestISBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param qq \code{TRUE} or \code{FALSE} (default), provide Q-Q plots of
 #'   residuals
 #' @param eqv \code{TRUE} or \code{FALSE} (default), perform Levene's tests
-#'   for equality of variances
+#'   for homogeneity of variances
 #' @param meanDiff \code{TRUE} or \code{FALSE} (default), provide means and
 #'   standard errors
 #' @param ci \code{TRUE} or \code{FALSE} (default), provide confidence
@@ -783,7 +783,7 @@ ttestISBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' \tabular{llllll}{
 #'   \code{results$ttest} \tab \tab \tab \tab \tab a table containing the t-test results \cr
 #'   \code{results$assum$norm} \tab \tab \tab \tab \tab a table containing the normality tests \cr
-#'   \code{results$assum$eqv} \tab \tab \tab \tab \tab a table containing the equality of variances tests \cr
+#'   \code{results$assum$eqv} \tab \tab \tab \tab \tab a table containing the homogeneity of variances tests \cr
 #'   \code{results$desc} \tab \tab \tab \tab \tab a table containing the group descriptives \cr
 #'   \code{results$plots} \tab \tab \tab \tab \tab an array of groups of plots \cr
 #' }

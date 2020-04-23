@@ -255,7 +255,7 @@ options:
             respectively
 
     - name: leveneTest
-      title: Levene's test (test for equality of variances)
+      title: Homogeneity test
       type: Bool
       default: false
       description:
@@ -263,7 +263,7 @@ options:
             provide Levene's test for homogeneity of variances. A low p-value
             suggests the groups have unequal variances.
           R: >
-            `TRUE` or `FALSE` (default), test for equality of variances (i.e.,
+            `TRUE` or `FALSE` (default), test for homogeneity of variances (i.e.,
             Levene's test)
 
     - name: contrasts

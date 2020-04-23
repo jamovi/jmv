@@ -339,7 +339,7 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         self$add(jmvcore::Table$new(
                             options=options,
                             name="homo",
-                            title="Homogeneity of Variances (Levene's)",
+                            title="Homogeneity of Variances Test (Levene's)",
                             refs="car",
                             visible="(homo)",
                             rows=1,
@@ -360,7 +360,7 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         self$add(jmvcore::Table$new(
                             options=options,
                             name="norm",
-                            title="Normality test (Shapiro-Wilk)",
+                            title="Normality Test (Shapiro-Wilk)",
                             visible="(norm)",
                             rows=1,
                             clearWith=list(
@@ -377,7 +377,7 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     `visible`=FALSE),
                                 list(
                                     `name`="s[sw]", 
-                                    `title`="statistic"),
+                                    `title`="Statistic"),
                                 list(
                                     `name`="p[sw]", 
                                     `title`="p", 

@@ -20,13 +20,13 @@ items:
       type: Group
       items:
         - name: homo
-          title: Homogeneity of Variances (Levene's)
+          title: Homogeneity of Variances Test (Levene's)
           type: Table
           description: a table of homogeneity tests
           columns: []
 
         - name: norm
-          title: Normality test (Shapiro-Wilk)
+          title: Normality Test (Shapiro-Wilk)
           type: Table
           description: a table of normality tests
           visible: (norm)

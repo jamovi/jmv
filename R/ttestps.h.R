@@ -292,7 +292,7 @@ ttestPSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(bf)"),
                     list(
                         `name`="stat[bf]", 
-                        `title`="statistic", 
+                        `title`="Statistic", 
                         `type`="number", 
                         `visible`="(bf)", 
                         `refs`=list(
@@ -378,7 +378,7 @@ ttestPSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(wilcoxon)"),
                     list(
                         `name`="stat[wilc]", 
-                        `title`="statistic", 
+                        `title`="Statistic", 
                         `type`="number", 
                         `visible`="(wilcoxon)"),
                     list(
@@ -431,7 +431,7 @@ ttestPSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$add(jmvcore::Table$new(
                 options=options,
                 name="norm",
-                title="Test of Normality (Shapiro-Wilk)",
+                title="Normality Test (Shapiro-Wilk)",
                 visible="(norm)",
                 rows="(pairs)",
                 notes=list(

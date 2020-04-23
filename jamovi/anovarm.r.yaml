@@ -311,7 +311,7 @@ items:
                   type: number
 
           - name: leveneTable
-            title: Equality of variances test (Levene's)
+            title: Homogeneity of Variances Test (Levene's)
             type: Table
             visible: (leveneTest)
             clearWith:
