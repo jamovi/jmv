@@ -2,6 +2,21 @@
 linRegClass <- R6::R6Class(
     "linRegClass",
     inherit = linRegBase,
+    #### Active bindings ----
+    active = list(
+        residuals = function() {
+            data <- private$.cleanData()
+            formulas <- private$.formulas()
+
+            res <- list()
+            for (i in seq_along(formulas)) {
+                model <- lm(formulas[[i]], data=data)
+                res[[i]] <- model$residuals
+            }
+
+            return(res)
+        }
+    ),
     private = list(
         #### Member variables ----
         terms = NULL,
