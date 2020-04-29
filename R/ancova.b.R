@@ -487,7 +487,7 @@ ancovaClass <- R6::R6Class(
                         row[['pholm']] <- holm[index,'p.value']
 
                         n <- nrow(private$.data)
-                        row[['d']] <- abs(row[['md']] / (n * sqrt(row[['se']])))
+                        row[['d']] <- abs(row[['md']] / (sqrt(n) * row[['se']]))
 
                         table$setRow(rowNo=i, values=row)
 
