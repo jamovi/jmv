@@ -61,7 +61,7 @@ children:
                   - name: nFactors
                     type: TextBox
                     label: ''
-                    suffix: component(s)
+                    suffix: factor(s)
                     format: number
                     enable: (nFactorMethod_fixed)
       - type: LayoutBox
