@@ -256,8 +256,10 @@ corrMatrixClass <- R6::R6Class(
         data <- jmvcore::select(self$data, columns)
         names(data) <- paste0('f', seq_along(columns))
 
-        for (i in seq_along(columns))
+        for (i in seq_along(columns)) {
             data[[i]] <- jmvcore::toNumeric(data[[i]])
+            attr(data[[i]], 'jmv-desc') <- NULL
+        }
 
         p <- GGally::ggpairs(
             data,
