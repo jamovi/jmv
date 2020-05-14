@@ -937,10 +937,10 @@ anovaRMClass <- R6::R6Class(
                 terms <- list()
 
                 # terms that include covariates:
-                covTerms <- c()
+                covTerms <- logical()
                 if (length(covariates) > 0) {
                     for (i in seq_along(bsTerms)) {
-                        covTerms[[i]] <- any(covariates %in% bsTerms[[i]])
+                        covTerms[i] <- any(covariates %in% bsTerms[[i]])
                     }
                 }
 
