@@ -144,6 +144,15 @@ analyses:
     description: |-
       Correlation matrices are a way to examine linear relationships between
       two or more continuous variables.
+  - title: Partial Correlation
+    name: corrPart
+    ns: jmv
+    menuGroup: Regression
+    menuTitle: Partial Correlation
+    description: |-
+      Partial correlation matrices are a way to examine linear relationships
+      between two or more continuous variables while controlling for other
+      variables
   - title: Linear Regression
     name: linReg
     ns: jmv

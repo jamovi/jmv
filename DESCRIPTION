@@ -33,7 +33,8 @@ Imports:
     ggridges,
     ROCR,
     nnet,
-    MASS
+    MASS,
+    ppcor
 Suggests:
     exact2x2,
     testthat,

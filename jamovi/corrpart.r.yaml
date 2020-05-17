@@ -1,0 +1,110 @@
+---
+name:  corrPart
+title: Partial Correlation
+jrs:   '1.1'
+
+items:
+    - name: matrix
+      title: Correlation
+      type: Table
+      description: a (semi)partial correlation matrix table
+      rows: (vars)
+      clearWith:
+          - controls
+          - hypothesis
+          - flag
+          - type
+
+      columns:
+          - name: .name[r]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (pearson)
+
+          - name: .stat[r]
+            title: ""
+            type: text
+            content: Pearson's r
+            visible: (pearson && (sig || spearman || kendall || n))
+
+          - name: .name[rp]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (pearson && sig)
+
+          - name: .stat[rp]
+            title: ""
+            type: text
+            content: p-value
+            visible: (pearson && sig)
+
+          - name: .name[rho]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (spearman)
+
+          - name: .stat[rho]
+            title: ""
+            type: text
+            content: Spearman's rho
+            visible: (spearman && (sig || pearson || kendall || n))
+
+          - name: .name[rhop]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (spearman && sig)
+
+          - name: .stat[rhop]
+            title: ""
+            type: text
+            content: p-value
+            visible: (spearman && sig)
+
+          - name: .name[tau]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (kendall)
+
+          - name: .stat[tau]
+            title: ""
+            type: text
+            content: Kendall's Tau B
+            visible: (kendall && (sig || pearson || spearman || n))
+
+          - name: .name[taup]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (kendall && sig)
+
+          - name: .stat[taup]
+            title: ""
+            type: text
+            content: p-value
+            visible: (kendall && sig)
+
+          - name: .name[n]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (n)
+
+          - name: .stat[n]
+            title: ""
+            type: text
+            content: N
+            visible: (n)
+
+...

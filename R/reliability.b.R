@@ -89,11 +89,11 @@ reliabilityClass <- R6::R6Class(
                 if (length(negCorItems) == 1) {
 
                     note <- jmvcore::format('item {} correlates negatively with the total scale and probably should be reversed',
-                                            private$.listItems(negCorItems))
+                                            listItems(negCorItems))
                 } else {
 
                     note <- jmvcore::format('items {} correlate negatively with the total scale and probably should be reversed',
-                                            private$.listItems(negCorItems))
+                                            listItems(negCorItems))
 
                 }
 
@@ -133,7 +133,7 @@ reliabilityClass <- R6::R6Class(
                 cormat <- cormat[hc$order, hc$order]
             }
 
-            upper_tri <- cormat[lower.tri(cormat)] <- NA
+            cormat[lower.tri(cormat)] <- NA
             melted_cormat <- reshape2::melt(cormat, na.rm = TRUE)
 
             image <- self$results$get('corPlot')
@@ -207,39 +207,11 @@ reliabilityClass <- R6::R6Class(
             allNAItems <- sapply(data, function(x) all(is.na(x)))
             noVarItems <- sapply(data, function(x) var(x, na.rm = TRUE) == 0)
 
-            error <- list()
             if (any(infItems))
                 jmvcore::reject("Item '{}' contains infinite values", code='', items[infItems])
             if (any(allNAItems))
                 jmvcore::reject("Item '{}' contains only missing values", code='', items[allNAItems])
             if (any(noVarItems))
                 jmvcore::reject("Item '{}' has no variance", code='', items[noVarItems])
-        },
-        .listItems = function(items, quote = '\'') {
-
-            if (length(items) == 1) {
-
-                l <- paste0(quote, items, quote)
-
-            } else if (length(items) == 2) {
-
-                itemsQuote <- character(length(items))
-                for (i in seq_along(items))
-                    itemsQuote[i] <- paste0(quote, items[i], quote)
-
-                l <- paste0(itemsQuote, collapse = ' and ')
-
-            } else {
-
-                itemsQuote <- character(length(items))
-                for (i in seq_along(items))
-                    itemsQuote[i] <- paste0(quote, items[i], quote)
-
-                l <- paste0(itemsQuote[1:(length(itemsQuote)-1)], collapse = ', ')
-                l <- paste(l, itemsQuote[length(itemsQuote)], sep = ', and ')
-
-            }
-
-            return(l)
         })
 )

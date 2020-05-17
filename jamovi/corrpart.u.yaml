@@ -1,0 +1,97 @@
+title: Partial Correlation
+name: corrPart
+jus: '3.0'
+compilerMode: tame
+children:
+  - type: VariableSupplier
+    name: variablesupplier
+    suggested:
+      - continuous
+      - ordinal
+    permitted:
+      - numeric
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: TargetLayoutBox
+        label: Variables
+        children:
+          - type: VariablesListBox
+            name: vars
+            isTarget: true
+      - type: TargetLayoutBox
+        label: Control Variables
+        children:
+          - type: VariablesListBox
+            name: controls
+            isTarget: true
+  - type: LayoutBox
+    margin: large
+    stretchFactor: 1
+    children:
+      - type: Label
+        label: Correlation Coefficients
+        fitToGrid: true
+        cell:
+          column: 0
+          row: 0
+        stretchFactor: 1
+        children:
+          - type: CheckBox
+            name: pearson
+            label: Pearson
+          - type: CheckBox
+            name: spearman
+            label: Spearman
+          - type: CheckBox
+            name: kendall
+      - type: Label
+        label: Hypothesis
+        fitToGrid: true
+        cell:
+          column: 0
+          row: 1
+        stretchFactor: 1
+        children:
+          - type: RadioButton
+            name: hypothesis_corr
+            optionName: hypothesis
+            optionPart: corr
+          - type: RadioButton
+            name: hypothesis_pos
+            optionName: hypothesis
+            optionPart: pos
+          - type: RadioButton
+            name: hypothesis_neg
+            optionName: hypothesis
+            optionPart: neg
+      - type: Label
+        label: Correlation Type
+        fitToGrid: true
+        cell:
+          column: 1
+          row: 0
+        stretchFactor: 1
+        children:
+          - type: RadioButton
+            name: type_part
+            optionName: type
+            optionPart: part
+          - type: RadioButton
+            name: type_semi
+            optionName: type
+            optionPart: semi
+      - type: Label
+        label: Additional Options
+        fitToGrid: true
+        cell:
+          column: 1
+          row: 1
+        stretchFactor: 1
+        children:
+          - type: CheckBox
+            name: sig
+          - type: CheckBox
+            name: flag
+          - type: CheckBox
+            name: 'n'
