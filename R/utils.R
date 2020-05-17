@@ -129,3 +129,31 @@ tapply = function (X, INDEX, FUN = NULL, ..., simplify = TRUE, drop = TRUE)
     }
     ansmat
 }
+
+listItems = function(items, quote = '\'') {
+
+    if (length(items) == 1) {
+
+        l <- paste0(quote, items, quote)
+
+    } else if (length(items) == 2) {
+
+        itemsQuote <- character(length(items))
+        for (i in seq_along(items))
+            itemsQuote[i] <- paste0(quote, items[i], quote)
+
+        l <- paste0(itemsQuote, collapse = ' and ')
+
+    } else {
+
+        itemsQuote <- character(length(items))
+        for (i in seq_along(items))
+            itemsQuote[i] <- paste0(quote, items[i], quote)
+
+        l <- paste0(itemsQuote[1:(length(itemsQuote)-1)], collapse = ', ')
+        l <- paste(l, itemsQuote[length(itemsQuote)], sep = ', and ')
+
+    }
+
+    return(l)
+}

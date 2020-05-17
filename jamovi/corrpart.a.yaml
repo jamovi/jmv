@@ -1,0 +1,187 @@
+---
+name:  corrPart
+title: Partial Correlation
+menuGroup: Regression
+version: '1.0.0'
+jas: '1.2'
+
+description:
+    main: |
+        Partial correlation matrices are a way to examine linear relationships
+        between two or more continuous variables while controlling for other
+        variables
+
+        For each pair of variables, a Pearson's r value indicates the strength
+        and direction of the relationship between those two variables. A
+        positive value indicates a positive relationship (higher values of one
+        variable predict higher values of the other variable). A negative
+        Pearson's r indicates a negative relationship (higher values of one
+        variable predict lower values of the other variable, and vice-versa).
+        A value of zero indicates no relationship (whether a variable is high
+        or low, does not tell us anything about the value of the other
+        variable).
+
+        More formally, it is possible to test the null hypothesis that the
+        correlation is zero and calculate a p-value. If the p-value is low, it
+        suggests the correlation co-efficient is not zero, and there is a linear
+        (or more complex) relationship between the two variables.
+    R:
+        usage: |
+            data('mtcars')
+
+            corrPart(mtcars, vars = vars(mpg, cyl, disp), controls = vars(hp))
+
+            #
+            #  PARTIAL CORRELATION
+            #
+            #  Partial Correlation
+            #  ────────────────────────────────────────────────────
+            #                           mpg       cyl       disp
+            #  ────────────────────────────────────────────────────
+            #    mpg     Pearson's r         —
+            #            p-value             —
+            #
+            #    cyl     Pearson's r    -0.590         —
+            #            p-value        < .001         —
+            #
+            #    disp    Pearson's r    -0.606     0.719        —
+            #            p-value        < .001    < .001        —
+            #  ────────────────────────────────────────────────────
+            #    Note. controlling for 'hp'
+            #
+
+completeWhenFilled: true
+
+options:
+    - name: data
+      type: Data
+      description:
+          R: the data as a data frame
+
+    - name: vars
+      title: Variables
+      type: Variables
+      takeFromDataIfMissing: true
+      suggested:
+        - continuous
+        - ordinal
+      permitted:
+        - numeric
+      description:
+          ui: >
+            the variables of interest.
+          R: >
+            a vector of strings naming the variables to correlate in `data`
+
+    - name: controls
+      title: Control variables
+      type: Variables
+      takeFromDataIfMissing: false
+      suggested:
+        - continuous
+        - ordinal
+      permitted:
+        - numeric
+      description:
+          ui: >
+            the control variables of interest.
+          R: >
+            a vector of strings naming the control variables in `data`
+
+    - name: pearson
+      title: Pearson
+      type: Bool
+      default: true
+      description:
+          ui: >
+            provide a Pearson's r for each combination of variables.
+          R: >
+            `TRUE` (default) or `FALSE`, provide Pearson's R
+
+    - name: spearman
+      title: Spearman
+      type: Bool
+      default: false
+      description:
+          ui: >
+            provide a Spearman's rho for each combination of variables.
+          R: >
+            `TRUE` or `FALSE` (default), provide Spearman's rho
+
+    - name: kendall
+      title: Kendall's tau-b
+      type: Bool
+      default: false
+      description:
+          ui: >
+            provide a Kendall's tau-b for each combination of variables.
+          R: >
+            `TRUE` or `FALSE` (default), provide Kendall's tau-b
+
+    - name: type
+      title: Correlation type
+      type: List
+      options:
+        - name: part
+          title: Partial
+        - name: semi
+          title: Semipartial
+        - name: zero
+          title: Zero-order
+      default: part
+      description:
+        ui: >
+            the type of correlation to calculate
+        R: >
+            one of `'part'` (default), `'semi'`, `'zero'` specifying the type of partial
+            correlation to calculate; partial, semipartial, or zero-order correlation.
+
+    - name: sig
+      title: Report significance
+      type: Bool
+      default: true
+      description:
+          ui: >
+            provide a p-value for each correlation co-efficient.
+          R: >
+            `TRUE` (default) or `FALSE`, provide significance levels
+
+    - name: flag
+      title: Flag significant correlations
+      type: Bool
+      default: false
+      description:
+          ui: >
+            flag significant correlations (p < .05) with symbols.
+          R: >
+            `TRUE` or `FALSE` (default), flag significant correlations
+
+    - name: n
+      title: N
+      type: Bool
+      default: false
+      description:
+          ui: >
+            provide the number of cases.
+          R: >
+            `TRUE` or `FALSE` (default), provide the number of cases
+
+    - name: hypothesis
+      title: Hypothesis
+      type: List
+      options:
+        - name: corr
+          title: Correlated
+        - name: pos
+          title: Correlated positively
+        - name: neg
+          title: Correlated negatively
+      default: corr
+      description:
+        ui: >
+            the alternative hypothesis. Allows for one-tailed tests.
+        R: >
+            one of `'corr'` (default), `'pos'`, `'neg'`
+            specifying the alernative hypothesis; correlated, correlated
+            positively, correlated negatively respectively.
+...

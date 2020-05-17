@@ -1,0 +1,107 @@
+title: Partial Correlation
+name: corrPart
+jus: '3.0'
+compilerMode: tame
+children:
+  - type: VariableSupplier
+    name: variablesupplier
+    suggested:
+      - continuous
+      - ordinal
+    permitted:
+      - numeric
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: TargetLayoutBox
+        label: 'Variables'
+        children:
+          - type: VariablesListBox
+            name: vars
+            isTarget: true
+      - type: TargetLayoutBox
+        label: 'Control Variables'
+        children:
+          - type: VariablesListBox
+            name: controls
+            isTarget: true
+  - type: LayoutBox
+    margin: large
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        cell:
+            column: 0
+            row: 0
+        stretchFactor: 1
+        children:
+
+          - type: Label
+            label: Correlation Coefficients
+            children:
+              - type: CheckBox
+                name: pearson
+                label: Pearson
+
+              - type: CheckBox
+                name: spearman
+                label: Spearman
+
+              - type: CheckBox
+                name: kendall
+
+          - type: Label
+            label: Hypothesis
+            children:
+              - type: RadioButton
+                name: hypothesis_corr
+                optionName: hypothesis
+                optionPart: corr
+
+              - type: RadioButton
+                name: hypothesis_pos
+                optionName: hypothesis
+                optionPart: pos
+
+              - type: RadioButton
+                name: hypothesis_neg
+                optionName: hypothesis
+                optionPart: neg
+
+      - type: LayoutBox
+        cell:
+            column: 1
+            row: 0
+        stretchFactor: 1
+        children:
+
+          - type: Label
+            label: Correlation Type
+            children:
+              - type: RadioButton
+                name: type_part
+                optionName: type
+                optionPart: part
+
+              - type: RadioButton
+                name: type_semi
+                optionName: type
+                optionPart: semi
+
+              - type: RadioButton
+                name: type_zero
+                optionName: type
+                optionPart: zero
+
+          - type: Label
+            label: Additional Options
+            children:
+              - type: CheckBox
+                name: sig
+
+              - type: CheckBox
+                name: flag
+
+              - type: CheckBox
+                name: n
+
