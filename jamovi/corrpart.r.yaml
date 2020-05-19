@@ -5,7 +5,7 @@ jrs:   '1.1'
 
 items:
     - name: matrix
-      title: Correlation Matrix
+      title: Correlation
       type: Table
       description: a (semi)partial correlation matrix table
       rows: (vars)

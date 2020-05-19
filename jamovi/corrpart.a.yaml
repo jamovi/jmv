@@ -126,15 +126,13 @@ options:
           title: Partial
         - name: semi
           title: Semipartial
-        - name: zero
-          title: Zero-order
       default: part
       description:
         ui: >
             the type of correlation to calculate
         R: >
-            one of `'part'` (default), `'semi'`, `'zero'` specifying the type of partial
-            correlation to calculate; partial, semipartial, or zero-order correlation.
+            one of `'part'` (default) or `'semi'` specifying the type of partial
+            correlation to calculate; partial or semipartial correlation.
 
     - name: sig
       title: Report significance

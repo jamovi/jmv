@@ -108,6 +108,7 @@ corrPartClass <- R6::R6Class(
             hyp <- self$options$hypothesis
             flag <- self$options$flag
             controls <- self$options$controls
+            nControls <- length(controls)
 
             if (length(controls) > 0 && type != 'zero') {
                 matrix$setNote('controls', jmvcore::format('controlling for {}', listItems(controls)))
@@ -135,12 +136,12 @@ corrPartClass <- R6::R6Class(
             if ( ! flag)
                 matrix$setNote('flag', NULL)
 
-            if (type == 'part') {
+            if (type == 'part' && nControls > 0) {
                 titleMatrix <- "Partial Correlation"
-            } else if (type == 'semi') {
+            } else if (type == 'semi' && nControls > 0) {
                 titleMatrix <- "Semipartial Correlation"
             } else {
-                titleMatrix <- "Zero-order Correlation"
+                titleMatrix <- "Correlation"
             }
 
             pearson <- self$options$pearson

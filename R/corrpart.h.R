@@ -58,8 +58,7 @@ corrPartOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 type,
                 options=list(
                     "part",
-                    "semi",
-                    "zero"),
+                    "semi"),
                 default="part")
             private$..sig <- jmvcore::OptionBool$new(
                 "sig",
@@ -131,7 +130,7 @@ corrPartResults <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$add(jmvcore::Table$new(
                 options=options,
                 name="matrix",
-                title="Correlation Matrix",
+                title="Correlation",
                 rows="(vars)",
                 clearWith=list(
                     "controls",
@@ -308,9 +307,9 @@ corrPartBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   rho
 #' @param kendall \code{TRUE} or \code{FALSE} (default), provide Kendall's
 #'   tau-b
-#' @param type one of \code{'part'} (default), \code{'semi'}, \code{'zero'}
-#'   specifying the type of partial correlation to calculate; partial,
-#'   semipartial, or zero-order correlation.
+#' @param type one of \code{'part'} (default) or \code{'semi'} specifying the
+#'   type of partial correlation to calculate; partial or semipartial
+#'   correlation.
 #' @param sig \code{TRUE} (default) or \code{FALSE}, provide significance
 #'   levels
 #' @param flag \code{TRUE} or \code{FALSE} (default), flag significant
