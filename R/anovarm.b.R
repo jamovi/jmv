@@ -471,7 +471,8 @@ anovaRMClass <- R6::R6Class(
         },
         .populateSpericityTable=function(result) {
 
-            spherTable <- self$results$get('assump')$get('spherTable')
+            spherTable <- self$results$assump$spherTable
+
             summaryResult <- suppressWarnings({summary(result)})
             epsilon <- summaryResult$pval.adjustments
             mauchly <- summaryResult$sphericity.tests
@@ -506,9 +507,16 @@ anovaRMClass <- R6::R6Class(
 
                 for (term in self$options$rmTerms) {
 
-                    spherTable$setRow(rowKey=term, values=list('mauch'=1, 'p'=NaN, 'gg'=1, 'hf'=1))
-                    if (length(spherTable$getRow(rowKey=term)$name$footnotes) == 0)
-                        spherTable$addFootnote(rowKey=term, 'p', 'The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels')
+                    if (any(nLevels > 2)) {
+                        spherTable$setRow(rowKey=term, values=list('mauch'=NaN, 'p'=NaN, 'gg'=NaN, 'hf'=NaN))
+                        if (length(spherTable$getRow(rowKey=term)$name$footnotes) == 0)
+                            spherTable$addFootnote(rowKey=term, 'name', 'Singularity error. Sphericity tests are not available')
+
+                    } else {
+                        spherTable$setRow(rowKey=term, values=list('mauch'=1, 'p'=NaN, 'gg'=1, 'hf'=1))
+                        if (length(spherTable$getRow(rowKey=term)$name$footnotes) == 0)
+                            spherTable$addFootnote(rowKey=term, 'p', 'The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels')
+                    }
                 }
             }
         },
