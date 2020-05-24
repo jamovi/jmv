@@ -311,11 +311,14 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                         table$setRow(rowKey=g1, row)
 
                         if (self$options$phFlag) {
-                            if (r[index, 'p'] < .001)
+                            p <- r[index, 'p']
+                            if (is.na(p))
+                                {} # do nothing
+                            else if (p < .001)
                                 table$addSymbol(rowNo=j, paste0(g2, '[md]'), '***')
-                            else if (r[index, 'p'] < .01)
+                            else if (p < .01)
                                 table$addSymbol(rowNo=j, paste0(g2, '[md]'), '**')
-                            else if (r[index, 'p'] < .05)
+                            else if (p < .05)
                                 table$addSymbol(rowNo=j, paste0(g2, '[md]'), '*')
                         }
                     }
