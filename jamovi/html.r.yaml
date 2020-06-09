@@ -1,11 +1,8 @@
 ---
 name:  html
-title: HTML
+title: 'Results'
 jrs:   '1.1'
 
-items:
-    - name:  html
-      title: ''
-      type:  Html
+items: []
 
 ...

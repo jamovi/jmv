@@ -3,10 +3,4 @@ name: html
 jus: '3.0'
 stage: 0
 compilerMode: aggressive
-children:
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: content
-        format: string
+children: []
