@@ -582,6 +582,8 @@ logRegMultiClass <- R6::R6Class(
                             weights <- 'cells'
 
                         suppressMessages({
+                            emmeans::emm_options(sep = ",", parens = "a^")
+                            
                             mm <- try(
                                 emmeans::emmeans(model, formula, cov.reduce=FUN, type='response', options=list(level=self$options$ciWidthEmm / 100), weights = weights, data=data),
                                 silent = TRUE

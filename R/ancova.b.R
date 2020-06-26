@@ -439,6 +439,7 @@ ancovaClass <- R6::R6Class(
 
                     # table$setStatus('running')
 
+                    emmeans::emm_options(sep = ",", parens = "a^")
                     referenceGrid <- emmeans::emmeans(private$.model, formula)
                     none <- summary(pairs(referenceGrid, adjust='none'))
                     tukey <- summary(pairs(referenceGrid, adjust='tukey'))
@@ -656,6 +657,8 @@ ancovaClass <- R6::R6Class(
                         weights <- 'cells'
 
                     suppressMessages({
+                        emmeans::emm_options(sep = ",", parens = "a^")
+                        
                         mm <- try(
                             emmeans::emmeans(model, formula, options=list(level=self$options$ciWidthEmm / 100), weights = weights),
                             silent = TRUE
