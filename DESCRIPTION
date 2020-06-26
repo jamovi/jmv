@@ -1,8 +1,8 @@
 Package: jmv
 Type: Package
 Title: The 'jamovi' Analyses
-Version: 1.2.19
-Date: 2020-05-14
+Version: 1.2.23
+Date: 2020-06-26
 Author: Ravi Selker, Jonathon Love, Damian Dropmann
 Maintainer: Jonathon Love <jon@thon.cc>
 Description: A suite of common statistical methods such as descriptives,
@@ -39,7 +39,8 @@ Suggests:
     testthat,
     semPlot,
     carData,
-    knitr
+    knitr,
+    rmarkdown
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr
