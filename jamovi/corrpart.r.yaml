@@ -9,11 +9,13 @@ items:
       type: Table
       description: a (semi)partial correlation matrix table
       rows: (vars)
+      refs: ppcor
       clearWith:
           - controls
           - hypothesis
           - flag
           - type
+          - kendall
 
       columns:
           - name: .name[r]
