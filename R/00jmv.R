@@ -135,4 +135,11 @@
         `year`=2017, 
         `title`="semPlot: Path Diagrams and Visual Analysis of Various SEM Packages' Output", 
         `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=semPlot", 
-        `url`="https://cran.r-project.org/package=semPlot"))
+        `url`="https://cran.r-project.org/package=semPlot"), 
+    `ppcor`=list(
+        `type`="software", 
+        `author`="Kim, S.", 
+        `year`=2015, 
+        `title`="ppcor: Partial and Semi-Partial (Part) Correlation", 
+        `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=ppcor", 
+        `url`="https://cran.r-project.org/package=ppcor"))

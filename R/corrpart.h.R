@@ -132,11 +132,13 @@ corrPartResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 name="matrix",
                 title="Correlation",
                 rows="(vars)",
+                refs="ppcor",
                 clearWith=list(
                     "controls",
                     "hypothesis",
                     "flag",
-                    "type"),
+                    "type",
+                    "kendall"),
                 columns=list(
                     list(
                         `name`=".name[r]", 
