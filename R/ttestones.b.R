@@ -119,15 +119,19 @@ ttestOneSClass <- R6::R6Class(
 
                     if ( ! isError(res)) {
 
+                        nTies <- sum(column == 0)
+                        totalRankSum <- ((n-nTies) * ((n-nTies) + 1)) / 2
+                        biSerial <- (2 * (res$statistic / totalRankSum)) - 1
+
                         ttest$setRow(rowNo=i, list(
                             "stat[wilc]"=res$statistic,
                             "p[wilc]"=res$p.value,
                             "md[wilc]"=res$estimate - testValue,
                             "cil[wilc]"=res$conf.int[1],
                             "ciu[wilc]"=res$conf.int[2],
-                            "es[wilc]"=d,
-                            "ciles[wilc]"=dCI[1],
-                            "ciues[wilc]"=dCI[3]))
+                            "es[wilc]"=biSerial,
+                            "ciles[wilc]"='',
+                            "ciues[wilc]"=''))
 
                     } else {
 

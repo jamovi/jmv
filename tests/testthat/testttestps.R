@@ -22,3 +22,18 @@ test_that('ttestPS works', {
     expect_equal(1, ttest$desc$getCell(rowNo=1, "med")$value)
     expect_equal(5.89915248150105, ttest$desc$getCell(rowNo=2, "sd")$value)
 })
+
+test_that('matched rank biserial correlation is correct', {
+
+    df <- data.frame(
+        before = c(20, 22, 19, 20, 22, 18, 24, 20, 25),
+        after = c(38, 37, 33, 29, 14, 12, 20, 22, 25)
+    )
+    pairs <- list(
+        list(i1='before', i2='after'))
+
+    res <- ttestPS(df, pairs, wilcoxon=TRUE, students=FALSE, effectSize=TRUE)$ttest$asDF
+
+    expect_equal(-0.5, res[['es[wilc]']])
+
+})

@@ -153,6 +153,15 @@ refs:
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=semPlot'
         url: https://cran.r-project.org/package=semPlot
 
+    Kerby2014:
+        type: 'article'
+        author: Kerby, D. S.
+        year: 2014
+        title: "The simple difference formula: An approach to teaching nonparametric correlation"
+        publisher: Comprehensive Psychology
+        volume: 3
+        pages: 2165–2228
+
     ppcor:
         type: 'software'
         author: Kim, S.

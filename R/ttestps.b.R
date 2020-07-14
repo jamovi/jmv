@@ -114,6 +114,9 @@ ttestPSClass <- R6::R6Class(
 
                 if ( ! isError(wilc)) {
 
+                    totalRankSum <- ((n-nTies) * ((n-nTies) + 1)) / 2
+                    biSerial <- (2 * (wilc$statistic / totalRankSum)) - 1
+
                     ttestTable$setRow(rowKey=pair, list(
                         'stat[wilc]'=wilc$statistic,
                         'df[wilc]'=wilc$parameter,
@@ -122,9 +125,9 @@ ttestPSClass <- R6::R6Class(
                         'sed[wilc]'=sediff,
                         'cil[wilc]'=wilc$conf.int[1],
                         'ciu[wilc]'=wilc$conf.int[2],
-                        'es[wilc]'=d,
-                        "ciles[wilc]"=dCI[1],
-                        "ciues[wilc]"=dCI[3]))
+                        'es[wilc]'=biSerial,
+                        "ciles[wilc]"='',
+                        "ciues[wilc]"=''))
 
                     if (nTies > 0) {
                         message <- paste0(nTies, ' pair(s) of values were tied')

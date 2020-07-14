@@ -68,10 +68,18 @@ items:
           type: number
           visible: (ci && meanDiff && students)
 
+        - name: esType[stud]
+          title: Type
+          content: Cohen's d
+          type: text
+          visible: (effectSize && students)
+          superTitle: Effect Size
+
         - name: es[stud]
-          title: Cohen's d
+          title: Value
           type: number
           visible: (effectSize && students)
+          superTitle: Effect Size
 
         - name: ciles[stud]
           title: Lower
@@ -138,11 +146,19 @@ items:
           visible: (ci && meanDiff && bf)
           content: ''
 
+        - name: esType[bf]
+          title: Type
+          content: ''
+          type: text
+          visible: (effectSize && bf)
+          superTitle: Effect Size
+
         - name: es[bf]
-          title: Cohen's d
+          title: Value
           type: number
           visible: (effectSize && bf)
           content: ''
+          superTitle: Effect Size
 
         - name: ciles[bf]
           title: Lower
@@ -201,10 +217,19 @@ items:
           type: number
           visible: (ci && meanDiff && (wilcoxon || mann))
 
+        - name: esType[wilc]
+          title: Type
+          content: Rank biserial correlation
+          type: text
+          visible: (effectSize && wilcoxon)
+          superTitle: Effect Size
+          refs: Kerby2014
+
         - name: es[wilc]
-          title: Cohen's d
+          title: Value
           type: number
-          visible: (effectSize && (wilcoxon || mann))
+          visible: (effectSize && wilcoxon)
+          superTitle: Effect Size
 
         - name: ciles[wilc]
           title: Lower
