@@ -74,17 +74,15 @@ items:
           visible: (ci && meanDiff && students)
 
         - name: esType[stud]
-          title: Type
+          title: ''
           content: Cohen's d
           type: text
           visible: (effectSize && students)
-          superTitle: Effect Size
 
         - name: es[stud]
-          title: Value
+          title: Effect Size
           type: number
           visible: (effectSize && students)
-          superTitle: Effect Size
 
         - name: ciles[stud]
           title: Lower
@@ -158,18 +156,16 @@ items:
           content: ''
 
         - name: esType[bf]
-          title: Type
+          title: ''
           content: ''
           type: text
           visible: (effectSize && bf)
-          superTitle: Effect Size
 
         - name: es[bf]
-          title: Value
+          title: Effect Size
           type: number
           visible: (effectSize && bf)
           content: ''
-          superTitle: Effect Size
 
         - name: ciles[bf]
           title: Lower
@@ -238,17 +234,15 @@ items:
           visible: (ci && meanDiff && welchs)
 
         - name: esType[welc]
-          title: Type
+          title: ''
           content: Cohen's d
           type: text
           visible: (effectSize && welchs)
-          superTitle: Effect Size
 
         - name: es[welc]
-          title: Value
+          title: Effect Size
           type: number
           visible: (effectSize && welchs)
-          superTitle: Effect Size
 
         - name: ciles[welc]
           title: Lower
@@ -311,18 +305,16 @@ items:
           visible: (ci && meanDiff && mann)
 
         - name: esType[mann]
-          title: Type
+          title: ''
           content: Rank biserial correlation
           type: text
           visible: (effectSize && mann)
-          superTitle: Effect Size
           refs: Kerby2014
 
         - name: es[mann]
-          title: Value
+          title: Effect Size
           type: number
           visible: (effectSize && mann)
-          superTitle: Effect Size
 
         - name: ciles[mann]
           title: Lower
