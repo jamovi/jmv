@@ -68,8 +68,14 @@ items:
           type: number
           visible: (ci && meanDiff && students)
 
+        - name: esType[stud]
+          title: ''
+          content: Cohen's d
+          type: text
+          visible: (effectSize && students)
+
         - name: es[stud]
-          title: Cohen's d
+          title: Effect Size
           type: number
           visible: (effectSize && students)
 
@@ -138,8 +144,14 @@ items:
           visible: (ci && meanDiff && bf)
           content: ''
 
+        - name: esType[bf]
+          title: ''
+          content: ''
+          type: text
+          visible: (effectSize && bf)
+
         - name: es[bf]
-          title: Cohen's d
+          title: Effect Size
           type: number
           visible: (effectSize && bf)
           content: ''
@@ -201,10 +213,17 @@ items:
           type: number
           visible: (ci && meanDiff && (wilcoxon || mann))
 
+        - name: esType[wilc]
+          title: ''
+          content: Rank biserial correlation
+          type: text
+          visible: (effectSize && wilcoxon)
+          refs: Kerby2014
+
         - name: es[wilc]
-          title: Cohen's d
+          title: Effect Size
           type: number
-          visible: (effectSize && (wilcoxon || mann))
+          visible: (effectSize && wilcoxon)
 
         - name: ciles[wilc]
           title: Lower

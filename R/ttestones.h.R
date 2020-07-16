@@ -268,8 +268,14 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `type`="number", 
                         `visible`="(ci && meanDiff && students)"),
                     list(
+                        `name`="esType[stud]", 
+                        `title`="", 
+                        `content`="Cohen's d", 
+                        `type`="text", 
+                        `visible`="(effectSize && students)"),
+                    list(
                         `name`="es[stud]", 
-                        `title`="Cohen's d", 
+                        `title`="Effect Size", 
                         `type`="number", 
                         `visible`="(effectSize && students)"),
                     list(
@@ -340,8 +346,14 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(ci && meanDiff && bf)", 
                         `content`=""),
                     list(
+                        `name`="esType[bf]", 
+                        `title`="", 
+                        `content`="", 
+                        `type`="text", 
+                        `visible`="(effectSize && bf)"),
+                    list(
                         `name`="es[bf]", 
-                        `title`="Cohen's d", 
+                        `title`="Effect Size", 
                         `type`="number", 
                         `visible`="(effectSize && bf)", 
                         `content`=""),
@@ -403,10 +415,17 @@ ttestOneSResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `type`="number", 
                         `visible`="(ci && meanDiff && (wilcoxon || mann))"),
                     list(
+                        `name`="esType[wilc]", 
+                        `title`="", 
+                        `content`="Rank biserial correlation", 
+                        `type`="text", 
+                        `visible`="(effectSize && wilcoxon)", 
+                        `refs`="Kerby2014"),
+                    list(
                         `name`="es[wilc]", 
-                        `title`="Cohen's d", 
+                        `title`="Effect Size", 
                         `type`="number", 
-                        `visible`="(effectSize && (wilcoxon || mann))"),
+                        `visible`="(effectSize && wilcoxon)"),
                     list(
                         `name`="ciles[wilc]", 
                         `title`="Lower", 

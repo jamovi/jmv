@@ -8,7 +8,7 @@ test_that('ttestIS works', {
 
     data <- data.frame(x=x,y=y,z=z)
     ttest <- ttestIS(data, c("y","z"), "x", hypothesis="different", bf=TRUE,
-                     welch=TRUE, mann=TRUE, norm=TRUE, eqv=TRUE, meanDiff=TRUE,
+                     welchs=TRUE, mann=TRUE, norm=TRUE, eqv=TRUE, meanDiff=TRUE,
                      effectSize=TRUE, ci=TRUE, desc=TRUE)
 
     expect_equal(c("a"=0.167541563316678), ttest$ttest$getCell(rowNo=2, "es[stud]")$value)
@@ -19,4 +19,17 @@ test_that('ttestIS works', {
     expect_error(ttestIS(data, "y", "x", hypothesis="error"),
                  "Argument 'hypothesis' must be one of 'different', 'oneGreater', 'twoGreater'",
                  fixed=TRUE)
+})
+
+test_that('matched rank biserial correlation is correct', {
+
+    df <- data.frame(
+        score = c(220, 221, 223, 225, 226, 228, 229, 230, 232),
+        group = factor(c('spr', 'spr', 'spr', 'ctrl', 'spr', 'spr', 'ctrl', 'ctrl', 'ctrl'), levels=c('spr', 'ctrl'))
+    )
+
+    res <- ttestIS(df, vars=vars(score), group=vars(group), mann=TRUE, students=FALSE, effectSize=TRUE)$ttest$asDF
+
+    expect_equal(0.8, res[['es[mann]']])
+
 })

@@ -283,8 +283,14 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `type`="number", 
                         `visible`="(ci && meanDiff && students)"),
                     list(
+                        `name`="esType[stud]", 
+                        `title`="", 
+                        `content`="Cohen's d", 
+                        `type`="text", 
+                        `visible`="(effectSize && students)"),
+                    list(
                         `name`="es[stud]", 
-                        `title`="Cohen's d", 
+                        `title`="Effect Size", 
                         `type`="number", 
                         `visible`="(effectSize && students)"),
                     list(
@@ -361,8 +367,14 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `visible`="(ci && meanDiff && bf)", 
                         `content`=""),
                     list(
+                        `name`="esType[bf]", 
+                        `title`="", 
+                        `content`="", 
+                        `type`="text", 
+                        `visible`="(effectSize && bf)"),
+                    list(
                         `name`="es[bf]", 
-                        `title`="Cohen's d", 
+                        `title`="Effect Size", 
                         `type`="number", 
                         `visible`="(effectSize && bf)", 
                         `content`=""),
@@ -433,8 +445,14 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `type`="number", 
                         `visible`="(ci && meanDiff && welchs)"),
                     list(
+                        `name`="esType[welc]", 
+                        `title`="", 
+                        `content`="Cohen's d", 
+                        `type`="text", 
+                        `visible`="(effectSize && welchs)"),
+                    list(
                         `name`="es[welc]", 
-                        `title`="Cohen's d", 
+                        `title`="Effect Size", 
                         `type`="number", 
                         `visible`="(effectSize && welchs)"),
                     list(
@@ -498,8 +516,15 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `type`="number", 
                         `visible`="(ci && meanDiff && mann)"),
                     list(
+                        `name`="esType[mann]", 
+                        `title`="", 
+                        `content`="Rank biserial correlation", 
+                        `type`="text", 
+                        `visible`="(effectSize && mann)", 
+                        `refs`="Kerby2014"),
+                    list(
                         `name`="es[mann]", 
-                        `title`="Cohen's d", 
+                        `title`="Effect Size", 
                         `type`="number", 
                         `visible`="(effectSize && mann)"),
                     list(

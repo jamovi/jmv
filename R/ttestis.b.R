@@ -73,12 +73,16 @@ ttestISClass <- R6::R6Class(
                 se <- sqrt(v/n)
                 sd <- sqrt(v)
 
-                pooledVAR <- tryNaN(((n[1]-1)*v[1]+(n[2]-1)*v[2])/(n[1]+n[2]-2))
-                sediffSTUD <- tryNaN(sqrt((pooledVAR/n[1])+(pooledVAR/n[2])))
+                pooledVARSTUD <- tryNaN(((n[1]-1)*v[1]+(n[2]-1)*v[2])/(n[1]+n[2]-2))
+                pooledVARWELC <- tryNaN((v[1] + v[2]) / 2)
+                sediffSTUD <- tryNaN(sqrt((pooledVARSTUD/n[1])+(pooledVARSTUD/n[2])))
                 sediffWELC <- tryNaN(sqrt((v[1]/n[1])+(v[2]/n[2])))
 
-                d <- (m[1]-m[2])/sqrt(pooledVAR) # Cohen's d
-                dCI <- psych::d.ci(d, n1=n[1], n2=n[2], alpha=confIntES)
+                dSTUD <- (m[1]-m[2])/sqrt(pooledVARSTUD) # Cohen's d for student's t
+                dWELC <- (m[1]-m[2])/sqrt(pooledVARWELC) # Cohen's d for Welch's t
+                dCISTUD <- psych::d.ci(dSTUD, n1=n[1], n2=n[2], alpha=confIntES)
+                dCIWELC <- psych::d.ci(dWELC, n1=n[1], n2=n[2], alpha=confIntES)
+
 
                 n[is.na(n)] <- 0
                 m[is.na(m)] <- NaN
@@ -87,8 +91,8 @@ ttestISClass <- R6::R6Class(
                 sd[is.na(sd)] <- NaN
                 sediffSTUD[is.na(sediffSTUD)] <- NaN
                 sediffWELC[is.na(sediffWELC)] <- NaN
-                pooledVAR[is.na(pooledVAR)] <- NaN
-                d[is.na(d)] <- NaN
+                pooledVARSTUD[is.na(pooledVARSTUD)] <- NaN
+                dSTUD[is.na(dSTUD)] <- NaN
 
                 ## Levene's test and equality of variances table
 
@@ -158,9 +162,9 @@ ttestISClass <- R6::R6Class(
                             "sed[stud]"=sediffSTUD,
                             "cil[stud]"=res$conf.int[1],
                             "ciu[stud]"=res$conf.int[2],
-                            "es[stud]"=d,
-                            "ciles[stud]"=dCI[1],
-                            "ciues[stud]"=dCI[3]))
+                            "es[stud]"=dSTUD,
+                            "ciles[stud]"=dCISTUD[1],
+                            "ciues[stud]"=dCISTUD[3]))
                     }
 
                     # ## Inform if a student's t-test is appropriate using Levene's test
@@ -189,9 +193,9 @@ ttestISClass <- R6::R6Class(
                             "sed[welc]"=sediffWELC,
                             "cil[welc]"=res$conf.int[1],
                             "ciu[welc]"=res$conf.int[2],
-                            "es[welc]"=d,
-                            "ciles[welc]"=dCI[1],
-                            "ciues[welc]"=dCI[3]))
+                            "es[welc]"=dWELC,
+                            "ciles[welc]"='',
+                            "ciues[welc]"=''))
 
                     } else {
 
@@ -275,6 +279,9 @@ ttestISClass <- R6::R6Class(
 
                         if ( ! is.na(m1) && m2 < m1)
                             res <- res2
+
+                        biSerial <- 1 - (2 * res$statistic / (n[1] * n[2]))
+
                     }
 
                     if ( ! isError(res)) {
@@ -287,9 +294,9 @@ ttestISClass <- R6::R6Class(
                             "sed[mann]"='',
                             "cil[mann]"=cil,
                             "ciu[mann]"=ciu,
-                            "es[mann]"=d,
-                            "ciles[mann]"=dCI[1],
-                            "ciues[mann]"=dCI[3]))
+                            "es[mann]"=biSerial,
+                            "ciles[mann]"='',
+                            "ciues[mann]"=''))
 
                     } else {
 

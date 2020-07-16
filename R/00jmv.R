@@ -135,11 +135,20 @@
         `year`=2017, 
         `title`="semPlot: Path Diagrams and Visual Analysis of Various SEM Packages' Output", 
         `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=semPlot", 
-        `url`="https://cran.r-project.org/package=semPlot"), 
+        `url`="https://cran.r-project.org/package=semPlot"),
+    `Kerby2014`=list(
+        `type`="article",
+        `author`="Kerby, D. S.",
+        `year`=2014,
+        `title`="The simple difference formula: An approach to teaching nonparametric correlation",
+        `publisher`="Comprehensive Psychology",
+        `volume`=3,
+        `pages`="2165\u20132228"))
+        `url`="https://cran.r-project.org/package=semPlot"),
     `ppcor`=list(
-        `type`="software", 
-        `author`="Kim, S.", 
-        `year`=2015, 
-        `title`="ppcor: Partial and Semi-Partial (Part) Correlation", 
-        `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=ppcor", 
+        `type`="software",
+        `author`="Kim, S.",
+        `year`=2015,
+        `title`="ppcor: Partial and Semi-Partial (Part) Correlation",
+        `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=ppcor",
         `url`="https://cran.r-project.org/package=ppcor"))
