@@ -170,6 +170,7 @@ items:
       clearWith:
         - dep
         - modelTerms
+        - postHocEsCiWidth
 
       refs: emmeans
 
@@ -180,6 +181,7 @@ items:
         clearWith:
             - dep
             - modelTerms
+            - postHocEsCiWidth
 
     - name: emm
       title: Estimated Marginal Means

@@ -459,7 +459,6 @@ ancovaClass <- R6::R6Class(
                             level=self$options$postHocEsCiWidth/100
                         )
                     )
-
                 }) # suppressWarnings
 
                 resultRows <- lapply(strsplit(as.character(none$contrast), ' - '), function(x) strsplit(x, ','))

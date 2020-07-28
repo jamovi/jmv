@@ -452,7 +452,8 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 items="(postHoc)",
                 clearWith=list(
                     "dep",
-                    "modelTerms"),
+                    "modelTerms",
+                    "postHocEsCiWidth"),
                 refs="emmeans",
                 template=jmvcore::Table$new(
                     options=options,
@@ -460,7 +461,8 @@ ancovaResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     columns=list(),
                     clearWith=list(
                         "dep",
-                        "modelTerms"))))
+                        "modelTerms",
+                        "postHocEsCiWidth"))))
             self$add(jmvcore::Array$new(
                 options=options,
                 name="emm",
