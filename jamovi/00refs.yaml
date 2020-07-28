@@ -3,7 +3,7 @@ refs:
     emmeans:
         type: 'software'
         author: Lenth, R.
-        year: 2018
+        year: 2020
         title: 'emmeans: Estimated Marginal Means, aka Least-Squares Means'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=emmeans'
         url: https://cran.r-project.org/package=emmeans
@@ -44,7 +44,7 @@ refs:
     car:
         type: 'software'
         author: Fox, J., & Weisberg, S.
-        year: 2018
+        year: 2020
         title: 'car: Companion to Applied Regression'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=car'
         url: https://cran.r-project.org/package=car

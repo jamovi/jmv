@@ -21,6 +21,8 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             postHocCorr = list(
                 "tukey"),
             postHocES = list(),
+            postHocEsCi = FALSE,
+            postHocEsCiWidth = 95,
             emMeans = list(
                 list()),
             emmPlots = TRUE,
@@ -144,6 +146,16 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 options=list(
                     "d"),
                 default=list())
+            private$..postHocEsCi <- jmvcore::OptionBool$new(
+                "postHocEsCi",
+                postHocEsCi,
+                default=FALSE)
+            private$..postHocEsCiWidth <- jmvcore::OptionNumber$new(
+                "postHocEsCiWidth",
+                postHocEsCiWidth,
+                min=50,
+                max=99.9,
+                default=95)
             private$..emMeans <- jmvcore::OptionArray$new(
                 "emMeans",
                 emMeans,
@@ -197,6 +209,8 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..postHoc)
             self$.addOption(private$..postHocCorr)
             self$.addOption(private$..postHocES)
+            self$.addOption(private$..postHocEsCi)
+            self$.addOption(private$..postHocEsCiWidth)
             self$.addOption(private$..emMeans)
             self$.addOption(private$..emmPlots)
             self$.addOption(private$..emmPlotData)
@@ -220,6 +234,8 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         postHoc = function() private$..postHoc$value,
         postHocCorr = function() private$..postHocCorr$value,
         postHocES = function() private$..postHocES$value,
+        postHocEsCi = function() private$..postHocEsCi$value,
+        postHocEsCiWidth = function() private$..postHocEsCiWidth$value,
         emMeans = function() private$..emMeans$value,
         emmPlots = function() private$..emmPlots$value,
         emmPlotData = function() private$..emmPlotData$value,
@@ -242,6 +258,8 @@ ancovaOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..postHoc = NA,
         ..postHocCorr = NA,
         ..postHocES = NA,
+        ..postHocEsCi = NA,
+        ..postHocEsCiWidth = NA,
         ..emMeans = NA,
         ..emmPlots = NA,
         ..emmPlotData = NA,
@@ -575,6 +593,10 @@ ancovaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   Scheffe, Bonferroni, and Holm Post Hoc corrections respectively
 #' @param postHocES a possible value of \code{'d'}; provide cohen's d measure
 #'   of effect size for the post-hoc tests
+#' @param postHocEsCi \code{TRUE} or \code{FALSE} (default), provide
+#'   confidence intervals for the post-hoc effect sizes
+#' @param postHocEsCiWidth a number between 50 and 99.9 (default: 95), the
+#'   width of confidence intervals for the post-hoc effect sizes
 #' @param emMeans a formula containing the terms to estimate marginal means
 #'   for (see the examples)
 #' @param emmPlots \code{TRUE} (default) or \code{FALSE}, provide estimated
@@ -627,6 +649,8 @@ ancova <- function(
     postHocCorr = list(
                 "tukey"),
     postHocES = list(),
+    postHocEsCi = FALSE,
+    postHocEsCiWidth = 95,
     emMeans = list(
                 list()),
     emmPlots = TRUE,
@@ -700,6 +724,8 @@ ancova <- function(
         postHoc = postHoc,
         postHocCorr = postHocCorr,
         postHocES = postHocES,
+        postHocEsCi = postHocEsCi,
+        postHocEsCiWidth = postHocEsCiWidth,
         emMeans = emMeans,
         emmPlots = emmPlots,
         emmPlotData = emmPlotData,

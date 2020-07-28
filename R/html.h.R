@@ -5,8 +5,7 @@ htmlOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
     "htmlOptions",
     inherit = jmvcore::Options,
     public = list(
-        initialize = function(
-            content = "<p>the <em>fish</em> was <strong>delish</strong></p>", ...) {
+        initialize = function( ...) {
 
             super$initialize(
                 package='jmv',
@@ -14,34 +13,22 @@ htmlOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 requiresData=FALSE,
                 ...)
 
-            private$..content <- jmvcore::OptionString$new(
-                "content",
-                content,
-                default="<p>the <em>fish</em> was <strong>delish</strong></p>")
 
-            self$.addOption(private$..content)
         }),
-    active = list(
-        content = function() private$..content$value),
-    private = list(
-        ..content = NA)
+    active = list(),
+    private = list()
 )
 
 htmlResults <- if (requireNamespace('jmvcore')) R6::R6Class(
     inherit = jmvcore::Group,
-    active = list(
-        html = function() private$.items[["html"]]),
+    active = list(),
     private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
-                title="HTML")
-            self$add(jmvcore::Html$new(
-                options=options,
-                name="html",
-                title=""))}))
+                title="Results")}))
 
 htmlBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "htmlBase",
