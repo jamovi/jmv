@@ -284,6 +284,29 @@ options:
             a possible value of `'d'`; provide cohen's d measure of effect size
             for the post-hoc tests
 
+    - name: postHocEsCi
+      title: Confidence Interval
+      type: Bool
+      default: false
+      description:
+          ui: >
+            provide confidence intervals for the post-hoc effect sizes.
+          R: >
+            `TRUE` or `FALSE` (default), provide confidence intervals for the post-hoc effect sizes
+
+    - name: postHocEsCiWidth
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          ui: >
+            the confidence interval width for the post-hoc effect sizes.
+          R: >
+            a number between 50 and 99.9 (default: 95), the width of confidence
+            intervals for the post-hoc effect sizes
+
     - name: emMeans
       title: Marginal Means
       type: Array

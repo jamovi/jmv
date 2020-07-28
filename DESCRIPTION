@@ -20,7 +20,7 @@ Imports:
     multcomp,
     ggplot2 (>= 2.2.1),
     PMCMR,
-    emmeans (>= 1.1.3),
+    emmeans (>= 1.4.2),
     vcd,
     vcdExtra,
     GGally,

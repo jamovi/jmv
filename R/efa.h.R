@@ -262,7 +262,7 @@ efaBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' \tabular{llllll}{
 #'   \code{results$text} \tab \tab \tab \tab \tab a preformatted \cr
 #' }
-#'0
+#'
 #' @export
 efa <- function(
     data,

@@ -232,7 +232,10 @@ ancovaClass <- R6::R6Class(
                 table$addColumn(name='pbonferroni', title='p<sub>bonferroni</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:bonf)")
                 table$addColumn(name='pholm', title='p<sub>holm</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:holm)")
 
+                ciTitleES <- paste0(self$options$postHocEsCiWidth, '% Confidence Interval')
                 table$addColumn(name='d', title='Cohen\'s d', type='number', visible="(postHocES:d)")
+                table$addColumn(name='dlower', title='Lower', type='number', visible="(postHocES:d && postHocEsCi)", superTitle=ciTitleES)
+                table$addColumn(name='dupper', title='Upper', type='number', visible="(postHocES:d && postHocEsCi)", superTitle=ciTitleES)
 
                 combin <- expand.grid(bsLevels[rev(ph)])
                 combin <- sapply(combin, as.character, simplify = 'matrix')
@@ -269,6 +272,8 @@ ancovaClass <- R6::R6Class(
                     if (comp[[i]][[3]] == TRUE)
                         table$addFormat(rowNo=i, col=1, Cell.END_GROUP)
                 }
+
+                table$setNote('note', 'Comparisons are based on estimated marginal means')
             }
             private$.postHocRows <- postHocRows
         },
@@ -446,7 +451,14 @@ ancovaClass <- R6::R6Class(
                     scheffe <- summary(pairs(referenceGrid, adjust='scheffe'))
                     bonferroni <- summary(pairs(referenceGrid, adjust='bonferroni'))
                     holm <- summary(pairs(referenceGrid, adjust='holm'))
-
+                    effSize <- as.data.frame(
+                        emmeans::eff_size(
+                            referenceGrid,
+                            sigma=sigma(private$.model),
+                            edf=private$.model$df.residual,
+                            level=self$options$postHocEsCiWidth/100
+                        )
+                    )
                 }) # suppressWarnings
 
                 resultRows <- lapply(strsplit(as.character(none$contrast), ' - '), function(x) strsplit(x, ','))
@@ -487,8 +499,9 @@ ancovaClass <- R6::R6Class(
                         row[['pbonferroni']] <- bonferroni[index,'p.value']
                         row[['pholm']] <- holm[index,'p.value']
 
-                        n <- nrow(private$.data)
-                        row[['d']] <- abs(row[['md']] / (sqrt(n) * row[['se']]))
+                        row[['d']] <- effSize[index, 'effect.size']
+                        row[['dlower']] <- effSize[index, 'lower.CL']
+                        row[['dupper']] <- effSize[index, 'upper.CL']
 
                         table$setRow(rowNo=i, values=row)
 
@@ -658,7 +671,7 @@ ancovaClass <- R6::R6Class(
 
                     suppressMessages({
                         emmeans::emm_options(sep = ",", parens = "a^")
-                        
+
                         mm <- try(
                             emmeans::emmeans(model, formula, options=list(level=self$options$ciWidthEmm / 100), weights = weights),
                             silent = TRUE

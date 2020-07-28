@@ -40,8 +40,8 @@ children:
       - type: Label
         label: Model Fit
         cell:
-            row: 0
-            column: 0
+          row: 0
+          column: 0
         stretchFactor: 1
         margin: large
         style: list-inline
@@ -51,8 +51,8 @@ children:
       - type: Label
         label: Effect Size
         cell:
-            row: 0
-            column: 1
+          row: 0
+          column: 1
         stretchFactor: 1
         margin: large
         style: list-inline
@@ -197,6 +197,22 @@ children:
                 type: CheckBox
                 optionPart: d
                 optionName: postHocES
+                children:
+                  - type: LayoutBox
+                    children:
+                      - type: CheckBox
+                        name: postHocEsCi
+                        label: Confidence interval
+                        enable: (postHocES:d)
+                        style: inline
+                        verticalAlignment: center
+                        children:
+                          - type: TextBox
+                            name: postHocEsCiWidth
+                            label: ''
+                            suffix: '%'
+                            format: number
+                            enable: (postHocES:d && postHocEsCi)
   - type: CollapseBox
     label: Estimated Marginal Means
     collapsed: true
