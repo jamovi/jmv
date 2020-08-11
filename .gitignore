@@ -54,3 +54,4 @@ man/
 .DS_Store
 npm-debug.log
 inst/doc
+tests/testthat/*.pdf
