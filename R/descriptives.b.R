@@ -245,9 +245,49 @@ descriptivesClass <- R6::R6Class(
             vars <- self$options$vars
             splitBy <- self$options$splitBy
 
+            varsCannotBeNumeric <- NULL
             for (var in vars) {
 
-                group <- plots$get(var)
+                if ((self$options$hist || self$options$dens || self$options$box ||
+                    self$options$violin || self$options$dot || self$options$qq) &&
+                    ! jmvcore::canBeNumeric(data[[var]])) {
+
+                    varsCannotBeNumeric <- c(varsCannotBeNumeric, var)
+
+                }
+            }
+
+            if ( ! is.null(varsCannotBeNumeric)) {
+
+                html <- jmvcore::Html$new(
+                    options = self$options,
+                    name = 'warningMessage'
+                )
+
+                if (length(varsCannotBeNumeric) == 1) {
+                    content <- jmvcore::format(
+                        "<p class=\"warning\">
+                            The variable {} cannot be treated as numeric. Therefore plots that expect
+                            numeric data will not be created for this variable.
+                        </p>", listItems(varsCannotBeNumeric)
+                    )
+                } else {
+                    content <- jmvcore::format(
+                        "<p class=\"warning\">
+                            The variables {} cannot be treated as numeric. Therefore plots that expect
+                            numeric data will not be created for these variables.
+                        </p>", listItems(varsCannotBeNumeric)
+                    )
+
+                }
+
+                html$setContent(content)
+                plots$add(html)
+            }
+
+            for (var in vars) {
+
+                group <- jmvcore::Group$new(options = self$options, name = var, title = var)
                 column <- data[[var]]
 
                 if (self$options$bar) {
@@ -258,17 +298,19 @@ descriptivesClass <- R6::R6Class(
 
                     size <- private$.plotSize(levels, 'bar')
 
-                    image <- jmvcore::Image$new(options=self$options,
-                                                name="bar",
-                                                renderFun=".barPlot",
-                                                width=size[1],
-                                                height=size[2],
-                                                clearWith=list("splitBy", "bar"))
+                    image <- jmvcore::Image$new(
+                        options = self$options,
+                        name = "bar",
+                        renderFun = ".barPlot",
+                        width = size[1],
+                        height=size[2],
+                        clearWith=list("splitBy", "bar")
+                    )
 
                     group$add(image)
                 }
 
-                if (is.numeric(column)) {
+                if (jmvcore::canBeNumeric(column)) {
 
                     if (is.null(splitBy))
                         names <- NULL
@@ -282,12 +324,14 @@ descriptivesClass <- R6::R6Class(
 
                         size <- private$.plotSize(levels, 'hist')
 
-                        image <- jmvcore::Image$new(options=self$options,
-                                                    name="hist",
-                                                    renderFun=".histogram",
-                                                    width=size[1],
-                                                    height=size[2],
-                                                    clearWith=list("splitBy", "hist", "dens"))
+                        image <- jmvcore::Image$new(
+                            options = self$options,
+                            name = "hist",
+                            renderFun = ".histogram",
+                            width = size[1],
+                            height = size[2],
+                            clearWith = list("splitBy", "hist", "dens")
+                        )
 
                         group$add(image)
                     }
@@ -296,12 +340,14 @@ descriptivesClass <- R6::R6Class(
 
                         size <- private$.plotSize(levels, 'box')
 
-                        image <- jmvcore::Image$new(options=self$options,
-                                                    name="box",
-                                                    renderFun=".boxPlot",
-                                                    width=size[1],
-                                                    height=size[2],
-                                                    clearWith=list("splitBy", "box", "violin", "dot", "dotType"))
+                        image <- jmvcore::Image$new(
+                            options = self$options,
+                            name = "box",
+                            renderFun = ".boxPlot",
+                            width = size[1],
+                            height = size[2],
+                            clearWith = list("splitBy", "box", "violin", "dot", "dotType")
+                        )
 
                         group$add(image)
                     }
@@ -310,17 +356,22 @@ descriptivesClass <- R6::R6Class(
 
                         size <- private$.plotSize(levels, 'qq')
 
-                        image <- jmvcore::Image$new(options=self$options,
-                                                    name="qq",
-                                                    renderFun=".qq",
-                                                    requiresData=TRUE,
-                                                    width=size[1],
-                                                    height=size[2],
-                                                    clearWith=list("splitBy"))
+                        image <- jmvcore::Image$new(
+                            options = self$options,
+                            name = "qq",
+                            renderFun = ".qq",
+                            requiresData = TRUE,
+                            width = size[1],
+                            height = size[2],
+                            clearWith = list("splitBy")
+                        )
 
                         group$add(image)
                     }
+
                 }
+
+                plots$add(group)
             }
         },
 
@@ -605,7 +656,7 @@ descriptivesClass <- R6::R6Class(
 
                 }
 
-                if (is.numeric(column)) {
+                if (jmvcore::canBeNumeric(column)) {
 
                     hist  <- group$get('hist')
                     box   <- group$get('box')

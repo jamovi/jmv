@@ -28,3 +28,33 @@ test_that('descriptives works', {
     expect_equal(2.25, descr$`y[quart1c]`, tolerance = 1e-3)
 
 })
+
+test_that('histogram is created for nominal numeric variable', {
+
+    set.seed(1337)
+    data <- data.frame(
+        a1 = rnorm(100, 0, 10),
+        a2 = factor(sample(1:10, 100, replace = TRUE))
+    )
+
+    attr(data$a2, 'values') <- 1:10
+
+    desc <- jmv::descriptives(data, c('a1', 'a2'), hist=TRUE)
+
+    expect_true(desc$plots[[2]]$.render())
+})
+
+test_that('warning message is shown when numeric plot is created for a non-numeric variable', {
+
+    set.seed(1337)
+    data <- data.frame(
+        a1 = rnorm(100, 0, 10),
+        a3 = factor(sample(letters[1:4], 100, replace = TRUE))
+    )
+
+    desc <- jmv::descriptives(data, c('a1', 'a3'), hist=TRUE)
+
+    desc$plots[[3]]$.render()
+
+    expect_match(desc$plots[[1]]$asString(), "class=\"warning\"")
+})

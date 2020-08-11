@@ -163,8 +163,6 @@ children:
             children:
               - type: Label
                 label: Histograms
-                icons:
-                  - variable-continuous
                 iconPosition: right
                 children:
                   - type: CheckBox
@@ -173,8 +171,6 @@ children:
                     name: dens
               - type: Label
                 label: Q-Q Plots
-                icons:
-                  - variable-continuous
                 iconPosition: right
                 children:
                   - type: CheckBox
@@ -183,8 +179,6 @@ children:
           - type: Label
             label: Box Plots
             stretchFactor: 1
-            icons:
-              - variable-continuous
             iconPosition: right
             children:
               - type: CheckBox
