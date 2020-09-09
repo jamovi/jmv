@@ -235,10 +235,10 @@ options:
     - name: sd
       title: Standard deviation
       type: Bool
-      default: false
+      default: true
       description:
           R: >
-            `TRUE` or `FALSE` (default), provide the standard deviation
+            `TRUE` (default) or `FALSE`, provide the standard deviation
 
     - name: variance
       title: Variance
