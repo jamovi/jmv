@@ -24,7 +24,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             median = TRUE,
             mode = FALSE,
             sum = FALSE,
-            sd = FALSE,
+            sd = TRUE,
             variance = FALSE,
             range = FALSE,
             min = TRUE,
@@ -130,7 +130,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..sd <- jmvcore::OptionBool$new(
                 "sd",
                 sd,
-                default=FALSE)
+                default=TRUE)
             private$..variance <- jmvcore::OptionBool$new(
                 "variance",
                 variance,
@@ -429,7 +429,7 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param median \code{TRUE} (default) or \code{FALSE}, provide the median
 #' @param mode \code{TRUE} or \code{FALSE} (default), provide the mode
 #' @param sum \code{TRUE} or \code{FALSE} (default), provide the sum
-#' @param sd \code{TRUE} or \code{FALSE} (default), provide the standard
+#' @param sd \code{TRUE} (default) or \code{FALSE}, provide the standard
 #'   deviation
 #' @param variance \code{TRUE} or \code{FALSE} (default), provide the variance
 #' @param range \code{TRUE} or \code{FALSE} (default), provide the range
@@ -478,7 +478,7 @@ descriptives <- function(
     median = TRUE,
     mode = FALSE,
     sum = FALSE,
-    sd = FALSE,
+    sd = TRUE,
     variance = FALSE,
     range = FALSE,
     min = TRUE,
