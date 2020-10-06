@@ -127,8 +127,8 @@ ttestOneSClass <- R6::R6Class(
                             "stat[wilc]"=res$statistic,
                             "p[wilc]"=res$p.value,
                             "md[wilc]"=res$estimate - testValue,
-                            "cil[wilc]"=res$conf.int[1],
-                            "ciu[wilc]"=res$conf.int[2],
+                            "cil[wilc]"=res$conf.int[1] - testValue,
+                            "ciu[wilc]"=res$conf.int[2] - testValue,
                             "es[wilc]"=biSerial,
                             "ciles[wilc]"='',
                             "ciues[wilc]"=''))
