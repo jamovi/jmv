@@ -12,15 +12,18 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             layers = NULL,
             chiSq = TRUE,
             chiSqCorr = FALSE,
+            zProp = FALSE,
             likeRat = FALSE,
             fisher = FALSE,
             contCoef = FALSE,
             phiCra = FALSE,
+            diffProp = FALSE,
             logOdds = FALSE,
             odds = FALSE,
             relRisk = FALSE,
             ci = TRUE,
             ciWidth = 95,
+            compCols = "rows",
             gamma = FALSE,
             taub = FALSE,
             obs = TRUE,
@@ -73,6 +76,10 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "chiSqCorr",
                 chiSqCorr,
                 default=FALSE)
+            private$..zProp <- jmvcore::OptionBool$new(
+                "zProp",
+                zProp,
+                default=FALSE)
             private$..likeRat <- jmvcore::OptionBool$new(
                 "likeRat",
                 likeRat,
@@ -88,6 +95,10 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..phiCra <- jmvcore::OptionBool$new(
                 "phiCra",
                 phiCra,
+                default=FALSE)
+            private$..diffProp <- jmvcore::OptionBool$new(
+                "diffProp",
+                diffProp,
                 default=FALSE)
             private$..logOdds <- jmvcore::OptionBool$new(
                 "logOdds",
@@ -111,6 +122,11 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 min=50,
                 max=99.9,
                 default=95)
+            private$..compCols <- jmvcore::OptionBool$new(
+                "compCols",
+                compCols,
+                options=list("rows","columns"
+                default="rows")
             private$..gamma <- jmvcore::OptionBool$new(
                 "gamma",
                 gamma,
@@ -146,15 +162,18 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..layers)
             self$.addOption(private$..chiSq)
             self$.addOption(private$..chiSqCorr)
+            self$.addOption(private$..zProp)
             self$.addOption(private$..likeRat)
             self$.addOption(private$..fisher)
             self$.addOption(private$..contCoef)
             self$.addOption(private$..phiCra)
+            self$.addOption(private$..diffProp)
             self$.addOption(private$..logOdds)
             self$.addOption(private$..odds)
             self$.addOption(private$..relRisk)
             self$.addOption(private$..ci)
             self$.addOption(private$..ciWidth)
+            self$.addOption(private$..compCols)
             self$.addOption(private$..gamma)
             self$.addOption(private$..taub)
             self$.addOption(private$..obs)
@@ -170,15 +189,18 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         layers = function() private$..layers$value,
         chiSq = function() private$..chiSq$value,
         chiSqCorr = function() private$..chiSqCorr$value,
+        zProp = function() private$..zProp$value,
         likeRat = function() private$..likeRat$value,
         fisher = function() private$..fisher$value,
         contCoef = function() private$..contCoef$value,
         phiCra = function() private$..phiCra$value,
+        diffProp = function() private$..diffProp$value,
         logOdds = function() private$..logOdds$value,
         odds = function() private$..odds$value,
         relRisk = function() private$..relRisk$value,
         ci = function() private$..ci$value,
         ciWidth = function() private$..ciWidth$value,
+        compCols = function() private$..compCols$value,
         gamma = function() private$..gamma$value,
         taub = function() private$..taub$value,
         obs = function() private$..obs$value,
@@ -193,15 +215,18 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..layers = NA,
         ..chiSq = NA,
         ..chiSqCorr = NA,
+        ..zProp = NA,
         ..likeRat = NA,
         ..fisher = NA,
         ..contCoef = NA,
         ..phiCra = NA,
+        ..diffProp = NA,
         ..logOdds = NA,
         ..odds = NA,
         ..relRisk = NA,
         ..ci = NA,
         ..ciWidth = NA,
+        ..compCols = NA,
         ..gamma = NA,
         ..taub = NA,
         ..obs = NA,
@@ -290,6 +315,26 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `format`="zto,pvalue", 
                         `visible`="(chiSqCorr)"),
                     list(
+                        `name`="test[zProp]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="z test for difference proportions", 
+                        `visible`="(zProp)"),
+                    list(
+                        `name`="value[zProp]", 
+                        `title`="Value", 
+                        `visible`="(zProp)"),
+                    list(
+                        `name`="df[zProp]", 
+                        `title`="df", 
+                        `visible`="(zProp)"),
+                    list(
+                        `name`="p[zProp]", 
+                        `title`="p", 
+                        `type`="number", 
+                        `format`="zto,pvalue", 
+                        `visible`="(zProp)"),
+                    list(
                         `name`="test[likeRat]", 
                         `title`="", 
                         `type`="text", 
@@ -340,14 +385,35 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 options=options,
                 name="odds",
                 title="Comparative Measures",
-                visible="(logOdds || odds || relRisk)",
+                visible="(diffProp || logOdds || odds || relRisk)",
                 clearWith=list(
                     "rows",
                     "cols",
                     "counts",
                     "layers",
-                    "ciWidth"),
+                    "ciWidth",
+                    "compCols"),
                 columns=list(
+                    list(
+                        `name`="t[dp]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="Difference in proportions", 
+                        `visible`="(diffProp)"),
+                    list(
+                        `name`="v[dp]", 
+                        `title`="Value", 
+                        `visible`="(diffProp)"),
+                    list(
+                        `name`="cil[dp]", 
+                        `title`="Lower", 
+                        `superTitle`="Confidence Intervals", 
+                        `visible`="(diffProp && ci)"),
+                    list(
+                        `name`="ciu[dp]", 
+                        `title`="Upper", 
+                        `superTitle`="Confidence Intervals", 
+                        `visible`="(diffProp && ci)"),
                     list(
                         `name`="t[lo]", 
                         `title`="", 
@@ -569,6 +635,8 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param chiSq \code{TRUE} (default) or \code{FALSE}, provide X²
 #' @param chiSqCorr \code{TRUE} or \code{FALSE} (default), provide X² with
 #'   continuity correction
+#' @param zProp \code{TRUE} or \code{FALSE} (default), provide a z Test for
+#'   differences in proportions
 #' @param likeRat \code{TRUE} or \code{FALSE} (default), provide the
 #'   likelihood ratio
 #' @param fisher \code{TRUE} or \code{FALSE} (default), provide Fisher's exact
@@ -577,6 +645,8 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   contingency coefficient
 #' @param phiCra \code{TRUE} or \code{FALSE} (default), provide Phi and
 #'   Cramer's V
+#' @param diffProp \code{TRUE} or \code{FALSE} (default), provide the
+#'   differences in proportions (only available for 2x2 tables)
 #' @param logOdds \code{TRUE} or \code{FALSE} (default), provide the log odds
 #'   ratio (only available for 2x2 tables)
 #' @param odds \code{TRUE} or \code{FALSE} (default), provide the odds ratio
@@ -587,6 +657,8 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   intervals for the comparative measures
 #' @param ciWidth a number between 50 and 99.9 (default: 95), width of the
 #'   confidence intervals to provide
+#' @param compCols \code{columns} or \code{rows} (default), compare rows/columns in
+#'   difference of proportions or relative risks (2x2 tables)
 #' @param gamma \code{TRUE} or \code{FALSE} (default), provide gamma
 #' @param taub \code{TRUE} or \code{FALSE} (default), provide Kendall's tau-b
 #' @param obs \code{TRUE} or \code{FALSE} (default), provide the observed
@@ -624,15 +696,18 @@ contTables <- function(
     layers = NULL,
     chiSq = TRUE,
     chiSqCorr = FALSE,
+    zProp = FALSE,
     likeRat = FALSE,
     fisher = FALSE,
     contCoef = FALSE,
     phiCra = FALSE,
+    diffProp = FALSE,
     logOdds = FALSE,
     odds = FALSE,
     relRisk = FALSE,
     ci = TRUE,
     ciWidth = 95,
+    compCols = "rows",
     gamma = FALSE,
     taub = FALSE,
     obs = TRUE,
@@ -699,15 +774,18 @@ contTables <- function(
         layers = layers,
         chiSq = chiSq,
         chiSqCorr = chiSqCorr,
+        zProp = zProp,
         likeRat = likeRat,
         fisher = fisher,
         contCoef = contCoef,
         phiCra = phiCra,
+        diffProp = diffProp,
         logOdds = logOdds,
         odds = odds,
         relRisk = relRisk,
         ci = ci,
         ciWidth = ciWidth,
+        compCols = compCols,
         gamma = gamma,
         taub = taub,
         obs = obs,

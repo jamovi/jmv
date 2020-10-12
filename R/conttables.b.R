@@ -199,6 +199,8 @@ contTablesClass <- R6::R6Class(
             }
 
             ciText <- paste0(self$options$ciWidth, '% Confidence Intervals')
+            odds$getColumn('cil[dp]')$setSuperTitle(ciText)
+            odds$getColumn('ciu[dp]')$setSuperTitle(ciText)
             odds$getColumn('cil[lo]')$setSuperTitle(ciText)
             odds$getColumn('ciu[lo]')$setSuperTitle(ciText)
             odds$getColumn('cil[o]')$setSuperTitle(ciText)
@@ -275,12 +277,16 @@ contTablesClass <- R6::R6Class(
                         tau <- try(cor.test(v1, v2, method='kendall', conf.level=ciWidth))
                     }
 
+                    zP <- NULL
+                    dp <- NULL
                     lor <- NULL
-                    fish <- NULL
+                    fish <- try(stats::fisher.test(mat, conf.level=ciWidth, hybrid=TRUE))  
+                    # use hybrid method for rxc tables: chi-2 if Cochran conditions are met, else exact
                     if (all(dim(mat) == 2)) {
-                        fish <- stats::fisher.test(mat, conf.level=ciWidth)
+                        dp <- private$.diffProp(mat) 
                         lor <- vcd::loddsratio(mat)
                         rr <- private$.relativeRisk(mat)
+                        zP <- dp[[1]] # z = qsrt(chi2)*sign(dp)
                     }
 
                 }) # suppressWarnings
@@ -365,6 +371,9 @@ contTablesClass <- R6::R6Class(
                         `value[chiSqCorr]`=NaN,
                         `df[chiSqCorr]`='',
                         `p[chiSqCorr]`='',
+                        `value[zProp]`=NaN,
+                        `df[zProp]`='',
+                        `p[zProp]`='',
                         `value[likeRat]`=NaN,
                         `df[likeRat]`='',
                         `p[likeRat]`='',
@@ -381,6 +390,14 @@ contTablesClass <- R6::R6Class(
                         fishP <- fish$p.value
                     }
 
+                    if (is.null(zP)) {
+                        zPstat <- NaN
+                        zPpval <- ''
+                    } else {
+                        zPstat <- sqrt(unname(test$statistic)) * sign(zP)
+                        zPpval <- unname(test$p.value)
+                    }
+
                     values <- list(
                         `value[chiSq]`=unname(test$statistic),
                         `df[chiSq]`=unname(test$parameter),
@@ -388,6 +405,9 @@ contTablesClass <- R6::R6Class(
                         `value[chiSqCorr]`=unname(corr$statistic),
                         `df[chiSqCorr]`=unname(corr$parameter),
                         `p[chiSqCorr]`=unname(corr$p.value),
+                        `value[zProp]`=zPstat,
+                        `df[zProp]`='', # needed to keep table entry order
+                        `p[zProp]`=zPpval,
                         `value[likeRat]`=asso$chisq_tests['Likelihood Ratio', 'X^2'],
                         `df[likeRat]`=asso$chisq_tests['Likelihood Ratio', 'df'],
                         `p[likeRat]`=asso$chisq_tests['Likelihood Ratio', 'P(> X^2)'],
@@ -398,9 +418,14 @@ contTablesClass <- R6::R6Class(
 
                 chiSq$setRow(rowNo=othRowNo, values=values)
 
-                if (is.null(fish))
-                    chiSq$addFootnote(rowNo=othRowNo, 'value[fisher]', 'Available for 2x2 tables only')
+                if (is.null(zP))
+                    chiSq$addFootnote(rowNo=othRowNo, 'value[zProp]', 'z test only available for 2x2 tables')
 
+                if (!is.null(fish) & !all(dim(mat) == 2))
+                    chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', 'Hybrid method: χ² if Cochran conditions are met')
+                # if (!is.null(fish))
+                #     chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', 'Two sided')
+                
                 values <- list(
                     `v[cont]`=asso$contingency,
                     `v[phi]`=ifelse(is.na(asso$phi), NaN, asso$phi),
@@ -428,6 +453,9 @@ contTablesClass <- R6::R6Class(
                 if ( ! is.null(lor)) {
                     ci <- confint(lor, level=ciWidth)
                     odds$setRow(rowNo=othRowNo, list(
+                        `v[dp]`=dp$dp,
+                        `cil[dp]`=dp$lower,
+                        `ciu[dp]`=dp$upper,
                         `v[lo]`=unname(lor[[1]]),
                         `cil[lo]`=ci[1],
                         `ciu[lo]`=ci[2],
@@ -437,12 +465,16 @@ contTablesClass <- R6::R6Class(
                         `v[rr]`=rr$rr,
                         `cil[rr]`=rr$lower,
                         `ciu[rr]`=rr$upper))
+                    odds$addFootnote(rowNo=othRowNo, 'v[dp]', paste(self$options$compCols, 'compared'))
+                    odds$addFootnote(rowNo=othRowNo, 'v[rr]', paste(self$options$compCols, 'compared'))
 
                 } else {
                     odds$setRow(rowNo=othRowNo, list(
+                        `v[dp]`=NaN, `cil[dp]`='', `ciu[dp]`='',
                         `v[lo]`=NaN, `cil[lo]`='', `ciu[lo]`='',
                         `v[o]`=NaN, `cil[o]`='', `ciu[o]`='',
                         `v[rr]`=NaN, `cil[rr]`='', `ciu[rr]`=''))
+                    odds$addFootnote(rowNo=othRowNo, 'v[dp]', 'Available for 2x2 tables only')
                     odds$addFootnote(rowNo=othRowNo, 'v[lo]', 'Available for 2x2 tables only')
                     odds$addFootnote(rowNo=othRowNo, 'v[o]', 'Available for 2x2 tables only')
                     odds$addFootnote(rowNo=othRowNo, 'v[rr]', 'Available for 2x2 tables only')
@@ -561,6 +593,33 @@ contTablesClass <- R6::R6Class(
 
             rows
         },
+        .diffProp = function(mat) {
+
+            dims <- dim(mat)
+
+            if (dims[1] > 2 || dims[2] > 2)
+                return(NULL)
+
+            ciWidth <- self$options$ciWidth / 100
+
+            if (self$options$compCols == "columns") mat <- t(mat)
+
+            a <- mat[1,1]
+            b <- mat[1,2]
+            c <- mat[2,1]
+            d <- mat[2,2]
+
+            p1 <- a / (a + b)
+            p2 <- c / (c + d)
+
+            dp <- p1 - p2
+            ci <-stats::prop.test(mat, conf.level=ciWidth, correct=FALSE)$conf.int
+            lower <- ci[1]
+            upper <- ci[2]
+
+            return(list(dp=dp, lower=lower, upper=upper))
+
+        },
         .relativeRisk = function(mat) {
 
             # https://en.wikipedia.org/wiki/Relative_risk#Tests
@@ -573,6 +632,8 @@ contTablesClass <- R6::R6Class(
             ciWidth <- self$options$ciWidth
             tail <- (100 - ciWidth) / 200
             z <- qnorm(tail, lower.tail = FALSE)
+
+            if (self$options$compCols == "columns") mat <- t(mat)
 
             a <- mat[1,1]
             b <- mat[1,2]

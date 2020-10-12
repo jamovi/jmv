@@ -145,6 +145,14 @@ options:
           R: >
             `TRUE` or `FALSE` (default), provide χ² with continuity correction
 
+    - name: zProp
+      title: z test for difference in proportions
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a z Test for differences in proportions
+
     - name: likeRat
       title: Likelihood ratio
       type: Bool
@@ -176,6 +184,15 @@ options:
       description:
           R: >
             `TRUE` or `FALSE` (default), provide Phi and Cramer's V
+
+    - name: diffProp
+      title: Difference in proportions
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the differences in proportions (only available
+            for 2x2 tables)
 
     - name: logOdds
       title: Log odds ratio
@@ -223,6 +240,20 @@ options:
           R: >
             a number between 50 and 99.9 (default: 95), width of the confidence
             intervals to provide
+
+    - name: compCols
+      title: Compare
+      type: List
+      options:
+        - title: rows
+          name: rows
+        - title: columns
+          name: columns
+      default: rows
+      description:
+          R: >
+            `columns` or `rows` (default), compare columns/rows in difference of proportions
+            or relative risks (2x2 tables)
 
     - name: gamma
       title: Gamma

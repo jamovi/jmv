@@ -69,6 +69,26 @@ items:
           format: zto,pvalue
           visible: (chiSqCorr)
 
+        - name: test[zProp]
+          title: ''
+          type: text
+          content: z test for difference proportions
+          visible: (zProp)
+
+        - name: value[zProp]
+          title: Value
+          visible: (zProp)
+
+        - name: df[zProp]
+          title: df
+          visible: (zProp)
+
+        - name: p[zProp]
+          title: p
+          type: number
+          format: zto,pvalue
+          visible: (zProp)
+
         - name: test[likeRat]
           title: ''
           type: text
@@ -120,7 +140,7 @@ items:
       title: Comparative Measures
       type: Table
       description: a table of comparative measures
-      visible: (logOdds || odds || relRisk)
+      visible: (diffProp || logOdds || odds || relRisk)
 
       clearWith:
         - rows
@@ -128,8 +148,29 @@ items:
         - counts
         - layers
         - ciWidth
+        - compCols
 
       columns:
+        - name: t[dp]
+          title: ''
+          type: text
+          content: Difference in proportions
+          visible: (diffProp)
+
+        - name: v[dp]
+          title: Value
+          visible: (diffProp)
+
+        - name: cil[dp]
+          title: Lower
+          superTitle: Confidence Intervals
+          visible: (diffProp && ci)
+
+        - name: ciu[dp]
+          title: Upper
+          superTitle: Confidence Intervals
+          visible: (diffProp && ci)
+
         - name: t[lo]
           title: ''
           type: text
