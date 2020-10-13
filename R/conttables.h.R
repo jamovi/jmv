@@ -125,8 +125,8 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..compare <- jmvcore::OptionList$new(
                 "compare",
                 compare,
-                options=list("rows","columns",
-                default="rows"))
+                options=list("rows","columns"),
+                default="rows")
             private$..gamma <- jmvcore::OptionBool$new(
                 "gamma",
                 gamma,
