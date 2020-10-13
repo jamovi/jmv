@@ -93,7 +93,7 @@ children:
                             format: number
                             enable: (ci)
                       - type: ComboBox
-                        name: compCols
+                        name: compare
           - type: LayoutBox
             margin: large
             stretchFactor: 1

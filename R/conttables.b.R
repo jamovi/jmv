@@ -465,8 +465,8 @@ contTablesClass <- R6::R6Class(
                         `v[rr]`=rr$rr,
                         `cil[rr]`=rr$lower,
                         `ciu[rr]`=rr$upper))
-                    odds$addFootnote(rowNo=othRowNo, 'v[dp]', paste(self$options$compCols, 'compared'))
-                    odds$addFootnote(rowNo=othRowNo, 'v[rr]', paste(self$options$compCols, 'compared'))
+                    odds$addFootnote(rowNo=othRowNo, 'v[dp]', paste(self$options$compare, 'compared'))
+                    odds$addFootnote(rowNo=othRowNo, 'v[rr]', paste(self$options$compare, 'compared'))
 
                 } else {
                     odds$setRow(rowNo=othRowNo, list(
@@ -602,7 +602,8 @@ contTablesClass <- R6::R6Class(
 
             ciWidth <- self$options$ciWidth / 100
 
-            if (self$options$compCols == "columns") mat <- t(mat)
+            if (self$options$compare == "columns") 
+                mat <- t(mat)
 
             a <- mat[1,1]
             b <- mat[1,2]
@@ -633,7 +634,7 @@ contTablesClass <- R6::R6Class(
             tail <- (100 - ciWidth) / 200
             z <- qnorm(tail, lower.tail = FALSE)
 
-            if (self$options$compCols == "columns") mat <- t(mat)
+            if (self$options$compare == "columns") mat <- t(mat)
 
             a <- mat[1,1]
             b <- mat[1,2]

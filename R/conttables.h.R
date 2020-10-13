@@ -23,7 +23,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             relRisk = FALSE,
             ci = TRUE,
             ciWidth = 95,
-            compCols = "rows",
+            compare = "rows",
             gamma = FALSE,
             taub = FALSE,
             obs = TRUE,
@@ -122,11 +122,11 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 min=50,
                 max=99.9,
                 default=95)
-            private$..compCols <- jmvcore::OptionBool$new(
-                "compCols",
-                compCols,
-                options=list("rows","columns"
-                default="rows")
+            private$..compare <- jmvcore::OptionList$new(
+                "compare",
+                compare,
+                options=list("rows","columns",
+                default="rows"))
             private$..gamma <- jmvcore::OptionBool$new(
                 "gamma",
                 gamma,
@@ -173,7 +173,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..relRisk)
             self$.addOption(private$..ci)
             self$.addOption(private$..ciWidth)
-            self$.addOption(private$..compCols)
+            self$.addOption(private$..compare)
             self$.addOption(private$..gamma)
             self$.addOption(private$..taub)
             self$.addOption(private$..obs)
@@ -200,7 +200,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         relRisk = function() private$..relRisk$value,
         ci = function() private$..ci$value,
         ciWidth = function() private$..ciWidth$value,
-        compCols = function() private$..compCols$value,
+        compare = function() private$..compare$value,
         gamma = function() private$..gamma$value,
         taub = function() private$..taub$value,
         obs = function() private$..obs$value,
@@ -226,7 +226,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..relRisk = NA,
         ..ci = NA,
         ..ciWidth = NA,
-        ..compCols = NA,
+        ..compare = NA,
         ..gamma = NA,
         ..taub = NA,
         ..obs = NA,
@@ -392,7 +392,7 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "counts",
                     "layers",
                     "ciWidth",
-                    "compCols"),
+                    "compare"),
                 columns=list(
                     list(
                         `name`="t[dp]", 
@@ -657,7 +657,7 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   intervals for the comparative measures
 #' @param ciWidth a number between 50 and 99.9 (default: 95), width of the
 #'   confidence intervals to provide
-#' @param compCols \code{columns} or \code{rows} (default), compare rows/columns in
+#' @param compare \code{columns} or \code{rows} (default), compare rows/columns in
 #'   difference of proportions or relative risks (2x2 tables)
 #' @param gamma \code{TRUE} or \code{FALSE} (default), provide gamma
 #' @param taub \code{TRUE} or \code{FALSE} (default), provide Kendall's tau-b
@@ -707,7 +707,7 @@ contTables <- function(
     relRisk = FALSE,
     ci = TRUE,
     ciWidth = 95,
-    compCols = "rows",
+    compare = "rows",
     gamma = FALSE,
     taub = FALSE,
     obs = TRUE,
@@ -785,7 +785,7 @@ contTables <- function(
         relRisk = relRisk,
         ci = ci,
         ciWidth = ciWidth,
-        compCols = compCols,
+        compare = compare,
         gamma = gamma,
         taub = taub,
         obs = obs,

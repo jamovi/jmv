@@ -148,7 +148,7 @@ items:
         - counts
         - layers
         - ciWidth
-        - compCols
+        - compare
 
       columns:
         - name: t[dp]
