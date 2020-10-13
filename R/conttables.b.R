@@ -457,11 +457,11 @@ contTablesClass <- R6::R6Class(
 
                 if (is.null(zP))
                     chiSq$addFootnote(rowNo=othRowNo, 'value[zProp]', 'z test only available for 2x2 tables')
-                else
+                else if (hypothesys!="different")
                     chiSq$addFootnote(rowNo=othRowNo, 'p[zProp]', hypothesis_tested)
                 
 
-                if (!is.null(fish) & all(dim(mat) == 2))
+                if (!is.null(fish) & all(dim(mat) == 2) & hypothesys!="different")
                     chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', hypothesis_tested)
                 
                 if (!is.null(fish) & !all(dim(mat) == 2))
