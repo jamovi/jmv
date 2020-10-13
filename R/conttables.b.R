@@ -423,8 +423,8 @@ contTablesClass <- R6::R6Class(
                         zPstat <- NaN
                         zPpval <- ''
                     } else {
-                        zPstat <- sqrt(unname(test$statistic)) * sign(zP)
-                        zPpval <- unname(dp$p.value) # unname(test$p.value)
+                        zPstat <- sqrt(dp$statistic) * sign(zP)
+                        zPpval <- dp$p.value # unname(test$p.value)
                     }
 
                     values <- list(
@@ -661,7 +661,7 @@ contTablesClass <- R6::R6Class(
             upper <- ci[2]
 
             return(list(dp=dp, lower=lower, upper=upper, 
-                        p.value=prtest$p.value, stat=prtest$statistic))
+                        p.value=prtest$p.value, statistic=prtest$statistic))
 
         },
         .relativeRisk = function(mat) {
