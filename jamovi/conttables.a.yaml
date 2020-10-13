@@ -242,7 +242,7 @@ options:
             intervals to provide
 
     - name: compare
-      title: compare
+      title: Compare
       type: List
       options:
         - title: rows
