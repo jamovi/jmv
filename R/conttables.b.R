@@ -449,9 +449,9 @@ contTablesClass <- R6::R6Class(
 
                 hypothesis_tested <- ''
                 if (hypothesis == 'oneGreater')
-                    hypothesis_tested <- jmvcore::format("H\u2090: {} {} > {}", variable, groups[1], groups[2])
+                    hypothesis_tested <- jmvcore::format("H\u2090: {} P({}) > P({})", variable, groups[1], groups[2])
                 else if (hypothesis == 'twoGreater')
-                    hypothesis_tested <- jmvcore::format("H\u2090: {} {} < {}", variable, groups[1], groups[2])
+                    hypothesis_tested <- jmvcore::format("H\u2090: {} P({}) < P({})", variable, groups[1], groups[2])
                 else
                     hypothesis_tested <- 'two-sided'
 
