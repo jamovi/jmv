@@ -420,11 +420,13 @@ contTablesClass <- R6::R6Class(
 
                 if (is.null(zP))
                     chiSq$addFootnote(rowNo=othRowNo, 'value[zProp]', 'z test only available for 2x2 tables')
+                else
+                    chiSq$addFootnote(rowNo=othRowNo, 'p[zProp]', 'Two sided')
 
                 if (!is.null(fish) & !all(dim(mat) == 2))
                     chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', 'Hybrid method: χ² if Cochran conditions are met')
-                # if (!is.null(fish))
-                #     chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', 'Two sided')
+                if (!is.null(fish))
+                    chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', 'Two sided')
                 
                 values <- list(
                     `v[cont]`=asso$contingency,

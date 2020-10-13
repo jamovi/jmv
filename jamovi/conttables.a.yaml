@@ -151,7 +151,7 @@ options:
       default: false
       description:
           R: >
-            `TRUE` or `FALSE` (default), provide a z Test for differences in proportions
+            `TRUE` or `FALSE` (default), provide a z test for differences in proportions
 
     - name: likeRat
       title: Likelihood ratio
