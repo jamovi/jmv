@@ -309,8 +309,7 @@ contTablesClass <- R6::R6Class(
                     zP <- NULL
                     dp <- NULL
                     lor <- NULL
-                    fish <- try(stats::fisher.test(mat, conf.level=ciWidth, hybrid=TRUE, alternative=Ha))  
-                    # use hybrid method for rxc tables: chi-2 if Cochran conditions are met, else exact
+                    fish <- try(stats::fisher.test(mat, conf.level=ciWidth, alternative=Ha))
                     if (all(dim(mat) == 2)) {
                         dp <- private$.diffProp(mat, Ha) 
                         lor <- vcd::loddsratio(mat)
@@ -424,7 +423,7 @@ contTablesClass <- R6::R6Class(
                         zPpval <- ''
                     } else {
                         zPstat <- sqrt(dp$statistic) * sign(zP)
-                        zPpval <- dp$p.value # unname(test$p.value)
+                        zPpval <- dp$p.value
                     }
 
                     values <- list(
@@ -464,9 +463,6 @@ contTablesClass <- R6::R6Class(
                 if (!is.null(fish) & all(dim(mat) == 2) & hypothesis!="different")
                     chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', hypothesis_tested)
                 
-                if (!is.null(fish) & !all(dim(mat) == 2))
-                    chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', 'Hybrid method: χ² if Cochran conditions are met')
-
                 values <- list(
                     `v[cont]`=asso$contingency,
                     `v[phi]`=ifelse(is.na(asso$phi), NaN, asso$phi),
