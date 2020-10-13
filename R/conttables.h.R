@@ -13,6 +13,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             chiSq = TRUE,
             chiSqCorr = FALSE,
             zProp = FALSE,
+            hypothesis = "different",
             likeRat = FALSE,
             fisher = FALSE,
             contCoef = FALSE,
@@ -80,6 +81,14 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "zProp",
                 zProp,
                 default=FALSE)
+            private$..hypothesis <- jmvcore::OptionList$new(
+                "hypothesis",
+                hypothesis,
+                options=list(
+                    "different",
+                    "oneGreater",
+                    "twoGreater"),
+                default="different")
             private$..likeRat <- jmvcore::OptionBool$new(
                 "likeRat",
                 likeRat,
@@ -163,6 +172,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..chiSq)
             self$.addOption(private$..chiSqCorr)
             self$.addOption(private$..zProp)
+            self$.addOption(private$..hypothesis)
             self$.addOption(private$..likeRat)
             self$.addOption(private$..fisher)
             self$.addOption(private$..contCoef)
@@ -190,6 +200,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         chiSq = function() private$..chiSq$value,
         chiSqCorr = function() private$..chiSqCorr$value,
         zProp = function() private$..zProp$value,
+        hypothesis = function() private$..hypothesis$value,
         likeRat = function() private$..likeRat$value,
         fisher = function() private$..fisher$value,
         contCoef = function() private$..contCoef$value,
@@ -216,6 +227,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..chiSq = NA,
         ..chiSqCorr = NA,
         ..zProp = NA,
+        ..hypothesis = NA,
         ..likeRat = NA,
         ..fisher = NA,
         ..contCoef = NA,
@@ -270,6 +282,7 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "rows",
                     "cols",
                     "counts",
+                    "hypothesis",
                     "layers"),
                 columns=list(
                     list(
@@ -645,6 +658,10 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   contingency coefficient
 #' @param phiCra \code{TRUE} or \code{FALSE} (default), provide Phi and
 #'   Cramer's V
+#' @param hypothesis \code{'different'} (default), \code{'oneGreater'} or
+#'   \code{'twoGreater'}, the alternative hypothesis; group 1 different to group
+#'   2, group 1 greater than group 2, and group 2 greater than group 1
+#'   respectively
 #' @param diffProp \code{TRUE} or \code{FALSE} (default), provide the
 #'   differences in proportions (only available for 2x2 tables)
 #' @param logOdds \code{TRUE} or \code{FALSE} (default), provide the log odds
@@ -697,6 +714,7 @@ contTables <- function(
     chiSq = TRUE,
     chiSqCorr = FALSE,
     zProp = FALSE,
+    hypothesis = "different",
     likeRat = FALSE,
     fisher = FALSE,
     contCoef = FALSE,
@@ -775,6 +793,7 @@ contTables <- function(
         chiSq = chiSq,
         chiSqCorr = chiSqCorr,
         zProp = zProp,
+        hypothesis = hypothesis,
         likeRat = likeRat,
         fisher = fisher,
         contCoef = contCoef,

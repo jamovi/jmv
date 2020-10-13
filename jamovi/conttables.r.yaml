@@ -25,6 +25,7 @@ items:
         - cols
         - counts
         - layers
+        - hypothesis
 
       columns:
         - name: test[chiSq]
