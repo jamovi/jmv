@@ -241,8 +241,8 @@ options:
             a number between 50 and 99.9 (default: 95), width of the confidence
             intervals to provide
 
-    - name: compCols
-      title: Compare
+    - name: compare
+      title: compare
       type: List
       options:
         - title: rows
