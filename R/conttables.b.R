@@ -258,7 +258,7 @@ contTablesClass <- R6::R6Class(
             } else { # compare columns
                 if (!is.null(colVarName)) {
                     variable <- colVarName
-                    levels <- base::levels(data[[colVarName]])
+                    groups <- base::levels(data[[colVarName]])
                 } else {
                     groups <- c('Group 1', 'Group 2')
                 }
