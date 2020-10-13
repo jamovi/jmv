@@ -210,31 +210,6 @@ contTablesClass <- R6::R6Class(
             gamma$getColumn('cil')$setSuperTitle(ciText)
             gamma$getColumn('ciu')$setSuperTitle(ciText)
 
-            hypothesis <- self$options$hypothesis
-
-            # # get group names according to compare
-            groups <- NULL
-            if (self$options$compare == "rows"){
-                if ( ! is.null(rowVarName))
-                    groups <- base::levels(data[[rowVarName]])
-                if (length(groups) != 2)
-                    groups <- c('Group 1', 'Group 2')
-
-            } else {
-                if ( ! is.null(rowVarName))
-                    levels <- base::levels(data[[colVarName]])
-                if (length(groups) != 2)
-                    groups <- c('Group 1', 'Group 2')
-
-            }
-
-            if (hypothesis == 'oneGreater')
-                chiSq$setNote("hyp", jmvcore::format("H\u2090 {} > {}", groups[1], groups[2]))
-            else if (hypothesis == 'twoGreater')
-                chiSq$setNote("hyp", jmvcore::format("H\u2090 {} < {}", groups[1], groups[2]))
-            else
-                chiSq$setNote("hyp", NULL)
-
         },
         .run=function() {
 
@@ -269,6 +244,27 @@ contTablesClass <- R6::R6Class(
 
             freqRowNo <- 1
             othRowNo <- 1
+
+            # get group names according to compare
+            groups <- NULL
+            variable <- NULL
+            if (self$options$compare == "rows") {
+                if (!is.null(rowVarName)) {
+                    variable <- rowVarName
+                    groups <- base::levels(data[[rowVarName]])
+                } else {
+                    groups <- c('Group 1', 'Group 2')
+                }
+            } else { # compare columns
+                if (!is.null(colVarName)) {
+                    variable <- colVarName
+                    levels <- base::levels(data[[colVarName]])
+                } else {
+                    groups <- c('Group 1', 'Group 2')
+                }
+            }
+
+            hypothesis <- self$options$hypothesis
 
             ## Hypothesis options checking
             if (self$options$hypothesis == 'oneGreater')
@@ -428,7 +424,7 @@ contTablesClass <- R6::R6Class(
                         zPpval <- ''
                     } else {
                         zPstat <- sqrt(unname(test$statistic)) * sign(zP)
-                        zPpval <- unname(test$p.value)
+                        zPpval <- dp$p.value # unname(test$p.value)
                     }
 
                     values <- list(
@@ -451,12 +447,26 @@ contTablesClass <- R6::R6Class(
 
                 chiSq$setRow(rowNo=othRowNo, values=values)
 
+                hypothesis_tested <- ''
+                if (hypothesis == 'oneGreater')
+                    hypothesis_tested <- jmvcore::format("H\u2090: {} {} > {}", variable, groups[1], groups[2])
+                else if (hypothesis == 'twoGreater')
+                    hypothesis_tested <- jmvcore::format("H\u2090: {} {} < {}", variable, groups[1], groups[2])
+                else
+                    hypothesis_tested <- 'two-sided'
+
                 if (is.null(zP))
                     chiSq$addFootnote(rowNo=othRowNo, 'value[zProp]', 'z test only available for 2x2 tables')
+                else
+                    chiSq$addFootnote(rowNo=othRowNo, 'p[zProp]', hypothesis_tested)
+                
 
+                if (!is.null(fish) & all(dim(mat) == 2))
+                    chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', hypothesis_tested)
+                
                 if (!is.null(fish) & !all(dim(mat) == 2))
                     chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', 'Hybrid method: χ² if Cochran conditions are met')
-                
+
                 values <- list(
                     `v[cont]`=asso$contingency,
                     `v[phi]`=ifelse(is.na(asso$phi), NaN, asso$phi),
@@ -649,7 +659,7 @@ contTablesClass <- R6::R6Class(
             lower <- ci[1]
             upper <- ci[2]
 
-            return(list(dp=dp, lower=lower, upper=upper))
+            return(list(dp=dp, lower=lower, upper=upper, p.value=p.value))
 
         },
         .relativeRisk = function(mat) {
