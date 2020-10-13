@@ -634,7 +634,8 @@ contTablesClass <- R6::R6Class(
             tail <- (100 - ciWidth) / 200
             z <- qnorm(tail, lower.tail = FALSE)
 
-            if (self$options$compare == "columns") mat <- t(mat)
+            if (self$options$compare == "columns") 
+                mat <- t(mat)
 
             a <- mat[1,1]
             b <- mat[1,2]
