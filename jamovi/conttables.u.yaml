@@ -69,25 +69,25 @@ children:
                         name: fisher
 
                   - type: Label
-                  label: Hypothesis
-                  children:
-                    - type: RadioButton
-                      name: hypothesis_different
-                      optionName: hypothesis
-                      optionPart: different
-                      label: "Group 1 ≠ Group 2"
-      
-                    - type: RadioButton
-                      name: hypothesis_oneGreater
-                      optionName: hypothesis
-                      optionPart: oneGreater
-                      label: "Group 1 > Group 2"
-      
-                    - type: RadioButton
-                      name: hypothesis_twoGreater
-                      optionName: hypothesis
-                      optionPart: twoGreater
-                      label: "Group 1 < Group 2"
+                    label: Hypothesis
+                    children:
+                      - type: RadioButton
+                        name: hypothesis_different
+                        optionName: hypothesis
+                        optionPart: different
+                        label: "Group 1 ≠ Group 2"
+        
+                      - type: RadioButton
+                        name: hypothesis_oneGreater
+                        optionName: hypothesis
+                        optionPart: oneGreater
+                        label: "Group 1 > Group 2"
+        
+                      - type: RadioButton
+                        name: hypothesis_twoGreater
+                        optionName: hypothesis
+                        optionPart: twoGreater
+                        label: "Group 1 < Group 2"
 
               - type: LayoutBox
                 cell:
