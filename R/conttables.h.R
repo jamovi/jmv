@@ -283,6 +283,7 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "cols",
                     "counts",
                     "hypothesis",
+                    "compare",
                     "layers"),
                 columns=list(
                     list(
