@@ -242,7 +242,7 @@ options:
             intervals to provide
 
     - name: compare
-      title: compare
+      title: Compare
       type: List
       options:
         - title: rows
@@ -254,6 +254,26 @@ options:
           R: >
             `columns` or `rows` (default), compare columns/rows in difference of proportions
             or relative risks (2x2 tables)
+
+    - name: hypothesis
+      title: Alternative hypothesis
+      type: List
+      options:
+        - name: different
+          title: "Group 1 ≠ Group 2"
+        - name: oneGreater
+          title: "Group 1 > Group 2"
+        - name: twoGreater
+          title: "Group 1 < Group 2"
+      default: different
+      description:
+          ui: >
+            the alternative hypothesis.
+          R: >
+            `'different'` (default), `'oneGreater'` or
+            `'twoGreater'`, the alternative hypothesis; group 1 different
+            to group 2, group 1 greater than group 2, and group 2 greater than
+            group 1 respectively
 
     - name: gamma
       title: Gamma

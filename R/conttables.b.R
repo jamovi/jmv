@@ -245,6 +245,35 @@ contTablesClass <- R6::R6Class(
             freqRowNo <- 1
             othRowNo <- 1
 
+            # get group names according to compare
+            groups <- NULL
+            variable <- NULL
+            if (self$options$compare == "rows") {
+                if (!is.null(rowVarName)) {
+                    variable <- rowVarName
+                    groups <- base::levels(data[[rowVarName]])
+                } else {
+                    groups <- c('Group 1', 'Group 2')
+                }
+            } else { # compare columns
+                if (!is.null(colVarName)) {
+                    variable <- colVarName
+                    groups <- base::levels(data[[colVarName]])
+                } else {
+                    groups <- c('Group 1', 'Group 2')
+                }
+            }
+
+            hypothesis <- self$options$hypothesis
+
+            ## Hypothesis options checking
+            if (self$options$hypothesis == 'oneGreater')
+                Ha <- "greater"
+            else if (self$options$hypothesis == 'twoGreater')
+                Ha <- "less"
+            else
+                Ha <- "two.sided"
+
             mats <- private$.matrices(data)
 
             nRows  <- base::nlevels(data[[rowVarName]])
@@ -280,13 +309,12 @@ contTablesClass <- R6::R6Class(
                     zP <- NULL
                     dp <- NULL
                     lor <- NULL
-                    fish <- try(stats::fisher.test(mat, conf.level=ciWidth, hybrid=TRUE))  
-                    # use hybrid method for rxc tables: chi-2 if Cochran conditions are met, else exact
+                    fish <- try(stats::fisher.test(mat, conf.level=ciWidth, alternative=Ha))
                     if (all(dim(mat) == 2)) {
-                        dp <- private$.diffProp(mat) 
+                        dp <- private$.diffProp(mat, Ha) 
                         lor <- vcd::loddsratio(mat)
                         rr <- private$.relativeRisk(mat)
-                        zP <- dp[[1]] # z = qsrt(chi2)*sign(dp)
+                        zP <- dp[[1]]
                     }
 
                 }) # suppressWarnings
@@ -394,8 +422,8 @@ contTablesClass <- R6::R6Class(
                         zPstat <- NaN
                         zPpval <- ''
                     } else {
-                        zPstat <- sqrt(unname(test$statistic)) * sign(zP)
-                        zPpval <- unname(test$p.value)
+                        zPstat <- sqrt(dp$statistic) * sign(zP)
+                        zPpval <- dp$p.value
                     }
 
                     values <- list(
@@ -418,15 +446,22 @@ contTablesClass <- R6::R6Class(
 
                 chiSq$setRow(rowNo=othRowNo, values=values)
 
+                hypothesis_tested <- ''
+                if (hypothesis == 'oneGreater')
+                    hypothesis_tested <- jmvcore::format("H\u2090: {} P({}) > P({})", variable, groups[1], groups[2])
+                else if (hypothesis == 'twoGreater')
+                    hypothesis_tested <- jmvcore::format("H\u2090: {} P({}) < P({})", variable, groups[1], groups[2])
+                else
+                    hypothesis_tested <- 'two-sided'
+
                 if (is.null(zP))
                     chiSq$addFootnote(rowNo=othRowNo, 'value[zProp]', 'z test only available for 2x2 tables')
-                else
-                    chiSq$addFootnote(rowNo=othRowNo, 'p[zProp]', 'Two sided')
+                else if (hypothesis!="different")
+                    chiSq$addFootnote(rowNo=othRowNo, 'p[zProp]', hypothesis_tested)
+                
 
-                if (!is.null(fish) & !all(dim(mat) == 2))
-                    chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', 'Hybrid method: χ² if Cochran conditions are met')
-                if (!is.null(fish))
-                    chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', 'Two sided')
+                if (!is.null(fish) & all(dim(mat) == 2) & hypothesis!="different")
+                    chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', hypothesis_tested)
                 
                 values <- list(
                     `v[cont]`=asso$contingency,
@@ -595,7 +630,7 @@ contTablesClass <- R6::R6Class(
 
             rows
         },
-        .diffProp = function(mat) {
+        .diffProp = function(mat, Ha) {
 
             dims <- dim(mat)
 
@@ -616,11 +651,13 @@ contTablesClass <- R6::R6Class(
             p2 <- c / (c + d)
 
             dp <- p1 - p2
-            ci <-stats::prop.test(mat, conf.level=ciWidth, correct=FALSE)$conf.int
+            prtest <- stats::prop.test(mat, conf.level=ciWidth, correct=FALSE, alternative=Ha)
+            ci <-prtest$conf.int
             lower <- ci[1]
             upper <- ci[2]
 
-            return(list(dp=dp, lower=lower, upper=upper))
+            return(list(dp=dp, lower=lower, upper=upper, 
+                        p.value=prtest$p.value, statistic=prtest$statistic))
 
         },
         .relativeRisk = function(mat) {
