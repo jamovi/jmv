@@ -62,6 +62,8 @@ children:
                       - type: CheckBox
                         name: chiSqCorr
                       - type: CheckBox
+                        name: zProp
+                      - type: CheckBox
                         name: likeRat
                       - type: CheckBox
                         name: fisher
@@ -74,6 +76,8 @@ children:
                   - type: Label
                     label: Comparative Measures (2x2 only)
                     children:
+                      - type: CheckBox
+                        name: diffProp
                       - type: CheckBox
                         name: logOdds
                       - type: CheckBox
@@ -88,6 +92,8 @@ children:
                             suffix: '%'
                             format: number
                             enable: (ci)
+                      - type: ComboBox
+                        name: compare
           - type: LayoutBox
             margin: large
             stretchFactor: 1
