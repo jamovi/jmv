@@ -24,6 +24,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             ci = TRUE,
             ciWidth = 95,
             compare = "rows",
+            hypothesis = "different",
             gamma = FALSE,
             taub = FALSE,
             obs = TRUE,
@@ -129,6 +130,14 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "rows",
                     "columns"),
                 default="rows")
+            private$..hypothesis <- jmvcore::OptionList$new(
+                "hypothesis",
+                hypothesis,
+                options=list(
+                    "different",
+                    "oneGreater",
+                    "twoGreater"),
+                default="different")
             private$..gamma <- jmvcore::OptionBool$new(
                 "gamma",
                 gamma,
@@ -176,6 +185,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..ci)
             self$.addOption(private$..ciWidth)
             self$.addOption(private$..compare)
+            self$.addOption(private$..hypothesis)
             self$.addOption(private$..gamma)
             self$.addOption(private$..taub)
             self$.addOption(private$..obs)
@@ -203,6 +213,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ci = function() private$..ci$value,
         ciWidth = function() private$..ciWidth$value,
         compare = function() private$..compare$value,
+        hypothesis = function() private$..hypothesis$value,
         gamma = function() private$..gamma$value,
         taub = function() private$..taub$value,
         obs = function() private$..obs$value,
@@ -229,6 +240,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..ci = NA,
         ..ciWidth = NA,
         ..compare = NA,
+        ..hypothesis = NA,
         ..gamma = NA,
         ..taub = NA,
         ..obs = NA,
@@ -272,7 +284,9 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "rows",
                     "cols",
                     "counts",
-                    "layers"),
+                    "layers",
+                    "hypothesis",
+                    "compare"),
                 columns=list(
                     list(
                         `name`="test[chiSq]", 
@@ -661,6 +675,10 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   confidence intervals to provide
 #' @param compare \code{columns} or \code{rows} (default), compare
 #'   columns/rows in difference of proportions or relative risks (2x2 tables)
+#' @param hypothesis \code{'different'} (default), \code{'oneGreater'} or
+#'   \code{'twoGreater'}, the alternative hypothesis; group 1 different to group
+#'   2, group 1 greater than group 2, and group 2 greater than group 1
+#'   respectively
 #' @param gamma \code{TRUE} or \code{FALSE} (default), provide gamma
 #' @param taub \code{TRUE} or \code{FALSE} (default), provide Kendall's tau-b
 #' @param obs \code{TRUE} or \code{FALSE} (default), provide the observed
@@ -710,6 +728,7 @@ contTables <- function(
     ci = TRUE,
     ciWidth = 95,
     compare = "rows",
+    hypothesis = "different",
     gamma = FALSE,
     taub = FALSE,
     obs = TRUE,
@@ -788,6 +807,7 @@ contTables <- function(
         ci = ci,
         ciWidth = ciWidth,
         compare = compare,
+        hypothesis = hypothesis,
         gamma = gamma,
         taub = taub,
         obs = obs,
