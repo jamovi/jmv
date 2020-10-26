@@ -125,7 +125,9 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..compare <- jmvcore::OptionList$new(
                 "compare",
                 compare,
-                options=list("rows","columns"),
+                options=list(
+                    "rows",
+                    "columns"),
                 default="rows")
             private$..gamma <- jmvcore::OptionBool$new(
                 "gamma",
@@ -635,7 +637,7 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param chiSq \code{TRUE} (default) or \code{FALSE}, provide X²
 #' @param chiSqCorr \code{TRUE} or \code{FALSE} (default), provide X² with
 #'   continuity correction
-#' @param zProp \code{TRUE} or \code{FALSE} (default), provide a z Test for
+#' @param zProp \code{TRUE} or \code{FALSE} (default), provide a z test for
 #'   differences in proportions
 #' @param likeRat \code{TRUE} or \code{FALSE} (default), provide the
 #'   likelihood ratio
@@ -657,8 +659,8 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   intervals for the comparative measures
 #' @param ciWidth a number between 50 and 99.9 (default: 95), width of the
 #'   confidence intervals to provide
-#' @param compare \code{columns} or \code{rows} (default), compare rows/columns in
-#'   difference of proportions or relative risks (2x2 tables)
+#' @param compare \code{columns} or \code{rows} (default), compare
+#'   columns/rows in difference of proportions or relative risks (2x2 tables)
 #' @param gamma \code{TRUE} or \code{FALSE} (default), provide gamma
 #' @param taub \code{TRUE} or \code{FALSE} (default), provide Kendall's tau-b
 #' @param obs \code{TRUE} or \code{FALSE} (default), provide the observed
