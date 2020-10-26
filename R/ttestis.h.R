@@ -25,7 +25,8 @@ ttestISOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             ciWidthES = 95,
             desc = FALSE,
             plots = FALSE,
-            miss = "perAnalysis", ...) {
+            miss = "perAnalysis",
+            resids = NULL, ...) {
 
             super$initialize(
                 package='jmv',
@@ -134,6 +135,9 @@ ttestISOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "perAnalysis",
                     "listwise"),
                 default="perAnalysis")
+            private$..resids <- jmvcore::OptionOutput$new(
+                "resids",
+                resids)
 
             self$.addOption(private$..vars)
             self$.addOption(private$..group)
@@ -155,6 +159,7 @@ ttestISOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..desc)
             self$.addOption(private$..plots)
             self$.addOption(private$..miss)
+            self$.addOption(private$..resids)
         }),
     active = list(
         vars = function() private$..vars$value,
@@ -176,7 +181,8 @@ ttestISOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ciWidthES = function() private$..ciWidthES$value,
         desc = function() private$..desc$value,
         plots = function() private$..plots$value,
-        miss = function() private$..miss$value),
+        miss = function() private$..miss$value,
+        resids = function() private$..resids$value),
     private = list(
         ..vars = NA,
         ..group = NA,
@@ -197,7 +203,8 @@ ttestISOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..ciWidthES = NA,
         ..desc = NA,
         ..plots = NA,
-        ..miss = NA)
+        ..miss = NA,
+        ..resids = NA)
 )
 
 ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
@@ -206,7 +213,8 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
         ttest = function() private$.items[["ttest"]],
         assum = function() private$.items[["assum"]],
         desc = function() private$.items[["desc"]],
-        plots = function() private$.items[["plots"]]),
+        plots = function() private$.items[["plots"]],
+        resids = function() private$.items[["resids"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -704,7 +712,11 @@ ttestISResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 requiresData=TRUE,
                                 visible="(qq)",
                                 renderFun=".qq",
-                                clearWith=list()))}))$new(options=options)))}))
+                                clearWith=list()))}))$new(options=options)))
+            self$add(jmvcore::Output$new(
+                options=options,
+                name="resids",
+                title="Residuals"))}))
 
 ttestISBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "ttestISBase",
@@ -811,6 +823,7 @@ ttestISBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{results$assum$eqv} \tab \tab \tab \tab \tab a table containing the homogeneity of variances tests \cr
 #'   \code{results$desc} \tab \tab \tab \tab \tab a table containing the group descriptives \cr
 #'   \code{results$plots} \tab \tab \tab \tab \tab an array of groups of plots \cr
+#'   \code{results$resids} \tab \tab \tab \tab \tab an output \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
