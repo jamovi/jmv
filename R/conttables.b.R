@@ -411,10 +411,8 @@ contTablesClass <- R6::R6Class(
                 } else {
 
                     if (is.null(fish)) {
-                        fishE <- NaN
                         fishP <- ''
                     } else {
-                        fishE <- fish$estimate
                         fishP <- fish$p.value
                     }
 
@@ -439,7 +437,7 @@ contTablesClass <- R6::R6Class(
                         `value[likeRat]`=asso$chisq_tests['Likelihood Ratio', 'X^2'],
                         `df[likeRat]`=asso$chisq_tests['Likelihood Ratio', 'df'],
                         `p[likeRat]`=asso$chisq_tests['Likelihood Ratio', 'P(> X^2)'],
-                        `value[fisher]`=fishE,
+                        `value[fisher]`='',
                         `p[fisher]`=fishP,
                         `value[N]`=n)
                 }
