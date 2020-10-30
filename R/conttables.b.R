@@ -405,7 +405,7 @@ contTablesClass <- R6::R6Class(
                         `value[likeRat]`=NaN,
                         `df[likeRat]`='',
                         `p[likeRat]`='',
-                        `value[fisher]`=NaN,
+                        `value[fisher]`='',
                         `p[fisher]`='',
                         `value[N]`=n)
                 } else {
