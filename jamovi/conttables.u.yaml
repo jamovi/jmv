@@ -62,11 +62,11 @@ children:
                       - type: CheckBox
                         name: chiSqCorr
                       - type: CheckBox
-                        name: zProp
-                      - type: CheckBox
                         name: likeRat
                       - type: CheckBox
                         name: fisher
+                      - type: CheckBox
+                        name: zProp
 
                   - type: Label
                     label: Hypothesis
@@ -99,13 +99,13 @@ children:
                     label: Comparative Measures (2x2 only)
                     children:
                       - type: CheckBox
-                        name: diffProp
+                        name: odds
                       - type: CheckBox
                         name: logOdds
                       - type: CheckBox
-                        name: odds
-                      - type: CheckBox
                         name: relRisk
+                      - type: CheckBox
+                        name: diffProp
                       - type: CheckBox
                         name: ci
                         children:
