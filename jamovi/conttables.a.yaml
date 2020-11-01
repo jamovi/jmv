@@ -146,12 +146,12 @@ options:
             `TRUE` or `FALSE` (default), provide χ² with continuity correction
 
     - name: zProp
-      title: z test for difference in proportions
+      title: z test for difference in 2 proportions
       type: Bool
       default: false
       description:
           R: >
-            `TRUE` or `FALSE` (default), provide a z test for differences in proportions
+            `TRUE` or `FALSE` (default), provide a z test for differences between two proportions
 
     - name: likeRat
       title: Likelihood ratio

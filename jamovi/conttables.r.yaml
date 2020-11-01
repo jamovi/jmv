@@ -74,7 +74,7 @@ items:
         - name: test[zProp]
           title: ''
           type: text
-          content: z test for difference proportions
+          content: z test difference in 2 proportions
           visible: (zProp)
 
         - name: value[zProp]
@@ -156,7 +156,7 @@ items:
         - name: t[dp]
           title: ''
           type: text
-          content: Difference in proportions
+          content: Difference in 2 proportions
           visible: (diffProp)
 
         - name: v[dp]
