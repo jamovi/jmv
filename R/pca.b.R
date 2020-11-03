@@ -471,7 +471,7 @@ pcaClass <- R6::R6Class(
             simEigen <- t(matrix(unlist(simEigenList), ncol=nIter))
             simEigenCI = apply(simEigen, 2, function(x) quantile(x,.95))
 
-            nFactors <- which(!(eigen > simEigenCI))[1]-1
+            nFactors <- max(which(!(eigen > simEigenCI))[1]-1, 1)
 
             if (is.na(nFactors))
                 nFactors <- length(eigen)
