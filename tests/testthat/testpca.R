@@ -37,3 +37,18 @@ test_that('pca works', {
     #              'Number of components cannot be bigger than number of variables', fixed=TRUE)
 
 })
+
+
+test_that('pca works when all simulated loadings in the parallel analysis are higher than the model loadings', {
+
+    data <- data.frame(
+        a = c(2, 1, 5, 2, 3, 4, 4, 1, 3, 5),
+        b = c(4, 5, 3, 2, 5, 3, 4, 2, 3, 5),
+        c = c(5, 1, 4, 3, 5, 2, 3, 1, 2, 3)
+    )
+
+    r <- jmv::pca(data = data, vars = vars(a, b, c))
+
+    expect_equal(r$loadings$asDF[1, 2], 0.7167, tolerance = 1e-4)
+
+})
