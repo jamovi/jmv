@@ -131,6 +131,7 @@ corrPartClass <- R6::R6Class(
                 titleMatrix <- "Partial Correlation"
             } else if (type == 'semi' && nControls > 0) {
                 titleMatrix <- "Semipartial Correlation"
+                matrix$setNote('part', 'variation from the control variables is only removed from the variables in the columns')
             } else {
                 titleMatrix <- "Correlation"
             }
