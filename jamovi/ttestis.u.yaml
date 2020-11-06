@@ -163,7 +163,7 @@ children:
     collapsed: true
     stretchFactor: 1
     children:
-      - type: VariableSupplier
+      - type: OutputSupplier
         persistentItems: false
         stretchFactor: 1
         children:
@@ -174,3 +174,5 @@ children:
                 name: resids
                 maxItemCount: 1
                 isTarget: true
+                permitted:
+                  - output
