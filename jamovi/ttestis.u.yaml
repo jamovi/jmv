@@ -163,12 +163,9 @@ children:
     collapsed: true
     stretchFactor: 1
     children:
-      - type: VariableSupplier
+      - type: OutputSupplier
         persistentItems: false
         stretchFactor: 1
-        showRestricted: false
-        permitted:
-          - output
         children:
           - type: TargetLayoutBox
             label: Residuals
