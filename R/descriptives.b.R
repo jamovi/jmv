@@ -21,6 +21,7 @@ descriptivesClass <- R6::R6Class(
         .init = function() {
 
             private$.addQuantiles()
+            private$.addPercentiles()
             private$.initDescriptivesTable()
 
             if (self$options$freq)
@@ -1030,6 +1031,24 @@ descriptivesClass <- R6::R6Class(
             private$colArgs$visible <- c(colArgs$visible, rep("(pcEqGr)", pcNEqGr - 1))
 
         },
+        .addPercentiles = function() {
+
+            pcValues <- as.numeric(unlist(strsplit(self$options$pcValues,",")))
+            pcValues[pcValues < 0 | pcValues > 1] <- NA 
+            pcValues <- pcValues[!is.na(pcValues)]
+            npcValues <- length(pcValues)
+
+            if (! self$options$pcVal || npcValues == 0)
+                return()       
+
+            colArgs <- private$colArgs
+
+            private$colArgs$name <- c(colArgs$name, paste0('perc', 1:npcValues))
+            private$colArgs$title <- c(colArgs$title, paste0(round(pcValues * 100, 2), 'th percentile'))
+            private$colArgs$type <- c(colArgs$type, rep('number', npcValues))
+            private$colArgs$visible <- c(colArgs$visible, rep("(pcValues)", npcValues))
+
+        },
         .computeDesc = function(column) {
 
             stats <- list()
@@ -1079,6 +1098,17 @@ descriptivesClass <- R6::R6Class(
                         stats[[paste0('quant', i)]] <- quants[i]
                 }
 
+                pcValues <- as.numeric(unlist(strsplit(self$options$pcValues,",")))
+                pcValues[pcValues < 0 | pcValues > 1] <- NA 
+                pcValues <- pcValues[!is.na(pcValues)]
+                npcValues <- length(pcValues)
+
+                if (self$options$pcVal && npcValues > 0) {
+                    quants <- as.numeric(quantile(column, pcValues))
+                    for (i in 1:npcValues)
+                        stats[[paste0('perc', i)]] <- quants[i]
+                }
+
             } else if (jmvcore::canBeNumeric(column)) {
 
                 l <- list(mean=NaN, median=NaN, mode=NaN, sum=NaN, sd=NaN, variance=NaN,
@@ -1089,6 +1119,15 @@ descriptivesClass <- R6::R6Class(
                 if ( ! (self$options$quart && pcNEqGr == 4)) {
                     for (i in 1:(pcNEqGr-1))
                         l[[paste0('quant', i)]] <- NaN
+                }
+
+                pcValues <- as.numeric(unlist(strsplit(self$options$pcValues,",")))
+                pcValues[pcValues < 0 | pcValues > 1] <- NA 
+                pcValues <- pcValues[!is.na(pcValues)]
+                npcValues <- length(pcValues)
+                if (! self$options$pcVal || npcValues == 0) {
+                    for (i in 1:npcValues)
+                        l[[paste0('perc', i)]] <- NaN
                 }
 
                 stats <- append(stats, l)
@@ -1103,6 +1142,15 @@ descriptivesClass <- R6::R6Class(
                 if ( ! (self$options$quart && pcNEqGr == 4)) {
                     for (i in 1:(pcNEqGr-1))
                         l[[paste0('quant', i)]] <- ''
+                }
+
+                pcValues <- as.numeric(unlist(strsplit(self$options$pcValues,",")))
+                pcValues[pcValues < 0 | pcValues > 1] <- NA 
+                pcValues <- pcValues[!is.na(pcValues)]
+                npcValues <- length(pcValues)
+                if (! self$options$pcVal || npcValues == 0) {
+                    for (i in 1:npcValues)
+                        l[[paste0('perc', i)]] <- ''
                 }
 
                 stats <- append(stats, l)
