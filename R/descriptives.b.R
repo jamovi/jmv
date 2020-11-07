@@ -21,6 +21,7 @@ descriptivesClass <- R6::R6Class(
         .init = function() {
 
             private$.addQuantiles()
+            private$.addPercentiles()
             private$.initDescriptivesTable()
 
             if (self$options$freq)
@@ -1028,6 +1029,24 @@ descriptivesClass <- R6::R6Class(
             private$colArgs$title <- c(colArgs$title, paste0(round(pcEq * 100, 2), 'th percentile'))
             private$colArgs$type <- c(colArgs$type, rep('number', pcNEqGr - 1))
             private$colArgs$visible <- c(colArgs$visible, rep("(pcEqGr)", pcNEqGr - 1))
+
+        },
+        .addPercentiles = function() {
+
+            pcValues <- as.numeric(unlist(strsplit(self$options$pcValues,",")))
+            pcValues[pcValues < 0 | pcValues > 1] <- NA 
+            pcValues <- pcValues[!is.na(pcValues)]
+            npcValues <- length(pcValues)
+
+            if (npcValues == 0)
+                return()       
+
+            colArgs <- private$colArgs
+
+            private$colArgs$name <- c(colArgs$name, paste0('quant', 1:npcValues))
+            private$colArgs$title <- c(colArgs$title, paste0(round(pcValues * 100, 2), 'th percentile'))
+            private$colArgs$type <- c(colArgs$type, rep('number', npcValues))
+            private$colArgs$visible <- c(colArgs$visible, rep("(pcValues)", npcValues))
 
         },
         .computeDesc = function(column) {

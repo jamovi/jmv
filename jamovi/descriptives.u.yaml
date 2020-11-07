@@ -77,6 +77,19 @@ children:
                         suffix: equal groups
                         format: number
                         enable: (pcEqGr)
+              - type: LayoutBox
+                children:
+                  - type: CheckBox
+                    name: pcVal
+                    label: Percentiles
+                    style: inline
+                    verticalAlignment: center
+                    children:
+                      - type: TextBox
+                        name: pcValues
+                        label: ''
+                        suffix: (comma sep)
+                        enable: (pcVal)
       - type: LayoutBox
         stretchFactor: 1
         margin: large
