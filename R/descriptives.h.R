@@ -511,7 +511,7 @@ descriptives <- function(
     pcEqGr = FALSE,
     pcNEqGr = 4,
     pcVal = FALSE,
-    pcVal = "0.05,0.95",
+    pcValues = "0.05,0.95",
     formula) {
 
     if ( ! requireNamespace('jmvcore'))
