@@ -1038,7 +1038,7 @@ descriptivesClass <- R6::R6Class(
             pcValues <- pcValues[!is.na(pcValues)]
             npcValues <- length(pcValues)
 
-            if (npcValues == 0)
+            if (self$options$pcVal && npcValues == 0)
                 return()       
 
             colArgs <- private$colArgs
