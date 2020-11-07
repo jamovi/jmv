@@ -175,4 +175,4 @@ children:
                 maxItemCount: 1
                 isTarget: true
                 permitted:
-                  - output
+                  - numeric
