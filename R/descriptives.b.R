@@ -1104,8 +1104,9 @@ descriptivesClass <- R6::R6Class(
                 npcValues <- length(pcValues)
 
                 if (self$options$pcVal && npcValues > 0) {
+                    quants <- as.numeric(quantile(column, pcValues))
                     for (i in 1:npcValues)
-                        stats[[paste0('perc', i)]] <- pcValues[i]
+                        stats[[paste0('perc', i)]] <- quants[i]
                 }
 
             } else if (jmvcore::canBeNumeric(column)) {
