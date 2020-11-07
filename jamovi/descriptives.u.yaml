@@ -87,6 +87,7 @@ children:
                     children:
                       - type: TextBox
                         name: pcValues
+                        format: string
                         label: ''
                         suffix: (comma sep)
                         enable: (pcVal)
