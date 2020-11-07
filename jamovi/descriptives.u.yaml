@@ -87,8 +87,8 @@ children:
                     children:
                       - type: TextBox
                         name: pcValues
-                        format: string
                         label: ''
+                        format: string
                         enable: (pcVal)
       - type: LayoutBox
         stretchFactor: 1
