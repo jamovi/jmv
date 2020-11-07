@@ -184,7 +184,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "pcVal",
                 pcVal,
                 default=FALSE)
-            private$..pcValues <- jmvcore::OptionBool$new(
+            private$..pcValues <- jmvcore::OptionString$new(
                 "pcValues",
                 pcValues,
                 default="0.05,0.95")
