@@ -6,14 +6,14 @@ descriptivesClass <- R6::R6Class(
         #### Member variables ----
         colArgs = list(
             name = c("n", "missing", "mean", "se", "median", "mode", "sum", "sd", "variance", "range",
-                     "min", "max", "skew", "seSkew", "kurt", "seKurt", "sww", "sw", "quart1", "quart2", "quart3"),
+                     "min", "max", "skew", "seSkew", "kurt", "seKurt", "sww", "sw"),
             title = c("N", "Missing", "Mean", "Std. error mean", "Median", "Mode", "Sum", "Standard deviation", "Variance",
                       "Range", "Minimum", "Maximum", "Skewness", "Std. error skewness",
-                      "Kurtosis", "Std. error kurtosis", "Shapiro-Wilk W", "Shapiro-Wilk p", "25th percentile", "50th percentile", "75th percentile"),
-            type = c(rep("integer", 2), rep("number", 19)),
-            format = c(rep("", 17), "zto,pvalue", rep("", 3)),
+                      "Kurtosis", "Std. error kurtosis", "Shapiro-Wilk W", "Shapiro-Wilk p"),
+            type = c(rep("integer", 2), rep("number", 16)),
+            format = c(rep("", 17), "zto,pvalue"),
             visible = c("(n)", "(missing)", "(mean)", "(se)", "(median)", "(mode)", "(sum)", "(sd)", "(variance)", "(range)",
-                        "(min)", "(max)", "(skew)", "(skew)", "(kurt)", "(kurt)", "(sw)", "(sw)", "(quart)", "(quart)", "(quart)")
+                        "(min)", "(max)", "(skew)", "(skew)", "(kurt)", "(kurt)", "(sw)", "(sw)")
         ),
         levels = NULL,
 
@@ -1017,37 +1017,38 @@ descriptivesClass <- R6::R6Class(
         },
         .addQuantiles = function() {
 
-            pcNEqGr <- self$options$pcNEqGr
+            if ( self$options$pcEqGr ) {
+                pcNEqGr <- self$options$pcNEqGr
 
-            if (self$options$quart && pcNEqGr == 4)
-                return()
+                colArgs <- private$colArgs
+                pcEq <- (1:pcNEqGr / pcNEqGr)[-pcNEqGr]
 
-            colArgs <- private$colArgs
-            pcEq <- (1:pcNEqGr / pcNEqGr)[-pcNEqGr]
-
-            private$colArgs$name <- c(colArgs$name, paste0('quant', 1:(pcNEqGr-1)))
-            private$colArgs$title <- c(colArgs$title, paste0(round(pcEq * 100, 2), 'th percentile'))
-            private$colArgs$type <- c(colArgs$type, rep('number', pcNEqGr - 1))
-            private$colArgs$visible <- c(colArgs$visible, rep("(pcEqGr)", pcNEqGr - 1))
+                private$colArgs$name <- c(colArgs$name, paste0('quant', 1:(pcNEqGr-1)))
+                private$colArgs$title <- c(colArgs$title, paste0(round(pcEq * 100, 2), 'th percentile'))
+                private$colArgs$type <- c(colArgs$type, rep('number', pcNEqGr - 1))
+                private$colArgs$visible <- c(colArgs$visible, rep("(pcEqGr)", pcNEqGr - 1))
+            }
 
         },
         .addPercentiles = function() {
 
-            pcValues <- as.numeric(unlist(strsplit(self$options$pcValues,",")))
-            pcValues[pcValues < 0 | pcValues > 1] <- NA 
-            pcValues <- pcValues[!is.na(pcValues)]
-            npcValues <- length(pcValues)
+            if ( self$options$pcVal ){
 
-            if (! self$options$pcVal || npcValues == 0)
-                return()       
+                pcValues <- as.numeric(unlist(strsplit(self$options$pcValues,",")))
+                pcValues[pcValues < 0 | pcValues > 1] <- NA 
+                pcValues <- pcValues[!is.na(pcValues)]
+                npcValues <- length(pcValues)
 
-            colArgs <- private$colArgs
+                if (npcValues > 0){
 
-            private$colArgs$name <- c(colArgs$name, paste0('perc', 1:npcValues))
-            private$colArgs$title <- c(colArgs$title, paste0(round(pcValues * 100, 2), 'th percentile'))
-            private$colArgs$type <- c(colArgs$type, rep('number', npcValues))
-            private$colArgs$visible <- c(colArgs$visible, rep("(pcValues)", npcValues))
+                    colArgs <- private$colArgs
 
+                    private$colArgs$name <- c(colArgs$name, paste0('perc', 1:npcValues))
+                    private$colArgs$title <- c(colArgs$title, paste0(round(pcValues * 100, 2), 'th percentile'))
+                    private$colArgs$type <- c(colArgs$type, rep('number', npcValues))
+                    private$colArgs$visible <- c(colArgs$visible, rep("(pcValues)", npcValues))
+                }
+            }
         },
         .computeDesc = function(column) {
 
@@ -1084,13 +1085,9 @@ descriptivesClass <- R6::R6Class(
                 stats[['sww']] <- normw
                 stats[['sw']] <- norm
 
-                stats[['quart1']] <- as.numeric(quantile(column, c(.25)))
-                stats[['quart2']] <- as.numeric(quantile(column, c(.5)))
-                stats[['quart3']] <- as.numeric(quantile(column, c(.75)))
+                if ( self$options$pcEqGr ) {
+                    pcNEqGr <- self$options$pcNEqGr
 
-                pcNEqGr <- self$options$pcNEqGr
-
-                if ( ! self$options$quart || pcNEqGr != 4) {
                     pcEq <- (1:pcNEqGr / pcNEqGr)[-pcNEqGr]
                     quants <- as.numeric(quantile(column, pcEq))
 
@@ -1098,36 +1095,40 @@ descriptivesClass <- R6::R6Class(
                         stats[[paste0('quant', i)]] <- quants[i]
                 }
 
-                pcValues <- as.numeric(unlist(strsplit(self$options$pcValues,",")))
-                pcValues[pcValues < 0 | pcValues > 1] <- NA 
-                pcValues <- pcValues[!is.na(pcValues)]
-                npcValues <- length(pcValues)
+                if ( self$options$pcVal ) {
+                    pcValues <- as.numeric(unlist(strsplit(self$options$pcValues,",")))
+                    pcValues[pcValues < 0 | pcValues > 1] <- NA 
+                    pcValues <- pcValues[!is.na(pcValues)]
+                    npcValues <- length(pcValues)
 
-                if (self$options$pcVal && npcValues > 0) {
-                    quants <- as.numeric(quantile(column, pcValues))
-                    for (i in 1:npcValues)
-                        stats[[paste0('perc', i)]] <- quants[i]
+                    if ( npcValues > 0 ) {
+                        quants <- as.numeric(quantile(column, pcValues))
+                        for (i in 1:npcValues)
+                            stats[[paste0('perc', i)]] <- quants[i]
+                    }
                 }
 
             } else if (jmvcore::canBeNumeric(column)) {
 
                 l <- list(mean=NaN, median=NaN, mode=NaN, sum=NaN, sd=NaN, variance=NaN,
                           range=NaN, min=NaN, max=NaN, se=NaN, skew=NaN, seSkew=NaN,
-                          kurt=NaN, seKurt=NaN, sw=NaN, quart1=NaN, quart2=NaN, quart3=NaN)
+                          kurt=NaN, seKurt=NaN, sw=NaN)
 
-                pcNEqGr <- self$options$pcNEqGr
-                if ( ! (self$options$quart && pcNEqGr == 4)) {
+                if ( self$options$pcEqGr ) {
+                    pcNEqGr <- self$options$pcNEqGr
                     for (i in 1:(pcNEqGr-1))
                         l[[paste0('quant', i)]] <- NaN
                 }
 
-                pcValues <- as.numeric(unlist(strsplit(self$options$pcValues,",")))
-                pcValues[pcValues < 0 | pcValues > 1] <- NA 
-                pcValues <- pcValues[!is.na(pcValues)]
-                npcValues <- length(pcValues)
-                if (! self$options$pcVal || npcValues == 0) {
-                    for (i in 1:npcValues)
-                        l[[paste0('perc', i)]] <- NaN
+                if ( self$options$pcVal ) {
+                    pcValues <- as.numeric(unlist(strsplit(self$options$pcValues,",")))
+                    pcValues[pcValues < 0 | pcValues > 1] <- NA 
+                    pcValues <- pcValues[!is.na(pcValues)]
+                    npcValues <- length(pcValues)
+                    if ( npcValues > 0 ) {
+                        for (i in 1:npcValues)
+                            l[[paste0('perc', i)]] <- NaN
+                    }
                 }
 
                 stats <- append(stats, l)
@@ -1136,21 +1137,23 @@ descriptivesClass <- R6::R6Class(
 
                 l <- list(mean='', median='', mode='', sum='', sd='', variance='',
                           range='', min='', max='', se='', skew='', seSkew='',
-                          kurt='', seKurt='', sw='', quart1='', quart2='', quart3='')
+                          kurt='', seKurt='', sw='')
 
-                pcNEqGr <- self$options$pcNEqGr
-                if ( ! (self$options$quart && pcNEqGr == 4)) {
+                if ( self$options$pcEqGr ) {
+                    pcNEqGr <- self$options$pcNEqGr
                     for (i in 1:(pcNEqGr-1))
                         l[[paste0('quant', i)]] <- ''
                 }
 
-                pcValues <- as.numeric(unlist(strsplit(self$options$pcValues,",")))
-                pcValues[pcValues < 0 | pcValues > 1] <- NA 
-                pcValues <- pcValues[!is.na(pcValues)]
-                npcValues <- length(pcValues)
-                if (! self$options$pcVal || npcValues == 0) {
-                    for (i in 1:npcValues)
-                        l[[paste0('perc', i)]] <- ''
+                if ( self$options$pcVal ) {
+                    pcValues <- as.numeric(unlist(strsplit(self$options$pcValues,",")))
+                    pcValues[pcValues < 0 | pcValues > 1] <- NA 
+                    pcValues <- pcValues[!is.na(pcValues)]
+                    npcValues <- length(pcValues)
+                    if ( npcValues > 0 ) {
+                        for (i in 1:npcValues)
+                            l[[paste0('perc', i)]] <- ''
+                    }
                 }
 
                 stats <- append(stats, l)
