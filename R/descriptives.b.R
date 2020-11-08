@@ -1016,7 +1016,7 @@ descriptivesClass <- R6::R6Class(
         },
         .addQuantiles = function() {
 
-            pcEQ <- NULL
+            pcEq <- NULL
 
             if ( self$options$pcEqGr ) {
                 pcNEqGr <- self$options$pcNEqGr
