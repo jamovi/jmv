@@ -1037,6 +1037,7 @@ descriptivesClass <- R6::R6Class(
                 pcValues <- as.numeric(unlist(strsplit(self$options$pcValues,",")))
                 pcValues[pcValues < 0 | pcValues > 1] <- NA 
                 pcValues <- pcValues[!is.na(pcValues)]
+                pcValues <- pcValues[ ! (pcValues %in% pcEq) ]
                 npcValues <- length(pcValues)
 
                 if (npcValues > 0){
