@@ -7,7 +7,7 @@ items:
     - name: descriptives
       title: Descriptives
       description: a table of the descriptive statistics
-      visible: (n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || skew || kurt || quart || pcEqGr || pcVal)
+      visible: (n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || skew || kurt || pcEqGr || pcVal)
       type: Table
       rows: 1
       clearWith:

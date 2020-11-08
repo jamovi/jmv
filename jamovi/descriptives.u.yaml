@@ -61,8 +61,6 @@ children:
           - type: Label
             label: Percentile Values
             children:
-              - type: CheckBox
-                name: quart
               - type: LayoutBox
                 children:
                   - type: CheckBox

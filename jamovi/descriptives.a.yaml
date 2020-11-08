@@ -304,14 +304,6 @@ options:
           R: >
             `TRUE` or `FALSE` (default), provide Shapiro-Wilk p-value
 
-    - name: quart
-      title: Quartiles
-      type: Bool
-      default: false
-      description:
-          R: >
-            `TRUE` or `FALSE` (default), provide quartiles
-
     - name: pcEqGr
       title: Cut points for
       type: Bool
@@ -341,8 +333,8 @@ options:
     - name: pcValues
       title: Percentile values
       type: String
-      default: "0.05,0.95"
+      default: "0.25,0.5,0.75"
       description:
           R: >
-            a comma-sepated list (default: 0.05,0.95) specifying the percentiles
+            a comma-sepated list (default: 0.25,0.5,0.75) specifying the percentiles
 ...
