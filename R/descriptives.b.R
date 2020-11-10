@@ -1014,18 +1014,19 @@ descriptivesClass <- R6::R6Class(
             else
                 return(FALSE)
         },
-        .getPcValues = function(pcEq) {
+        .getPcValues = function() {
     
             if ( self$options$pcEqGr ) {
                 pcNEqGr <- self$options$pcNEqGr
                 pcEq <- (1:pcNEqGr / pcNEqGr)[-pcNEqGr]
                 pcEq <- round(pcEq, 4)
-            } else
+            } else {
                 pcEq <- NULL
+            }
 
             pcValues<-self$options$pcValues
             if ( is.character(pcValues) )
-                pcValues <- as.numeric(unlist(strsplit(,",")))
+                pcValues <- as.numeric(unlist(strsplit(pcValues,",")))
             pcValues <- pcValues / 100
             pcValues[pcValues < 0 | pcValues > 100] <- NA 
             pcValues <- pcValues[!is.na(pcValues)]
