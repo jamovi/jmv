@@ -35,7 +35,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             sw = FALSE,
             pcEqGr = FALSE,
             pcNEqGr = 4,
-            pcVal = FALSE,
+            pc = FALSE,
             pcValues = "25,50,75",
             ...) {
 
@@ -175,9 +175,9 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 default=4,
                 min=2,
                 max=10)
-            private$..pcVal <- jmvcore::OptionBool$new(
-                "pcVal",
-                pcVal,
+            private$..pc <- jmvcore::OptionBool$new(
+                "pc",
+                pc,
                 default=FALSE)
             private$..pcValues <- jmvcore::OptionString$new(
                 "pcValues",
@@ -213,7 +213,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..sw)
             self$.addOption(private$..pcEqGr)
             self$.addOption(private$..pcNEqGr)
-            self$.addOption(private$..pcVal)
+            self$.addOption(private$..pc)
             self$.addOption(private$..pcValues)
         }),
     active = list(
@@ -246,7 +246,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         sw = function() private$..sw$value,
         pcEqGr = function() private$..pcEqGr$value,
         pcNEqGr = function() private$..pcNEqGr$value,
-        pcVal = function() private$..pcVal$value,
+        pc = function() private$..pc$value,
         pcValues = function() private$..pcValues$value),
     private = list(
         ..vars = NA,
@@ -278,7 +278,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..sw = NA,
         ..pcEqGr = NA,
         ..pcNEqGr = NA,
-        ..pcVal = NA,
+        ..pc = NA,
         ..pcValues = NA)
 )
 
@@ -299,7 +299,7 @@ descriptivesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 options=options,
                 name="descriptives",
                 title="Descriptives",
-                visible="(n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || skew || kurt || pcEqGr || pcVal)",
+                visible="(n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || skew || kurt || pcEqGr || pc)",
                 rows=1,
                 clearWith=list(
                     "splitBy",
@@ -452,7 +452,7 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param pcEqGr \code{TRUE} or \code{FALSE} (default), provide quantiles
 #' @param pcNEqGr an integer (default: 4) specifying the number of equal
 #'   groups
-#' @param pcVal \code{TRUE} or \code{FALSE} (default), provide percentiles
+#' @param pc \code{TRUE} or \code{FALSE} (default), provide percentiles
 #' @param pcValues a comma-sepated list (default: 25,50,75) specifying the 
 #'   percentiles
 #' @param formula (optional) the formula to use, see the examples
@@ -500,7 +500,7 @@ descriptives <- function(
     sw = FALSE,
     pcEqGr = FALSE,
     pcNEqGr = 4,
-    pcVal = FALSE,
+    pc = FALSE,
     pcValues = "25,50,75",
     formula) {
 
@@ -562,7 +562,7 @@ descriptives <- function(
         sw = sw,
         pcEqGr = pcEqGr,
         pcNEqGr = pcNEqGr,
-        pcVal = pcVal,
+        pc = pc,
         pcValues = pcValues)
 
     analysis <- descriptivesClass$new(

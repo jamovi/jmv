@@ -322,7 +322,7 @@ options:
           R: >
             an integer (default: 4) specifying the number of equal groups
 
-    - name: pcVal
+    - name: pc
       title: Percentile
       type: Bool
       default: false

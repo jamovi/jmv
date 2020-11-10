@@ -1028,7 +1028,7 @@ descriptivesClass <- R6::R6Class(
             if ( is.character(pcValues) )
                 pcValues <- as.numeric(unlist(strsplit(pcValues,",")))
             pcValues <- pcValues / 100
-            pcValues[pcValues < 0 | pcValues > 100] <- NA 
+            pcValues[pcValues < 0 | pcValues > 1] <- NA 
             pcValues <- pcValues[!is.na(pcValues)]
             pcValues <- pcValues[ ! (pcValues %in% pcEq) ]
 
@@ -1048,7 +1048,7 @@ descriptivesClass <- R6::R6Class(
                 private$colArgs$visible <- c(colArgs$visible, rep("(pcEqGr)", pcNEqGr - 1))
             }
 
-            if ( self$options$pcVal ){
+            if ( self$options$pc ){
                 pcValues <- private$.getPcValues()
                 npcValues <- length(pcValues)
 
@@ -1108,7 +1108,7 @@ descriptivesClass <- R6::R6Class(
                         stats[[paste0('quant', i)]] <- quants[i]
                 }
 
-                if ( self$options$pcVal ) {
+                if ( self$options$pc ) {
                     pcValues <- private$.getPcValues()
                     npcValues <- length(pcValues)
 
@@ -1131,7 +1131,7 @@ descriptivesClass <- R6::R6Class(
                         l[[paste0('quant', i)]] <- NaN
                 }
 
-                if ( self$options$pcVal ) {
+                if ( self$options$pc ) {
                     pcValues <- private$.getPcValues()
                     npcValues <- length(pcValues)
                     if ( npcValues > 0 ) {
@@ -1154,7 +1154,7 @@ descriptivesClass <- R6::R6Class(
                         l[[paste0('quant', i)]] <- ''
                 }
 
-                if ( self$options$pcVal ) {
+                if ( self$options$pc ) {
                     pcValues <- private$.getPcValues()
                     npcValues <- length(pcValues)
                     if ( npcValues > 0 ) {

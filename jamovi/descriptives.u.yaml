@@ -78,7 +78,7 @@ children:
               - type: LayoutBox
                 children:
                   - type: CheckBox
-                    name: pcVal
+                    name: pc
                     label: Percentiles
                     style: inline
                     verticalAlignment: center
@@ -88,7 +88,7 @@ children:
                         label: ''
                         format: string
                         width: large
-                        enable: (pcVal)
+                        enable: (pc)
       - type: LayoutBox
         stretchFactor: 1
         margin: large
