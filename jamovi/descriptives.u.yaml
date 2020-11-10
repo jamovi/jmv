@@ -87,6 +87,7 @@ children:
                         name: pcValues
                         label: ''
                         format: string
+                        width: large
                         enable: (pcVal)
       - type: LayoutBox
         stretchFactor: 1

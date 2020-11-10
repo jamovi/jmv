@@ -333,8 +333,8 @@ options:
     - name: pcValues
       title: Percentile values
       type: String
-      default: "0.25,0.5,0.75"
+      default: "25,50,75"
       description:
           R: >
-            a comma-sepated list (default: 0.25,0.5,0.75) specifying the percentiles
+            a comma-sepated list (default: 25,50,75) specifying the percentiles
 ...

@@ -36,7 +36,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             pcEqGr = FALSE,
             pcNEqGr = 4,
             pcVal = FALSE,
-            pcValues = "0.25,0.5,0.75",
+            pcValues = "25,50,75",
             ...) {
 
             super$initialize(
@@ -182,7 +182,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$..pcValues <- jmvcore::OptionString$new(
                 "pcValues",
                 pcValues,
-                default="0.25,0.5,0.75")
+                default="25,50,75")
 
             self$.addOption(private$..vars)
             self$.addOption(private$..splitBy)
@@ -453,7 +453,7 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param pcNEqGr an integer (default: 4) specifying the number of equal
 #'   groups
 #' @param pcVal \code{TRUE} or \code{FALSE} (default), provide percentiles
-#' @param pcValues a comma-sepated list (default: 0.25,0.5,0.75) specifying the 
+#' @param pcValues a comma-sepated list (default: 25,50,75) specifying the 
 #'   percentiles
 #' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
@@ -501,7 +501,7 @@ descriptives <- function(
     pcEqGr = FALSE,
     pcNEqGr = 4,
     pcVal = FALSE,
-    pcValues = "0.25,0.5,0.75",
+    pcValues = "25,50,75",
     formula) {
 
     if ( ! requireNamespace('jmvcore'))
