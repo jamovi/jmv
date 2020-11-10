@@ -1024,7 +1024,7 @@ descriptivesClass <- R6::R6Class(
                 pcEq <- NULL
 
             pcValues<-self$options$pcValues
-            if ( is.string(pcValues) )
+            if ( is.character(pcValues) )
                 pcValues <- as.numeric(unlist(strsplit(,",")))
             pcValues <- pcValues / 100
             pcValues[pcValues < 0 | pcValues > 100] <- NA 
