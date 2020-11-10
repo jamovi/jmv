@@ -36,7 +36,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             pcEqGr = FALSE,
             pcNEqGr = 4,
             pcVal = FALSE,
-            pcValues = c(25,50,75),
+            pcValues = "25,50,75",
             ...) {
 
             super$initialize(
@@ -179,10 +179,10 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "pcVal",
                 pcVal,
                 default=FALSE)
-            private$..pcValues <- jmvcore::OptionInteger$new(
+            private$..pcValues <- jmvcore::OptionString$new(
                 "pcValues",
                 pcValues,
-                default=c(25,50,75))
+                default="25,50,75")
 
             self$.addOption(private$..vars)
             self$.addOption(private$..splitBy)
@@ -501,7 +501,7 @@ descriptives <- function(
     pcEqGr = FALSE,
     pcNEqGr = 4,
     pcVal = FALSE,
-    pcValues = c(25,50,75),
+    pcValues = "25,50,75",
     formula) {
 
     if ( ! requireNamespace('jmvcore'))
