@@ -1032,7 +1032,7 @@ descriptivesClass <- R6::R6Class(
             pcValues <- pcValues[ ! (pcValues %in% pcEq) ]
 
             return(pcValues)
-        }
+        },
         .addQuantiles = function() {
 
             if ( self$options$pcEqGr ) {
