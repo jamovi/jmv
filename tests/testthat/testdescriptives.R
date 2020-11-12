@@ -9,7 +9,7 @@ test_that('descriptives works', {
     z <- c(NA,NaN,3,-1,-2,1,1,-2,2,-2,-3,3)
 
     data <- data.frame(w=w, x=x, y=y, z=z)
-    desc <- jmv::descriptives(data, vars=c("w", "y", "z"), splitBy = "x", freq=TRUE, median=TRUE, mode=TRUE, skew=TRUE, kurt=TRUE, quart=TRUE)
+    desc <- jmv::descriptives(data, vars=c("w", "y", "z"), splitBy = "x", freq=TRUE, median=TRUE, mode=TRUE, skew=TRUE, kurt=TRUE, pc=TRUE)
 
     freq <- desc$frequencies[[1]]$asDF
     descr <- desc$descriptives$asDF
@@ -25,7 +25,7 @@ test_that('descriptives works', {
     expect_equal(5.750, descr$`y[meana]`, tolerance = 1e-3)
     expect_equal(-2, descr$`z[modeb]`, tolerance = 1e-3)
     expect_equal(4, descr$`y[mina]`, tolerance = 1e-3)
-    expect_equal(2.25, descr$`y[quart1c]`, tolerance = 1e-3)
+    expect_equal(2.25, descr$`y[perc1c]`, tolerance = 1e-3)
 
 })
 

@@ -61,8 +61,6 @@ children:
           - type: Label
             label: Percentile Values
             children:
-              - type: CheckBox
-                name: quart
               - type: LayoutBox
                 children:
                   - type: CheckBox
@@ -77,6 +75,20 @@ children:
                         suffix: equal groups
                         format: number
                         enable: (pcEqGr)
+              - type: LayoutBox
+                children:
+                  - type: CheckBox
+                    name: pc
+                    label: Percentiles
+                    style: inline
+                    verticalAlignment: center
+                    children:
+                      - type: TextBox
+                        name: pcValues
+                        label: ''
+                        format: string
+                        width: large
+                        enable: (pc)
       - type: LayoutBox
         stretchFactor: 1
         margin: large

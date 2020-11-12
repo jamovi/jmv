@@ -33,9 +33,11 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             skew = FALSE,
             kurt = FALSE,
             sw = FALSE,
-            quart = FALSE,
             pcEqGr = FALSE,
-            pcNEqGr = 4, ...) {
+            pcNEqGr = 4,
+            pc = FALSE,
+            pcValues = "25,50,75",
+            ...) {
 
             super$initialize(
                 package='jmv',
@@ -163,10 +165,6 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "sw",
                 sw,
                 default=FALSE)
-            private$..quart <- jmvcore::OptionBool$new(
-                "quart",
-                quart,
-                default=FALSE)
             private$..pcEqGr <- jmvcore::OptionBool$new(
                 "pcEqGr",
                 pcEqGr,
@@ -177,6 +175,14 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 default=4,
                 min=2,
                 max=10)
+            private$..pc <- jmvcore::OptionBool$new(
+                "pc",
+                pc,
+                default=FALSE)
+            private$..pcValues <- jmvcore::OptionString$new(
+                "pcValues",
+                pcValues,
+                default="25,50,75")
 
             self$.addOption(private$..vars)
             self$.addOption(private$..splitBy)
@@ -205,9 +211,10 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..skew)
             self$.addOption(private$..kurt)
             self$.addOption(private$..sw)
-            self$.addOption(private$..quart)
             self$.addOption(private$..pcEqGr)
             self$.addOption(private$..pcNEqGr)
+            self$.addOption(private$..pc)
+            self$.addOption(private$..pcValues)
         }),
     active = list(
         vars = function() private$..vars$value,
@@ -237,9 +244,10 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         skew = function() private$..skew$value,
         kurt = function() private$..kurt$value,
         sw = function() private$..sw$value,
-        quart = function() private$..quart$value,
         pcEqGr = function() private$..pcEqGr$value,
-        pcNEqGr = function() private$..pcNEqGr$value),
+        pcNEqGr = function() private$..pcNEqGr$value,
+        pc = function() private$..pc$value,
+        pcValues = function() private$..pcValues$value),
     private = list(
         ..vars = NA,
         ..splitBy = NA,
@@ -268,9 +276,10 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..skew = NA,
         ..kurt = NA,
         ..sw = NA,
-        ..quart = NA,
         ..pcEqGr = NA,
-        ..pcNEqGr = NA)
+        ..pcNEqGr = NA,
+        ..pc = NA,
+        ..pcValues = NA)
 )
 
 descriptivesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
@@ -290,7 +299,7 @@ descriptivesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 options=options,
                 name="descriptives",
                 title="Descriptives",
-                visible="(n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || skew || kurt || quart || pcEqGr)",
+                visible="(n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || skew || kurt || pcEqGr || pc)",
                 rows=1,
                 clearWith=list(
                     "splitBy",
@@ -440,10 +449,12 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param kurt \code{TRUE} or \code{FALSE} (default), provide the kurtosis
 #' @param sw \code{TRUE} or \code{FALSE} (default), provide Shapiro-Wilk
 #'   p-value
-#' @param quart \code{TRUE} or \code{FALSE} (default), provide quartiles
 #' @param pcEqGr \code{TRUE} or \code{FALSE} (default), provide quantiles
 #' @param pcNEqGr an integer (default: 4) specifying the number of equal
 #'   groups
+#' @param pc \code{TRUE} or \code{FALSE} (default), provide percentiles
+#' @param pcValues a comma-sepated list (default: 25,50,75) specifying the 
+#'   percentiles
 #' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{
@@ -487,9 +498,10 @@ descriptives <- function(
     skew = FALSE,
     kurt = FALSE,
     sw = FALSE,
-    quart = FALSE,
     pcEqGr = FALSE,
     pcNEqGr = 4,
+    pc = FALSE,
+    pcValues = "25,50,75",
     formula) {
 
     if ( ! requireNamespace('jmvcore'))
@@ -548,9 +560,10 @@ descriptives <- function(
         skew = skew,
         kurt = kurt,
         sw = sw,
-        quart = quart,
         pcEqGr = pcEqGr,
-        pcNEqGr = pcNEqGr)
+        pcNEqGr = pcNEqGr,
+        pc = pc,
+        pcValues = pcValues)
 
     analysis <- descriptivesClass$new(
         options = options,
