@@ -3,7 +3,7 @@ Type: Package
 Title: The 'jamovi' Analyses
 Version: 1.2.23
 Date: 2020-06-26
-Author: Ravi Selker, Jonathon Love, Damian Dropmann
+Author: Ravi Selker, Jonathon Love, Damian Dropmann, Victor Moreno
 Maintainer: Jonathon Love <jon@thon.cc>
 Description: A suite of common statistical methods such as descriptives,
     t-tests, ANOVAs, regression, correlation matrices, proportion tests,
