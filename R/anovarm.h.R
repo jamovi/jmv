@@ -22,6 +22,7 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             spherCorr = list(
                 "none"),
             leveneTest = FALSE,
+            qq = FALSE,
             contrasts = NULL,
             postHoc = NULL,
             postHocCorr = list(
@@ -142,6 +143,10 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "leveneTest",
                 leveneTest,
                 default=FALSE)
+            private$..qq <- jmvcore::OptionBool$new(
+                "qq",
+                qq,
+                default=FALSE)
             private$..contrasts <- jmvcore::OptionArray$new(
                 "contrasts",
                 contrasts,
@@ -243,6 +248,7 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..spherTests)
             self$.addOption(private$..spherCorr)
             self$.addOption(private$..leveneTest)
+            self$.addOption(private$..qq)
             self$.addOption(private$..contrasts)
             self$.addOption(private$..postHoc)
             self$.addOption(private$..postHocCorr)
@@ -268,6 +274,7 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         spherTests = function() private$..spherTests$value,
         spherCorr = function() private$..spherCorr$value,
         leveneTest = function() private$..leveneTest$value,
+        qq = function() private$..qq$value,
         contrasts = function() private$..contrasts$value,
         postHoc = function() private$..postHoc$value,
         postHocCorr = function() private$..postHocCorr$value,
@@ -292,6 +299,7 @@ anovaRMOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..spherTests = NA,
         ..spherCorr = NA,
         ..leveneTest = NA,
+        ..qq = NA,
         ..contrasts = NA,
         ..postHoc = NA,
         ..postHocCorr = NA,
@@ -595,7 +603,8 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
                     spherTable = function() private$.items[["spherTable"]],
-                    leveneTable = function() private$.items[["leveneTable"]]),
+                    leveneTable = function() private$.items[["leveneTable"]],
+                    qq = function() private$.items[["qq"]]),
                 private = list(),
                 public=list(
                     initialize=function(options) {
@@ -667,7 +676,26 @@ anovaRMResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 list(
                                     `name`="p", 
                                     `type`="number", 
-                                    `format`="zto,pvalue"))))}))$new(options=options))
+                                    `format`="zto,pvalue"))))
+                        self$add(jmvcore::Image$new(
+                            options=options,
+                            name="qq",
+                            title="Q-Q Plot",
+                            visible="(qq)",
+                            width=450,
+                            height=400,
+                            renderFun=".qqPlot",
+                            clearWith=list(
+                                "dependent",
+                                "ss",
+                                "rmCells",
+                                "rmcModelTerms",
+                                "bscModelTerms",
+                                "bs",
+                                "rm",
+                                "cov",
+                                "rmTerms",
+                                "bsTerms")))}))$new(options=options))
             self$add(jmvcore::Array$new(
                 options=options,
                 name="contrasts",
@@ -909,6 +937,8 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   respectively
 #' @param leveneTest \code{TRUE} or \code{FALSE} (default), test for
 #'   homogeneity of variances (i.e., Levene's test)
+#' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
+#'   residuals
 #' @param contrasts in development
 #' @param postHoc a list of character vectors describing the post-hoc tests
 #'   that need to be computed
@@ -939,6 +969,7 @@ anovaRMBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{results$bsTable} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$assump$spherTable} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$assump$leveneTable} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$assump$qq} \tab \tab \tab \tab \tab a q-q plot \cr
 #'   \code{results$contrasts} \tab \tab \tab \tab \tab an array of tables \cr
 #'   \code{results$postHoc} \tab \tab \tab \tab \tab an array of tables \cr
 #'   \code{results$emm} \tab \tab \tab \tab \tab an array of the estimated marginal means plots + tables \cr
@@ -970,6 +1001,7 @@ anovaRM <- function(
     spherCorr = list(
                 "none"),
     leveneTest = FALSE,
+    qq = FALSE,
     contrasts = NULL,
     postHoc = NULL,
     postHocCorr = list(
@@ -1013,6 +1045,7 @@ anovaRM <- function(
         spherTests = spherTests,
         spherCorr = spherCorr,
         leveneTest = leveneTest,
+        qq = qq,
         contrasts = contrasts,
         postHoc = postHoc,
         postHocCorr = postHocCorr,

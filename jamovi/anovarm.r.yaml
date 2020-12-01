@@ -337,6 +337,26 @@ items:
                   type: number
                   format: zto,pvalue
 
+          - name: qq
+            title: Q-Q Plot
+            visible: (qq)
+            type: Image
+            description: a q-q plot
+            width: 450
+            height: 400
+            renderFun: .qqPlot
+            clearWith:
+                - dependent
+                - ss
+                - rmCells
+                - rmcModelTerms
+                - bscModelTerms
+                - bs
+                - rm
+                - cov
+                - rmTerms
+                - bsTerms
+
     - name: contrasts
       title: Contrasts
       type: Array

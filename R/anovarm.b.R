@@ -52,6 +52,7 @@ anovaRMClass <- R6::R6Class(
                 private$.populateEffectsTables(result)
                 private$.populateSpericityTable(result)
                 private$.populateLeveneTable()
+                private$.prepareQQPlot(result)
 
                 private$.populatePostHocTables(result)
 
@@ -702,6 +703,33 @@ anovaRMClass <- R6::R6Class(
         },
 
         #### Plot functions ----
+        .prepareQQPlot = function(model) {
+            image <- self$results$assump$qq
+
+            suppressMessages({
+                suppressWarnings({
+                    residuals <- residuals(model)
+                })
+            })
+
+            image$setState(residuals)
+        },
+        .qqPlot=function(image, ggtheme, theme, ...) {
+
+            if (is.null(image$state))
+                return(FALSE)
+
+            df <- as.data.frame(qqnorm(image$state, plot.it=FALSE))
+
+            p <- ggplot(data=df, aes(y=y, x=x)) +
+                geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
+                geom_point(aes(x=x,y=y), size=2, colour=theme$color[1]) +
+                xlab("Theoretical Quantiles") +
+                ylab("Standardized Residuals") +
+                ggtheme
+
+            return(p)
+        },
         .prepareEmmPlots = function(model, data) {
 
             emMeans <- self$options$emMeans
@@ -727,7 +755,7 @@ anovaRMClass <- R6::R6Class(
 
                     suppressMessages({
                         emmeans::emm_options(sep = ",", parens = "a^")
-                        
+
                         mm <- try(
                             emmeans::emmeans(model, formula, options=list(level=self$options$ciWidthEmm / 100), weights = weights),
                             silent = TRUE
