@@ -26,7 +26,6 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             stdEst = FALSE,
             ciStdEst = FALSE,
             ciWidthStdEst = 95,
-            coefPlot = FALSE,
             norm = FALSE,
             qqPlot = FALSE,
             resPlots = FALSE,
@@ -158,11 +157,6 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 min=50,
                 max=99.9,
                 default=95)
-            private$..coefPlot <- jmvcore::OptionBool$new(
-                "coefPlot",
-                coefPlot,
-                default=FALSE,
-                hidden=TRUE)
             private$..norm <- jmvcore::OptionBool$new(
                 "norm",
                 norm,
@@ -237,7 +231,6 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..stdEst)
             self$.addOption(private$..ciStdEst)
             self$.addOption(private$..ciWidthStdEst)
-            self$.addOption(private$..coefPlot)
             self$.addOption(private$..norm)
             self$.addOption(private$..qqPlot)
             self$.addOption(private$..resPlots)
@@ -271,7 +264,6 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         stdEst = function() private$..stdEst$value,
         ciStdEst = function() private$..ciStdEst$value,
         ciWidthStdEst = function() private$..ciWidthStdEst$value,
-        coefPlot = function() private$..coefPlot$value,
         norm = function() private$..norm$value,
         qqPlot = function() private$..qqPlot$value,
         resPlots = function() private$..resPlots$value,
@@ -304,7 +296,6 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..stdEst = NA,
         ..ciStdEst = NA,
         ..ciWidthStdEst = NA,
-        ..coefPlot = NA,
         ..norm = NA,
         ..qqPlot = NA,
         ..resPlots = NA,
@@ -461,7 +452,6 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     active = list(
                         anova = function() private$.items[["anova"]],
                         coef = function() private$.items[["coef"]],
-                        coefPlot = function() private$.items[["coefPlot"]],
                         dataSummary = function() private$.items[["dataSummary"]],
                         assump = function() private$.items[["assump"]],
                         emm = function() private$.items[["emm"]]),
@@ -565,18 +555,6 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                         `title`="Upper", 
                                         `type`="number", 
                                         `visible`="(ciStdEst && stdEst)"))))
-                            self$add(jmvcore::Image$new(
-                                options=options,
-                                name="coefPlot",
-                                title="Coefficient Plot",
-                                width=550,
-                                height=500,
-                                renderFun=".coefPlot",
-                                visible="(coefPlot)",
-                                clearWith=list(
-                                    "dep",
-                                    "blocks",
-                                    "ciWidth")))
                             self$add(R6::R6Class(
                                 inherit = jmvcore::Group,
                                 active = list(
@@ -712,6 +690,7 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                             height=400,
                                             renderFun=".qqPlot",
                                             visible="(qqPlot)",
+                                            requiresData=TRUE,
                                             clearWith=list(
                                                 "dep",
                                                 "blocks")))
@@ -723,6 +702,7 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                             template=jmvcore::Image$new(
                                                 options=options,
                                                 renderFun=".resPlot",
+                                                requiresData=TRUE,
                                                 clearWith=list(
                                                     "dep",
                                                     "blocks"))))}))$new(options=options))
@@ -876,9 +856,6 @@ linRegBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   interval for the model coefficient standardized estimates
 #' @param ciWidthStdEst a number between 50 and 99.9 (default: 95) specifying
 #'   the confidence interval width
-#' @param coefPlot \code{TRUE} or \code{FALSE} (default), provide a
-#'   coefficient plot where for each predictor the estimated coefficient and
-#'   confidence intervals are plotted.
 #' @param norm \code{TRUE} or \code{FALSE} (default), perform a Shapiro-Wilk
 #'   test on the residuals
 #' @param qqPlot \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
@@ -940,7 +917,6 @@ linReg <- function(
     stdEst = FALSE,
     ciStdEst = FALSE,
     ciWidthStdEst = 95,
-    coefPlot = FALSE,
     norm = FALSE,
     qqPlot = FALSE,
     resPlots = FALSE,
@@ -991,7 +967,6 @@ linReg <- function(
         stdEst = stdEst,
         ciStdEst = ciStdEst,
         ciWidthStdEst = ciWidthStdEst,
-        coefPlot = coefPlot,
         norm = norm,
         qqPlot = qqPlot,
         resPlots = resPlots,

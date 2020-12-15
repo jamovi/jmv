@@ -248,17 +248,6 @@ options:
             a number between 50 and 99.9 (default: 95) specifying the confidence
             interval width
 
-    - name: coefPlot
-      title: Coefficient plot
-      type: Bool
-      default: false
-      hidden: true
-      description:
-          R: >
-            `TRUE` or `FALSE` (default), provide a coefficient plot where
-            for each predictor the estimated coefficient and confidence
-            intervals are plotted.
-
     - name: norm
       title: Shapiro-Wilk
       type: Bool

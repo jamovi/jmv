@@ -50,17 +50,16 @@ linRegClass <- R6::R6Class(
                 private$.populateAnovaTables(results)
                 private$.populateCoefTables(results)
 
-                private$.populateCooksTable(results)
+                private$.populateCooksTable(results$cooks)
                 private$.populateCollinearityTable(results)
                 private$.populateDurbinWatsonTable(results)
                 private$.populateNormality(results)
+
                 private$.prepareQQPlot()
                 private$.prepareResPlots()
 
                 private$.prepareEmmPlots(results$models, data=data)
                 private$.populateEmmTables()
-
-                # private$.prepareCoefPlot(results)
             }
         },
 
@@ -72,16 +71,16 @@ linRegClass <- R6::R6Class(
             anovaTerms <- private$.computeAnova(models)
             ANOVA <- do.call(stats::anova, models)
 
+            cooks <- private$.computeCooksSummary(models)
+
             AIC <- list(); BIC <- list(); CI <- list();
-            CIScaled <- list(); dwTest <- list(); VIF <- list(); cooks <- list()
+            CIScaled <- list(); dwTest <- list(); VIF <- list();
             for (i in seq_along(models)) {
 
                 AIC[[i]] <- stats::AIC(models[[i]])
                 BIC[[i]] <- stats::BIC(models[[i]])
-                # betas[[i]] <- private$.stdEst(models[[i]])
                 CI[[i]] <- stats::confint(models[[i]], level = self$options$ciWidth / 100)
                 CIScaled[[i]] <- stats::confint(modelsScaled[[i]], level = self$options$ciWidth / 100)
-                cooks[[i]] <- stats::cooks.distance(models[[i]])
 
                 if (length(private$terms[[i]]) > 1)
                     VIF[[i]] <- car::vif(models[[i]])
@@ -127,6 +126,29 @@ linRegClass <- R6::R6Class(
             }
 
             return(res)
+        },
+        .computeCooks = function(models) {
+            cooks <- list()
+            for (i in seq_along(models))
+                cooks[[i]] <- stats::cooks.distance(models[[i]])
+
+            return(cooks)
+        },
+        .computeCooksSummary = function(models) {
+            cooks <- private$.computeCooks(models)
+
+            cooksSummary <- list()
+            for (i in seq_along(cooks)) {
+                cooksSummary[[i]] <- list(
+                    'mean' = mean(cooks[[i]]),
+                    'median' = median(cooks[[i]]),
+                    'sd' = sd(cooks[[i]]),
+                    'min' = min(cooks[[i]]),
+                    'max' = max(cooks[[i]])
+                )
+            }
+
+            return(cooksSummary)
         },
 
         #### Init tables/plots functions ----
@@ -547,24 +569,14 @@ linRegClass <- R6::R6Class(
                 }
             }
         },
-        .populateCooksTable = function(results) {
+        .populateCooksTable = function(cooks) {
 
             groups <- self$results$models
             termsAll <- private$terms
 
             for (i in seq_along(termsAll)) {
-
                 table <- groups$get(key=i)$dataSummary$cooks
-                cooks <- results$cooks[[i]]
-
-                row <- list()
-                row[['mean']] <- mean(cooks)
-                row[['median']] <- median(cooks)
-                row[['sd']] <- sd(cooks)
-                row[['min']] <- min(cooks)
-                row[['max']] <- max(cooks)
-
-                table$setRow(rowNo=1, values=row)
+                table$setRow(rowNo=1, values=cooks[[i]])
             }
         },
         .populateDurbinWatsonTable = function(results) {
@@ -793,48 +805,6 @@ linRegClass <- R6::R6Class(
                       xlab(image$state$xlab) +
                       ylab("Residuals") +
                       ggtheme
-
-            return(p)
-        },
-        .prepareCoefPlot = function(results) {
-
-            image <- self$results$coefPlot
-
-            betas <- results$betas[[private$modelSelected]]
-
-            df <- data.frame(
-                term = jmvcore::fromB64(names(betas$beta)),
-                estimate = as.numeric(betas$beta),
-                conf.low = as.numeric(betas$lower),
-                conf.high = as.numeric(betas$upper),
-                group = rep('CI', length(betas$beta))
-            )
-            df$term <- factor(df$term, rev(df$term))
-
-            image$setState(df)
-        },
-        .coefPlot = function(image, ggtheme, theme, ...) {
-
-            if (is.null(image$state))
-                return(FALSE)
-
-            themeSpec <- theme(
-                legend.position = 'right',
-                legend.background = element_rect("transparent"),
-                legend.title = element_blank(),
-                legend.key = element_blank(),
-                legend.text = element_text(size=16, colour='#333333'))
-
-            errorType <- paste0(self$options$ciWidth, '% CI')
-
-            p <- ggplot(data=image$state) +
-                geom_hline(yintercept=0, linetype="dotted", colour=theme$color[1], size=1.2) +
-                geom_errorbar(aes(x=term, ymin=conf.low, ymax=conf.high, width=.1, colour='colour'), size=.8) +
-                geom_point(aes(x=term, y=estimate, colour='colour'), shape=21, fill=theme$fill[1], size=3) +
-                scale_colour_manual(name='', values=c(colour=theme$color[1]), labels=paste("", errorType)) +
-                labs(x="Predictor", y="Standardized Estimate") +
-                coord_flip() +
-                ggtheme + themeSpec
 
             return(p)
         },
@@ -1102,7 +1072,6 @@ linRegClass <- R6::R6Class(
         .plotSize = function(emm) {
 
             data <- self$data
-            covs <- self$options$covs
             factors <- self$options$factors
 
             levels <- list()
@@ -1166,24 +1135,6 @@ linRegClass <- R6::R6Class(
             }
 
             return(contrast)
-        },
-        .stdEst = function(model) {
-
-            # From 'QuantPsyc' R package
-            b <- summary(model)$coef[-1,1]
-            sx <- sapply(model$model[-1], sd)
-            sy <- sapply(model$model[1], sd)
-            beta <- b * sx /  sy
-
-            CI <- stats::confint(model, level = self$options$ciWidthStdEst / 100)[-1,]
-            betaCI <- CI * sx / sy
-
-            if (is.matrix(betaCI))
-                r <- list(beta=beta, lower=betaCI[,1], upper=betaCI[,2])
-            else
-                r <- list(beta=beta, lower=betaCI[1], upper=betaCI[2])
-
-            return(r)
         },
         .scaleData = function(data) {
             for (col in names(data)) {
