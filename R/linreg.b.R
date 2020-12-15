@@ -6,13 +6,8 @@ linRegClass <- R6::R6Class(
     active = list(
         residuals = function() {
             data <- private$.cleanData()
-            formulas <- private$.formulas()
-
-            res <- list()
-            for (i in seq_along(formulas)) {
-                model <- lm(formulas[[i]], data=data)
-                res[[i]] <- model$residuals
-            }
+            models <- private$.computeModels(data)
+            res <- private$.computeResiduals(models)
 
             return(res)
         }
@@ -59,8 +54,8 @@ linRegClass <- R6::R6Class(
                 private$.populateCollinearityTable(results)
                 private$.populateDurbinWatsonTable(results)
                 private$.populateNormality(results)
-                private$.prepareQQPlot(results)
-                private$.prepareResPlots(data, results)
+                private$.prepareQQPlot()
+                private$.prepareResPlots()
 
                 private$.prepareEmmPlots(results$models, data=data)
                 private$.populateEmmTables()
@@ -72,16 +67,9 @@ linRegClass <- R6::R6Class(
         #### Compute results ----
         .compute = function(data) {
 
-            formulas <- private$.formulas()
-            scaledData <- private$.scaleData(data)
-
-            models <- list(); modelsScaled <- list(); anovaTerms <- list()
-            for (i in seq_along(formulas)) {
-                models[[i]] <- lm(formulas[[i]], data=data)
-                anovaTerms[[i]] <- car::Anova(models[[i]], type=3, singular.ok=TRUE)
-                modelsScaled[[i]] <- lm(formulas[[i]], data=scaledData)
-            }
-
+            models <- private$.computeModels(data)
+            modelsScaled <- private$.computeModels(data, scaled = TRUE)
+            anovaTerms <- private$.computeAnova(models)
             ANOVA <- do.call(stats::anova, models)
 
             AIC <- list(); BIC <- list(); CI <- list();
@@ -110,16 +98,43 @@ linRegClass <- R6::R6Class(
                         anovaTerms=anovaTerms, AIC=AIC, BIC=BIC, CI=CI, CIScaled=CIScaled,
                         dwTest=dwTest, VIF=VIF, cooks=cooks))
         },
+        .computeModels = function(data, model = NULL, scaled = FALSE) {
+            if (scaled)
+                data <- private$.scaleData(data)
+
+            formulas <- private$.formulas()
+
+            if (is.numeric(model))
+                formulas <- formulas[model]
+
+            models <- list()
+            for (i in seq_along(formulas))
+                models[[i]] <- lm(formulas[[i]], data=data)
+
+            return(models)
+        },
+        .computeAnova = function(models) {
+            anovaTerms <- list()
+            for (i in seq_along(models))
+                anovaTerms[[i]] <- car::Anova(models[[i]], type=3, singular.ok=TRUE)
+
+            return(anovaTerms)
+        },
+        .computeResiduals = function(models) {
+            res <- list()
+            for (i in seq_along(models)) {
+                res[[i]] <- models[[i]]$residuals
+            }
+
+            return(res)
+        },
 
         #### Init tables/plots functions ----
         .initModelFitTable = function() {
-
             table <- self$results$modelFit
-            blocks <- self$options$blocks
 
             for (i in seq_along(self$options$blocks))
                 table$addRow(rowKey=i, values=list(model = i))
-
         },
         .initModelCompTable = function() {
 
@@ -715,19 +730,14 @@ linRegClass <- R6::R6Class(
         },
 
         #### Plot functions ----
-        .prepareQQPlot = function(results) {
+        .prepareQQPlot = function() {
 
             groups <- self$results$models
             termsAll <- private$terms
 
             for (i in seq_along(termsAll)) {
-
-                model <- results$models[[i]]
-
                 image <- groups$get(key=i)$assump$get('qqPlot')
-                df <- as.data.frame(qqnorm(scale(model$residuals), plot.it=FALSE))
-
-                image$setState(df)
+                image$setState(i)
             }
         },
         .qqPlot = function(image, ggtheme, theme, ...) {
@@ -735,7 +745,11 @@ linRegClass <- R6::R6Class(
             if (is.null(image$state))
                 return(FALSE)
 
-            p <- ggplot(data=image$state, aes(x=x, y=y)) +
+            data <- private$.cleanData()
+            model <- private$.computeModels(data, model=image$state)[[1]]
+            df <- as.data.frame(qqnorm(scale(model$residuals), plot.it=FALSE))
+
+            p <- ggplot(data=df, aes(x=x, y=y)) +
                       geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
                       geom_point(aes(x=x,y=y), size=2, colour=theme$color[1]) +
                       xlab("Theoretical Quantiles") +
@@ -744,29 +758,16 @@ linRegClass <- R6::R6Class(
 
             return(p)
         },
-        .prepareResPlots = function(data, results) {
+        .prepareResPlots = function() {
 
             groups <- self$results$models
             termsAll <- private$terms
 
             for (i in seq_along(termsAll)) {
-
-                model <- results$models[[i]]
-                res <- model$residuals
-
                 images <- groups$get(key=i)$assump$resPlots
                 for (term in images$itemKeys) {
-
-                    if (term == 'Fitted') {
-                        x <- model$fitted.values
-                    } else {
-                        x <- data[[jmvcore::toB64(term)]]
-                    }
-
-                    df <- data.frame(y=res, x=x)
-
                     image <- images$get(key=term)
-                    image$setState(list(df=df, xlab=term))
+                    image$setState(list(model=i, term=term))
                 }
             }
         },
@@ -775,7 +776,19 @@ linRegClass <- R6::R6Class(
             if (is.null(image$state))
                 return(FALSE)
 
-            p <- ggplot(data=image$state$df, aes(y=y, x=x)) +
+            data <- private$.cleanData()
+            model <- private$.computeModels(data, model=image$state$model)[[1]]
+            res <- model$residuals
+
+            if (image$state$term == 'Fitted') {
+                x <- model$fitted.values
+            } else {
+                x <- data[[jmvcore::toB64(image$state$term)]]
+            }
+
+            df <- data.frame(y=res, x=x)
+
+            p <- ggplot(data=df, aes(y=y, x=x)) +
                       geom_point(aes(x=x,y=y), colour=theme$color[1]) +
                       xlab(image$state$xlab) +
                       ylab("Residuals") +
