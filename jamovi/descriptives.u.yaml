@@ -209,3 +209,67 @@ children:
             children:
               - type: CheckBox
                 name: bar
+  - type: CollapseBox
+    label: XY Plots
+    collapsed: true
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        stretchFactor: 1
+        children:
+          - type: LayoutBox
+            margin: small
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Plot
+                iconPosition: right
+                children:
+                  - type: CheckBox
+                    name: dispersion
+                  - type: CheckBox
+                    name: lineplot
+                  - type: CheckBox
+                    name: linefit
+                    children:
+                    - type: CheckBox
+                      name: confband
+                      enable: (linefit)
+                    - type: ComboBox
+                      name: model
+                      enable: (linefit)
+          - type: Label
+            label: Lines & Means
+            stretchFactor: 1
+            children:
+              - type: CheckBox
+                name: xmean
+              - type: CheckBox
+                name: ymean
+              - type: CheckBox
+                name: xymeandot
+              - type: TextBox
+                name: xline
+                format: string
+              - type: TextBox
+                name: yline
+                format: string
+          - type: Label
+            label: Axes
+            stretchFactor: 1
+            children:
+              - type: CheckBox
+                name: xlog
+              - type: CheckBox
+                name: ylog
+              - type: TextBox
+                name: xlim
+                suffix: 'min,max'
+                format: string
+              - type: TextBox
+                name: ylim
+                suffix: 'min,max'
+                format: string
+              - type: CheckBox
+                name: mergesplit
