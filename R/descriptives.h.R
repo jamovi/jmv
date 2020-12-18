@@ -36,8 +36,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             pcEqGr = FALSE,
             pcNEqGr = 4,
             pc = FALSE,
-            pcValues = "25,50,75",
-            ...) {
+            pcValues = "25,50,75", ...) {
 
             super$initialize(
                 package='jmv',
@@ -303,7 +302,8 @@ descriptivesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 rows=1,
                 clearWith=list(
                     "splitBy",
-                    "pcNEqGr"),
+                    "pcNEqGr",
+                    "pcValues"),
                 columns=list()))
             self$add(jmvcore::Array$new(
                 options=options,
@@ -453,7 +453,7 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param pcNEqGr an integer (default: 4) specifying the number of equal
 #'   groups
 #' @param pc \code{TRUE} or \code{FALSE} (default), provide percentiles
-#' @param pcValues a comma-sepated list (default: 25,50,75) specifying the 
+#' @param pcValues a comma-sepated list (default: 25,50,75) specifying the
 #'   percentiles
 #' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:

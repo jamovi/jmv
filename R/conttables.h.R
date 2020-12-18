@@ -334,7 +334,7 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="test[zProp]", 
                         `title`="", 
                         `type`="text", 
-                        `content`="z test for difference proportions", 
+                        `content`="z test difference in 2 proportions", 
                         `visible`="(zProp)"),
                     list(
                         `name`="value[zProp]", 
@@ -414,7 +414,7 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="t[dp]", 
                         `title`="", 
                         `type`="text", 
-                        `content`="Difference in proportions", 
+                        `content`="Difference in 2 proportions", 
                         `visible`="(diffProp)"),
                     list(
                         `name`="v[dp]", 
@@ -652,7 +652,7 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param chiSqCorr \code{TRUE} or \code{FALSE} (default), provide X² with
 #'   continuity correction
 #' @param zProp \code{TRUE} or \code{FALSE} (default), provide a z test for
-#'   differences in proportions
+#'   differences between two proportions
 #' @param likeRat \code{TRUE} or \code{FALSE} (default), provide the
 #'   likelihood ratio
 #' @param fisher \code{TRUE} or \code{FALSE} (default), provide Fisher's exact
