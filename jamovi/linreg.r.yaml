@@ -228,18 +228,6 @@ items:
                   type: number
                   visible: (ciStdEst && stdEst)
 
-            - name: coefPlot
-              title: Coefficient Plot
-              type: Image
-              width: 550
-              height: 500
-              renderFun: .coefPlot
-              visible: (coefPlot)
-              clearWith:
-                - dep
-                - blocks
-                - ciWidth
-
             - name: dataSummary
               title: Data Summary
               type: Group
@@ -357,6 +345,7 @@ items:
                   height: 400
                   renderFun: .qqPlot
                   visible: (qqPlot)
+                  requiresData: true
                   clearWith:
                     - dep
                     - blocks
@@ -368,6 +357,7 @@ items:
                   template:
                       type: Image
                       renderFun: .resPlot
+                      requiresData: true
                       clearWith:
                         - dep
                         - blocks
