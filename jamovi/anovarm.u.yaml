@@ -187,6 +187,8 @@ children:
                 optionName: spherCorr
       - type: CheckBox
         name: leveneTest
+      - type: CheckBox
+        name: qq
   - type: CollapseBox
     label: Post Hoc Tests
     collapsed: true

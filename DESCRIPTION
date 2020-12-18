@@ -41,6 +41,7 @@ Suggests:
     carData,
     knitr,
     rmarkdown
+Remotes: singmann/afex@fdfe4f5e96efeeac0ed6b78684f2da75c7c4d760
 Encoding: UTF-8
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr

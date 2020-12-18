@@ -266,6 +266,19 @@ options:
             `TRUE` or `FALSE` (default), test for homogeneity of variances (i.e.,
             Levene's test)
 
+    - name: qq
+      title: Q-Q Plot
+      type: Bool
+      default: false
+      description:
+          ui: >
+            provide Q-Q plots of residuals -- a plot of the actual residuals against
+            what would be expected if the data were *perfectly* normally
+            distributed. Large deviations from the diagonal line suggest the residuals
+            are not normally distributed.
+          R: >
+            `TRUE` or `FALSE` (default), provide a Q-Q plot of residuals
+
     - name: contrasts
       hidden: true
       title: Contrasts
