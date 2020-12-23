@@ -176,6 +176,14 @@ options:
           title: "Stacked"
       default: jitter
 
+    - name: boxmean
+      title: Add mean
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), add mean to box plot
+
     - name: qq
       title: Q-Q plot
       type: Bool
