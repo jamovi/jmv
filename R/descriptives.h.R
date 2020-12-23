@@ -26,6 +26,8 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             sum = FALSE,
             sd = TRUE,
             variance = FALSE,
+            iqr = FALSE,
+            cv = FALSE,
             range = FALSE,
             min = TRUE,
             max = TRUE,
@@ -136,6 +138,14 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "variance",
                 variance,
                 default=FALSE)
+            private$..iqr <- jmvcore::OptionBool$new(
+                "iqr",
+                iqr,
+                default=TRUE)
+            private$..cv <- jmvcore::OptionBool$new(
+                "cv",
+                cv,
+                default=TRUE)
             private$..range <- jmvcore::OptionBool$new(
                 "range",
                 range,
@@ -203,6 +213,8 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..sum)
             self$.addOption(private$..sd)
             self$.addOption(private$..variance)
+            self$.addOption(private$..iqr)
+            self$.addOption(private$..cv)
             self$.addOption(private$..range)
             self$.addOption(private$..min)
             self$.addOption(private$..max)
@@ -236,6 +248,8 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         sum = function() private$..sum$value,
         sd = function() private$..sd$value,
         variance = function() private$..variance$value,
+        iqr = function() private$..iqr$value,
+        cv = function() private$..cv$value,
         range = function() private$..range$value,
         min = function() private$..min$value,
         max = function() private$..max$value,
@@ -268,6 +282,8 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..sum = NA,
         ..sd = NA,
         ..variance = NA,
+        ..iqr = NA,
+        ..cv = NA,
         ..range = NA,
         ..min = NA,
         ..max = NA,
@@ -298,7 +314,7 @@ descriptivesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 options=options,
                 name="descriptives",
                 title="Descriptives",
-                visible="(n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || skew || kurt || pcEqGr || pc)",
+                visible="(n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || iqr || cv || skew || kurt || pcEqGr || pc)",
                 rows=1,
                 clearWith=list(
                     "splitBy",
@@ -442,6 +458,10 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   deviation
 #' @param variance \code{TRUE} or \code{FALSE} (default), provide the variance
 #' @param range \code{TRUE} or \code{FALSE} (default), provide the range
+#' @param iqr \code{TRUE} (default) or \code{FALSE}, provide the interquartile
+#'   range
+#' @param cv \code{TRUE} (default) or \code{FALSE}, provide the coefficient of
+#'   variation
 #' @param min \code{TRUE} or \code{FALSE} (default), provide the minimum
 #' @param max \code{TRUE} or \code{FALSE} (default), provide the maximum
 #' @param se \code{TRUE} or \code{FALSE} (default), provide the standard error
@@ -491,6 +511,8 @@ descriptives <- function(
     sum = FALSE,
     sd = TRUE,
     variance = FALSE,
+    iqr = FALSE,
+    cv = FALSE,
     range = FALSE,
     min = TRUE,
     max = TRUE,
@@ -553,6 +575,8 @@ descriptives <- function(
         sum = sum,
         sd = sd,
         variance = variance,
+        iqr = iqr,
+        cv = cv,
         range = range,
         min = min,
         max = max,

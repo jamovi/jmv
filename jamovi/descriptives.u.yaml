@@ -130,6 +130,8 @@ children:
                     name: variance
                   - type: CheckBox
                     name: range
+                  - type: CheckBox
+                    name: iqr
               - type: LayoutBox
                 margin: normal
                 children:
@@ -140,6 +142,9 @@ children:
                   - type: CheckBox
                     name: se
                     label: S. E. Mean
+                  - type: CheckBox
+                    name: cv
+                    label: Coeff. variation
       - type: LayoutBox
         stretchFactor: 1
         margin: large

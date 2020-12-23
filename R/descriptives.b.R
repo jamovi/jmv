@@ -5,15 +5,16 @@ descriptivesClass <- R6::R6Class(
     private=list(
         #### Member variables ----
         colArgs = list(
-            name = c("n", "missing", "mean", "se", "median", "mode", "sum", "sd", "variance", "range",
+            name = c("n", "missing", "mean", "se", "median", "mode", "sum", "sd", "variance", "iqr", "cv","range",
                      "min", "max", "skew", "seSkew", "kurt", "seKurt", "sww", "sw"),
             title = c("N", "Missing", "Mean", "Std. error mean", "Median", "Mode", "Sum", "Standard deviation", "Variance",
+                      "IQR", "Coeff. variation", 
                       "Range", "Minimum", "Maximum", "Skewness", "Std. error skewness",
                       "Kurtosis", "Std. error kurtosis", "Shapiro-Wilk W", "Shapiro-Wilk p"),
-            type = c(rep("integer", 2), rep("number", 16)),
-            format = c(rep("", 17), "zto,pvalue"),
-            visible = c("(n)", "(missing)", "(mean)", "(se)", "(median)", "(mode)", "(sum)", "(sd)", "(variance)", "(range)",
-                        "(min)", "(max)", "(skew)", "(skew)", "(kurt)", "(kurt)", "(sw)", "(sw)")
+            type = c(rep("integer", 2), rep("number", 18)),
+            format = c(rep("", 19), "zto,pvalue"),
+            visible = c("(n)", "(missing)", "(mean)", "(se)", "(median)", "(mode)", "(sum)", "(sd)", "(variance)", 
+                        "(iqr)","(cv)","(range)", "(min)", "(max)", "(skew)", "(skew)", "(kurt)", "(kurt)", "(sw)", "(sw)")
         ),
         levels = NULL,
 
@@ -1085,6 +1086,8 @@ descriptivesClass <- R6::R6Class(
                 stats[['min']] <- min(column)
                 stats[['max']] <- max(column)
                 stats[['se']] <- sqrt(var(column)/length(column))
+                stats[['iqr']] <- diff(as.numeric(quantile(column, c(.25,.75))))
+                stats[['cv']] <- sd(column)/mean(column)
 
                 deviation <- column-mean(column)
                 skew <- private$.skewness(column)
