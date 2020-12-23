@@ -203,6 +203,8 @@ children:
                   - type: ComboBox
                     name: dotType
                     enable: (dot)
+              - type: CheckBox
+                name: boxmean
           - type: Label
             label: Bar Plots
             stretchFactor: 1

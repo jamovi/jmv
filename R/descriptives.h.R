@@ -17,6 +17,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             violin = FALSE,
             dot = FALSE,
             dotType = "jitter",
+            boxmean = FALSE,
             qq = FALSE,
             n = TRUE,
             missing = TRUE,
@@ -100,6 +101,10 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "jitter",
                     "stack"),
                 default="jitter")
+            private$..boxmean <- jmvcore::OptionBool$new(
+                "boxmean",
+                boxmean,
+                default=FALSE)
             private$..qq <- jmvcore::OptionBool$new(
                 "qq",
                 qq,
@@ -194,6 +199,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..violin)
             self$.addOption(private$..dot)
             self$.addOption(private$..dotType)
+            self$.addOption(private$..boxmean)
             self$.addOption(private$..qq)
             self$.addOption(private$..n)
             self$.addOption(private$..missing)
@@ -227,6 +233,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         violin = function() private$..violin$value,
         dot = function() private$..dot$value,
         dotType = function() private$..dotType$value,
+        boxmean = function() private$..boxmean$value,
         qq = function() private$..qq$value,
         n = function() private$..n$value,
         missing = function() private$..missing$value,
@@ -259,6 +266,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..violin = NA,
         ..dot = NA,
         ..dotType = NA,
+        ..boxmean = NA,
         ..qq = NA,
         ..n = NA,
         ..missing = NA,
@@ -429,6 +437,8 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param dot \code{TRUE} or \code{FALSE} (default), provide dot plots
 #'   (continuous variables only)
 #' @param dotType .
+#' @param boxmean \code{TRUE} or \code{FALSE} (default), add mean to
+#'   box plot
 #' @param qq \code{TRUE} or \code{FALSE} (default), provide Q-Q plots
 #'   (continuous variables only)
 #' @param n \code{TRUE} (default) or \code{FALSE}, provide the sample size
@@ -482,6 +492,7 @@ descriptives <- function(
     violin = FALSE,
     dot = FALSE,
     dotType = "jitter",
+    boxmean = FALSE,
     qq = FALSE,
     n = TRUE,
     missing = TRUE,
@@ -544,6 +555,7 @@ descriptives <- function(
         violin = violin,
         dot = dot,
         dotType = dotType,
+        boxmean = boxmean,
         qq = qq,
         n = n,
         missing = missing,

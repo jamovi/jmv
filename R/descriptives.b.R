@@ -346,7 +346,7 @@ descriptivesClass <- R6::R6Class(
                             renderFun = ".boxPlot",
                             width = size[1],
                             height = size[2],
-                            clearWith = list("splitBy", "box", "violin", "dot", "dotType")
+                            clearWith = list("splitBy", "box", "violin", "dot", "dotType", "boxmean")
                         )
 
                         group$add(image)
@@ -954,6 +954,9 @@ descriptivesClass <- R6::R6Class(
                                                    outlier.shape=outlier.shape)
                 }
 
+                if (self$options$boxmean)
+                    plot <- plot + stat_summary(fun.y=mean, geom="point", shape=22, size=2, color="blue", fill="blue")
+
                 if (is.null(splitBy))
                     themeSpec <- theme(axis.text.x=element_blank(),
                                        axis.ticks.x=element_blank(),
@@ -983,6 +986,9 @@ descriptivesClass <- R6::R6Class(
                     plot <- plot + ggplot2::geom_boxplot(color=theme$color[1], width=0.3, alpha=0.8,
                                                          outlier.colour=theme$color[1],
                                                          position=position_dodge(0.9))
+                if (self$options$boxmean)
+                    plot <- plot + stat_summary(fun.y=mean, geom="point", shape=22, size=2, color="blue", fill="blue")
+
             }
 
             if (length(splitBy) > 2)
