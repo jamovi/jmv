@@ -1370,7 +1370,7 @@ descriptivesClass <- R6::R6Class(
                     method <- "loess"
                 else if (model == "quadratic")
                     fit <- "y~poly(x,2)"
-                else if (model == "qubic")
+                else if (model == "cubic")
                     fit <- "y~poly(x,3)"
                 else if (model == "log_x")
                     fit <- "y~log(x)"

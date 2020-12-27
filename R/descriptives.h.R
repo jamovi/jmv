@@ -220,7 +220,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "linear",
                     "loess",
                     "quadratic",
-                    "qubic",
+                    "cubic",
                     "log_x"),
                 default="linear")
             private$..xmean <- jmvcore::OptionBool$new(

@@ -380,8 +380,8 @@ options:
           title: loess
         - name: quadratic
           title: quadratic
-        - name: qubic
-          title: qubic
+        - name: cubic
+          title: cubic
         - name: log_x
           title: log_x
       default: linear
