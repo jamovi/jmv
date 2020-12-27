@@ -36,7 +36,22 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             pcEqGr = FALSE,
             pcNEqGr = 4,
             pc = FALSE,
-            pcValues = "25,50,75", ...) {
+            pcValues = "25,50,75",
+            dispersion = FALSE,
+            lineplot = FALSE,
+            linefit = FALSE,
+            confband = TRUE,
+            model = "linear",
+            xmean = FALSE,
+            ymean = FALSE,
+            xymeandot = FALSE,
+            xline = "",
+            yline = "",
+            xlog = FALSE,
+            ylog = FALSE,
+            xlim = "",
+            ylim = "",
+            mergesplit = TRUE, ...) {
 
             super$initialize(
                 package='jmv',
@@ -182,6 +197,72 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "pcValues",
                 pcValues,
                 default="25,50,75")
+            private$..dispersion <- jmvcore::OptionBool$new(
+                "dispersion",
+                dispersion,
+                default=FALSE)
+            private$..lineplot <- jmvcore::OptionBool$new(
+                "lineplot",
+                lineplot,
+                default=FALSE)
+            private$..linefit <- jmvcore::OptionBool$new(
+                "linefit",
+                linefit,
+                default=FALSE)
+            private$..confband <- jmvcore::OptionBool$new(
+                "confband",
+                confband,
+                default=TRUE)
+            private$..model <- jmvcore::OptionList$new(
+                "model",
+                model,
+                options=list(
+                    "linear",
+                    "loess",
+                    "quadratic",
+                    "cubic",
+                    "log_x"),
+                default="linear")
+            private$..xmean <- jmvcore::OptionBool$new(
+                "xmean",
+                xmean,
+                default=FALSE)
+            private$..ymean <- jmvcore::OptionBool$new(
+                "ymean",
+                ymean,
+                default=FALSE)
+            private$..xymeandot <- jmvcore::OptionBool$new(
+                "xymeandot",
+                xymeandot,
+                default=FALSE)
+            private$..xline <- jmvcore::OptionString$new(
+                "xline",
+                xline,
+                default="")
+            private$..yline <- jmvcore::OptionString$new(
+                "yline",
+                yline,
+                default="")
+            private$..xlog <- jmvcore::OptionBool$new(
+                "xlog",
+                xlog,
+                default=FALSE)
+            private$..ylog <- jmvcore::OptionBool$new(
+                "ylog",
+                ylog,
+                default=FALSE)
+            private$..xlim <- jmvcore::OptionString$new(
+                "xlim",
+                xlim,
+                default="")
+            private$..ylim <- jmvcore::OptionString$new(
+                "ylim",
+                ylim,
+                default="")
+            private$..mergesplit <- jmvcore::OptionBool$new(
+                "mergesplit",
+                mergesplit,
+                default=TRUE)
 
             self$.addOption(private$..vars)
             self$.addOption(private$..splitBy)
@@ -214,6 +295,21 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..pcNEqGr)
             self$.addOption(private$..pc)
             self$.addOption(private$..pcValues)
+            self$.addOption(private$..dispersion)
+            self$.addOption(private$..lineplot)
+            self$.addOption(private$..linefit)
+            self$.addOption(private$..confband)
+            self$.addOption(private$..model)
+            self$.addOption(private$..xmean)
+            self$.addOption(private$..ymean)
+            self$.addOption(private$..xymeandot)
+            self$.addOption(private$..xline)
+            self$.addOption(private$..yline)
+            self$.addOption(private$..xlog)
+            self$.addOption(private$..ylog)
+            self$.addOption(private$..xlim)
+            self$.addOption(private$..ylim)
+            self$.addOption(private$..mergesplit)
         }),
     active = list(
         vars = function() private$..vars$value,
@@ -246,7 +342,22 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         pcEqGr = function() private$..pcEqGr$value,
         pcNEqGr = function() private$..pcNEqGr$value,
         pc = function() private$..pc$value,
-        pcValues = function() private$..pcValues$value),
+        pcValues = function() private$..pcValues$value,
+        dispersion = function() private$..dispersion$value,
+        lineplot = function() private$..lineplot$value,
+        linefit = function() private$..linefit$value,
+        confband = function() private$..confband$value,
+        model = function() private$..model$value,
+        xmean = function() private$..xmean$value,
+        ymean = function() private$..ymean$value,
+        xymeandot = function() private$..xymeandot$value,
+        xline = function() private$..xline$value,
+        yline = function() private$..yline$value,
+        xlog = function() private$..xlog$value,
+        ylog = function() private$..ylog$value,
+        xlim = function() private$..xlim$value,
+        ylim = function() private$..ylim$value,
+        mergesplit = function() private$..mergesplit$value),
     private = list(
         ..vars = NA,
         ..splitBy = NA,
@@ -278,7 +389,22 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..pcEqGr = NA,
         ..pcNEqGr = NA,
         ..pc = NA,
-        ..pcValues = NA)
+        ..pcValues = NA,
+        ..dispersion = NA,
+        ..lineplot = NA,
+        ..linefit = NA,
+        ..confband = NA,
+        ..model = NA,
+        ..xmean = NA,
+        ..ymean = NA,
+        ..xymeandot = NA,
+        ..xline = NA,
+        ..yline = NA,
+        ..xlog = NA,
+        ..ylog = NA,
+        ..xlim = NA,
+        ..ylim = NA,
+        ..mergesplit = NA)
 )
 
 descriptivesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
@@ -455,6 +581,26 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param pc \code{TRUE} or \code{FALSE} (default), provide percentiles
 #' @param pcValues a comma-sepated list (default: 25,50,75) specifying the
 #'   percentiles
+#' @param dispersion \code{TRUE} or \code{FALSE} (default), Dispersion plot
+#' @param lineplot \code{TRUE} or \code{FALSE} (default), Line plot
+#' @param linefit \code{TRUE} or \code{FALSE} (default), Least squares
+#'   regression plot
+#' @param confband \code{TRUE} (default) or \code{FALSE}, Confidence bands in
+#'   least quares or loess plots
+#' @param model Model for line fit
+#' @param xmean \code{TRUE} or \code{FALSE} (default), Vertical line at mean X
+#' @param ymean \code{TRUE} or \code{FALSE} (default), Horizontal line at mean
+#'   Y
+#' @param xymeandot \code{TRUE} or \code{FALSE} (default), Dot at mean X, mean
+#'   Y
+#' @param xline Vertical line at X
+#' @param yline Horizontal line at Y
+#' @param xlog \code{TRUE} or \code{FALSE} (default), X axis log scale
+#' @param ylog \code{TRUE} or \code{FALSE} (default), Y axis log scale
+#' @param xlim min, max limits for X axis
+#' @param ylim min, max limits for Y axis
+#' @param mergesplit \code{TRUE} (default) or \code{FALSE}, merge plots of
+#'   first split variable
 #' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{
@@ -502,6 +648,21 @@ descriptives <- function(
     pcNEqGr = 4,
     pc = FALSE,
     pcValues = "25,50,75",
+    dispersion = FALSE,
+    lineplot = FALSE,
+    linefit = FALSE,
+    confband = TRUE,
+    model = "linear",
+    xmean = FALSE,
+    ymean = FALSE,
+    xymeandot = FALSE,
+    xline = "",
+    yline = "",
+    xlog = FALSE,
+    ylog = FALSE,
+    xlim = "",
+    ylim = "",
+    mergesplit = TRUE,
     formula) {
 
     if ( ! requireNamespace('jmvcore'))
@@ -563,7 +724,22 @@ descriptives <- function(
         pcEqGr = pcEqGr,
         pcNEqGr = pcNEqGr,
         pc = pc,
-        pcValues = pcValues)
+        pcValues = pcValues,
+        dispersion = dispersion,
+        lineplot = lineplot,
+        linefit = linefit,
+        confband = confband,
+        model = model,
+        xmean = xmean,
+        ymean = ymean,
+        xymeandot = xymeandot,
+        xline = xline,
+        yline = yline,
+        xlog = xlog,
+        ylog = ylog,
+        xlim = xlim,
+        ylim = ylim,
+        mergesplit = mergesplit)
 
     analysis <- descriptivesClass$new(
         options = options,

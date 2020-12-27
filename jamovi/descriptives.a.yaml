@@ -337,4 +337,135 @@ options:
       description:
           R: >
             a comma-sepated list (default: 25,50,75) specifying the percentiles
+
+    - name: dispersion
+      title: Dispersion
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), Dispersion plot
+
+    - name: lineplot
+      title: Line plot
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), Line plot
+
+    - name: linefit
+      title: Line fit
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), Least squares regression plot
+
+    - name: confband
+      title: Confidence bands
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, Confidence bands in least quares or loess plots
+
+    - name: model
+      title: Model
+      type: List
+      options:
+        - name: linear
+          title: linear
+        - name: loess
+          title: loess
+        - name: quadratic
+          title: quadratic
+        - name: cubic
+          title: cubic
+        - name: log_x
+          title: log_x
+      default: linear
+      description:
+          R: >
+            Model for line fit
+
+    - name: xmean
+      title: Mean X
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), Vertical line at mean X
+
+    - name: ymean
+      title: Mean Y
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), Horizontal line at mean Y
+
+    - name: xymeandot
+      title: Dot mean X,Y
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), Dot at mean X, mean Y
+
+    - name: xline
+      title: Vertical line
+      type: String
+      default: ""
+      description:
+          R: >
+            Vertical line at X
+
+    - name: yline
+      title: Horizontal line
+      type: String
+      default: ""
+      description:
+          R: >
+            Horizontal line at Y
+
+    - name: xlog
+      title: X log
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), X axis log scale
+
+    - name: ylog
+      title: Y log
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), Y axis log scale
+
+    - name: xlim
+      title: X limits
+      type: String
+      default: ""
+      description:
+          R: >
+            min, max limits for X axis
+
+    - name: ylim
+      title: Y limits
+      type: String
+      default: ""
+      description:
+          R: >
+            min, max limits for Y axis
+
+    - name: mergesplit
+      title: Merge Split
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, merge plots of first split variable
 ...

@@ -369,13 +369,33 @@ descriptivesClass <- R6::R6Class(
                         group$add(image)
                     }
 
+                    if (length(vars)>1 && var != vars[1] &&
+                        (self$options$dispersion || self$options$lineplot || self$options$linefit) ) {
+
+                        size <- private$.plotSize(levels, 'xyplot')
+
+                        image <- jmvcore::Image$new(
+                            options = self$options,
+                            name = "xyplot",
+                            renderFun = ".xyPlot",
+                            width = size[1],
+                            height = size[2],
+                            clearWith = list("splitBy", "dispersion", "lineplot", "linefit", "confband", "model",
+                                             "xmean", "ymean", "xymeandot", "xline", "yline", 
+                                             "xlog", "ylog", "xlim", "ylim","mergesplit")
+                        )
+
+                        group$add(image)
+                    }
+
                 }
 
                 plots$add(group)
             }
         },
 
-        #### Clear tables ----
+
+       #### Clear tables ----
         .clearDescriptivesTable = function(vChanges) {
 
             table <- self$results$descriptives
@@ -701,6 +721,22 @@ descriptivesClass <- R6::R6Class(
 
                         if (self$options$box || self$options$violin || self$options$dot)
                             box$setState(list(data=plotData, names=names, labels=labels))
+                    }
+
+                    # XY plot
+                    if (length(vars)>1 && var != vars[1] &&
+                       (self$options$dispersion || self$options$lineplot || self$options$linefit) ) {
+
+                        xyplot<- group$get('xyplot')
+    
+                        xvar <- vars[1]
+                        columns <- na.omit(c(xvar,var, splitBy[1:3])) # max 3 split vars
+                        plotData <- naOmit(data[columns])
+                        plotData[[xvar]] <- jmvcore::toNumeric(plotData[[xvar]])
+                        plotData[[var]] <- jmvcore::toNumeric(plotData[[var]])
+
+                        if (NROW(plotData)> 0)
+                            xyplot$setState(list(data=plotData))
                     }
                 }
             }
@@ -1222,6 +1258,22 @@ descriptivesClass <- R6::R6Class(
                 width <- yAxis + width
                 height <- xAxis + height
 
+            } else if (plot == "xyplot") {
+
+                xAxis <- 30 + 20
+                yAxis <- 30 + 20
+                if (self$options$mergesplit){
+                    width <- 300 * nLevels[2] 
+                    height <- 300 * nLevels[3]
+                } else {
+                    width <- 300 * nLevels[1]  
+                    height <- 300 * nLevels[2] * nLevels[3] 
+                }
+                legend <- max(25 + 21 + 3.5 + 8.3 * nCharLevels[1] + 28, 25 + 10 * nCharNames[1] + 28)
+
+                width <- yAxis + width + ifelse(nLevels[1] > 1 && self$options$mergesplit, legend, 0)
+                height <- xAxis + height
+
             } else {
 
                 xAxis <- 30 + 20
@@ -1281,6 +1333,128 @@ descriptivesClass <- R6::R6Class(
             if (length(self$options$splitBy) == 0)
                 return('')
             jmvcore:::composeFormula(self$options$vars, list(self$options$splitBy))
+        },
+
+        .xyPlot = function(image, ggtheme, theme, ...) {
+
+            if (is.null(image$state))   # from .preparePlots
+                return(FALSE)
+
+            data <- image$state$data
+            splitBy <- self$options$splitBy
+            xvar <- names(data)[1]
+            var <- names(data)[2]
+
+            if( length(splitBy) > 0){
+                plot <- ggplot2::ggplot(data=data, ggplot2::aes_string(x=xvar, y=var, color=splitBy[1]))
+            } else {
+                plot <- ggplot2::ggplot(data=data, ggplot2::aes_string(x=xvar, y=var))
+            }
+
+            plot <- plot + ggtheme
+
+            if (self$options$dispersion)
+                plot <- plot + ggplot2::geom_point()
+
+            if (self$options$lineplot)
+                plot <- plot + ggplot2::geom_line()
+
+            if (self$options$linefit){
+                
+                model <- self$options$model
+                method <- "lm"
+                fit <- "y~x"
+                if (model == "linear")
+                    fit <- "y~x"
+                else if (model == "loess")
+                    method <- "loess"
+                else if (model == "quadratic")
+                    fit <- "y~poly(x,2)"
+                else if (model == "cubic")
+                    fit <- "y~poly(x,3)"
+                else if (model == "log_x")
+                    fit <- "y~log(x)"
+
+                plot <- plot + ggplot2::geom_smooth(method=method, se=self$options$confband, formula=fit)
+            }
+
+            data$dummy <- " "
+            means <- aggregate(data[c(xvar, var)],data[c(splitBy, "dummy")], mean)
+
+            if (self$options$xmean){
+                plot <- plot + ggplot2::geom_vline(ggplot2::aes_string(xintercept = xvar), data=means, linetype="dashed")
+            }
+
+            if (self$options$ymean){
+               plot <- plot + ggplot2::geom_hline(ggplot2::aes_string(yintercept = var), data=means, linetype="dashed")
+            }
+
+            if (self$options$xymeandot) {
+                plot <- plot + ggplot2::geom_point(data=means, shape=15, size=2)
+            }
+
+            if (self$options$xline != ""){ 
+                xline <- as.numeric(unlist(strsplit(self$options$xline,",")))
+                xline <- xline[!is.na(xline)]
+                plot <- plot + ggplot2::geom_vline(xintercept=xline, linetype="dashed")
+            }
+
+            if (self$options$yline != ""){ 
+                yline <- as.numeric(unlist(strsplit(self$options$yline,",")))
+                yline <- yline[!is.na(yline)]
+                plot <- plot + ggplot2::geom_hline(yintercept=yline, linetype="dashed")
+            }
+
+            if (self$options$xlim != "" || self$options$xlog){
+                xlim <- as.numeric(unlist(strsplit(self$options$xlim,",")))
+                xlim <- c(xlim[!is.na(xlim)],NA,NA)[1:2]
+
+                trans <- ifelse(self$options$xlog, "log10", "identity")
+
+                if(trans == "log10" && !is.na(xlim[1]) && xlim[1] <=0)
+                     xlim[1] <- NA
+
+                plot <- plot + ggplot2::scale_x_continuous(trans=trans, limits = xlim)
+            }
+
+            if (self$options$ylim != "" || self$options$ylog){
+                ylim <- as.numeric(unlist(strsplit(self$options$ylim,",")))
+                ylim <- c(ylim[!is.na(ylim)],NA,NA)[1:2]
+                
+                trans <- ifelse(self$options$ylog, "log10", "identity")
+
+                if(trans == "log10" && !is.na(ylim[1]) && ylim[1] <=0)
+                     ylim[1] <- NA
+
+                plot <- plot + ggplot2::scale_y_continuous(trans=trans, limits = ylim)
+            }
+
+            if (self$options$mergesplit){
+
+                if (length(splitBy) == 2) {
+                    formula <- as.formula(paste0(". ~", splitBy[2]))
+                } else if (length(splitBy) > 2) {
+                    formula <- as.formula(paste0(splitBy[3],"~",splitBy[2]))
+                }
+                if (length(splitBy) >= 2)
+                    plot <- plot + facet_grid(formula)
+            } else {
+
+                plot <- plot + theme(legend.position='none')
+
+                if (length(splitBy) == 1){
+                        formula <- as.formula(paste0(". ~", splitBy[1]))
+                } else if (length(splitBy) == 2) {
+                        formula <- as.formula(paste0(splitBy[2],"~", splitBy[1]))
+                } else if (length(splitBy) == 3) {
+                        formula <- as.formula(paste0(splitBy[2],"+",splitBy[3],"~", splitBy[1]))
+                }
+                if (length(splitBy) >= 1)
+                    plot <- plot + facet_grid(formula)
+            }
+
+            return(plot)
         }
+
     )
 )
