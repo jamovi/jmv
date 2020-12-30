@@ -458,6 +458,9 @@ linRegClass <- R6::R6Class(
                         table$addColumn(name='lower', title='Lower', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Confidence Interval'), visibl="(ciEmm)")
                         table$addColumn(name='upper', title='Upper', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Confidence Interval'), visibl="(ciEmm)")
 
+                        table$addColumn(name='sd', title='SD', type='number', visibl="(piEmm)")
+                        table$addColumn(name='lowerpi', title='Lower', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Prediction Interval'), visibl="(piEmm)")
+                        table$addColumn(name='upperpi', title='Upper', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Prediction Interval'), visibl="(piEmm)")
                         nRows <- prod(nLevels)
 
                         for (k in 1:nRows) {
@@ -750,6 +753,10 @@ linRegClass <- R6::R6Class(
                             row[['lower']] <- emmTable[k, 'lower.CL']
                             row[['upper']] <- emmTable[k, 'upper.CL']
 
+                            row[['sd']] <- emmTable[k, 'SD']
+                            row[['lowerpi']] <- emmTable[k, 'lower.PL']
+                            row[['upperpi']] <- emmTable[k, 'upper.PL']
+
                             table$setRow(rowNo=k, values=row)
 
                             if (length(covValues) > 0) {
@@ -902,15 +909,25 @@ linRegClass <- R6::R6Class(
                                 silent = TRUE
                             )
 
-                            emmTable[[ j ]] <- try(
-                                as.data.frame(summary(emmeans::emmeans(model, formula, cov.reduce=FUN2,
-                                                                       options=list(level=self$options$ciWidthEmm / 100),
-                                                                       weights = weights, data=self$dataProcessed))),
-                                silent = TRUE
+                            emmTable[[ j ]] <- try({
+                                d<- emmeans::emmeans(model, formula, cov.reduce=FUN2,
+                                                    options=list(level=self$options$ciWidthEmm / 100),
+                                                    weights = weights, data=self$dataProcessed)
+                                p<- as.data.frame(predict(d, interval='prediction'))
+                                d<- as.data.frame(summary(d))
+                                d$SD<- p$SE
+                                d$lower.PL<- p$lower.PL
+                                d$upper.PL<- p$upper.PL
+                                d
+                                }, silent = TRUE
                             )
+
                         })
 
                         d <- as.data.frame(summary(mm))
+                        p <- as.data.frame(predict(mm, interval='prediction'))
+                        d$lower.PL<- p$lower.PL
+                        d$upper.PL<- p$upper.PL
 
                         for (k in 1:3) {
                             if ( ! is.na(termB64[k])) {
@@ -927,7 +944,7 @@ linRegClass <- R6::R6Class(
                         }
 
                         names <- list('x'=termB64[1], 'y'='emmean', 'lines'=termB64[2],
-                                      'plots'=termB64[3], 'lower'='lower.CL', 'upper'='upper.CL')
+                                      'plots'=termB64[3], 'lower'='lower.CL', 'upper'='upper.CL', 'lowerpi'='lower.PL', 'upperpi'='upper.PL')
                         names <- lapply(names, function(x) if (is.na(x)) NULL else x)
 
                         labels <- list('x'=term[1], 'y'=dep, 'lines'=term[2], 'plots'=term[3])
@@ -958,13 +975,21 @@ linRegClass <- R6::R6Class(
             if (cont) {
                 p <- p + geom_line()
 
-                if (self$options$ciEmm && is.null(names$plots) && is.null(names$lines))
-                    p <- p + geom_ribbon(aes_string(x=names$x, ymin=names$lower, ymax=names$upper), show.legend=TRUE, alpha=.3)
+                if (self$options$ciEmm) {# && is.null(names$plots)) # && is.null(names$lines) 
+                    p <- p + geom_ribbon(aes_string(x=names$x, ymin=names$lower, ymax=names$upper, fill=names$lines), show.legend=TRUE, alpha=.3)
+                }
+
+                if (self$options$piEmm) 
+                    p <- p + geom_line(aes_string(x=names$x, y=names$lowerpi), linetype = "dashed") +
+                             geom_line(aes_string(x=names$x, y=names$upperpi), linetype = "dashed")
             } else {
                 p <- p + geom_point(position = dodge)
 
                 if (self$options$ciEmm)
                     p <- p + geom_errorbar(aes_string(x=names$x, ymin=names$lower, ymax=names$upper), width=.1, size=.8, position=dodge)
+
+                if (self$options$piEmm)
+                    p <- p + geom_errorbar(aes_string(x=names$x, ymin=names$lowerpi, ymax=names$upperpi), width=.2, size=.8, alpha=.3, position=dodge)
             }
 
             if ( ! is.null(names$plots)) {

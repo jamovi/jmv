@@ -36,6 +36,7 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 list()),
             ciEmm = TRUE,
             ciWidthEmm = 95,
+            piEmm = FALSE,
             emmPlots = TRUE,
             emmTables = FALSE,
             emmWeights = TRUE, ...) {
@@ -199,6 +200,10 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 min=50,
                 max=99.9,
                 default=95)
+            private$..piEmm <- jmvcore::OptionBool$new(
+                "piEmm",
+                piEmm,
+                default=FALSE)
             private$..emmPlots <- jmvcore::OptionBool$new(
                 "emmPlots",
                 emmPlots,
@@ -240,6 +245,7 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..emMeans)
             self$.addOption(private$..ciEmm)
             self$.addOption(private$..ciWidthEmm)
+            self$.addOption(private$..piEmm)
             self$.addOption(private$..emmPlots)
             self$.addOption(private$..emmTables)
             self$.addOption(private$..emmWeights)
@@ -273,6 +279,7 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         emMeans = function() private$..emMeans$value,
         ciEmm = function() private$..ciEmm$value,
         ciWidthEmm = function() private$..ciWidthEmm$value,
+        piEmm = function() private$..piEmm$value,
         emmPlots = function() private$..emmPlots$value,
         emmTables = function() private$..emmTables$value,
         emmWeights = function() private$..emmWeights$value),
@@ -305,6 +312,7 @@ linRegOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..emMeans = NA,
         ..ciEmm = NA,
         ..ciWidthEmm = NA,
+        ..piEmm = NA,
         ..emmPlots = NA,
         ..emmTables = NA,
         ..emmWeights = NA)
@@ -740,6 +748,7 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                                     "blocks",
                                                     "refLevels",
                                                     "ciEmm",
+                                                    "piEmm",
                                                     "ciWidthEmm",
                                                     "emmWeights")))
                                             self$add(jmvcore::Table$new(
@@ -752,6 +761,7 @@ linRegResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                                                     "dep",
                                                     "blocks",
                                                     "refLevels",
+                                                    "piEmm",
                                                     "ciWidthEmm",
                                                     "emmWeights")))}))$new(options=options)))}))$new(options=options)))}))
 
@@ -875,6 +885,8 @@ linRegBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   interval for the estimated marginal means
 #' @param ciWidthEmm a number between 50 and 99.9 (default: 95) specifying the
 #'   confidence interval width for the estimated marginal means
+#' @param piEmm \code{TRUE} or \code{FALSE} (default), provide a prediction
+#'   interval for the estimated marginal means
 #' @param emmPlots \code{TRUE} (default) or \code{FALSE}, provide estimated
 #'   marginal means plots
 #' @param emmTables \code{TRUE} or \code{FALSE} (default), provide estimated
@@ -927,6 +939,7 @@ linReg <- function(
                 list()),
     ciEmm = TRUE,
     ciWidthEmm = 95,
+    piEmm = FALSE,
     emmPlots = TRUE,
     emmTables = FALSE,
     emmWeights = TRUE) {
@@ -976,6 +989,7 @@ linReg <- function(
         emMeans = emMeans,
         ciEmm = ciEmm,
         ciWidthEmm = ciWidthEmm,
+        piEmm = piEmm,
         emmPlots = emmPlots,
         emmTables = emmTables,
         emmWeights = emmWeights)

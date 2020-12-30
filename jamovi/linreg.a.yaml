@@ -333,6 +333,15 @@ options:
             a number between 50 and 99.9 (default: 95) specifying the confidence
             interval width for the estimated marginal means
 
+    - name: piEmm
+      title: Prediction interval
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a prediction interval
+            for the estimated marginal means
+
     - name: emmPlots
       title: Marginal means plots
       type: Bool
@@ -357,4 +366,5 @@ options:
           R: >
             `TRUE` (default) or `FALSE`, weigh each cell equally or weigh them according to
             the cell frequency
+
 ...

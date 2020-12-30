@@ -391,6 +391,7 @@ items:
                         - blocks
                         - refLevels
                         - ciEmm
+                        - piEmm
                         - ciWidthEmm
                         - emmWeights
 
@@ -404,5 +405,6 @@ items:
                         - dep
                         - blocks
                         - refLevels
+                        - piEmm
                         - ciWidthEmm
                         - emmWeights
