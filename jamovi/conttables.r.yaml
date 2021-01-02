@@ -322,3 +322,27 @@ items:
           title: p
           type: number
           format: zto,pvalue
+
+    - name: mh
+      title: Mantel-Haenszel test for trend
+      type: Table
+      description: a table of the Mantel-Haenszel test for trend
+      visible: (mh)
+
+      clearWith:
+        - rows
+        - cols
+        - counts
+        - layers
+
+      columns:
+        - name: chi2
+          title: χ²
+
+        - name: df
+          title: df
+
+        - name: p
+          title: p
+          type: number
+          format: zto,pvalue

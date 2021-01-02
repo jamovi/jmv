@@ -291,6 +291,14 @@ options:
           R: >
             `TRUE` or `FALSE` (default), provide Kendall's tau-b
 
+    - name: mh
+      title: Mantel-Haenszel
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Mantel-Haenszel test for trend
+
     - name: obs
       title: Observed counts
       type: Bool

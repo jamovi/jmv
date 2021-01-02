@@ -27,6 +27,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             hypothesis = "different",
             gamma = FALSE,
             taub = FALSE,
+            mh = FALSE,
             obs = TRUE,
             exp = FALSE,
             pcRow = FALSE,
@@ -146,6 +147,10 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "taub",
                 taub,
                 default=FALSE)
+            private$..mh <- jmvcore::OptionBool$new(
+                "mh",
+                mh,
+                default=FALSE)
             private$..obs <- jmvcore::OptionBool$new(
                 "obs",
                 obs,
@@ -188,6 +193,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..hypothesis)
             self$.addOption(private$..gamma)
             self$.addOption(private$..taub)
+            self$.addOption(private$..mh)
             self$.addOption(private$..obs)
             self$.addOption(private$..exp)
             self$.addOption(private$..pcRow)
@@ -216,6 +222,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         hypothesis = function() private$..hypothesis$value,
         gamma = function() private$..gamma$value,
         taub = function() private$..taub$value,
+        mh = function() private$..mh$value,
         obs = function() private$..obs$value,
         exp = function() private$..exp$value,
         pcRow = function() private$..pcRow$value,
@@ -243,6 +250,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..hypothesis = NA,
         ..gamma = NA,
         ..taub = NA,
+        ..mh = NA,
         ..obs = NA,
         ..exp = NA,
         ..pcRow = NA,
@@ -258,7 +266,8 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
         odds = function() private$.items[["odds"]],
         nom = function() private$.items[["nom"]],
         gamma = function() private$.items[["gamma"]],
-        taub = function() private$.items[["taub"]]),
+        taub = function() private$.items[["taub"]],
+        mh = function() private$.items[["mh"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -574,7 +583,31 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="p", 
                         `title`="p", 
                         `type`="number", 
-                        `format`="zto,pvalue"))))}))
+                        `format`="zto,pvalue"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="mh",
+                title="Mantel-Haenszel",
+                visible="(mh)",
+                clearWith=list(
+                    "rows",
+                    "cols",
+                    "counts",
+                    "layers"),
+                columns=list(
+                    list(
+                        `name`="chi2", 
+                        `title`="\u03C7\u00B2"),
+                    list(
+                        `name`="df", 
+                        `title`="df",
+                        `type`="integer"), 
+                    list(
+                        `name`="p", 
+                        `title`="p", 
+                        `type`="number", 
+                        `format`="zto,pvalue"))))
+            }))
 
 contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "contTablesBase",
@@ -681,6 +714,8 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   respectively
 #' @param gamma \code{TRUE} or \code{FALSE} (default), provide gamma
 #' @param taub \code{TRUE} or \code{FALSE} (default), provide Kendall's tau-b
+#' @param mh \code{TRUE} or \code{FALSE} (default), provide Mante-Haenszel test
+#'    for trend
 #' @param obs \code{TRUE} or \code{FALSE} (default), provide the observed
 #'   counts
 #' @param exp \code{TRUE} or \code{FALSE} (default), provide the expected
@@ -699,6 +734,7 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{results$nom} \tab \tab \tab \tab \tab a table of the 'nominal' test results \cr
 #'   \code{results$gamma} \tab \tab \tab \tab \tab a table of the gamma test results \cr
 #'   \code{results$taub} \tab \tab \tab \tab \tab a table of the Kendall's tau-b test results \cr
+#'   \code{results$mh} \tab \tab \tab \tab \tab a table of the Mantel-Haenszel results \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -731,6 +767,7 @@ contTables <- function(
     hypothesis = "different",
     gamma = FALSE,
     taub = FALSE,
+    mh = FALSE,
     obs = TRUE,
     exp = FALSE,
     pcRow = FALSE,
@@ -810,6 +847,7 @@ contTables <- function(
         hypothesis = hypothesis,
         gamma = gamma,
         taub = taub,
+        mh = mh,
         obs = obs,
         exp = exp,
         pcRow = pcRow,
