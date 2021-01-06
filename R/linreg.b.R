@@ -299,11 +299,11 @@ linRegClass <- R6::R6Class(
         },
         .initCoefTable = function() {
             groups <- self$results$models
-            termsAll <- private$.getModelTerms()
             factors <- self$options$factors
+            termsAll <- private$.getModelTerms()
+            rowNamesModel <- private$.getRowNamesModel()
 
             for (i in seq_along(termsAll)) {
-
                 table <- groups$get(key=i)$coef
 
                 ciWidth <- self$options$ciWidth
@@ -314,10 +314,9 @@ linRegClass <- R6::R6Class(
                 table$getColumn('stdEstLower')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidthStdEst))
                 table$getColumn('stdEstUpper')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidthStdEst))
 
-                coefTerms <- list()
+                coefTerms <- rowNamesModel[[i]]
 
                 table$addRow(rowKey="`(Intercept)`", values=list(term = "Intercept"))
-                coefTerms[[1]] <- "(Intercept)"
 
                 if ( ! is.null(factors)) {
                     note <- ifelse(self$options$intercept == 'refLevel',
@@ -328,37 +327,28 @@ linRegClass <- R6::R6Class(
 
                 terms <- termsAll[[i]]
 
+                iter <- 1
                 for (j in seq_along(terms)) {
+                    if (any(terms[[j]] %in% factors)) {
+                        table$addRow(rowKey=terms[[j]],
+                                     values=list(term = paste0(jmvcore::stringifyTerm(terms[[j]]), ':'),
+                                                 est='', se='', t='', p='', lower='', upper='', stdEst='',
+                                                 stdEstLower='', stdEstUpper=''))
 
-                    if (any(terms[[j]] %in% factors)) { # check if there are factors in the term
+                        contrastNames <- private$.contrastsCoefTable(terms[[j]])
 
-                        table$addRow(rowKey=terms[[j]], values=list(term = paste0(jmvcore::stringifyTerm(terms[[j]]), ':'),
-                                                                    est='', se='', t='', p='',
-                                                                    lower='', upper='', stdEst='',
-                                                                    stdEstLower='', stdEstUpper=''))
-
-                        coefs <- private$.coefTerms(terms[[j]])
-                        coefNames <- coefs$coefNames
-
-                        for (k in seq_along(coefNames)) {
-                            rowKey <- jmvcore::composeTerm(coefs$coefTerms[[k]])
-                            table$addRow(rowKey=rowKey, values=list(term = coefNames[[k]]))
+                        for (k in seq_along(contrastNames)) {
+                            iter <-iter + 1
+                            rowKey <- jmvcore::composeTerm(coefTerms[[iter]])
+                            table$addRow(rowKey=rowKey, values=list(term = contrastNames[[k]]))
                             table$addFormat(rowKey=rowKey, col=1, Cell.INDENTED)
                         }
-
-                        coefTerms <- c(coefTerms, coefs$coefTerms)
-
                     } else {
-
+                        iter <- iter + 1
                         rowKey <- jmvcore::composeTerm(jmvcore::toB64(terms[[j]]))
                         table$addRow(rowKey=rowKey, values=list(term = jmvcore::stringifyTerm(terms[[j]])))
-
-                        coefTerms[[length(coefTerms) + 1]] <- jmvcore::toB64(terms[[j]])
-
                     }
                 }
-
-                private$coefTerms[[i]] <- coefTerms
             }
         },
         .initCollinearityTable = function() {
@@ -580,7 +570,7 @@ linRegClass <- R6::R6Class(
         },
         .populateCoefTables = function() {
             groups <- self$results$models
-            termsAll <- private$coefTerms
+            termsAll <- private$.getRowNamesModel()
             models <- self$models
             modelsScaled <- self$modelsScaled
 
@@ -622,7 +612,7 @@ linRegClass <- R6::R6Class(
                         row[["stdEstUpper"]] <- CIScaled[index, 2]
                     }
 
-                    table$setRow(rowKey=jmvcore::composeTerm(term), values = row)
+                    table$setRow(rowKey=jmvcore::composeTerm(term), values=row)
                 }
             }
         },
@@ -954,18 +944,22 @@ linRegClass <- R6::R6Class(
 
             dodge <- position_dodge(0.4)
 
-            p <- ggplot(data=data, aes_string(x=names$x, y=names$y, color=names$lines, fill=names$lines), inherit.aes = FALSE)
+            p <- ggplot(data=data,
+                        aes_string(x=names$x, y=names$y, color=names$lines, fill=names$lines),
+                        inherit.aes = FALSE)
 
             if (cont) {
                 p <- p + geom_line()
 
                 if (self$options$ciEmm && is.null(names$plots) && is.null(names$lines))
-                    p <- p + geom_ribbon(aes_string(x=names$x, ymin=names$lower, ymax=names$upper), show.legend=TRUE, alpha=.3)
+                    p <- p + geom_ribbon(aes_string(x=names$x, ymin=names$lower, ymax=names$upper),
+                                         show.legend=TRUE, alpha=.3)
             } else {
                 p <- p + geom_point(position = dodge)
 
                 if (self$options$ciEmm)
-                    p <- p + geom_errorbar(aes_string(x=names$x, ymin=names$lower, ymax=names$upper), width=.1, size=.8, position=dodge)
+                    p <- p + geom_errorbar(aes_string(x=names$x, ymin=names$lower, ymax=names$upper),
+                                           width=.1, size=.8, position=dodge)
             }
 
             if ( ! is.null(names$plots)) {
@@ -998,47 +992,90 @@ linRegClass <- R6::R6Class(
 
             return(private$.modelTerms)
         },
-        .coefTerms = function(terms) {
+        .getRowNamesModel = function() {
+            if (is.null(private$.rowNamesModel)) {
+                factors <- self$options$factors
+                termsAll <- private$.getModelTerms()
+
+                rowNamesAll <- list()
+                for (i in seq_along(termsAll)) {
+                    rowNames <- list()
+                    rowNames[[1]] <- "(Intercept)"
+
+                    terms <- termsAll[[i]]
+                    for (term in terms) {
+                        if (any(term %in% factors))
+                            rowNames <- c(rowNames, private$.contrastModel(term))
+                        else
+                            rowNames[[length(rowNames) + 1]] <- jmvcore::toB64(term)
+                    }
+                    rowNamesAll[[i]] <- rowNames
+                }
+                private$.rowNamesModel <- rowNamesAll
+            }
+
+            return(private$.rowNamesModel)
+        },
+        .contrastModel = function(terms) {
+            #' Returns the names of the factor contrasts as they are
+            #' defined by the lm function
+
+            factors <- self$options$factors
+
+            nLevels <- list()
+            for (factor in factors)
+                nLevels[[factor]] <- length(levels(self$data[[factor]]))
+
+            contrast <- list()
+            for (term in terms) {
+                if (term %in% factors) {
+                    contrast[[term]] <- paste0(jmvcore::toB64(term), 1:(nLevels[[term]] - 1))
+                } else {
+                    contrast[[term]] <- jmvcore::toB64(term)
+                }
+            }
+
+            contrastGrid <- expand.grid(contrast)
+            contrastTerms <- list()
+            for (i in 1:nrow(contrastGrid))
+                contrastTerms[[i]] <- as.character(unlist(contrastGrid[i,]))
+
+            return(contrastTerms)
+        },
+        .contrastsCoefTable = function(terms) {
+            #' Returns the names of the factor contrasts as they are
+            #' displayed in the coef table
+
             factors <- self$options$factors
             refLevels <- self$options$refLevels
-
             refVars <- sapply(refLevels, function(x) x$var)
 
             levels <- list()
             for (factor in factors)
                 levels[[factor]] <- levels(self$data[[factor]])
 
-            contrLevels <- list(); refLevel <- list(); contr <- list(); rContr <- list()
-
+            contrast <- list()
             for (term in terms) {
                 if (term %in% factors) {
                     ref <- refLevels[[which(term == refVars)]][['ref']]
                     refNo <- which(ref == levels[[term]])
 
-                    contrLevels[[term]] <- levels[[term]][-refNo]
-                    refLevel[[term]] <- levels[[term]][refNo]
+                    contrLevels <- levels[[term]][-refNo]
+                    refLevel <- levels[[term]][refNo]
 
+                    c <- paste(contrLevels, refLevel, sep = ' \u2013 ')
                     if (length(terms) > 1)
-                        contr[[term]] <- paste0('(', paste(contrLevels[[term]], refLevel[[term]], sep = ' \u2013 '), ')')
-                    else
-                        contr[[term]] <- paste(contrLevels[[term]], refLevel[[term]], sep = ' \u2013 ')
+                        c <- paste0('(', c, ')')
 
-                    rContr[[term]] <- paste0(jmvcore::toB64(term), 1:length(contrLevels[[term]]))
+                    contrast[[term]] <- c
                 } else {
-                    contr[[term]] <- term
-                    rContr[[term]] <- jmvcore::toB64(term)
+                    contrast[[term]] <- term
                 }
             }
+            contrastGrid <- expand.grid(contrast)
+            contrastNames <- apply(contrastGrid, 1, jmvcore::stringifyTerm)
 
-            grid <- expand.grid(contr)
-            coefNames <- apply(grid, 1, jmvcore::stringifyTerm)
-
-            grid2 <- expand.grid(rContr)
-            coefTerms <- list()
-            for (i in 1:nrow(grid2))
-                coefTerms[[i]] <- as.character(unlist(grid2[i,]))
-
-            return(list(coefNames=coefNames, coefTerms=coefTerms))
+            return(contrastNames)
         },
         .formulas = function() {
             dep <- self$options$dep
