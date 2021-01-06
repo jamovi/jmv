@@ -75,3 +75,37 @@ test_that('linreg works', {
     expect_equal(20.663, emmeans$emmean[1], tolerance = 1e-3)
 
 })
+
+test_that('cooks summary in linreg works', {
+
+    set.seed(100)
+    intercept <- rnorm(100) + 1
+    a <- rnorm(100) * 2.5
+    b <- rnorm(100) * .5
+    c <- rnorm(100) * .1
+
+    y <- intercept + a + b + c
+
+    data <- list()
+    data[["dep"]] <- y
+    data[["var1"]] <- a
+    data[["var 2"]] <- b
+    data[["var3"]] <- c
+
+    attr(data, 'row.names') <- seq_len(length(data[[1]]))
+    attr(data, 'class') <- 'data.frame'
+
+    dep <- "dep"
+    covs <- c("var1", "var 2", "var3")
+    blocks = list(list("var1", "var 2", "var3"))
+
+    linreg <- jmv::linReg(data, dep=!!dep, covs=!!covs, blocks=blocks, cooks=TRUE)
+
+    cooksTable <- linreg$models[[1]]$dataSummary$cooks$asDF
+
+    expect_equal(0.0109, cooksTable$mean, tolerance = 1e-4)
+    expect_equal(0.0031, cooksTable$median, tolerance = 1e-4)
+    expect_equal(0.0188, cooksTable$sd, tolerance = 1e-4)
+    expect_equal(0.0000, cooksTable$min, tolerance = 1e-4)
+    expect_equal(0.0966, cooksTable$max, tolerance = 1e-4)
+})
