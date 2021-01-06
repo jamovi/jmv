@@ -106,7 +106,7 @@ linRegClass <- R6::R6Class(
         .VIF = NULL,
         .durbinWatson = NULL,
         .modelTerms = NULL,
-        coefTerms = list(),
+        .rowNamesModel = NULL,
         emMeans = list(),
 
         #### Init + run functions ----
@@ -191,12 +191,13 @@ linRegClass <- R6::R6Class(
         .computeCooksSummary = function() {
             cooksSummary <- list()
             for (i in seq_along(self$cooks)) {
+                cooks <- self$cooks[[i]]
                 cooksSummary[[i]] <- list(
-                    'mean' = mean(cooks[[i]]),
-                    'median' = median(cooks[[i]]),
-                    'sd' = sd(cooks[[i]]),
-                    'min' = min(cooks[[i]]),
-                    'max' = max(cooks[[i]])
+                    'mean' = mean(cooks),
+                    'median' = median(cooks),
+                    'sd' = sd(cooks),
+                    'min' = min(cooks),
+                    'max' = max(cooks)
                 )
             }
 
