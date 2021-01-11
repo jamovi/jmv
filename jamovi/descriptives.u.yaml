@@ -130,6 +130,8 @@ children:
                     name: variance
                   - type: CheckBox
                     name: range
+                  - type: CheckBox
+                    name: iqr
               - type: LayoutBox
                 margin: normal
                 children:

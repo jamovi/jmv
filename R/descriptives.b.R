@@ -5,15 +5,16 @@ descriptivesClass <- R6::R6Class(
     private=list(
         #### Member variables ----
         colArgs = list(
-            name = c("n", "missing", "mean", "se", "median", "mode", "sum", "sd", "variance", "range",
+            name = c("n", "missing", "mean", "se", "median", "mode", "sum", "sd", "variance", "iqr", "range",
                      "min", "max", "skew", "seSkew", "kurt", "seKurt", "sww", "sw"),
             title = c("N", "Missing", "Mean", "Std. error mean", "Median", "Mode", "Sum", "Standard deviation", "Variance",
+                      "IQR",
                       "Range", "Minimum", "Maximum", "Skewness", "Std. error skewness",
                       "Kurtosis", "Std. error kurtosis", "Shapiro-Wilk W", "Shapiro-Wilk p"),
-            type = c(rep("integer", 2), rep("number", 16)),
-            format = c(rep("", 17), "zto,pvalue"),
-            visible = c("(n)", "(missing)", "(mean)", "(se)", "(median)", "(mode)", "(sum)", "(sd)", "(variance)", "(range)",
-                        "(min)", "(max)", "(skew)", "(skew)", "(kurt)", "(kurt)", "(sw)", "(sw)")
+            type = c(rep("integer", 2), rep("number", 17)),
+            format = c(rep("", 18), "zto,pvalue"),
+            visible = c("(n)", "(missing)", "(mean)", "(se)", "(median)", "(mode)", "(sum)", "(sd)", "(variance)",
+                        "(iqr)","(range)", "(min)", "(max)", "(skew)", "(skew)", "(kurt)", "(kurt)", "(sw)", "(sw)")
         ),
         levels = NULL,
 
@@ -1015,7 +1016,7 @@ descriptivesClass <- R6::R6Class(
                 return(FALSE)
         },
         .getPcValues = function() {
-    
+
             if ( self$options$pcEqGr ) {
                 pcNEqGr <- self$options$pcNEqGr
                 pcEq <- (1:pcNEqGr / pcNEqGr)[-pcNEqGr]
@@ -1028,7 +1029,7 @@ descriptivesClass <- R6::R6Class(
             if ( is.character(pcValues) )
                 pcValues <- as.numeric(unlist(strsplit(pcValues,",")))
             pcValues <- pcValues / 100
-            pcValues[pcValues < 0 | pcValues > 1] <- NA 
+            pcValues[pcValues < 0 | pcValues > 1] <- NA
             pcValues <- pcValues[!is.na(pcValues)]
             pcValues <- pcValues[ ! (pcValues %in% pcEq) ]
 
@@ -1041,7 +1042,7 @@ descriptivesClass <- R6::R6Class(
 
                 colArgs <- private$colArgs
                 pcEq <- (1:pcNEqGr / pcNEqGr)[-pcNEqGr]
- 
+
                 private$colArgs$name <- c(colArgs$name, paste0('quant', 1:(pcNEqGr-1)))
                 private$colArgs$title <- c(colArgs$title, paste0(round(pcEq * 100, 2), 'th percentile'))
                 private$colArgs$type <- c(colArgs$type, rep('number', pcNEqGr - 1))
@@ -1085,6 +1086,7 @@ descriptivesClass <- R6::R6Class(
                 stats[['min']] <- min(column)
                 stats[['max']] <- max(column)
                 stats[['se']] <- sqrt(var(column)/length(column))
+                stats[['iqr']] <- diff(as.numeric(quantile(column, c(.25,.75))))
 
                 deviation <- column-mean(column)
                 skew <- private$.skewness(column)

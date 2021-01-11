@@ -30,6 +30,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             min = TRUE,
             max = TRUE,
             se = FALSE,
+            iqr = FALSE,
             skew = FALSE,
             kurt = FALSE,
             sw = FALSE,
@@ -152,6 +153,10 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "se",
                 se,
                 default=FALSE)
+            private$..iqr <- jmvcore::OptionBool$new(
+                "iqr",
+                iqr,
+                default=FALSE)
             private$..skew <- jmvcore::OptionBool$new(
                 "skew",
                 skew,
@@ -207,6 +212,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..min)
             self$.addOption(private$..max)
             self$.addOption(private$..se)
+            self$.addOption(private$..iqr)
             self$.addOption(private$..skew)
             self$.addOption(private$..kurt)
             self$.addOption(private$..sw)
@@ -240,6 +246,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         min = function() private$..min$value,
         max = function() private$..max$value,
         se = function() private$..se$value,
+        iqr = function() private$..iqr$value,
         skew = function() private$..skew$value,
         kurt = function() private$..kurt$value,
         sw = function() private$..sw$value,
@@ -272,6 +279,7 @@ descriptivesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..min = NA,
         ..max = NA,
         ..se = NA,
+        ..iqr = NA,
         ..skew = NA,
         ..kurt = NA,
         ..sw = NA,
@@ -298,7 +306,7 @@ descriptivesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                 options=options,
                 name="descriptives",
                 title="Descriptives",
-                visible="(n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || skew || kurt || pcEqGr || pc)",
+                visible="(n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || iqr || skew || kurt || pcEqGr || pc)",
                 rows=1,
                 clearWith=list(
                     "splitBy",
@@ -445,6 +453,8 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param min \code{TRUE} or \code{FALSE} (default), provide the minimum
 #' @param max \code{TRUE} or \code{FALSE} (default), provide the maximum
 #' @param se \code{TRUE} or \code{FALSE} (default), provide the standard error
+#' @param iqr \code{TRUE} or \code{FALSE} (default), provide the interquartile
+#'   range
 #' @param skew \code{TRUE} or \code{FALSE} (default), provide the skewness
 #' @param kurt \code{TRUE} or \code{FALSE} (default), provide the kurtosis
 #' @param sw \code{TRUE} or \code{FALSE} (default), provide Shapiro-Wilk
@@ -495,6 +505,7 @@ descriptives <- function(
     min = TRUE,
     max = TRUE,
     se = FALSE,
+    iqr = FALSE,
     skew = FALSE,
     kurt = FALSE,
     sw = FALSE,
@@ -557,6 +568,7 @@ descriptives <- function(
         min = min,
         max = max,
         se = se,
+        iqr = iqr,
         skew = skew,
         kurt = kurt,
         sw = sw,

@@ -280,6 +280,14 @@ options:
           R: >
             `TRUE` or `FALSE` (default), provide the standard error
 
+    - name: iqr
+      title: IQR
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide the interquartile range
+
     - name: skew
       title: Skewness
       type: Bool
