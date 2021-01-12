@@ -324,15 +324,6 @@ ttestISClass <- R6::R6Class(
                     }
                 }
 
-                if (self$options$norm || ! is.null(self$options$resids)) {
-                    residuals <- tapply(dataTTest$dep, dataTTest$group, function(x) x - mean(x))
-                    residuals <- unlist(residuals, use.names=FALSE)
-                }
-
-                if ( ! is.null(self$options$resids)) {
-                    self$results$resids$setValues(residuals)
-                }
-
                 if (self$options$norm) {
 
                     values <- list()
@@ -348,7 +339,8 @@ ttestISClass <- R6::R6Class(
                         values[['p']] <- ''
                         footnote <- 'Too many samples to compute statistic (N > 5000)'
                     } else {
-
+                        residuals <- tapply(dataTTest$dep, dataTTest$group, function(x) x - mean(x))
+                        residuals <- unlist(residuals, use.names=FALSE)
                         res <- try(shapiro.test(residuals), silent=TRUE)
 
                         if ( ! isError(res)) {

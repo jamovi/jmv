@@ -158,21 +158,3 @@ children:
 
               - type: CheckBox
                 name: qq
-  - type: CollapseBox
-    label: Save
-    collapsed: true
-    stretchFactor: 1
-    children:
-      - type: OutputSupplier
-        persistentItems: false
-        stretchFactor: 1
-        children:
-          - type: TargetLayoutBox
-            label: Residuals
-            children:
-              - type: VariablesListBox
-                name: resids
-                maxItemCount: 1
-                isTarget: true
-                permitted:
-                  - output
