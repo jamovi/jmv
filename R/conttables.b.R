@@ -312,14 +312,12 @@ contTablesClass <- R6::R6Class(
                             tau <- try(cor.test(v1, v2, method='kendall', conf.level=ciWidth))
                         }
                         if (self$options$mh) {
-                            if (all(dim(mat))>2)
+                            if (all(dim(mat) > 2))
                                 mhchi2 <- -1 # Mantel-Haenszel is only for 2xk tables
                             else
-                                mhchi2 <- try((cor(v1, v2)^2)*(sum(df$Freq)-1))
-
+                                mhchi2 <- try((cor(v1, v2)^2) * (sum(df$Freq) - 1))
                         }
                     }
-
 
                     zP <- NULL
                     dp <- NULL
@@ -503,12 +501,13 @@ contTablesClass <- R6::R6Class(
                     if (base::inherits(mhchi2, 'try-error') || is.na(mhchi2) || mhchi2 == -1)
                         values <- list(chi2=NaN, df='', p='')
                     else
-                        values <- list(
-                            chi2=mhchi2,
-                            df=1,
-                            p=1-pchisq(mhchi2,1))
+                        values <- list(chi2=mhchi2, df=1, p=1-pchisq(mhchi2,1))
+                    
                     mh$setRow(rowNo=othRowNo, values=values)
-                    if (mhchi2 == -1)
+                    
+                    if (base::inherits(mhchi2, 'try-error') || is.na(mhchi2))
+                        mh$addFootnote(rowNo=othRowNo, 'chi2', 'Variables must have >=2 categories')
+                    else if (mhchi2 == -1)
                         mh$addFootnote(rowNo=othRowNo, 'chi2', 'One variable must be binary')
                 }
 

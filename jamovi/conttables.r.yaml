@@ -324,7 +324,7 @@ items:
           format: zto,pvalue
 
     - name: mh
-      title: Mantel-Haenszel test for trend
+      title: Mantel-Haenszel Test for Trend
       type: Table
       description: a table of the Mantel-Haenszel test for trend
       visible: (mh)
@@ -341,6 +341,7 @@ items:
 
         - name: df
           title: df
+          type: integer
 
         - name: p
           title: p
