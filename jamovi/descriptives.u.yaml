@@ -204,7 +204,8 @@ children:
                     name: dotType
                     enable: (dot)
               - type: CheckBox
-                name: boxmean
+                name: boxMean
+                enable: (box || violin || dot)
           - type: Label
             label: Bar Plots
             stretchFactor: 1

@@ -176,8 +176,8 @@ options:
           title: "Stacked"
       default: jitter
 
-    - name: boxmean
-      title: Add mean
+    - name: boxMean
+      title: Mean
       type: Bool
       default: false
       description:
