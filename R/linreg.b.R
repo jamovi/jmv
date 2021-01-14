@@ -87,6 +87,12 @@ linRegClass <- R6::R6Class(
                 private$.durbinWatson <- private$.computeDurbinWatson()
 
             return(private$.durbinWatson)
+        },
+        emMeans = function() {
+            if (is.null(private$.emMeans))
+                private$.emMeans <- private$.computeEmMeans()
+
+            return(private$.emMeans)
         }
     ),
     private = list(
@@ -107,7 +113,8 @@ linRegClass <- R6::R6Class(
         .durbinWatson = NULL,
         .modelTerms = NULL,
         .rowNamesModel = NULL,
-        emMeans = list(),
+        .emMeans = NULL,
+        .emMeansForPlot = NULL,
 
         #### Init + run functions ----
         .init = function() {
@@ -229,7 +236,7 @@ linRegClass <- R6::R6Class(
 
             return(CICoefEst)
         },
-        .computeVIF= function() {
+        .computeVIF = function() {
             modelTerms <- private$.getModelTerms()
 
             VIF <- list()
@@ -242,13 +249,68 @@ linRegClass <- R6::R6Class(
 
             return(VIF)
         },
-        .computeDurbinWatson= function() {
+        .computeDurbinWatson = function() {
             durbinWatson <- list()
             for (i in seq_along(self$models)) {
                 durbinWatson[[i]] <- car::durbinWatsonTest(self$models[[i]])
             }
 
             return(durbinWatson)
+        },
+        .computeEmMeans = function(forPlot = FALSE) {
+            covs <- self$options$covs
+            termsAll <- private$.getModelTerms()
+            emMeansTerms <- self$options$emMeans
+
+            emMeans <- list()
+            for (i in seq_along(termsAll)) {
+                terms <- unique(unlist(termsAll[[i]]))
+                model <- self$models[[i]]
+
+                emmTable <- list()
+                for (j in seq_along(emMeansTerms)) {
+                    term <- emMeansTerms[[j]]
+
+                    if ( ! is.null(term) && all(term %in% terms)) {
+                        termB64 <- jmvcore::toB64(term)
+
+                        FUN <- list()
+                        for (k in seq_along(termB64)) {
+                            if (term[k] %in% covs) {
+                                if (inPlot && k == 1) {
+                                    FUN[[termB64[k]]] <- function(x) pretty(x, 25)
+                                } else {
+                                    FUN[[termB64[k]]] <- function(x) c(mean(x)-sd(x), mean(x), mean(x)+sd(x))
+                                }
+                            }
+                        }
+
+                        formula <- formula(paste('~', jmvcore::composeTerm(termB64)))
+
+                        if (self$options$emmWeights)
+                            weights <- 'equal'
+                        else
+                            weights <- 'cells'
+
+                        suppressMessages({
+                            emmeans::emm_options(sep = ",", parens = "a^")
+
+                            mm <- try(
+                                emmeans::emmeans(model, formula, cov.reduce=FUN,
+                                                 options=list(level=self$options$ciWidthEmm / 100),
+                                                 weights=weights, data=self$dataProcessed),
+                                silent = TRUE
+                            )
+
+                            emmTable[[j]] <- try(as.data.frame(summary(mm)), silent = TRUE)
+                        })
+                    }
+                }
+
+                emMeans[[i]] <- emmTable
+            }
+
+            return(emMeans)
         },
 
         #### Init tables/plots functions ----
@@ -694,7 +756,6 @@ linRegClass <- R6::R6Class(
             emMeans <- self$options$emMeans
             factors <- self$options$factors
             covs <- self$options$covs
-            emmTables <- private$emMeans
 
             for (i in seq_along(termsAll)) {
                 group <- groups$get(key=i)$emm
@@ -707,7 +768,7 @@ linRegClass <- R6::R6Class(
                         emmGroup <- group$get(key=j)
                         table <- emmGroup$emmTable
 
-                        emmTable <- emmTables[[i]][[j]]
+                        emmTable <- self$emMeans[[i]][[j]]
 
                         covValues <- list()
                         for (k in seq_along(emm)) {
@@ -756,9 +817,7 @@ linRegClass <- R6::R6Class(
                 }
             }
         },
-
         .populateNormality = function() {
-
             groups <- self$results$models
             termsAll <- private$.getModelTerms()
 
@@ -842,15 +901,11 @@ linRegClass <- R6::R6Class(
             groups <- self$results$models
             termsAll <- private$.getModelTerms()
             emMeans <- self$options$emMeans
-
-            emmTables <- list()
+            emMeansTables <- private$.getEmMeansForPlot()
 
             for (i in seq_along(termsAll)) {
                 group <- groups$get(key=i)$emm
                 terms <- unique(unlist(termsAll[[i]]))
-                model <- self$models[[i]]
-
-                emmTable <- list()
 
                 for (j in seq_along(emMeans)) {
                     term <- emMeans[[j]]
@@ -859,49 +914,11 @@ linRegClass <- R6::R6Class(
                         image <- group$get(key=j)$emmPlot
 
                         termB64 <- jmvcore::toB64(term)
-
-                        FUN <- list(); FUN2 <- list()
                         cont <- FALSE
+                        if (term[1] %in% covs)
+                            cont <- TRUE
 
-                        for(k in seq_along(termB64)) {
-                            if (term[k] %in% covs) {
-                                if (k == 1) {
-                                    FUN[[termB64[k]]] <- function(x)  pretty(x, 25)
-                                    cont <- TRUE
-                                } else {
-                                    FUN[[termB64[k]]] <- function(x)  c(mean(x)-sd(x), mean(x), mean(x)+sd(x))
-                                }
-
-                                FUN2[[termB64[[k]]]] <- function(x)  c(mean(x)-sd(x), mean(x), mean(x)+sd(x))
-                            }
-                        }
-
-                        formula <- formula(paste('~', jmvcore::composeTerm(termB64)))
-
-                        if (self$options$emmWeights)
-                            weights <- 'equal'
-                        else
-                            weights <- 'cells'
-
-                        suppressMessages({
-                            emmeans::emm_options(sep = ",", parens = "a^")
-
-                            mm <- try(
-                                emmeans::emmeans(model, formula, cov.reduce=FUN,
-                                                 options=list(level=self$options$ciWidthEmm / 100),
-                                                 weights = weights, data=self$dataProcessed),
-                                silent = TRUE
-                            )
-
-                            emmTable[[ j ]] <- try(
-                                as.data.frame(summary(emmeans::emmeans(model, formula, cov.reduce=FUN2,
-                                                                       options=list(level=self$options$ciWidthEmm / 100),
-                                                                       weights = weights, data=self$dataProcessed))),
-                                silent = TRUE
-                            )
-                        })
-
-                        d <- as.data.frame(summary(mm))
+                        d <- emMeansTables[[i]][[j]]
 
                         for (k in 1:3) {
                             if ( ! is.na(termB64[k])) {
@@ -927,11 +944,7 @@ linRegClass <- R6::R6Class(
                         image$setState(list(data=d, names=names, labels=labels, cont=cont))
                     }
                 }
-
-                emmTables[[i]] <- emmTable
             }
-
-            private$emMeans <- emmTables
         },
         .emmPlot = function(image, ggtheme, theme, ...) {
             if (is.null(image$state))
@@ -1015,6 +1028,12 @@ linRegClass <- R6::R6Class(
             }
 
             return(private$.rowNamesModel)
+        },
+        .getEmMeansForPlot = function() {
+            if (is.null(private$.emMeansForPlot))
+                private$.emMeansForPlot <- private$.computeEmMeans(forPlot=TRUE)
+
+            return(private$.emMeansForPlot)
         },
         .contrastModel = function(terms) {
             #' Returns the names of the factor contrasts as they are
