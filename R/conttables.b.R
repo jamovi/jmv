@@ -323,7 +323,7 @@ contTablesClass <- R6::R6Class(
                     dp <- NULL
                     lor <- NULL
                     fish <- try(stats::fisher.test(mat, conf.level=ciWidth, alternative=Ha), silent=TRUE)
-                    if (all(dim(mat) == 2)) {
+                    if (all(dim(mat) == 2) && all(rowSums(mat) > 0) && all(colSums(mat) > 0)) {
                         dp <- private$.diffProp(mat, Ha)
                         lor <- vcd::loddsratio(mat)
                         rr <- private$.relativeRisk(mat)
@@ -528,7 +528,10 @@ contTablesClass <- R6::R6Class(
                         `ciu[rr]`=rr$upper))
                     odds$addFootnote(rowNo=othRowNo, 'v[dp]', paste(self$options$compare, 'compared'))
                     odds$addFootnote(rowNo=othRowNo, 'v[rr]', paste(self$options$compare, 'compared'))
-
+                    if (any(mat == 0)){
+                        odds$addFootnote(rowNo=othRowNo, 'v[lo]', 'Haldane-Ascombe correction applied')
+                        odds$addFootnote(rowNo=othRowNo, 'v[o]', 'Haldane-Ascombe correction applied')
+                    }
                 } else {
                     odds$setRow(rowNo=othRowNo, list(
                         `v[dp]`=NaN, `cil[dp]`='', `ciu[dp]`='',

@@ -587,7 +587,7 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$add(jmvcore::Table$new(
                 options=options,
                 name="mh",
-                title="Mantel-Haenszel",
+                title="Mantel-Haenszel Test for Trend",
                 visible="(mh)",
                 clearWith=list(
                     "rows",
@@ -600,14 +600,13 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `title`="\u03C7\u00B2"),
                     list(
                         `name`="df", 
-                        `title`="df",
-                        `type`="integer"), 
+                        `title`="df", 
+                        `type`="integer"),
                     list(
                         `name`="p", 
                         `title`="p", 
                         `type`="number", 
-                        `format`="zto,pvalue"))))
-            }))
+                        `format`="zto,pvalue"))))}))
 
 contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "contTablesBase",
@@ -714,8 +713,8 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   respectively
 #' @param gamma \code{TRUE} or \code{FALSE} (default), provide gamma
 #' @param taub \code{TRUE} or \code{FALSE} (default), provide Kendall's tau-b
-#' @param mh \code{TRUE} or \code{FALSE} (default), provide Mante-Haenszel test
-#'    for trend
+#' @param mh \code{TRUE} or \code{FALSE} (default), provide Mantel-Haenszel
+#'   test for trend
 #' @param obs \code{TRUE} or \code{FALSE} (default), provide the observed
 #'   counts
 #' @param exp \code{TRUE} or \code{FALSE} (default), provide the expected
@@ -734,7 +733,7 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{results$nom} \tab \tab \tab \tab \tab a table of the 'nominal' test results \cr
 #'   \code{results$gamma} \tab \tab \tab \tab \tab a table of the gamma test results \cr
 #'   \code{results$taub} \tab \tab \tab \tab \tab a table of the Kendall's tau-b test results \cr
-#'   \code{results$mh} \tab \tab \tab \tab \tab a table of the Mantel-Haenszel results \cr
+#'   \code{results$mh} \tab \tab \tab \tab \tab a table of the Mantel-Haenszel test for trend \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
