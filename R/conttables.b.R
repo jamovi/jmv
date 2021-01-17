@@ -506,9 +506,9 @@ contTablesClass <- R6::R6Class(
                     mh$setRow(rowNo=othRowNo, values=values)
                     
                     if (base::inherits(mhchi2, 'try-error') || is.na(mhchi2))
-                        mh$addFootnote(rowNo=othRowNo, 'chi2', 'Variables must have >=2 categories')
+                        mh$addFootnote(rowNo=othRowNo, 'chi2', 'Variables must have at least two levels')
                     else if (mhchi2 == -1)
-                        mh$addFootnote(rowNo=othRowNo, 'chi2', 'One variable must be binary')
+                        mh$addFootnote(rowNo=othRowNo, 'chi2', 'At least one variable must have two levels')
                 }
 
                 if ( ! is.null(lor)) {
