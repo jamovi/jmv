@@ -154,6 +154,8 @@ children:
                         name: gamma
                       - type: CheckBox
                         name: taub
+                      - type: CheckBox
+                        name: mh
       - type: CollapseBox
         label: Cells
         stretchFactor: 1

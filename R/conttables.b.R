@@ -17,6 +17,7 @@ contTablesClass <- R6::R6Class(
             odds  <- self$results$odds
             gamma <- self$results$gamma
             taub  <- self$results$taub
+            mh  <- self$results$mh
 
             data <- private$.cleanData()
 
@@ -29,6 +30,7 @@ contTablesClass <- R6::R6Class(
                 nom$addColumn(index=i, name=layer, type='text', combineBelow=TRUE)
                 gamma$addColumn(index=i, name=layer, type='text', combineBelow=TRUE)
                 taub$addColumn(index=i, name=layer, type='text', combineBelow=TRUE)
+                mh$addColumn(index=i, name=layer, type='text', combineBelow=TRUE)
             }
 
             # add the row column, containing the row variable
@@ -178,6 +180,7 @@ contTablesClass <- R6::R6Class(
                 odds$addRow(rowKey=1, values=list())
                 gamma$addRow(rowKey=1, values=list())
                 taub$addRow(rowKey=1, values=list())
+                mh$addRow(rowKey=1, values=list())
 
             } else {
 
@@ -195,6 +198,7 @@ contTablesClass <- R6::R6Class(
                     odds$addRow(rowKey=i, values=values)
                     gamma$addRow(rowKey=i, values=values)
                     taub$addRow(rowKey=i, values=values)
+                    mh$addRow(rowKey=i, values=values)
                 }
             }
 
@@ -241,6 +245,7 @@ contTablesClass <- R6::R6Class(
             odds  <- self$results$odds
             gamma <- self$results$gamma
             taub  <- self$results$taub
+            mh    <- self$results$mh
 
             freqRowNo <- 1
             othRowNo <- 1
@@ -297,20 +302,28 @@ contTablesClass <- R6::R6Class(
                     else
                         exp <- test$expected
 
-                    if (self$options$taub) {
+                    if (self$options$taub || self$options$mh) {
                         df <- as.data.frame(as.table(mat))
                         v1 <- rep(as.numeric(df[[1]]), df$Freq)
                         v2 <- rep(as.numeric(df[[2]]), df$Freq)
 
-                        # this can be slow
-                        tau <- try(cor.test(v1, v2, method='kendall', conf.level=ciWidth))
+                        if (self$options$taub) {
+                            # this can be slow
+                            tau <- try(cor.test(v1, v2, method='kendall', conf.level=ciWidth))
+                        }
+                        if (self$options$mh) {
+                            if (all(dim(mat) > 2))
+                                mhchi2 <- -1 # Mantel-Haenszel is only for 2xk tables
+                            else
+                                mhchi2 <- try((cor(v1, v2)^2) * (sum(df$Freq) - 1))
+                        }
                     }
 
                     zP <- NULL
                     dp <- NULL
                     lor <- NULL
                     fish <- try(stats::fisher.test(mat, conf.level=ciWidth, alternative=Ha), silent=TRUE)
-                    if (all(dim(mat) == 2)) {
+                    if (all(dim(mat) == 2) && all(rowSums(mat) > 0) && all(colSums(mat) > 0)) {
                         dp <- private$.diffProp(mat, Ha)
                         lor <- vcd::loddsratio(mat)
                         rr <- private$.relativeRisk(mat)
@@ -484,6 +497,20 @@ contTablesClass <- R6::R6Class(
                     taub$setRow(rowNo=othRowNo, values=values)
                 }
 
+                if (self$options$mh) {
+                    if (base::inherits(mhchi2, 'try-error') || is.na(mhchi2) || mhchi2 == -1)
+                        values <- list(chi2=NaN, df='', p='')
+                    else
+                        values <- list(chi2=mhchi2, df=1, p=1-pchisq(mhchi2,1))
+                    
+                    mh$setRow(rowNo=othRowNo, values=values)
+                    
+                    if (base::inherits(mhchi2, 'try-error') || is.na(mhchi2))
+                        mh$addFootnote(rowNo=othRowNo, 'chi2', 'Variables must have at least two levels')
+                    else if (mhchi2 == -1)
+                        mh$addFootnote(rowNo=othRowNo, 'chi2', 'At least one variable must have two levels')
+                }
+
                 if ( ! is.null(lor)) {
                     ci <- confint(lor, level=ciWidth)
                     odds$setRow(rowNo=othRowNo, list(
@@ -501,7 +528,10 @@ contTablesClass <- R6::R6Class(
                         `ciu[rr]`=rr$upper))
                     odds$addFootnote(rowNo=othRowNo, 'v[dp]', paste(self$options$compare, 'compared'))
                     odds$addFootnote(rowNo=othRowNo, 'v[rr]', paste(self$options$compare, 'compared'))
-
+                    if (any(mat == 0)){
+                        odds$addFootnote(rowNo=othRowNo, 'v[lo]', 'Haldane-Ascombe correction applied')
+                        odds$addFootnote(rowNo=othRowNo, 'v[o]', 'Haldane-Ascombe correction applied')
+                    }
                 } else {
                     odds$setRow(rowNo=othRowNo, list(
                         `v[dp]`=NaN, `cil[dp]`='', `ciu[dp]`='',
