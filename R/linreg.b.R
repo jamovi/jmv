@@ -888,7 +888,7 @@ linRegClass <- R6::R6Class(
 
             p <- ggplot(data=df, aes(y=y, x=x)) +
                       geom_point(aes(x=x,y=y), colour=theme$color[1]) +
-                      xlab(image$state$xlab) +
+                      xlab(image$state$term) +
                       ylab("Residuals") +
                       ggtheme
 
