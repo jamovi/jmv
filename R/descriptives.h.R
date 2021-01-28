@@ -334,16 +334,21 @@ descriptivesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     clearWith=list(
                         "splitBy"),
                     columns=list())))
-            self$add(R6::R6Class(
-                inherit = jmvcore::Group,
-                active = list(),
-                private = list(),
-                public=list(
-                    initialize=function(options) {
-                        super$initialize(
-                            options=options,
-                            name="plots",
-                            title="Plots")}))$new(options=options))}))
+            self$add(jmvcore::Array$new(
+                options=options,
+                name="plots",
+                title="Plots",
+                items="(vars)",
+                template=R6::R6Class(
+                    inherit = jmvcore::Group,
+                    active = list(),
+                    private = list(),
+                    public=list(
+                        initialize=function(options) {
+                            super$initialize(
+                                options=options,
+                                name="undefined",
+                                title="($key)")}))$new(options=options)))}))
 
 descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "descriptivesBase",
@@ -479,6 +484,7 @@ descriptivesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' \tabular{llllll}{
 #'   \code{results$descriptives} \tab \tab \tab \tab \tab a table of the descriptive statistics \cr
 #'   \code{results$frequencies} \tab \tab \tab \tab \tab an array of frequency tables \cr
+#'   \code{results$plots} \tab \tab \tab \tab \tab an array of descriptive plots \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

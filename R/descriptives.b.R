@@ -5,16 +5,20 @@ descriptivesClass <- R6::R6Class(
     private=list(
         #### Member variables ----
         colArgs = list(
-            name = c("n", "missing", "mean", "se", "median", "mode", "sum", "sd", "variance", "iqr", "range",
-                     "min", "max", "skew", "seSkew", "kurt", "seKurt", "sww", "sw"),
-            title = c("N", "Missing", "Mean", "Std. error mean", "Median", "Mode", "Sum", "Standard deviation", "Variance",
-                      "IQR",
-                      "Range", "Minimum", "Maximum", "Skewness", "Std. error skewness",
-                      "Kurtosis", "Std. error kurtosis", "Shapiro-Wilk W", "Shapiro-Wilk p"),
+            name = c("n", "missing", "mean", "se", "median", "mode", "sum",
+                     "sd", "variance", "iqr", "range", "min", "max", "skew",
+                     "seSkew", "kurt", "seKurt", "sww", "sw"),
+            title = c("N", "Missing", "Mean", "Std. error mean", "Median",
+                      "Mode", "Sum", "Standard deviation", "Variance", "IQR",
+                      "Range", "Minimum", "Maximum", "Skewness",
+                      "Std. error skewness", "Kurtosis", "Std. error kurtosis",
+                      "Shapiro-Wilk W", "Shapiro-Wilk p"),
             type = c(rep("integer", 2), rep("number", 17)),
             format = c(rep("", 18), "zto,pvalue"),
-            visible = c("(n)", "(missing)", "(mean)", "(se)", "(median)", "(mode)", "(sum)", "(sd)", "(variance)",
-                        "(iqr)","(range)", "(min)", "(max)", "(skew)", "(skew)", "(kurt)", "(kurt)", "(sw)", "(sw)")
+            visible = c("(n)", "(missing)", "(mean)", "(se)", "(median)",
+                        "(mode)", "(sum)", "(sd)", "(variance)", "(iqr)",
+                        "(range)", "(min)", "(max)", "(skew)", "(skew)",
+                        "(kurt)", "(kurt)", "(sw)", "(sw)")
         ),
         levels = NULL,
 
@@ -246,49 +250,50 @@ descriptivesClass <- R6::R6Class(
             vars <- self$options$vars
             splitBy <- self$options$splitBy
 
-            varsCannotBeNumeric <- NULL
+            # varsCannotBeNumeric <- NULL
+            # for (var in vars) {
+            #
+            #     if ((self$options$hist || self$options$dens || self$options$box ||
+            #         self$options$violin || self$options$dot || self$options$qq) &&
+            #         ! jmvcore::canBeNumeric(data[[var]])) {
+            #
+            #         varsCannotBeNumeric <- c(varsCannotBeNumeric, var)
+            #
+            #     }
+            # }
+            #
+            # if ( ! is.null(varsCannotBeNumeric)) {
+            #
+            #     html <- jmvcore::Html$new(
+            #         options = self$options,
+            #         name = 'warningMessage'
+            #     )
+            #
+            #     if (length(varsCannotBeNumeric) == 1) {
+            #         content <- jmvcore::format(
+            #             "<p class=\"warning\">
+            #                 The variable {} cannot be treated as numeric. Therefore plots that expect
+            #                 numeric data will not be created for this variable.
+            #             </p>", listItems(varsCannotBeNumeric)
+            #         )
+            #     } else {
+            #         content <- jmvcore::format(
+            #             "<p class=\"warning\">
+            #                 The variables {} cannot be treated as numeric. Therefore plots that expect
+            #                 numeric data will not be created for these variables.
+            #             </p>", listItems(varsCannotBeNumeric)
+            #         )
+            #
+            #     }
+            #
+            #     html$setContent(content)
+            #     plots$add(html)
+            # }
+
             for (var in vars) {
 
-                if ((self$options$hist || self$options$dens || self$options$box ||
-                    self$options$violin || self$options$dot || self$options$qq) &&
-                    ! jmvcore::canBeNumeric(data[[var]])) {
-
-                    varsCannotBeNumeric <- c(varsCannotBeNumeric, var)
-
-                }
-            }
-
-            if ( ! is.null(varsCannotBeNumeric)) {
-
-                html <- jmvcore::Html$new(
-                    options = self$options,
-                    name = 'warningMessage'
-                )
-
-                if (length(varsCannotBeNumeric) == 1) {
-                    content <- jmvcore::format(
-                        "<p class=\"warning\">
-                            The variable {} cannot be treated as numeric. Therefore plots that expect
-                            numeric data will not be created for this variable.
-                        </p>", listItems(varsCannotBeNumeric)
-                    )
-                } else {
-                    content <- jmvcore::format(
-                        "<p class=\"warning\">
-                            The variables {} cannot be treated as numeric. Therefore plots that expect
-                            numeric data will not be created for these variables.
-                        </p>", listItems(varsCannotBeNumeric)
-                    )
-
-                }
-
-                html$setContent(content)
-                plots$add(html)
-            }
-
-            for (var in vars) {
-
-                group <- jmvcore::Group$new(options = self$options, name = var, title = var)
+                # group <- jmvcore::Group$new(options = self$options, name = var, title = var)
+                group <- plots$get(var)
                 column <- data[[var]]
 
                 if (self$options$bar) {
@@ -369,10 +374,9 @@ descriptivesClass <- R6::R6Class(
 
                         group$add(image)
                     }
-
                 }
 
-                plots$add(group)
+                # plots$add(group)
             }
         },
 

@@ -9,7 +9,9 @@ test_that('descriptives works', {
     z <- c(NA,NaN,3,-1,-2,1,1,-2,2,-2,-3,3)
 
     data <- data.frame(w=w, x=x, y=y, z=z)
-    desc <- jmv::descriptives(data, vars=c("w", "y", "z"), splitBy = "x", freq=TRUE, median=TRUE, mode=TRUE, skew=TRUE, kurt=TRUE, pc=TRUE)
+    desc <- jmv::descriptives(data, vars=c("w", "y", "z"), splitBy = "x",
+                              freq=TRUE, median=TRUE, mode=TRUE, skew=TRUE,
+                              kurt=TRUE, pc=TRUE)
 
     freq <- desc$frequencies[[1]]$asDF
     descr <- desc$descriptives$asDF
@@ -44,17 +46,17 @@ test_that('histogram is created for nominal numeric variable', {
     expect_true(desc$plots[[2]]$.render())
 })
 
-test_that('warning message is shown when numeric plot is created for a non-numeric variable', {
-
-    set.seed(1337)
-    data <- data.frame(
-        a1 = rnorm(100, 0, 10),
-        a3 = factor(sample(letters[1:4], 100, replace = TRUE))
-    )
-
-    desc <- jmv::descriptives(data, c('a1', 'a3'), hist=TRUE)
-
-    desc$plots[[3]]$.render()
-
-    expect_match(desc$plots[[1]]$asString(), "class=\"warning\"")
-})
+# test_that('warning message is shown when numeric plot is created for a non-numeric variable', {
+#
+#     set.seed(1337)
+#     data <- data.frame(
+#         a1 = rnorm(100, 0, 10),
+#         a3 = factor(sample(letters[1:4], 100, replace = TRUE))
+#     )
+#
+#     desc <- jmv::descriptives(data, c('a1', 'a3'), hist=TRUE)
+#
+#     desc$plots[[3]]$.render()
+#
+#     expect_match(desc$plots[[1]]$asString(), "class=\"warning\"")
+# })

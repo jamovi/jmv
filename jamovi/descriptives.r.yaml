@@ -33,5 +33,11 @@ items:
 
     - name: plots
       title: Plots
-      type: Group
-      items: []
+      type: Array
+      description: an array of descriptive plots
+      items: (vars)
+
+      template:
+          title: ($key)
+          type: Group
+          items: []
