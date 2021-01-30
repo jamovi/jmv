@@ -250,45 +250,44 @@ descriptivesClass <- R6::R6Class(
             vars <- self$options$vars
             splitBy <- self$options$splitBy
 
-            # varsCannotBeNumeric <- NULL
-            # for (var in vars) {
-            #
-            #     if ((self$options$hist || self$options$dens || self$options$box ||
-            #         self$options$violin || self$options$dot || self$options$qq) &&
-            #         ! jmvcore::canBeNumeric(data[[var]])) {
-            #
-            #         varsCannotBeNumeric <- c(varsCannotBeNumeric, var)
-            #
-            #     }
-            # }
-            #
-            # if ( ! is.null(varsCannotBeNumeric)) {
-            #
-            #     html <- jmvcore::Html$new(
-            #         options = self$options,
-            #         name = 'warningMessage'
-            #     )
-            #
-            #     if (length(varsCannotBeNumeric) == 1) {
-            #         content <- jmvcore::format(
-            #             "<p class=\"warning\">
-            #                 The variable {} cannot be treated as numeric. Therefore plots that expect
-            #                 numeric data will not be created for this variable.
-            #             </p>", listItems(varsCannotBeNumeric)
-            #         )
-            #     } else {
-            #         content <- jmvcore::format(
-            #             "<p class=\"warning\">
-            #                 The variables {} cannot be treated as numeric. Therefore plots that expect
-            #                 numeric data will not be created for these variables.
-            #             </p>", listItems(varsCannotBeNumeric)
-            #         )
-            #
-            #     }
-            #
-            #     html$setContent(content)
-            #     plots$add(html)
-            # }
+            varsCannotBeNumeric <- NULL
+            for (var in vars) {
+
+                if ((self$options$hist || self$options$dens || self$options$box ||
+                    self$options$violin || self$options$dot || self$options$qq) &&
+                    ! jmvcore::canBeNumeric(data[[var]])) {
+
+                    varsCannotBeNumeric <- c(varsCannotBeNumeric, var)
+                }
+            }
+
+            if ( ! is.null(varsCannotBeNumeric)) {
+
+                html <- jmvcore::Html$new(
+                    options = self$options,
+                    name = 'warningMessage'
+                )
+
+                if (length(varsCannotBeNumeric) == 1) {
+                    content <- jmvcore::format(
+                        "<p class=\"warning\">
+                            The variable {} cannot be treated as numeric. Therefore plots that expect
+                            numeric data will not be created for this variable.
+                        </p>", listItems(varsCannotBeNumeric)
+                    )
+                } else {
+                    content <- jmvcore::format(
+                        "<p class=\"warning\">
+                            The variables {} cannot be treated as numeric. Therefore plots that expect
+                            numeric data will not be created for these variables.
+                        </p>", listItems(varsCannotBeNumeric)
+                    )
+
+                }
+
+                html$setContent(content)
+                plots$setHeader(html)
+            }
 
             for (var in vars) {
 
