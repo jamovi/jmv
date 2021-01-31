@@ -67,7 +67,6 @@ children:
                         name: fisher
                       - type: CheckBox
                         name: zProp
-
                   - type: Label
                     label: Hypothesis
                     children:
@@ -75,20 +74,17 @@ children:
                         name: hypothesis_different
                         optionName: hypothesis
                         optionPart: different
-                        label: "Group 1 ≠ Group 2"
-        
+                        label: Group 1 ≠ Group 2
                       - type: RadioButton
                         name: hypothesis_oneGreater
                         optionName: hypothesis
                         optionPart: oneGreater
-                        label: "Group 1 > Group 2"
-        
+                        label: Group 1 > Group 2
                       - type: RadioButton
                         name: hypothesis_twoGreater
                         optionName: hypothesis
                         optionPart: twoGreater
-                        label: "Group 1 < Group 2"
-
+                        label: Group 1 < Group 2
               - type: LayoutBox
                 cell:
                   column: 1
@@ -198,3 +194,83 @@ children:
                         name: pcCol
                       - type: CheckBox
                         name: pcTot
+      - type: CollapseBox
+        label: Plots
+        stretchFactor: 1
+        collapsed: true
+        children:
+          - type: LayoutBox
+            margin: large
+            stretchFactor: 1
+            children:
+              - type: LayoutBox
+                cell:
+                  column: 0
+                  row: 0
+                stretchFactor: 1
+                children:
+                  - type: Label
+                    label: Plots
+                    fitToGrid: true
+                    children:
+                      - type: CheckBox
+                        name: barplot
+                  - type: Label
+                    label: Y variable
+                    fitToGrid: true
+                    children:
+                      - type: RadioButton
+                        name: row_pcts
+                        optionName: yvar
+                        optionPart: row_pcts
+                        label: Row percentages
+                      - type: RadioButton
+                        name: column_pcts
+                        optionName: yvar
+                        optionPart: column_pcts
+                        label: Column percentages
+                      - type: RadioButton
+                        name: ycounts
+                        optionName: yvar
+                        optionPart: ycounts
+                        label: Counts
+              - type: LayoutBox
+                cell:
+                  column: 1
+                  row: 0
+                stretchFactor: 1
+                children:
+                  - type: Label
+                    label: Bar type
+                    fitToGrid: true
+                    cell:
+                      column: 1
+                      row: 0
+                    children:
+                      - type: RadioButton
+                        name: dodge
+                        optionName: bartype
+                        optionPart: dodge
+                        label: By side
+                      - type: RadioButton
+                        name: stack
+                        optionName: bartype
+                        optionPart: stack
+                        label: Stacked
+                  - type: Label
+                    label: X variable
+                    fitToGrid: true
+                    cell:
+                      column: 1
+                      row: 1
+                    children:
+                      - type: RadioButton
+                        name: xrows
+                        optionName: xvar
+                        optionPart: xrows
+                        label: Rows
+                      - type: RadioButton
+                        name: xcols
+                        optionName: xvar
+                        optionPart: xcols
+                        label: Columns

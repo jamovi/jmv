@@ -347,3 +347,21 @@ items:
           title: p
           type: number
           format: zto,pvalue
+
+    - name: barplot
+      title: Plots
+      type: Image
+      width: 450
+      height: 400
+      renderFun: .barPlot
+      visible: (barplot)
+      requiresData: true
+
+      clearWith:
+        - rows
+        - cols
+        - counts
+        - layers
+        - yvar
+        - xvar
+        - bartype

@@ -214,6 +214,7 @@ contTablesClass <- R6::R6Class(
             gamma$getColumn('cil')$setSuperTitle(ciText)
             gamma$getColumn('ciu')$setSuperTitle(ciText)
 
+            private$.initPlot()
         },
         .run=function() {
 
@@ -546,7 +547,6 @@ contTablesClass <- R6::R6Class(
 
                 othRowNo <- othRowNo + 1
             }
-
         },
 
         #### Helper functions ----
@@ -736,5 +736,105 @@ contTablesClass <- R6::R6Class(
                 }
             }
             jmvcore:::composeFormula(self$options$counts, list(rhs))
-        })
+        },
+        .initPlot = function() {
+            image <- self$results$get('barplot')
+
+            width <- 450
+            height <- 400
+
+            layerNames <- self$options$layers
+            if (length(layerNames)==1) 
+                image$setSize(width*2, height)
+            else if (length(layerNames)>=2)
+                image$setSize(width*2, height*2)
+        },
+        .barPlot = function(image, ggtheme, theme, ...) {
+
+            if (! self$options$barplot)
+                return()
+
+            rowVarName <- self$options$rows
+            colVarName <- self$options$cols
+            countsName <- self$options$counts
+            layerNames <- self$options$layers
+            if (length(layerNames)>2)
+                layerNames <- layerNames[1:2] # max 2
+
+            if (is.null(rowVarName) || is.null(colVarName))
+                return()
+
+            data <- private$.cleanData()
+            data <- na.omit(data)
+
+            if (! is.null(countsName)){
+                untable <- function (df, counts) df[rep(1:nrow(df), counts), ]
+
+                data <- untable(data[,c(rowVarName, colVarName, layerNames)], counts=data[,countsName])              
+            }
+
+            formula <- as.formula(paste0("~",paste(c(rowVarName, colVarName, layerNames), collapse="+")))
+            counts<-xtabs(formula, data)
+            d <- dim(counts)
+
+            expand <- list()
+            for (i in c(rowVarName, colVarName, layerNames))
+                expand[[i]] <- c(base::levels(data[[i]]))
+            tab<-expand.grid(expand)
+            tab$counts<-as.numeric(counts)
+
+            # proportions
+            if (self$options$yvar != "ycounts") {
+                props <- counts
+
+                if (self$options$yvar == "ycolumnpcts") {
+                    pctVarName <- colVarName
+                } else {
+                    pctVarName <- rowVarName
+                } 
+
+                if (length(layerNames)==0)
+                    props<-proportions(counts, pctVarName)
+                else if (length(layerNames)==1)
+                    for (i in seq.int(1,d[3],1))
+                        props[,,i]<-proportions(counts[,,i], pctVarName)
+                else if (length(layerNames)==2)
+                    for (i in seq.int(1,d[3],1))
+                        for (j in seq.int(1,d[4],1))
+                            props[,,i,j]<-proportions(counts[,,i,j], pctVarName)
+                tab$percentages <-as.numeric(props)*100
+            } 
+
+            if (self$options$xvar == "xcols") {
+                xVarName <- colVarName
+                zVarName <- rowVarName
+            } else {
+                xVarName <- rowVarName
+                zVarName <- colVarName
+            }
+
+            position <- self$options$bartype
+
+            if (self$options$yvar == "ycounts") {
+                p <- ggplot(data=tab, aes_string(y="counts", x=xVarName, fill=zVarName)) +
+                    geom_col(position=position, width = 0.7)
+            } else {
+                p <- ggplot(data=tab, aes_string(y="percentages", x=xVarName, fill=zVarName)) +
+                    geom_col(position=position, width = 0.7)
+            }
+
+            if (! is.null(layerNames)) {
+                if(length(layerNames)==1)
+                # resize
+                layers <- as.formula(paste0("~ ",layerNames))
+                else
+                layers <- as.formula(paste0(layerNames[1]," ~ ",layerNames[2]))
+                
+                p <- p + facet_grid(layers)
+            }
+            p <- p + ggtheme
+
+            return(p)
+        }
+    )
 )

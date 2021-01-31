@@ -32,7 +32,11 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             exp = FALSE,
             pcRow = FALSE,
             pcCol = FALSE,
-            pcTot = FALSE, ...) {
+            pcTot = FALSE,
+            barplot = FALSE,
+            yvar = "ycounts",
+            xvar = "xrows",
+            bartype = "dodge", ...) {
 
             super$initialize(
                 package='jmv',
@@ -171,6 +175,32 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "pcTot",
                 pcTot,
                 default=FALSE)
+            private$..barplot <- jmvcore::OptionBool$new(
+                "barplot",
+                barplot,
+                default=FALSE)
+            private$..yvar <- jmvcore::OptionList$new(
+                "yvar",
+                yvar,
+                options=list(
+                    "ycounts",
+                    "row_pcts",
+                    "column_pcts"),
+                default="ycounts")
+            private$..xvar <- jmvcore::OptionList$new(
+                "xvar",
+                xvar,
+                options=list(
+                    "xrows",
+                    "xcols"),
+                default="xrows")
+            private$..bartype <- jmvcore::OptionList$new(
+                "bartype",
+                bartype,
+                options=list(
+                    "dodge",
+                    "stack"),
+                default="dodge")
 
             self$.addOption(private$..rows)
             self$.addOption(private$..cols)
@@ -199,6 +229,10 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..pcRow)
             self$.addOption(private$..pcCol)
             self$.addOption(private$..pcTot)
+            self$.addOption(private$..barplot)
+            self$.addOption(private$..yvar)
+            self$.addOption(private$..xvar)
+            self$.addOption(private$..bartype)
         }),
     active = list(
         rows = function() private$..rows$value,
@@ -227,7 +261,11 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         exp = function() private$..exp$value,
         pcRow = function() private$..pcRow$value,
         pcCol = function() private$..pcCol$value,
-        pcTot = function() private$..pcTot$value),
+        pcTot = function() private$..pcTot$value,
+        barplot = function() private$..barplot$value,
+        yvar = function() private$..yvar$value,
+        xvar = function() private$..xvar$value,
+        bartype = function() private$..bartype$value),
     private = list(
         ..rows = NA,
         ..cols = NA,
@@ -255,7 +293,11 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..exp = NA,
         ..pcRow = NA,
         ..pcCol = NA,
-        ..pcTot = NA)
+        ..pcTot = NA,
+        ..barplot = NA,
+        ..yvar = NA,
+        ..xvar = NA,
+        ..bartype = NA)
 )
 
 contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
@@ -267,7 +309,8 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
         nom = function() private$.items[["nom"]],
         gamma = function() private$.items[["gamma"]],
         taub = function() private$.items[["taub"]],
-        mh = function() private$.items[["mh"]]),
+        mh = function() private$.items[["mh"]],
+        barplot = function() private$.items[["barplot"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -606,7 +649,24 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="p", 
                         `title`="p", 
                         `type`="number", 
-                        `format`="zto,pvalue"))))}))
+                        `format`="zto,pvalue"))))
+            self$add(jmvcore::Image$new(
+                options=options,
+                name="barplot",
+                title="Plots",
+                width=450,
+                height=400,
+                renderFun=".barPlot",
+                visible="(barplot)",
+                requiresData=TRUE,
+                clearWith=list(
+                    "rows",
+                    "cols",
+                    "counts",
+                    "layers",
+                    "yvar",
+                    "xvar",
+                    "bartype")))}))
 
 contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "contTablesBase",
@@ -724,6 +784,11 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   percentages
 #' @param pcTot \code{TRUE} or \code{FALSE} (default), provide total
 #'   percentages
+#' @param barplot \code{TRUE} or \code{FALSE} (default), show barplots
+#' @param yvar counts (default), row percentages or column percentages in bar
+#'   plot Y axis
+#' @param xvar rows (default), or column in bar plot X axis
+#' @param bartype stack or dodge (default), barplot type
 #' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{
@@ -734,6 +799,7 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{results$gamma} \tab \tab \tab \tab \tab a table of the gamma test results \cr
 #'   \code{results$taub} \tab \tab \tab \tab \tab a table of the Kendall's tau-b test results \cr
 #'   \code{results$mh} \tab \tab \tab \tab \tab a table of the Mantel-Haenszel test for trend \cr
+#'   \code{results$barplot} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -772,6 +838,10 @@ contTables <- function(
     pcRow = FALSE,
     pcCol = FALSE,
     pcTot = FALSE,
+    barplot = FALSE,
+    yvar = "ycounts",
+    xvar = "xrows",
+    bartype = "dodge",
     formula) {
 
     if ( ! requireNamespace('jmvcore'))
@@ -851,7 +921,11 @@ contTables <- function(
         exp = exp,
         pcRow = pcRow,
         pcCol = pcCol,
-        pcTot = pcTot)
+        pcTot = pcTot,
+        barplot = barplot,
+        yvar = yvar,
+        xvar = xvar,
+        bartype = bartype)
 
     analysis <- contTablesClass$new(
         options = options,
