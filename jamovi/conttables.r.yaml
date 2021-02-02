@@ -362,6 +362,6 @@ items:
         - cols
         - counts
         - layers
-        - yvar
-        - xvar
+        - yaxis
+        - xaxis
         - bartype

@@ -216,24 +216,17 @@ children:
                       - type: CheckBox
                         name: barplot
                   - type: Label
-                    label: Y variable
+                    label: Bar Type
                     fitToGrid: true
                     children:
                       - type: RadioButton
-                        name: row_pcts
-                        optionName: yvar
-                        optionPart: row_pcts
-                        label: Row percentages
+                        name: dodge
+                        optionName: bartype
+                        optionPart: dodge
                       - type: RadioButton
-                        name: column_pcts
-                        optionName: yvar
-                        optionPart: column_pcts
-                        label: Column percentages
-                      - type: RadioButton
-                        name: ycounts
-                        optionName: yvar
-                        optionPart: ycounts
-                        label: Counts
+                        name: stack
+                        optionName: bartype
+                        optionPart: stack
               - type: LayoutBox
                 cell:
                   column: 1
@@ -241,36 +234,34 @@ children:
                 stretchFactor: 1
                 children:
                   - type: Label
-                    label: Bar type
+                    label: Y-Axis
                     fitToGrid: true
-                    cell:
-                      column: 1
-                      row: 0
                     children:
                       - type: RadioButton
-                        name: dodge
-                        optionName: bartype
-                        optionPart: dodge
-                        label: By side
+                        name: ycounts
+                        optionName: yaxis
+                        optionPart: ycounts
                       - type: RadioButton
-                        name: stack
-                        optionName: bartype
-                        optionPart: stack
-                        label: Stacked
+                        name: total_pcts
+                        optionName: yaxis
+                        optionPart: total_pcts
+                      - type: RadioButton
+                        name: row_pcts
+                        optionName: yaxis
+                        optionPart: row_pcts
+                      - type: RadioButton
+                        name: column_pcts
+                        optionName: yaxis
+                        optionPart: column_pcts
                   - type: Label
-                    label: X variable
+                    label: X-Axis
                     fitToGrid: true
-                    cell:
-                      column: 1
-                      row: 1
                     children:
                       - type: RadioButton
                         name: xrows
-                        optionName: xvar
+                        optionName: xaxis
                         optionPart: xrows
-                        label: Rows
                       - type: RadioButton
                         name: xcols
-                        optionName: xvar
+                        optionName: xaxis
                         optionPart: xcols
-                        label: Columns

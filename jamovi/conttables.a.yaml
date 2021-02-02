@@ -347,23 +347,25 @@ options:
           R: >
             `TRUE` or `FALSE` (default), show barplots
 
-    - name: yvar
-      title: Y axis
+    - name: yaxis
+      title: Y-axis
       type: List
       options:
         - name: ycounts
           title: "Counts"
         - name: row_pcts
-          title: "Row percentages"
+          title: "% within Rows"
         - name: column_pcts
-          title: "Column percentages"
+          title: "% within Column"
+        - name: total_pcts
+          title: "% of Total"
       default: ycounts
       description:
           R: >
-            counts (default), row percentages or column percentages in bar plot Y axis
+            counts (default), row , column or total percentages in bar plot Y axis
 
-    - name: xvar
-      title: X axis
+    - name: xaxis
+      title: X-axis
       type: List
       options:
         - name: xrows
@@ -373,18 +375,18 @@ options:
       default: xrows
       description:
           R: >
-            rows (default), or column in bar plot X axis
+            rows (default), or columns in bar plot X axis
 
     - name: bartype
       title: Bar Type
       type: List
       options:
         - name: dodge
-          title: "By side"
+          title: "Side by side"
         - name: stack
           title: "Stacked"
       default: dodge
       description:
           R: >
-            stack or dodge (default), barplot type
+            stack or side by side (default), barplot type
 ...
