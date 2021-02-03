@@ -353,16 +353,30 @@ options:
       options:
         - name: ycounts
           title: "Counts"
-        - name: row_pcts
-          title: "% within Rows"
-        - name: column_pcts
-          title: "% within Column"
-        - name: total_pcts
-          title: "% of Total"
+        - name: ypc
+          title: "Percentages"
       default: ycounts
       description:
           R: >
-            counts (default), row , column or total percentages in bar plot Y axis
+            ycounts (default) or ypc. Use respectively `counts` or `percentages`
+            for the bar plot y-axis
+
+    - name: yaxisPc
+      title: ''
+      type: List
+      options:
+        - name: total_pc
+          title: "of total"
+        - name: column_pc
+          title: "within column"
+        - name: row_pc
+          title: "within rows"
+      default: total_pc
+      description:
+          R: >
+            total_pc (default), column_pc, or row_pc. Use respectively
+            percentages `of total`, `within columns`, or `within rows` for the
+            bar plot y-axis.
 
     - name: xaxis
       title: X-axis

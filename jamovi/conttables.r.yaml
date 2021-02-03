@@ -363,5 +363,6 @@ items:
         - counts
         - layers
         - yaxis
+        - yaxisPc
         - xaxis
         - bartype

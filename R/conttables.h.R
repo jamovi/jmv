@@ -35,6 +35,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             pcTot = FALSE,
             barplot = FALSE,
             yaxis = "ycounts",
+            yaxisPc = "total_pc",
             xaxis = "xrows",
             bartype = "dodge", ...) {
 
@@ -184,10 +185,16 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 yaxis,
                 options=list(
                     "ycounts",
-                    "row_pcts",
-                    "column_pcts",
-                    "total_pcts"),
+                    "ypc"),
                 default="ycounts")
+            private$..yaxisPc <- jmvcore::OptionList$new(
+                "yaxisPc",
+                yaxisPc,
+                options=list(
+                    "total_pc",
+                    "column_pc",
+                    "row_pc"),
+                default="total_pc")
             private$..xaxis <- jmvcore::OptionList$new(
                 "xaxis",
                 xaxis,
@@ -232,6 +239,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..pcTot)
             self$.addOption(private$..barplot)
             self$.addOption(private$..yaxis)
+            self$.addOption(private$..yaxisPc)
             self$.addOption(private$..xaxis)
             self$.addOption(private$..bartype)
         }),
@@ -265,6 +273,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         pcTot = function() private$..pcTot$value,
         barplot = function() private$..barplot$value,
         yaxis = function() private$..yaxis$value,
+        yaxisPc = function() private$..yaxisPc$value,
         xaxis = function() private$..xaxis$value,
         bartype = function() private$..bartype$value),
     private = list(
@@ -297,6 +306,7 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..pcTot = NA,
         ..barplot = NA,
         ..yaxis = NA,
+        ..yaxisPc = NA,
         ..xaxis = NA,
         ..bartype = NA)
 )
@@ -666,6 +676,7 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                     "counts",
                     "layers",
                     "yaxis",
+                    "yaxisPc",
                     "xaxis",
                     "bartype")))}))
 
@@ -786,8 +797,11 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #' @param pcTot \code{TRUE} or \code{FALSE} (default), provide total
 #'   percentages
 #' @param barplot \code{TRUE} or \code{FALSE} (default), show barplots
-#' @param yaxis counts (default), row , column or total percentages in bar
-#'   plot Y axis
+#' @param yaxis ycounts (default) or ypc. Use respectively \code{counts} or
+#'   \code{percentages} for the bar plot y-axis
+#' @param yaxisPc total_pc (default), column_pc, or row_pc. Use respectively
+#'   percentages \code{of total}, \code{within columns}, or \code{within rows}
+#'   for the bar plot y-axis.
 #' @param xaxis rows (default), or columns in bar plot X axis
 #' @param bartype stack or side by side (default), barplot type
 #' @param formula (optional) the formula to use, see the examples
@@ -841,6 +855,7 @@ contTables <- function(
     pcTot = FALSE,
     barplot = FALSE,
     yaxis = "ycounts",
+    yaxisPc = "total_pc",
     xaxis = "xrows",
     bartype = "dodge",
     formula) {
@@ -925,6 +940,7 @@ contTables <- function(
         pcTot = pcTot,
         barplot = barplot,
         yaxis = yaxis,
+        yaxisPc = yaxisPc,
         xaxis = xaxis,
         bartype = bartype)
 

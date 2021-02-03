@@ -589,18 +589,18 @@ contTablesClass <- R6::R6Class(
             counts <- xtabs(formula, data)
             d <- dim(counts)
 
-            expand <- list()
+            expand <- list() 
             for (i in c(rowVarName, colVarName, layerNames))
                 expand[[i]] <- base::levels(data[[i]])
             tab <- expand.grid(expand)
             tab$Counts <- as.numeric(counts)
 
-            if (self$options$yaxis != "ycounts") { # proportions
+            if (self$options$yaxis == "ypc") { # percentages
                 props <- counts
                 
-                if (self$options$yaxis == "column_pcts") {
+                if (self$options$yaxisPc == "column_pc") {
                     pctVarName <- colVarName
-                } else if (self$options$yaxis == "row_pcts") {
+                } else if (self$options$yaxisPc == "row_pc") {
                     pctVarName <- rowVarName
                 } else { # total
                     pctVarName <- NULL
@@ -640,7 +640,7 @@ contTablesClass <- R6::R6Class(
                 p <- ggplot(data=tab, aes_string(y="Percentages", x=xVarName, fill=zVarName)) +
                     geom_col(position=position, width = 0.7)
 
-                if (self$options$yaxis == "total_pcts") {
+                if (self$options$yaxisPc == "total_pc") {
                     p <- p + labs(y = "Percentages of total")
                 } else {
                     p <- p + labs(y = paste0("Percentages within ", pctVarName))

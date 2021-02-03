@@ -237,22 +237,20 @@ children:
                     label: Y-Axis
                     fitToGrid: true
                     children:
-                      - type: RadioButton
-                        name: ycounts
+                      - name: ycounts
+                        type: RadioButton
                         optionName: yaxis
                         optionPart: ycounts
                       - type: RadioButton
-                        name: total_pcts
+                        name: ypc
                         optionName: yaxis
-                        optionPart: total_pcts
-                      - type: RadioButton
-                        name: row_pcts
-                        optionName: yaxis
-                        optionPart: row_pcts
-                      - type: RadioButton
-                        name: column_pcts
-                        optionName: yaxis
-                        optionPart: column_pcts
+                        optionPart: ypc
+                        style: inline
+                        verticalAlignment: center
+                        children:
+                          - type: ComboBox
+                            name: yaxisPc
+                            enable: (ypc)
                   - type: Label
                     label: X-Axis
                     fitToGrid: true
