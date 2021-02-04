@@ -67,7 +67,6 @@ children:
                         name: fisher
                       - type: CheckBox
                         name: zProp
-
                   - type: Label
                     label: Hypothesis
                     children:
@@ -75,20 +74,17 @@ children:
                         name: hypothesis_different
                         optionName: hypothesis
                         optionPart: different
-                        label: "Group 1 ≠ Group 2"
-        
+                        label: Group 1 ≠ Group 2
                       - type: RadioButton
                         name: hypothesis_oneGreater
                         optionName: hypothesis
                         optionPart: oneGreater
-                        label: "Group 1 > Group 2"
-        
+                        label: Group 1 > Group 2
                       - type: RadioButton
                         name: hypothesis_twoGreater
                         optionName: hypothesis
                         optionPart: twoGreater
-                        label: "Group 1 < Group 2"
-
+                        label: Group 1 < Group 2
               - type: LayoutBox
                 cell:
                   column: 1
@@ -198,3 +194,72 @@ children:
                         name: pcCol
                       - type: CheckBox
                         name: pcTot
+      - type: CollapseBox
+        label: Plots
+        stretchFactor: 1
+        collapsed: true
+        children:
+          - type: LayoutBox
+            margin: large
+            stretchFactor: 1
+            children:
+              - type: LayoutBox
+                cell:
+                  column: 0
+                  row: 0
+                stretchFactor: 1
+                children:
+                  - type: Label
+                    label: Plots
+                    fitToGrid: true
+                    children:
+                      - type: CheckBox
+                        name: barplot
+                  - type: Label
+                    label: Bar Type
+                    fitToGrid: true
+                    children:
+                      - type: RadioButton
+                        name: dodge
+                        optionName: bartype
+                        optionPart: dodge
+                      - type: RadioButton
+                        name: stack
+                        optionName: bartype
+                        optionPart: stack
+              - type: LayoutBox
+                cell:
+                  column: 1
+                  row: 0
+                stretchFactor: 1
+                children:
+                  - type: Label
+                    label: Y-Axis
+                    fitToGrid: true
+                    children:
+                      - name: ycounts
+                        type: RadioButton
+                        optionName: yaxis
+                        optionPart: ycounts
+                      - type: RadioButton
+                        name: ypc
+                        optionName: yaxis
+                        optionPart: ypc
+                        style: inline
+                        verticalAlignment: center
+                        children:
+                          - type: ComboBox
+                            name: yaxisPc
+                            enable: (ypc)
+                  - type: Label
+                    label: X-Axis
+                    fitToGrid: true
+                    children:
+                      - type: RadioButton
+                        name: xrows
+                        optionName: xaxis
+                        optionPart: xrows
+                      - type: RadioButton
+                        name: xcols
+                        optionName: xaxis
+                        optionPart: xcols

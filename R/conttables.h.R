@@ -32,7 +32,12 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             exp = FALSE,
             pcRow = FALSE,
             pcCol = FALSE,
-            pcTot = FALSE, ...) {
+            pcTot = FALSE,
+            barplot = FALSE,
+            yaxis = "ycounts",
+            yaxisPc = "total_pc",
+            xaxis = "xrows",
+            bartype = "dodge", ...) {
 
             super$initialize(
                 package='jmv',
@@ -171,6 +176,39 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
                 "pcTot",
                 pcTot,
                 default=FALSE)
+            private$..barplot <- jmvcore::OptionBool$new(
+                "barplot",
+                barplot,
+                default=FALSE)
+            private$..yaxis <- jmvcore::OptionList$new(
+                "yaxis",
+                yaxis,
+                options=list(
+                    "ycounts",
+                    "ypc"),
+                default="ycounts")
+            private$..yaxisPc <- jmvcore::OptionList$new(
+                "yaxisPc",
+                yaxisPc,
+                options=list(
+                    "total_pc",
+                    "column_pc",
+                    "row_pc"),
+                default="total_pc")
+            private$..xaxis <- jmvcore::OptionList$new(
+                "xaxis",
+                xaxis,
+                options=list(
+                    "xrows",
+                    "xcols"),
+                default="xrows")
+            private$..bartype <- jmvcore::OptionList$new(
+                "bartype",
+                bartype,
+                options=list(
+                    "dodge",
+                    "stack"),
+                default="dodge")
 
             self$.addOption(private$..rows)
             self$.addOption(private$..cols)
@@ -199,6 +237,11 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
             self$.addOption(private$..pcRow)
             self$.addOption(private$..pcCol)
             self$.addOption(private$..pcTot)
+            self$.addOption(private$..barplot)
+            self$.addOption(private$..yaxis)
+            self$.addOption(private$..yaxisPc)
+            self$.addOption(private$..xaxis)
+            self$.addOption(private$..bartype)
         }),
     active = list(
         rows = function() private$..rows$value,
@@ -227,7 +270,12 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         exp = function() private$..exp$value,
         pcRow = function() private$..pcRow$value,
         pcCol = function() private$..pcCol$value,
-        pcTot = function() private$..pcTot$value),
+        pcTot = function() private$..pcTot$value,
+        barplot = function() private$..barplot$value,
+        yaxis = function() private$..yaxis$value,
+        yaxisPc = function() private$..yaxisPc$value,
+        xaxis = function() private$..xaxis$value,
+        bartype = function() private$..bartype$value),
     private = list(
         ..rows = NA,
         ..cols = NA,
@@ -255,7 +303,12 @@ contTablesOptions <- if (requireNamespace('jmvcore')) R6::R6Class(
         ..exp = NA,
         ..pcRow = NA,
         ..pcCol = NA,
-        ..pcTot = NA)
+        ..pcTot = NA,
+        ..barplot = NA,
+        ..yaxis = NA,
+        ..yaxisPc = NA,
+        ..xaxis = NA,
+        ..bartype = NA)
 )
 
 contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
@@ -267,7 +320,8 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
         nom = function() private$.items[["nom"]],
         gamma = function() private$.items[["gamma"]],
         taub = function() private$.items[["taub"]],
-        mh = function() private$.items[["mh"]]),
+        mh = function() private$.items[["mh"]],
+        barplot = function() private$.items[["barplot"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -606,7 +660,25 @@ contTablesResults <- if (requireNamespace('jmvcore')) R6::R6Class(
                         `name`="p", 
                         `title`="p", 
                         `type`="number", 
-                        `format`="zto,pvalue"))))}))
+                        `format`="zto,pvalue"))))
+            self$add(jmvcore::Image$new(
+                options=options,
+                name="barplot",
+                title="Plots",
+                width=450,
+                height=400,
+                renderFun=".barPlot",
+                visible="(barplot)",
+                requiresData=TRUE,
+                clearWith=list(
+                    "rows",
+                    "cols",
+                    "counts",
+                    "layers",
+                    "yaxis",
+                    "yaxisPc",
+                    "xaxis",
+                    "bartype")))}))
 
 contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
     "contTablesBase",
@@ -724,6 +796,14 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   percentages
 #' @param pcTot \code{TRUE} or \code{FALSE} (default), provide total
 #'   percentages
+#' @param barplot \code{TRUE} or \code{FALSE} (default), show barplots
+#' @param yaxis ycounts (default) or ypc. Use respectively \code{counts} or
+#'   \code{percentages} for the bar plot y-axis
+#' @param yaxisPc total_pc (default), column_pc, or row_pc. Use respectively
+#'   percentages \code{of total}, \code{within columns}, or \code{within rows}
+#'   for the bar plot y-axis.
+#' @param xaxis rows (default), or columns in bar plot X axis
+#' @param bartype stack or side by side (default), barplot type
 #' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{
@@ -734,6 +814,7 @@ contTablesBase <- if (requireNamespace('jmvcore')) R6::R6Class(
 #'   \code{results$gamma} \tab \tab \tab \tab \tab a table of the gamma test results \cr
 #'   \code{results$taub} \tab \tab \tab \tab \tab a table of the Kendall's tau-b test results \cr
 #'   \code{results$mh} \tab \tab \tab \tab \tab a table of the Mantel-Haenszel test for trend \cr
+#'   \code{results$barplot} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -772,6 +853,11 @@ contTables <- function(
     pcRow = FALSE,
     pcCol = FALSE,
     pcTot = FALSE,
+    barplot = FALSE,
+    yaxis = "ycounts",
+    yaxisPc = "total_pc",
+    xaxis = "xrows",
+    bartype = "dodge",
     formula) {
 
     if ( ! requireNamespace('jmvcore'))
@@ -851,7 +937,12 @@ contTables <- function(
         exp = exp,
         pcRow = pcRow,
         pcCol = pcCol,
-        pcTot = pcTot)
+        pcTot = pcTot,
+        barplot = barplot,
+        yaxis = yaxis,
+        yaxisPc = yaxisPc,
+        xaxis = xaxis,
+        bartype = bartype)
 
     analysis <- contTablesClass$new(
         options = options,

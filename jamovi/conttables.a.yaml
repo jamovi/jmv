@@ -338,4 +338,69 @@ options:
       description:
           R: >
             `TRUE` or `FALSE` (default), provide total percentages
+
+    - name: barplot
+      title: Bar Plot
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), show barplots
+
+    - name: yaxis
+      title: Y-axis
+      type: List
+      options:
+        - name: ycounts
+          title: "Counts"
+        - name: ypc
+          title: "Percentages"
+      default: ycounts
+      description:
+          R: >
+            ycounts (default) or ypc. Use respectively `counts` or `percentages`
+            for the bar plot y-axis
+
+    - name: yaxisPc
+      title: ''
+      type: List
+      options:
+        - name: total_pc
+          title: "of total"
+        - name: column_pc
+          title: "within column"
+        - name: row_pc
+          title: "within rows"
+      default: total_pc
+      description:
+          R: >
+            total_pc (default), column_pc, or row_pc. Use respectively
+            percentages `of total`, `within columns`, or `within rows` for the
+            bar plot y-axis.
+
+    - name: xaxis
+      title: X-axis
+      type: List
+      options:
+        - name: xrows
+          title: "Rows"
+        - name: xcols
+          title: "Columns"
+      default: xrows
+      description:
+          R: >
+            rows (default), or columns in bar plot X axis
+
+    - name: bartype
+      title: Bar Type
+      type: List
+      options:
+        - name: dodge
+          title: "Side by side"
+        - name: stack
+          title: "Stacked"
+      default: dodge
+      description:
+          R: >
+            stack or side by side (default), barplot type
 ...
