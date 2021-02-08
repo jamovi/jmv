@@ -10,6 +10,7 @@ Description: A suite of common statistical methods such as descriptives,
     contingency tables, and factor analysis. This package is also useable from
     the 'jamovi' statistical spreadsheet (see <https://www.jamovi.org> for more
     information).
+BugReports: https://github.com/jamovi/jmv/issues
 License: GPL (>= 2)
 Depends:
     R (>= 3.2)
