@@ -65,6 +65,7 @@ ancovaClass <- R6::R6Class(
             private$.populatePostHoc(dataB64)
             private$.prepareEmmPlots(data)
             private$.populateEmmTables()
+            private$.populateOutputs()
         },
 
         #### Compute results ----
@@ -576,7 +577,7 @@ ancovaClass <- R6::R6Class(
             if ( ! self$options$norm)
                 return()
 
-            residuals <- self$residuals
+            residuals <- self$residuals[[1]]
             if (is.null(residuals))
                 return()
 
@@ -626,10 +627,20 @@ ancovaClass <- R6::R6Class(
                 }
             }
         },
+        .populateOutputs=function() {
+
+            if (self$options$resids && self$results$resids$isNotFilled()) {
+                self$results$resids$setValues(self$residuals)
+            }
+
+            if (self$options$predict) {
+
+            }
+        },
 
         #### Plot functions ----
         .qqPlot=function(image, ggtheme, theme, ...) {
-            residuals <- self$residuals
+            residuals <- self$residuals[[1]]
             if (is.null(residuals))
                 return()
 
@@ -1015,6 +1026,7 @@ ancovaClass <- R6::R6Class(
             model <- stats::aov(formula, data)
 
             residuals <- rstandard(model)
+            residuals <- data.frame(residuals=residuals, row.names=rownames(data))
             return(residuals)
         }
     )

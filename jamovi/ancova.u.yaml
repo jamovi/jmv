@@ -299,3 +299,16 @@ children:
                     name: emmPlotError
                   - type: CheckBox
                     name: emmPlotData
+  - type: CollapseBox
+    label: Save
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        children:
+          - type: CheckBox
+            name: predict
+          - type: CheckBox
+            name: resids
