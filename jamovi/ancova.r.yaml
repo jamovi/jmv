@@ -225,12 +225,22 @@ items:
                 - dep
                 - modelTerms
 
-    - name: residsOV
+    - name: predict
+      title: Predicted values
+      type: Output
+      varTitle: '`Predicted - ${ dep }`'
+      varDescription: Predicted values from ANCOVA
+      clearWith:
+        - dep
+        - factors
+        - covs
+        - modelTerms
+
+    - name: resids
       title: Residuals
       type: Output
-      varTitle: Residuals
+      varTitle: '`Residuals - ${ dep }`'
       varDescription: Residuals from ANCOVA
-      measureType: continuous
       clearWith:
         - dep
         - factors

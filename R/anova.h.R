@@ -185,8 +185,10 @@ anovaOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                 min=50,
                 max=99.9,
                 default=95)
-            private$..residsOV <- jmvcore::OptionOutput$new(
-                "residsOV")
+            private$..predict <- jmvcore::OptionOutput$new(
+                "predict")
+            private$..resids <- jmvcore::OptionOutput$new(
+                "resids")
 
             self$.addOption(private$..dep)
             self$.addOption(private$..factors)
@@ -210,7 +212,8 @@ anovaOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..emmTables)
             self$.addOption(private$..emmWeights)
             self$.addOption(private$..ciWidthEmm)
-            self$.addOption(private$..residsOV)
+            self$.addOption(private$..predict)
+            self$.addOption(private$..resids)
         }),
     active = list(
         dep = function() private$..dep$value,
@@ -235,7 +238,8 @@ anovaOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
         emmTables = function() private$..emmTables$value,
         emmWeights = function() private$..emmWeights$value,
         ciWidthEmm = function() private$..ciWidthEmm$value,
-        residsOV = function() private$..residsOV$value),
+        predict = function() private$..predict$value,
+        resids = function() private$..resids$value),
     private = list(
         ..dep = NA,
         ..factors = NA,
@@ -259,7 +263,8 @@ anovaOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
         ..emmTables = NA,
         ..emmWeights = NA,
         ..ciWidthEmm = NA,
-        ..residsOV = NA)
+        ..predict = NA,
+        ..resids = NA)
 )
 
 anovaResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
@@ -271,7 +276,8 @@ anovaResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
         contrasts = function() private$.items[["contrasts"]],
         postHoc = function() private$.items[["postHoc"]],
         emm = function() private$.items[["emm"]],
-        residsOV = function() private$.items[["residsOV"]]),
+        predict = function() private$.items[["predict"]],
+        resids = function() private$.items[["resids"]]),
     private = list(
         ..model = NA),
     public=list(
@@ -381,11 +387,20 @@ anovaResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                                     "emmWeights")))}))$new(options=options)))
             self$add(jmvcore::Output$new(
                 options=options,
-                name="residsOV",
+                name="predict",
+                title="Predicted values",
+                varTitle="`Predicted - ${ dep }`",
+                varDescription="Predicted values from ANOVA",
+                clearWith=list(
+                    "dep",
+                    "factors",
+                    "modelTerms")))
+            self$add(jmvcore::Output$new(
+                options=options,
+                name="resids",
                 title="Residuals",
-                varTitle="Residuals",
+                varTitle="`Residuals - ${ dep }`",
                 varDescription="Residuals from ANOVA",
-                measureType="continuous",
                 clearWith=list(
                     "dep",
                     "factors",
@@ -513,7 +528,8 @@ anovaBase <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
 #'   \code{results$contrasts} \tab \tab \tab \tab \tab an array of contrasts tables \cr
 #'   \code{results$postHoc} \tab \tab \tab \tab \tab an array of post-hoc tables \cr
 #'   \code{results$emm} \tab \tab \tab \tab \tab an array of the estimated marginal means plots + tables \cr
-#'   \code{results$residsOV} \tab \tab \tab \tab \tab an output \cr
+#'   \code{results$predict} \tab \tab \tab \tab \tab an output \cr
+#'   \code{results$resids} \tab \tab \tab \tab \tab an output \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
