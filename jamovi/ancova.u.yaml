@@ -308,7 +308,7 @@ children:
         margin: large
         stretchFactor: 1
         children:
-          - type: CheckBox
+          - type: Output
             name: predict
-          - type: CheckBox
+          - type: Output
             name: resids

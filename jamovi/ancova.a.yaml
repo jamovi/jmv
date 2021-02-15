@@ -397,9 +397,9 @@ options:
 
     - name: predict
       title: Predicted Values
-      type: Bool
+      type: Output
 
     - name: resids
       title: Residuals
-      type: Bool
+      type: Output
 ...
