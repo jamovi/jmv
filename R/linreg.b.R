@@ -293,7 +293,7 @@ linRegClass <- R6::R6Class(
                             weights <- 'cells'
 
                         suppressMessages({
-                            emmeans::emm_options(sep = ",", parens = "a^")
+                            emmeans::emm_options(sep=",", parens="a^", cov.keep=1)
 
                             mm <- try(
                                 emmeans::emmeans(model, formula, cov.reduce=FUN,
@@ -751,6 +751,9 @@ linRegClass <- R6::R6Class(
             }
         },
         .populateEmmTables = function() {
+            if (! self$options$emmTables)
+                return()
+
             groups <- self$results$models
             termsAll <- private$.getModelTerms()
             emMeans <- self$options$emMeans
