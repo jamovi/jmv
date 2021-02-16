@@ -99,7 +99,13 @@ test_that('cooks summary in linreg works', {
     covs <- c("var1", "var 2", "var3")
     blocks = list(list("var1", "var 2", "var3"))
 
-    linreg <- jmv::linReg(data, dep=!!dep, covs=!!covs, blocks=blocks, cooks=TRUE)
+    linreg <- jmv::linReg(
+        data,
+        dep=!!dep,
+        covs=!!covs,
+        blocks=blocks,
+        cooks=TRUE
+    )
 
     cooksTable <- linreg$models[[1]]$dataSummary$cooks$asDF
 
@@ -108,4 +114,36 @@ test_that('cooks summary in linreg works', {
     expect_equal(0.0188, cooksTable$sd, tolerance = 1e-4)
     expect_equal(0.0000, cooksTable$min, tolerance = 1e-4)
     expect_equal(0.0966, cooksTable$max, tolerance = 1e-4)
+})
+
+test_that('emmeans table in linreg works with covariate with only two unique values', {
+
+    set.seed(100)
+    data <- data.frame(
+        dep = rnorm(100),
+        var1 = rnorm(100),
+        var2 = sample(0:1, 100, replace = TRUE)
+    )
+
+    dep <- "dep"
+    covs <- c("var1", "var2")
+    blocks = list(list("var1", "var2"))
+
+    linreg <- jmv::linReg(
+        data,
+        dep=!!dep,
+        covs=!!covs,
+        blocks=blocks,
+        emMeans = ~var1:var2,
+        emmTables = TRUE
+    )
+
+    emmeansTable <- linreg$models[[1]]$emm[[1]]$emmTable$asDF
+
+    expect_equal(0.0077, emmeansTable$emmean[1], tolerance = 1e-4)
+    expect_equal(0.1441, emmeansTable$se[2], tolerance = 1e-4)
+    expect_equal(-0.1564, emmeansTable$lower[4], tolerance = 1e-4)
+    expect_equal(0.1623, emmeansTable$upper[6], tolerance = 1e-4)
+    expect_equal(0.2515, emmeansTable$emmean[7], tolerance = 1e-4)
+    expect_equal(0.1821, emmeansTable$se[9], tolerance = 1e-4)
 })
