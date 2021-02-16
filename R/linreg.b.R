@@ -277,7 +277,7 @@ linRegClass <- R6::R6Class(
                         FUN <- list()
                         for (k in seq_along(termB64)) {
                             if (term[k] %in% covs) {
-                                if (inPlot && k == 1) {
+                                if (forPlot && k == 1) {
                                     FUN[[termB64[k]]] <- function(x) pretty(x, 25)
                                 } else {
                                     FUN[[termB64[k]]] <- function(x) c(mean(x)-sd(x), mean(x), mean(x)+sd(x))
