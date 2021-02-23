@@ -22,6 +22,12 @@ linRegClass <- R6::R6Class(
 
             return(private$.modelsScaled)
         },
+        nModels = function() {
+            if (is.null(private$.nModels))
+                private$.nModels <- length(self$options$blocks)
+
+            return(private$.nModels)
+        },
         residuals = function() {
             if (is.null(private$.residuals))
                 private$.residuals <- private$.computeResiduals()
@@ -98,8 +104,10 @@ linRegClass <- R6::R6Class(
     private = list(
         #### Member variables ----
         .dataProcessed = NULL,
+        .dataRowNums = NULL,
         .models = NULL,
         .modelsScaled = NULL,
+        .nModels = NULL,
         .residuals = NULL,
         .fitted = NULL,
         .cooks = NULL,
@@ -127,9 +135,10 @@ linRegClass <- R6::R6Class(
             private$.initResPlots()
             private$.initEmm()
             private$.initEmmTable()
+            private$.initOutputs()
         },
         .run = function() {
-            if (is.null(self$options$dep) || length(self$options$blocks) < 1 || length(self$options$blocks[[1]]) == 0)
+            if (is.null(self$options$dep) || self$nModels < 1 || length(self$options$blocks[[1]]) == 0)
                 return()
 
             private$.populateModelFitTable()
@@ -141,12 +150,13 @@ linRegClass <- R6::R6Class(
             private$.populateDurbinWatsonTable()
             private$.populateCollinearityTable()
             private$.populateNormality()
+            private$.populateEmmTables()
 
             private$.prepareQQPlot()
             private$.prepareResPlots()
-
             private$.prepareEmmPlots()
-            private$.populateEmmTables()
+
+            private$.populateOutputs()
         },
 
         #### Compute results ----
@@ -182,9 +192,10 @@ linRegClass <- R6::R6Class(
             return(res)
         },
         .computeFitted = function() {
+            data <- private$.cleanData(naSkip=jmvcore::toB64(self$options$dep))
             fitted <- list()
             for (i in seq_along(self$models))
-                fitted[[i]] <- self$models[[i]]$fitted.values
+                fitted[[i]] <- predict(self$models[[i]], data)
 
             return(fitted)
         },
@@ -521,6 +532,43 @@ linRegClass <- R6::R6Class(
                 }
             }
         },
+        .initOutputs = function() {
+            description = function(varType, modelNo=NULL) {
+                return(
+                    jmvcore::format(
+                        "{} of linear regression model{}",
+                        varType,
+                        ifelse(is.null(modelNo), "", paste0(" ", modelNo))
+                    )
+                )
+            }
+
+            title = function(varType, modelNo) {
+                return(jmvcore::format("{} - {}", varType, modelNo))
+            }
+
+            residsTitle <- "Residuals"
+            predictTitle <- "Predicted values"
+            cooksTitle <- "Cook's distance"
+
+            if (self$nModels == 1) {
+                self$results$residsOV$setTitle(residsTitle)
+                self$results$residsOV$setDescription(description(residsTitle))
+                self$results$predictOV$setTitle(predictTitle)
+                self$results$predictOV$setDescription(description(predictTitle))
+                self$results$cooksOV$setTitle(cooksTitle)
+                self$results$cooksOV$setDescription(description(cooksTitle))
+            } else if (self$nModels > 1) {
+                for (i in 1:self$nModels) {
+                    self$results$residsOV$setTitle(index=i, title(residsTitle, i))
+                    self$results$residsOV$setDescription(index=i, description(residsTitle, i))
+                    self$results$predictOV$setTitle(index=i, title(predictTitle, i))
+                    self$results$predictOV$setDescription(index=i, description(predictTitle, i))
+                    self$results$cooksOV$setTitle(index=i, title(cooksTitle, i))
+                    self$results$cooksOV$setDescription(index=i, description(cooksTitle, i))
+                }
+            }
+        },
 
         #### Populate tables functions ----
         .populateModelFitTable = function() {
@@ -837,6 +885,25 @@ linRegClass <- R6::R6Class(
                 table$setRow(rowNo=1, values)
             }
         },
+        .populateOutputs = function() {
+            if (self$options$residsOV && self$results$residsOV$isNotFilled()) {
+                self$results$residsOV$setRowNums(private$.getDataRowNums())
+                for (i in seq_along(self$residuals))
+                    self$results$residsOV$setValues(index=i, self$residuals[[i]])
+            }
+
+            if (self$options$predictOV && self$results$predictOV$isNotFilled()) {
+                self$results$predictOV$setRowNums(names(self$fitted[[1]]))
+                for (i in seq_along(self$fitted))
+                    self$results$predictOV$setValues(index=i, as.numeric(self$fitted[[i]]))
+            }
+
+            if (self$options$cooksOV && self$results$cooksOV$isNotFilled()) {
+                self$results$cooksOV$setRowNums(private$.getDataRowNums())
+                for (i in seq_along(self$cooks))
+                    self$results$cooksOV$setValues(index=i, self$cooks[[i]])
+            }
+        },
 
         #### Plot functions ----
         .prepareQQPlot = function() {
@@ -1038,6 +1105,12 @@ linRegClass <- R6::R6Class(
 
             return(private$.emMeansForPlot)
         },
+        .getDataRowNums = function() {
+            if (is.null(private$.dataRowNums))
+                private$.dataRowNums <- rownames(self$dataProcessed)
+
+            return(private$.dataRowNums)
+        },
         .contrastModel = function(terms) {
             #' Returns the names of the factor contrasts as they are
             #' defined by the lm function
@@ -1113,7 +1186,7 @@ linRegClass <- R6::R6Class(
 
             return(formulas)
         },
-        .cleanData = function() {
+        .cleanData = function(naOmit=TRUE, naSkip=NULL) {
             dep <- self$options$dep
             covs <- self$options$covs
             factors <- self$options$factors
@@ -1143,7 +1216,12 @@ linRegClass <- R6::R6Class(
 
             attr(data, 'row.names') <- seq_len(length(data[[1]]))
             attr(data, 'class') <- 'data.frame'
-            data <- jmvcore::naOmit(data)
+
+            if (naOmit) {
+                data <- tibble::rownames_to_column(data)
+                data <- tidyr::drop_na(data, -naSkip)
+                data <- tibble::column_to_rownames(data)
+            }
 
             return(data)
         },
