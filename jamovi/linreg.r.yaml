@@ -406,3 +406,30 @@ items:
                         - refLevels
                         - ciWidthEmm
                         - emmWeights
+
+    - name: predictOV
+      title: Predicted values
+      type: Output
+      measureType: continuous
+      items: (blocks)
+      clearWith:
+        - dep
+        - blocks
+
+    - name: residsOV
+      title: Residuals
+      type: Output
+      measureType: continuous
+      items: (blocks)
+      clearWith:
+        - dep
+        - blocks
+
+    - name: cooksOV
+      title: Cook's distance
+      type: Output
+      measureType: continuous
+      items: (blocks)
+      clearWith:
+        - dep
+        - blocks

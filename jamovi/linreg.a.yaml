@@ -357,4 +357,16 @@ options:
           R: >
             `TRUE` (default) or `FALSE`, weigh each cell equally or weigh them according to
             the cell frequency
+
+    - name: predictOV
+      title: Predicted values
+      type: Output
+
+    - name: residsOV
+      title: Residuals
+      type: Output
+
+    - name: cooksOV
+      title: Cook's distance
+      type: Output
 ...
