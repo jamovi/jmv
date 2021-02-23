@@ -140,4 +140,11 @@ options:
             a vector containing strings naming the varibales that are
             reverse scaled
 
+    - name: meanScoreOV
+      title: Mean score
+      type: Output
+
+    - name: sumScoreOV
+      title: Sum score
+      type: Output
 ...

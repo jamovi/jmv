@@ -79,6 +79,10 @@ reliabilityOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class
                 "revItems",
                 revItems,
                 default=NULL)
+            private$..meanScoreOV <- jmvcore::OptionOutput$new(
+                "meanScoreOV")
+            private$..sumScoreOV <- jmvcore::OptionOutput$new(
+                "sumScoreOV")
 
             self$.addOption(private$..vars)
             self$.addOption(private$..alphaScale)
@@ -92,6 +96,8 @@ reliabilityOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class
             self$.addOption(private$..sdItems)
             self$.addOption(private$..itemRestCor)
             self$.addOption(private$..revItems)
+            self$.addOption(private$..meanScoreOV)
+            self$.addOption(private$..sumScoreOV)
         }),
     active = list(
         vars = function() private$..vars$value,
@@ -105,7 +111,9 @@ reliabilityOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class
         meanItems = function() private$..meanItems$value,
         sdItems = function() private$..sdItems$value,
         itemRestCor = function() private$..itemRestCor$value,
-        revItems = function() private$..revItems$value),
+        revItems = function() private$..revItems$value,
+        meanScoreOV = function() private$..meanScoreOV$value,
+        sumScoreOV = function() private$..sumScoreOV$value),
     private = list(
         ..vars = NA,
         ..alphaScale = NA,
@@ -118,7 +126,9 @@ reliabilityOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class
         ..meanItems = NA,
         ..sdItems = NA,
         ..itemRestCor = NA,
-        ..revItems = NA)
+        ..revItems = NA,
+        ..meanScoreOV = NA,
+        ..sumScoreOV = NA)
 )
 
 reliabilityResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
@@ -126,7 +136,9 @@ reliabilityResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class
     active = list(
         scale = function() private$.items[["scale"]],
         items = function() private$.items[["items"]],
-        corPlot = function() private$.items[["corPlot"]]),
+        corPlot = function() private$.items[["corPlot"]],
+        meanScoreOV = function() private$.items[["meanScoreOV"]],
+        sumScoreOV = function() private$.items[["sumScoreOV"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -212,6 +224,24 @@ reliabilityResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class
                 renderFun=".corPlot",
                 clearWith=list(
                     "vars",
+                    "revItems")))
+            self$add(jmvcore::Output$new(
+                options=options,
+                name="meanScoreOV",
+                title="Mean score",
+                varTitle="Mean Score",
+                measureType="continuous",
+                clearWith=list(
+                    "vars",
+                    "revItems")))
+            self$add(jmvcore::Output$new(
+                options=options,
+                name="sumScoreOV",
+                title="Sum score",
+                varTitle="Sum Score",
+                measureType="continuous",
+                clearWith=list(
+                    "vars",
                     "revItems")))}))
 
 reliabilityBase <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
@@ -283,6 +313,8 @@ reliabilityBase <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
 #'   \code{results$scale} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$items} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$corPlot} \tab \tab \tab \tab \tab an image \cr
+#'   \code{results$meanScoreOV} \tab \tab \tab \tab \tab an output \cr
+#'   \code{results$sumScoreOV} \tab \tab \tab \tab \tab an output \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
