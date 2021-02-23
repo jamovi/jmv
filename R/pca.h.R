@@ -96,6 +96,8 @@ pcaOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                 "bartlett",
                 bartlett,
                 default=FALSE)
+            private$..factorScoresOV <- jmvcore::OptionOutput$new(
+                "factorScoresOV")
 
             self$.addOption(private$..vars)
             self$.addOption(private$..nFactorMethod)
@@ -110,6 +112,7 @@ pcaOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..factorSummary)
             self$.addOption(private$..kmo)
             self$.addOption(private$..bartlett)
+            self$.addOption(private$..factorScoresOV)
         }),
     active = list(
         vars = function() private$..vars$value,
@@ -124,7 +127,8 @@ pcaOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
         factorCor = function() private$..factorCor$value,
         factorSummary = function() private$..factorSummary$value,
         kmo = function() private$..kmo$value,
-        bartlett = function() private$..bartlett$value),
+        bartlett = function() private$..bartlett$value,
+        factorScoresOV = function() private$..factorScoresOV$value),
     private = list(
         ..vars = NA,
         ..nFactorMethod = NA,
@@ -138,7 +142,8 @@ pcaOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
         ..factorCor = NA,
         ..factorSummary = NA,
         ..kmo = NA,
-        ..bartlett = NA)
+        ..bartlett = NA,
+        ..factorScoresOV = NA)
 )
 
 pcaResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
@@ -148,7 +153,8 @@ pcaResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
         factorStats = function() private$.items[["factorStats"]],
         modelFit = function() private$.items[["modelFit"]],
         assump = function() private$.items[["assump"]],
-        eigen = function() private$.items[["eigen"]]),
+        eigen = function() private$.items[["eigen"]],
+        factorScoresOV = function() private$.items[["factorScoresOV"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -403,7 +409,17 @@ pcaResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                                 "vars",
                                 "screePlot",
                                 "nFactorMethod",
-                                "minEigen")))}))$new(options=options))}))
+                                "minEigen")))}))$new(options=options))
+            self$add(jmvcore::Output$new(
+                options=options,
+                name="factorScoresOV",
+                title="Factor scores",
+                initInRun=TRUE,
+                clearWith=list(
+                    "vars",
+                    "nFactorMethod",
+                    "nFactors",
+                    "rotation")))}))
 
 pcaBase <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
     "pcaBase",
@@ -484,6 +500,7 @@ pcaBase <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
 #'   \code{results$assump$kmo} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$eigen$initEigen} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$eigen$screePlot} \tab \tab \tab \tab \tab an image \cr
+#'   \code{results$factorScoresOV} \tab \tab \tab \tab \tab an output \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

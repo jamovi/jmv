@@ -198,4 +198,13 @@ items:
             - nFactorMethod
             - minEigen
 
+    - name: factorScoresOV
+      title: Factor scores
+      type: Output
+      initInRun: true
+      clearWith:
+        - vars
+        - nFactorMethod
+        - nFactors
+        - rotation
 ...

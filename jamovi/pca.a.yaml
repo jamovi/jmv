@@ -166,4 +166,7 @@ options:
           R: >
             `TRUE` or `FALSE` (default), show Bartlett's test of sphericity results
 
+    - name: factorScoresOV
+      title: Component scores
+      type: Output
 ...
