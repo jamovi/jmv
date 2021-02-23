@@ -2,98 +2,183 @@
 pcaClass <- R6::R6Class(
     "pcaClass",
     inherit = pcaBase,
-    private = list(
-        #### Member variables ----
-        analysis = 'pca',
-        eigen = NULL,
-        simEigen = NULL,
+    #### Active bindings ----
+    active = list(
+        dataProcessed = function() {
+            if (is.null(private$.dataProcessed))
+                private$.dataProcessed <- private$.cleanData()
 
-        #### Init + run functions ----
-        .init = function() {
-
-            private$.initLoadingsTable()
-            private$.initModelFitTable()
-            private$.initEigenTable()
-            private$.initKMOTable()
-
+            return(private$.dataProcessed)
         },
-        .run = function() {
+        nFactors = function() {
+            if (is.null(private$.nFactors))
+                private$.nFactors <- private$.computeNFactors()
 
-            ready <- TRUE
-            if (is.null(self$options$vars) || length(self$options$vars) < 2)
-                ready <- FALSE
-
-            private$.errorCheck()
-
-            if (ready) {
-
-                data <- private$.cleanData()
-                results <- private$.compute(data)
-
-                private$.populateLoadingsTable(results)
-                private$.populateEigenTable(results)
-                private$.populateFactorSummaryTable(results)
-                private$.populateFactorCorTable(results)
-                private$.populateModelFitTable(results)
-                private$.populateKMOTable(results)
-                private$.populateBartlettTable(results)
-                private$.prepareScreePlot()
-
-            }
+            return(private$.nFactors)
         },
+        eigen = function() {
+            if (is.null(private$.eigen))
+                private$.eigen <- private$.computeEigen()
 
-        #### Compute results ----
-        .compute = function(data) {
+            return(private$.eigen)
+        },
+        loadings = function() {
+            if (is.null(private$.loadings))
+                private$.loadings <- private$.getPsychResult()$loadings
 
-            nFactors <- private$.nFactors(data)
+            return(private$.loadings)
+        },
+        uniqueness = function() {
+            if (is.null(private$.uniqueness))
+                private$.uniqueness <- private$.getPsychResult()$uniqueness
 
-            suppressWarnings({
+            return(private$.uniqueness)
+        },
+        factorCor = function() {
+            if (is.null(private$.factorCor))
+                private$.factorCor <- private$.getPsychResult()$r.scores
 
-                if (private$analysis == 'pca')
-                    r <- psych::principal(data, nfactors = nFactors, rotate = self$options$rotation)
-                else
-                    r <- psych::fa(data, nfactors = nFactors, rotate = self$options$rotation, fm = self$options$extraction)
-
+            return(private$.factorCor)
+        },
+        SS = function() {
+            if (is.null(private$.SS)) {
                 devnull <- '/dev/null'
                 if (Sys.info()['sysname'] == 'Windows')
                     devnull <- 'nul'
 
                 sink(file=devnull)
-
-                SS <- print(r)$Vaccounted
-
+                SS <- print(private$.getPsychResult())$Vaccounted
                 sink()
 
-                corMatrix <- cor(data, use = "pairwise")
-                N <- nrow(data)
-                kmo <- psych::KMO(corMatrix)
-                bartlett <- psych::cortest.bartlett(corMatrix, n = N)
+                private$.SS <- SS
+            }
 
-            }) # suppressWarnings
+            return(private$.SS)
+        },
+        modelFit = function() {
+            if (is.null(private$.modelFit) && private$analysis == 'efa') {
+                r <- private$.getPsychResult()
+                private$.modelFit <- list(
+                    'tli'=r$TLI, 'bic'=r$BIC, 'rmsea'=r$RMSEA,
+                    'chi'=r$STATISTIC, 'df'=r$dof, 'p'=r$PVAL
+                )
+            }
 
-            factorCor <- r$r.scores
-            loadings <- r$loadings
-            uniqueness <- r$uniqueness
+            return(private$.modelFit)
+        },
+        kmo = function() {
+            if (is.null(private$.kmo))
+                private$.kmo <- private$.computeKmo()
 
-            modelFit <- NULL
-            if (private$analysis == 'efa')
-                modelFit <- list('tli'=r$TLI, 'bic'=r$BIC, 'rmsea'=r$RMSEA, 'chi'=r$STATISTIC, 'df'=r$dof, 'p'=r$PVAL)
+            return(private$.kmo)
+        },
+        bartlett = function() {
+            if (is.null(private$.bartlett))
+                private$.bartlett <- private$.computeBartlett()
 
-            return(list(loadings=loadings, uniqueness=uniqueness, factorCor=factorCor, SS=SS, nFactors=nFactors,
-                        modelFit=modelFit, kmo=kmo, bartlett=bartlett))
+            return(private$.bartlett)
+        },
+        scores = function() {
+            if (is.null(private$.scores) && private$analysis == 'pca')
+                private$.scores <- private$.getPsychResult()$scores
+
+            return(private$.scores)
+        }
+    ),
+    private = list(
+        #### Member variables ----
+        analysis = 'pca',
+        .dataProcessed = NULL,
+        .dataRowNums = NULL,
+        .nFactors = NULL,
+        .eigen = NULL,
+        .simEigenCI = NULL,
+        .corMatrix = NULL,
+        .psychResult = NULL,
+        .loadings = NULL,
+        .uniqueness = NULL,
+        .factorCor = NULL,
+        .SS = NULL,
+        .modelFit = NULL,
+        .kmo = NULL,
+        .bartlett = NULL,
+        .scores = NULL,
+
+        #### Init + run functions ----
+        .init = function() {
+            private$.initLoadingsTable()
+            private$.initModelFitTable()
+            private$.initEigenTable()
+            private$.initKMOTable()
+        },
+        .run = function() {
+            if (is.null(self$options$vars) || length(self$options$vars) < 2)
+                return()
+
+            private$.errorCheck()
+
+            private$.populateLoadingsTable()
+            private$.populateEigenTable()
+            private$.populateFactorSummaryTable()
+            private$.populateFactorCorTable()
+            private$.populateModelFitTable()
+            private$.populateKMOTable()
+            private$.populateBartlettTable()
+            private$.prepareScreePlot()
+            private$.populateOutputs()
+        },
+
+        #### Compute results ----
+        .computeNFactors = function() {
+            method <- self$options$nFactorMethod
+
+            if (method == "parallel") {
+                nFactors <- private$.parallel(data)
+            } else if (method == "eigen") {
+                nFactors <- sum(self$eigen > self$options$minEigen)
+
+                if (nFactors <= 0)
+                    jmvcore::reject(jmvcore::format('No components have an eigenvalue greater than {}'),
+                                    self$options$minEigen, code='')
+            } else {
+                nFactors <- self$options$nFactors
+            }
+
+            return(nFactors)
+        },
+        .computeEigen = function() {
+            # Eigenvalues for PCA and EFA
+            if (private$analysis == 'pca')
+                eigen <- eigen(private$.getCorMatrix())$values
+            else
+                eigen<- psych::fa(private$.getCorMatrix(), fm=self$options$extraction,
+                                  warnings=FALSE)$values
+
+            return(eigen)
+        },
+        .computeKmo = function() {
+            suppressWarnings({
+                kmo <- psych::KMO(private$.getCorMatrix())
+            })
+
+            return(kmo)
+        },
+        .computeBartlett = function() {
+            suppressWarnings({
+                N <- nrow(self$dataProcessed)
+                bartlett <- psych::cortest.bartlett(private$.getCorMatrix(), n = N)
+            })
+
+            return(bartlett)
         },
 
         #### Init tables/plots functions ----
         .initLoadingsTable = function() {
-
             table <- self$results$loadings
 
             if (private$analysis == 'pca') {
-
                 table$setNote("note", jmvcore::format("\'{}\' rotation was used", self$options$rotation))
-
             } else {
-
                 extr <- self$options$extraction
 
                 if (extr == 'pa')
@@ -103,30 +188,29 @@ pcaClass <- R6::R6Class(
                 else
                     extrName <- 'Minimum residual'
 
-
-                table$setNote("note", jmvcore::format("\'{}\' extraction method was used in combination with a \'{}\' rotation", extrName, self$options$rotation))
-
+                table$setNote(
+                    "note",
+                    jmvcore::format(
+                        "\'{}\' extraction method was used in combination with a \'{}\' rotation",
+                        extrName,
+                        self$options$rotation
+                    )
+                )
             }
         },
         .initModelFitTable = function() {
-
             if (private$analysis == 'efa' && self$options$modelFit) {
-
                 table <- self$results$modelFit$fit
                 table$setVisible(TRUE)
-
             }
         },
         .initEigenTable = function() {
-
             table <- self$results$eigen$initEigen
 
             for (i in seq_along(self$options$vars))
                 table$addRow(rowKey=i, values=list(comp = as.character(i)))
-
         },
         .initKMOTable = function() {
-
             table <- self$results$assump$kmo
             vars <- self$options$vars
 
@@ -135,16 +219,14 @@ pcaClass <- R6::R6Class(
 
             for (i in seq_along(vars))
                 table$addRow(rowKey=i+1, values=list(name = vars[[i]]))
-
         },
 
         #### Populate tables/plots functions ----
-        .populateLoadingsTable = function(results) {
-
+        .populateLoadingsTable = function() {
             table <- self$results$loadings
-            loadings <- results$loadings
-            uniqueness <- results$uniqueness
-            nFactors <- results$nFactors
+            loadings <- self$loadings
+            uniqueness <- self$uniqueness
+            nFactors <- self$nFactors
 
             vars <- self$options$vars
             hide <- self$options$hideLoadings
@@ -155,61 +237,57 @@ pcaClass <- R6::R6Class(
                 type <- 'Factor'
 
             if (nFactors > 1) {
-                for (i in 2:nFactors)
-                    table$addColumn(name=paste0("pc",i), title=as.character(i), type='number', superTitle=jmvcore::format('{}', type), index=i+1)
+                for (i in 2:nFactors) {
+                    table$addColumn(
+                        name = paste0("pc",i),
+                        title = as.character(i),
+                        type = 'number',
+                        superTitle = jmvcore::format('{}', type),
+                        index = i+1
+                    )
+                }
             }
 
             class(loadings) <- "matrix"
             loadings <- as.data.frame(loadings)
 
             if (self$options$sortLoadings) {
-
                 absLoadings <- abs(loadings)
                 max <- apply(absLoadings, 1, max)
                 whichMax <- apply(absLoadings, 1, which.max)
                 loadings$uniqueness <- uniqueness
-
                 loadings <- loadings[order(whichMax, -max), ]
-
             } else {
-
                 varOrder <- match(jmvcore::toB64(vars), rownames(loadings))
                 loadings$uniqueness <- uniqueness
-
                 loadings <- loadings[order(varOrder), ]
-
             }
 
             rowNames <- jmvcore::fromB64(rownames(loadings))
 
             for (i in seq_along(vars)) {
-
                 row <- list()
 
                 row[['name']] <- rowNames[i]
                 for (j in 1:nFactors) {
-
                     l <- loadings[i, j]
                     row[[paste0("pc", j)]] <- if (abs(l) < hide) "" else l
                 }
-
                 row[["uniq"]] <- as.numeric(loadings$uniqueness[i])
 
                 table$setRow(rowNo=i, values=row)
-
             }
         },
-        .populateEigenTable = function(results) {
+        .populateEigenTable = function() {
 
             table <- self$results$eigen$initEigen
-            eigen <- private$eigen
+            eigen <- self$eigen
 
             eigenTotal <- sum(abs(eigen))
             varProp <- (abs(eigen) / eigenTotal) * 100
             varCum <- cumsum(varProp)
 
             for (i in seq_along(eigen)) {
-
                 row <- list()
                 row[["eigen"]] <- eigen[i]
 
@@ -221,19 +299,17 @@ pcaClass <- R6::R6Class(
                 table$setRow(rowNo=i, values=row)
             }
         },
-        .populateFactorSummaryTable = function(results) {
-
+        .populateFactorSummaryTable = function() {
             table <- self$results$factorStats$factorSummary
 
-            SS <- results$SS
-            nFactors <- results$nFactors
+            SS <- self$SS
+            nFactors <- self$nFactors
 
             loadings <- SS[1,]
             varProp <- SS[2,]
             varCum <- if (dim(SS)[1] <= 2) SS[2,] else SS[3,]
 
             for (i in 1:nFactors) {
-
                 row <- list()
 
                 row[["comp"]] <- as.character(i)
@@ -244,11 +320,10 @@ pcaClass <- R6::R6Class(
                 table$addRow(rowKey=i, values=row)
             }
         },
-        .populateFactorCorTable = function(results) {
-
+        .populateFactorCorTable = function() {
             table <- self$results$factorStats$factorCor
-            nFactors <- results$nFactors
-            factorCor <- results$factorCor
+            nFactors <- self$nFactors
+            factorCor <- self$factorCor
 
             vars <- self$options$vars
 
@@ -260,12 +335,10 @@ pcaClass <- R6::R6Class(
             colNames <- sub('.', '', colnames(factorCor))
 
             for (i in 1:nFactors) {
-
                 row <- list()
                 row[["comp"]] <- i
 
                 for (j in 1:nFactors) {
-
                     if (i == j)
                         row[[paste0("pc", j)]] <- "\u2014"
                     else if (j < i)
@@ -277,11 +350,9 @@ pcaClass <- R6::R6Class(
                 table$addRow(rowKey=i, values=row)
             }
         },
-        .populateModelFitTable = function(results) {
-
+        .populateModelFitTable = function() {
             if (private$analysis == 'efa') {
-
-                r <- results$modelFit
+                r <- self$modelFit
 
                 table <- self$results$modelFit$fit
 
@@ -296,51 +367,73 @@ pcaClass <- R6::R6Class(
                 row['p'] <- r$p
 
                 table$setRow(rowNo=1, values=row)
-
             }
         },
-        .populateKMOTable = function(results) {
+        .populateKMOTable = function() {
+            if (! self$options$kmo)
+                return()
 
             table <- self$results$assump$kmo
             vars <- self$options$vars
-            kmo <- results$kmo
+            kmo <- self$kmo
 
             table$setRow(rowNo=1, values=list(msa=kmo$MSA))
 
             for (i in seq_along(vars)) {
-
                 msa <- kmo$MSAi[ jmvcore::toB64(vars[[i]]) ]
-
                 table$setRow(rowNo=i+1, values=list(msa = msa))
             }
         },
-        .populateBartlettTable = function(results) {
+        .populateBartlettTable = function() {
+            if (! self$options$bartlett)
+                return()
 
             table <- self$results$assump$bartlett
-            r <- results$bartlett
+            r <- self$bartlett
 
             table$setRow(rowNo=1, values=list(chi=r$chisq, df=r$df, p=r$p.value))
+        },
+        .populateOutputs = function() {
+            if (private$analysis == 'pca'
+                    && self$options$factorScoresOV
+                    && self$results$factorScoresOV$isNotFilled()) {
 
+                keys <- 1:self$nFactors
+                titles <- paste("Score Component", 1:self$nFactors)
+                descriptions <- paste("Score for component", 1:self$nFactors)
+                measureTypes <- rep("continuous", self$nFactors)
+
+                self$results$factorScoresOV$set(
+                    keys=keys,
+                    titles=titles,
+                    descriptions=descriptions,
+                    measureTypes=measureTypes
+                )
+
+                self$results$factorScoresOV$setRowNums(private$.getDataRowNums())
+
+                for (i in 1:self$nFactors) {
+                    scores <- as.numeric(self$scores[, i])
+                    self$results$factorScoresOV$setValues(index=i, scores)
+                }
+            }
         },
 
         #### Plot functions ----
         .prepareScreePlot = function() {
-
             image <- self$results$eigen$screePlot
 
             df <- list()
-            df[["eigen"]] <- c(private$simEigen, private$eigen)
-            df[["comp"]] <- factor(c(1:length(private$eigen), 1:length(private$eigen)))
-            df[["type"]] <- c(rep("Simulations", length(private$eigen)), rep("Data", length(private$eigen)))
+            df[["eigen"]] <- c(private$.getSimEigenCI(), self$eigen)
+            df[["comp"]] <- factor(c(1:length(self$eigen), 1:length(self$eigen)))
+            df[["type"]] <- c(rep("Simulations", length(self$eigen)), rep("Data", length(self$eigen)))
 
             attr(df, 'row.names') <- seq_len(length(df[[1]]))
             attr(df, 'class') <- 'data.frame'
 
             image$setState(df)
-
         },
         .screePlot = function(image, ggtheme, theme, ...) {
-
             if (is.null(image$state))
                 return(FALSE)
 
@@ -379,8 +472,67 @@ pcaClass <- R6::R6Class(
         },
 
         #### Helper functions ----
-        .errorCheck = function() {
+        .getDataRowNums = function() {
+            if (is.null(private$.dataRowNums))
+                private$.dataRowNums <- rownames(self$dataProcessed)
 
+            return(private$.dataRowNums)
+        },
+        .getSimEigenCI = function(nIter = 20) {
+            if (is.null(private$.simEigenCI)) {
+                nSub <- dim(self$dataProcessed)[1]
+                nVar <- dim(self$dataProcessed)[2]
+
+                # Simulate eigen values
+                simEigenList <- parallel::mclapply(1:nIter, function(XX) {
+                    simData <- matrix(rnorm(nSub*nVar), nrow=nSub, ncol=nVar)
+                    simCor <- cor(simData)
+
+                    if (private$analysis == 'pca')
+                        eigen(simCor)$values
+                    else
+                        psych::fa(simCor, fm=self$options$extraction, warnings=FALSE)$values
+                })
+
+                simEigen <- t(matrix(unlist(simEigenList), ncol=nIter))
+                simEigenCI = apply(simEigen, 2, function(x) quantile(x,.95))
+
+                private$.simEigenCI <- simEigenCI
+            }
+
+            return(private$.simEigenCI)
+        },
+        .getCorMatrix = function() {
+            if (is.null(private$.corMatrix))
+                private$.corMatrix <- cor(self$dataProcessed, use = "pairwise")
+
+            return(private$.corMatrix)
+        },
+        .getPsychResult = function() {
+            if (is.null(private$.psychResult)) {
+                suppressWarnings({
+                    if (private$analysis == 'pca') {
+                        r <- psych::principal(
+                            self$dataProcessed,
+                            nfactors = self$nFactors,
+                            rotate = self$options$rotation
+                        )
+                    } else {
+                        r <- psych::fa(
+                            self$dataProcessed,
+                            nfactors = self$nFactors,
+                            rotate = self$options$rotation,
+                            fm = self$options$extraction
+                        )
+                    }
+                })
+
+                private$.psychResult <- r
+            }
+
+            return(private$.psychResult)
+        },
+        .errorCheck = function() {
             nFactorMethod <- self$options$nFactorMethod
             nFactors <- self$options$nFactors
             vars <- self$options$vars
@@ -392,10 +544,8 @@ pcaClass <- R6::R6Class(
 
             if (nFactorMethod == "fixed" && nFactors > length(vars))
                 jmvcore::reject(jmvcore::format('Number of {} cannot be bigger than number of variables', type), code='')
-
         },
         .cleanData = function() {
-
             vars <- self$options$vars
 
             data <- list()
@@ -408,78 +558,12 @@ pcaClass <- R6::R6Class(
 
             return(data)
         },
-        .nFactors = function(data) {
-
-            method <- self$options$nFactorMethod
-
-            nFactorsPar <- private$.parallel(data)
-
-            if (method == "parallel") {
-
-                nFactors <- nFactorsPar
-
-            } else if (method == "eigen") {
-
-                nFactors <- sum(private$eigen > self$options$minEigen)
-
-                if (nFactors <= 0)
-                    jmvcore::reject(jmvcore::format('No components have an eigenvalue greater than {}'), self$options$minEigen, code='')
-
-            } else {
-
-                nFactors <- self$options$nFactors
-
-            }
-
-            return(nFactors)
-        },
-        .parallel = function(data, nIter = 20) {
-
-            corMatrix <- cor(data, use="pairwise")
-
-            # Eigenvalues for PCA and EFA
-            if (private$analysis == 'pca')
-                eigen <- eigen(corMatrix)$values
-            else
-                eigen<- psych::fa(corMatrix, fm=self$options$extraction, warnings=FALSE)$values
-
-            nSub <- dim(data)[1]
-            nVar <- dim(data)[2]
-
-            # Simulate eigen values
-            simEigenList <- parallel::mclapply(1:nIter, function(XX) {
-
-                # bad <- TRUE
-                # while(bad) {
-                #
-                #     samplesData <- matrix(apply(data, 2, function(y) sample(y, nSub, replace=TRUE)), ncol=nVar)
-                #     samplesCor <- cor(samples, use="pairwise")
-                #
-                #     bad <- any(is.na(samplesCor))
-                # }
-
-                simData <- matrix(rnorm(nSub*nVar), nrow=nSub, ncol=nVar)
-                simCor <- cor(simData)
-
-                if (private$analysis == 'pca')
-                    eigen(simCor)$values
-                else
-                    psych::fa(simCor, fm=self$options$extraction, warnings=FALSE)$values
-
-            })
-
-            simEigen <- t(matrix(unlist(simEigenList), ncol=nIter))
-            simEigenCI = apply(simEigen, 2, function(x) quantile(x,.95))
-
-            nFactors <- max(which(!(eigen > simEigenCI))[1]-1, 1)
+        .parallel = function(nIter = 20) {
+            nFactors <- max(which(! (self$eigen > private$.getSimEigenCI(nIter = 20)))[1] - 1, 1)
 
             if (is.na(nFactors))
-                nFactors <- length(eigen)
-
-            private$eigen <- eigen
-            private$simEigen <- simEigenCI
+                nFactors <- length(self$eigen)
 
             return(nFactors)
-
         })
 )
