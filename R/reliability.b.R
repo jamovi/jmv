@@ -2,79 +2,143 @@
 reliabilityClass <- R6::R6Class(
     "reliabilityClass",
     inherit = reliabilityBase,
+    #### Active bindings ----
+    active = list(
+        dataProcessed = function() {
+            if (is.null(private$.dataProcessed))
+                private$.dataProcessed <- private$.cleanData()
+
+            return(private$.dataProcessed)
+        },
+        alpha = function() {
+            if (is.null(private$.alpha))
+                private$.alpha <- private$.computeAlpha()
+
+            return(private$.alpha)
+        },
+        omega = function() {
+            if (is.null(private$.omega))
+                private$.omega <- private$.computeOmega()
+
+            return(private$.omega)
+        },
+        omegaDrop = function() {
+            if (is.null(private$.omegaDrop))
+                private$.omegaDrop <- private$.computeOmegaDrop()
+
+            return(private$.omegaDrop)
+        },
+        loadings = function() {
+            if (is.null(private$.loadings))
+                private$.loadings <- private$.computeLoadings()
+
+            return(private$.loadings)
+        }
+    ),
     private = list(
+        #### Member variables ----
+        .dataProcessed = NULL,
+        .alpha = NULL,
+        .omega = NULL,
+        .omegaDrop = NULL,
+        .loadings = NULL,
+        .negCorItems = NULL,
+        .varList = NULL,
+
         #### Init + run functions ----
         .init = function() {
-
             private$.initItemsTable()
-
+            private$.initOutputs()
         },
         .run = function() {
-
-            ready <- TRUE
             if (is.null(self$options$vars) || length(self$options$vars) < 2)
-                ready <- FALSE
+                return()
 
-            if (ready) {
-
-                data <- private$.cleanData()
-                private$.errorCheck(data)
-
-                results <- private$.compute(data)
-
-                private$.populateScaleTable(results)
-                private$.populateItemsTable(results)
-                private$.prepareCorPlot(data)
-
-            }
+            private$.populateScaleTable()
+            private$.populateItemsTable()
+            private$.prepareCorPlot()
+            private$.populateOutputs()
         },
 
         #### Compute results ----
-        .compute = function(data) {
-
+        .computeAlpha = function() {
             suppressMessages({
                 suppressWarnings({
-
-                    alpha <- psych::alpha(data, delete=FALSE, warnings=FALSE)
-                    omega <- psych::omega(data, 1, flip = FALSE)
-
+                    alpha <- psych::alpha(self$dataProcessed, delete=FALSE, warnings=FALSE)
+                })
+            })
+            return(alpha)
+        },
+        .computeOmega = function() {
+            suppressMessages({
+                suppressWarnings({
+                    omega <- psych::omega(self$dataProcessed, 1, flip = FALSE)
+                })
+            })
+            return(omega)
+        },
+        .computeOmegaDrop = function() {
+            suppressMessages({
+                suppressWarnings({
                     items <- self$options$vars
 
                     omegaDrop <- numeric(length(items))
                     if (length(items) > 2) {
-                        for (i in seq_along(items))
-                            omegaDrop[i] <- psych::omega(data[, colnames(data) != items[i]], 1,
-                                                         flip = FALSE)$omega.tot
+                        colNames <- colnames(self$dataProcessed)
+                        for (i in seq_along(items)) {
+                            omegaDrop[i] <- psych::omega(
+                                self$dataProcessed[, colNames != items[i]],
+                                1, flip = FALSE)$omega.tot
+                        }
                     }
+                })
+            })
 
-                    loadings <- psych::principal(data, scores=FALSE)$loadings
-                    negCorItems <- items[loadings < 0]
-
-                }) # suppressWarnings
-            }) # suppressMessages
-
-            return(list('alpha'=alpha, 'omega'=omega, 'omegaDrop'=omegaDrop, 'negCorItems'=negCorItems))
+            return(omegaDrop)
+        },
+        .computeLoadings = function() {
+            suppressMessages({
+                suppressWarnings({
+                    loadings <- psych::principal(self$dataProcessed, scores=FALSE)$loadings
+                })
+            })
+            return(loadings)
         },
 
         #### Init tables ----
         .initItemsTable = function() {
-
             table <- self$results$items
             items <- self$options$revItems
 
             for (i in seq_along(items))
                 table$addFootnote(rowKey=items[i], 'name', 'reverse scaled item')
+        },
+        .initOutputs = function() {
+            description = function(aggrType) {
+                return(
+                    jmvcore::format(
+                        "{} score based on the variables {}",
+                        aggrType,
+                        listItems(private$.getVarList())
+                    )
+                )
+            }
 
+            if (self$options$meanScoreOV)
+                self$results$meanScoreOV$setDescription(description("Mean"))
+
+            if (self$options$sumScoreOV)
+                self$results$sumScoreOV$setDescription(description("Sum"))
         },
 
         #### Populate tables ----
-        .populateScaleTable = function(results) {
+        .populateScaleTable = function() {
 
             table <- self$results$scale
 
-            alpha <- results$alpha
-            omega <- results$omega
-            negCorItems <- results$negCorItems
+            alpha <- self$alpha
+            omega <- self$omega
+            negCorItems <- private$.getNegCorItems()
 
             row <- list()
             row[['alpha']] <- alpha$total$raw_alpha
@@ -85,29 +149,22 @@ reliabilityClass <- R6::R6Class(
             table$setRow(rowNo=1, values=row)
 
             if (length(negCorItems) > 0) {
-
                 if (length(negCorItems) == 1) {
-
                     note <- jmvcore::format('item {} correlates negatively with the total scale and probably should be reversed',
                                             listItems(negCorItems))
                 } else {
-
                     note <- jmvcore::format('items {} correlate negatively with the total scale and probably should be reversed',
                                             listItems(negCorItems))
-
                 }
-
                 table$setNote(key='negCor', note=note, init=FALSE)
             }
-
         },
-        .populateItemsTable = function(results) {
-
+        .populateItemsTable = function() {
             table <- self$results$items
 
             items <- self$options$vars
-            alpha <- results$alpha
-            omegaDrop <- results$omegaDrop
+            alpha <- self$alpha
+            omegaDrop <- self$omegaDrop
 
             for (i in seq_along(items)) {
 
@@ -121,11 +178,31 @@ reliabilityClass <- R6::R6Class(
                 table$setRow(rowKey=items[i], values=row)
             }
         },
+        .populateOutputs = function() {
+            if (self$options$meanScoreOV && self$results$meanScoreOV$isNotFilled()) {
+                means <- apply(self$dataProcessed, 1, mean)
+
+                df <- data.frame(
+                    meanScoreOV = means,
+                    row.names = rownames(self$dataProcessed)
+                )
+                self$results$meanScoreOV$setValues(df)
+            }
+
+            if (self$options$sumScoreOV && self$results$sumScoreOV$isNotFilled()) {
+                sums <- apply(self$dataProcessed, 1, sum)
+
+                df <- data.frame(
+                    sumScoreOV = sums,
+                    row.names = rownames(self$dataProcessed)
+                )
+                self$results$sumScoreOV$setValues(df)
+            }
+        },
 
         #### Plot functions ----
-        .prepareCorPlot = function(data, reorder = FALSE) {
-
-            cormat <- round(cor(data), 2)
+        .prepareCorPlot = function(reorder = FALSE) {
+            cormat <- round(cor(self$dataProcessed), 2)
 
             if (reorder) {
                 dd <- stats::as.dist((1-cormat)/2)
@@ -140,7 +217,6 @@ reliabilityClass <- R6::R6Class(
             image$setState(melted_cormat)
         },
         .corPlot = function(image, ...) {
-
             if (is.null(image$state))
                 return(FALSE)
 
@@ -175,7 +251,6 @@ reliabilityClass <- R6::R6Class(
 
         #### Helper functions ----
         .cleanData = function() {
-
             items <- self$options$vars
 
             data <- list()
@@ -196,11 +271,11 @@ reliabilityClass <- R6::R6Class(
                 data[[item]] <- adjust - dataItem
             }
 
-            return(data)
+            private$.errorCheck(data)
 
+            return(data)
         },
         .errorCheck = function(data) {
-
             items <- self$options$vars
 
             infItems <- sapply(data, function(x) any(is.infinite(x)))
@@ -213,5 +288,22 @@ reliabilityClass <- R6::R6Class(
                 jmvcore::reject("Item '{}' contains only missing values", code='', items[allNAItems])
             if (any(noVarItems))
                 jmvcore::reject("Item '{}' has no variance", code='', items[noVarItems])
+        },
+        .getNegCorItems = function() {
+            if (is.null(private$.negCorItems))
+                private$.negCorItems <- self$options$vars[self$loadings < 0]
+
+            return(private$.negCorItems)
+        },
+        .getVarList = function() {
+            if (is.null(private$.varList)) {
+                items <- self$options$vars
+                for (revItem in self$options$revItems)
+                    items[which(revItem == self$options$vars)] <- paste0(revItem, " (reversed)")
+
+                private$.varList <- items
+            }
+
+            return(private$.varList)
         })
 )
