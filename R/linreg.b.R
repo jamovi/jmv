@@ -544,29 +544,25 @@ linRegClass <- R6::R6Class(
             }
 
             title = function(varType, modelNo) {
-                return(jmvcore::format("{} - {}", varType, modelNo))
+                return(jmvcore::format("{} {}", varType, modelNo))
             }
 
-            residsTitle <- "Residuals"
-            predictTitle <- "Predicted values"
-            cooksTitle <- "Cook's distance"
+            if (self$nModels > 1) {
 
-            if (self$nModels == 1) {
-                self$results$residsOV$setTitle(residsTitle)
-                self$results$residsOV$setDescription(description(residsTitle))
-                self$results$predictOV$setTitle(predictTitle)
-                self$results$predictOV$setDescription(description(predictTitle))
-                self$results$cooksOV$setTitle(cooksTitle)
-                self$results$cooksOV$setDescription(description(cooksTitle))
-            } else if (self$nModels > 1) {
-                for (i in 1:self$nModels) {
-                    self$results$residsOV$setTitle(index=i, title(residsTitle, i))
-                    self$results$residsOV$setDescription(index=i, description(residsTitle, i))
-                    self$results$predictOV$setTitle(index=i, title(predictTitle, i))
-                    self$results$predictOV$setDescription(index=i, description(predictTitle, i))
-                    self$results$cooksOV$setTitle(index=i, title(cooksTitle, i))
-                    self$results$cooksOV$setDescription(index=i, description(cooksTitle, i))
-                }
+                keys <- seq_len(self$nModels)
+                measureTypes <- rep('continuous', self$nModels)
+
+                titles <- vapply(keys, function(key) title('Residuals', key), '')
+                descriptions <- vapply(keys, function(key) description('Residuals', key), '')
+                self$results$residsOV$set(keys, titles, descriptions, measureTypes)
+
+                titles <- vapply(keys, function(key) title('Predicted values', key), '')
+                descriptions <- vapply(keys, function(key) description('Predicted values', key), '')
+                self$results$predictOV$set(keys, titles, descriptions, measureTypes)
+
+                titles <- vapply(keys, function(key) title("Cook's distance", key), '')
+                descriptions <- vapply(keys, function(key) description("Cook's distance", key), '')
+                self$results$cooksOV$set(keys, titles, descriptions, measureTypes)
             }
         },
 

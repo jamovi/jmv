@@ -776,8 +776,9 @@ linRegResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                 options=options,
                 name="predictOV",
                 title="Predicted values",
+                varTitle="Predicted values",
+                varDescription="Predicted values of linear regression",
                 measureType="continuous",
-                items="(blocks)",
                 clearWith=list(
                     "dep",
                     "blocks")))
@@ -785,17 +786,19 @@ linRegResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                 options=options,
                 name="residsOV",
                 title="Residuals",
+                varTitle="Residuals",
+                varDescription="Residuals of linear regression",
                 measureType="continuous",
-                items="(blocks)",
                 clearWith=list(
                     "dep",
                     "blocks")))
             self$add(jmvcore::Output$new(
                 options=options,
                 name="cooksOV",
-                title="Cook's distance",
+                title="Cook's Distance",
+                varTitle="Cook's distance",
+                varDescription="Cook's distance of linear regression",
                 measureType="continuous",
-                items="(blocks)",
                 clearWith=list(
                     "dep",
                     "blocks")))}))
