@@ -408,28 +408,31 @@ items:
                         - emmWeights
 
     - name: predictOV
-      title: Predicted values
       type: Output
+      title: Predicted values
+      varTitle: Predicted values
+      varDescription: Predicted values of linear regression
       measureType: continuous
-      items: (blocks)
       clearWith:
         - dep
         - blocks
 
     - name: residsOV
-      title: Residuals
       type: Output
+      title: Residuals
+      varTitle: Residuals
+      varDescription: Residuals of linear regression
       measureType: continuous
-      items: (blocks)
       clearWith:
         - dep
         - blocks
 
     - name: cooksOV
-      title: Cook's distance
       type: Output
+      title: Cook's Distance
+      varTitle: Cook's distance
+      varDescription: Cook's distance of linear regression
       measureType: continuous
-      items: (blocks)
       clearWith:
         - dep
         - blocks
