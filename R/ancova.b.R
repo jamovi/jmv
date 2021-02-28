@@ -8,11 +8,18 @@ ancovaClass <- R6::R6Class(
         #### Member variables ----
         .model = NA,
         .postHocRows = NA,
-        .data = NA,
+        .finalData = NA,
+        .residuals = NA,
+        .predicted = NA,
         emMeans = list(),
 
         #### Init + run functions ----
         .init=function() {
+
+            private$.finalData <- NULL
+            private$.model <- NULL
+            private$.residuals <- NULL
+            private$.predicted <- NULL
 
             private$.initMainTable()
 
@@ -21,8 +28,6 @@ ancovaClass <- R6::R6Class(
 
             if (length(factors) == 0 || length(modelTerms) == 0)
                 return()
-
-            private$.data <- private$.cleanData()
 
             private$.initContrastTables()
             private$.initPostHoc()
@@ -39,8 +44,7 @@ ancovaClass <- R6::R6Class(
             if (is.null(dep) || length(factors) == 0 || length(modelTerms) == 0)
                 return()
 
-            data <- private$.cleanData()
-            private$.data <- data
+            data <- self$finalData
 
             for (name in colnames(data)) {
                 column <- data[[name]]
@@ -65,6 +69,7 @@ ancovaClass <- R6::R6Class(
             private$.populatePostHoc(dataB64)
             private$.prepareEmmPlots(data)
             private$.populateEmmTables()
+            private$.populateOutputs()
         },
 
         #### Compute results ----
@@ -392,7 +397,7 @@ ancovaClass <- R6::R6Class(
                         p <- ''
                 } else if (index == 0) {
 
-                    summ <- summary.lm(private$.model)
+                    summ <- summary.lm(self$model)
                     fstat <- summ$fstatistic
 
                     ss <- modelSS
@@ -445,7 +450,7 @@ ancovaClass <- R6::R6Class(
                     # table$setStatus('running')
 
                     emmeans::emm_options(sep = ",", parens = "a^")
-                    referenceGrid <- emmeans::emmeans(private$.model, formula)
+                    referenceGrid <- emmeans::emmeans(self$model, formula)
                     none <- summary(pairs(referenceGrid, adjust='none'))
                     tukey <- summary(pairs(referenceGrid, adjust='tukey'))
                     scheffe <- summary(pairs(referenceGrid, adjust='scheffe'))
@@ -454,8 +459,8 @@ ancovaClass <- R6::R6Class(
                     effSize <- as.data.frame(
                         emmeans::eff_size(
                             referenceGrid,
-                            sigma=sigma(private$.model),
-                            edf=private$.model$df.residual,
+                            sigma=sigma(self$model),
+                            edf=self$model$df.residual,
                             level=self$options$postHocEsCiWidth/100
                         )
                     )
@@ -554,7 +559,7 @@ ancovaClass <- R6::R6Class(
             if ( ! self$options$homo)
                 return()
 
-            data[[".RES"]] = abs(private$.model$residuals)
+            data[[".RES"]] = abs(self$residuals)
             modelTerms <- private$.modelTerms()
             factors <- self$options$factors
 
@@ -626,10 +631,25 @@ ancovaClass <- R6::R6Class(
                 }
             }
         },
+        .populateOutputs=function() {
+
+            if (self$options$resids && self$results$resids$isNotFilled()) {
+                self$results$resids$setRowNums(rownames(self$finalData))
+                self$results$resids$setValues(self$residuals)
+            }
+
+            if (self$options$predict && self$results$predict$isNotFilled()) {
+                self$results$predict$setRowNums(rownames(self$finalData))
+                self$results$predict$setValues(self$predicted)
+            }
+        },
 
         #### Plot functions ----
         .qqPlot=function(image, ggtheme, theme, ...) {
-            residuals <- self$residuals
+
+            print(self$model)
+
+            residuals <- rstandard(self$model)
             if (is.null(residuals))
                 return()
 
@@ -648,7 +668,7 @@ ancovaClass <- R6::R6Class(
 
             group <- self$results$emm
             emmTables <- list()
-            model <- private$.model
+            model <- self$model
 
             dep <- self$options$dep
 
@@ -974,48 +994,80 @@ ancovaClass <- R6::R6Class(
                     reject("Factor '{}' contains no data", factorName=factorName)
             }
 
-        },
-        .cleanData=function() {
-
-            dep <- self$options$dep
-            factors <- self$options$factors
-
-            covs <- NULL
-            if ('covs' %in% names(self$options))
-                covs <- self$options$covs
-
-            data <- self$data
-
-            if ( ! is.null(dep))
-                data[[dep]] <- jmvcore::toNumeric(data[[dep]])
-
-            for (factor in factors)
-                data[[factor]] <- as.factor(data[[factor]])
-
-            for (covariate in covs)
-                data[[covariate]] <- jmvcore::toNumeric(data[[covariate]])
-
-            data <- na.omit(data)
-
-            data
         }),
     active=list(
-        residuals=function() {
+        ready=function() {
             dep <- self$options$dep
             factors <- self$options$factors
             modelTerms <- private$.modelTerms()
 
-            if (is.null(dep) || length(factors) == 0 || length(modelTerms) == 0)
-                return(NULL)
+            return( ! is.null(dep)
+                && (length(factors) > 0 || length(modelTerms) > 0)
+                && nrow(self$data) > 0)
+        },
+        finalData=function() {
 
-            data <- private$.cleanData()
+            if (self$ready && is.null(private$.finalData)) {
 
-            formula <- jmvcore::constructFormula(dep, modelTerms)
-            formula <- stats::as.formula(formula)
-            model <- stats::aov(formula, data)
+                dep <- self$options$dep
+                factors <- self$options$factors
 
-            residuals <- rstandard(model)
-            return(residuals)
+                covs <- NULL
+                if ('covs' %in% names(self$options))
+                    covs <- self$options$covs
+
+                data <- self$data
+
+                if ( ! is.null(dep))
+                    data[[dep]] <- jmvcore::toNumeric(data[[dep]])
+
+                for (factor in factors)
+                    data[[factor]] <- as.factor(data[[factor]])
+
+                for (covariate in covs)
+                    data[[covariate]] <- jmvcore::toNumeric(data[[covariate]])
+
+                private$.finalData <- na.omit(data)
+            }
+
+            private$.finalData
+        },
+        model=function() {
+
+            if (self$ready && is.null(private$.model)) {
+
+                dep <- self$options$dep
+                factors <- self$options$factors
+                modelTerms <- private$.modelTerms()
+                data <- self$finalData
+
+                suppressWarnings({
+
+                    base::options(contrasts = c("contr.sum","contr.poly"))
+
+                    for (contrast in self$options$contrasts) {
+                        levels <- base::levels(data[[contrast$var]])
+                        stats::contrasts(data[[contrast$var]]) <- private$.createContrasts(levels, contrast$type)
+                    }
+
+                    formula <- jmvcore::constructFormula(dep, modelTerms)
+                    formula <- stats::as.formula(formula)
+
+                    private$.model <- stats::aov(formula, data)
+                })
+            }
+
+            private$.model
+        },
+        residuals=function() {
+            if (self$ready && is.null(private$.residuals))
+                private$.residuals <- residuals(self$model)
+            private$.residuals
+        },
+        predicted=function() {
+            if (self$ready && is.null(private$.predicted))
+                private$.predicted <- self$finalData[[self$options$dep]] - self$residuals
+            private$.predicted
         }
     )
 )
