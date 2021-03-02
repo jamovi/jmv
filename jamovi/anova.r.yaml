@@ -101,21 +101,12 @@ items:
                 - ciWidthEmm
                 - emmWeights
 
-    - name: predict
-      title: Predicted values
-      type: Output
-      varTitle: '`Predicted - ${ dep }`'
-      varDescription: Predicted values from ANOVA
-      clearWith:
-        - dep
-        - factors
-        - modelTerms
-
-    - name: resids
+    - name: residsOV
       title: Residuals
       type: Output
-      varTitle: '`Residuals - ${ dep }`'
+      varTitle: Residuals
       varDescription: Residuals from ANOVA
+      measureType: continuous
       clearWith:
         - dep
         - factors

@@ -285,6 +285,4 @@ children:
         stretchFactor: 1
         children:
           - type: Output
-            name: predict
-          - type: Output
-            name: resids
+            name: residsOV
