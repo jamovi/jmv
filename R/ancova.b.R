@@ -10,7 +10,6 @@ ancovaClass <- R6::R6Class(
         .postHocRows = NA,
         .finalData = NA,
         .residuals = NA,
-        .predicted = NA,
         emMeans = list(),
 
         #### Init + run functions ----
@@ -19,7 +18,6 @@ ancovaClass <- R6::R6Class(
             private$.finalData <- NULL
             private$.model <- NULL
             private$.residuals <- NULL
-            private$.predicted <- NULL
 
             private$.initMainTable()
 
@@ -632,23 +630,14 @@ ancovaClass <- R6::R6Class(
             }
         },
         .populateOutputs=function() {
-
-            if (self$options$resids && self$results$resids$isNotFilled()) {
-                self$results$resids$setRowNums(rownames(self$finalData))
-                self$results$resids$setValues(self$residuals)
-            }
-
-            if (self$options$predict && self$results$predict$isNotFilled()) {
-                self$results$predict$setRowNums(rownames(self$finalData))
-                self$results$predict$setValues(self$predicted)
+            if (self$options$residsOV && self$results$residsOV$isNotFilled()) {
+                self$results$residsOV$setRowNums(rownames(self$finalData))
+                self$results$residsOV$setValues(self$residuals)
             }
         },
 
         #### Plot functions ----
         .qqPlot=function(image, ggtheme, theme, ...) {
-
-            print(self$model)
-
             residuals <- rstandard(self$model)
             if (is.null(residuals))
                 return()
@@ -995,6 +984,7 @@ ancovaClass <- R6::R6Class(
             }
 
         }),
+    #### Active bindings ----
     active=list(
         ready=function() {
             dep <- self$options$dep
@@ -1063,11 +1053,6 @@ ancovaClass <- R6::R6Class(
             if (self$ready && is.null(private$.residuals))
                 private$.residuals <- residuals(self$model)
             private$.residuals
-        },
-        predicted=function() {
-            if (self$ready && is.null(private$.predicted))
-                private$.predicted <- self$finalData[[self$options$dep]] - self$residuals
-            private$.predicted
         }
     )
 )

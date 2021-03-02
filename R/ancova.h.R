@@ -194,10 +194,8 @@ ancovaOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                 min=50,
                 max=99.9,
                 default=95)
-            private$..predict <- jmvcore::OptionOutput$new(
-                "predict")
-            private$..resids <- jmvcore::OptionOutput$new(
-                "resids")
+            private$..residsOV <- jmvcore::OptionOutput$new(
+                "residsOV")
 
             self$.addOption(private$..dep)
             self$.addOption(private$..factors)
@@ -222,8 +220,7 @@ ancovaOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..emmTables)
             self$.addOption(private$..emmWeights)
             self$.addOption(private$..ciWidthEmm)
-            self$.addOption(private$..predict)
-            self$.addOption(private$..resids)
+            self$.addOption(private$..residsOV)
         }),
     active = list(
         dep = function() private$..dep$value,
@@ -249,8 +246,7 @@ ancovaOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
         emmTables = function() private$..emmTables$value,
         emmWeights = function() private$..emmWeights$value,
         ciWidthEmm = function() private$..ciWidthEmm$value,
-        predict = function() private$..predict$value,
-        resids = function() private$..resids$value),
+        residsOV = function() private$..residsOV$value),
     private = list(
         ..dep = NA,
         ..factors = NA,
@@ -275,8 +271,7 @@ ancovaOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
         ..emmTables = NA,
         ..emmWeights = NA,
         ..ciWidthEmm = NA,
-        ..predict = NA,
-        ..resids = NA)
+        ..residsOV = NA)
 )
 
 ancovaResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
@@ -288,8 +283,7 @@ ancovaResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
         contrasts = function() private$.items[["contrasts"]],
         postHoc = function() private$.items[["postHoc"]],
         emm = function() private$.items[["emm"]],
-        predict = function() private$.items[["predict"]],
-        resids = function() private$.items[["resids"]]),
+        residsOV = function() private$.items[["residsOV"]]),
     private = list(
         ..model = NA),
     public=list(
@@ -522,21 +516,11 @@ ancovaResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                                     "modelTerms")))}))$new(options=options)))
             self$add(jmvcore::Output$new(
                 options=options,
-                name="predict",
-                title="Predicted values",
-                varTitle="`Predicted - ${ dep }`",
-                varDescription="Predicted values from ANCOVA",
-                clearWith=list(
-                    "dep",
-                    "factors",
-                    "covs",
-                    "modelTerms")))
-            self$add(jmvcore::Output$new(
-                options=options,
-                name="resids",
+                name="residsOV",
                 title="Residuals",
-                varTitle="`Residuals - ${ dep }`",
+                varTitle="Residuals",
                 varDescription="Residuals from ANCOVA",
+                measureType="continuous",
                 clearWith=list(
                     "dep",
                     "factors",
@@ -659,8 +643,7 @@ ancovaBase <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
 #'   \code{results$contrasts} \tab \tab \tab \tab \tab an array of contrasts tables \cr
 #'   \code{results$postHoc} \tab \tab \tab \tab \tab an array of post-hoc tables \cr
 #'   \code{results$emm} \tab \tab \tab \tab \tab an array of the estimated marginal means plots + tables \cr
-#'   \code{results$predict} \tab \tab \tab \tab \tab an output \cr
-#'   \code{results$resids} \tab \tab \tab \tab \tab an output \cr
+#'   \code{results$residsOV} \tab \tab \tab \tab \tab an output \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
