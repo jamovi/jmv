@@ -1076,7 +1076,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 return(FALSE)
 
             prob <- predict(self$models[[image$state]], type=c("response"))
-            pred <- ROCR::prediction(self$fitted[[i]], self$models[[image$state]]$y)
+            pred <- ROCR::prediction(self$fitted[[image$state]], self$models[[image$state]]$y)
             perf <- ROCR::performance(pred, measure = "tpr", x.measure = "fpr")
 
             df <- data.frame(x=unlist(perf@x.values), y=unlist(perf@y.values))
@@ -1101,6 +1101,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             if (is.null(image$state))
                 return(FALSE)
 
+            cutOff <- self$options$cutOff
             prob <- self$fitted[[image$state]]
             pred <- ROCR::prediction(prob, self$models[[image$state]]$y)
 
