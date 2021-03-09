@@ -870,6 +870,9 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             }
         },
         .populateClassTable = function(results) {
+            if ( ! self$options$class)
+                return()
+
             groups <- self$results$models
             classTables <- self$classTable
 
@@ -893,12 +896,16 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             for (i in seq_along(groups)) {
                 table <- groups$get(key=i)$pred$measures
-                classTable <- self$classTable[[i]]
 
                 row <- list()
-                row[['accuracy']] <- (classTable[1,1] + classTable[2,2]) / sum(classTable)
-                row[['spec']] <- (classTable[1,1] / sum(classTable[1,]))
-                row[['sens']] <- (classTable[2,2] / sum(classTable[2,]))
+
+                if (self$options$acc || self$options$spec || self$options$sens) {
+                    classTable <- self$classTable[[i]]
+
+                    row[['accuracy']] <- (classTable[1,1] + classTable[2,2]) / sum(classTable)
+                    row[['spec']] <- (classTable[1,1] / sum(classTable[1,]))
+                    row[['sens']] <- (classTable[2,2] / sum(classTable[2,]))
+                }
 
                 if (self$options$auc)
                     row[['auc']] <- self$AUC[[i]]
@@ -907,6 +914,9 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             }
         },
         .populateCollinearityTable = function() {
+            if ( ! self$options$collin)
+                return()
+
             groups <- self$results$models
             termsAll <- private$.getModelTerms()
 
@@ -1204,7 +1214,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         },
         .errorCheck = function() {
             dep <- self$options$dep
-            column <- self$dataProcessed[[jmvcore::toB64(dep)]]
+            column <- self$data[[dep]]
 
             if (length(levels(column)) > 2)
                 jmvcore::reject(jmvcore::format('The dependent variable \'{}\' has more than two levels;
@@ -1224,13 +1234,9 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             refVars <- sapply(refLevels, function(x) x$var)
 
             for (factor in c(dep, factors)) {
-
                 ref <- refLevels[[which(factor == refVars)]][['ref']]
-
-                rows <- jmvcore::toB64(as.character(dataRaw[[factor]]))
-                levels <- jmvcore::toB64(levels(dataRaw[[factor]]))
-
-                column <- factor(rows, levels=levels)
+                column <- dataRaw[[factor]]
+                levels(column) <- jmvcore::toB64(levels(column))
                 column <- relevel(column, ref = jmvcore::toB64(ref))
 
                 data[[jmvcore::toB64(factor)]] <- column

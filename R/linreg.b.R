@@ -1196,15 +1196,12 @@ linRegClass <- R6::R6Class(
 
             for (factor in factors) {
                 ref <- refLevels[[which(factor == refVars)]][['ref']]
-
-                rows <- jmvcore::toB64(as.character(dataRaw[[factor]]))
-                levels <- jmvcore::toB64(levels(dataRaw[[factor]]))
-
-                column <- factor(rows, levels=levels)
+                column <- dataRaw[[factor]]
+                levels(column) <- jmvcore::toB64(levels(column))
                 column <- relevel(column, ref = jmvcore::toB64(ref))
 
                 data[[jmvcore::toB64(factor)]] <- column
-                stats::contrasts(data[[jmvcore::toB64(factor)]]) <- private$.createContrasts(levels)
+                stats::contrasts(data[[jmvcore::toB64(factor)]]) <- private$.createContrasts(levels(column))
             }
 
             for (cov in c(dep, covs))
