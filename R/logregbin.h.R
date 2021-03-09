@@ -228,6 +228,12 @@ logRegBinOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                 cooks,
                 default=FALSE,
                 hidden=TRUE)
+            private$..predictOV <- jmvcore::OptionOutput$new(
+                "predictOV")
+            private$..residsOV <- jmvcore::OptionOutput$new(
+                "residsOV")
+            private$..cooksOV <- jmvcore::OptionOutput$new(
+                "cooksOV")
 
             self$.addOption(private$..dep)
             self$.addOption(private$..covs)
@@ -262,6 +268,9 @@ logRegBinOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..collin)
             self$.addOption(private$..boxTidwell)
             self$.addOption(private$..cooks)
+            self$.addOption(private$..predictOV)
+            self$.addOption(private$..residsOV)
+            self$.addOption(private$..cooksOV)
         }),
     active = list(
         dep = function() private$..dep$value,
@@ -296,7 +305,10 @@ logRegBinOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
         cutOffPlot = function() private$..cutOffPlot$value,
         collin = function() private$..collin$value,
         boxTidwell = function() private$..boxTidwell$value,
-        cooks = function() private$..cooks$value),
+        cooks = function() private$..cooks$value,
+        predictOV = function() private$..predictOV$value,
+        residsOV = function() private$..residsOV$value,
+        cooksOV = function() private$..cooksOV$value),
     private = list(
         ..dep = NA,
         ..covs = NA,
@@ -330,7 +342,10 @@ logRegBinOptions <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
         ..cutOffPlot = NA,
         ..collin = NA,
         ..boxTidwell = NA,
-        ..cooks = NA)
+        ..cooks = NA,
+        ..predictOV = NA,
+        ..residsOV = NA,
+        ..cooksOV = NA)
 )
 
 logRegBinResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
@@ -338,7 +353,10 @@ logRegBinResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
     active = list(
         modelFit = function() private$.items[["modelFit"]],
         modelComp = function() private$.items[["modelComp"]],
-        models = function() private$.items[["models"]]),
+        models = function() private$.items[["models"]],
+        predictOV = function() private$.items[["predictOV"]],
+        residsOV = function() private$.items[["residsOV"]],
+        cooksOV = function() private$.items[["cooksOV"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -791,7 +809,37 @@ logRegBinResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                                             clearWith=list(
                                                 "dep",
                                                 "blocks",
-                                                "refLevels")))}))$new(options=options))}))$new(options=options)))}))
+                                                "refLevels")))}))$new(options=options))}))$new(options=options)))
+            self$add(jmvcore::Output$new(
+                options=options,
+                name="predictOV",
+                title="Predicted values",
+                measureType="continuous",
+                items="(blocks)",
+                clearWith=list(
+                    "dep",
+                    "blocks",
+                    "refLevels")))
+            self$add(jmvcore::Output$new(
+                options=options,
+                name="residsOV",
+                title="Residuals",
+                measureType="continuous",
+                items="(blocks)",
+                clearWith=list(
+                    "dep",
+                    "blocks",
+                    "refLevels")))
+            self$add(jmvcore::Output$new(
+                options=options,
+                name="cooksOV",
+                title="Cook's distance",
+                measureType="continuous",
+                items="(blocks)",
+                clearWith=list(
+                    "dep",
+                    "blocks",
+                    "refLevels")))}))
 
 logRegBinBase <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
     "logRegBinBase",
@@ -932,6 +980,9 @@ logRegBinBase <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
 #'   \code{results$modelFit} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$modelComp} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$models} \tab \tab \tab \tab \tab an array of model specific results \cr
+#'   \code{results$predictOV} \tab \tab \tab \tab \tab an output \cr
+#'   \code{results$residsOV} \tab \tab \tab \tab \tab an output \cr
+#'   \code{results$cooksOV} \tab \tab \tab \tab \tab an output \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

@@ -2,17 +2,166 @@
 logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
     "logRegBinClass",
     inherit = logRegBinBase,
+    #### Active bindings ----
+    active = list(
+        dataProcessed = function() {
+            if (is.null(private$.dataProcessed))
+                private$.dataProcessed <- private$.cleanData()
+
+            return(private$.dataProcessed)
+        },
+        formulas = function() {
+            if (is.null(private$.formulas))
+                private$.formulas <- private$.getFormulas()
+
+            return(private$.formulas)
+        },
+        models = function() {
+            if (is.null(private$.models))
+                private$.models <- private$.computeModels()
+
+            return(private$.models)
+        },
+        nModels = function() {
+            if (is.null(private$.nModels))
+                private$.nModels <- length(self$options$blocks)
+
+            return(private$.nModels)
+        },
+        residuals = function() {
+            if (is.null(private$.residuals))
+                private$.residuals <- private$.computeResiduals()
+
+            return(private$.residuals)
+        },
+        fitted = function() {
+            if (is.null(private$.fitted))
+                private$.fitted <- private$.computeFitted()
+
+            return(private$.fitted)
+        },
+        predicted = function() {
+            if (is.null(private$.predicted))
+                private$.predicted <- private$.computePredicted()
+
+            return(private$.predicted)
+        },
+        cooks = function() {
+            if (is.null(private$.cooks))
+                private$.cooks <- private$.computeCooks()
+
+            return(private$.cooks)
+        },
+        lrtModelComparison = function() {
+            if (is.null(private$.lrtModelComparison))
+                private$.lrtModelComparison <- do.call(stats::anova, c(self$models, test="Chisq"))
+
+            return(private$.lrtModelComparison)
+        },
+        lrtModelTerms = function() {
+            if (is.null(private$.lrtModelTerms))
+                private$.lrtModelTerms <- private$.computeLrtModelTerms()
+
+            return(private$.lrtModelTerms)
+        },
+        deviance = function() {
+            if (is.null(private$.deviance))
+                private$.deviance <- private$.computeDeviance()
+
+            return(private$.deviance)
+        },
+        AIC = function() {
+            if (is.null(private$.AIC))
+                private$.AIC <- private$.computeAIC()
+
+            return(private$.AIC)
+        },
+        BIC = function() {
+            if (is.null(private$.BIC))
+                private$.BIC <- private$.computeBIC()
+
+            return(private$.BIC)
+        },
+        pseudoR2 = function() {
+            if (is.null(private$.pseudoR2))
+                private$.pseudoR2 <- private$.computePseudoR2()
+
+            return(private$.pseudoR2)
+        },
+        modelTest = function() {
+            if (is.null(private$.modelTest))
+                private$.modelTest <- private$.computeModelTest()
+
+            return(private$.modelTest)
+        },
+        VIF = function() {
+            if (is.null(private$.VIF))
+                private$.VIF <- private$.computeVIF()
+
+            return(private$.VIF)
+        },
+        CICoefEst = function() {
+            if (is.null(private$.CICoefEst))
+                private$.CICoefEst <- private$.computeCICoefEst()
+
+            return(private$.CICoefEst)
+        },
+        CICoefEstOR = function() {
+            if (is.null(private$.CICoefEstOR))
+                private$.CICoefEstOR <- private$.computeCICoefEst(type="OR")
+
+            return(private$.CICoefEstOR)
+        },
+        classTable = function() {
+            if (is.null(private$.classTable))
+                private$.classTable <- private$.computeClassTable()
+
+            return(private$.classTable)
+        },
+        AUC = function() {
+            if (is.null(private$.AUC))
+                private$.AUC <- private$.computeAUC()
+
+            return(private$.AUC)
+        },
+        emMeans = function() {
+            if (is.null(private$.emMeans))
+                private$.emMeans <- private$.computeEmMeans()
+
+            return(private$.emMeans)
+        }
+    ),
     private = list(
         #### Member variables ----
-        terms = NULL,
-        coefTerms = list(),
-        emMeans = list(),
+        .dataProcessed = NULL,
+        .dataRowNums = NULL,
+        .formulas = NULL,
+        .models = NULL,
+        .nModels = NULL,
+        .residuals = NULL,
+        .fitted = NULL,
+        .predicted = NULL,
+        .cooks = NULL,
+        .modelTerms = NULL,
+        .lrtModelComparison = NULL,
+        .lrtModelTerms = NULL,
+        .deviance = NULL,
+        .AIC = NULL,
+        .BIC = NULL,
+        .pseudoR2 = NULL,
+        .modelTest = NULL,
+        .VIF = NULL,
+        .CICoefEst = NULL,
+        .CICoefEstOR = NULL,
+        .classTable = NULL,
+        .AUC = NULL,
+        .rowNamesModel = NULL,
+        .levelsDep = NULL,
+        .emMeans = NULL,
+        .emMeansForPlot = NULL,
 
         #### Init + run functions ----
         .init = function() {
-
-            private$.modelTerms()
-
             private$.initModelFitTable()
             private$.initModelCompTable()
             private$.initModelSpec()
@@ -23,116 +172,250 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             private$.initClassTable()
             private$.initPredMeasuresTable()
             private$.initCollinearityTable()
-            # private$.initBoxTidwellTable()
-
+            private$.initOutputs()
         },
         .run = function() {
+            if (is.null(self$options$dep) || self$nModels < 1 || length(self$options$blocks[[1]]) == 0)
+                return()
 
-            ready <- TRUE
-            if (is.null(self$options$dep) || length(self$options$blocks) < 1 || length(self$options$blocks[[1]]) == 0)
-                ready <- FALSE
+            private$.errorCheck()
 
-            if (ready) {
+            private$.populateModelFitTable()
+            private$.populateModelCompTable()
+            private$.populateLrtTables()
+            private$.populateCoefTables()
 
-                data <- private$.cleanData()
-                private$.errorCheck(data)
+            private$.populateEmmTables()
+            private$.populateClassTable()
+            private$.populatePredMeasuresTable()
+            private$.populateCollinearityTable()
 
-                results <- private$.compute(data)
+            private$.prepareRocPlot()
+            private$.prepareCutOffPlot()
+            private$.prepareEmmPlots()
 
-                private$.populateModelFitTable(results)
-                private$.populateModelCompTable(results)
-                private$.populateLrtTables(results)
-                private$.populateCoefTables(results)
-                private$.prepareEmmPlots(results$models, data=data)
-                private$.populateEmmTables()
-                # private$.populateCooksTable(results)
-                private$.populateClassTable(results)
-                private$.populatePredMeasuresTable(results)
-                private$.populateCollinearityTable(results)
-                # private$.populateBoxTidwellTable(data, results)
-                private$.prepareRocPlot(results$models)
-                private$.prepareCutOffPlot(results$models)
-            }
+            private$.populateOutputs()
         },
 
         #### Compute results ----
-        .compute = function(data) {
+        .computeModels = function(modelNo = NULL) {
+            data <- self$dataProcessed
+            formulas <- self$formulas
 
-            formulas <- private$.formulas()
+            if (is.numeric(modelNo))
+                formulas <- formulas[modelNo]
 
-            suppressWarnings({
-                suppressMessages({
+            models <- list()
+            for (i in seq_along(formulas))
+                models[[i]] <- stats::glm(formulas[[i]],  data=data, family="binomial")
 
-                    models <- list(); modelTest <- list(); lrTestTerms <- list(); dev <- list();
-                    AIC <- list(); BIC <- list(); pseudoR <- list(); VIF <- list(); CI <- list();
-                    CIOR <- list(); cooks <- list(); classTable <- list(); AUC <- list()
+            return(models)
+        },
+        .computeResiduals = function() {
+            res <- list()
+            for (i in seq_along(self$models))
+                res[[i]] <- self$models[[i]]$residuals
 
-                    for (i in seq_along(formulas)) {
+            return(res)
+        },
+        .computeFitted = function() {
+            fitted <- list()
+            for (i in seq_along(self$models))
+                fitted[[i]] <- self$models[[i]]$fitted.values
 
-                        models[[i]] <- stats::glm(formulas[[i]],  data=data, family="binomial")
+            return(fitted)
+        },
+        .computePredicted = function() {
+            data <- private$.cleanData(naSkip=jmvcore::toB64(self$options$dep))
+            predicted <- list()
+            for (i in seq_along(self$models))
+                predicted[[i]] <- predict(self$models[[i]], data, type="response")
 
-                        if (self$options$omni)
-                            lrTestTerms[[i]] <- car::Anova(models[[i]], test="LR", type=3, singular.ok=TRUE)
+            return(predicted)
+        },
+        .computeCooks = function() {
+            cooks <- list()
+            for (i in seq_along(self$models))
+                cooks[[i]] <- stats::cooks.distance(self$models[[i]])
 
-                        modelTest[[i]] <- private$.modelTest(models[[i]])
-                        dev[[i]] <- models[[i]]$deviance
-                        AIC[[i]] <- stats::AIC(models[[i]])
-                        BIC[[i]] <- stats::BIC(models[[i]])
-                        pseudoR[[i]] <- private$.pseudoR2(models[[i]])
+            return(cooks)
+        },
+        .computeLrtModelTerms = function() {
+            lrtModelTerms <- list()
+            for (i in seq_along(self$models)) {
+                lrtModelTerms[[i]] <- car::Anova(
+                    self$models[[i]],
+                    test="LR",
+                    type=3,
+                    singular.ok=TRUE
+                )
+            }
 
-                        classTable[[i]] <- private$.classTable(models[[i]])
+            return(lrtModelTerms)
+        },
+        .computeDeviance = function() {
+            dev <- list()
+            for (i in seq_along(self$models))
+                dev[[i]] <- self$models[[i]]$deviance
 
-                        if (self$options$auc)
-                            AUC[[i]] <- private$.auc(models[[i]])
+            return(dev)
+        },
+        .computeAIC = function() {
+            AIC <- list()
+            for (i in seq_along(self$models))
+                AIC[[i]] <- stats::AIC(self$models[[i]])
 
-                        # cooks[[i]] <- stats::cooks.distance(models[[i]])
+            return(AIC)
+        },
+        .computeBIC = function() {
+            BIC <- list()
+            for (i in seq_along(self$models))
+                BIC[[i]] <- stats::BIC(self$models[[i]])
 
-                        CI[[i]] <- try(confint.default(models[[i]], level=self$options$ciWidth/100), silent=TRUE)
-                        if (jmvcore::isError(CI[[i]]))
-                            CI[[i]] <- confint.default(models[[i]], level=self$options$ciWidth/100)
+            return(BIC)
+        },
+        .computePseudoR2 = function() {
+            pR2 <- list()
+            for (i in seq_along(self$models)) {
+                dev <- self$deviance[[i]]
+                nullDev <- self$models[[i]]$null.deviance
+                n <- length(self$models[[i]]$fitted.values)
 
-                        CILO <- try(confint.default(models[[i]], level=self$options$ciWidthOR/100), silent=TRUE)
-                        if (jmvcore::isError(CILO))
-                            CILO <- confint.default(models[[i]], level=self$options$ciWidthOR/100)
+                r2mf <- 1 - dev/nullDev
+                r2cs <- 1 - exp(-(nullDev - dev) / n)
+                r2n <- r2cs / (1 - exp(-nullDev / n))
 
-                        CIOR[[i]] <- exp(CILO)
+                pR2[[i]] <- list(r2mf=r2mf, r2cs=r2cs, r2n=r2n)
+            }
+            return(pR2)
+        },
+        .computeModelTest = function() {
+            modelTest <- list()
+            for (i in seq_along(self$models)) {
+                chi <- self$models[[i]]$null.deviance - self$deviance[[i]]
+                df <- self$models[[i]]$df.null - self$models[[i]]$df.residual
+                p <- 1 - pchisq(chi, df)
 
-                        if (length(private$terms[[i]]) > 1) {
-                            VIF[[i]] <- try(car::vif(models[[i]]), silent=TRUE)
+                modelTest[[i]] <- list(chi=chi, df=df, p=p)
+            }
+            return(modelTest)
+        },
+        .computeVIF = function() {
+            VIF <- list()
+            for (i in seq_along(self$models)) {
+                if (length(private$.getModelTerms()[[i]]) > 1) {
+                    VIF[[i]] <- try(car::vif(self$models[[i]]), silent=TRUE)
 
-                            if (isError(VIF[[i]]) && extractErrorMessage(VIF[[i]]) == 'there are aliased coefficients in the model')
-                                jmvcore::reject("One or more coefficients in model '{}' could not be estimated due to perfect collinearity.", code='error', i)
-                        } else {
-                            VIF[[i]] <- NULL
-                        }
+                    if (isError(VIF[[i]]) && extractErrorMessage(VIF[[i]]) == 'there are aliased coefficients in the model') {
+                        jmvcore::reject("One or more coefficients in model '{}' could not be estimated due to perfect collinearity.", code='error', i)
                     }
+                } else {
+                    VIF[[i]] <- NULL
+                }
+            }
+            return(VIF)
+        },
+        .computeCICoefEst = function(type="LOR") {
+            if (type == "OR")
+                level <- self$options$ciWidthOR/100
+            else
+                level <- self$options$ciWidth/100
 
-                    lrTest <- do.call(stats::anova, c(models, test="Chisq"))
-                    # bt <- private$.boxTidwell(data, formulas)
+            ci <- list()
+            for (i in seq_along(self$models)) {
+                ci[[i]] <- confint.default(self$models[[i]], level=level)
+                if (type == "OR")
+                    ci[[i]] <- exp(ci[[i]])
+            }
+            return(ci)
+        },
+        .computeClassTable = function() {
+            class <- list()
+            for (i in seq_along(self$models)) {
+                pred <- ifelse(self$fitted[[i]] > self$options$cutOff, 1, 0)
+                df <- data.frame(response=factor(self$models[[i]]$y, levels=c(0,1)),
+                                 predicted=factor(pred, levels=c(0,1)))
+                class[[i]] <- stats::xtabs(~ response + predicted, data=df)
+            }
+            return(class)
+        },
+        .computeAUC = function() {
+            AUC <- list()
+            for (i in seq_along(self$models)) {
+                prob <- self$fitted[[i]]
+                pred <- ROCR::prediction(prob, self$models[[i]]$y)
+                perf <- ROCR::performance(pred, measure = "auc")
 
-                }) # Supress messages
-            }) # Supress warnings
+                AUC[[i]] <- unlist(perf@y.values)
+            }
+            return(AUC)
+        },
+        .computeEmMeans = function(forPlot = FALSE) {
+            covs <- self$options$covs
+            termsAll <- private$.getModelTerms()
+            emMeansTerms <- self$options$emMeans
 
-            results <- list(models=models, modelTest=modelTest, lrTestTerms=lrTestTerms, dev=dev,
-                            AIC=AIC, BIC=BIC, pseudoR=pseudoR, lrTest=lrTest, VIF=VIF, CI=CI,
-                            CIOR=CIOR, classTable=classTable, AUC=AUC, cooks=cooks)
+            emMeans <- list()
+            for (i in seq_along(termsAll)) {
+                terms <- unique(unlist(termsAll[[i]]))
+                model <- self$models[[i]]
 
-            return(results)
+                emmTable <- list()
+                for (j in seq_along(emMeansTerms)) {
+                    term <- emMeansTerms[[j]]
+
+                    if ( ! is.null(term) && all(term %in% terms)) {
+                        termB64 <- jmvcore::toB64(term)
+
+                        FUN <- list()
+                        for (k in seq_along(termB64)) {
+                            if (term[k] %in% covs) {
+                                if (forPlot && k == 1) {
+                                    FUN[[termB64[k]]] <- function(x) pretty(x, 25)
+                                } else {
+                                    FUN[[termB64[k]]] <- function(x) c(mean(x)-sd(x), mean(x), mean(x)+sd(x))
+                                }
+                            }
+                        }
+
+                        formula <- formula(paste('~', jmvcore::composeTerm(termB64)))
+
+                        if (self$options$emmWeights)
+                            weights <- 'equal'
+                        else
+                            weights <- 'cells'
+
+                        suppressMessages({
+                            emmeans::emm_options(sep=",", parens="a^", cov.keep=1)
+
+                            mm <- try(
+                                emmeans::emmeans(model, formula, cov.reduce=FUN, type='response',
+                                                 options=list(level=self$options$ciWidthEmm / 100),
+                                                 weights=weights, data=self$dataProcessed),
+                                silent = TRUE
+                            )
+
+                            emmTable[[j]] <- try(as.data.frame(summary(mm)), silent = TRUE)
+                        })
+                    }
+                }
+
+                emMeans[[i]] <- emmTable
+            }
+
+            return(emMeans)
         },
 
         #### Init tables/plots functions ----
         .initModelFitTable = function() {
-
             table <- self$results$modelFit
 
-            for (i in seq_along(private$terms))
+            for (i in seq_along(private$.getModelTerms()))
                 table$addRow(rowKey=i, values=list(model = i))
-
         },
         .initModelCompTable = function() {
-
             table <- self$results$modelComp
-            terms <- private$terms
+            terms <- private$.getModelTerms()
 
             if (length(terms) <= 1) {
                 table$setVisible(visible = FALSE)
@@ -144,55 +427,45 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
         },
         .initModelSpec = function() {
-
             groups <- self$results$models
 
-            for (i in seq_along(private$terms)) {
+            for (i in seq_along(private$.getModelTerms())) {
                 groups$addItem(key=i)
                 group <- groups$get(key=i)
                 group$setTitle(paste("Model",i))
             }
         },
         .initLrtTables = function() {
-
             groups <- self$results$models
-            termsAll <- private$terms
+            termsAll <- private$.getModelTerms()
 
             for (i in seq_along(termsAll)) {
-
                 table <- groups$get(key=i)$lrt
                 terms <- termsAll[[i]]
-
-                # if (length(terms) == 0)
-                #     next()
 
                 for (j in seq_along(terms))
                     table$addRow(rowKey=paste0(terms[[j]]), values=list(term = jmvcore::stringifyTerm(terms[j])))
             }
         },
         .initCoefTables = function() {
-
             groups <- self$results$models
-            termsAll <- private$terms
+            factors <- self$options$factors
+            termsAll <- private$.getModelTerms()
             data <- self$data
 
-            factors <- self$options$factors
-
             dep <- self$options$dep
-
-            if ( ! is.null(dep) ) {
-                refLevels <- self$options$refLevels
-                depLevels <- levels(self$data[[dep]])
-                refVars <- sapply(refLevels, function(x) x$var)
-                depRef <- refLevels[[which(dep == refVars)]][['ref']]
-                depLevel <- depLevels[-which(depRef == depLevels)]
-                note <- paste0("Estimates represent the log odds of \"", dep, " = ", depLevel, "\" vs. \"", dep, " = ", depRef, "\"")
-            } else {
+            if (is.null(dep) ) {
                 note <- paste0("Estimates represent the log odds of \u2026")
+            } else {
+                depLevels <- private$.getLevelsDep()
+                note <- paste0("Estimates represent the log odds of \"",
+                               dep, " = ", depLevels$other, "\" vs. \"", dep, " = ",
+                               depLevels$ref, "\"")
             }
 
-            for (i in seq_along(termsAll)) {
+            rowNamesModel <- private$.getRowNamesModel()
 
+            for (i in seq_along(termsAll)) {
                 table <- groups$get(key=i)$coef
 
                 ciWidth <- self$options$ciWidth
@@ -203,50 +476,43 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 table$getColumn('oddsLower')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidthOR))
                 table$getColumn('oddsUpper')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidthOR))
 
-                coefTerms <- list()
+                coefTerms <- rowNamesModel[[i]]
 
                 table$addRow(rowKey="`(Intercept)`", values=list(term = "Intercept"))
-                coefTerms[[1]] <- "(Intercept)"
 
                 terms <- termsAll[[i]]
 
+                iter <- 1
                 for (j in seq_along(terms)) {
+                    if (any(terms[[j]] %in% factors)) {
 
-                    if (any(terms[[j]] %in% factors)) { # check if there are factors in the term
+                        table$addRow(rowKey=terms[[j]],
+                                     values=list(term = paste0(jmvcore::stringifyTerm(terms[[j]]), ':'),
+                                                 est='', se='', odds='', z='', p='',
+                                                 lower='', upper='', oddsLower='', oddsUpper=''))
 
-                        table$addRow(rowKey=terms[[j]], values=list(term = paste0(jmvcore::stringifyTerm(terms[[j]]), ':'),
-                                                                    est='', se='', odds='', z='', p='',
-                                                                    lower='', upper='', oddsLower='', oddsUpper=''))
+                        contrastNames <- private$.contrastsCoefTable(terms[[j]])
 
-                        coefs <- private$.coefTerms(terms[[j]])
-                        coefNames <- coefs$coefNames
-
-                        for (k in seq_along(coefNames)) {
-                            rowKey <- jmvcore::composeTerm(coefs$coefTerms[[k]])
-                            table$addRow(rowKey=rowKey, values=list(term = coefNames[[k]]))
+                        for (k in seq_along(contrastNames)) {
+                            iter <- iter + 1
+                            rowKey <- jmvcore::composeTerm(coefTerms[[iter]])
+                            table$addRow(rowKey=rowKey, values=list(term = contrastNames[[k]]))
                             table$addFormat(rowKey=rowKey, col=1, Cell.INDENTED)
                         }
-
-                        coefTerms <- c(coefTerms, coefs$coefTerms)
-
                     } else {
-
+                        iter <- iter + 1
                         rowKey <- jmvcore::composeTerm(jmvcore::toB64(terms[[j]]))
                         table$addRow(rowKey=rowKey, values=list(term = jmvcore::stringifyTerm(terms[[j]])))
-
-                        coefTerms[[length(coefTerms) + 1]] <- jmvcore::toB64(terms[[j]])
-
                     }
                 }
 
                 table$setNote("est", note)
-                private$coefTerms[[i]] <- coefTerms
             }
         },
         .initEmm = function() {
 
             groups <- self$results$models
-            termsAll <- private$terms
+            termsAll <- private$.getModelTerms()
             emMeans <- self$options$emMeans
 
             for (i in seq_along(termsAll)) {
@@ -273,7 +539,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         .initEmmTable = function() {
 
             groups <- self$results$models
-            termsAll <- private$terms
+            termsAll <- private$.getModelTerms()
             emMeans <- self$options$emMeans
             factors <- self$options$factors
 
@@ -357,7 +623,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         .initPredMeasuresTable = function() {
 
             groups <- self$results$models
-            termsAll <- private$terms
+            termsAll <- private$.getModelTerms()
             cutOff <- self$options$cutOff
 
             for (i in seq_along(termsAll)) {
@@ -366,9 +632,8 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             }
         },
         .initCollinearityTable = function() {
-
             groups <- self$results$models
-            termsAll <- private$terms
+            termsAll <- private$.getModelTerms()
 
             for (i in seq_along(termsAll)) {
 
@@ -382,69 +647,82 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                     table$addRow(rowKey=i, values=list(term = jmvcore::stringifyTerm(terms[i])))
             }
         },
-        .initBoxTidwellTable = function() {
+        .initOutputs = function() {
+            description = function(part1, part2=NULL) {
+                return(
+                    jmvcore::format(
+                        "{} of binomial logistic regression model{}",
+                        part1,
+                        ifelse(is.null(part2), "", paste0(" ", part2))
+                    )
+                )
+            }
 
-            groups <- self$results$models
-            termsAll <- private$terms
-            covs <- self$options$covs
+            title = function(part1=NULL, part2=NULL) {
+                return(jmvcore::format("{} - {}", part1, part2))
+            }
 
-            for (i in seq_along(termsAll)) {
+            predictTitle <- "Predicted"
+            residsTitle <- "Residuals"
+            cooksTitle <- "Cook's distance"
 
-                table <- groups$get(key=i)$assump$boxTidwell
-                terms <- termsAll[[i]]
+            if (is.null(self$options$dep)) {
+                dep <- "\u2026"
+                predictDescPrefix <- "Predicted probability of \u2026 = \u2026 (vs \u2026 = \u2026)"
+            } else {
+                dep <- self$options$dep
+                predictDescPrefix <- jmvcore::format("Predicted probability of {} = {} (vs {} = {})",
+                                                     dep,
+                                                     private$.getLevelsDep()$other,
+                                                     dep,
+                                                     private$.getLevelsDep()$ref)
+            }
 
-                if (length(terms) < 1)
-                    terms <- ''
-
-                for (term in terms) {
-                    if (length(term) == 1 &&  term %in% covs)
-                        table$addRow(rowKey=jmvcore::toB64(term), values=list(term = term))
+            if (self$nModels == 1) {
+                self$results$predictOV$setTitle(title(predictTitle, dep))
+                self$results$predictOV$setDescription(description(predictDescPrefix))
+                self$results$residsOV$setTitle(residsTitle)
+                self$results$residsOV$setDescription(description(residsTitle))
+                self$results$cooksOV$setTitle(cooksTitle)
+                self$results$cooksOV$setDescription(description(cooksTitle))
+            } else if (self$nModels > 1) {
+                for (i in 1:self$nModels) {
+                    self$results$predictOV$setTitle(index=i, title(predictTitle, paste(dep, i)))
+                    self$results$predictOV$setDescription(index=i, description(predictDescPrefix, i))
+                    self$results$residsOV$setTitle(index=i, title(residsTitle, i))
+                    self$results$residsOV$setDescription(index=i, description(residsTitle, i))
+                    self$results$cooksOV$setTitle(index=i, title(cooksTitle, i))
+                    self$results$cooksOV$setDescription(index=i, description(cooksTitle, i))
                 }
-
-                table$setNote("ns", "A non-significant result indicates that the assumption is met")
             }
         },
 
         #### Populate tables functions ----
-        .populateModelFitTable = function(results) {
-
+        .populateModelFitTable = function() {
             table <- self$results$modelFit
-
-            AIC <- results$AIC
-            BIC <- results$BIC
-            pR2 <- results$pseudoR
-            modelTest <- results$modelTest
-            dev <- results$dev
-
-            for (i in seq_along(AIC)) {
-
+            for (i in 1:self$nModels) {
                 row <- list()
-                row[["r2mf"]] <- pR2[[i]]$r2mf
-                row[["r2cs"]] <- pR2[[i]]$r2cs
-                row[["r2n"]] <- pR2[[i]]$r2n
-                row[["dev"]] <- dev[[i]]
-                row[["aic"]] <- AIC[[i]]
-                row[["bic"]] <- BIC[[i]]
-                row[["chi"]] <- modelTest[[i]]$chi
-                row[["df"]] <- modelTest[[i]]$df
-                row[["p"]] <- modelTest[[i]]$p
+                row[["r2mf"]] <- self$pseudoR2[[i]]$r2mf
+                row[["r2cs"]] <- self$pseudoR2[[i]]$r2cs
+                row[["r2n"]] <- self$pseudoR2[[i]]$r2n
+                row[["dev"]] <- self$deviance[[i]]
+                row[["aic"]] <- self$AIC[[i]]
+                row[["bic"]] <- self$BIC[[i]]
+                row[["chi"]] <- self$modelTest[[i]]$chi
+                row[["df"]] <- self$modelTest[[i]]$df
+                row[["p"]] <- self$modelTest[[i]]$p
 
                 table$setRow(rowNo=i, values = row)
             }
         },
-        .populateModelCompTable = function(results) {
-
-            table <- self$results$modelComp
-
-            models <- results$models
-            lrTest <- results$lrTest
-            r <- lrTest[-1,]
-
-            if (length(models) <= 1)
+        .populateModelCompTable = function() {
+            if (self$nModels <= 1)
                 return()
 
-            for (i in 1:(length(models)-1)) {
+            table <- self$results$modelComp
+            r <- self$lrtModelComparison[-1,]
 
+            for (i in 1:(self$nModels - 1)) {
                 row <- list()
                 row[["chi"]] <- r$Deviance[i]
                 row[["df"]] <- r$Df[i]
@@ -453,17 +731,15 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 table$setRow(rowNo=i, values = row)
             }
         },
-        .populateLrtTables = function(results) {
-
+        .populateLrtTables = function() {
             if ( ! self$options$omni)
                 return()
 
             groups <- self$results$models
-            termsAll <- private$terms
-            lrTests <- results$lrTestTerms
+            termsAll <- private$.getModelTerms()
+            lrTests <- self$lrtModelTerms
 
             for (i in seq_along(termsAll)) {
-
                 table <- groups$get(key=i)$lrt
 
                 terms <- termsAll[[i]]
@@ -472,7 +748,6 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 rowTerms <- jmvcore::decomposeTerms(rownames(lrt))
 
                 for (j in seq_along(terms)) {
-
                     term <- termsB64[[j]]
 
                     # check which rows have the same length + same terms
@@ -488,26 +763,21 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 }
             }
         },
-        .populateCoefTables = function(results) {
-
+        .populateCoefTables = function() {
             groups <- self$results$models
-            termsAll <- private$coefTerms
-            models <- results$models
+            termsAll <- private$.getRowNamesModel()
 
             for (i in seq_along(termsAll)) {
-
                 table <- groups$get(key=i)$coef
 
-                model <- summary(models[[i]])
-
-                CI <- results$CI[[i]]
-                CIOR <- results$CIOR[[i]]
+                model <- summary(self$models[[i]])
+                CI <- self$CICoefEst[[i]]
+                CIOR <- self$CICoefEstOR[[i]]
                 coef<- model$coefficients
                 terms <- termsAll[[i]]
                 rowTerms <- jmvcore::decomposeTerms(rownames(coef))
 
                 for (j in seq_along(terms)) {
-
                     term <- terms[[j]]
 
                     # check which rows have the same length + same terms
@@ -526,34 +796,31 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                     row[["oddsUpper"]] <- CIOR[index, 2]
 
                     table$setRow(rowKey=jmvcore::composeTerm(term), values = row)
-
                 }
             }
         },
         .populateEmmTables = function() {
+            if (! self$options$emmTables)
+                return()
 
             groups <- self$results$models
-            termsAll <- private$terms
+            termsAll <- private$.getModelTerms()
             emMeans <- self$options$emMeans
             factors <- self$options$factors
             covs <- self$options$covs
-            emmTables <- private$emMeans
 
             for (i in seq_along(termsAll)) {
-
                 group <- groups$get(key=i)$emm
                 terms <- unique(unlist(termsAll[[i]]))
 
                 for (j in seq_along(emMeans)) {
-
                     emm <- emMeans[[j]]
 
                     if ( ! is.null(emm) && all(emm %in% terms)) {
-
                         emmGroup <- group$get(key=j)
                         table <- emmGroup$emmTable
 
-                        emmTable <- emmTables[[i]][[j]]
+                        emmTable <- self$emMeans[[i]][[j]]
 
                         covValues <- list()
                         for (k in seq_along(emm)) {
@@ -566,7 +833,6 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                             sign <- list()
 
                             for (l in seq_along(emm)) {
-
                                 value <- emmTable[k, jmvcore::toB64(emm[l])]
 
                                 if (emm[l] %in% factors) {
@@ -591,7 +857,6 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                             table$setRow(rowNo=k, values=row)
 
                             if (length(covValues) > 0) {
-
                                 table$setNote("sub", "\u207B mean - 1SD, <sup>\u03BC</sup> mean, \u207A mean + 1SD")
 
                                 for (l in seq_along(emm)) {
@@ -604,33 +869,11 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 }
             }
         },
-        .populateCooksTable = function(results) {
-
-            groups <- self$results$models
-            cooksAll <- results$cooks
-
-            for (i in seq_along(cooksAll)) {
-
-                table <- groups$get(key=i)$dataSummary$cooks
-                cooks <- cooksAll[[i]]
-
-                row <- list()
-                row[['mean']] <- mean(cooks)
-                row[['median']] <- median(cooks)
-                row[['sd']] <- sd(cooks)
-                row[['min']] <- min(cooks)
-                row[['max']] <- max(cooks)
-
-                table$setRow(rowNo=1, values=row)
-            }
-        },
         .populateClassTable = function(results) {
-
             groups <- self$results$models
-            classTables <- results$classTable
+            classTables <- self$classTable
 
             for (i in seq_along(classTables)) {
-
                 table <- groups$get(key=i)$pred$class
                 classTable <- classTables[[i]]
 
@@ -645,14 +888,12 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 table$setRow(rowNo=1, values=row)
             }
         },
-        .populatePredMeasuresTable = function(results) {
-
+        .populatePredMeasuresTable = function() {
             groups <- self$results$models
 
             for (i in seq_along(groups)) {
-
                 table <- groups$get(key=i)$pred$measures
-                classTable <- results$classTable[[i]]
+                classTable <- self$classTable[[i]]
 
                 row <- list()
                 row[['accuracy']] <- (classTable[1,1] + classTable[2,2]) / sum(classTable)
@@ -660,25 +901,23 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 row[['sens']] <- (classTable[2,2] / sum(classTable[2,]))
 
                 if (self$options$auc)
-                    row[['auc']] <- results$AUC[[i]]
+                    row[['auc']] <- self$AUC[[i]]
 
                 table$setRow(rowNo=1, values=row)
             }
         },
-        .populateCollinearityTable = function(results) {
-
+        .populateCollinearityTable = function() {
             groups <- self$results$models
-            termsAll <- private$terms
+            termsAll <- private$.getModelTerms()
 
             for (i in seq_along(termsAll)) {
-
                 table <- groups$get(key=i)$assump$collin
                 terms <- lapply(termsAll[[i]], jmvcore::toB64)
 
-                if (length(results$VIF) == 0)
+                if (length(self$VIF) == 0)
                     VIF <- NULL
                 else
-                    VIF <- results$VIF[[i]]
+                    VIF <- self$VIF[[i]]
 
                 if (length(dim(VIF)) > 1) {
                     names <- rownames(VIF)
@@ -689,16 +928,11 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 rowTerms <- jmvcore::decomposeTerms(names(VIF))
 
                 for (i in seq_along(terms)) {
-
                     row <- list()
-
                     if (length(terms) <= 1) {
-
                         row[["tol"]] <- 1
                         row[["vif"]] <- 1
-
                     } else {
-
                         # check which rows have the same length + same terms
                         index <- which(length(terms[[i]]) == sapply(rowTerms, length) &
                                            sapply(rowTerms, function(x) all(terms[[i]] %in% x)))
@@ -706,118 +940,56 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                         row[["tol"]] <- 1 / as.numeric(VIF[index])
                         row[["vif"]] <- as.numeric(VIF[index])
                     }
-
                     table$setRow(rowNo=i, values=row)
                 }
             }
         },
-        .populateBoxTidwellTable = function(data, results) {
+        .populateOutputs = function() {
+            if (self$options$predictOV && self$results$predictOV$isNotFilled()) {
+                self$results$predictOV$setRowNums(names(self$predicted[[1]]))
+                for (i in seq_along(self$predicted))
+                    self$results$predictOV$setValues(index=i, as.numeric(self$predicted[[i]]))
+            }
 
-            groups <- self$results$models
-            termsAll <- private$terms
+            if (self$options$residsOV && self$results$residsOV$isNotFilled()) {
+                self$results$residsOV$setRowNums(private$.getDataRowNums())
+                for (i in seq_along(self$residuals))
+                    self$results$residsOV$setValues(index=i, self$residuals[[i]])
+            }
 
-            for (i in seq_along(termsAll)) {
-
-                table <- groups$get(key=i)$assump$boxTidwell
-                termsB64 <- jmvcore::toB64(termsAll[[i]])
-                coef <- results$bt[[i]]
-
-                for (term in termsB64) {
-                    if ( ! is.factor(data[[term]])) {
-
-                        index <- which(rownames(coef) == paste0('log.', term))
-
-                        row <- list()
-                        row[["est"]] <- coef[index, 'Estimate']
-                        row[["se"]] <- coef[index, 'Std. Error']
-                        row[["z"]] <- coef[index, 'z value']
-                        row[["p"]] <- coef[index, 'Pr(>|z|)']
-
-                        table$setRow(rowKey=term, values=row)
-                    }
-                }
+            if (self$options$cooksOV && self$results$cooksOV$isNotFilled()) {
+                self$results$cooksOV$setRowNums(private$.getDataRowNums())
+                for (i in seq_along(self$cooks))
+                    self$results$cooksOV$setValues(index=i, self$cooks[[i]])
             }
         },
 
         #### Plot functions ----
-        .prepareEmmPlots = function(models, data) {
-
+        .prepareEmmPlots = function() {
             covs <- self$options$covs
-            factors <- self$options$factors
             dep <- self$options$dep
 
-            refLevels <- self$options$refLevels
-            depLevels <- levels(self$data[[dep]])
-            refVars <- sapply(refLevels, function(x) x$var)
-            depRef <- refLevels[[which(dep == refVars)]][['ref']]
-            depLevel <- depLevels[-which(depRef == depLevels)]
-
             groups <- self$results$models
-            termsAll <- private$terms
+            termsAll <- private$.getModelTerms()
             emMeans <- self$options$emMeans
-
-            emmTables <- list()
+            emMeansTables <- private$.getEmMeansForPlot()
 
             for (i in seq_along(termsAll)) {
-
                 group <- groups$get(key=i)$emm
                 terms <- unique(unlist(termsAll[[i]]))
-                model <- models[[i]]
-
-                emmTable <- list()
 
                 for (j in seq_along(emMeans)) {
-
                     term <- emMeans[[j]]
 
                     if ( ! is.null(term) && all(term %in% terms)) {
-
                         image <- group$get(key=j)$emmPlot
 
                         termB64 <- jmvcore::toB64(term)
-
-                        FUN <- list(); FUN2 <- list()
                         cont <- FALSE
+                        if (term[1] %in% covs)
+                            cont <- TRUE
 
-                        for(k in seq_along(termB64)) {
-
-                            if (term[k] %in% covs) {
-                                if (k == 1) {
-                                    FUN[[termB64[k]]] <- function(x)  pretty(x, 25)
-                                    cont <- TRUE
-                                } else {
-                                    FUN[[termB64[k]]] <- function(x)  c(mean(x)-sd(x), mean(x), mean(x)+sd(x))
-                                }
-
-                                FUN2[[termB64[[k]]]] <- function(x)  c(mean(x)-sd(x), mean(x), mean(x)+sd(x))
-                            }
-                        }
-
-                        formula <- formula(paste('~', jmvcore::composeTerm(termB64)))
-
-                        if (self$options$emmWeights)
-                            weights <- 'equal'
-                        else
-                            weights <- 'cells'
-
-                        suppressMessages({
-                            emmeans::emm_options(sep = ",", parens = "a^")
-
-                            mm <- try(
-                                emmeans::emmeans(model, formula, cov.reduce=FUN, type='response', options=list(level=self$options$ciWidthEmm / 100), weights = weights, data=data),
-                                silent = TRUE
-                            )
-
-                            emmTable[[ j ]] <- try(
-                                as.data.frame(summary(emmeans::emmeans(model, formula, cov.reduce=FUN2, type='response', options=list(level=self$options$ciWidthEmm / 100), weights = weights, data=data))),
-                                silent = TRUE
-                            )
-                        })
-
-                        # if (class(mm) == 'try-error')
-                        #     jmvcore::reject('No variable named rank in the reference grid')
-
-                        d <- as.data.frame(summary(mm))
+                        d <- emMeansTables[[i]][[j]]
 
                         for (k in 1:3) {
                             if ( ! is.na(termB64[k])) {
@@ -833,24 +1005,20 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                             }
                         }
 
-                        names <- list('x'=termB64[1], 'y'='prob', 'lines'=termB64[2], 'plots'=termB64[3], 'lower'='asymp.LCL', 'upper'='asymp.UCL')
+                        names <- list('x'=termB64[1], 'y'='prob', 'lines'=termB64[2],
+                                      'plots'=termB64[3], 'lower'='asymp.LCL', 'upper'='asymp.UCL')
                         names <- lapply(names, function(x) if (is.na(x)) NULL else x)
 
-                        labels <- list('x'=term[1], 'y'=paste0('P(', dep, ' = ', depLevel,')'), 'lines'=term[2], 'plots'=term[3])
+                        labels <- list('x'=term[1], 'y'=paste0('P(', dep, ' = ', private$.getLevelsDep()$other,')'),
+                                       'lines'=term[2], 'plots'=term[3])
                         labels <- lapply(labels, function(x) if (is.na(x)) NULL else x)
 
                         image$setState(list(data=d, names=names, labels=labels, cont=cont))
-
                     }
                 }
-
-                emmTables[[i]] <- emmTable
             }
-
-            private$emMeans <- emmTables
         },
         .emmPlot = function(image, ggtheme, theme, ...) {
-
             if (is.null(image$state))
                 return(FALSE)
 
@@ -864,14 +1032,11 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             p <- ggplot(data=data, aes_string(x=names$x, y=names$y, color=names$lines, fill=names$lines), inherit.aes = FALSE)
 
             if (cont) {
-
                 p <- p + geom_line()
 
                 if (self$options$ciEmm && is.null(names$plots) && is.null(names$lines))
                     p <- p + geom_ribbon(aes_string(x=names$x, ymin=names$lower, ymax=names$upper), show.legend=TRUE, alpha=.3)
-
             } else {
-
                 p <- p + geom_point(position = dodge)
 
                 if (self$options$ciEmm)
@@ -889,160 +1054,145 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             return(p)
         },
-        .prepareRocPlot = function(models) {
-
+        .prepareRocPlot = function() {
             groups <- self$results$models
-
             for (i in seq_along(groups)) {
-
                 image <- groups$get(key=i)$pred$rocPlot
-
-                prob <- predict(models[[i]], type=c("response"))
-                pred <- ROCR::prediction(prob, models[[i]]$y)
-                perf <- ROCR::performance(pred, measure = "tpr", x.measure = "fpr")
-
-                df <- data.frame(x=unlist(perf@x.values), y=unlist(perf@y.values))
-
-                image$setState(df)
-
+                image$setState(i)
             }
         },
         .rocPlot = function(image, ggtheme, theme, ...) {
-
             if (is.null(image$state))
                 return(FALSE)
 
-            p <- ggplot(data=image$state, aes(x=x, y=y)) +
+            prob <- predict(self$models[[image$state]], type=c("response"))
+            pred <- ROCR::prediction(self$fitted[[i]], self$models[[image$state]]$y)
+            perf <- ROCR::performance(pred, measure = "tpr", x.measure = "fpr")
+
+            df <- data.frame(x=unlist(perf@x.values), y=unlist(perf@y.values))
+
+            p <- ggplot(data=df, aes(x=x, y=y)) +
                 geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
                 geom_line(color="red") +
                 xlab("1 - Specificity") +
                 ylab("Sensitivity") +
                 ggtheme
 
-            print(p)
-
-            TRUE
+            return(p)
         },
-        .prepareCutOffPlot = function(models) {
-
+        .prepareCutOffPlot = function() {
             groups <- self$results$models
-
             for (i in seq_along(groups)) {
-
                 image <- groups$get(key=i)$pred$cutOffPlot
-
-                prob <- predict(models[[i]], type=c("response"))
-                pred <- ROCR::prediction(prob, models[[i]]$y)
-
-                perf <- ROCR::performance(pred, "sens", "spec")
-
-                cutoff <- perf@alpha.values[[1]]
-                sens <- perf@y.values[[1]]
-                spec <- perf@x.values[[1]]
-
-                cutoff[cutoff == Inf] <- 1
-                cutoff[cutoff == -Inf] <- -1
-
-                df <- data.frame(x=rep(c(0, cutoff), 2),
-                                 y=c(1, sens, 0, spec),
-                                 group=c(rep('Sensitivity', length(sens) + 1),
-                                         rep('Specificity', length(spec) + 1)))
-
-                image$setState(df)
+                image$setState(i)
             }
         },
         .cutOffPlot = function(image, ggtheme, theme, ...) {
-
             if (is.null(image$state))
                 return(FALSE)
 
-            cutOff <- self$options$cutOff
+            prob <- self$fitted[[image$state]]
+            pred <- ROCR::prediction(prob, self$models[[image$state]]$y)
 
-            p <- ggplot(data=image$state, aes(x=x, y=y, color=group)) +
+            perf <- ROCR::performance(pred, "sens", "spec")
+
+            cutoff <- perf@alpha.values[[1]]
+            sens <- perf@y.values[[1]]
+            spec <- perf@x.values[[1]]
+
+            cutoff[cutoff == Inf] <- 1
+            cutoff[cutoff == -Inf] <- -1
+
+            df <- data.frame(x=rep(c(0, cutoff), 2),
+                             y=c(1, sens, 0, spec),
+                             group=c(rep('Sensitivity', length(sens) + 1),
+                                     rep('Specificity', length(spec) + 1)))
+
+            p <- ggplot(data=df, aes(x=x, y=y, color=group)) +
                 geom_vline(xintercept = cutOff, linetype=3, color=theme$color[1]) +
                 geom_line() +
                 xlab("Cut-Off") + xlim(0,1) + ylim(0,1) +
                 ggtheme + theme(legend.title = element_blank(), legend.position = 'top',
                                 axis.title.y = element_blank())
 
-            print(p)
-
-            TRUE
+            return(p)
         },
 
         #### Helper functions ----
-        .modelTerms = function() {
+        .getModelTerms = function() {
+            if (is.null(private$.modelTerms)) {
+                blocks <- self$options$blocks
 
-            blocks <- self$options$blocks
-
-            terms <- list()
-
-            if (is.null(blocks)) {
-                terms[[1]] <- c(self$options$covs, self$options$factors)
-            } else {
-                for (i in seq_along(blocks)) {
-                    terms[[i]] <- unlist(blocks[1:i], recursive = FALSE)
-                }
-            }
-
-            private$terms <- terms
-
-        },
-        .coefTerms = function(terms) {
-
-            covs <- self$options$covs
-            factors <- self$options$factors
-            refLevels <- self$options$refLevels
-
-            refVars <- sapply(refLevels, function(x) x$var)
-
-            levels <- list()
-            for (factor in factors)
-                levels[[factor]] <- levels(self$data[[factor]])
-
-            contrLevels <- list(); refLevel <- list(); contr <- list(); rContr <- list()
-            for (term in terms) {
-
-                if (term %in% factors) {
-
-                    ref <- refLevels[[which(term == refVars)]][['ref']]
-                    refNo <- which(ref == levels[[term]])
-
-                    contrLevels[[term]] <- levels[[term]][-refNo]
-                    refLevel[[term]] <- levels[[term]][refNo]
-
-                    if (length(terms) > 1)
-                        contr[[term]] <- paste0('(', paste(contrLevels[[term]], refLevel[[term]], sep = ' \u2013 '), ')')
-                    else
-                        contr[[term]] <- paste(contrLevels[[term]], refLevel[[term]], sep = ' \u2013 ')
-
-                    rContr[[term]] <- paste0(jmvcore::toB64(term), jmvcore::toB64(contrLevels[[term]]))
-
+                terms <- list()
+                if (is.null(blocks)) {
+                    terms[[1]] <- c(self$options$covs, self$options$factors)
                 } else {
-
-                    contr[[term]] <- term
-                    rContr[[term]] <- jmvcore::toB64(term)
-
+                    for (i in seq_along(blocks)) {
+                        terms[[i]] <- unlist(blocks[1:i], recursive = FALSE)
+                    }
                 }
+                private$.modelTerms <- terms
             }
 
-            grid <- expand.grid(contr)
-            coefNames <- apply(grid, 1, jmvcore::stringifyTerm)
-
-            grid2 <- expand.grid(rContr)
-            coefTerms <- list()
-            for (i in 1:nrow(grid2))
-                coefTerms[[i]] <- as.character(unlist(grid2[i,]))
-
-            return(list(coefNames=coefNames, coefTerms=coefTerms))
+            return(private$.modelTerms)
         },
-        .formulas = function() {
+        .getRowNamesModel = function() {
+            if (is.null(private$.rowNamesModel)) {
+                factors <- self$options$factors
+                termsAll <- private$.getModelTerms()
 
+                rowNamesAll <- list()
+                for (i in seq_along(termsAll)) {
+                    rowNames <- list()
+                    rowNames[[1]] <- "(Intercept)"
+
+                    terms <- termsAll[[i]]
+                    for (term in terms) {
+                        if (any(term %in% factors))
+                            rowNames <- c(rowNames, private$.contrastModel(term))
+                        else
+                            rowNames[[length(rowNames) + 1]] <- jmvcore::toB64(term)
+                    }
+                    rowNamesAll[[i]] <- rowNames
+                }
+                private$.rowNamesModel <- rowNamesAll
+            }
+
+            return(private$.rowNamesModel)
+        },
+        .getLevelsDep = function() {
+            if (is.null(private$.levelsDep) && ! is.null(self$options$dep))
+                private$.levelsDep <- private$.getLevels(self$options$dep)
+
+            return(private$.levelsDep)
+        },
+        .getLevels = function(var) {
+            levels <- levels(self$data[[var]])
+            refLevels <- self$options$refLevels
+            refVars <- sapply(refLevels, function(x) x$var)
+            ref <- refLevels[[which(var == refVars)]][['ref']]
+            other <- levels[-which(ref == levels)]
+
+            return(list("ref"=ref, "other"=other))
+        },
+        .getEmMeansForPlot = function() {
+            if (is.null(private$.emMeansForPlot))
+                private$.emMeansForPlot <- private$.computeEmMeans(forPlot=TRUE)
+
+            return(private$.emMeansForPlot)
+        },
+        .getDataRowNums = function() {
+            if (is.null(private$.dataRowNums))
+                private$.dataRowNums <- rownames(self$dataProcessed)
+
+            return(private$.dataRowNums)
+        },
+        .getFormulas = function() {
             dep <- self$options$dep
             depB64 <- jmvcore::toB64(dep)
-            terms <- private$terms
+            terms <- private$.getModelTerms()
 
-            formulas <- list();
+            formulas <- list()
             for (i in seq_along(terms)) {
                 termsB64 <- lapply(terms[[i]], jmvcore::toB64)
                 composedTerms <- jmvcore::composeTerms(termsB64)
@@ -1051,18 +1201,16 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             return(formulas)
         },
-        .errorCheck = function(data) {
-
+        .errorCheck = function() {
             dep <- self$options$dep
-            column <- data[[jmvcore::toB64(dep)]]
+            column <- self$dataProcessed[[jmvcore::toB64(dep)]]
 
             if (length(levels(column)) > 2)
                 jmvcore::reject(jmvcore::format('The dependent variable \'{}\' has more than two levels;
                                                 binomial logistic regression can only be performed on dependent
                                                 variables with two levels.', dep), code='')
         },
-        .cleanData = function() {
-
+        .cleanData = function(naOmit=TRUE, naSkip=NULL) {
             dep <- self$options$dep
             covs <- self$options$covs
             factors <- self$options$factors
@@ -1092,9 +1240,78 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             attr(data, 'row.names') <- seq_len(length(data[[1]]))
             attr(data, 'class') <- 'data.frame'
-            data <- jmvcore::naOmit(data)
+
+            if (naOmit) {
+                data <- tibble::rownames_to_column(data)
+                data <- tidyr::drop_na(data, -naSkip)
+                data <- tibble::column_to_rownames(data)
+            }
 
             return(data)
+        },
+        .contrastModel = function(terms) {
+            #' Returns the names of the factor contrasts as they are
+            #' defined by the glm function
+
+            factors <- self$options$factors
+
+            nLevels <- list()
+            for (factor in factors)
+                nLevels[[factor]] <- length(levels(self$data[[factor]]))
+
+            contrast <- list()
+            for (term in terms) {
+                if (term %in% factors) {
+                    contrast[[term]] <- paste0(
+                        jmvcore::toB64(term),
+                        jmvcore::toB64(private$.getLevels(term)$other)
+                    )
+                } else {
+                    contrast[[term]] <- jmvcore::toB64(term)
+                }
+            }
+
+            contrastGrid <- expand.grid(contrast)
+            contrastTerms <- list()
+            for (i in 1:nrow(contrastGrid))
+                contrastTerms[[i]] <- as.character(unlist(contrastGrid[i,]))
+
+            return(contrastTerms)
+        },
+        .contrastsCoefTable = function(terms) {
+            #' Returns the names of the factor contrasts as they are
+            #' displayed in the jmv coef table
+
+            factors <- self$options$factors
+            refLevels <- self$options$refLevels
+            refVars <- sapply(refLevels, function(x) x$var)
+
+            levels <- list()
+            for (factor in factors)
+                levels[[factor]] <- levels(self$data[[factor]])
+
+            contrast <- list()
+            for (term in terms) {
+                if (term %in% factors) {
+                    ref <- refLevels[[which(term == refVars)]][['ref']]
+                    refNo <- which(ref == levels[[term]])
+
+                    contrLevels <- levels[[term]][-refNo]
+                    refLevel <- levels[[term]][refNo]
+
+                    c <- paste(contrLevels, refLevel, sep = ' \u2013 ')
+                    if (length(terms) > 1)
+                        c <- paste0('(', c, ')')
+
+                    contrast[[term]] <- c
+                } else {
+                    contrast[[term]] <- term
+                }
+            }
+            contrastGrid <- expand.grid(contrast)
+            contrastNames <- apply(contrastGrid, 1, jmvcore::stringifyTerm)
+
+            return(contrastNames)
         },
         .plotSize = function(emm) {
 
@@ -1144,88 +1361,5 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             height <- xAxis + height
 
             return(c(width, height))
-        },
-        .pseudoR2 = function(model) {
-
-            dev <- model$deviance
-            nullDev <- model$null.deviance
-            n <- length(model$fitted.values)
-
-            r2mf <- 1 - dev/nullDev
-            r2cs <- 1 - exp(-(nullDev - dev) / n)
-            r2n <- r2cs / (1 - exp(-nullDev / n))
-
-            return(list(r2mf=r2mf, r2cs=r2cs, r2n=r2n))
-        },
-        .modelTest = function(model) {
-
-            chi <- model$null.deviance - model$deviance
-            df <- model$df.null - model$df.residual
-            p <- 1 - pchisq(chi, df)
-
-            return(list(chi=chi, df=df, p=p))
-        },
-        .classTable = function(model) {
-
-            cutOff <- self$options$cutOff
-            pred <- ifelse(fitted(model) > cutOff, 1, 0)
-            df <- data.frame(response = factor(model$y, levels = c(0,1)),
-                             predicted = factor(pred, levels = c(0,1)))
-            classTable <- xtabs(~ response + predicted, data = df)
-
-            return(classTable)
-        },
-        .auc = function(model) {
-
-            prob <- predict(model, type=c("response"))
-            pred <- ROCR::prediction(prob, model$y)
-            perf <- ROCR::performance(pred, measure = "auc")
-
-            return(unlist(perf@y.values))
-        },
-        .boxTidwell = function(data, formulas) {
-
-            termsAll <- private$terms
-            termsFull <- termsAll[[length(termsAll)]]
-            coVars <- character(0)
-
-            for (term in termsFull) {
-
-                termB64 <- jmvcore::toB64(term)
-                column <- data[[termB64]]
-
-                if ( ! is.factor(column)) {
-
-                    if (min(column) <= 0)
-                        column <- column - min(column) + 1
-
-                    name <- paste0('log.', termB64)
-                    data[[name]] <- column * log(column)
-                    data[[termB64]] <- column
-                    coVars <- c(coVars, termB64)
-                }
-            }
-
-            bt <- list()
-            for (i in seq_along(termsAll)) {
-
-                formula <- formulas[[i]]
-
-                termsB64 <- jmvcore::toB64(termsAll[[i]])
-                logVars <- termsB64[termsB64 %in% coVars]
-
-                if (length(logVars) == 0) {
-                    bt[[i]] <- 0
-                    next()
-                }
-
-                logTerms <- paste0(paste0('log.', logVars), collapse = ' + ')
-
-                formula <- as.formula(paste(formula[2], "~", formula[3], "+", logTerms))
-                model <- stats::glm(formula,  data=data, family="binomial")
-                bt[[i]] <- summary(model)$coefficients
-            }
-
-            return(bt)
         })
 )
