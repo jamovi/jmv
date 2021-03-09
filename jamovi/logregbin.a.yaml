@@ -394,4 +394,15 @@ options:
             `TRUE` or `FALSE` (default), provide summary statistics for
             the Cook's distance
 
+    - name: predictOV
+      title: Predicted values
+      type: Output
+
+    - name: residsOV
+      title: Residuals
+      type: Output
+
+    - name: cooksOV
+      title: Cook's distance
+      type: Output
 ...

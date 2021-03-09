@@ -355,3 +355,18 @@ children:
                     name: rocPlot
                   - type: CheckBox
                     name: auc
+  - type: CollapseBox
+    label: Save
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        children:
+          - type: Output
+            name: predictOV
+          - type: Output
+            name: residsOV
+          - type: Output
+            name: cooksOV

@@ -417,4 +417,34 @@ items:
                   - dep
                   - blocks
                   - refLevels
+
+    - name: predictOV
+      title: Predicted values
+      type: Output
+      measureType: continuous
+      items: (blocks)
+      clearWith:
+        - dep
+        - blocks
+        - refLevels
+
+    - name: residsOV
+      title: Residuals
+      type: Output
+      measureType: continuous
+      items: (blocks)
+      clearWith:
+        - dep
+        - blocks
+        - refLevels
+
+    - name: cooksOV
+      title: Cook's distance
+      type: Output
+      measureType: continuous
+      items: (blocks)
+      clearWith:
+        - dep
+        - blocks
+        - refLevels
 ...
