@@ -815,7 +815,6 @@ logRegBinResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                 name="predictOV",
                 title="Predicted values",
                 measureType="continuous",
-                items="(blocks)",
                 clearWith=list(
                     "dep",
                     "blocks",
@@ -825,7 +824,6 @@ logRegBinResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                 name="residsOV",
                 title="Residuals",
                 measureType="continuous",
-                items="(blocks)",
                 clearWith=list(
                     "dep",
                     "blocks",
@@ -835,7 +833,6 @@ logRegBinResults <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                 name="cooksOV",
                 title="Cook's distance",
                 measureType="continuous",
-                items="(blocks)",
                 clearWith=list(
                     "dep",
                     "blocks",

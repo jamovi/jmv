@@ -679,21 +679,27 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             }
 
             if (self$nModels == 1) {
-                self$results$predictOV$setTitle(title(predictTitle, dep))
-                self$results$predictOV$setDescription(description(predictDescPrefix))
-                self$results$residsOV$setTitle(residsTitle)
-                self$results$residsOV$setDescription(description(residsTitle))
-                self$results$cooksOV$setTitle(cooksTitle)
-                self$results$cooksOV$setDescription(description(cooksTitle))
+
+                self$results$predictOV$set(1, title(predictTitle, dep), description(predictDescPrefix), 'continuous')
+                self$results$residsOV$set(1, residsTitle, description(residsTitle), 'continuous')
+                self$results$cooksOV$set(1, cooksTitle, description(cooksTitle), 'continuous')
+
             } else if (self$nModels > 1) {
-                for (i in 1:self$nModels) {
-                    self$results$predictOV$setTitle(index=i, title(predictTitle, paste(dep, i)))
-                    self$results$predictOV$setDescription(index=i, description(predictDescPrefix, i))
-                    self$results$residsOV$setTitle(index=i, title(residsTitle, i))
-                    self$results$residsOV$setDescription(index=i, description(residsTitle, i))
-                    self$results$cooksOV$setTitle(index=i, title(cooksTitle, i))
-                    self$results$cooksOV$setDescription(index=i, description(cooksTitle, i))
-                }
+
+                keys <- seq_len(self$nModels)
+                measureTypes <- rep('continuous', self$nModels)
+
+                titles <- vapply(keys, function(key) title(predictTitle, paste(dep, key)), '')
+                descriptions <- vapply(keys, function(key) description(predictDescPrefix, key), '')
+                self$results$predictOV$set(keys, titles, descriptions, measureTypes)
+
+                titles <- vapply(keys, function(key) title(residsTitle, key), '')
+                descriptions <- vapply(keys, function(key) description(residsTitle, key), '')
+                self$results$residsOV$set(keys, titles, descriptions, measureTypes)
+
+                titles <- vapply(keys, function(key) title(cooksTitle, key), '')
+                descriptions <- vapply(keys, function(key) description(cooksTitle, key), '')
+                self$results$cooksOV$set(keys, titles, descriptions, measureTypes)
             }
         },
 

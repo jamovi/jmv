@@ -422,7 +422,6 @@ items:
       title: Predicted values
       type: Output
       measureType: continuous
-      items: (blocks)
       clearWith:
         - dep
         - blocks
@@ -432,7 +431,6 @@ items:
       title: Residuals
       type: Output
       measureType: continuous
-      items: (blocks)
       clearWith:
         - dep
         - blocks
@@ -442,7 +440,6 @@ items:
       title: Cook's distance
       type: Output
       measureType: continuous
-      items: (blocks)
       clearWith:
         - dep
         - blocks
