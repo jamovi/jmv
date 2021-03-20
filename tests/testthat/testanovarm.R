@@ -82,3 +82,48 @@ test_that('anovarm works', {
     spher <- r$assump$spherTable$asDF
     testthat::expect_equal(spher$mauch, NaN)
 })
+
+test_that('emmeans work for unbalanced data', {
+    set.seed(1337)
+    N <- 100
+    data <- data.frame(
+        measure1 = rnorm(N, 0, 1),
+        measure2 = rnorm(N, 1, 1),
+        measure3 = rnorm(N, 2, 1),
+        bsFactor = sample(letters[1:2], replace=TRUE, prob=c(0.3, 0.7), size=N),
+        stringsAsFactors = TRUE
+    )
+
+    rm = list(list(
+        label="rmFactor",
+        levels=c("measure1", "measure2", "measure3")
+    ))
+
+    rmCells = list(
+        list(
+            measure="measure1",
+            cell="measure1"),
+        list(
+            measure="measure2",
+            cell="measure2"),
+        list(
+            measure="measure3",
+            cell="measure3")
+    )
+
+    r <- jmv::anovaRM(
+        data=data, rm=rm, rmCells=rmCells, bs="bsFactor",
+        rmTerms=list("rmFactor"), bsTerms=list("bsFactor"),
+        emMeans = ~bsFactor:rmFactor, emmPlots = FALSE, emmTables = TRUE
+    )
+
+    means <- aggregate(data[, -4], data[4], mean)
+    emmeans <- r$emm[[1]]$emmTable$asDF
+
+    expect_equal(means[1, 2], emmeans[1, "mean"], tolerance = 1e-4)
+    expect_equal(means[2, 2], emmeans[2, "mean"], tolerance = 1e-4)
+    expect_equal(means[1, 3], emmeans[3, "mean"], tolerance = 1e-4)
+    expect_equal(means[2, 3], emmeans[4, "mean"], tolerance = 1e-4)
+    expect_equal(means[1, 4], emmeans[5, "mean"], tolerance = 1e-4)
+    expect_equal(means[2, 4], emmeans[6, "mean"], tolerance = 1e-4)
+})
