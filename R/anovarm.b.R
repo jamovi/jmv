@@ -593,7 +593,7 @@ anovaRMClass <- R6::R6Class(
                     table$setStatus('running')
 
                     emmeans::emm_options(sep = ",", parens = "a^")
-                    referenceGrid <- emmeans::emmeans(result, formula)
+                    referenceGrid <- emmeans::emmeans(result, formula, model="multivariate")
                     none <- summary(pairs(referenceGrid, adjust='none'))
                     tukey <- summary(pairs(referenceGrid, adjust='tukey'))
                     scheffe <- summary(pairs(referenceGrid, adjust='scheffe'))
@@ -757,7 +757,8 @@ anovaRMClass <- R6::R6Class(
                         emmeans::emm_options(sep = ",", parens = "a^")
 
                         mm <- try(
-                            emmeans::emmeans(model, formula, options=list(level=self$options$ciWidthEmm / 100), weights = weights),
+                            emmeans::emmeans(model, formula, options=list(level=self$options$ciWidthEmm / 100),
+                                             weights = weights, model = "multivariate"),
                             silent = TRUE
                         )
                     })
