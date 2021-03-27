@@ -12,6 +12,7 @@ items:
       clearWith:
         - group
         - hypothesis
+        - testValue
         - ciWidth
         - miss
         - bfPrior
