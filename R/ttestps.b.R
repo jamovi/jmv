@@ -364,12 +364,16 @@ ttestPSClass <- R6::R6Class(
                 plots$get(pair)$setTitle(paste0(pair, collapse=' - '))
             }
 
-            if (hypothesis == 'oneGreater')
-                table$setNote("hyp", jmvcore::format("H\u2090 Measure 1 - Measure 2 > {}", testValue))
-            else if (hypothesis == 'twoGreater')
-                table$setNote("hyp", jmvcore::format("H\u2090 Measure 1 - Measure 2 < {}", testValue))
-            else
-                table$setNote("hyp", jmvcore::format("H\u2090 Measure 1 - Measure 2 \u2260 {}", testValue))
+
+
+            if (self$options$get("hypothesis") == 'oneGreater') {
+                ttestTable$setNote("hyp", jmvcore::format("H\u2090 Measure 1 - Measure 2 > {}", testValue))
+            } else if (self$options$get("hypothesis") == 'twoGreater'){
+                ttestTable$setNote("hyp", jmvcore::format("H\u2090 Measure 1 - Measure 2 < {}", testValue))
+            } else {
+                ttestTable$setNote("hyp", jmvcore::format("H\u2090 Measure 1 - Measure 2 \u2260 {}", testValue))
+            }
+
 
 
         },
