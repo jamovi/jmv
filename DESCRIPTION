@@ -28,7 +28,7 @@ Imports:
     BayesFactor,
     psych (>= 1.7.5),
     GPArotation,
-    afex (>= 0.20.2),
+    afex (>= 0.28-0),
     mvnormtest,
     lavaan,
     ggridges,
@@ -42,7 +42,6 @@ Suggests:
     carData,
     knitr,
     rmarkdown
-Remotes: singmann/afex@fdfe4f5e96efeeac0ed6b78684f2da75c7c4d760
 Encoding: UTF-8
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr
