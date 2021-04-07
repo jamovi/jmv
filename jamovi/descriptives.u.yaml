@@ -130,8 +130,6 @@ children:
                     name: variance
                   - type: CheckBox
                     name: range
-                  - type: CheckBox
-                    name: iqr
               - type: LayoutBox
                 margin: normal
                 children:
@@ -140,8 +138,28 @@ children:
                   - type: CheckBox
                     name: max
                   - type: CheckBox
+                    name: iqr
+          - type: Label
+            label: Mean Dispersion
+            children:
+              - type: LayoutBox
+                margin: normal
+                children:
+                  - type: CheckBox
                     name: se
-                    label: S. E. Mean
+                    label: Std. error of Mean
+                  - type: CheckBox
+                    name: ci
+                    label: Confidence interval for Mean
+                    style: inline
+                    verticalAlignment: center
+                    children:
+                    - type: TextBox
+                      name: ciWidth
+                      label: ""
+                      suffix: "%"
+                      format: number
+                      enable: (ci)
       - type: LayoutBox
         stretchFactor: 1
         margin: large
