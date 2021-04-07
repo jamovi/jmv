@@ -31,6 +31,8 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             min = TRUE,
             max = TRUE,
             se = FALSE,
+            ci = FALSE,
+            ciWidth = 95,
             iqr = FALSE,
             skew = FALSE,
             kurt = FALSE,
@@ -158,6 +160,16 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 "se",
                 se,
                 default=FALSE)
+            private$..ci <- jmvcore::OptionBool$new(
+                "ci",
+                ci,
+                default=FALSE)
+            private$..ciWidth <- jmvcore::OptionNumber$new(
+                "ciWidth",
+                ciWidth,
+                min=50,
+                max=99.9,
+                default=95)
             private$..iqr <- jmvcore::OptionBool$new(
                 "iqr",
                 iqr,
@@ -218,6 +230,8 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$.addOption(private$..min)
             self$.addOption(private$..max)
             self$.addOption(private$..se)
+            self$.addOption(private$..ci)
+            self$.addOption(private$..ciWidth)
             self$.addOption(private$..iqr)
             self$.addOption(private$..skew)
             self$.addOption(private$..kurt)
@@ -253,6 +267,8 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         min = function() private$..min$value,
         max = function() private$..max$value,
         se = function() private$..se$value,
+        ci = function() private$..ci$value,
+        ciWidth = function() private$..ciWidth$value,
         iqr = function() private$..iqr$value,
         skew = function() private$..skew$value,
         kurt = function() private$..kurt$value,
@@ -287,6 +303,8 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         ..min = NA,
         ..max = NA,
         ..se = NA,
+        ..ci = NA,
+        ..ciWidth = NA,
         ..iqr = NA,
         ..skew = NA,
         ..kurt = NA,
@@ -315,12 +333,13 @@ descriptivesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 options=options,
                 name="descriptives",
                 title="Descriptives",
-                visible="(n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || iqr || skew || kurt || pcEqGr || pc)",
+                visible="(n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || ci || iqr || skew || kurt || pcEqGr || pc)",
                 rows=1,
                 clearWith=list(
                     "splitBy",
                     "pcNEqGr",
-                    "pcValues"),
+                    "pcValues",
+                    "ciWidth"),
                 columns=list()))
             self$add(jmvcore::Array$new(
                 options=options,
@@ -468,6 +487,10 @@ descriptivesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param min \code{TRUE} or \code{FALSE} (default), provide the minimum
 #' @param max \code{TRUE} or \code{FALSE} (default), provide the maximum
 #' @param se \code{TRUE} or \code{FALSE} (default), provide the standard error
+#' @param ci \code{TRUE} or \code{FALSE} (default), provide confidence
+#'   intervals for the mean
+#' @param ciWidth a number between 50 and 99.9 (default: 95), the width of
+#'   confidence intervals
 #' @param iqr \code{TRUE} or \code{FALSE} (default), provide the interquartile
 #'   range
 #' @param skew \code{TRUE} or \code{FALSE} (default), provide the skewness
@@ -522,6 +545,8 @@ descriptives <- function(
     min = TRUE,
     max = TRUE,
     se = FALSE,
+    ci = FALSE,
+    ciWidth = 95,
     iqr = FALSE,
     skew = FALSE,
     kurt = FALSE,
@@ -586,6 +611,8 @@ descriptives <- function(
         min = min,
         max = max,
         se = se,
+        ci = ci,
+        ciWidth = ciWidth,
         iqr = iqr,
         skew = skew,
         kurt = kurt,

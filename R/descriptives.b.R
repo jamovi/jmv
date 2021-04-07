@@ -5,20 +5,22 @@ descriptivesClass <- R6::R6Class(
     private=list(
         #### Member variables ----
         colArgs = list(
-            name = c("n", "missing", "mean", "se", "median", "mode", "sum",
-                     "sd", "variance", "iqr", "range", "min", "max", "skew",
-                     "seSkew", "kurt", "seKurt", "sww", "sw"),
-            title = c("N", "Missing", "Mean", "Std. error mean", "Median",
-                      "Mode", "Sum", "Standard deviation", "Variance", "IQR",
-                      "Range", "Minimum", "Maximum", "Skewness",
-                      "Std. error skewness", "Kurtosis", "Std. error kurtosis",
-                      "Shapiro-Wilk W", "Shapiro-Wilk p"),
-            type = c(rep("integer", 2), rep("number", 17)),
-            format = c(rep("", 18), "zto,pvalue"),
-            visible = c("(n)", "(missing)", "(mean)", "(se)", "(median)",
-                        "(mode)", "(sum)", "(sd)", "(variance)", "(iqr)",
-                        "(range)", "(min)", "(max)", "(skew)", "(skew)",
-                        "(kurt)", "(kurt)", "(sw)", "(sw)")
+            name = c("n", "missing", "mean", "se", "ciLower", "ciUpper",
+                     "median", "mode", "sum", "sd", "variance", "iqr", "range",
+                     "min", "max", "skew", "seSkew", "kurt", "seKurt", "sww",
+                     "sw"),
+            title = c("N", "Missing", "Mean", "Std. error mean",
+                      "lower bound", "upper bound", "Median", "Mode", "Sum",
+                      "Standard deviation", "Variance", "IQR", "Range",
+                      "Minimum", "Maximum", "Skewness", "Std. error skewness",
+                      "Kurtosis", "Std. error kurtosis", "Shapiro-Wilk W",
+                      "Shapiro-Wilk p"),
+            type = c(rep("integer", 2), rep("number", 19)),
+            format = c(rep("", 20), "zto,pvalue"),
+            visible = c("(n)", "(missing)", "(mean)", "(se)", "(ci)",
+                        "(ci)", "(median)", "(mode)", "(sum)", "(sd)",
+                        "(variance)", "(iqr)", "(range)", "(min)", "(max)",
+                        "(skew)", "(skew)", "(kurt)", "(kurt)", "(sw)", "(sw)")
         ),
         levels = NULL,
 
@@ -40,7 +42,6 @@ descriptivesClass <- R6::R6Class(
 
         },
         .run=function() {
-
             data <- self$data
             splitBy <- self$options$splitBy
 
@@ -54,7 +55,6 @@ descriptivesClass <- R6::R6Class(
             private$.errorCheck(data)
 
             if (length(self$options$vars) > 0) {
-
                 results <- private$.compute(data)
 
                 private$.populateDescriptivesTable(results)
@@ -63,7 +63,6 @@ descriptivesClass <- R6::R6Class(
                     private$.populateFrequencyTables(results)
 
                 private$.preparePlots(data)
-
             }
         },
 
@@ -145,6 +144,9 @@ descriptivesClass <- R6::R6Class(
                 format <- colArgs$format[i]
                 type <- colArgs$type[i]
                 visible <- colArgs$visible[i]
+
+                if (name == "ciLower" || name == "ciUpper")
+                    title <- jmvcore::format("{}% CI mean {}", self$options$ciWidth, title)
 
                 if (length(splitBy) > 0) {
 
@@ -495,7 +497,6 @@ descriptivesClass <- R6::R6Class(
 
         },
         .populateFrequencyTables = function(results) {
-
             tables <- self$results$frequencies
             vars <- self$options$vars
             splitBy <- self$options$splitBy
@@ -1083,7 +1084,6 @@ descriptivesClass <- R6::R6Class(
             stats[['missing']] <- total - n
 
             if (jmvcore::canBeNumeric(column) && n > 0) {
-
                 stats[['mean']] <- mean(column)
                 stats[['median']] <- median(column)
                 stats[['mode']] <- as.numeric(names(table(column)[table(column)==max(table(column))]))
@@ -1094,6 +1094,10 @@ descriptivesClass <- R6::R6Class(
                 stats[['min']] <- min(column)
                 stats[['max']] <- max(column)
                 stats[['se']] <- sqrt(var(column)/length(column))
+                zQuant <- 1 - ((1 - self$options$ciWidth/100) / 2)
+                ciDiff <- qnorm(zQuant) * stats[['se']]
+                stats[['ciLower']] <- stats[['mean']] - ciDiff
+                stats[['ciUpper']] <- stats[['mean']] + ciDiff
                 stats[['iqr']] <- diff(as.numeric(quantile(column, c(.25,.75))))
 
                 deviation <- column-mean(column)
@@ -1128,12 +1132,10 @@ descriptivesClass <- R6::R6Class(
                             stats[[paste0('perc', i)]] <- quants[i]
                     }
                 }
-
             } else if (jmvcore::canBeNumeric(column)) {
-
                 l <- list(mean=NaN, median=NaN, mode=NaN, sum=NaN, sd=NaN, variance=NaN,
-                          range=NaN, min=NaN, max=NaN, se=NaN, skew=NaN, seSkew=NaN,
-                          kurt=NaN, seKurt=NaN, sw=NaN)
+                          range=NaN, min=NaN, max=NaN, se=NaN, ciLower=NaN, ciUpper=NaN,
+                          skew=NaN, seSkew=NaN, kurt=NaN, seKurt=NaN, sw=NaN)
 
                 if ( self$options$pcEqGr ) {
                     pcNEqGr <- self$options$pcNEqGr
@@ -1151,12 +1153,10 @@ descriptivesClass <- R6::R6Class(
                 }
 
                 stats <- append(stats, l)
-
             } else {
-
                 l <- list(mean='', median='', mode='', sum='', sd='', variance='',
-                          range='', min='', max='', se='', skew='', seSkew='',
-                          kurt='', seKurt='', sw='')
+                          range='', min='', max='', se='', ciLower='', ciUpper='',
+                          skew='', seSkew='', kurt='', seKurt='', sw='')
 
                 if ( self$options$pcEqGr ) {
                     pcNEqGr <- self$options$pcNEqGr
@@ -1174,7 +1174,6 @@ descriptivesClass <- R6::R6Class(
                 }
 
                 stats <- append(stats, l)
-
             }
 
             return(stats)

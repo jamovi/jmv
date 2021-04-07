@@ -288,6 +288,25 @@ options:
           R: >
             `TRUE` or `FALSE` (default), provide the standard error
 
+    - name: ci
+      title: Confidence Interval
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide confidence intervals for the mean
+
+    - name: ciWidth
+      title: Confidence level
+      type: Number
+      min: 50
+      max: 99.9
+      default: 95
+      description:
+          R: >
+            a number between 50 and 99.9 (default: 95), the width of confidence
+            intervals
+
     - name: iqr
       title: IQR
       type: Bool
