@@ -58,7 +58,7 @@ items:
               type: number
 
         - name: factorCor
-          title: Correlation Matrix
+          title: Inter-Component Correlations
           visible: (factorCor)
           type: Table
           clearWith:

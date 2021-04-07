@@ -36,7 +36,7 @@ pcaClass <- R6::R6Class(
         },
         factorCor = function() {
             if (is.null(private$.factorCor))
-                private$.factorCor <- private$.getPsychResult()$r.scores
+                private$.factorCor <- private$.getPsychResult()$Phi
 
             return(private$.factorCor)
         },
@@ -110,6 +110,7 @@ pcaClass <- R6::R6Class(
             private$.initModelFitTable()
             private$.initEigenTable()
             private$.initKMOTable()
+            private$.initFactorCor()
         },
         .run = function() {
             if (is.null(self$options$vars) || length(self$options$vars) < 2)
@@ -219,6 +220,12 @@ pcaClass <- R6::R6Class(
 
             for (i in seq_along(vars))
                 table$addRow(rowKey=i+1, values=list(name = vars[[i]]))
+        },
+        .initFactorCor = function() {
+            if (private$analysis == 'efa') {
+                table <- self$results$factorStats$factorCor
+                table$setTitle("Inter-Factor Correlations")
+            }
         },
 
         #### Populate tables/plots functions ----
@@ -332,8 +339,6 @@ pcaClass <- R6::R6Class(
                     table$addColumn(name=paste0("pc",i), title=as.character(i), type='number')
             }
 
-            colNames <- sub('.', '', colnames(factorCor))
-
             for (i in 1:nFactors) {
                 row <- list()
                 row[["comp"]] <- i
@@ -344,7 +349,7 @@ pcaClass <- R6::R6Class(
                     else if (j < i)
                         row[[paste0("pc", j)]] <- ""
                     else
-                        row[[paste0("pc", j)]] <- factorCor[i, j]
+                        row[[paste0("pc", j)]] <- ifelse(is.null(factorCor), 0, factorCor[i, j])
                 }
 
                 table$addRow(rowKey=i, values=row)

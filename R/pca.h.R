@@ -232,7 +232,7 @@ pcaResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                         self$add(jmvcore::Table$new(
                             options=options,
                             name="factorCor",
-                            title="Correlation Matrix",
+                            title="Inter-Component Correlations",
                             visible="(factorCor)",
                             clearWith=list(
                                 "vars",
@@ -483,7 +483,7 @@ pcaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   loadings by size
 #' @param screePlot \code{TRUE} or \code{FALSE} (default), show scree plot
 #' @param eigen \code{TRUE} or \code{FALSE} (default), show eigenvalue table
-#' @param factorCor \code{TRUE} or \code{FALSE} (default), show factor
+#' @param factorCor \code{TRUE} or \code{FALSE} (default), show inter-factor
 #'   correlations
 #' @param factorSummary \code{TRUE} or \code{FALSE} (default), show factor
 #'   summary
