@@ -139,7 +139,7 @@ options:
       default: false
       description:
           R: >
-            `TRUE` or `FALSE` (default), show factor correlations
+            `TRUE` or `FALSE` (default), show inter-factor correlations
 
     - name: factorSummary
       title: Component summary
