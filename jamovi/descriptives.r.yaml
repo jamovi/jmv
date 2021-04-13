@@ -17,6 +17,18 @@ items:
         - ciWidth
       columns: []
 
+    - name: descriptivesT
+      title: Descriptives
+      description: a table of the descriptive statistics
+      visible: (transpose && (n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || ci || iqr || skew || kurt || pcEqGr || pc))
+      type: Table
+      clearWith:
+        - splitBy
+        - pcNEqGr
+        - pcValues
+        - ciWidth
+      columns: []
+
     - name: frequencies
       title: Frequencies
       type: Array

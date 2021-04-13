@@ -53,6 +53,45 @@ test_that('descriptive statistics work for continuous variables without split by
     expect_equal(as.numeric(quantiles[3]), r[["x[quant3]"]], tolerance = 1e-5)
 })
 
+test_that('descriptives transposed table works with splitBy', {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+    df <- data.frame(
+        Q1=rnorm(100),
+        Q2=rnorm(100),
+        Q3=rnorm(100),
+        Q4=rnorm(100),
+        group=sample(letters[1:3], 100, replace = TRUE)
+    )
+
+    desc <- jmv::descriptives(
+        data=df, vars=vars(Q1, Q2, Q3, Q4), splitBy=group, transpose=TRUE
+    )
+
+    r <- desc$descriptivesT$asDF
+
+    expect_equal(c(36, 28, 36, 36, 28, 36, 36, 28, 36, 36, 28, 36), r$n)
+    expect_equal(
+        c(0.1454, 0.2344, 0.3307, 0.09781, -0.02078, 0.03245, -0.2239, -0.1114,
+          -0.1302, -0.005095, -0.1445, 0.01393),
+        r$mean, tolerance=1e-4
+    )
+    expect_equal(
+        c(1.138, 0.8853, 1.138, 0.9002, 1.178, 0.9884, 1.044, 1.225, 0.9436,
+          0.8925, 1.070, 0.843),
+        r$sd, tolerance=1e-3
+    )
+    expect_equal(
+        c(-2.344, -1.774, -1.679, -1.154, -2.474, -2.32, -2.38, -2.689, -1.979,
+          -1.697, -1.867, -1.493),
+        r$min, tolerance=1e-3
+    )
+    expect_equal(
+        c(2.199, 1.785, 3.446, 3.104, 2.929, 2.209, 2.258, 3.406, 1.933, 1.851,
+          1.898, 2.163),
+        r$max, tolerance=1e-4
+    )
+})
 
 test_that('descriptives works old scenario', {
 

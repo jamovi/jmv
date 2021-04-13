@@ -28,13 +28,31 @@ children:
     stretchFactor: 1
     margin: large
     children:
-      - type: CheckBox
-        name: freq
-        label: Frequency tables
-        icons:
-          - variable-nominal
-          - variable-ordinal
-        iconPosition: right
+      - type: LayoutBox
+        stretchFactor: 3
+        margin: large
+        cell:
+          column: 0
+          row: 0
+        fitToGrid: true
+        children:
+          - type: CheckBox
+            name: freq
+            label: Frequency tables
+            icons:
+              - variable-nominal
+              - variable-ordinal
+            iconPosition: right
+      - type: LayoutBox
+        stretchFactor: 2
+        margin: large
+        cell:
+          column: 1
+          row: 0
+        fitToGrid: true
+        children:
+          - type: CheckBox
+            name: transpose
   - type: CollapseBox
     label: Statistics
     collapsed: true
@@ -154,12 +172,12 @@ children:
                     style: inline
                     verticalAlignment: center
                     children:
-                    - type: TextBox
-                      name: ciWidth
-                      label: ""
-                      suffix: "%"
-                      format: number
-                      enable: (ci)
+                      - type: TextBox
+                        name: ciWidth
+                        label: ''
+                        suffix: '%'
+                        format: number
+                        enable: (ci)
       - type: LayoutBox
         stretchFactor: 1
         margin: large

@@ -108,6 +108,15 @@ options:
             `TRUE` or `FALSE` (default), provide frequency tables (nominal, ordinal
             variables only)
 
+    - name: transpose
+      title: Transpose descriptives table
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), transpose the descriptives table to display
+            the statistics as columns instead of rows (which is the default)
+
     - name: hist
       title: Histogram
       type: Bool
