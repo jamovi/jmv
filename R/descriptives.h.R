@@ -9,6 +9,7 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             vars = NULL,
             splitBy = NULL,
             freq = FALSE,
+            desc = "columns",
             hist = FALSE,
             dens = FALSE,
             bar = FALSE,
@@ -68,6 +69,13 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 "freq",
                 freq,
                 default=FALSE)
+            private$..desc <- jmvcore::OptionList$new(
+                "desc",
+                desc,
+                options=list(
+                    "rows",
+                    "columns"),
+                default="columns")
             private$..hist <- jmvcore::OptionBool$new(
                 "hist",
                 hist,
@@ -208,6 +216,7 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$.addOption(private$..vars)
             self$.addOption(private$..splitBy)
             self$.addOption(private$..freq)
+            self$.addOption(private$..desc)
             self$.addOption(private$..hist)
             self$.addOption(private$..dens)
             self$.addOption(private$..bar)
@@ -245,6 +254,7 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         vars = function() private$..vars$value,
         splitBy = function() private$..splitBy$value,
         freq = function() private$..freq$value,
+        desc = function() private$..desc$value,
         hist = function() private$..hist$value,
         dens = function() private$..dens$value,
         bar = function() private$..bar$value,
@@ -281,6 +291,7 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         ..vars = NA,
         ..splitBy = NA,
         ..freq = NA,
+        ..desc = NA,
         ..hist = NA,
         ..dens = NA,
         ..bar = NA,
@@ -320,6 +331,7 @@ descriptivesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
     inherit = jmvcore::Group,
     active = list(
         descriptives = function() private$.items[["descriptives"]],
+        descriptivesT = function() private$.items[["descriptivesT"]],
         frequencies = function() private$.items[["frequencies"]],
         plots = function() private$.items[["plots"]]),
     private = list(),
@@ -336,6 +348,18 @@ descriptivesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 visible="(n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || ci || iqr || skew || kurt || pcEqGr || pc)",
                 rows=1,
                 clearWith=list(
+                    "splitBy",
+                    "pcNEqGr",
+                    "pcValues",
+                    "ciWidth"),
+                columns=list()))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="descriptivesT",
+                title="Descriptives",
+                visible="(n || missing || mean || median || mode || sum || sd || variance || range || min || max || se || ci || iqr || skew || kurt || pcEqGr || pc)",
+                clearWith=list(
+                    "vars",
                     "splitBy",
                     "pcNEqGr",
                     "pcValues",
@@ -455,6 +479,8 @@ descriptivesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   \code{vars}
 #' @param freq \code{TRUE} or \code{FALSE} (default), provide frequency tables
 #'   (nominal, ordinal variables only)
+#' @param desc \code{'rows'} or \code{'columns'} (default), display the
+#'   variables across the rows or across the columns (default)
 #' @param hist \code{TRUE} or \code{FALSE} (default), provide histograms
 #'   (continuous variables only)
 #' @param dens \code{TRUE} or \code{FALSE} (default), provide density plots
@@ -507,6 +533,7 @@ descriptivesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$descriptives} \tab \tab \tab \tab \tab a table of the descriptive statistics \cr
+#'   \code{results$descriptivesT} \tab \tab \tab \tab \tab a table of the descriptive statistics \cr
 #'   \code{results$frequencies} \tab \tab \tab \tab \tab an array of frequency tables \cr
 #'   \code{results$plots} \tab \tab \tab \tab \tab an array of descriptive plots \cr
 #' }
@@ -523,6 +550,7 @@ descriptives <- function(
     vars,
     splitBy = NULL,
     freq = FALSE,
+    desc = "columns",
     hist = FALSE,
     dens = FALSE,
     bar = FALSE,
@@ -589,6 +617,7 @@ descriptives <- function(
         vars = vars,
         splitBy = splitBy,
         freq = freq,
+        desc = desc,
         hist = hist,
         dens = dens,
         bar = bar,

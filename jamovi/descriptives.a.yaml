@@ -108,6 +108,20 @@ options:
             `TRUE` or `FALSE` (default), provide frequency tables (nominal, ordinal
             variables only)
 
+    - name: desc
+      title: Descriptives
+      type: List
+      options:
+        - title: Variables across rows
+          name: 'rows'
+        - title: Variables across columns
+          name: 'columns'
+      default: 'columns'
+      description:
+          R: >
+            `'rows'` or `'columns'` (default), display the variables across the
+            rows or across the columns (default)
+
     - name: hist
       title: Histogram
       type: Bool
