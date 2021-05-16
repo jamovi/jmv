@@ -557,7 +557,7 @@ pcaClass <- R6::R6Class(
             for (var in vars)
                 data[[jmvcore::toB64(var)]] <- jmvcore::toNumeric(self$data[[var]])
 
-            attr(data, 'row.names') <- seq_len(length(data[[1]]))
+            attr(data, 'row.names') <- rownames(self$data)
             attr(data, 'class') <- 'data.frame'
             data <- jmvcore::naOmit(data)
 
