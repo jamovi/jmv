@@ -257,12 +257,11 @@ reliabilityClass <- R6::R6Class(
             for (item in items)
                 data[[item]] <- jmvcore::toNumeric(self$data[[item]])
 
-            attr(data, 'row.names') <- seq_len(length(data[[1]]))
+            attr(data, 'row.names') <- rownames(self$data)
             attr(data, 'class') <- 'data.frame'
             data <- jmvcore::naOmit(data)
 
             for (item in self$options$revItems) {
-
                 dataItem <- data[[item]]
                 minItem <- min(dataItem)
                 maxItem <- max(dataItem)

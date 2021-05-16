@@ -1251,7 +1251,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             for (cov in covs)
                 data[[jmvcore::toB64(cov)]] <- jmvcore::toNumeric(dataRaw[[cov]])
 
-            attr(data, 'row.names') <- seq_len(length(data[[1]]))
+            attr(data, 'row.names') <- rownames(self$data)
             attr(data, 'class') <- 'data.frame'
 
             if (naOmit) {
