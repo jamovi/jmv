@@ -6,6 +6,7 @@ ttestPSClass <- R6::R6Class(
         .run=function() {
 
             data <- self$data
+            testValue <- self$options$get("testValue")
 
             ttestTable <- self$results$get('ttest')
             descTable <- self$results$get('desc')
@@ -64,7 +65,7 @@ ttestPSClass <- R6::R6Class(
 
                 pooledSD <- tryNaN(stats::sd(column1-column2))
                 sediff <- pooledSD/sqrt(n)
-                d <- (m1-m2)/pooledSD #Cohen's d
+                d <- (m1-m2-testValue)/pooledSD #Cohen's d
                 dCI <- psych::d.ci(d, n1=n, alpha=confIntES)
 
                 if (is.factor(column1) || is.factor(column2)) {
@@ -72,8 +73,20 @@ ttestPSClass <- R6::R6Class(
                     wilc <- createError('One or both variables are not numeric')
                 }
                 else {
-                    stud <- try(t.test(column1, column2, paired=TRUE, conf.level=confInt, alternative=Ha), silent=TRUE)
-                    wilc <- try(suppressWarnings(wilcox.test(column1, column2, alternative=Ha, paired=TRUE, conf.int=TRUE, conf.level=confInt)), silent=TRUE)
+                    stud <- try(t.test(column1, column2,
+                                       paired=TRUE,
+                                       conf.level=confInt,
+                                       alternative=Ha,
+                                       mu=testValue),
+                                silent=TRUE)
+                    wilc <- try(suppressWarnings(wilcox.test(column1,
+                                                             column2,
+                                                             alternative=Ha,
+                                                             paired=TRUE,
+                                                             conf.int=TRUE,
+                                                             conf.level=confInt,
+                                                             mu=testValue)),
+                                silent=TRUE)
                 }
 
                 if ( ! isError(stud)) {
@@ -82,10 +95,10 @@ ttestPSClass <- R6::R6Class(
                         'stat[stud]'=stud$statistic,
                         'df[stud]'=stud$parameter,
                         'p[stud]'=stud$p.value,
-                        'md[stud]'=stud$estimate,
+                        'md[stud]'=stud$estimate - testValue,
                         'sed[stud]'=sediff,
-                        'cil[stud]'=stud$conf.int[1],
-                        'ciu[stud]'=stud$conf.int[2],
+                        'cil[stud]'=stud$conf.int[1] - testValue,
+                        'ciu[stud]'=stud$conf.int[2] - testValue,
                         'es[stud]'=d,
                         "ciles[stud]"=dCI[1],
                         "ciues[stud]"=dCI[3]))
@@ -121,10 +134,10 @@ ttestPSClass <- R6::R6Class(
                         'stat[wilc]'=wilc$statistic,
                         'df[wilc]'=wilc$parameter,
                         'p[wilc]'=wilc$p.value,
-                        'md[wilc]'=wilc$estimate,
+                        'md[wilc]'=wilc$estimate - testValue,
                         'sed[wilc]'=sediff,
-                        'cil[wilc]'=wilc$conf.int[1],
-                        'ciu[wilc]'=wilc$conf.int[2],
+                        'cil[wilc]'=wilc$conf.int[1] - testValue,
+                        'ciu[wilc]'=wilc$conf.int[2] - testValue,
                         'es[wilc]'=biSerial,
                         "ciles[wilc]"='',
                         "ciues[wilc]"=''))
@@ -224,7 +237,12 @@ ttestPSClass <- R6::R6Class(
 
                         rscale <- self$options$get('bfPrior')
 
-                        res <- try(BayesFactor::ttestBF(x=column1, y=column2, paired=TRUE, nullInterval=nullInterval, rscale=rscale), silent=TRUE)
+                        res <- try(BayesFactor::ttestBF(x=column1,
+                                                        y=column2,
+                                                        paired=TRUE,
+                                                        nullInterval=nullInterval,
+                                                        mu = testValue,
+                                                        rscale=rscale), silent=TRUE)
                     }
 
                     if (isError(res)) {
@@ -300,6 +318,7 @@ ttestPSClass <- R6::R6Class(
         .init=function() {
 
             hypothesis <- self$options$get('hypothesis')
+            testValue <- self$options$get("testValue")
             ttestTable <- self$results$get('ttest')
 
             ciTitle <- paste0(self$options$get('ciWidth'), '% Confidence Interval')
@@ -319,13 +338,6 @@ ttestPSClass <- R6::R6Class(
             ttestTable$getColumn('ciles[bf]')$setSuperTitle(ciTitleES)
             ttestTable$getColumn('ciues[wilc]')$setSuperTitle(ciTitleES)
             ttestTable$getColumn('ciles[wilc]')$setSuperTitle(ciTitleES)
-
-            if (hypothesis == 'oneGreater')
-                ttestTable$setNote("hyp", "H\u2090 Measure 1 > Measure 2")
-            else if (hypothesis == 'twoGreater')
-                ttestTable$setNote("hyp", "H\u2090 Measure 1 < Measure 2")
-            else
-                ttestTable$setNote("hyp", NULL)
 
 
             pairs <- self$options$pairs
@@ -351,6 +363,19 @@ ttestPSClass <- R6::R6Class(
 
                 plots$get(pair)$setTitle(paste0(pair, collapse=' - '))
             }
+
+
+
+            if (self$options$get("hypothesis") == 'oneGreater') {
+                ttestTable$setNote("hyp", jmvcore::format("H\u2090 Measure 1 - Measure 2 > {}", testValue))
+            } else if (self$options$get("hypothesis") == 'twoGreater'){
+                ttestTable$setNote("hyp", jmvcore::format("H\u2090 Measure 1 - Measure 2 < {}", testValue))
+            } else {
+                ttestTable$setNote("hyp", jmvcore::format("H\u2090 Measure 1 - Measure 2 \u2260 {}", testValue))
+            }
+
+
+
         },
         .desc=function(image, ggtheme, theme, ...) {
 

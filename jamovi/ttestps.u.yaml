@@ -59,21 +59,27 @@ children:
           - type: Label
             label: Hypothesis
             children:
+              - type: LayoutBox
+                children:
+                  - type: TextBox
+                    name: testValue
+                    label: Test value
+                    format: number
               - type: RadioButton
                 name: hypothesis_different
                 optionName: hypothesis
                 optionPart: different
-                label: Measure 1 ≠ Measure 2
+                label: Measure 1 - Measure 2 ≠ Test value
               - type: RadioButton
                 name: hypothesis_oneGreater
                 optionName: hypothesis
                 optionPart: oneGreater
-                label: Measure 1 > Measure 2
+                label: Measure 1 - Measure 2 > Test value
               - type: RadioButton
                 name: hypothesis_twoGreater
                 optionName: hypothesis
                 optionPart: twoGreater
-                label: Measure 1 < Measure 2
+                label: Measure 1 - Measure 2 < Test value
           - type: Label
             label: Missing values
             children:

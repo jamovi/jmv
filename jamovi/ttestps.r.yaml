@@ -12,6 +12,7 @@ items:
       clearWith:
           - miss
           - hypothesis
+          - testValue
           - ciWidth
           - bfPrior
           - ciWidthES

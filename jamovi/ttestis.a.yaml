@@ -139,6 +139,14 @@ options:
           R: >
             `TRUE` or `FALSE` (default), perform Mann-Whitney U tests
 
+    - name: testValue
+      title: Test Value
+      type: Number
+      default: 0
+      description:
+          ui: the test value to test against (typically zero).
+          R: a number specifying the value of the null hypothesis
+
     - name: hypothesis
       title: Alternative hypothesis
       type: List

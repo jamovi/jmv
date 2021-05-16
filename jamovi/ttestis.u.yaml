@@ -1,6 +1,6 @@
-name:  ttestIS
+name: ttestIS
 title: Independent Samples T-Test
-jus:   '2.0'
+jus: '2.0'
 compilerMode: tame
 children:
   - type: VariableSupplier
@@ -28,8 +28,8 @@ children:
     children:
       - type: LayoutBox
         cell:
-            column: 0
-            row: 0
+          column: 0
+          row: 0
         stretchFactor: 1
         children:
           - type: Label
@@ -47,34 +47,34 @@ children:
                         label: Prior
                         format: number
                         enable: (bf)
-
               - type: CheckBox
                 name: welchs
-
               - type: CheckBox
                 name: mann
-
           - type: Label
             label: Hypothesis
             children:
+              - type: LayoutBox
+                children:
+                  - type: TextBox
+                    name: testValue
+                    label: Test value
+                    format: number
               - type: RadioButton
                 name: hypothesis_different
                 optionName: hypothesis
                 optionPart: different
-                label: "Group 1 ≠ Group 2"
-
+                label: Group 1 - Group 2 ≠ Test value
               - type: RadioButton
                 name: hypothesis_oneGreater
                 optionName: hypothesis
                 optionPart: oneGreater
-                label: "Group 1 > Group 2"
-
+                label: Group 1 - Group 2 > Test value
               - type: RadioButton
                 name: hypothesis_twoGreater
                 optionName: hypothesis
                 optionPart: twoGreater
-                label: "Group 1 < Group 2"
-
+                label: Group 1 - Group 2 < Test value
           - type: Label
             label: Missing values
             children:
@@ -83,17 +83,15 @@ children:
                 optionName: miss
                 optionPart: perAnalysis
                 label: Exclude cases analysis by analysis
-
               - type: RadioButton
                 name: miss_listwise
                 optionName: miss
                 optionPart: listwise
                 label: Exclude cases listwise
-
       - type: LayoutBox
         cell:
-            column: 1
-            row: 0
+          column: 1
+          row: 0
         stretchFactor: 1
         children:
           - type: Label
@@ -105,56 +103,51 @@ children:
                 children:
                   - type: LayoutBox
                     children:
-                    - type: CheckBox
-                      name: ci
-                      label: Confidence interval
-                      enable: (meanDiff)
-                      style: inline
-                      verticalAlignment: center
-                      children:
-                        - type: TextBox
-                          name: ciWidth
-                          label: ""
-                          suffix: "%"
-                          format: number
-                          enable: (meanDiff && ci)
-
+                      - type: CheckBox
+                        name: ci
+                        label: Confidence interval
+                        enable: (meanDiff)
+                        style: inline
+                        verticalAlignment: center
+                        children:
+                          - type: TextBox
+                            name: ciWidth
+                            label: ''
+                            suffix: '%'
+                            format: number
+                            enable: (meanDiff && ci)
               - type: CheckBox
                 name: effectSize
                 label: Effect size
                 children:
                   - type: LayoutBox
                     children:
-                    - type: CheckBox
-                      name: ciES
-                      label: Confidence interval
-                      enable: (effectSize)
-                      style: inline
-                      verticalAlignment: center
-                      children:
-                        - type: TextBox
-                          name: ciWidthES
-                          label: ""
-                          suffix: "%"
-                          format: number
-                          enable: (effectSize && ciES)
-
+                      - type: CheckBox
+                        name: ciES
+                        label: Confidence interval
+                        enable: (effectSize)
+                        style: inline
+                        verticalAlignment: center
+                        children:
+                          - type: TextBox
+                            name: ciWidthES
+                            label: ''
+                            suffix: '%'
+                            format: number
+                            enable: (effectSize && ciES)
               - type: CheckBox
                 name: desc
                 label: Descriptives
-
               - type: CheckBox
                 name: plots
                 label: Descriptives plots
-
           - type: Label
             label: Assumption Checks
             children:
               - type: CheckBox
                 name: eqv
-
               - type: CheckBox
                 name: norm
-
               - type: CheckBox
                 name: qq
+

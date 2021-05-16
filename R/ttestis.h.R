@@ -13,6 +13,7 @@ ttestISOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             bfPrior = 0.707,
             welchs = FALSE,
             mann = FALSE,
+            testValue = 0,
             hypothesis = "different",
             norm = FALSE,
             qq = FALSE,
@@ -71,6 +72,10 @@ ttestISOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "mann",
                 mann,
                 default=FALSE)
+            private$..testValue <- jmvcore::OptionNumber$new(
+                "testValue",
+                testValue,
+                default=0)
             private$..hypothesis <- jmvcore::OptionList$new(
                 "hypothesis",
                 hypothesis,
@@ -142,6 +147,7 @@ ttestISOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..bfPrior)
             self$.addOption(private$..welchs)
             self$.addOption(private$..mann)
+            self$.addOption(private$..testValue)
             self$.addOption(private$..hypothesis)
             self$.addOption(private$..norm)
             self$.addOption(private$..qq)
@@ -164,6 +170,7 @@ ttestISOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         bfPrior = function() private$..bfPrior$value,
         welchs = function() private$..welchs$value,
         mann = function() private$..mann$value,
+        testValue = function() private$..testValue$value,
         hypothesis = function() private$..hypothesis$value,
         norm = function() private$..norm$value,
         qq = function() private$..qq$value,
@@ -185,6 +192,7 @@ ttestISOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..bfPrior = NA,
         ..welchs = NA,
         ..mann = NA,
+        ..testValue = NA,
         ..hypothesis = NA,
         ..norm = NA,
         ..qq = NA,
@@ -223,6 +231,7 @@ ttestISResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 clearWith=list(
                     "group",
                     "hypothesis",
+                    "testValue",
                     "ciWidth",
                     "miss",
                     "bfPrior",
@@ -774,6 +783,7 @@ ttestISBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   t-tests
 #' @param mann \code{TRUE} or \code{FALSE} (default), perform Mann-Whitney U
 #'   tests
+#' @param testValue a number specifying the value of the null hypothesis
 #' @param hypothesis \code{'different'} (default), \code{'oneGreater'} or
 #'   \code{'twoGreater'}, the alternative hypothesis; group 1 different to group
 #'   2, group 1 greater than group 2, and group 2 greater than group 1
@@ -830,6 +840,7 @@ ttestIS <- function(
     bfPrior = 0.707,
     welchs = FALSE,
     mann = FALSE,
+    testValue = 0,
     hypothesis = "different",
     norm = FALSE,
     qq = FALSE,
@@ -881,6 +892,7 @@ ttestIS <- function(
         bfPrior = bfPrior,
         welchs = welchs,
         mann = mann,
+        testValue = testValue,
         hypothesis = hypothesis,
         norm = norm,
         qq = qq,

@@ -11,6 +11,7 @@ ttestPSOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             bf = FALSE,
             bfPrior = 0.707,
             wilcoxon = FALSE,
+            testValue = 0,
             hypothesis = "different",
             norm = FALSE,
             qq = FALSE,
@@ -55,6 +56,10 @@ ttestPSOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "wilcoxon",
                 wilcoxon,
                 default=FALSE)
+            private$..testValue <- jmvcore::OptionNumber$new(
+                "testValue",
+                testValue,
+                default=0)
             private$..hypothesis <- jmvcore::OptionList$new(
                 "hypothesis",
                 hypothesis,
@@ -120,6 +125,7 @@ ttestPSOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..bf)
             self$.addOption(private$..bfPrior)
             self$.addOption(private$..wilcoxon)
+            self$.addOption(private$..testValue)
             self$.addOption(private$..hypothesis)
             self$.addOption(private$..norm)
             self$.addOption(private$..qq)
@@ -139,6 +145,7 @@ ttestPSOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         bf = function() private$..bf$value,
         bfPrior = function() private$..bfPrior$value,
         wilcoxon = function() private$..wilcoxon$value,
+        testValue = function() private$..testValue$value,
         hypothesis = function() private$..hypothesis$value,
         norm = function() private$..norm$value,
         qq = function() private$..qq$value,
@@ -157,6 +164,7 @@ ttestPSOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..bf = NA,
         ..bfPrior = NA,
         ..wilcoxon = NA,
+        ..testValue = NA,
         ..hypothesis = NA,
         ..norm = NA,
         ..qq = NA,
@@ -194,6 +202,7 @@ ttestPSResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 clearWith=list(
                     "miss",
                     "hypothesis",
+                    "testValue",
                     "ciWidth",
                     "bfPrior",
                     "ciWidthES"),
@@ -613,6 +622,7 @@ ttestPSBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   to use in calculating Bayes factors
 #' @param wilcoxon \code{TRUE} or \code{FALSE} (default), perform Wilcoxon
 #'   signed rank tests
+#' @param testValue a number specifying the value of the null hypothesis
 #' @param hypothesis \code{'different'} (default), \code{'oneGreater'} or
 #'   \code{'twoGreater'}, the alternative hypothesis; measure 1 different to
 #'   measure 2, measure 1 greater than measure 2, and measure 2 greater than
@@ -663,6 +673,7 @@ ttestPS <- function(
     bf = FALSE,
     bfPrior = 0.707,
     wilcoxon = FALSE,
+    testValue = 0,
     hypothesis = "different",
     norm = FALSE,
     qq = FALSE,
@@ -690,6 +701,7 @@ ttestPS <- function(
         bf = bf,
         bfPrior = bfPrior,
         wilcoxon = wilcoxon,
+        testValue = testValue,
         hypothesis = hypothesis,
         norm = norm,
         qq = qq,
