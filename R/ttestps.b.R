@@ -321,9 +321,9 @@ ttestPSClass <- R6::R6Class(
             ttestTable$getColumn('ciles[wilc]')$setSuperTitle(ciTitleES)
 
             if (hypothesis == 'oneGreater')
-                ttestTable$setNote("hyp", "H\u2090 Measure 1 > Measure 2")
+                ttestTable$setNote("hyp", "H\u2090 \u03BC\u2009<sub>Measure 1 - Measure 2</sub> > 0")
             else if (hypothesis == 'twoGreater')
-                ttestTable$setNote("hyp", "H\u2090 Measure 1 < Measure 2")
+                ttestTable$setNote("hyp", "H\u2090 \u03BC\u2009<sub>Measure 1 - Measure 2</sub> < 0")
             else
                 ttestTable$setNote("hyp", NULL)
 

@@ -514,9 +514,9 @@ ttestISClass <- R6::R6Class(
             table$getColumn('ciles[mann]')$setSuperTitle(ciTitleES)
 
             if (hypothesis == 'oneGreater')
-                table$setNote("hyp", jmvcore::format("H\u2090 {} > {}", groups[1], groups[2]))
+                table$setNote("hyp", jmvcore::format("H\u2090 \u03BC\u2009<sub>{}</sub> > \u03BC\u2009<sub>{}</sub>", groups[1], groups[2]))
             else if (hypothesis == 'twoGreater')
-                table$setNote("hyp", jmvcore::format("H\u2090 {} < {}", groups[1], groups[2]))
+                table$setNote("hyp", jmvcore::format("H\u2090 \u03BC\u2009<sub>{}</sub> < \u03BC\u2009<sub>{}</sub>", groups[1], groups[2]))
             else
                 table$setNote("hyp", NULL)
         },

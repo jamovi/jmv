@@ -284,11 +284,11 @@ ttestOneSClass <- R6::R6Class(
             if (hypothesis == 'dt' && testValue == 0)
                 table$setNote("hyp", NULL)
             else if (hypothesis == 'dt')
-                table$setNote("hyp", jmvcore::format("H\u2090 population mean \u2260 {}", testValue))
+                table$setNote("hyp", jmvcore::format("H\u2090 \u03BC \u2260 {}", testValue))
             else if (hypothesis == 'gt')
-                table$setNote("hyp", jmvcore::format("H\u2090 population mean > {}", testValue))
+                table$setNote("hyp", jmvcore::format("H\u2090 \u03BC > {}", testValue))
             else if (hypothesis == 'lt')
-                table$setNote("hyp", jmvcore::format("H\u2090 population mean < {}", testValue))
+                table$setNote("hyp", jmvcore::format("H\u2090 \u03BC < {}", testValue))
         },
         .desc=function(image, ggtheme, theme, ...) {
 
