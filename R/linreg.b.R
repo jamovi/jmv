@@ -40,6 +40,12 @@ linRegClass <- R6::R6Class(
 
             return(private$.fitted)
         },
+        predicted = function() {
+            if (is.null(private$.predicted))
+                private$.predicted <- private$.computePredicted()
+
+            return(private$.predicted)
+        },
         cooks = function() {
             if (is.null(private$.cooks))
                 private$.cooks <- private$.computeCooks()
@@ -110,6 +116,7 @@ linRegClass <- R6::R6Class(
         .nModels = NULL,
         .residuals = NULL,
         .fitted = NULL,
+        .predicted = NULL,
         .cooks = NULL,
         .anovaModelComparison = NULL,
         .anovaModelTerms = NULL,
@@ -192,6 +199,13 @@ linRegClass <- R6::R6Class(
             return(res)
         },
         .computeFitted = function() {
+            fitted <- list()
+            for (i in seq_along(self$models))
+                fitted[[i]] <- self$models[[i]]$fitted.values
+
+            return(fitted)
+        },
+        .computePredicted = function() {
             data <- private$.cleanData(naSkip=jmvcore::toB64(self$options$dep))
             fitted <- list()
             for (i in seq_along(self$models))
@@ -889,9 +903,9 @@ linRegClass <- R6::R6Class(
             }
 
             if (self$options$predictOV && self$results$predictOV$isNotFilled()) {
-                self$results$predictOV$setRowNums(names(self$fitted[[1]]))
+                self$results$predictOV$setRowNums(names(self$predicted[[1]]))
                 for (i in seq_along(self$fitted))
-                    self$results$predictOV$setValues(index=i, as.numeric(self$fitted[[i]]))
+                    self$results$predictOV$setValues(index=i, as.numeric(self$predicted[[i]]))
             }
 
             if (self$options$cooksOV && self$results$cooksOV$isNotFilled()) {
