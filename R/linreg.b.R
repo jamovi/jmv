@@ -187,8 +187,13 @@ linRegClass <- R6::R6Class(
         },
         .computeAnovaModelTerms = function() {
             anovaTerms <- list()
-            for (i in seq_along(self$models))
-                anovaTerms[[i]] <- car::Anova(self$models[[i]], type=3, singular.ok=TRUE)
+            for (i in seq_along(self$models)) {
+                suppressMessages({
+                    anovaTerms[[i]] <- car::Anova(
+                        self$models[[i]], type=3, singular.ok=TRUE
+                    )
+                })
+            }
 
             return(anovaTerms)
         },
