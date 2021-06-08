@@ -113,6 +113,7 @@ linRegClass <- R6::R6Class(
         .dataRowNums = NULL,
         .models = NULL,
         .modelsScaled = NULL,
+        .isAliased = NULL,
         .nModels = NULL,
         .residuals = NULL,
         .fitted = NULL,
@@ -266,7 +267,7 @@ linRegClass <- R6::R6Class(
 
             VIF <- list()
             for (i in seq_along(self$models)) {
-                if (length(modelTerms[[i]]) > 1)
+                if ( ! private$.getIsAliased()[[i]] && length(modelTerms[[i]]) > 1 )
                     VIF[[i]] <- car::vif(self$models[[i]])
                 else
                     VIF[[i]] <- NULL
@@ -648,7 +649,6 @@ linRegClass <- R6::R6Class(
                 termsB64 <- lapply(terms, jmvcore::toB64)
                 r <- anova[[i]]
                 rowTerms <- jmvcore::decomposeTerms(rownames(r))
-
                 resIndex <- length(rowTerms)
 
                 for (j in seq_along(terms)) {
@@ -659,33 +659,34 @@ linRegClass <- R6::R6Class(
                     index <- which(length(term) == sapply(rowTerms, length) &
                                        sapply(rowTerms, function(x) all(term %in% x)))
 
-                    ss <- r[index,'Sum Sq']
-                    df <- r[index,'Df']
-                    ms <- ss / df
-                    F  <- r[index,'F value']
-                    p  <- r[index,'Pr(>F)']
+                    ss <- r[index, 1]
+                    df <- r[index, 2]
 
-                    if ( ! is.finite(ss))
-                        ss <- 0
-                    if ( ! is.finite(ms))
-                        ms <- ''
-                    if ( ! is.finite(F))
-                        F <- ''
-                    if ( ! is.finite(p))
-                        p <- ''
+                    if (df == 0) {
+                        ms <- NaN
+                        F <- NaN
+                        p <- NaN
+                    } else {
+                        ms <- ss / df
+                        F  <- r[index, 3]
+                        p  <- r[index, 4]
+                    }
 
                     row <- list(ss=ss, df=df, ms=ms, F=F, p=p)
 
                     table$setRow(rowKey=paste0(terms[[j]]), values = row)
                 }
 
-                ss <- r[resIndex,'Sum Sq']
-                df <- r[resIndex,'Df']
+                ss <- r[resIndex, 1]
+                df <- r[resIndex, 2]
                 ms <- ss / df
 
                 row <- list(ss=ss, df=df, ms=ms, F='', p='')
 
                 table$setRow(rowKey='.RES', values = row)
+
+                if ( private$.getIsAliased()[[i]] )
+                    table$setNote("alias", SINGULAR_WARNING)
             }
         },
         .populateCoefTables = function() {
@@ -714,25 +715,42 @@ linRegClass <- R6::R6Class(
                     index <- which(length(term) == sapply(rowTerms, length) &
                                        sapply(rowTerms, function(x) all(term %in% x)))
 
-                    row <- list()
-                    row[["est"]] <- coef[index, 1]
-                    row[["se"]] <- coef[index, 2]
-                    row[["t"]] <- coef[index, 3]
-                    row[["p"]] <- coef[index, 4]
-                    row[["lower"]] <- CI[index, 1]
-                    row[["upper"]] <- CI[index, 2]
+                    if (length(index) > 0) {
+                        row <- list()
+                        row[["est"]] <- coef[index, 1]
+                        row[["se"]] <- coef[index, 2]
+                        row[["t"]] <- coef[index, 3]
+                        row[["p"]] <- coef[index, 4]
+                        row[["lower"]] <- CI[index, 1]
+                        row[["upper"]] <- CI[index, 2]
 
-                    if (rowTerms[index] == "(Intercept)") {
-                        row[["stdEst"]] <- ""
-                        row[["stdEstLower"]] <- ""
-                        row[["stdEstUpper"]] <- ""
+                        if (rowTerms[index] == "(Intercept)") {
+                            row[["stdEst"]] <- ""
+                            row[["stdEstLower"]] <- ""
+                            row[["stdEstUpper"]] <- ""
+                        } else {
+                            row[["stdEst"]] <- coefScaled[index, 1]
+                            row[["stdEstLower"]] <- CIScaled[index, 1]
+                            row[["stdEstUpper"]] <- CIScaled[index, 2]
+                        }
                     } else {
-                        row[["stdEst"]] <- coefScaled[index, 1]
-                        row[["stdEstLower"]] <- CIScaled[index, 1]
-                        row[["stdEstUpper"]] <- CIScaled[index, 2]
+                        row <- list(
+                            est = NaN,
+                            se = NaN,
+                            t = NaN,
+                            p = NaN,
+                            lower = NaN,
+                            upper = NaN,
+                            stdEst = NaN,
+                            stdEstLower = NaN,
+                            stdEstUpper = NaN
+                        )
                     }
 
                     table$setRow(rowKey=jmvcore::composeTerm(term), values=row)
+
+                    if ( private$.getIsAliased()[[i]] )
+                        table$setNote("alias", SINGULAR_WARNING)
                 }
             }
         },
@@ -789,23 +807,29 @@ linRegClass <- R6::R6Class(
 
                 rowTerms <- jmvcore::decomposeTerms(names(VIF))
 
-                for (i in seq_along(terms)) {
+                for (j in seq_along(terms)) {
                     row <- list()
 
-                    if (length(terms) <= 1) {
+                    if (private$.getIsAliased()[[i]]) {
+                        row[["tol"]] <- NaN
+                        row[["vif"]] <- NaN
+                    } else if (length(terms) <= 1) {
                         row[["tol"]] <- 1
                         row[["vif"]] <- 1
                     } else {
                         # check which rows have the same length + same terms
-                        index <- which(length(terms[[i]]) == sapply(rowTerms, length) &
-                                           sapply(rowTerms, function(x) all(terms[[i]] %in% x)))
+                        index <- which(length(terms[[j]]) == sapply(rowTerms, length) &
+                                           sapply(rowTerms, function(x) all(terms[[j]] %in% x)))
 
                         row[["tol"]] <- 1 / as.numeric(VIF[index])
                         row[["vif"]] <- as.numeric(VIF[index])
                     }
 
-                    table$setRow(rowNo=i, values=row)
+                    table$setRow(rowNo=j, values=row)
                 }
+
+                if ( private$.getIsAliased()[[i]] )
+                    table$setNote("alias", SINGULAR_WARNING)
             }
         },
         .populateEmmTables = function() {
@@ -1120,6 +1144,17 @@ linRegClass <- R6::R6Class(
                 private$.dataRowNums <- rownames(self$dataProcessed)
 
             return(private$.dataRowNums)
+        },
+        .getIsAliased = function() {
+            if (is.null(private$.isAliased)) {
+                aliased <- list()
+                for (i in seq_along(self$models))
+                    aliased[[i]] <- any(summary(self$models[[i]])$aliased)
+
+                private$.isAliased <- aliased
+            }
+
+            return(private$.isAliased)
         },
         .contrastModel = function(terms) {
             #' Returns the names of the factor contrasts as they are

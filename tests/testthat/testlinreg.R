@@ -147,3 +147,40 @@ test_that('emmeans table in linreg works with covariate with only two unique val
     expect_equal(0.2515, emmeansTable$emmean[7], tolerance = 1e-4)
     expect_equal(0.1821, emmeansTable$se[9], tolerance = 1e-4)
 })
+
+test_that("analysis shows warning note on singular fit", {
+
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    N <- 20
+    data <- data.frame(
+        x1 = sample(letters[1:4], N, replace = TRUE),
+        x2 = sample(letters[1:4], N, replace = TRUE),
+        y = rnorm(N)
+    )
+
+    dep <- "y"
+    factors <- c("x1", "x2")
+    blocks = list(list("x1", "x2", c("x1", "x2")))
+    refLevels = list(list(var="x1", ref="a"),
+                     list(var="x2", ref="a"))
+
+    r <- jmv::linReg(
+        data,
+        dep=!!dep,
+        factors=!!factors,
+        blocks=blocks,
+        refLevels=refLevels,
+        anova = TRUE,
+        collin = TRUE
+    )
+
+    noteAnova <- r$models[[1]]$anova$notes$alias$note
+    noteCoef <- r$models[[1]]$coef$notes$alias$note
+    noteVIF <- r$models[[1]]$assump$collin$notes$alias$note
+
+    expect_equal(noteAnova, "Linear model contains aliased coefficients (singular fit)")
+    expect_equal(noteCoef, "Linear model contains aliased coefficients (singular fit)")
+    expect_equal(noteVIF, "Linear model contains aliased coefficients (singular fit)")
+})
