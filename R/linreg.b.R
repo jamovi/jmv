@@ -1249,8 +1249,15 @@ linRegClass <- R6::R6Class(
             refVars <- sapply(refLevels, function(x) x$var)
 
             for (factor in factors) {
+                if (length(levels(dataRaw[[factor]])) <= 1)
+                    stop(jmvcore::format("Factor '{}' needs to have at least 2 levels", factor))
+
                 ref <- refLevels[[which(factor == refVars)]][['ref']]
-                column <- dataRaw[[factor]]
+                column <- factor(
+                    dataRaw[[factor]],
+                    ordered = FALSE,
+                    levels = levels(dataRaw[[factor]])
+                )
                 levels(column) <- jmvcore::toB64(levels(column))
                 column <- relevel(column, ref = jmvcore::toB64(ref))
 
@@ -1330,7 +1337,7 @@ linRegClass <- R6::R6Class(
         },
         .scaleData = function(data) {
             for (col in names(data)) {
-                if ( ! is.factor(data[[col]]))
+                if ( ! is.factor(data[[col]]) && length(unique(data[[col]])) > 1 )
                     data[[col]] <- scale(data[[col]])
             }
 

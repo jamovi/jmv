@@ -184,3 +184,49 @@ test_that("analysis shows warning note on singular fit", {
     expect_equal(noteCoef, "Linear model contains aliased coefficients (singular fit)")
     expect_equal(noteVIF, "Linear model contains aliased coefficients (singular fit)")
 })
+
+test_that("analysis works for covariate with one unique value", {
+
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    df <- data.frame(
+        x = rep(1, 100),
+        y = rnorm(100)
+    )
+
+    r <- jmv::linReg(
+        df,
+        dep="y",
+        covs="x",
+        blocks=list(list("x")),
+    )
+
+    coef <- r$models[[1]]$coef$asDF
+    expect_equal(0.237, coef[1, "est"], tolerance = 1e-4)
+    expect_equal(NaN, coef[2, "est"])
+})
+
+test_that("analysis throws error for factor with one level", {
+
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    df <- data.frame(
+        x = factor(rep(1, 100)),
+        y = rnorm(100)
+    )
+
+    testthat::expect_error(
+        {
+            jmv::linReg(
+                df,
+                dep="y",
+                factors="x",
+                blocks=list(list("x")),
+                refLevels = list(list(var="x", ref="1"))
+            )
+        },
+        regexp = "needs to have at least 2 levels"
+    )
+})
