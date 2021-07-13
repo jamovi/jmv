@@ -935,8 +935,13 @@ descriptivesClass <- R6::R6Class(
                 fill <- theme$fill[2]
                 color <- theme$color[1]
 
-                min <- min(data[names$x])
-                max <- max(data[names$x])
+                min <- min(data[[names$x]])
+                if (is.na(min))
+                    min <- 0
+
+                max <- max(data[[names$x]])
+                if (is.na(max))
+                    max <- 0
 
                 range <- max - min
 
@@ -965,7 +970,7 @@ descriptivesClass <- R6::R6Class(
                 themeSpec <- theme(axis.text.y=element_blank(),
                                    axis.ticks.y=element_blank())
 
-            } else {  # if (nSplits > 0) {
+            } else {
                 data$s1rev <- factor(data$s1, rev(levels(data$s1)))
 
                 plot <- ggplot(data=data, aes_string(x='x', y='s1rev', fill='s1')) +
@@ -989,7 +994,6 @@ descriptivesClass <- R6::R6Class(
             }
 
             plot <- plot + ggtheme + themeSpec
-
             return(plot)
         },
         .barPlot = function(image, ggtheme, theme, ...) {
