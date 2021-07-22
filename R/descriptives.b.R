@@ -1119,7 +1119,7 @@ descriptivesClass <- R6::R6Class(
                             )
                     } else if (self$options$dotType == 'stack') {
                         plot <- plot +
-                            gplot2::geom_dotplot(
+                            ggplot2::geom_dotplot(
                                 binaxis="y",
                                 stackdir="center",
                                 color=theme$color[1],
