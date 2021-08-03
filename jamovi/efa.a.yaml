@@ -77,10 +77,10 @@ options:
     - name: minEigen
       title: Minimum value
       type: Number
-      default: 1
+      default: 0
       description:
           R: >
-            a number (default: 1), the minimal eigenvalue for a factor to be included in the model
+            a number (default: 0), the minimal eigenvalue for a factor to be included in the model
 
     - name: extraction
       title: Extraction
