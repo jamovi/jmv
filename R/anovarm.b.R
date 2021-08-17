@@ -708,7 +708,7 @@ anovaRMClass <- R6::R6Class(
 
             suppressMessages({
                 suppressWarnings({
-                    residuals <- residuals(model)
+                    residuals <- scale(residuals(model))
                 })
             })
 
