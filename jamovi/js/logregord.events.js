@@ -1,7 +1,7 @@
 const events = {
 
     update: function(ui) {
-        updateModelLabels(ui.blocks, 'Block');
+        updateModelLabels(ui.blocks, _('Block {0}'));
         calcBlocks(ui, this);
         filterBlocks(ui, this);
 
@@ -35,7 +35,7 @@ const events = {
     },
 
     onEvent_test_listItemsChanged: function(ui) {
-        updateModelLabels(ui.blocks, 'Block');
+        updateModelLabels(ui.blocks, _('Block {0}'));
         let blocks = this.cloneArray(ui.blocks.value(), []);
         this.workspace["blocks"] = blocks;
     },
@@ -85,7 +85,7 @@ var updateContrasts = function(ui, variableList, context) {
 
 let updateModelLabels = function(list, blockName) {
     list.applyToItems(0, (item, index) => {
-        item.controls[0].setPropertyValue("label", blockName + " " + (index + 1) );
+        item.controls[0].setPropertyValue("label", blockName.replace('{0}', (index + 1) ));
     });
 };
 

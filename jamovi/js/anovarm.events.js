@@ -5,14 +5,15 @@ const events = {
     update: function(ui) {
         this._factorCells = null;
 
-        this.initializeValue(ui.rmTerms, [["RM Factor 1"]]);
-        this.setCustomVariable("RM Factor 1", "none", []);
+        let factor = _('RM Factor {0}').replace('{0}', 1);
+        this.initializeValue(ui.rmTerms, [[factor]]);
+        this.setCustomVariable(factor, "none", []);
 
         updateFactorCells(ui, this);
         updateModelTerms(ui, this);
         filterModelRMTerms(ui, this);
         filterModelTerms(ui, this);
-        updateModelLabels(ui.emMeans, 'Term');
+        updateModelLabels(ui.emMeans, _('Term {0}'));
     },
 
     onChange_rm: function(ui) {
@@ -73,13 +74,13 @@ const events = {
     },
 
     onEvent_emMeans_listItemsChanged: function(ui) {
-        updateModelLabels(ui.emMeans, 'Term');
+        updateModelLabels(ui.emMeans, _('Term {0}'));
     }
 };
 
 let updateModelLabels = function(list, blockName) {
     list.applyToItems(0, (item, index) => {
-        item.controls[0].setPropertyValue("label", blockName + " " + (index + 1) );
+        item.controls[0].setPropertyValue("label", blockName.replace('{0}', (index + 1) ));
     });
 };
 
