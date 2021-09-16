@@ -4,7 +4,7 @@ const events = {
         calcModelTerms(ui, this);
         filterModelTerms(ui, this);
         updatePostHocSupplier(ui, this);
-        updateModelLabels(ui.emMeans, 'Term');
+        updateModelLabels(ui.emMeans, _('Term {0}'));
     },
 
     onChange_factors: function(ui) {
@@ -48,7 +48,7 @@ const events = {
     },
 
     onEvent_emMeans_listItemsChanged: function(ui) {
-        updateModelLabels(ui.emMeans, 'Term');
+        updateModelLabels(ui.emMeans, _('Term {0}'));
     }
 };
 
@@ -63,7 +63,7 @@ let calcMarginalMeansSupplier = function(ui, context) {
 
 let updateModelLabels = function(list, blockName) {
     list.applyToItems(0, (item, index) => {
-        item.controls[0].setPropertyValue("label", blockName + " " + (index + 1) );
+        item.controls[0].setPropertyValue("label", blockName.replace('{0}', (index + 1)) );
     });
 };
 
