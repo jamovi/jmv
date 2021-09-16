@@ -2,12 +2,12 @@
 const events = {
 
     update: function(ui) {
-        updateModelLabels(ui);
+        updateModelLabels(ui, this);
         calcModelTerms(ui, this);
     },
 
     onEvent_test_listItemsAdded: function(ui, data) {
-        updateModelLabels(ui);
+        updateModelLabels(ui, this);
         calcModelTerms(ui, this);
         setTimeout(() => {
             data.item.controls[0].$input.focus();
@@ -15,7 +15,7 @@ const events = {
     },
 
     onEvent_test_listItemsChanged: function(ui) {
-        updateModelLabels(ui);
+        updateModelLabels(ui, this);
         calcModelTerms(ui, this);
     },
 
@@ -29,15 +29,15 @@ const events = {
     },
 
     onEvent_factorNameChange : function(ui) {
-        updateModelLabels(ui);
+        updateModelLabels(ui, this);
     }
 };
 
-const updateModelLabels = function(ui) {
+const updateModelLabels = function(ui, context) {
     let list = ui.factors.applyToItems(0, (item, index) => {
         let value = item.controls[0].value();
         if ( ! value || value.trim() === '')
-            item.controls[0].setValue("Factor " + (index + 1) );
+            item.controls[0].setValue(_('Factor {0}').replace('{0}', (index + 1)) );
     });
 };
 
