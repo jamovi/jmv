@@ -294,13 +294,20 @@ options:
               - name: type
                 type: List
                 options:
-                  - none
-                  - deviation
-                  - simple
-                  - difference
-                  - helmert
-                  - repeated
-                  - polynomial
+                  - name: none
+                    title: None
+                  - name: deviation
+                    title: Deviation
+                  - name: simple
+                    title: Simple
+                  - name: difference
+                    title: Difference
+                  - name: helmert
+                    title: Helmert
+                  - name: repeated
+                    title: Repeated
+                  - name: polynomial
+                    title: Polynomial
       description:
           R: in development
 
