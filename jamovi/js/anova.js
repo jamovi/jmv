@@ -6,7 +6,7 @@ module.exports = {
     view_updated: function(ui) {
         this.calcModelTerms(ui);
         this.filterModelTerms(ui);
-        this.updateModelLabels(ui.emMeans, 'Term');
+        this.updateModelLabels(ui.emMeans, _('Term {0}'));
     },
 
     factors_changed: function(ui) {
@@ -42,7 +42,7 @@ module.exports = {
     },
 
     emMeans_listItemsChanged: function(ui) {
-        this.updateModelLabels(ui.emMeans, 'Term');
+        this.updateModelLabels(ui.emMeans, _('Term {0}'));
     },
 
     filterModelTerms: function(ui) {
@@ -91,7 +91,7 @@ module.exports = {
 
     updateModelLabels: function(list, blockName) {
         list.applyToItems(0, (item, index) => {
-            item.controls[0].setPropertyValue("label", blockName + " " + (index + 1) );
+            item.controls[0].setPropertyValue("label", blockName.replace('{0}', (index + 1) ));
         });
     },
 
