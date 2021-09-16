@@ -1,13 +1,13 @@
 const events = {
 
     update: function(ui) {
-        updateModelLabels(ui.blocks, 'Block');
+        updateModelLabels(ui.blocks, _('Block {0}'));
         calcBlocks(ui, this);
         filterBlocks(ui, this);
 
         calcModelTerms(ui, this);
         updateLevelControls(ui, this);
-        updateModelLabels(ui.emMeans, 'Term');
+        updateModelLabels(ui.emMeans, _('Term {0}'));
     },
 
     onChange_covs: function(ui) {
@@ -52,13 +52,13 @@ const events = {
     },
 
     onEvent_test_listItemsChanged: function(ui) {
-        updateModelLabels(ui.blocks, 'Block');
+        updateModelLabels(ui.blocks, _('Block {0}'));
         let blocks = this.cloneArray(ui.blocks.value(), []);
         this.workspace["blocks"] = blocks;
     },
 
     onEvent_emMeans_listItemsChanged: function(ui) {
-        updateModelLabels(ui.emMeans, 'Term');
+        updateModelLabels(ui.emMeans, _('Term {0}'));
     }
 };
 
@@ -68,7 +68,7 @@ let calcMarginalMeansSupplier = function(ui, context) {
     let variableList = [];
     for (let blockIndex = 0; blockIndex < blocks.length; blockIndex++)  {
         for (let term of blocks[blockIndex])
-            variableList = _.union(variableList, term);
+            variableList = [...new Set([...variableList, ...term])];
     }
 
     if (ui.emMeansSupplier)
@@ -116,7 +116,7 @@ var updateContrasts = function(ui, variableList, context) {
 
 let updateModelLabels = function(list, blockName) {
     list.applyToItems(0, (item, index) => {
-        item.controls[0].setPropertyValue("label", blockName + " " + (index + 1) );
+        item.controls[0].setPropertyValue("label", blockName.replace('{0}', (index + 1) ));
     });
 };
 
