@@ -1093,6 +1093,9 @@ descriptivesClass <- R6::R6Class(
 
             themeSpec <- NULL
 
+            # hide outliers it plotting the data
+            outlierShape <- `if`(self$options$dot, NA, 19)
+
             if (is.null(splitBy) || length(splitBy) == 1) {
                 data[["placeHolder"]] <- rep('var1', nrow(data))
 
@@ -1131,9 +1134,6 @@ descriptivesClass <- R6::R6Class(
                 }
 
                 if (self$options$box) {
-                    # hide outliers it plotting the data
-                    outlier.shape <- `if`(self$options$dot, NA, 19)
-
                     plot <- plot +
                         ggplot2::geom_boxplot(
                             color=theme$color[1],
@@ -1141,7 +1141,7 @@ descriptivesClass <- R6::R6Class(
                             alpha=0.9,
                             fill=theme$fill[2],
                             outlier.colour=theme$color[1],
-                            outlier.shape=outlier.shape
+                            outlier.shape=outlierShape
                         )
                 }
 
@@ -1211,6 +1211,7 @@ descriptivesClass <- R6::R6Class(
                             color=theme$color[1],
                             width=0.3,
                             alpha=0.8,
+                            outlier.shape=outlierShape,
                             outlier.colour=theme$color[1],
                             position=position_dodge(0.9)
                         )
@@ -1223,7 +1224,9 @@ descriptivesClass <- R6::R6Class(
                             geom="point",
                             shape=15,
                             size=3.5,
-                            color=theme$color[1]
+                            color=theme$color[1],
+                            position=position_dodge(0.9),
+                            show.legend = FALSE
                         )
                 }
             }
