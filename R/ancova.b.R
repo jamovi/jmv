@@ -711,7 +711,6 @@ ancovaClass <- R6::R6Class(
             private$emMeans <- emmTables
         },
         .emmPlot = function(image, ggtheme, theme, ...) {
-
             if (is.null(image$state))
                 return(FALSE)
 
@@ -723,6 +722,12 @@ ancovaClass <- R6::R6Class(
             emm$lowerSE <- emm[[names$y]] - emm[['SE']]
             emm$upperSE <- emm[[names$y]] + emm[['SE']]
 
+            if (theme$bw) {
+                lty <- names$lines
+            } else {
+                lty <- NULL
+            }
+
             if (self$options$emmPlotData)
                 dodge <- position_dodge(0.7)
             else
@@ -733,17 +738,35 @@ ancovaClass <- R6::R6Class(
             else
                 jitterdodge <- position_jitterdodge(dodge.width = 0.7, jitter.width = 0.4)
 
-            p <- ggplot(data=emm, aes_string(x=names$x, y=names$y, color=names$lines, fill=names$lines, group=names$lines), inherit.aes = FALSE)
+            p <- ggplot(
+                data=emm,
+                aes_string(
+                    x=names$x,
+                    y=names$y,
+                    color=names$lines,
+                    fill=names$lines,
+                    linetype=lty,
+                    group=names$lines
+                ),
+                inherit.aes = FALSE
+            )
 
             if (self$options$emmPlotData)
                 p <- p + geom_point(data=data, aes(y=!!data[[labels$y]]), alpha=0.3, position=jitterdodge)
 
             p <- p + geom_line(size=.8, position=dodge)
 
-            if (self$options$emmPlotError == 'ci')
-                p <- p + geom_errorbar(aes_string(x=names$x, ymin=names$lower, ymax=names$upper), width=.1, size=.8, position=dodge)
-            else if (self$options$emmPlotError == 'se')
-                p <- p + geom_errorbar(aes_string(x=names$x, ymin='lowerSE', ymax='upperSE'), width=.1, size=.8, position=dodge)
+            if (self$options$emmPlotError == 'ci') {
+                p <- p + geom_errorbar(
+                    aes_string(x=names$x, ymin=names$lower, ymax=names$upper, linetype=NULL),
+                    width=.1, size=.8, position=dodge
+                )
+            } else if (self$options$emmPlotError == 'se') {
+                p <- p + geom_errorbar(
+                    aes_string(x=names$x, ymin='lowerSE', ymax='upperSE', linetype=NULL),
+                    width=.1, size=.8, position=dodge
+                )
+            }
 
             p <- p + geom_point(shape=21, fill='white', size=3, position=dodge)
 
@@ -753,7 +776,7 @@ ancovaClass <- R6::R6Class(
             }
 
             p <- p +
-                labs(x=labels$x, y=labels$y, fill=labels$lines, color=labels$lines) +
+                labs(x=labels$x, y=labels$y, fill=labels$lines, color=labels$lines, linetype=labels$lines) +
                 ggtheme + theme(panel.spacing = unit(2, "lines"))
 
             return(p)

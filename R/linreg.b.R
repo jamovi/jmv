@@ -1066,22 +1066,43 @@ linRegClass <- R6::R6Class(
 
             dodge <- position_dodge(0.4)
 
+            if (theme$bw) {
+                lty <- names$lines
+                color <- NULL
+            } else {
+                lty <- NULL
+                color <- names$lines
+            }
+
             p <- ggplot(data=data,
-                        aes_string(x=names$x, y=names$y, color=names$lines, fill=names$lines),
+                        aes_string(x=names$x, y=names$y, group=names$lines),
                         inherit.aes = FALSE)
 
             if (cont) {
-                p <- p + geom_line()
+                p <- p + geom_line(aes_string(color=color, fill=color, linetype=lty))
 
                 if (self$options$ciEmm && is.null(names$plots) && is.null(names$lines))
-                    p <- p + geom_ribbon(aes_string(x=names$x, ymin=names$lower, ymax=names$upper),
-                                         show.legend=TRUE, alpha=.3)
+                    p <- p +
+                        geom_ribbon(
+                            aes_string(x=names$x, ymin=names$lower, ymax=names$upper),
+                            show.legend=TRUE, alpha=.3
+                        )
             } else {
-                p <- p + geom_point(position = dodge)
+                p <- p +
+                    geom_point(
+                        aes_string(color=names$lines, fill=names$lines),
+                        position = dodge
+                    )
 
                 if (self$options$ciEmm)
-                    p <- p + geom_errorbar(aes_string(x=names$x, ymin=names$lower, ymax=names$upper),
-                                           width=.1, size=.8, position=dodge)
+                    p <- p +
+                        geom_errorbar(
+                            aes_string(
+                                x=names$x, ymin=names$lower, ymax=names$upper,
+                                color=names$lines, fill=names$lines
+                            ),
+                            width=.1, size=.8, position=dodge
+                        )
             }
 
             if ( ! is.null(names$plots)) {
@@ -1090,7 +1111,7 @@ linRegClass <- R6::R6Class(
             }
 
             p <- p +
-                labs(x=labels$x, y=labels$y, fill=labels$lines, color=labels$lines) +
+                labs(x=labels$x, y=labels$y, fill=labels$lines, color=labels$lines, linetype=labels$lines) +
                 ggtheme + theme(panel.spacing = unit(2, "lines"))
 
             return(p)
