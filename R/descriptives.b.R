@@ -752,16 +752,16 @@ descriptivesClass <- R6::R6Class(
                         }
 
                         if (length(splitBy) >= 3) {
-                            names <- list("x"="x", "s1"="s1", "s2"="s2", "s3"="s3", "y"="y")
+                            names <- list("x"="y", "s1"="s1", "s2"="s2", "s3"="s3", "y"="y")
                             labels <- list("x"=var, "s1"=splitBy[1], "s2"=splitBy[2], "s3"=splitBy[3])
                         } else if (length(splitBy) == 2) {
-                            names <- list("x"="x", "s1"="s1", "s2"="s2", "s3"=NULL, "y"="y")
+                            names <- list("x"="y", "s1"="s1", "s2"="s2", "s3"=NULL, "y"="y")
                             labels <- list("x"=var, "s1"=splitBy[1], "s2"=splitBy[2], "s3"=NULL)
                         } else if (length(splitBy) == 1) {
-                            names <- list("x"="x", "s1"="s1", "s2"=NULL, "s3"=NULL, "y"="y")
+                            names <- list("x"="y", "s1"="s1", "s2"=NULL, "s3"=NULL, "y"="y")
                             labels <- list("x"=var, "s1"=splitBy[1], "s2"=NULL, "s3"=NULL)
                         } else {
-                            names <- list("x"="x", "s1"=NULL, "s2"=NULL, "s3"=NULL, "y"="y")
+                            names <- list("x"="y", "s1"=NULL, "s2"=NULL, "s3"=NULL, "y"="y")
                             labels <- list("x"=var, "s1"=NULL, "s2"=NULL, "s3"=NULL)
                         }
 
@@ -1004,19 +1004,20 @@ descriptivesClass <- R6::R6Class(
             names <- image$state$names
             labels <- image$state$labels
             splitBy <- self$options$splitBy
-            type <- `if`(identical(image$state$type, 'continuous'), 'continuous', 'categorical')
+            type <- `if`(
+                identical(image$state$type, 'continuous'),
+                'continuous',
+                'categorical'
+            )
 
             fill <- theme$fill[2]
             color <- theme$color[1]
+            pd <- position_dodge(0.85)
 
-            if (length(splitBy) == 2) {
-                formula <- as.formula(paste(". ~", names$s2))
-            } else if (length(splitBy) > 2) {
-                formula <- as.formula(paste(names$s3, "~", names$s2))
-            }
+            plotSpecificTheme <- NULL
 
-            if (is.null(splitBy)) {
-                if (type == 'categorical') {
+            if (type == 'categorical') {
+                if (is.null(splitBy)) {
                     plot <-
                         ggplot(data=data, aes_string(x=names$x, y=names$y)) +
                         geom_bar(
@@ -1028,19 +1029,6 @@ descriptivesClass <- R6::R6Class(
                         ) +
                         labs(x=labels$x, y='counts')
                 } else {
-                    plot <- ggplot(data=data, aes_string(x=names$x, y=names$y)) +
-                        geom_col(
-                            position="dodge", width = 0.7, fill=fill, color=color
-                        ) +
-                        geom_errorbar(
-                            aes_string(x=names$x, ymin='sel', ymax='seu'), width=.1
-                        ) +
-                        labs(x=labels$x, y='')
-                }
-            } else {
-                pd <- position_dodge(0.85)
-
-                if (type == 'categorical') {
                     plot <-
                         ggplot(
                             data=data,
@@ -1054,11 +1042,39 @@ descriptivesClass <- R6::R6Class(
                         ) +
                         labs(x=labels$x, y='counts', fill=labels$s1)
 
+                    if (length(splitBy) == 2) {
+                        plot <- plot +
+                            facet_grid(as.formula(paste(". ~", names$s2)))
+                    } else if (length(splitBy) > 2) {
+                        plot <- plot +
+                            facet_grid(as.formula(paste(names$s3, "~", names$s2)))
+                    }
+                }
+            } else {
+                if (length(splitBy) <= 1) {
+                    if (is.null(names$s1))
+                        names$s1 <- "x"
+
+                    plot <- ggplot(data=data, aes_string(x=names$s1, y=names$x)) +
+                        geom_col(
+                            position="dodge", width = 0.7, fill=fill, color=color
+                        ) +
+                        geom_errorbar(
+                            aes_string(y=names$x, ymin='sel', ymax='seu'), width=.1
+                        ) +
+                        labs(x=labels$s1, y=labels$x)
+
+                    if (is.null(splitBy)) {
+                        plotSpecificTheme <- theme(
+                            axis.text.x = element_blank(),
+                            axis.ticks.x = element_blank()
+                        )
+                    }
                 } else {
                     plot <-
                         ggplot(
                             data=data,
-                            aes_string(x=names$x, y=names$y, fill=names$s1)
+                            aes_string(x=names$s1, y=names$x, fill=names$s2)
                         ) +
                         geom_col(position=pd, width = 0.7, color='#333333') +
                         geom_errorbar(
@@ -1066,13 +1082,15 @@ descriptivesClass <- R6::R6Class(
                             aes_string(ymin='sel', ymax='seu'),
                             width=.1
                         ) +
-                        labs(x=labels$x, y='', fill=labels$s1)
-                }
+                        labs(x=labels$s1, y=labels$x, fill=labels$s2)
 
-                if (length(splitBy) > 1)
-                    plot <- plot + facet_grid(formula)
+                    if (length(splitBy) > 2) {
+                        plot <- plot +
+                            facet_grid(as.formula(paste(". ~", names$s3)))
+                    }
+                }
             }
-            plot <- plot + ggtheme
+            plot <- plot + ggtheme + plotSpecificTheme
 
             return(plot)
         },
