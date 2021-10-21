@@ -1,18 +1,14 @@
 
+#' @importFrom jmvcore .
 anovaClass <- R6::R6Class(
     "anovaClass",
     inherit = ancovaClass,
     private = list(
         .init=function() {
             super$.init()
-            self$results$setTitle('ANOVA')
-
-            if ( ! is.null(self$options$dep))
-                self$results$main$setTitle(paste0('ANOVA - ', self$options$dep))
-            else
-                self$results$main$setTitle('ANOVA - \u2026')
-
-            self$results$residsOV$setDescription('Residuals from ANOVA')
+            self$results$setTitle(.('ANOVA'))
+            self$results$main$setTitle(self$options$eval('`ANOVA - ${dep}`'))
+            self$results$residsOV$setDescription(.('Residuals from ANOVA'))
         }
     ),
     public = list(
