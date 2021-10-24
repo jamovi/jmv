@@ -1,1 +1,1 @@
-SINGULAR_WARNING = "Linear model contains aliased coefficients (singular fit)"
+SINGULAR_WARNING = .("Linear model contains aliased coefficients (singular fit)")

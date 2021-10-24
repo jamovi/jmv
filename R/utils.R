@@ -142,7 +142,7 @@ listItems = function(items, quote = '\'') {
         for (i in seq_along(items))
             itemsQuote[i] <- paste0(quote, items[i], quote)
 
-        l <- paste0(itemsQuote, collapse = ' and ')
+        l <- paste0(itemsQuote, collapse = jmvcore::format(" {} ", .("and")))
 
     } else {
 
@@ -151,7 +151,7 @@ listItems = function(items, quote = '\'') {
             itemsQuote[i] <- paste0(quote, items[i], quote)
 
         l <- paste0(itemsQuote[1:(length(itemsQuote)-1)], collapse = ', ')
-        l <- paste(l, itemsQuote[length(itemsQuote)], sep = ', and ')
+        l <- paste(l, itemsQuote[length(itemsQuote)], sep = jmvcore::format(', {} ', .("and")))
 
     }
 

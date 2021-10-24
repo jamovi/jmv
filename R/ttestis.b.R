@@ -1,4 +1,5 @@
 
+#' @importFrom jmvcore .
 ttestISClass <- R6::R6Class(
     "ttestISClass",
     inherit=ttestISBase,
@@ -27,7 +28,7 @@ ttestISClass <- R6::R6Class(
             confIntES <- 1 - self$options$ciWidthES / 100
 
             if (any(depVarNames == groupVarName))
-                jmvcore::reject("Grouping variable '{a}' must not also be a dependent variable",
+                jmvcore::reject(.("Grouping variable '{a}' must not also be a dependent variable"),
                                 code="a_is_dependent_variable", a=groupVarName)
 
             # exclude rows with missings in the grouping variable
@@ -40,13 +41,13 @@ ttestISClass <- R6::R6Class(
             groupLevels <- base::levels(data[[groupVarName]])
 
             if (length(groupLevels) != 2)
-                jmvcore::reject("Grouping variable '{a}' must have exactly 2 levels",
+                jmvcore::reject(.("Grouping variable '{a}' must have exactly 2 levels"),
                                 code="grouping_var_must_have_2_levels", a=groupVarName)
 
             if (self$options$miss == "listwise") {
                 data <- naOmit(data)
                 if (dim(data)[1] == 0)
-                    jmvcore::reject("Grouping variable '{a}' has less than 2 levels after missing values are excluded",
+                    jmvcore::reject(.("Grouping variable '{a}' has less than 2 levels after missing values are excluded"),
                                     code="grouping_var_must_have_2_levels", a=groupVarName)
             }
 
@@ -101,12 +102,12 @@ ttestISClass <- R6::R6Class(
                 if (isError(levene)) {
 
                     eqvTable$setRow(rowKey=depName, list("f"=NaN, "df"="", "df2"="", "p"=""))
-                    eqvTable$addFootnote(rowKey=depName, "f", "F-statistic could not be calculated")
+                    eqvTable$addFootnote(rowKey=depName, "f", .("F-statistic could not be calculated"))
 
                 } else if (is.na(levene[1,"F value"])) {
 
                     eqvTable$setRow(rowKey=depName, list("f"=NaN, "df"="", "df2"="", "p"=""))
-                    eqvTable$addFootnote(rowKey=depName, "f", "F-statistic could not be calculated")
+                    eqvTable$addFootnote(rowKey=depName, "f", .("F-statistic could not be calculated"))
 
                 } else {
 
@@ -121,9 +122,9 @@ ttestISClass <- R6::R6Class(
                 if (self$options$students) {
 
                     if (is.factor(dataTTest$dep))
-                        res <- createError('Variable is not numeric')
+                        res <- createError(.('Variable is not numeric'))
                     else if (any(is.infinite(dataTTest$dep)))
-                        res <- createError('Variable contains infinite values')
+                        res <- createError(.('Variable contains infinite values'))
                     else
                         res <- try(t.test(dep ~ group, data=dataTTest, var.equal=TRUE, paired=FALSE,
                                           alternative=Ha, conf.level=confInt), silent=TRUE)
@@ -144,11 +145,11 @@ ttestISClass <- R6::R6Class(
 
                         message <- extractErrorMessage(res)
                         if (message == 'grouping factor must have exactly 2 levels')
-                            message <- 'One or both groups do not contain enough observations'
+                            message <- .('One or both groups do not contain enough observations')
                         else if (message == 'not enough observations')
-                            message <- 'One or both groups do not contain enough observations'
+                            message <- .('One or both groups do not contain enough observations')
                         else if (message == 'data are essentially constant')
-                            message <- 'All observations are tied'
+                            message <- .('All observations are tied')
 
                         ttestTable$addFootnote(rowKey=depName, 'stat[stud]', message)
 
@@ -170,15 +171,15 @@ ttestISClass <- R6::R6Class(
                     # ## Inform if a student's t-test is appropriate using Levene's test
                     if (!isError(levene) && !is.na(levene[1,"Pr(>F)"]) && levene[1,"Pr(>F)"] < .05)
                         ttestTable$addFootnote(rowKey=depName, "stat[stud]",
-                                               "Levene's test is significant (p < .05), suggesting a violation of the assumption of equal variances")
+                                               .("Levene's test is significant (p < .05), suggesting a violation of the assumption of equal variances"))
                 }
 
                 if (self$options$welchs) {
 
                     if (is.factor(dataTTest$dep))
-                        res <- createError('Variable is not numeric')
+                        res <- createError(.('Variable is not numeric'))
                     else if (any(is.infinite(dataTTest$dep)))
-                        res <- createError('Variable contains infinite values')
+                        res <- createError(.('Variable contains infinite values'))
                     else
                         res <- try(t.test(dep ~ group, data=dataTTest, var.equal=FALSE, paired=FALSE,
                                           alternative=Ha, conf.level=confInt), silent=TRUE)
@@ -213,13 +214,13 @@ ttestISClass <- R6::R6Class(
 
                         message <- extractErrorMessage(res)
                         if (message == 'grouping factor must have exactly 2 levels')
-                            message <- 'One or both groups do not contain enough observations'
+                            message <- .('One or both groups do not contain enough observations')
                         else if (message == "not enough 'x' observations")
-                            message <- 'One or both groups do not contain enough observations'
+                            message <- .('One or both groups do not contain enough observations')
                         else if (message == 'missing value where TRUE/FALSE needed')
-                            message <- 'Variable contains infinite values'
+                            message <- .('Variable contains infinite values')
                         else if (message == 'data are essentially constant')
-                            message <- 'All observations are tied'
+                            message <- .('All observations are tied')
 
                         ttestTable$addFootnote(rowKey=depName, 'stat[welc]', message)
                     }
@@ -228,10 +229,10 @@ ttestISClass <- R6::R6Class(
                 if (self$options$mann) {
 
                     if (is.factor(dataTTest$dep)) {
-                        res <- createError('Variable is not numeric')
+                        res <- createError(.('Variable is not numeric'))
                     }
                     else if (any(is.infinite(dataTTest$dep))) {
-                        res <- createError('Variable contains infinite values')
+                        res <- createError(.('Variable contains infinite values'))
                     }
                     else {
 
@@ -314,11 +315,11 @@ ttestISClass <- R6::R6Class(
 
                         message <- extractErrorMessage(res)
                         if (message == 'grouping factor must have exactly 2 levels')
-                            message <- 'One or both groups do not contain enough observations'
+                            message <- .('One or both groups do not contain enough observations')
                         else if (message == 'not enough observations')
-                            message <- 'One or both groups do not contain enough observations'
+                            message <- .('One or both groups do not contain enough observations')
                         else if (message == 'cannot compute confidence interval when all observations are tied')
-                            message <- 'All observations are tied'
+                            message <- .('All observations are tied')
 
                         ttestTable$addFootnote(rowKey=depName, 'stat[mann]', message)
                     }
@@ -333,11 +334,11 @@ ttestISClass <- R6::R6Class(
                     if (length(dataTTest$dep) < 3) {
                         values[['w']] <- NaN
                         values[['p']] <- ''
-                        footnote <- 'Too few samples to compute statistic (N < 3)'
+                        footnote <- .('Too few samples to compute statistic (N < 3)')
                     } else if (length(dataTTest$dep) > 5000) {
                         values[['w']] <- NaN
                         values[['p']] <- ''
-                        footnote <- 'Too many samples to compute statistic (N > 5000)'
+                        footnote <- .('Too many samples to compute statistic (N > 5000)')
                     } else {
                         residuals <- tapply(dataTTest$dep, dataTTest$group, function(x) x - mean(x))
                         residuals <- unlist(residuals, use.names=FALSE)
@@ -380,9 +381,9 @@ ttestISClass <- R6::R6Class(
                 if (self$options$bf) {
 
                     if (is.factor(dataTTest$dep))
-                        res <- createError('Variable is not numeric')
+                        res <- createError(.('Variable is not numeric'))
                     else if (any(is.infinite(dataTTest$dep)))
-                        res <- createError('Variable contains infinite values')
+                        res <- createError(.('Variable contains infinite values'))
                     else {
 
                         if (self$options$hypothesis == 'oneGreater') {
@@ -407,13 +408,13 @@ ttestISClass <- R6::R6Class(
 
                         message <- extractErrorMessage(res)
                         if (message == 'grouping factor must have exactly 2 levels')
-                            message <- 'One or both groups do not contain enough observations'
+                            message <- .('One or both groups do not contain enough observations')
                         else if (message == 'not enough observations')
-                            message <- 'One or both groups do not contain enough observations'
+                            message <- .('One or both groups do not contain enough observations')
                         else if (message == 'Dependent variable must be numeric.')
-                            message <- 'Variable is not numeric'
+                            message <- .('Variable is not numeric')
                         else if (message == 'data are essentially constant')
-                            message <- 'All observations are tied'
+                            message <- .('All observations are tied')
                         ttestTable$addFootnote(rowKey=depName, 'stat[bf]', message)
 
                     } else {
@@ -493,7 +494,9 @@ ttestISClass <- R6::R6Class(
 
             table <- self$results$ttest
 
-            ciTitle <- paste0(self$options$ciWidth, '% Confidence Interval')
+            ciTitleString <- .('{ciWidth}% Confidence Interval')
+
+            ciTitle <- jmvcore::format(ciTitleString, ciWidth=self$options$ciWidth)
             table$getColumn('ciu[stud]')$setSuperTitle(ciTitle)
             table$getColumn('cil[stud]')$setSuperTitle(ciTitle)
             table$getColumn('ciu[bf]')$setSuperTitle(ciTitle)
@@ -503,7 +506,7 @@ ttestISClass <- R6::R6Class(
             table$getColumn('ciu[mann]')$setSuperTitle(ciTitle)
             table$getColumn('cil[mann]')$setSuperTitle(ciTitle)
 
-            ciTitleES <- paste0(self$options$ciWidthES, '% Confidence Interval')
+            ciTitleES <- jmvcore::format(ciTitleString, ciWidth=self$options$ciWidthES)
             table$getColumn('ciues[stud]')$setSuperTitle(ciTitleES)
             table$getColumn('ciles[stud]')$setSuperTitle(ciTitleES)
             table$getColumn('ciues[bf]')$setSuperTitle(ciTitleES)
@@ -564,8 +567,8 @@ ttestISClass <- R6::R6Class(
             plot <- ggplot(data=data) +
                 geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
                 stat_qq(aes(sample=y), size=2, colour=theme$color[1]) +
-                xlab("Theoretical Quantiles") +
-                ylab("Standardized Residuals") +
+                xlab(.("Theoretical Quantiles")) +
+                ylab(.("Standardized Residuals")) +
                 ggtheme
 
             print(plot)
