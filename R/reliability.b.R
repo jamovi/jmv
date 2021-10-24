@@ -1,4 +1,5 @@
 
+#' @importFrom jmvcore .
 reliabilityClass <- R6::R6Class(
     "reliabilityClass",
     inherit = reliabilityBase,
@@ -111,24 +112,24 @@ reliabilityClass <- R6::R6Class(
             items <- self$options$revItems
 
             for (i in seq_along(items))
-                table$addFootnote(rowKey=items[i], 'name', 'reverse scaled item')
+                table$addFootnote(rowKey=items[i], 'name', .('reverse scaled item'))
         },
         .initOutputs = function() {
             description = function(aggrType) {
                 return(
                     jmvcore::format(
-                        "{} score based on the variables {}",
-                        aggrType,
-                        listItems(private$.getVarList())
+                        .("{type} score based on the variables {vars}"),
+                        type=aggrType,
+                        vars=listItems(private$.getVarList())
                     )
                 )
             }
 
             if (self$options$meanScoreOV)
-                self$results$meanScoreOV$setDescription(description("Mean"))
+                self$results$meanScoreOV$setDescription(description(.("Mean")))
 
             if (self$options$sumScoreOV)
-                self$results$sumScoreOV$setDescription(description("Sum"))
+                self$results$sumScoreOV$setDescription(description(.("Sum")))
         },
 
         #### Populate tables ----
@@ -150,11 +151,15 @@ reliabilityClass <- R6::R6Class(
 
             if (length(negCorItems) > 0) {
                 if (length(negCorItems) == 1) {
-                    note <- jmvcore::format('item {} correlates negatively with the total scale and probably should be reversed',
-                                            listItems(negCorItems))
+                    note <- jmvcore::format(
+                        .('item {item} correlates negatively with the total scale and probably should be reversed'),
+                        item=listItems(negCorItems)
+                    )
                 } else {
-                    note <- jmvcore::format('items {} correlate negatively with the total scale and probably should be reversed',
-                                            listItems(negCorItems))
+                    note <- jmvcore::format(
+                        .('items {items} correlate negatively with the total scale and probably should be reversed'),
+                        items=listItems(negCorItems)
+                    )
                 }
                 table$setNote(key='negCor', note=note, init=FALSE)
             }
@@ -239,7 +244,7 @@ reliabilityClass <- R6::R6Class(
                         geom_tile(color = "white") +
                         scale_fill_gradient2(low = "#FF1919", high = "#00B233", mid = "white",
                                              midpoint = 0, limit = c(-1,1), space = "Lab",
-                                             name="Pearson\nCorrelation") +
+                                             name=jmvcore::format(.("Pearson{}Correlation"), "\n")) +
                         coord_fixed() +
                         geom_text(aes(Var2, Var1, label = value), color = "black", size = 4) +
                         guides(fill = guide_colorbar(barwidth = 7, barheight = 1,
@@ -282,11 +287,11 @@ reliabilityClass <- R6::R6Class(
             noVarItems <- sapply(data, function(x) var(x, na.rm = TRUE) == 0)
 
             if (any(infItems))
-                jmvcore::reject("Item '{}' contains infinite values", code='', items[infItems])
+                jmvcore::reject(.("Item '{item}' contains infinite values"), code='', item=items[infItems])
             if (any(allNAItems))
-                jmvcore::reject("Item '{}' contains only missing values", code='', items[allNAItems])
+                jmvcore::reject(.("Item '{item}' contains only missing values"), code='', item=items[allNAItems])
             if (any(noVarItems))
-                jmvcore::reject("Item '{}' has no variance", code='', items[noVarItems])
+                jmvcore::reject(.("Item '{item}' has no variance"), code='', item=items[noVarItems])
         },
         .getNegCorItems = function() {
             if (is.null(private$.negCorItems))
@@ -297,8 +302,12 @@ reliabilityClass <- R6::R6Class(
         .getVarList = function() {
             if (is.null(private$.varList)) {
                 items <- self$options$vars
-                for (revItem in self$options$revItems)
-                    items[which(revItem == self$options$vars)] <- paste0(revItem, " (reversed)")
+                for (revItem in self$options$revItems) {
+                    items[which(revItem == self$options$vars)] <- jmvcore::format(
+                        .("{varName} (reversed)"),
+                        varName=revItem
+                    )
+                }
 
                 private$.varList <- items
             }
