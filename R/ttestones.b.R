@@ -1,4 +1,5 @@
 
+#' @importFrom jmvcore .
 ttestOneSClass <- R6::R6Class(
     "ttestOneSClass",
     inherit=ttestOneSBase,
@@ -62,9 +63,9 @@ ttestOneSClass <- R6::R6Class(
                 if (self$options$get("students")) {
 
                     if (is.factor(column))
-                        res <- createError('Variable is not numeric')
+                        res <- createError(.('Variable is not numeric'))
                     else if (any(is.infinite(column)))
-                        res <- createError('Variable contains infinite values')
+                        res <- createError(.('Variable contains infinite values'))
                     else
                         res <- try(t.test(column, mu=testValue, paired=FALSE, conf.level=cl,
                                           alternative=Ha), silent=TRUE)
@@ -97,9 +98,9 @@ ttestOneSClass <- R6::R6Class(
 
                         message <- extractErrorMessage(res)
                         if (message == "not enough 'x' observations")
-                            message <- 'Variable does not contain enough observations'
+                            message <- .('Variable does not contain enough observations')
                         else if (message == 'data are essentially constant')
-                            message <- 'All observations are tied'
+                            message <- .('All observations are tied')
                         ttest$addFootnote(rowNo=i, 'stat[stud]', message)
                     }
                 }
@@ -107,9 +108,9 @@ ttestOneSClass <- R6::R6Class(
                 if (self$options$wilcoxon || self$options$mann) {
 
                     if (is.factor(column))
-                        res <- createError('Variable is not numeric')
+                        res <- createError(.('Variable is not numeric'))
                     else if (length(column) == 0)
-                        res <- createError('Variable does not contain enough observations')
+                        res <- createError(.('Variable does not contain enough observations'))
                     else
                         res <- try(suppressWarnings(wilcox.test(column, mu=testValue,
                                                                 alternative=Ha,
@@ -147,7 +148,7 @@ ttestOneSClass <- R6::R6Class(
 
                         message <- extractErrorMessage(res)
                         if (message == 'cannot compute confidence interval when all observations are tied')
-                            message <- 'All observations are tied'
+                            message <- .('All observations are tied')
                         ttest$addFootnote(rowNo=i, 'stat[wilc]', message)
                     }
                 }
@@ -156,13 +157,13 @@ ttestOneSClass <- R6::R6Class(
                 if (n < 3) {
 
                     normality$addFootnote(rowNo=i, "w",
-                                          "Too few observations (N < 3) to compute statistic")
+                                          .("Too few observations (N < 3) to compute statistic"))
                     res <- list(statistic=NaN, p.value='')
 
                 } else if (n > 5000) {
 
                     normality$addFootnote(rowNo=i, "w",
-                                          "Too many observations (N > 5000) to compute statistic")
+                                          .("Too many observations (N > 5000) to compute statistic"))
                     res <- list(statistic=NaN, p.value='')
 
                 }
@@ -204,9 +205,9 @@ ttestOneSClass <- R6::R6Class(
                 if (self$options$get('bf')) {
 
                     if (is.factor(column)) {
-                        res <- createError('Variable is not numeric')
+                        res <- createError(.('Variable is not numeric'))
                     } else if (any(is.infinite(column))) {
-                        res <- createError('Variable contains infinite values')
+                        res <- createError(.('Variable contains infinite values'))
                     } else {
 
                         if (self$options$get('hypothesis') == 'gt') {
@@ -232,9 +233,9 @@ ttestOneSClass <- R6::R6Class(
 
                         message <- extractErrorMessage(res)
                         if (message == 'not enough observations')
-                            message = 'Variable does not contain enough observations'
+                            message = .('Variable does not contain enough observations')
                         else if (message == 'data are essentially constant')
-                            message <- 'All observations are tied'
+                            message <- .('All observations are tied')
                         ttest$addFootnote(rowKey=name, 'stat[bf]', message)
 
                     } else {
@@ -263,8 +264,9 @@ ttestOneSClass <- R6::R6Class(
             testValue  <- self$options$get('testValue')
             table <- self$results$get("ttest")
 
-            ciTitle <- paste0(self$options$get('ciWidth'), '% Confidence Interval')
+            ciTitleString <- .('{ciWidth}% Confidence Interval')
 
+            ciTitle <- jmvcore::format(ciTitleString, ciWidth=self$options$ciWidth)
             table$getColumn('ciu[stud]')$setSuperTitle(ciTitle)
             table$getColumn('cil[stud]')$setSuperTitle(ciTitle)
             table$getColumn('ciu[bf]')$setSuperTitle(ciTitle)
@@ -272,8 +274,7 @@ ttestOneSClass <- R6::R6Class(
             table$getColumn('ciu[wilc]')$setSuperTitle(ciTitle)
             table$getColumn('cil[wilc]')$setSuperTitle(ciTitle)
 
-            ciTitleES <- paste0(self$options$ciWidthES, '% Confidence Interval')
-
+            ciTitleES <- jmvcore::format(ciTitleString, ciWidth=self$options$ciWidthES)
             table$getColumn('ciues[stud]')$setSuperTitle(ciTitleES)
             table$getColumn('ciles[stud]')$setSuperTitle(ciTitleES)
             table$getColumn('ciues[bf]')$setSuperTitle(ciTitleES)
@@ -325,8 +326,8 @@ ttestOneSClass <- R6::R6Class(
             plot <- ggplot(data=data) +
                 geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
                 stat_qq(aes(sample=y), size=2, colour=theme$color[1]) +
-                xlab("Theoretical Quantiles") +
-                ylab("Standardized Residuals") +
+                xlab(.("Theoretical Quantiles")) +
+                ylab(.("Standardized Residuals")) +
                 ggtheme
 
             print(plot)
