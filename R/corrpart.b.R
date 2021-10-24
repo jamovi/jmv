@@ -1,3 +1,5 @@
+
+#' @importFrom jmvcore .
 corrPartClass <- R6::R6Class(
     "corrPartClass",
     inherit = corrPartBase,
@@ -105,18 +107,21 @@ corrPartClass <- R6::R6Class(
             nControls <- length(controls)
 
             if (length(controls) > 0) {
-                matrix$setNote('controls', jmvcore::format('controlling for {}', listItems(controls)))
+                matrix$setNote(
+                    'controls',
+                    jmvcore::format(.('controlling for {items}'), items=listItems(controls))
+                )
             }
 
             if (hyp == 'pos') {
-                matrix$setNote('hyp', 'H\u2090 is positive correlation')
+                matrix$setNote('hyp', .('H\u2090 is positive correlation'))
                 if (flag)
-                    matrix$setNote('flag', '* p < .05, ** p < .01, *** p < .001, one-tailed')
+                    matrix$setNote('flag', .('* p < .05, ** p < .01, *** p < .001, one-tailed'))
             }
             else if (hyp == 'neg') {
-                matrix$setNote('hyp', 'H\u2090 is negative correlation')
+                matrix$setNote('hyp', .('H\u2090 is negative correlation'))
                 if (flag)
-                    matrix$setNote('flag', '* p < .05, ** p < .01, *** p < .001, one-tailed')
+                    matrix$setNote('flag', .('* p < .05, ** p < .01, *** p < .001, one-tailed'))
             }
             else {
                 matrix$setNote('hyp', NULL)
@@ -128,12 +133,12 @@ corrPartClass <- R6::R6Class(
                 matrix$setNote('flag', NULL)
 
             if (type == 'part' && nControls > 0) {
-                titleMatrix <- "Partial Correlation"
+                titleMatrix <- .("Partial Correlation")
             } else if (type == 'semi' && nControls > 0) {
-                titleMatrix <- "Semipartial Correlation"
-                matrix$setNote('part', 'variation from the control variables is only removed from the variables in the columns')
+                titleMatrix <- .("Semipartial Correlation")
+                matrix$setNote('part', .('variation from the control variables is only removed from the variables in the columns'))
             } else {
-                titleMatrix <- "Correlation"
+                titleMatrix <- .("Correlation")
             }
 
             pearson <- self$options$pearson
@@ -144,11 +149,11 @@ corrPartClass <- R6::R6Class(
 
             if ( ! sum(pearson, spearman, kendall) > 1  && ! n && ! sig) {
                 if (pearson)
-                    titleMatrix <- jmvcore::format("{} - Pearson's r", titleMatrix)
+                    titleMatrix <- jmvcore::format(.("{} - Pearson's r"), titleMatrix)
                 else if (spearman)
-                    titleMatrix <- jmvcore::format("{} - Spearman's rho", titleMatrix)
+                    titleMatrix <- jmvcore::format(.("{} - Spearman's rho"), titleMatrix)
                 else if (kendall)
-                    titleMatrix <- jmvcore::format("{} - Kendall's Tau B", titleMatrix)
+                    titleMatrix <- jmvcore::format(.("{} - Kendall's Tau B"), titleMatrix)
             }
 
             matrix$setTitle(titleMatrix)
