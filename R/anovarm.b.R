@@ -1,4 +1,5 @@
 
+#' @importFrom jmvcore .
 anovaRMClass <- R6::R6Class(
     "anovaRMClass",
     inherit=anovaRMBase,
@@ -64,8 +65,10 @@ anovaRMClass <- R6::R6Class(
 
         #### Init tables/plots functions ----
         .initRMTable=function() {
+            ssTypeNote <- .("Type {ssType} Sums of Squares")
+
             rmTable <- self$results$get('rmTable')
-            rmTable$setNote('Note', jmvcore::format("Type {} Sums of Squares", self$options$ss))
+            rmTable$setNote('Note', jmvcore::format(ssTypeNote, ssType=self$options$ss))
 
             rm <- private$.rmTerms()
             rmTerms <- rm$terms
@@ -106,8 +109,10 @@ anovaRMClass <- R6::R6Class(
             }
         },
         .initBSTable=function() {
+            ssTypeNote <- .("Type {ssType} Sums of Squares")
+
             bsTable <- self$results$get('bsTable')
-            bsTable$setNote('Note', jmvcore::format("Type {} Sums of Squares", self$options$ss))
+            bsTable$setNote('Note', jmvcore::format(ssTypeNote, ssType=self$options$ss))
 
             bsTerms <- private$.bsTerms()
 
@@ -148,22 +153,23 @@ anovaRMClass <- R6::R6Class(
             tables <- self$results$postHoc
 
             postHocRows <- list()
+            postHocTableTitle <- .('Post Hoc Comparisons - {term}')
 
             for (ph in phTerms) {
 
                 table <- tables$get(key=ph)
 
-                table$setTitle(paste0('Post Hoc Comparisons - ', stringifyTerm(ph)))
+                table$setTitle(jmvcore::format(postHocTableTitle, term=stringifyTerm(ph)))
 
                 for (i in seq_along(ph))
-                    table$addColumn(name=paste0(ph[i],'1'), title=ph[i], type='text', superTitle='Comparison', combineBelow=TRUE)
+                    table$addColumn(name=paste0(ph[i],'1'), title=ph[i], type='text', superTitle=.('Comparison'), combineBelow=TRUE)
 
-                table$addColumn(name='sep', title='', type='text', content='-', superTitle='Comparison', format='narrow')
+                table$addColumn(name='sep', title='', type='text', content='-', superTitle=.('Comparison'), format='narrow')
 
                 for (i in seq_along(ph))
-                    table$addColumn(name=paste0(ph[i],'2'), title=ph[i], type='text', superTitle='Comparison')
+                    table$addColumn(name=paste0(ph[i],'2'), title=ph[i], type='text', superTitle=.('Comparison'))
 
-                table$addColumn(name='md', title='Mean Difference', type='number')
+                table$addColumn(name='md', title=.('Mean Difference'), type='number')
                 table$addColumn(name='se', title='SE', type='number')
                 table$addColumn(name='df', title='df', type='number')
                 table$addColumn(name='t', title='t', type='number')
@@ -242,6 +248,9 @@ anovaRMClass <- R6::R6Class(
 
             group <- self$results$emm
 
+            emMeansTableTitle <- .('Estimated Marginal Means - {term}')
+            ciWidthTitle <- jmvcore::format(.('{ciWidth}% Confidence Interval'), ciWidth=self$options$ciWidthEmm)
+
             for (j in seq_along(emMeans)) {
 
                 emm <- emMeans[[j]]
@@ -251,7 +260,7 @@ anovaRMClass <- R6::R6Class(
                     emmGroup <- group$get(key=j)
 
                     table <- emmGroup$emmTable
-                    table$setTitle(paste0('Estimated Marginal Means - ', jmvcore::stringifyTerm(emm)))
+                    table$setTitle(jmvcore::format(emMeansTableTitle, term=jmvcore::stringifyTerm(emm)))
 
                     nLevels <- numeric(length(emm))
                     for (k in rev(seq_along(emm))) {
@@ -264,10 +273,10 @@ anovaRMClass <- R6::R6Class(
                         }
                     }
 
-                    table$addColumn(name='mean', title='Mean', type='number')
+                    table$addColumn(name='mean', title=.('Mean'), type='number')
                     table$addColumn(name='se', title='SE', type='number')
-                    table$addColumn(name='lower', title='Lower', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Confidence Interval'))
-                    table$addColumn(name='upper', title='Upper', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Confidence Interval'))
+                    table$addColumn(name='lower', title='Lower', type='number', superTitle=ciWidthTitle)
+                    table$addColumn(name='upper', title='Upper', type='number', superTitle=ciWidthTitle)
 
                     nRows <- prod(nLevels)
 
@@ -491,7 +500,7 @@ anovaRMClass <- R6::R6Class(
 
                         spherTable$setRow(rowKey=term, values=list('mauch'=1, 'p'=NaN, 'gg'=1, 'hf'=1))
                         if (length(spherTable$getRow(rowKey=term)$name$footnotes) == 0)
-                            spherTable$addFootnote(rowKey=term, 'p', 'The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels')
+                            spherTable$addFootnote(rowKey=term, 'p', .('The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels.'))
 
                     } else {
 
@@ -511,12 +520,12 @@ anovaRMClass <- R6::R6Class(
                     if (any(nLevels > 2)) {
                         spherTable$setRow(rowKey=term, values=list('mauch'=NaN, 'p'=NaN, 'gg'=NaN, 'hf'=NaN))
                         if (length(spherTable$getRow(rowKey=term)$name$footnotes) == 0)
-                            spherTable$addFootnote(rowKey=term, 'name', 'Singularity error. Sphericity tests are not available')
+                            spherTable$addFootnote(rowKey=term, 'name', .('Singularity error. Sphericity tests are not available'))
 
                     } else {
                         spherTable$setRow(rowKey=term, values=list('mauch'=1, 'p'=NaN, 'gg'=1, 'hf'=1))
                         if (length(spherTable$getRow(rowKey=term)$name$footnotes) == 0)
-                            spherTable$addFootnote(rowKey=term, 'p', 'The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels')
+                            spherTable$addFootnote(rowKey=term, 'p', .('The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels'))
                     }
                 }
             }
@@ -535,7 +544,7 @@ anovaRMClass <- R6::R6Class(
             if (length(bsVars) == 0) {
                 for (var in rmVars) {
                     leveneTable$setRow(rowKey=var, values=list('F'=NaN, 'df1'='', 'df2'='', 'p'=''))
-                    leveneTable$addFootnote(rowKey=var, 'F', 'As there are no between subjects factors specified this assumption is always met.')
+                    leveneTable$addFootnote(rowKey=var, 'F', .('As there are no between subjects factors specified this assumption is always met.'))
                 }
                 return()
             }
@@ -724,8 +733,8 @@ anovaRMClass <- R6::R6Class(
             p <- ggplot(data=df, aes(y=y, x=x)) +
                 geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
                 geom_point(aes(x=x,y=y), size=2, colour=theme$color[1]) +
-                xlab("Theoretical Quantiles") +
-                ylab("Standardized Residuals") +
+                xlab(.("Theoretical Quantiles")) +
+                ylab(.("Standardized Residuals")) +
                 ggtheme
 
             return(p)
@@ -885,22 +894,33 @@ anovaRMClass <- R6::R6Class(
 
             # Check all values
             allNAItems <- sapply(c(dataFactors, dataNumeric), function(x) all(is.na(x)))
-            if (any(allNAItems))
-                jmvcore::reject("Item '{}' contains only missing values", code='error', c(bs,varsNumeric)[allNAItems])
+            if (any(allNAItems)) {
+                onlyContainsMissingsMessage <- .("Item '{item}' contains only missing values")
+                jmvcore::reject(onlyContainsMissingsMessage, code='error', item=c(bs,varsNumeric)[allNAItems])
+            }
 
             # Check factor values
             singleLevelItems <- sapply(dataFactors, function(x) length(levels(x)) == 1)
-            if (any(singleLevelItems))
-                jmvcore::reject("Item '{}' consists of one level only", code='error', bs[singleLevelItems])
+            if (any(singleLevelItems)) {
+                oneLevelOnlyMessage <- .("Item '{item}' consists of one level only")
+                jmvcore::reject(oneLevelOnlyMessage, code='error', item=bs[singleLevelItems])
+            }
+
 
             # Check numeric values
             factorItems <- sapply(dataNumeric, function(x) class(jmvcore::toNumeric(x)) == "factor")
             infItems <- sapply(dataNumeric, function(x) any(is.infinite(x)))
             noVarItems <- sapply(dataNumeric, function(x) var(x, na.rm = TRUE) == 0)
-            if (any(factorItems))
-                jmvcore::reject("Item '{}' needs to be numeric", code='error', varsNumeric[factorItems])
-            if (any(infItems))
-                jmvcore::reject("Item '{}' contains infinite values", code='error', varsNumeric[infItems])
+            if (any(factorItems)) {
+                notNumericMessage <- .("Item '{item}' needs to be numeric")
+                jmvcore::reject(notNumericMessage, code='error', item=varsNumeric[factorItems])
+            }
+
+            if (any(infItems)) {
+                infiniteValuesMessage <- .("Item '{item}' contains infinite values")
+                jmvcore::reject(infiniteValuesMessage, code='error', item=varsNumeric[infItems])
+            }
+
             # if (any(noVarItems))
             #     jmvcore::reject("Item '{}' has no variance", code='error', varsNumeric[noVarItems])
         },

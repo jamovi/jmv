@@ -1,4 +1,5 @@
 
+#' @importFrom jmvcore .
 logRegMultiClass <- R6::R6Class(
     "logRegMultiClass",
     inherit = logRegMultiBase,
@@ -171,19 +172,19 @@ logRegMultiClass <- R6::R6Class(
                 depCompLevels <- NULL
             }
 
+            ciWidthTitleString <- .('{ciWidth}% Confidence Interval')
+            ciWidthTitle <- jmvcore::format(ciWidthTitleString, ciWidth=self$options$ciWidth)
+            ciWidthORTitle <- jmvcore::format(ciWidthTitleString, ciWidth=self$options$ciWidthOR)
+
             for (i in seq_along(termsAll)) {
 
                 table <- groups$get(key=i)$coef
 
                 table$getColumn('dep')$setTitle(dep)
-
-                ciWidth <- self$options$ciWidth
-                table$getColumn('lower')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidth))
-                table$getColumn('upper')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidth))
-
-                ciWidthOR <- self$options$ciWidthOR
-                table$getColumn('oddsLower')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidthOR))
-                table$getColumn('oddsUpper')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidthOR))
+                table$getColumn('lower')$setSuperTitle(ciWidthTitle)
+                table$getColumn('upper')$setSuperTitle(ciWidthTitle)
+                table$getColumn('oddsLower')$setSuperTitle(ciWidthORTitle)
+                table$getColumn('oddsUpper')$setSuperTitle(ciWidthORTitle)
 
                 terms <- termsAll[[i]]
 
@@ -194,7 +195,7 @@ logRegMultiClass <- R6::R6Class(
                     comparison <- paste(depCompLevels[j], "-", depRefLevel)
 
                     rowKey <- paste0(j, jmvcore::composeTerm("(Intercept)"))
-                    table$addRow(rowKey=rowKey, values=list(dep=comparison, term = "Intercept"))
+                    table$addRow(rowKey=rowKey, values=list(dep=comparison, term = .("Intercept")))
                     table$addFormat(rowKey=rowKey, col=1, Cell.BEGIN_GROUP)
 
                     if (j == 1)
@@ -271,6 +272,9 @@ logRegMultiClass <- R6::R6Class(
             factors <- self$options$factors
             dep <- self$options$dep
 
+            emMeansTableTitle <- .('Estimated Marginal Means - {term}')
+            ciWidthTitle <- jmvcore::format(.('{ciWidth}% Confidence Interval'), ciWidth=self$options$ciWidthEmm)
+
             for (i in seq_along(termsAll)) {
 
                 group <- groups$get(key=i)$emm
@@ -285,7 +289,7 @@ logRegMultiClass <- R6::R6Class(
                         emmGroup <- group$get(key=j)
 
                         table <- emmGroup$emmTable
-                        table$setTitle(paste0('Estimated Marginal Means - ', jmvcore::stringifyTerm(emm)))
+                        table$setTitle(jmvcore::format(emMeansTableTitle, term=jmvcore::stringifyTerm(emm)))
 
                         emm <- c(dep, emm)
                         nLevels <- numeric(length(emm))
@@ -299,10 +303,10 @@ logRegMultiClass <- R6::R6Class(
                             }
                         }
 
-                        table$addColumn(name='prob', title='Probability', type='number')
-                        table$addColumn(name='se', title='SE', type='number')
-                        table$addColumn(name='lower', title='Lower', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Confidence Interval'), visibl="(ciEmm)")
-                        table$addColumn(name='upper', title='Upper', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Confidence Interval'), visibl="(ciEmm)")
+                        table$addColumn(name='prob', title=.('Probability'), type='number')
+                        table$addColumn(name='se', title=.('SE'), type='number')
+                        table$addColumn(name='lower', title=.('Lower'), type='number', superTitle=ciWidthTitle, visibl="(ciEmm)")
+                        table$addColumn(name='upper', title=.('Upper'), type='number', superTitle=ciWidthTitle, visibl="(ciEmm)")
 
                         nRows <- prod(nLevels)
 
@@ -510,7 +514,7 @@ logRegMultiClass <- R6::R6Class(
 
                             if (length(covValues) > 0) {
 
-                                table$setNote("sub", "\u207B mean - 1SD, <sup>\u03BC</sup> mean, \u207A mean + 1SD")
+                                table$setNote("sub", .("\u207B mean - 1SD, <sup>\u03BC</sup> mean, \u207A mean + 1SD"))
 
                                 for (l in seq_along(emm)) {
                                     if (emm[l] %in% covs)
@@ -583,7 +587,7 @@ logRegMultiClass <- R6::R6Class(
 
                         suppressMessages({
                             emmeans::emm_options(sep = ",", parens = "a^")
-                            
+
                             mm <- try(
                                 emmeans::emmeans(model, formula, cov.reduce=FUN, type='response', options=list(level=self$options$ciWidthEmm / 100), weights = weights, data=data),
                                 silent = TRUE
@@ -617,7 +621,7 @@ logRegMultiClass <- R6::R6Class(
                         names <- list('x'=termB64[2], 'y'='prob', 'lines'=termB64[1], 'xPlots'=termB64[3], 'yPlots'=termB64[4], 'lower'='lower.CL', 'upper'='upper.CL')
                         names <- lapply(names, function(x) if (is.na(x)) NULL else x)
 
-                        labels <- list('x'=term[2], 'y'='Probability', 'lines'=term[1], 'xPlots'=term[3], 'yPlots'=term[4])
+                        labels <- list('x'=term[2], 'y'=.('Probability'), 'lines'=term[1], 'xPlots'=term[3], 'yPlots'=term[4])
                         labels <- lapply(labels, function(x) if (is.na(x)) NULL else x)
 
                         image$setState(list(data=d, names=names, labels=labels, cont=cont))
@@ -766,8 +770,15 @@ logRegMultiClass <- R6::R6Class(
             dep <- self$options$dep
             column <- data[[jmvcore::toB64(dep)]]
 
-            if (length(levels(column)) == 2)
-                jmvcore::reject(jmvcore::format('The dependent variable \'{}\' has only two levels, consider doing a binomial logistic regression.', dep), code='')
+            if (length(levels(column)) == 2) {
+                jmvcore::reject(
+                    jmvcore::format(
+                        .('The dependent variable "{dep}" has only two levels, consider doing a binomial logistic regression.'),
+                        dep=dep
+                    ),
+                    code=''
+                )
+            }
         },
         .cleanData = function() {
 

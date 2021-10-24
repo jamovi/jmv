@@ -1,4 +1,5 @@
 
+#' @importFrom jmvcore .
 descriptivesClass <- R6::R6Class(
     "descriptivesClass",
     inherit=descriptivesBase,
@@ -11,20 +12,20 @@ descriptivesClass <- R6::R6Class(
                 "skew", "seSkew", "kurt", "seKurt", "sww", "sw"
             ),
             title = c(
-                "N", "Missing", "Mean", "Std. error mean", "lower bound",
-                "upper bound", "Median", "Mode", "Sum", "Standard deviation",
-                "Variance", "IQR", "Range", "Minimum", "Maximum", "Skewness",
-                "Std. error skewness", "Kurtosis", "Std. error kurtosis",
-                "Shapiro-Wilk W", "Shapiro-Wilk p"
+                .("N"), .("Missing"), .("Mean"), .("Std. error mean"), .("lower bound"),
+                .("upper bound"), .("Median"), .("Mode"), .("Sum"), .("Standard deviation"),
+                .("Variance"), .("IQR"), .("Range"), .("Minimum"), .("Maximum"), .("Skewness"),
+                .("Std. error skewness"), .("Kurtosis"), .("Std. error kurtosis"),
+                .("Shapiro-Wilk W"), .("Shapiro-Wilk p")
             ),
             titleT = c(
-                "N", "Missing", "Mean", "SE", "Lower", "Upper", "Median",
-                "Mode", "Sum", "SD", "Variance", "IQR", "Range", "Minimum",
-                "Maximum", "Skewness", "SE", "Kurtosis", "SE", "W", "p"
+                .("N"), .("Missing"), .("Mean"), .("SE"), .("Lower"), .("Upper"), .("Median"),
+                .("Mode"), .("Sum"), .("SD"), .("Variance"), .("IQR"), .("Range"), .("Minimum"),
+                .("Maximum"), .("Skewness"), .("SE"), .("Kurtosis"), .("SE"), .("W"), .("p")
             ),
             superTitle = c(
-                rep("", 4), rep("ci", 2), rep("", 9), rep("Skewness", 2),
-                rep("Kurtosis", 2), rep("Shapiro-Wilk", 2)
+                rep("", 4), rep("ci", 2), rep("", 9), rep(.("Skewness"), 2),
+                rep(.("Kurtosis"), 2), rep(.("Shapiro-Wilk"), 2)
             ),
             type = c(rep("integer", 2), rep("number", 19)),
             format = c(rep("", 20), "zto,pvalue"),
@@ -122,7 +123,7 @@ descriptivesClass <- R6::R6Class(
 
                 if (name == "ciLower" || name == "ciUpper") {
                     title <- jmvcore::format(
-                        "{}% CI mean {}", self$options$ciWidth, title
+                        .("{ciWidth}% CI mean {title}"), ciWidth=self$options$ciWidth, title=title
                     )
                 }
 
@@ -221,7 +222,7 @@ descriptivesClass <- R6::R6Class(
 
                 if (colArgs$superTitle[i] == "ci")
                     superTitle <- jmvcore::format(
-                        '{}% Confidence Interval', self$options$ciWidth
+                        .('{ciWidth}% Confidence Interval'), ciWidth=self$options$ciWidth
                     )
                 else
                     superTitle <- colArgs$superTitle[i]
@@ -280,16 +281,16 @@ descriptivesClass <- R6::R6Class(
 
                     if (length(splitBy) == 0) {
                         table$addColumn(
-                            name='levels', title='Levels', type='text'
+                            name='levels', title=.('Levels'), type='text'
                         )
                         table$addColumn(
-                            name='counts', title='Counts', type='integer'
+                            name='counts', title=.('Counts'), type='integer'
                         )
                         table$addColumn(
-                            name='pc', title='% of Total', type='number', format='pc'
+                            name='pc', title=.('% of Total'), type='number', format='pc'
                         )
                         table$addColumn(
-                            name='cumpc', title='Cumulative %', type='number', format='pc'
+                            name='cumpc', title=.('Cumulative %'), type='number', format='pc'
                         )
 
                         for (k in seq_along(levels)) {
@@ -364,21 +365,23 @@ descriptivesClass <- R6::R6Class(
                 )
 
                 if (length(varsCannotBeNumeric) == 1) {
-                    content <- jmvcore::format(
-                        "<p class=\"warning\">
-                            The variable {} cannot be treated as numeric. Therefore plots that expect
-                            numeric data will not be created for this variable.
-                        </p>", listItems(varsCannotBeNumeric)
+                    warningMessage <- jmvcore::format(
+                        .("The variable {var} cannot be treated as numeric. Therefore plots that expect numeric data will not be created for this variable."),
+                        listItems(varsCannotBeNumeric)
                     )
                 } else {
-                    content <- jmvcore::format(
-                        "<p class=\"warning\">
-                            The variables {} cannot be treated as numeric. Therefore plots that expect
-                            numeric data will not be created for these variables.
-                        </p>", listItems(varsCannotBeNumeric)
+                    warningMessage <- jmvcore::format(
+                        .("The variables {vars} cannot be treated as numeric. Therefore plots that expect numeric data will not be created for these variables."),
+                        listItems(varsCannotBeNumeric)
                     )
-
                 }
+
+                content <- jmvcore::format(
+                    "<p class=\"warning\">
+                        {}
+                    </p>",
+                    warningMessage
+                )
 
                 html$setContent(content)
                 plots$setHeader(html)
@@ -579,7 +582,7 @@ descriptivesClass <- R6::R6Class(
                 table$addFootnote(
                     rowNo=1,
                     footnotes[[i]],
-                    'More than one mode exists, only the first is reported'
+                    .('More than one mode exists, only the first is reported')
                 )
             }
         },
@@ -613,7 +616,7 @@ descriptivesClass <- R6::R6Class(
                             table$addFootnote(
                                 rowNo=iter,
                                 'mode',
-                                'More than one mode exists, only the first is reported'
+                                .('More than one mode exists, only the first is reported')
                             )
                         }
 
@@ -632,7 +635,7 @@ descriptivesClass <- R6::R6Class(
                         table$addFootnote(
                             rowNo=i,
                             'mode',
-                            'More than one mode exists, only the first is reported'
+                            .('More than one mode exists, only the first is reported')
                         )
                     }
                 }
@@ -894,8 +897,8 @@ descriptivesClass <- R6::R6Class(
             plot <- ggplot(data=data) +
                 geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
                 stat_qq(aes(sample=y), size=2, colour=theme$color[1]) +
-                xlab("Theoretical Quantiles") +
-                ylab("Standardized Residuals") +
+                xlab(.("Theoretical Quantiles")) +
+                ylab(.("Standardized Residuals")) +
                 ggtheme
 
             if (nSplits == 0) {
@@ -1266,7 +1269,7 @@ descriptivesClass <- R6::R6Class(
                 for (item in splitBy) {
                     if ( ! is.factor(data[[item]])) {
                         jmvcore::reject(
-                            'Unable to split by a continuous variable'
+                            .('Unable to split by a continuous variable')
                         )
                     }
                 }
@@ -1276,7 +1279,7 @@ descriptivesClass <- R6::R6Class(
                 if (length(levels(data[[var]])) == 0) {
                     jmvcore::reject(
                         jmvcore::format(
-                            "The 'split by' variable '{}' contains no data.", var
+                            .("The 'split by' variable '{var}' contains no data."), var=var
                         ),
                         code=''
                     )
@@ -1346,9 +1349,9 @@ descriptivesClass <- R6::R6Class(
                 pcEq <- (1:pcNEqGr / pcNEqGr)[-pcNEqGr]
 
                 private$colArgs$name <- c(colArgs$name, paste0('quant', 1:(pcNEqGr-1)))
-                private$colArgs$title <- c(colArgs$title, paste0(round(pcEq * 100, 2), 'th percentile'))
+                private$colArgs$title <- c(colArgs$title, paste0(round(pcEq * 100, 2), .('th percentile')))
                 private$colArgs$titleT <- c(colArgs$titleT, paste0(round(pcEq * 100, 2), 'th'))
-                private$colArgs$superTitle <- c(colArgs$superTitle, rep("Percentiles", pcNEqGr-1))
+                private$colArgs$superTitle <- c(colArgs$superTitle, rep(.("Percentiles"), pcNEqGr-1))
                 private$colArgs$type <- c(colArgs$type, rep('number', pcNEqGr - 1))
                 private$colArgs$visible <- c(colArgs$visible, rep("(pcEqGr)", pcNEqGr - 1))
             }
@@ -1361,9 +1364,9 @@ descriptivesClass <- R6::R6Class(
                     colArgs <- private$colArgs
 
                     private$colArgs$name <- c(colArgs$name, paste0('perc', 1:npcValues))
-                    private$colArgs$title <- c(colArgs$title, paste0(round(pcValues * 100, 2), 'th percentile'))
+                    private$colArgs$title <- c(colArgs$title, paste0(round(pcValues * 100, 2), .('th percentile')))
                     private$colArgs$titleT <- c(colArgs$titleT, paste0(round(pcValues * 100, 2), 'th'))
-                    private$colArgs$superTitle <- c(colArgs$superTitle, rep("Percentiles", npcValues))
+                    private$colArgs$superTitle <- c(colArgs$superTitle, rep(.("Percentiles"), npcValues))
                     private$colArgs$type <- c(colArgs$type, rep('number', npcValues))
                     private$colArgs$visible <- c(colArgs$visible, rep("(pc)", npcValues))
                 }

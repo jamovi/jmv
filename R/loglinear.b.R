@@ -1,4 +1,5 @@
 
+#' @importFrom jmvcore .
 logLinearClass <- R6::R6Class(
     "logLinearClass",
     inherit = logLinearBase,
@@ -151,16 +152,18 @@ logLinearClass <- R6::R6Class(
                 table <- groups$get(key=i)$coef
 
                 ciWidth <- self$options$ciWidth
-                table$getColumn('lower')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidth))
-                table$getColumn('upper')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidth))
+                ciWidthTitle <- jmvcore::format(.('{ciWidth}% Confidence Interval'), ciWidth=ciWidth)
+                table$getColumn('lower')$setSuperTitle(ciWidthTitle)
+                table$getColumn('upper')$setSuperTitle(ciWidthTitle)
 
                 ciWidthRR <- self$options$ciWidthRR
-                table$getColumn('rateLower')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidthRR))
-                table$getColumn('rateUpper')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidthRR))
+                ciWidthRRTitle <- jmvcore::format(.('{ciWidth}% Confidence Interval'), ciWidth=ciWidthRR)
+                table$getColumn('rateLower')$setSuperTitle(ciWidthRRTitle)
+                table$getColumn('rateUpper')$setSuperTitle(ciWidthRRTitle)
 
                 coefTerms <- list()
 
-                table$addRow(rowKey="`(Intercept)`", values=list(term = "Intercept"))
+                table$addRow(rowKey="`(Intercept)`", values=list(term = .("Intercept")))
                 coefTerms[[1]] <- "(Intercept)"
 
                 terms <- termsAll[[i]]
@@ -220,6 +223,9 @@ logLinearClass <- R6::R6Class(
             emMeans <- self$options$emMeans
             factors <- self$options$factors
 
+            emMeansTableTitle <- .('Estimated Marginal Means - {term}')
+            ciWidthTitle <- jmvcore::format(.('{ciWidth}% Confidence Interval'), ciWidth=self$options$ciWidthEmm)
+
             for (i in seq_along(termsAll)) {
 
                 group <- groups$get(key=i)$emm
@@ -234,7 +240,7 @@ logLinearClass <- R6::R6Class(
                         emmGroup <- group$get(key=j)
 
                         table <- emmGroup$emmTable
-                        table$setTitle(paste0('Estimated Marginal Means - ', jmvcore::stringifyTerm(emm)))
+                        table$setTitle(jmvcore::format(emMeansTableTitle, term=jmvcore::stringifyTerm(emm)))
 
                         nLevels <- numeric(length(emm))
                         for (k in rev(seq_along(emm))) {
@@ -242,10 +248,10 @@ logLinearClass <- R6::R6Class(
                                 nLevels[k] <- length(levels(self$data[[ emm[k] ]]))
                         }
 
-                        table$addColumn(name='counts', title='Counts', type='number')
-                        table$addColumn(name='se', title='SE', type='number')
-                        table$addColumn(name='lower', title='Lower', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Confidence Interval'), visibl="(ciEmm)")
-                        table$addColumn(name='upper', title='Upper', type='number', superTitle=paste0(self$options$ciWidthEmm, '% Confidence Interval'), visibl="(ciEmm)")
+                        table$addColumn(name='counts', title=.('Counts'), type='number')
+                        table$addColumn(name='se', title=.('SE'), type='number')
+                        table$addColumn(name='lower', title=.('Lower'), type='number', superTitle=ciWidthTitle, visibl="(ciEmm)")
+                        table$addColumn(name='upper', title=.('Upper'), type='number', superTitle=ciWidthTitle, visibl="(ciEmm)")
 
                         nRows <- prod(nLevels)
 
@@ -465,7 +471,7 @@ logLinearClass <- R6::R6Class(
 
                         suppressMessages({
                             emmeans::emm_options(sep = ",", parens = "a^")
-                            
+
                             mm <- try(
                                 emmeans::emmeans(model, formula, type='response', options=list(level=self$options$ciWidthEmm / 100), weights = weights, data=data),
                                 silent = TRUE
@@ -485,7 +491,7 @@ logLinearClass <- R6::R6Class(
                         names <- list('x'=termB64[1], 'y'='rate', 'lines'=termB64[2], 'plots'=termB64[3], 'lower'='asymp.LCL', 'upper'='asymp.UCL')
                         names <- lapply(names, function(x) if (is.na(x)) NULL else x)
 
-                        labels <- list('x'=term[1], 'y'='Counts', 'lines'=term[2], 'plots'=term[3])
+                        labels <- list('x'=term[1], 'y'=.('Counts'), 'lines'=term[2], 'plots'=term[3])
                         labels <- lapply(labels, function(x) if (is.na(x)) NULL else x)
 
                         image$setState(list(data=d, names=names, labels=labels))

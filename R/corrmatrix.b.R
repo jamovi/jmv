@@ -1,13 +1,14 @@
 
+#' @importFrom jmvcore .
 corrMatrixClass <- R6::R6Class(
   "corrMatrixClass",
   inherit=corrMatrixBase,
   private=list(
     .init=function() {
-        matrix <- self$results$get('matrix')
-        vars <- self$options$get('vars')
+        matrix <- self$results$matrix
+        vars <- self$options$vars
         nVars <- length(vars)
-        ciw <- self$options$get('ciWidth')
+        ciw <- self$options$ciWidth
 
         for (i in seq_along(vars)) {
             var <- vars[[i]]
@@ -60,8 +61,8 @@ corrMatrixClass <- R6::R6Class(
             values[[paste0(var, '[taup]')]] <- '\u2014'
             values[[paste0(var, '[n]')]] <- '\u2014'
 
-            values[['.stat[rciu]']] <- paste0(ciw, '% CI Upper')
-            values[['.stat[rcil]']] <- paste0(ciw, '% CI Lower')
+            values[['.stat[rciu]']] <- jmvcore::format(.('{ciWidth}% CI Upper'), ciWidth=ciw)
+            values[['.stat[rcil]']] <- jmvcore::format(.('{ciWidth}% CI Lower'), ciWidth=ciw)
 
             matrix$setRow(rowKey=var, values)
         }
@@ -70,16 +71,16 @@ corrMatrixClass <- R6::R6Class(
         flag <- self$options$get('flag')
 
         if (hyp == 'pos') {
-            matrix$setNote('hyp', 'H\u2090 is positive correlation')
+            matrix$setNote('hyp', .('H\u2090 is positive correlation'))
             hyp <- 'greater'
             if (flag)
-                matrix$setNote('flag', '* p < .05, ** p < .01, *** p < .001, one-tailed')
+                matrix$setNote('flag', .('* p < .05, ** p < .01, *** p < .001, one-tailed'))
         }
         else if (hyp == 'neg') {
-            matrix$setNote('hyp', 'H\u2090 is negative correlation')
+            matrix$setNote('hyp', .('H\u2090 is negative correlation'))
             hyp <- 'less'
             if (flag)
-                matrix$setNote('flag', '* p < .05, ** p < .01, *** p < .001, one-tailed')
+                matrix$setNote('flag', .('* p < .05, ** p < .01, *** p < .001, one-tailed'))
         }
         else {
             matrix$setNote('hyp', NULL)
@@ -94,12 +95,12 @@ corrMatrixClass <- R6::R6Class(
     },
     .run=function() {
 
-        matrix <- self$results$get('matrix')
-        vars <- self$options$get('vars')
+        matrix <- self$results$matrix
+        vars <- self$options$vars
         nVars <- length(vars)
 
-        hyp <- self$options$get('hypothesis')
-        flag <- self$options$get('flag')
+        hyp <- self$options$hypothesis
+        flag <- self$options$flag
 
         if (hyp == 'pos')
             hyp <- 'greater'
