@@ -1,4 +1,5 @@
 
+#' @importFrom jmvcore .
 anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
     "anovaOneWClass",
     inherit = anovaOneWBase,
@@ -87,9 +88,9 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             table <- self$results$anova
 
             if (self$options$fishers && !self$options$welchs)
-                table$setTitle("One-Way ANOVA (Fisher's)")
+                table$setTitle(.("One-Way ANOVA (Fisher's)"))
             else if (self$options$welchs && !self$options$fishers)
-                table$setTitle("One-Way ANOVA (Welch's)")
+                table$setTitle(.("One-Way ANOVA (Welch's)"))
 
         },
         .initDescTable = function() {
@@ -136,15 +137,17 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 return()
 
             levels <- levels(self$data[[group]])
+            gamesHowellTableTitle <- .('Games-Howell Post-Hoc Test \u2013 {dep}')
+            tukeyTableTitle <- .('Tukey Post-Hoc Test \u2013 {dep}')
 
             for (i in seq_along(deps)) {
 
                 table <- tables[[i]]
 
                 if (self$options$phMethod == 'gamesHowell')
-                    table$setTitle(paste0('Games-Howell Post-Hoc Test \u2013 ', deps[i]))
+                    table$setTitle(jmvcore::format(gamesHowellTableTitle, dep=deps[i]))
                 else  if (self$options$phMethod == 'tukey')
-                    table$setTitle(paste0('Tukey Post-Hoc Test \u2013 ', deps[i]))
+                    table$setTitle(jmvcore::format(tukeyTableTitle, dep=deps[i]))
 
                 for (j in seq_along(levels)) {
 
@@ -247,6 +250,9 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         },
         .populateShapiroWilkTable = function(results) {
 
+            tooFewSamplesMessage <- .('Too few samples to compute statistic (N < {n})')
+            tooManySamplesMessage <- .('Too many samples to compute statistic (N > {n})')
+
             table <- self$results$assump$norm
 
             for (dep in self$options$deps) {
@@ -260,13 +266,13 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
                     row[['w']] <- NaN
                     row[['p']] <- ''
-                    footnote <- 'Too few samples to compute statistic (N < 3)'
+                    footnote <- jmvcore::format(tooFewSamplesMessage, n=3)
 
                 } else if (length(r) > 5000) {
 
                     row[['w']] <- NaN
                     row[['p']] <- ''
-                    footnote <- 'Too many samples to compute statistic (N > 5000)'
+                    footnote <- jmvcore::format(tooManySamplesMessage, n=5000)
 
                 } else {
 
@@ -361,8 +367,8 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             groupName <- self$options$group
 
-            ciw <- 95
-            errorType <- paste0('Mean (', ciw, '% CI)')
+            ciLegendTitle<- .("Mean ({ciWidth}% CI)")
+            errorType <- jmvcore::format(ciLegendTitle, ciWidth=95)
 
             p <- ggplot2::ggplot(data=image$state$df, ggplot2::aes(x=levels, y=mean)) +
                 ggplot2::geom_errorbar(ggplot2::aes(ymin=mean-ci, ymax=mean+ci, width=.1), size=.8, color=theme$color[2]) +
@@ -399,8 +405,8 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             p <- ggplot2::ggplot(data=image$state, ggplot2::aes(y=y, x=x)) +
                 ggplot2::geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
                 ggplot2::geom_point(size=2, colour=theme$color[1]) +
-                ggplot2::xlab("Theoretical Quantiles") +
-                ggplot2::ylab("Standardized Residuals") +
+                ggplot2::xlab(.("Theoretical Quantiles")) +
+                ggplot2::ylab(.("Standardized Residuals")) +
                 ggtheme
 
             return(p)

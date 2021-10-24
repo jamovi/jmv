@@ -1,4 +1,5 @@
 
+#' @importFrom jmvcore .
 cfaClass <- R6::R6Class(
     "cfaClass",
     inherit = cfaBase,
@@ -75,8 +76,10 @@ cfaClass <- R6::R6Class(
             rowNo <- 1
 
             ciWidth <- self$options$ciWidth
-            table$getColumn('lower')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidth))
-            table$getColumn('upper')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidth))
+            ciWidthTitle <- jmvcore::format(.('{ciWidth}% Confidence Interval'), ciWidth=ciWidth)
+
+            table$getColumn('lower')$setSuperTitle(ciWidthTitle)
+            table$getColumn('upper')$setSuperTitle(ciWidthTitle)
 
             for (i in seq_along(factors)) {
 
@@ -116,8 +119,10 @@ cfaClass <- R6::R6Class(
             rowNo <- 1
 
             ciWidth <- self$options$ciWidth
-            table$getColumn('lower')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidth))
-            table$getColumn('upper')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidth))
+            ciWidthTitle <- jmvcore::format(.('{ciWidth}% Confidence Interval'), ciWidth=ciWidth)
+
+            table$getColumn('lower')$setSuperTitle(ciWidthTitle)
+            table$getColumn('upper')$setSuperTitle(ciWidthTitle)
 
             if (length(factors) == 0)
                 return()
@@ -156,8 +161,10 @@ cfaClass <- R6::R6Class(
             factors <- sapply(self$options$factors, function(x) x$label)
 
             ciWidth <- self$options$ciWidth
-            table$getColumn('lower')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidth))
-            table$getColumn('upper')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidth))
+            ciWidthTitle <- jmvcore::format(.('{ciWidth}% Confidence Interval'), ciWidth=ciWidth)
+
+            table$getColumn('lower')$setSuperTitle(ciWidthTitle)
+            table$getColumn('upper')$setSuperTitle(ciWidthTitle)
 
             for (i in 1:length(factors)) {
 
@@ -176,8 +183,10 @@ cfaClass <- R6::R6Class(
             rowNo <- 1
 
             ciWidth <- self$options$ciWidth
-            table$getColumn('lower')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidth))
-            table$getColumn('upper')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidth))
+            ciWidthTitle <- jmvcore::format(.('{ciWidth}% Confidence Interval'), ciWidth=ciWidth)
+
+            table$getColumn('lower')$setSuperTitle(ciWidthTitle)
+            table$getColumn('upper')$setSuperTitle(ciWidthTitle)
 
             if (length(vars) == 0)
                 return()
@@ -225,8 +234,10 @@ cfaClass <- R6::R6Class(
             vars <- unique(unlist(lapply(self$options$factors, function(x) x$vars)))
 
             ciWidth <- self$options$ciWidth
-            table$getColumn('lower')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidth))
-            table$getColumn('upper')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidth))
+            ciWidthTitle <- jmvcore::format(.('{ciWidth}% Confidence Interval'), ciWidth=ciWidth)
+
+            table$getColumn('lower')$setSuperTitle(ciWidthTitle)
+            table$getColumn('upper')$setSuperTitle(ciWidthTitle)
 
             for (i in seq_along(vars))
                 table$addRow(rowKey=i, values=list('var'=vars[i]))
@@ -725,7 +736,7 @@ cfaClass <- R6::R6Class(
 
             if (length(resCov) > 0) {
 
-                model <- paste(model,  model <- '\n\n# Residual covariances')
+                model <- paste(model,  '\n\n# Residual covariances')
 
                 for (i in seq_along(resCov)) {
 

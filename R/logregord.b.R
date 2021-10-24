@@ -1,4 +1,5 @@
 
+#' @importFrom jmvcore .
 logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
     "logRegOrdClass",
     inherit = logRegOrdBase,
@@ -115,8 +116,14 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 return()
             }
 
-            table$setNote("note", jmvcore::format("The dependent variable \'{}\' has the following order: {}", dep, paste(depLevels, collapse = ' | ')))
-
+            table$setNote(
+                "note",
+                jmvcore::format(
+                    .("The dependent variable '{dep}' has the following order: {orderedLevels}"),
+                    dep=dep,
+                    orderedLevels=paste(depLevels, collapse = ' | ')
+                )
+            )
         },
         .initModelCompTable = function() {
 
@@ -172,17 +179,18 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 depLevels <- NULL
             }
 
+            ciWidthTitleString <- .('{ciWidth}% Confidence Interval')
+            ciWidthTitle <- jmvcore::format(ciWidthTitleString, ciWidth=self$options$ciWidth)
+            ciWidthORTitle <- jmvcore::format(ciWidthTitleString, ciWidth=self$options$ciWidthOR)
+
             for (i in seq_along(termsAll)) {
 
                 table <- groups$get(key=i)$coef
 
-                ciWidth <- self$options$ciWidth
-                table$getColumn('lower')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidth))
-                table$getColumn('upper')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidth))
-
-                ciWidthOR <- self$options$ciWidthOR
-                table$getColumn('oddsLower')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidthOR))
-                table$getColumn('oddsUpper')$setSuperTitle(jmvcore::format('{}% Confidence Interval', ciWidthOR))
+                table$getColumn('lower')$setSuperTitle(ciWidthTitle)
+                table$getColumn('upper')$setSuperTitle(ciWidthTitle)
+                table$getColumn('oddsLower')$setSuperTitle(ciWidthORTitle)
+                table$getColumn('oddsUpper')$setSuperTitle(ciWidthORTitle)
 
                 coefTerms <- list()
 
@@ -507,9 +515,15 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             dep <- self$options$dep
             column <- data[[jmvcore::toB64(dep)]]
 
-            if (length(levels(column)) == 2)
-                jmvcore::reject(jmvcore::format('The dependent variable \'{}\' has only two levels, consider doing a binomial logistic regression.', dep), code='')
-
+            if (length(levels(column)) == 2) {
+                jmvcore::reject(
+                    jmvcore::format(
+                        .('The dependent variable "{dep}" has only two levels, consider doing a binomial logistic regression.'),
+                        dep=dep
+                    ),
+                    code=''
+                )
+            }
         },
         .cleanData = function() {
 

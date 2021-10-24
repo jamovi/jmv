@@ -1,4 +1,5 @@
 
+#' @importFrom jmvcore .
 contTablesPairedClass <- R6::R6Class(
     "contTablesPairedClass",
     inherit = contTablesPairedBase,
@@ -33,17 +34,17 @@ contTablesPairedClass <- R6::R6Class(
             data <- private$.cleanData()
 
             if (nlevels(data[[rowVarName]]) < 2)
-                jmvcore::reject("Row variable '{}' contains fewer than 2 levels", code='', rowVarName)
+                jmvcore::reject(.("Row variable '{var}' contains fewer than 2 levels"), code='', var=rowVarName)
             if (nlevels(data[[colVarName]]) < 2)
-                jmvcore::reject("Column variable '{}' contains fewer than 2 levels", code='', colVarName)
+                jmvcore::reject(.("Column variable '{var}' contains fewer than 2 levels"), code='', var=colVarName)
 
             if ( ! is.null(countsName)) {
                 countCol <- jmvcore::toNumeric(data[[countsName]])
 
                 if (any(countCol < 0, na.rm=TRUE))
-                    jmvcore::reject('Counts may not be negative')
+                    jmvcore::reject(.('Counts may not be negative'))
                 if (any(is.infinite(countCol)))
-                    jmvcore::reject('Counts may not be infinite')
+                    jmvcore::reject(.('Counts may not be infinite'))
             }
 
             rowVar <- data[[rowVarName]]
@@ -146,27 +147,27 @@ contTablesPairedClass <- R6::R6Class(
             if (base::inherits(wocor, 'try-error')) {
                 error <- jmvcore::extractErrorMessage(wocor)
                 if (error == "'x' must be square with at least two rows and columns")
-                    error <- 'McNemar requires a 2x2 table'
+                    error <- .('McNemar requires a 2x2 table')
                 else if (error == "all entries of 'x' must be nonnegative and finite")
-                    error <- 'Counts must be non-negative and finite'
+                    error <- .('Counts must be non-negative and finite')
                 test$addFootnote(rowNo=1, 'value[mcn]', error)
             }
 
             if (base::inherits(wcor, 'try-error')) {
                 error <- jmvcore::extractErrorMessage(wcor)
                 if (error == "'x' must be square with at least two rows and columns")
-                    error <- 'McNemar requires a 2x2 table'
+                    error <- .('McNemar requires a 2x2 table')
                 else if (error == "all entries of 'x' must be nonnegative and finite")
-                    error <- 'Counts must be non-negative and finite'
+                    error <- .('Counts must be non-negative and finite')
                 test$addFootnote(rowNo=1, 'value[cor]', error)
             }
 
             if (base::inherits(exact, 'try-error')) {
                 error <- jmvcore::extractErrorMessage(exact)
                 if (error == "table must be 2 by 2")
-                    error <- 'McNemar requires a 2x2 table'
+                    error <- .('McNemar requires a 2x2 table')
                 else if (error == "all entries of 'x' must be nonnegative and finite")
-                    error <- 'Counts must be non-negative and finite'
+                    error <- .('Counts must be non-negative and finite')
                 test$addFootnote(rowNo=1, 'value[exa]', error)
             }
         },
@@ -207,7 +208,7 @@ contTablesPairedClass <- R6::R6Class(
                               self$options$pcCol) > 0
 
             subNames  <- c('[count]', '[pcRow]', '[pcCol]')
-            subTitles <- c('Count', '% within row', '% within column')
+            subTitles <- c(.('Count'), .('% within row'), .('% within column'))
             visible   <- c('TRUE', '(pcRow)', '(pcCol)')
             types     <- c('integer', 'number', 'number')
             formats   <- c('', 'pc', 'pc')
@@ -247,7 +248,7 @@ contTablesPairedClass <- R6::R6Class(
 
             freqs$addColumn(
                 name='.total[count]',
-                title='Total',
+                title=.('Total'),
                 type='integer')
 
             # populate the first column with levels of the row variable
@@ -262,7 +263,7 @@ contTablesPairedClass <- R6::R6Class(
                 for (name in dimnames(rows)[[2]]) {
                     value <- as.character(rows[i, name])
                     if (value == '.total')
-                        value <- 'Total'
+                        value <- .('Total')
                     values[[name]] <- value
                 }
                 key <- paste0(rows[i,], collapse='`')
@@ -288,7 +289,7 @@ contTablesPairedClass <- R6::R6Class(
 
             if (incRows) {
                 if (is.null(rowVarName))
-                    expand[['.']] <- c('.', '. ', 'Total')
+                    expand[['.']] <- c('.', '. ', .('Total'))
                 else
                     expand[[rowVarName]] <- c(base::levels(data[[rowVarName]]), '.total')
             }

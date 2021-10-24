@@ -1,4 +1,5 @@
 
+#' @importFrom jmvcore .
 ttestPSClass <- R6::R6Class(
     "ttestPSClass",
     inherit=ttestPSBase,
@@ -68,8 +69,8 @@ ttestPSClass <- R6::R6Class(
                 dCI <- psych::d.ci(d, n1=n, alpha=confIntES)
 
                 if (is.factor(column1) || is.factor(column2)) {
-                    stud <- createError('One or both variables are not numeric')
-                    wilc <- createError('One or both variables are not numeric')
+                    stud <- createError(.('One or both variables are not numeric'))
+                    wilc <- createError(.('One or both variables are not numeric'))
                 }
                 else {
                     stud <- try(t.test(column1, column2, paired=TRUE, conf.level=confInt, alternative=Ha), silent=TRUE)
@@ -105,9 +106,9 @@ ttestPSClass <- R6::R6Class(
 
                     message <- extractErrorMessage(stud)
                     if (message == "not enough 'x' observations")
-                        message <- 'One or both variables do not contain enough observations'
+                        message <- .('One or both variables do not contain enough observations')
                     else if (message == 'missing value where TRUE/FALSE needed')
-                        message <- 'One or both variables contain infinite values'
+                        message <- .('One or both variables contain infinite values')
 
                     ttestTable$addFootnote(rowKey=pair, 'stat[stud]', message)
                 }
@@ -130,7 +131,7 @@ ttestPSClass <- R6::R6Class(
                         "ciues[wilc]"=''))
 
                     if (nTies > 0) {
-                        message <- paste0(nTies, ' pair(s) of values were tied')
+                        message <- jmvcore::format(.('{n} pair(s) of values were tied'), n=nTies)
                         ttestTable$addFootnote(rowKey=pair, 'stat[wilc]', message)
                     }
 
@@ -150,13 +151,13 @@ ttestPSClass <- R6::R6Class(
 
                     message <- extractErrorMessage(wilc)
                     if (message == "not enough 'x' observations")
-                        message <- 'One or both variables do not contain enough observations'
+                        message <- .('One or both variables do not contain enough observations')
                     else if (message == 'missing value where TRUE/FALSE needed')
-                        message <- 'One or both variables contain infinite values'
+                        message <- .('One or both variables contain infinite values')
                     else if (message == 'cannot compute confidence interval when all observations are tied')
-                        message <- 'All observations are tied'
+                        message <- .('All observations are tied')
                     else if (message == "'y' must be numeric")
-                        message <- 'One or both variables contain no observations'
+                        message <- .('One or both variables contain no observations')
 
                     ttestTable$addFootnote(rowKey=pair, 'stat[wilc]', message)
                 }
@@ -168,10 +169,10 @@ ttestPSClass <- R6::R6Class(
                 p <- ''
 
                 if (n < 3) {
-                    normTable$addFootnote(rowKey=pair, 'w', "Too few observations (N < 3) to compute statistic")
+                    normTable$addFootnote(rowKey=pair, 'w', .("Too few observations (N < 3) to compute statistic"))
                 }
                 else if (n > 5000) {
-                    normTable$addFootnote(rowKey=pair, 'w', "Too many observations (N > 5000) to compute statistic")
+                    normTable$addFootnote(rowKey=pair, 'w', .("Too many observations (N > 5000) to compute statistic"))
                 }
                 else {
                     res <- try(shapiro.test(column1-column2), silent=TRUE)
@@ -209,9 +210,9 @@ ttestPSClass <- R6::R6Class(
                 if (self$options$get('bf')) {
 
                     if (is.factor(column1) || is.factor(column2)) {
-                        res <- createError('One or both variables are not numeric')
+                        res <- createError(.('One or both variables are not numeric'))
                     } else if (any(is.infinite(column1)) || any(is.infinite(column2))) {
-                        res <- createError('One or both variables contain infinite values')
+                        res <- createError(.('One or both variables contain infinite values'))
                     } else {
 
                         if (self$options$get('hypothesis') == 'oneGreater') {
@@ -235,7 +236,7 @@ ttestPSClass <- R6::R6Class(
 
                         message <- extractErrorMessage(res)
                         if (message == 'not enough observations')
-                            message = 'One or both variables do not contain enough observations'
+                            message = .('One or both variables do not contain enough observations')
                         ttestTable$addFootnote(rowKey=pair, 'stat[bf]', message)
 
                     } else {
@@ -302,8 +303,9 @@ ttestPSClass <- R6::R6Class(
             hypothesis <- self$options$get('hypothesis')
             ttestTable <- self$results$get('ttest')
 
-            ciTitle <- paste0(self$options$get('ciWidth'), '% Confidence Interval')
+            ciTitleString <- .('{ciWidth}% Confidence Interval')
 
+            ciTitle <- jmvcore::format(ciTitleString, ciWidth=self$options$ciWidth)
             ttestTable$getColumn('ciu[stud]')$setSuperTitle(ciTitle)
             ttestTable$getColumn('cil[stud]')$setSuperTitle(ciTitle)
             ttestTable$getColumn('ciu[bf]')$setSuperTitle(ciTitle)
@@ -311,8 +313,7 @@ ttestPSClass <- R6::R6Class(
             ttestTable$getColumn('ciu[wilc]')$setSuperTitle(ciTitle)
             ttestTable$getColumn('cil[wilc]')$setSuperTitle(ciTitle)
 
-            ciTitleES <- paste0(self$options$ciWidthES, '% Confidence Interval')
-
+            ciTitleES <- jmvcore::format(ciTitleString, ciWidth=self$options$ciWidthES)
             ttestTable$getColumn('ciues[stud]')$setSuperTitle(ciTitleES)
             ttestTable$getColumn('ciles[stud]')$setSuperTitle(ciTitleES)
             ttestTable$getColumn('ciues[bf]')$setSuperTitle(ciTitleES)
@@ -320,13 +321,19 @@ ttestPSClass <- R6::R6Class(
             ttestTable$getColumn('ciues[wilc]')$setSuperTitle(ciTitleES)
             ttestTable$getColumn('ciles[wilc]')$setSuperTitle(ciTitleES)
 
-            if (hypothesis == 'oneGreater')
-                ttestTable$setNote("hyp", "H\u2090 \u03BC\u2009<sub>Measure 1 - Measure 2</sub> > 0")
-            else if (hypothesis == 'twoGreater')
-                ttestTable$setNote("hyp", "H\u2090 \u03BC\u2009<sub>Measure 1 - Measure 2</sub> < 0")
-            else
+            if (hypothesis == 'oneGreater') {
+                ttestTable$setNote(
+                    "hyp",
+                    jmvcore::format("H\u2090 \u03BC\u2009<sub>{}</sub> > 0", .("Measure 1 - Measure 2"))
+                )
+            } else if (hypothesis == 'twoGreater') {
+                ttestTable$setNote(
+                    "hyp",
+                    jmvcore::format("H\u2090 \u03BC\u2009<sub>{}</sub> < 0", .("Measure 1 - Measure 2"))
+                )
+            } else {
                 ttestTable$setNote("hyp", NULL)
-
+            }
 
             pairs <- self$options$pairs
             descTable <- self$results$desc
@@ -387,8 +394,8 @@ ttestPSClass <- R6::R6Class(
             plot <- ggplot(data=data) +
                 geom_abline(slope=1, intercept=0, colour=theme$color[1]) +
                 stat_qq(aes(sample=y), size=2, colour=theme$color[1]) +
-                xlab("Theoretical Quantiles") +
-                ylab("Standardized Residuals") +
+                xlab(.("Theoretical Quantiles")) +
+                ylab(.("Standardized Residuals")) +
                 ggtheme
 
             return(plot)

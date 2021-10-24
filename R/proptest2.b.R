@@ -1,4 +1,5 @@
 
+#' @importFrom jmvcore .
 propTest2Class <- R6::R6Class(
     "propTest2Class",
     inherit = propTest2Base,
@@ -91,11 +92,22 @@ propTest2Class <- R6::R6Class(
             else
                 op <- '\u2260'
 
-            table$setNote('hyp', jmvcore::format('H\u2090 is proportion {} {}', op, self$options$testValue))
-            table$getColumn('cil')$setSuperTitle(paste0(self$options$ciWidth, '% Confidence Interval'))
-            table$getColumn('ciu')$setSuperTitle(paste0(self$options$ciWidth, '% Confidence Interval'))
-            table$getColumn('cilBayes')$setSuperTitle(paste0(self$options$ciBayesWidth, '% Credible Interval'))
-            table$getColumn('ciuBayes')$setSuperTitle(paste0(self$options$ciBayesWidth, '% Credible Interval'))
+            table$setNote(
+                'hyp',
+                jmvcore::format(
+                    .('H\u2090 is proportion {direction} {testValue}'),
+                    direction=op,
+                    testValue=self$options$testValue
+                )
+            )
+
+            ciWidthTitleString <- .('{ciWidth}% Confidence Interval')
+            ciWidthTitle <- jmvcore::format(ciWidthTitleString, ciWidth=self$options$ciWidth)
+            ciWidthBayesTitle <- jmvcore::format(ciWidthTitleString, ciWidth=self$options$ciBayesWidth)
+            table$getColumn('cil')$setSuperTitle(ciWidthTitle)
+            table$getColumn('ciu')$setSuperTitle(ciWidthTitle)
+            table$getColumn('cilBayes')$setSuperTitle(ciWidthBayesTitle)
+            table$getColumn('ciuBayes')$setSuperTitle(ciWidthBayesTitle)
 
             for (var in self$options$vars) {
 
@@ -231,8 +243,8 @@ propTest2Class <- R6::R6Class(
                     }
 
                     y <- c(prior, like, post)
-                    g <- factor(rep(c("Prior", "Likelihood", "Posterior"), each=length(prior)),
-                                levels=c("Prior", "Likelihood", "Posterior"))
+                    g <- factor(rep(c(.("Prior"), .("Likelihood"), .("Posterior")), each=length(prior)),
+                                levels=c(.("Prior"), .("Likelihood"), .("Posterior")))
 
                     df <- data.frame(x=x, y=y, group=g)
 
@@ -255,7 +267,7 @@ propTest2Class <- R6::R6Class(
 
             p <- ggplot(data=image$state, aes(x=x, y=y, group=group, color=group, linetype=group)) +
                 geom_line(size=0.7) +
-                xlim(0, 1) + labs(x="Proportion", y="Density") +
+                xlim(0, 1) + labs(x=.("Proportion"), y=.("Density")) +
                 scale_color_manual(values=c("#3E6DA9", "#6b9de8", theme$color[1])) +
                 scale_linetype_manual(values=c("dotted", "dashed", "solid")) +
                 # geom_vline(xintercept = prop, size=0.1, linetype="dashed") +
@@ -273,8 +285,12 @@ propTest2Class <- R6::R6Class(
 
             for (var in vars) {
                 column <- naOmit(data[[var]])
-                if (length(column) == 0)
-                    jmvcore::reject(jmvcore::format('Variable \'{}\' contains no data', var), code='')
+                if (length(column) == 0) {
+                    jmvcore::reject(
+                        jmvcore::format(.("Variable '{var}' contains no data"), var=var),
+                        code=''
+                    )
+                }
             }
         },
         .counts = function(var) {
