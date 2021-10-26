@@ -625,20 +625,21 @@ contTablesClass <- R6::R6Class(
             }
 
             if (self$options$xaxis == "xcols") {
-                xVarName <- colVarName
-                zVarName <- rowVarName
+                xVarName <- ensym(colVarName)
+                zVarName <- ensym(rowVarName)
             } else {
-                xVarName <- rowVarName
-                zVarName <- colVarName
+                xVarName <- ensym(rowVarName)
+                zVarName <- ensym(colVarName)
             }
 
             position <- self$options$bartype
 
             if (self$options$yaxis == "ycounts") {
-                p <- ggplot(data=tab, aes_string(y=.("Counts"), x=xVarName, fill=zVarName)) +
-                    geom_col(position=position, width = 0.7)
+                p <- ggplot(data=tab, aes(y=Counts, x=!!xVarName, fill=!!zVarName)) +
+                    geom_col(position=position, width = 0.7) +
+                    labs(y = .("Counts"))
             } else {
-                p <- ggplot(data=tab, aes_string(y=.("Percentages"), x=xVarName, fill=zVarName)) +
+                p <- ggplot(data=tab, aes(y=Percentages, x=!!xVarName, fill=!!zVarName)) +
                     geom_col(position=position, width = 0.7)
 
                 if (self$options$yaxisPc == "total_pc") {
@@ -650,9 +651,9 @@ contTablesClass <- R6::R6Class(
 
             if (! is.null(layerNames)) {
                 if (length(layerNames) == 1)
-                    layers <- as.formula(paste0("~ ", layerNames))
+                    layers <- as.formula(jmvcore::composeFormula(NULL, layerNames))
                 else
-                    layers <- as.formula(paste0(layerNames[1], " ~ ", layerNames[2]))
+                    layers <- as.formula(jmvcore::composeFormula(layerNames[1], layerNames[2]))
 
                 p <- p + facet_grid(layers)
             }

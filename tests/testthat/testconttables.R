@@ -1,7 +1,6 @@
 context('conttables')
 
-test_that('conttables works', {
-
+test_that('conttables works without counts', {
     suppressWarnings(RNGversion("3.5.0"))
     set.seed(100)
 
@@ -34,7 +33,10 @@ test_that('conttables works', {
     expect_equal(4, freqs2[10, '2[count]'])
     expect_equal(4, freqs2[11, '1[count]'])
     expect_equal(6, freqs2[11, '2[count]'])
+})
 
+test_that("conttables works with counts", {
+    suppressWarnings(RNGversion("3.5.0"))
     set.seed(212)
 
     rows <- factor(c("A","B","C","A","B","C","A","B","C","A","B","C"), c("A","B","C"))
@@ -42,16 +44,26 @@ test_that('conttables works', {
     layer <- factor(c("I","I","I","I","I","I","II","II","II","II","II","II"), c("I","II"))
     counts <- sample(0:20, 12, replace = TRUE)
 
-    data2 <- data.frame(rows = rows, cols = cols, layer = layer, counts = counts)
+    data <- data.frame(rows = rows, cols = cols, layer = layer, counts = counts)
 
-    table3 <- jmv::contTables(data=data2, rows="rows", cols="cols", layers="layer", counts="counts")
+    table <- jmv::contTables(data=data, rows="rows", cols="cols", layers="layer", counts="counts")
 
-    freqs3 <- as.data.frame(table3$freqs)
+    freqs <- as.data.frame(table$freqs)
 
-    expect_equal(8, freqs3[1, '1[count]'])
-    expect_equal(3, freqs3[1, '2[count]'])
-    expect_equal(17, freqs3[2, '1[count]'])
-    expect_equal(0, freqs3[2, '2[count]'])
-    expect_equal(84, freqs3[12, '1[count]'])
-    expect_equal(32, freqs3[12, '2[count]'])
+    expect_equal(8, freqs[1, '1[count]'])
+    expect_equal(3, freqs[1, '2[count]'])
+    expect_equal(17, freqs[2, '1[count]'])
+    expect_equal(0, freqs[2, '2[count]'])
+    expect_equal(84, freqs[12, '1[count]'])
+    expect_equal(32, freqs[12, '2[count]'])
+})
+
+test_that("bar plots work with spaces in variable name", {
+    data <- ToothGrowth
+    data$dose <- factor(data$dose)
+    names(data) <- c("len", "su pp", "do se")
+
+    table <- jmv::contTables(data=data, rows="su pp", cols="do se", barplot=TRUE)
+
+    expect_true(table$barplot$.render())
 })
