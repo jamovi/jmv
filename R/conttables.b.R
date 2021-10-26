@@ -503,9 +503,9 @@ contTablesClass <- R6::R6Class(
                         values <- list(chi2=NaN, df='', p='')
                     else
                         values <- list(chi2=mhchi2, df=1, p=1-pchisq(mhchi2,1))
-                    
+
                     mh$setRow(rowNo=othRowNo, values=values)
-                    
+
                     if (base::inherits(mhchi2, 'try-error') || is.na(mhchi2))
                         mh$addFootnote(rowNo=othRowNo, 'chi2', 'Variables must have at least two levels')
                     else if (mhchi2 == -1)
@@ -557,7 +557,7 @@ contTablesClass <- R6::R6Class(
             height <- 400
 
             layerNames <- self$options$layers
-            if (length(layerNames) == 1) 
+            if (length(layerNames) == 1)
                 image$setSize(width * 2, height)
             else if (length(layerNames) >= 2)
                 image$setSize(width * 2, height * 2)
@@ -582,14 +582,14 @@ contTablesClass <- R6::R6Class(
 
             if (! is.null(countsName)){
                 untable <- function (df, counts) df[rep(1:nrow(df), counts), ]
-                data <- untable(data[, c(rowVarName, colVarName, layerNames)], counts=data[, countsName])              
+                data <- untable(data[, c(rowVarName, colVarName, layerNames)], counts=data[, countsName])
             }
 
             formula <- jmvcore::composeFormula(NULL, c(rowVarName, colVarName, layerNames))
             counts <- xtabs(formula, data)
             d <- dim(counts)
 
-            expand <- list() 
+            expand <- list()
             for (i in c(rowVarName, colVarName, layerNames))
                 expand[[i]] <- base::levels(data[[i]])
             tab <- expand.grid(expand)
@@ -597,7 +597,7 @@ contTablesClass <- R6::R6Class(
 
             if (self$options$yaxis == "ypc") { # percentages
                 props <- counts
-                
+
                 if (self$options$yaxisPc == "column_pc") {
                     pctVarName <- colVarName
                 } else if (self$options$yaxisPc == "row_pc") {
@@ -621,23 +621,24 @@ contTablesClass <- R6::R6Class(
                 }
 
                 tab$Percentages <- as.numeric(props) * 100
-            } 
+            }
 
             if (self$options$xaxis == "xcols") {
-                xVarName <- colVarName
-                zVarName <- rowVarName
+                xVarName <- ensym(colVarName)
+                zVarName <- ensym(rowVarName)
             } else {
-                xVarName <- rowVarName
-                zVarName <- colVarName
+                xVarName <- ensym(rowVarName)
+                zVarName <- ensym(colVarName)
             }
 
             position <- self$options$bartype
 
             if (self$options$yaxis == "ycounts") {
-                p <- ggplot(data=tab, aes_string(y="Counts", x=xVarName, fill=zVarName)) +
-                    geom_col(position=position, width = 0.7)
+                p <- ggplot(data=tab, aes(y=Counts, x=!!xVarName, fill=!!zVarName)) +
+                    geom_col(position=position, width = 0.7) +
+                    labs(y = "Counts")
             } else {
-                p <- ggplot(data=tab, aes_string(y="Percentages", x=xVarName, fill=zVarName)) +
+                p <- ggplot(data=tab, aes(y=Percentages, x=!!xVarName, fill=!!zVarName)) +
                     geom_col(position=position, width = 0.7)
 
                 if (self$options$yaxisPc == "total_pc") {
@@ -649,10 +650,10 @@ contTablesClass <- R6::R6Class(
 
             if (! is.null(layerNames)) {
                 if (length(layerNames) == 1)
-                    layers <- as.formula(paste0("~ ", layerNames))
+                    layers <- as.formula(jmvcore::composeFormula(NULL, layerNames))
                 else
-                    layers <- as.formula(paste0(layerNames[1], " ~ ", layerNames[2]))
-                
+                    layers <- as.formula(jmvcore::composeFormula(layerNames[1], layerNames[2]))
+
                 p <- p + facet_grid(layers)
             }
             p <- p + ggtheme
