@@ -7,7 +7,7 @@ checkTypes <- list(
     "variable_contains_one_unique_value" = "variable_contains_one_unique_value"
 )
 
-variableContainsInf = function(col, colName) {
+variableContainsInf = function(self, col, colName) {
     fail <- any(is.infinite(col))
     if (fail) {
         jmvcore::reject(
@@ -18,7 +18,7 @@ variableContainsInf = function(col, colName) {
     }
 }
 
-variableContainsMissing = function(col, colName) {
+variableContainsMissing = function(self, col, colName) {
     fail <- any(is.na(col))
     if (fail) {
         jmvcore::reject(
@@ -29,7 +29,7 @@ variableContainsMissing = function(col, colName) {
     }
 }
 
-variableContainsOnlyMissing = function(col, colName) {
+variableContainsOnlyMissing = function(self, col, colName) {
     fail <- all(is.na(col))
     if (fail) {
         jmvcore::reject(
@@ -40,7 +40,7 @@ variableContainsOnlyMissing = function(col, colName) {
     }
 }
 
-variableContainsOneUniqueValue = function(col, colName) {
+variableContainsOneUniqueValue = function(self, col, colName) {
     fail <- length(unique(col)) == 1
     if (fail) {
         jmvcore::reject(
@@ -51,7 +51,7 @@ variableContainsOneUniqueValue = function(col, colName) {
     }
 }
 
-checkData = function(data, types, B64 = FALSE) {
+checkData = function(self, data, types, B64 = FALSE) {
     for (colNo in seq_along(data)) {
         col <- data[[colNo]]
         colName <- names(data)[[colNo]]
@@ -59,12 +59,12 @@ checkData = function(data, types, B64 = FALSE) {
             colname <- jmvcore::fromB64(colName)
 
         if (checkTypes$variable_contains_inf %in% types)
-            variableContainsInf(col, colName)
+            variableContainsInf(self, col, colName)
         if (checkTypes$variable_contains_missing %in% types)
-            variableContainsMissing(col, colName)
+            variableContainsMissing(self, col, colName)
         if (checkTypes$variable_contains_only_missing %in% types)
-            variableContainsOnlyMissing(col, colName)
+            variableContainsOnlyMissing(self, col, colName)
         if (checkTypes$variable_contains_one_unique_value %in% types)
-            variableContainsOneUniqueValue(col, colName)
+            variableContainsOneUniqueValue(self, col, colName)
     }
 }

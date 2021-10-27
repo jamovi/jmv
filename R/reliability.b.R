@@ -120,7 +120,7 @@ reliabilityClass <- R6::R6Class(
                     jmvcore::format(
                         .("{type} score based on the variables {vars}"),
                         type=aggrType,
-                        vars=listItems(private$.getVarList())
+                        vars=listItems(self, private$.getVarList())
                     )
                 )
             }
@@ -153,12 +153,12 @@ reliabilityClass <- R6::R6Class(
                 if (length(negCorItems) == 1) {
                     note <- jmvcore::format(
                         .('item {item} correlates negatively with the total scale and probably should be reversed'),
-                        item=listItems(negCorItems)
+                        item=listItems(self, negCorItems)
                     )
                 } else {
                     note <- jmvcore::format(
                         .('items {items} correlate negatively with the total scale and probably should be reversed'),
-                        items=listItems(negCorItems)
+                        items=listItems(self, negCorItems)
                     )
                 }
                 table$setNote(key='negCor', note=note, init=FALSE)

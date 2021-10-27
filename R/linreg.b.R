@@ -696,7 +696,7 @@ linRegClass <- R6::R6Class(
                 table$setRow(rowKey='.RES', values = row)
 
                 if ( private$.getIsAliased()[[i]] )
-                    table$setNote("alias", SINGULAR_WARNING)
+                    table$setNote("alias", .(SINGULAR_WARNING))
             }
         },
         .populateCoefTables = function() {
@@ -760,7 +760,7 @@ linRegClass <- R6::R6Class(
                     table$setRow(rowKey=jmvcore::composeTerm(term), values=row)
 
                     if ( private$.getIsAliased()[[i]] )
-                        table$setNote("alias", SINGULAR_WARNING)
+                        table$setNote("alias", .(SINGULAR_WARNING))
                 }
             }
         },
@@ -839,7 +839,7 @@ linRegClass <- R6::R6Class(
                 }
 
                 if ( private$.getIsAliased()[[i]] )
-                    table$setNote("alias", SINGULAR_WARNING)
+                    table$setNote("alias", .(SINGULAR_WARNING))
             }
         },
         .populateEmmTables = function() {
