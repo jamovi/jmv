@@ -130,7 +130,7 @@ tapply = function (X, INDEX, FUN = NULL, ..., simplify = TRUE, drop = TRUE)
     ansmat
 }
 
-listItems = function(items, quote = '\'') {
+listItems = function(self, items, quote = '\'') {
 
     if (length(items) == 1) {
 

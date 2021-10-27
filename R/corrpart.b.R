@@ -109,7 +109,7 @@ corrPartClass <- R6::R6Class(
             if (length(controls) > 0) {
                 matrix$setNote(
                     'controls',
-                    jmvcore::format(.('controlling for {items}'), items=listItems(controls))
+                    jmvcore::format(.('controlling for {items}'), items=listItems(self, controls))
                 )
             }
 
