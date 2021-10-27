@@ -5,42 +5,45 @@ descriptivesClass <- R6::R6Class(
     inherit=descriptivesBase,
     private=list(
         #### Member variables ----
-        colArgs = list(
-            name = c(
-                "n", "missing", "mean", "se", "ciLower", "ciUpper", "median",
-                "mode", "sum", "sd", "variance", "iqr", "range", "min", "max",
-                "skew", "seSkew", "kurt", "seKurt", "sww", "sw"
-            ),
-            title = c(
-                .("N"), .("Missing"), .("Mean"), .("Std. error mean"), .("lower bound"),
-                .("upper bound"), .("Median"), .("Mode"), .("Sum"), .("Standard deviation"),
-                .("Variance"), .("IQR"), .("Range"), .("Minimum"), .("Maximum"), .("Skewness"),
-                .("Std. error skewness"), .("Kurtosis"), .("Std. error kurtosis"),
-                .("Shapiro-Wilk W"), .("Shapiro-Wilk p")
-            ),
-            titleT = c(
-                .("N"), .("Missing"), .("Mean"), .("SE"), .("Lower"), .("Upper"), .("Median"),
-                .("Mode"), .("Sum"), .("SD"), .("Variance"), .("IQR"), .("Range"), .("Minimum"),
-                .("Maximum"), .("Skewness"), .("SE"), .("Kurtosis"), .("SE"), .("W"), .("p")
-            ),
-            superTitle = c(
-                rep("", 4), rep("ci", 2), rep("", 9), rep(.("Skewness"), 2),
-                rep(.("Kurtosis"), 2), rep(.("Shapiro-Wilk"), 2)
-            ),
-            type = c(rep("integer", 2), rep("number", 19)),
-            format = c(rep("", 20), "zto,pvalue"),
-            visible = c(
-                "(n)", "(missing)", "(mean)", "(se)", "(ci)", "(ci)",
-                "(median)", "(mode)", "(sum)", "(sd)", "(variance)", "(iqr)",
-                "(range)", "(min)", "(max)", "(skew)", "(skew)", "(kurt)",
-                "(kurt)", "(sw)", "(sw)"
-            )
-        ),
+        colArgs = NA,
         .levels = NULL,
         .splitByGrid = NULL,
 
         #### Init + run functions ----
         .init = function() {
+
+            private$colArgs <- list(
+                name = c(
+                    "n", "missing", "mean", "se", "ciLower", "ciUpper", "median",
+                    "mode", "sum", "sd", "variance", "iqr", "range", "min", "max",
+                    "skew", "seSkew", "kurt", "seKurt", "sww", "sw"
+                ),
+                title = c(
+                    .("N"), .("Missing"), .("Mean"), .("Std. error mean"), .("lower bound"),
+                    .("upper bound"), .("Median"), .("Mode"), .("Sum"), .("Standard deviation"),
+                    .("Variance"), .("IQR"), .("Range"), .("Minimum"), .("Maximum"), .("Skewness"),
+                    .("Std. error skewness"), .("Kurtosis"), .("Std. error kurtosis"),
+                    .("Shapiro-Wilk W"), .("Shapiro-Wilk p")
+                ),
+                titleT = c(
+                    .("N"), .("Missing"), .("Mean"), .("SE"), .("Lower"), .("Upper"), .("Median"),
+                    .("Mode"), .("Sum"), .("SD"), .("Variance"), .("IQR"), .("Range"), .("Minimum"),
+                    .("Maximum"), .("Skewness"), .("SE"), .("Kurtosis"), .("SE"), .("W"), .("p")
+                ),
+                superTitle = c(
+                    rep("", 4), rep("ci", 2), rep("", 9), rep(.("Skewness"), 2),
+                    rep(.("Kurtosis"), 2), rep(.("Shapiro-Wilk"), 2)
+                ),
+                type = c(rep("integer", 2), rep("number", 19)),
+                format = c(rep("", 20), "zto,pvalue"),
+                visible = c(
+                    "(n)", "(missing)", "(mean)", "(se)", "(ci)", "(ci)",
+                    "(median)", "(mode)", "(sum)", "(sd)", "(variance)", "(iqr)",
+                    "(range)", "(min)", "(max)", "(skew)", "(skew)", "(kurt)",
+                    "(kurt)", "(sw)", "(sw)"
+                )
+            )
+
             private$.addQuantiles()
             private$.initDescriptivesTable()
             private$.initDescriptivesTTable()
@@ -366,13 +369,13 @@ descriptivesClass <- R6::R6Class(
 
                 if (length(varsCannotBeNumeric) == 1) {
                     warningMessage <- jmvcore::format(
-                        .("The variable {var} cannot be treated as numeric. Therefore plots that expect numeric data will not be created for this variable."),
-                        listItems(varsCannotBeNumeric)
+                        .("The variable {var} cannot be treated as numeric. Plots that expect numeric data will not be created for this variable."),
+                        var=listItems(self, varsCannotBeNumeric)
                     )
                 } else {
                     warningMessage <- jmvcore::format(
-                        .("The variables {vars} cannot be treated as numeric. Therefore plots that expect numeric data will not be created for these variables."),
-                        listItems(varsCannotBeNumeric)
+                        .("The variables {vars} cannot be treated as numeric. Plots that expect numeric data will not be created for these variables."),
+                        vars=listItems(self, varsCannotBeNumeric)
                     )
                 }
 
