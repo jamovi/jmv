@@ -1188,7 +1188,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             refLevels <- self$options$refLevels
             refVars <- sapply(refLevels, function(x) x$var)
             ref <- refLevels[[which(var == refVars)]][['ref']]
-            other <- levels[-which(ref == levels)]
+            other <- levels[-which(ref == levels)][1]
 
             return(list("ref"=ref, "other"=other))
         },
