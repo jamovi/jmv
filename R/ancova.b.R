@@ -153,7 +153,7 @@ ancovaClass <- R6::R6Class(
             table    <- self$results$main
 
             if (self$options$modelTest) {
-                table$addRow(rowKey='.', list(name='Overall model'))
+                table$addRow(rowKey='.', list(name=.('Overall model')))
                 table$addFormat(rowKey='.', col=1, format=Cell.BEGIN_END_GROUP)
             }
 
@@ -173,7 +173,7 @@ ancovaClass <- R6::R6Class(
                 table$addFormat(rowKey='...', col=1, format=Cell.BEGIN_END_GROUP)
             }
 
-            table$addRow(rowKey='', list(name='Residuals'))
+            table$addRow(rowKey='', list(name=.('Residuals')))
             table$addFormat(rowKey='', col=1, format=Cell.BEGIN_END_GROUP)
 
             if (self$options$ss == '1') {
