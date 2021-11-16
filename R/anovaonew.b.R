@@ -51,8 +51,8 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 if (self$options$miss != 'listwise')
                     dataA <- na.omit(dataA)
 
-                welch <- oneway.test(dep ~ group, data=dataA, var.equal=FALSE)
-                fisher <-  oneway.test(dep ~ group, data=dataA, var.equal=TRUE)
+                welch <- stats::oneway.test(dep ~ group, data=dataA, var.equal=FALSE)
+                fisher <-  stats::oneway.test(dep ~ group, data=dataA, var.equal=TRUE)
                 residuals <- rstandard(lm(dep ~ group, data=dataA))
 
                 desc <- tapply(dataA$dep, dataA$group, function (x) {

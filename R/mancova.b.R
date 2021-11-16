@@ -80,18 +80,16 @@ mancovaClass <- R6::R6Class(
             }
         },
         .initUnivarTables = function(modelTerms) {
-
-            deps <- self$options$deps
-
             table <- self$results$univar
 
+            deps <- self$options$deps
             terms <- c(modelTerms, "Residuals")
+            termTitles <- c(modelTerms, .("Residuals"))
 
-            for (term in terms) {
+            for (i in seq_along(terms)) {
                 for (dep in deps) {
-
-                    termString <- jmvcore::stringifyTerm(term)
-                    key <- paste0(paste0(term, collapse=""), dep)
+                    termString <- jmvcore::stringifyTerm(termTitles[[i]])
+                    key <- paste0(paste0(terms[[i]], collapse=""), dep)
                     table$addRow(rowKey=key, values=list(term = termString, dep = dep))
 
                     if (dep == deps[1])

@@ -628,7 +628,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             for (i in seq_along(self$options$blocks)) {
 
                 table <- groups$get(key=i)$pred$class
-                table$setTitle(paste0('Classification Table \u2013 ', dep))
+                table$setTitle(jmvcore::format(.("Classification Table \u2013 {dep}"), dep))
 
                 name <- c('name[0]', 'neg[0]', 'pos[0]', 'perc[0]', 'name[1]', 'neg[1]', 'pos[1]', 'perc[1]')
                 title <- rep(c(.('Observed'), levels[1], levels[2], .('% Correct')), 2)
