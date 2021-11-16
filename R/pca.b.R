@@ -184,17 +184,30 @@ pcaClass <- R6::R6Class(
         .initLoadingsTable = function() {
             table <- self$results$loadings
 
+            rotation <- self$options$rotation
+            if (rotation == 'varimax')
+                rotationName <- .("varimax")
+            else if (rotation == 'quartimax')
+                rotationName <- .("quartimax")
+            else if (rotation == 'promax')
+                rotationName <- .("promax")
+            else if (rotation == 'oblimin')
+                rotationName <- .("oblimin")
+            else if (rotation == 'simplimax')
+                rotationName <- .("simplimax")
+            else
+                rotationName <- .("none")
+
             if (private$analysis == 'pca') {
                 table$setNote(
                     "note",
                     jmvcore::format(
                         .("'{rotation}' rotation was used"),
-                        rotation=self$options$rotation
+                        rotation=rotationName
                     )
                 )
             } else {
                 extr <- self$options$extraction
-
                 if (extr == 'pa')
                     extrName <- .('Principal axis factoring')
                 else if (extr == 'ml')
@@ -207,7 +220,7 @@ pcaClass <- R6::R6Class(
                     jmvcore::format(
                         .("'{method}' extraction method was used in combination with a '{rotation}' rotation"),
                         method=extrName,
-                        rotation=self$options$rotation
+                        rotation=rotationName
                     )
                 )
             }

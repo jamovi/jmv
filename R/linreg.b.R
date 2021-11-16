@@ -385,7 +385,7 @@ linRegClass <- R6::R6Class(
                 for (j in seq_along(terms))
                     table$addRow(rowKey=paste0(terms[[j]]), values=list(term = jmvcore::stringifyTerm(terms[j])))
 
-                table$addRow(rowKey='.RES', values=list(term = 'Residuals'))
+                table$addRow(rowKey='.RES', values=list(term = .('Residuals')))
                 table$addFormat(col=1, rowKey='.RES', format=Cell.BEGIN_GROUP)
 
                 table$setNote("ss", .("Type 3 sum of squares"))
@@ -473,7 +473,7 @@ linRegClass <- R6::R6Class(
                 if (length(modelTerms) < 1) {
                     terms <- ''
                 } else {
-                    terms <- c('Fitted', self$options$dep)
+                    terms <- c(.('Fitted'), self$options$dep)
                     for (term in modelTerms) {
                         if (length(term) == 1 && term %in% covs)
                             terms <- c(terms, term)
@@ -992,7 +992,7 @@ linRegClass <- R6::R6Class(
 
             res <- self$residuals[[image$state$modelNo]]
 
-            if (image$state$term == 'Fitted') {
+            if (image$state$term == .('Fitted')) {
                 x <- self$fitted[[image$state$modelNo]]
             } else {
                 x <- self$dataProcessed[[jmvcore::toB64(image$state$term)]]

@@ -96,7 +96,7 @@ cfaClass <- R6::R6Class(
                                     "z"='', "p"='', "lower"='', "upper"='')
 
                         table$addRow(rowKey=rowNo, values=row)
-                        table$addFootnote(rowKey=rowNo, 'est', 'fixed parameter')
+                        table$addFootnote(rowKey=rowNo, 'est', .('fixed parameter'))
 
                     } else {
 
@@ -139,7 +139,7 @@ cfaClass <- R6::R6Class(
                                     "z"='', "p"='', "lower"='', "upper"='', "stdEst"='')
 
                         table$addRow(rowKey=rowNo, values=row)
-                        table$addFootnote(rowKey=rowNo, 'est', 'fixed parameter')
+                        table$addFootnote(rowKey=rowNo, 'est', .('fixed parameter'))
 
                     } else {
 
@@ -172,7 +172,7 @@ cfaClass <- R6::R6Class(
                             "p"='', "lower"='', "upper"='', "stdEst"='')
 
                 table$addRow(rowKey=i, values=row)
-                table$addFootnote(rowKey=i, 'est', 'fixed parameter')
+                table$addFootnote(rowKey=i, 'est', .('fixed parameter'))
             }
         },
         .initResCovTable = function() {
