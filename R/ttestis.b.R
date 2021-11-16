@@ -540,10 +540,19 @@ ttestISClass <- R6::R6Class(
                 geom_point(aes(x=group, y=stat, shape=type), color=theme$color[1],
                            fill=theme$fill[1], size=3, position=pd) +
                 labs(x=groupName, y=image$key) +
-                scale_shape_manual(name='', values=c(mean=21, median=22),
-                                   labels=c(mean=paste0('Mean (', ciw, '% CI)'), median='Median')) +
-                ggtheme + theme(plot.title = ggplot2::element_text(margin=ggplot2::margin(b = 5.5 * 1.2)),
-                                plot.margin = ggplot2::margin(5.5, 5.5, 5.5, 5.5))
+                scale_shape_manual(
+                    name='',
+                    values=c(mean=21, median=22),
+                    labels=c(
+                        mean=jmvcore::format(.('Mean ({ciWidth}% CI)'), ciWidth=ciw),
+                        median=.('Median')
+                    )
+                ) +
+                ggtheme +
+                theme(
+                    plot.title=ggplot2::element_text(margin=ggplot2::margin(b = 5.5 * 1.2)),
+                    plot.margin = ggplot2::margin(5.5, 5.5, 5.5, 5.5)
+                )
 
             return(plot)
         },
