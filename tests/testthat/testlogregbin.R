@@ -123,3 +123,37 @@ test_that('logregbin works with factors', {
     expect_equal(0.873, coef$p[3], tolerance = 1e-3)
     expect_equal(0.813, coef$p[4], tolerance = 1e-3)
 })
+
+test_that('logregbin works with ordered factors', {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    N <- 100
+    x <- factor(sample(LETTERS[1:3], N, replace=TRUE), ordered = TRUE)
+    y <- factor(sample(0:1, N, replace=TRUE), ordered = TRUE)
+    df <- data.frame(y=y, x=x)
+
+    refLevels <- list(list(var="y", ref="0"),
+                      list(var="x", ref="A"))
+
+    logReg <- jmv::logRegBin(data = df, dep = "y", factors = "x",
+                             blocks = list("x"), refLevels = refLevels)
+
+    # Test coefficients table
+    coef <- logReg$models[[1]]$coef$asDF
+    expect_equal("x:", coef$term[2])
+    expect_equal("B – A", coef$term[3])
+    expect_equal("C – A", coef$term[4])
+    expect_equal(-0.0606, coef$est[1], tolerance = 1e-3)
+    expect_equal(-0.0824, coef$est[3], tolerance = 1e-3)
+    expect_equal(0.112, coef$est[4], tolerance = 1e-3)
+    expect_equal(0.348, coef$se[1], tolerance = 1e-3)
+    expect_equal(0.515, coef$se[3], tolerance = 1e-3)
+    expect_equal(0.473, coef$se[4], tolerance = 1e-3)
+    expect_equal(-0.174, coef$z[1], tolerance = 1e-3)
+    expect_equal(-0.160, coef$z[3], tolerance = 1e-3)
+    expect_equal(0.236, coef$z[4], tolerance = 1e-3)
+    expect_equal(0.862, coef$p[1], tolerance = 1e-3)
+    expect_equal(0.873, coef$p[3], tolerance = 1e-3)
+    expect_equal(0.813, coef$p[4], tolerance = 1e-3)
+})

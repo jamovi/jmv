@@ -162,6 +162,9 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
         #### Init + run functions ----
         .init = function() {
+            if (! is.null(self$options$dep))
+                private$.errorCheck()
+
             private$.initModelFitTable()
             private$.initModelCompTable()
             private$.initModelSpec()
@@ -612,16 +615,30 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 table <- groups$get(key=i)$pred$class
                 table$setTitle(paste0('Classification Table \u2013 ', dep))
 
-                name <- c('name[0]', 'neg[0]', 'pos[0]', 'perc[0]', 'name[1]', 'neg[1]', 'pos[1]', 'perc[1]')
+                name <- c(
+                    'name[0]', 'neg[0]', 'pos[0]', 'perc[0]',
+                    'name[1]', 'neg[1]', 'pos[1]', 'perc[1]'
+                )
                 title <- rep(c('Observed', levels[1], levels[2], '% Correct'), 2)
                 superTitle <- rep(c('', 'Predicted', 'Predicted', ''), 2)
 
-                for (j in seq_along(name))
-                    table$addColumn(name=name[j], title=title[j], superTitle=superTitle[j], type='number')
+                for (j in seq_along(name)) {
+                    table$addColumn(
+                        name=name[j],
+                        title=title[j],
+                        superTitle=superTitle[j],
+                        type='number'
+                    )
+                }
 
-                table$setRow(rowNo=1, values=list('name[0]'=levels[1], 'name[1]'=levels[2]))
+                table$setRow(
+                    rowNo=1, values=list('name[0]'=levels[1], 'name[1]'=levels[2])
+                )
 
-                table$setNote("thres", jmvcore::format("The cut-off value is set to {}", cutOff))
+                table$setNote(
+                    "thres",
+                    jmvcore::format("The cut-off value is set to {}", cutOff)
+                )
 
             }
         },
@@ -633,7 +650,9 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             for (i in seq_along(termsAll)) {
                 table <- groups$get(key=i)$pred$measures
-                table$setNote("thres", jmvcore::format("The cut-off value is set to {}", cutOff))
+                table$setNote(
+                    "thres", jmvcore::format("The cut-off value is set to {}", cutOff)
+                )
             }
         },
         .initCollinearityTable = function() {
@@ -1231,10 +1250,17 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             dep <- self$options$dep
             column <- self$data[[dep]]
 
-            if (length(levels(column)) > 2)
-                jmvcore::reject(jmvcore::format('The dependent variable \'{}\' has more than two levels;
-                                                binomial logistic regression can only be performed on dependent
-                                                variables with two levels.', dep), code='')
+            if (length(levels(column)) > 2) {
+                jmvcore::reject(
+                    jmvcore::format(
+                        'The dependent variable \'{}\' has more than two levels;
+                        binomial logistic regression can only be performed on dependent
+                        variables with two levels.',
+                        dep
+                    ),
+                    code=''
+                )
+            }
         },
         .cleanData = function(naOmit=TRUE, naSkip=NULL) {
             dep <- self$options$dep
@@ -1250,7 +1276,11 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             for (factor in c(dep, factors)) {
                 ref <- refLevels[[which(factor == refVars)]][['ref']]
-                column <- dataRaw[[factor]]
+                column <- factor(
+                    dataRaw[[factor]],
+                    ordered = FALSE,
+                    levels = levels(dataRaw[[factor]])
+                )
                 levels(column) <- jmvcore::toB64(levels(column))
                 column <- relevel(column, ref = jmvcore::toB64(ref))
 

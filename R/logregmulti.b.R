@@ -583,7 +583,7 @@ logRegMultiClass <- R6::R6Class(
 
                         suppressMessages({
                             emmeans::emm_options(sep = ",", parens = "a^")
-                            
+
                             mm <- try(
                                 emmeans::emmeans(model, formula, cov.reduce=FUN, type='response', options=list(level=self$options$ciWidthEmm / 100), weights = weights, data=data),
                                 silent = TRUE
@@ -770,7 +770,6 @@ logRegMultiClass <- R6::R6Class(
                 jmvcore::reject(jmvcore::format('The dependent variable \'{}\' has only two levels, consider doing a binomial logistic regression.', dep), code='')
         },
         .cleanData = function() {
-
             dep <- self$options$dep
             covs <- self$options$covs
             factors <- self$options$factors
@@ -783,17 +782,16 @@ logRegMultiClass <- R6::R6Class(
             refVars <- sapply(refLevels, function(x) x$var)
 
             for (factor in c(dep, factors)) {
-
                 ref <- refLevels[[which(factor == refVars)]][['ref']]
-
-                rows <- jmvcore::toB64(as.character(dataRaw[[factor]]))
-                levels <- jmvcore::toB64(levels(dataRaw[[factor]]))
-
-                column <- factor(rows, levels=levels)
+                column <- factor(
+                    dataRaw[[factor]],
+                    ordered = FALSE,
+                    levels = levels(dataRaw[[factor]])
+                )
+                levels(column) <- jmvcore::toB64(levels(column))
                 column <- relevel(column, ref = jmvcore::toB64(ref))
 
                 data[[jmvcore::toB64(factor)]] <- column
-                # stats::contrasts(data[[jmvcore::toB64(factor)]]) <- private$.createContrasts(levels)
             }
 
             for (cov in covs)
