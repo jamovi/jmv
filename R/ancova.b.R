@@ -231,19 +231,19 @@ ancovaClass <- R6::R6Class(
                     table$addColumn(name=paste0(ph[i],'2'), title=ph[i], type='text', superTitle=.('Comparison'))
 
                 table$addColumn(name='md', title=.('Mean Difference'), type='number')
-                table$addColumn(name='se', title='SE', type='number')
-                table$addColumn(name='df', title='df', type='number')
-                table$addColumn(name='t', title='t', type='number')
+                table$addColumn(name='se', title=.('SE'), type='number')
+                table$addColumn(name='df', title=.('df'), type='number')
+                table$addColumn(name='t', title=.('t'), type='number')
 
-                table$addColumn(name='pnone', title='p', type='number', format='zto,pvalue', visible="(postHocCorr:none)")
-                table$addColumn(name='ptukey', title='p<sub>tukey</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:tukey)")
-                table$addColumn(name='pscheffe', title='p<sub>scheffe</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:scheffe)")
-                table$addColumn(name='pbonferroni', title='p<sub>bonferroni</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:bonf)")
-                table$addColumn(name='pholm', title='p<sub>holm</sub>', type='number', format='zto,pvalue', visible="(postHocCorr:holm)")
+                table$addColumn(name='pnone', title=.('p'), type='number', format='zto,pvalue', visible="(postHocCorr:none)")
+                table$addColumn(name='ptukey', title=.('p<sub>tukey</sub>'), type='number', format='zto,pvalue', visible="(postHocCorr:tukey)")
+                table$addColumn(name='pscheffe', title=.('p<sub>scheffe</sub>'), type='number', format='zto,pvalue', visible="(postHocCorr:scheffe)")
+                table$addColumn(name='pbonferroni', title=.('p<sub>bonferroni</sub>'), type='number', format='zto,pvalue', visible="(postHocCorr:bonf)")
+                table$addColumn(name='pholm', title=.('p<sub>holm</sub>'), type='number', format='zto,pvalue', visible="(postHocCorr:holm)")
 
 
                 ciTitleES <- jmvcore::format(.('{ciWidth}% Confidence Interval'), ciWidth=self$options$postHocEsCiWidth)
-                table$addColumn(name='d', title='Cohen\'s d', type='number', visible="(postHocES:d)")
+                table$addColumn(name='d', title=.('Cohen\'s d'), type='number', visible="(postHocES:d)")
                 table$addColumn(name='dlower', title=.('Lower'), type='number', visible="(postHocES:d && postHocEsCi)", superTitle=ciTitleES)
                 table$addColumn(name='dupper', title=.('Upper'), type='number', visible="(postHocES:d && postHocEsCi)", superTitle=ciTitleES)
 
@@ -333,7 +333,7 @@ ancovaClass <- R6::R6Class(
                     }
 
                     table$addColumn(name='mean', title=.('Mean'), type='number')
-                    table$addColumn(name='se', title='SE', type='number')
+                    table$addColumn(name='se', title=.('SE'), type='number')
                     table$addColumn(name='lower', title=.('Lower'), type='number', superTitle=ciWidthTitle)
                     table$addColumn(name='upper', title=.('Upper'), type='number', superTitle=ciWidthTitle)
 
@@ -834,7 +834,10 @@ ancovaClass <- R6::R6Class(
 
             } else if (type == 'polynomial') {
 
-                names <- c('linear', 'quadratic', 'cubic', 'quartic', 'quintic', 'sextic', 'septic', 'octic')
+                names <- c(
+                    .('linear'), .('quadratic'), .('cubic'), .('quartic'),
+                    .('quintic'), .('sextic'), .('septic'), .('octic')
+                )
 
                 for (i in seq_len(nLevels-1)) {
                     if (i <= length(names)) {

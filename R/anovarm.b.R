@@ -67,7 +67,7 @@ anovaRMClass <- R6::R6Class(
         .initRMTable=function() {
             ssTypeNote <- .("Type {ssType} Sums of Squares")
 
-            rmTable <- self$results$get('rmTable')
+            rmTable <- self$results$rmTable
             rmTable$setNote('Note', jmvcore::format(ssTypeNote, ssType=self$options$ss))
 
             rm <- private$.rmTerms()
@@ -76,15 +76,18 @@ anovaRMClass <- R6::R6Class(
 
             if (length(rmTerms) > 0) {
                 for (i in seq_along(rmTerms)) {
-                    name <- stringifyTerm(rmTerms[[i]])
+                    if (rmTerms[i] == 'Residual') {
+                        key <- unlist(c(rmTerms[[i-1]],'.RES'))
+                        name <- .("Residual")
+                    } else {
+                        key <- unlist(rmTerms[[i]])
+                        name <- stringifyTerm(rmTerms[[i]])
+                    }
                     values <- list(
                         `name[none]`=name,
                         `name[GG]`=name,
-                        `name[HF]`=name)
-                    if (rmTerms[i] == 'Residual')
-                        key <- unlist(c(rmTerms[[i-1]],'.RES'))
-                    else
-                        key <- unlist(rmTerms[[i]])
+                        `name[HF]`=name
+                    )
                     rmTable$addRow(rowKey=key, values)
                 }
             } else {
@@ -92,9 +95,10 @@ anovaRMClass <- R6::R6Class(
                 values <- list(
                     `name[none]`=name,
                     `name[GG]`=name,
-                    `name[HF]`=name)
+                    `name[HF]`=name
+                )
                 rmTable$addRow(rowKey='.', values)
-                rmTable$addRow(rowKey='', list(name='Residual'))
+                rmTable$addRow(rowKey='', list(name=.('Residual')))
             }
 
             for (i in seq_along(rmSpacing)) {
@@ -111,16 +115,22 @@ anovaRMClass <- R6::R6Class(
         .initBSTable=function() {
             ssTypeNote <- .("Type {ssType} Sums of Squares")
 
-            bsTable <- self$results$get('bsTable')
+            bsTable <- self$results$bsTable
             bsTable$setNote('Note', jmvcore::format(ssTypeNote, ssType=self$options$ss))
 
             bsTerms <- private$.bsTerms()
 
             if (length(bsTerms) > 0) {
-                for (term in bsTerms)
-                    bsTable$addRow(rowKey=unlist(term), list(name=stringifyTerm(term)))
+                for (term in bsTerms) {
+                    if (term == 'Residual') {
+                        name <- .('Residual')
+                    } else {
+                        name <- stringifyTerm(term)
+                    }
+                    bsTable$addRow(rowKey=unlist(term), list(name=name))
+                }
             } else {
-                bsTable$addRow(rowKey='', list(name='Residual'))
+                bsTable$addRow(rowKey='', list(name=.('Residual')))
             }
         },
         .initSpericityTable=function() {
