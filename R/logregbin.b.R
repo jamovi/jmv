@@ -598,8 +598,13 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 levels <- c('0', '1')
             } else {
                 levels <- levels(data[[dep]])
-                ref <- which(refLevels[[1]]$ref == levels)
-                levels <- c(levels[ref], levels[-ref])
+                refLevel <- refLevels[[1]]$ref
+                # workaround ... client currently initially sends null
+                # before issuing a second request with the correct value
+                if ( ! is.null(refLevel)) {
+                    ref <- which(refLevel == levels)
+                    levels <- c(levels[ref], levels[-ref])
+                }
             }
 
             for (i in seq_along(self$options$blocks)) {
@@ -1188,6 +1193,10 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             refLevels <- self$options$refLevels
             refVars <- sapply(refLevels, function(x) x$var)
             ref <- refLevels[[which(var == refVars)]][['ref']]
+            # workaround ... client currently initially sends null
+            # before issuing a second request with the correct value
+            if (is.null(ref))
+                ref <- levels[1]
             other <- levels[-which(ref == levels)]
 
             return(list("ref"=ref, "other"=other))
