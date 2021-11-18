@@ -243,7 +243,7 @@ ancovaClass <- R6::R6Class(
 
 
                 ciTitleES <- jmvcore::format(.('{ciWidth}% Confidence Interval'), ciWidth=self$options$postHocEsCiWidth)
-                table$addColumn(name='d', title=.('Cohen\'s d'), type='number', visible="(postHocES:d)")
+                table$addColumn(name='d', title=.("Cohen's d"), type='number', visible="(postHocES:d)")
                 table$addColumn(name='dlower', title=.('Lower'), type='number', visible="(postHocES:d && postHocEsCi)", superTitle=ciTitleES)
                 table$addColumn(name='dupper', title=.('Upper'), type='number', visible="(postHocES:d && postHocEsCi)", superTitle=ciTitleES)
 

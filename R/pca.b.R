@@ -267,7 +267,7 @@ pcaClass <- R6::R6Class(
             if (private$analysis == 'pca')
                 type <- .('Component')
             else
-                type <- .('Factor')
+                type <- .('Factor [specific factor]')
 
             if (nFactors > 1) {
                 for (i in 2:nFactors) {
@@ -485,7 +485,7 @@ pcaClass <- R6::R6Class(
             if (private$analysis == 'pca')
                 type <- .('Component')
             else
-                type <- .('Factor')
+                type <- .('Factor [specific factor]')
 
             p <- ggplot(data=data, aes(x=comp, y=eigen, group=type, linetype=factor(type))) +
                         geom_line(size=.8, colour=theme$color[1]) +
