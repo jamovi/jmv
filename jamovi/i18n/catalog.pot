@@ -13,37 +13,37 @@ msgstr ""
 msgid "1"
 msgstr ""
 
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/linreg.events.js:4
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/linreg.events.js:40
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/loglinear.events.js:4
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/loglinear.events.js:46
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/logregbin.events.js:4
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/logregbin.events.js:55
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/logregord.events.js:38
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/logregord.events.js:4
+#: jamovi/js/linreg.events.js:4
+#: jamovi/js/linreg.events.js:40
+#: jamovi/js/loglinear.events.js:4
+#: jamovi/js/loglinear.events.js:46
+#: jamovi/js/logregbin.events.js:4
+#: jamovi/js/logregbin.events.js:55
+#: jamovi/js/logregord.events.js:38
+#: jamovi/js/logregord.events.js:4
 msgid "Block {0}"
 msgstr ""
 
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/cfa.events.js:40
+#: jamovi/js/cfa.events.js:40
 msgid "Factor {0}"
 msgstr ""
 
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/anovarm.events.js:8
+#: jamovi/js/anovarm.events.js:8
 msgid "RM Factor {0}"
 msgstr ""
 
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/ancova.events.js:51
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/ancova.events.js:7
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/anova.js:45
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/anova.js:9
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/anovarm.events.js:16
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/anovarm.events.js:77
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/linreg.events.js:10
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/linreg.events.js:47
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/loglinear.events.js:10
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/loglinear.events.js:52
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/logregbin.events.js:10
-#: C:/Users/damia/Documents/GitHub/jamovi-bundle/jamovi/Resources/jamovi/jmv/jamovi/js/logregbin.events.js:61
+#: jamovi/js/ancova.events.js:51
+#: jamovi/js/ancova.events.js:7
+#: jamovi/js/anova.js:45
+#: jamovi/js/anova.js:9
+#: jamovi/js/anovarm.events.js:16
+#: jamovi/js/anovarm.events.js:77
+#: jamovi/js/linreg.events.js:10
+#: jamovi/js/linreg.events.js:47
+#: jamovi/js/loglinear.events.js:10
+#: jamovi/js/loglinear.events.js:52
+#: jamovi/js/logregbin.events.js:10
+#: jamovi/js/logregbin.events.js:61
 msgid "Term {0}"
 msgstr ""
 
@@ -152,6 +152,7 @@ msgstr ""
 msgid "One-Way ANOVA"
 msgstr ""
 
+#: R/anova.b.R
 #: package/analyses/anovaOneW.menuGroup
 #: package/analyses/anova.title
 #: package/analyses/anova.menuGroup
@@ -310,6 +311,7 @@ msgid "Correlation matrices are a way to examine linear relationships between\n"
 "two or more continuous variables."
 msgstr ""
 
+#: R/corrpart.b.R
 #: package/analyses/corrPart.title
 #: package/analyses/corrPart.menuTitle
 #: corrPart/options.title
@@ -525,6 +527,7 @@ msgstr ""
 msgid "Reliability Analysis"
 msgstr ""
 
+#: R/efa.b.R
 #: package/analyses/reliability.menuGroup
 #: package/analyses/pca.menuGroup
 #: package/analyses/efa.menuGroup
@@ -557,6 +560,7 @@ msgstr ""
 msgid "Data Reduction"
 msgstr ""
 
+#: R/efa.b.R
 #: package/analyses/efa.title
 #: package/analyses/efa.menuTitle
 #: package/analyses/efa.description
@@ -950,6 +954,7 @@ msgstr ""
 #: anovaRM/options/spherCorr/none.title
 #: anovaRM/options/contrasts.template/type/none.title
 #: anovaRM/options/emmPlotError/none.title
+#: anovaRM/results/rmTable.columns.content
 #: efa/options/rotation/none.title
 #: pca/options/rotation/none.title
 msgid "None"
@@ -1084,14 +1089,19 @@ msgstr ""
 msgid "a possible value of `'d'`; provide cohen's d measure of effect size for the post-hoc tests"
 msgstr ""
 
+#: R/ancova.b.R
 #: ancova/options/postHocES/d.title
 #: anova/options/postHocES/d.title
+#: ttestIS/results/ttest.columns.content
+#: ttestOneS/results/ttest.columns.content
+#: ttestPS/results/ttest.columns.content
 msgid "Cohen's d"
 msgstr ""
 
 #: ancova/options/postHocEsCi.title
 #: anova/options/postHocEsCi.title
 #: descriptives/options/ci.title
+#: propTest2/results/table.columns.superTitle
 #: ttestIS/options/ci.title
 #: ttestIS/options/ciES.title
 #: ttestOneS/options/ci.title
@@ -1339,6 +1349,10 @@ msgstr ""
 msgid "a number between 50 and 99.9 (default: 95) specifying the confidence interval width for the estimated marginal means"
 msgstr ""
 
+#: R/ancova.b.R
+#: R/linreg.b.R
+#: R/logregbin.b.R
+#: R/mancova.b.R
 #: ancova/options/residsOV.title
 #: ancova/results/residsOV.title
 #: anova/options/residsOV.title
@@ -1363,6 +1377,7 @@ msgstr ""
 msgid "Model Fit"
 msgstr ""
 
+#: R/logregbin.b.R
 #: ancova/ui[2].label
 #: anova/ui[2].label
 #: anovaRM/ui[2].label
@@ -1547,8 +1562,10 @@ msgstr ""
 msgid "Sum of Squares"
 msgstr ""
 
+#: R/ancova.b.R
 #: ancova/results/main.columns.title
 #: anovaNP/results/table.columns.title
+#: anovaOneW/results/postHoc.template.columns.content
 #: anovaRM/results/rmTable.columns.title
 #: anovaRM/results/bsTable.columns.title
 #: anovaRMNP/results/table.columns.title
@@ -1601,6 +1618,8 @@ msgstr ""
 msgid "F"
 msgstr ""
 
+#: R/ancova.b.R
+#: R/descriptives.b.R
 #: ancova/results/main.columns.title
 #: ancova/results/assump/norm.columns.title
 #: ancova/results/contrasts.template.columns.title
@@ -1745,6 +1764,12 @@ msgstr ""
 msgid "Estimate"
 msgstr ""
 
+#: R/ancova.b.R
+#: R/descriptives.b.R
+#: R/linreg.b.R
+#: R/loglinear.b.R
+#: R/logregbin.b.R
+#: R/logregmulti.b.R
 #: ancova/results/contrasts.template.columns.title
 #: anovaOneW/results/desc.columns.title
 #: anovaRM/results/contrasts.template.columns.title
@@ -1929,8 +1954,10 @@ msgstr ""
 #: anovaRMNP/results/table.columns.title
 #: cfa/results/modelFit/test.columns.title
 #: contTables/options/chiSq.title
+#: contTables/results/chiSq.columns.content
 #: contTables/results/mh.columns.title
 #: contTablesPaired/options/chiSq.title
+#: contTablesPaired/results/test.columns.content
 #: logLinear/results/modelFit.columns.title
 #: logLinear/results/modelComp.columns.title
 #: logLinear/results/models.template/lrt.columns.title
@@ -2116,6 +2143,7 @@ msgid "`'none'`, `'gamesHowell'` or `'tukey'`, which post-hoc tests to provide; 
 msgstr ""
 
 #: anovaOneW/options/phMeanDif.title
+#: anovaOneW/results/postHoc.template.columns.content
 #: ttestIS/options/meanDiff.title
 #: ttestIS/ui[1][1][0]/meanDiff.label
 #: ttestIS/results/ttest.columns.title
@@ -2250,10 +2278,15 @@ msgstr ""
 msgid "a table containing the group descriptives"
 msgstr ""
 
+#: R/descriptives.b.R
 #: anovaOneW/results/desc.columns.title
 #: anovaRM/results/groupSummary.columns.title
+#: contTables/results/chiSq.columns.content
+#: contTablesPaired/results/test.columns.content
 #: corrMatrix/options/n.title
+#: corrMatrix/results/matrix.columns.content
 #: corrPart/options/n.title
+#: corrPart/results/matrix.columns.content
 #: descriptives/options/n.title
 #: ttestIS/results/desc.columns.title
 #: ttestOneS/results/descriptives.columns.title
@@ -2261,6 +2294,10 @@ msgstr ""
 msgid "N"
 msgstr ""
 
+#: R/ancova.b.R
+#: R/anovarm.b.R
+#: R/descriptives.b.R
+#: R/reliability.b.R
 #: anovaOneW/results/desc.columns.title
 #: anovaRMNP/results/desc.columns.title
 #: descriptives/options/boxMean.title
@@ -2275,6 +2312,7 @@ msgstr ""
 msgid "Mean"
 msgstr ""
 
+#: R/descriptives.b.R
 #: anovaOneW/results/desc.columns.title
 #: linReg/results/models.template/dataSummary/cooks.columns.title
 #: logRegBin/results/models.template/dataSummary/cooks.columns.title
@@ -2289,6 +2327,7 @@ msgstr ""
 msgid "a table containing the normality tests"
 msgstr ""
 
+#: R/descriptives.b.R
 #: anovaOneW/results/assump/norm.columns.title
 #: mancova/results/assump/shapiro.columns.title
 #: ttestIS/results/assum/norm.columns.title
@@ -2318,11 +2357,6 @@ msgstr ""
 #: anovaOneW/results/plots.description
 #: ttestIS/results/plots.description
 msgid "an array of groups of plots"
-msgstr ""
-
-#: anovaOneW/results/plots.template.title
-#: ttestIS/results/plots.template.title
-msgid "$key"
 msgstr ""
 
 #: anovaOneW/results/plots.template/desc.description
@@ -2535,10 +2569,12 @@ msgid "one or more of `'none'` (default), `'GG'`, or ``HF``; use no p-value corr
 msgstr ""
 
 #: anovaRM/options/spherCorr/GG.title
+#: anovaRM/results/rmTable.columns.content
 msgid "Greenhouse-Geisser"
 msgstr ""
 
 #: anovaRM/options/spherCorr/HF.title
+#: anovaRM/results/rmTable.columns.content
 msgid "Huynh-Feldt"
 msgstr ""
 
@@ -2729,6 +2765,9 @@ msgstr ""
 msgid "a table containing the descriptives"
 msgstr ""
 
+#: R/descriptives.b.R
+#: R/ttestis.b.R
+#: R/ttestps.b.R
 #: anovaRMNP/results/desc.columns.title
 #: descriptives/options/median.title
 #: linReg/results/models.template/dataSummary/cooks.columns.title
@@ -3028,6 +3067,7 @@ msgstr ""
 msgid "Post-Hoc Model Performance"
 msgstr ""
 
+#: R/efa.b.R
 #: cfa/results/factorLoadings.title
 #: efa/ui[1][1][1].label
 #: pca/ui[1][1][1].label
@@ -3042,6 +3082,12 @@ msgstr ""
 msgid "Indicator"
 msgstr ""
 
+#: R/ancova.b.R
+#: R/descriptives.b.R
+#: R/linreg.b.R
+#: R/loglinear.b.R
+#: R/logregbin.b.R
+#: R/logregmulti.b.R
 #: cfa/results/factorLoadings.columns.title
 #: cfa/results/factorEst/factorCov.columns.title
 #: cfa/results/factorEst/factorIntercept.columns.title
@@ -3063,6 +3109,12 @@ msgstr ""
 msgid "Lower"
 msgstr ""
 
+#: R/ancova.b.R
+#: R/descriptives.b.R
+#: R/linreg.b.R
+#: R/loglinear.b.R
+#: R/logregbin.b.R
+#: R/logregmulti.b.R
 #: cfa/results/factorLoadings.columns.title
 #: cfa/results/factorEst/factorCov.columns.title
 #: cfa/results/factorEst/factorIntercept.columns.title
@@ -3276,7 +3328,9 @@ msgid "`TRUE` (default) or `FALSE`, provide χ²"
 msgstr ""
 
 #: contTables/options/chiSqCorr.title
+#: contTables/results/chiSq.columns.content
 #: contTablesPaired/options/chiSqCorr.title
+#: contTablesPaired/results/test.columns.content
 msgid "χ² continuity correction"
 msgstr ""
 
@@ -3294,6 +3348,7 @@ msgid "`TRUE` or `FALSE` (default), provide a z test for differences between two
 msgstr ""
 
 #: contTables/options/likeRat.title
+#: contTables/results/chiSq.columns.content
 msgid "Likelihood ratio"
 msgstr ""
 
@@ -3302,6 +3357,7 @@ msgid "`TRUE` or `FALSE` (default), provide the likelihood ratio"
 msgstr ""
 
 #: contTables/options/fisher.title
+#: contTables/results/chiSq.columns.content
 msgid "Fisher's exact test"
 msgstr ""
 
@@ -3310,6 +3366,7 @@ msgid "`TRUE` or `FALSE` (default), provide Fisher's exact test"
 msgstr ""
 
 #: contTables/options/contCoef.title
+#: contTables/results/nom.columns.content
 msgid "Contingency coefficient"
 msgstr ""
 
@@ -3334,6 +3391,7 @@ msgid "`TRUE` or `FALSE` (default), provide the differences in proportions (only
 msgstr ""
 
 #: contTables/options/logOdds.title
+#: contTables/results/odds.columns.content
 msgid "Log odds ratio"
 msgstr ""
 
@@ -3342,6 +3400,7 @@ msgid "`TRUE` or `FALSE` (default), provide the log odds ratio (only available f
 msgstr ""
 
 #: contTables/options/odds.title
+#: contTables/results/odds.columns.content
 #: logRegBin/options/OR.title
 #: logRegBin/results/models.template/coef.columns.title
 #: logRegMulti/options/OR.title
@@ -3357,6 +3416,7 @@ msgid "`TRUE` or `FALSE` (default), provide the odds ratio (only available for 2
 msgstr ""
 
 #: contTables/options/relRisk.title
+#: contTables/results/odds.columns.content
 msgid "Relative risk"
 msgstr ""
 
@@ -3501,6 +3561,8 @@ msgstr ""
 msgid "`TRUE` or `FALSE` (default), provide column percentages"
 msgstr ""
 
+#: R/conttables.b.R
+#: R/conttablespaired.b.R
 #: contTables/options/pcTot.title
 #: propTest2/results/table.columns.title
 msgid "Total"
@@ -3526,6 +3588,9 @@ msgstr ""
 msgid "ycounts (default) or ypc. Use respectively `counts` or `percentages` for the bar plot y-axis"
 msgstr ""
 
+#: R/conttables.b.R
+#: R/descriptives.b.R
+#: R/loglinear.b.R
 #: contTables/options/yaxis/ycounts.title
 #: contTables/ui[1][1][0][0][0].label
 #: descriptives/options/barCounts.title
@@ -3637,6 +3702,7 @@ msgstr ""
 msgid "a table of χ² test results"
 msgstr ""
 
+#: R/anovarmnp.b.R
 #: contTables/results/chiSq.columns.title
 #: contTables/results/odds.columns.title
 #: contTables/results/nom.columns.title
@@ -3672,6 +3738,7 @@ msgstr ""
 msgid "Kendall's Tau-B"
 msgstr ""
 
+#: R/ancova.b.R
 #: contTables/results/taub.columns.title
 #: linReg/results/models.template/coef.columns.title
 msgid "t"
@@ -3724,6 +3791,7 @@ msgid "dat <- data.frame(\n"
 msgstr ""
 
 #: contTablesPaired/options/exact.title
+#: contTablesPaired/results/test.columns.content
 msgid "Log odds ratio exact"
 msgstr ""
 
@@ -4070,6 +4138,7 @@ msgstr ""
 msgid "Correlation Type"
 msgstr ""
 
+#: R/corrpart.b.R
 #: corrPart/results/matrix.title
 msgid "Correlation"
 msgstr ""
@@ -4175,6 +4244,7 @@ msgstr ""
 msgid "`TRUE` or `FALSE` (default), provide histograms (continuous variables only)"
 msgstr ""
 
+#: R/proptest2.b.R
 #: descriptives/options/dens.title
 msgid "Density"
 msgstr ""
@@ -4211,6 +4281,7 @@ msgstr ""
 msgid "`TRUE` or `FALSE` (default), provide violin plots (continuous variables only)"
 msgstr ""
 
+#: R/pca.b.R
 #: descriptives/options/dot.title
 msgid "Data"
 msgstr ""
@@ -4235,6 +4306,7 @@ msgstr ""
 msgid "`TRUE` (default) or `FALSE`, provide the sample size"
 msgstr ""
 
+#: R/descriptives.b.R
 #: descriptives/options/missing.title
 msgid "Missing"
 msgstr ""
@@ -4251,6 +4323,7 @@ msgstr ""
 msgid "`TRUE` (default) or `FALSE`, provide the median"
 msgstr ""
 
+#: R/descriptives.b.R
 #: descriptives/options/mode.title
 msgid "Mode"
 msgstr ""
@@ -4259,6 +4332,8 @@ msgstr ""
 msgid "`TRUE` or `FALSE` (default), provide the mode"
 msgstr ""
 
+#: R/descriptives.b.R
+#: R/reliability.b.R
 #: descriptives/options/sum.title
 msgid "Sum"
 msgstr ""
@@ -4267,6 +4342,7 @@ msgstr ""
 msgid "`TRUE` or `FALSE` (default), provide the sum"
 msgstr ""
 
+#: R/descriptives.b.R
 #: descriptives/options/sd.title
 #: reliability/options/sdScale.title
 #: reliability/options/sdItems.title
@@ -4277,6 +4353,7 @@ msgstr ""
 msgid "`TRUE` (default) or `FALSE`, provide the standard deviation"
 msgstr ""
 
+#: R/descriptives.b.R
 #: descriptives/options/variance.title
 msgid "Variance"
 msgstr ""
@@ -4285,7 +4362,10 @@ msgstr ""
 msgid "`TRUE` or `FALSE` (default), provide the variance"
 msgstr ""
 
+#: R/descriptives.b.R
 #: descriptives/options/range.title
+#: linReg/results/models.template/dataSummary/cooks.columns.superTitle
+#: logRegBin/results/models.template/dataSummary/cooks.columns.superTitle
 msgid "Range"
 msgstr ""
 
@@ -4293,6 +4373,7 @@ msgstr ""
 msgid "`TRUE` or `FALSE` (default), provide the range"
 msgstr ""
 
+#: R/descriptives.b.R
 #: descriptives/options/min.title
 msgid "Minimum"
 msgstr ""
@@ -4301,6 +4382,7 @@ msgstr ""
 msgid "`TRUE` or `FALSE` (default), provide the minimum"
 msgstr ""
 
+#: R/descriptives.b.R
 #: descriptives/options/max.title
 msgid "Maximum"
 msgstr ""
@@ -4324,6 +4406,7 @@ msgstr ""
 msgid "a number between 50 and 99.9 (default: 95), the width of confidence intervals"
 msgstr ""
 
+#: R/descriptives.b.R
 #: descriptives/options/iqr.title
 msgid "IQR"
 msgstr ""
@@ -4332,6 +4415,7 @@ msgstr ""
 msgid "`TRUE` or `FALSE` (default), provide the interquartile range"
 msgstr ""
 
+#: R/descriptives.b.R
 #: descriptives/options/skew.title
 msgid "Skewness"
 msgstr ""
@@ -4340,6 +4424,7 @@ msgstr ""
 msgid "`TRUE` or `FALSE` (default), provide the skewness"
 msgstr ""
 
+#: R/descriptives.b.R
 #: descriptives/options/kurt.title
 msgid "Kurtosis"
 msgstr ""
@@ -4348,7 +4433,10 @@ msgstr ""
 msgid "`TRUE` or `FALSE` (default), provide the kurtosis"
 msgstr ""
 
+#: R/descriptives.b.R
+#: ancova/results/assump/norm.columns.content
 #: descriptives/options/sw.title
+#: linReg/results/models.template/assump/norm.columns.content
 msgid "Shapiro-Wilk"
 msgstr ""
 
@@ -4405,6 +4493,7 @@ msgstr ""
 msgid "equal groups"
 msgstr ""
 
+#: R/descriptives.b.R
 #: descriptives/ui[2][0][1][1]/pc.label
 msgid "Percentiles"
 msgstr ""
@@ -4478,12 +4567,6 @@ msgstr ""
 msgid "an array of descriptive plots"
 msgstr ""
 
-#: descriptives/results/plots.template.title
-#: propTest2/results/postPlots.template.title
-#: propTest2/results/postPlots.template.template.title
-msgid "($key)"
-msgstr ""
-
 #: efa/options.description.R.usage
 msgid "data('iris')\n"
 "\n"
@@ -4554,6 +4637,7 @@ msgstr ""
 msgid "Minimum residuals"
 msgstr ""
 
+#: R/pca.b.R
 #: efa/options/extraction/ml.title
 msgid "Maximum likelihood"
 msgstr ""
@@ -4783,6 +4867,10 @@ msgstr ""
 msgid "a list of lists specifying reference levels of the dependent variable and all the factors"
 msgstr ""
 
+#: R/linreg.b.R
+#: R/loglinear.b.R
+#: R/logregbin.b.R
+#: R/logregmulti.b.R
 #: linReg/options/intercept.title
 #: linReg/ui[2][1].label
 msgid "Intercept"
@@ -4915,6 +5003,8 @@ msgstr ""
 msgid "`TRUE` or `FALSE` (default), provide VIF and tolerence collinearity statistics"
 msgstr ""
 
+#: R/linreg.b.R
+#: R/logregbin.b.R
 #: linReg/options/cooks.title
 #: linReg/options/cooksOV.title
 #: logRegBin/options/cooks.title
@@ -4939,6 +5029,7 @@ msgstr ""
 msgid "`TRUE` (default) or `FALSE`, provide a confidence interval for the estimated marginal means"
 msgstr ""
 
+#: R/linreg.b.R
 #: linReg/options/predictOV.title
 #: linReg/results/predictOV.title
 #: logRegBin/options/predictOV.title
@@ -5010,6 +5101,11 @@ msgid "Data Summary"
 msgstr ""
 
 #: linReg/ui[4][0][1][0].label
+#: linReg/results/modelFit.columns.superTitle
+#: logLinear/results/modelFit.columns.superTitle
+#: logRegBin/results/modelFit.columns.superTitle
+#: logRegMulti/results/modelFit.columns.superTitle
+#: logRegOrd/results/modelFit.columns.superTitle
 msgid "Overall Model Test"
 msgstr ""
 
@@ -5355,6 +5451,7 @@ msgstr ""
 msgid "`TRUE` or `FALSE` (default), provide the predicted accuracy of outcomes grouped by the cut-off value"
 msgstr ""
 
+#: R/logregbin.b.R
 #: logRegBin/options/spec.title
 #: logRegBin/results/models.template/pred/measures.columns.title
 msgid "Specificity"
@@ -5364,6 +5461,7 @@ msgstr ""
 msgid "`TRUE` or `FALSE` (default), provide the predicted specificity of outcomes grouped by the cut-off value"
 msgstr ""
 
+#: R/logregbin.b.R
 #: logRegBin/options/sens.title
 #: logRegBin/results/models.template/pred/measures.columns.title
 msgid "Sensitivity"
@@ -5431,6 +5529,7 @@ msgstr ""
 msgid "Prediction"
 msgstr ""
 
+#: R/logregbin.b.R
 #: logRegBin/ui[7][0][0][0].label
 msgid "Cut-Off"
 msgstr ""
@@ -5557,18 +5656,22 @@ msgid "one or more of `'pillai'`, `'wilks'`, `'hotel'`, or `'roy'`; use Pillai's
 msgstr ""
 
 #: mancova/options/multivar/pillai.title
+#: mancova/results/multivar.columns.content
 msgid "Pillai's Trace"
 msgstr ""
 
 #: mancova/options/multivar/wilks.title
+#: mancova/results/multivar.columns.content
 msgid "Wilks' Lambda"
 msgstr ""
 
 #: mancova/options/multivar/hotel.title
+#: mancova/results/multivar.columns.content
 msgid "Hotelling's Trace"
 msgstr ""
 
 #: mancova/options/multivar/roy.title
+#: mancova/results/multivar.columns.content
 msgid "Roy's Largest Root"
 msgstr ""
 
@@ -5705,6 +5808,8 @@ msgstr ""
 msgid "Summary"
 msgstr ""
 
+#: R/pca.b.R
+#: pca/results/loadings.columns.superTitle
 #: pca/results/factorStats/factorSummary.columns.title
 #: pca/results/eigen/initEigen.columns.title
 msgid "Component"
@@ -5719,6 +5824,7 @@ msgstr ""
 msgid "% of Variance"
 msgstr ""
 
+#: R/descriptives.b.R
 #: pca/results/factorStats/factorSummary.columns.title
 #: pca/results/eigen/initEigen.columns.title
 msgid "Cumulative %"
@@ -5748,6 +5854,7 @@ msgstr ""
 msgid "Initial Eigenvalues"
 msgstr ""
 
+#: R/pca.b.R
 #: pca/results/eigen/initEigen.columns.title
 msgid "Eigenvalue"
 msgstr ""
@@ -5876,6 +5983,7 @@ msgstr ""
 msgid "Bayesian Statistics"
 msgstr ""
 
+#: R/proptest2.b.R
 #: propTest2/ui[2][0][0].label
 #: ttestIS/ui[1][0][0]/students/bf/bfPrior.label
 #: ttestOneS/ui[1][0][0]/students/bf/bfPrior.label
@@ -5905,11 +6013,13 @@ msgstr ""
 msgid "Level"
 msgstr ""
 
+#: R/conttablespaired.b.R
 #: propTest2/results/table.columns.title
 #: propTestN/results/props.columns.title
 msgid "Count"
 msgstr ""
 
+#: R/proptest2.b.R
 #: propTest2/results/table.columns.title
 #: propTestN/ui[2]/ratio.columns.label
 #: propTestN/results/props.columns.title
@@ -5917,6 +6027,9 @@ msgid "Proportion"
 msgstr ""
 
 #: propTest2/results/table.columns.title
+#: ttestIS/results/ttest.columns.content
+#: ttestOneS/results/ttest.columns.content
+#: ttestPS/results/ttest.columns.content
 msgid "Bayes factor₁₀"
 msgstr ""
 
@@ -6229,6 +6342,7 @@ msgstr ""
 msgid "a number between 0.5 and 2 (default 0.707), the prior width to use in calculating Bayes factors"
 msgstr ""
 
+#: anovaOneW/results/anova.columns.content
 #: ttestIS/options/welchs.title
 msgid "Welch's"
 msgstr ""
@@ -6242,6 +6356,7 @@ msgid "`TRUE` or `FALSE` (default), perform Welch's t-tests"
 msgstr ""
 
 #: ttestIS/options/mann.title
+#: ttestIS/results/ttest.columns.content
 msgid "Mann-Whitney U"
 msgstr ""
 
@@ -6627,15 +6742,772 @@ msgstr ""
 msgid "an array of the descriptive plots"
 msgstr ""
 
+#: R/ancova.b.R
+msgid "Column '{name}' contains unused levels (possible only when rows with missing values are excluded)"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "Singular fit encountered; one or more predictor variables are a linear combination of other predictor variables."
+msgstr ""
+
+#: R/ancova.b.R
+msgid "Residual sum of squares and/or degrees of freedom is zero, indicating a perfect fit"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "Overall model"
+msgstr ""
+
+#: R/ancova.b.R
+#: R/anovarm.b.R
+msgid "Post Hoc Comparisons - {term}"
+msgstr ""
+
+#: R/ancova.b.R
+#: R/anovarm.b.R
+#: linReg/results/modelComp.columns.superTitle
+#: logLinear/results/modelComp.columns.superTitle
+#: logRegBin/results/modelComp.columns.superTitle
+#: logRegMulti/results/modelComp.columns.superTitle
+#: logRegOrd/results/modelComp.columns.superTitle
+msgid "Comparison"
+msgstr ""
+
+#: R/ancova.b.R
+#: R/anovarm.b.R
+msgid "Mean Difference"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "p<sub>tukey</sub>"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "p<sub>scheffe</sub>"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "p<sub>bonferroni</sub>"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "p<sub>holm</sub>"
+msgstr ""
+
+#: R/ancova.b.R
+#: R/anovarm.b.R
+#: R/cfa.b.R
+#: R/descriptives.b.R
+#: R/linreg.b.R
+#: R/loglinear.b.R
+#: R/logregbin.b.R
+#: R/logregmulti.b.R
+#: R/logregord.b.R
+#: R/proptest2.b.R
+#: R/ttestis.b.R
+#: R/ttestones.b.R
+#: R/ttestps.b.R
+msgid "{ciWidth}% Confidence Interval"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "Comparisons are based on estimated marginal means"
+msgstr ""
+
+#: R/ancova.b.R
+#: R/anovarm.b.R
+#: R/linreg.b.R
+#: R/loglinear.b.R
+#: R/logregbin.b.R
+#: R/logregmulti.b.R
+msgid "Estimated Marginal Means - {term}"
+msgstr ""
+
+#: R/ancova.b.R
+#: R/anovaonew.b.R
+#: R/anovarm.b.R
+#: R/descriptives.b.R
+#: R/linreg.b.R
+#: R/ttestis.b.R
+#: R/ttestones.b.R
+#: R/ttestps.b.R
+msgid "Theoretical Quantiles"
+msgstr ""
+
+#: R/ancova.b.R
+#: R/anovaonew.b.R
+#: R/anovarm.b.R
+#: R/descriptives.b.R
+#: R/linreg.b.R
+#: R/ttestis.b.R
+#: R/ttestones.b.R
+#: R/ttestps.b.R
+msgid "Standardized Residuals"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "linear"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "quadratic"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "cubic"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "quartic"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "quintic"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "sextic"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "septic"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "octic"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "Dependent variable must be numeric"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "Factor '{factorName}' contains only a single level"
+msgstr ""
+
+#: R/ancova.b.R
+msgid "Factor '{factorName}' contains no data"
+msgstr ""
+
+#: R/anova.b.R
+msgid "Residuals from ANOVA"
+msgstr ""
+
+#: R/anovaonew.b.R
+msgid "One-Way ANOVA (Fisher's)"
+msgstr ""
+
+#: R/anovaonew.b.R
+msgid "One-Way ANOVA (Welch's)"
+msgstr ""
+
+#: R/anovaonew.b.R
+msgid "Games-Howell Post-Hoc Test – {dep}"
+msgstr ""
+
+#: R/anovaonew.b.R
+msgid "Tukey Post-Hoc Test – {dep}"
+msgstr ""
+
+#: R/anovaonew.b.R
+msgid "Too few samples to compute statistic (N < {n})"
+msgstr ""
+
+#: R/anovaonew.b.R
+msgid "Too many samples to compute statistic (N > {n})"
+msgstr ""
+
+#: R/anovaonew.b.R
+#: R/ttestis.b.R
+#: R/ttestps.b.R
+msgid "Mean ({ciWidth}% CI)"
+msgstr ""
+
+#: R/anovarm.b.R
+msgid "Type {ssType} Sums of Squares"
+msgstr ""
+
+#: R/anovarm.b.R
+msgid "Residual"
+msgstr ""
+
+#: R/anovarm.b.R
+msgid "The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels."
+msgstr ""
+
+#: R/anovarm.b.R
+msgid "Singularity error. Sphericity tests are not available"
+msgstr ""
+
+#: R/anovarm.b.R
+msgid "The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels"
+msgstr ""
+
+#: R/anovarm.b.R
+msgid "As there are no between subjects factors specified this assumption is always met."
+msgstr ""
+
+#: R/anovarm.b.R
+#: R/reliability.b.R
+msgid "Item '{item}' contains only missing values"
+msgstr ""
+
+#: R/anovarm.b.R
+msgid "Item '{item}' consists of one level only"
+msgstr ""
+
+#: R/anovarm.b.R
+msgid "Item '{item}' needs to be numeric"
+msgstr ""
+
+#: R/anovarm.b.R
+#: R/reliability.b.R
+msgid "Item '{item}' contains infinite values"
+msgstr ""
+
+#: R/anovarmnp.b.R
+msgid "Measure"
+msgstr ""
+
+#: R/cfa.b.R
+msgid "fixed parameter"
+msgstr ""
+
+#: R/conttables.b.R
+#: R/logregbin.b.R
+#: propTestN/results/props.columns.content
+msgid "Observed"
+msgstr ""
+
+#: R/conttables.b.R
+#: propTestN/results/props.columns.content
+msgid "Expected"
+msgstr ""
+
+#: R/conttables.b.R
+#: R/conttablespaired.b.R
+msgid "% within row"
+msgstr ""
+
+#: R/conttables.b.R
+#: R/conttablespaired.b.R
+msgid "% within column"
+msgstr ""
+
+#: R/conttables.b.R
+msgid "% of total"
+msgstr ""
+
+#: R/conttables.b.R
+msgid "{ciWidth}% Confidence Intervals"
+msgstr ""
+
+#: R/conttables.b.R
+#: R/conttablespaired.b.R
+msgid "Row variable '{var}' contains fewer than 2 levels"
+msgstr ""
+
+#: R/conttables.b.R
+#: R/conttablespaired.b.R
+msgid "Column variable '{var}' contains fewer than 2 levels"
+msgstr ""
+
+#: R/conttables.b.R
+#: R/conttablespaired.b.R
+msgid "Counts may not be negative"
+msgstr ""
+
+#: R/conttables.b.R
+#: R/conttablespaired.b.R
+msgid "Counts may not be infinite"
+msgstr ""
+
+#: R/conttables.b.R
+msgid "Group 1"
+msgstr ""
+
+#: R/conttables.b.R
+msgid "Group 2"
+msgstr ""
+
+#: R/conttables.b.R
+msgid "z test only available for 2x2 tables"
+msgstr ""
+
+#: R/conttables.b.R
+msgid "Variables must have at least two levels"
+msgstr ""
+
+#: R/conttables.b.R
+msgid "At least one variable must have two levels"
+msgstr ""
+
+#: R/conttables.b.R
+msgid "compared"
+msgstr ""
+
+#: R/conttables.b.R
+msgid "Haldane-Anscombe correction applied"
+msgstr ""
+
+#: R/conttables.b.R
+msgid "Available for 2x2 tables only"
+msgstr ""
+
+#: R/conttables.b.R
+msgid "Percentages of total"
+msgstr ""
+
+#: R/conttables.b.R
+msgid "Percentages within {var}"
+msgstr ""
+
+#: R/conttablespaired.b.R
+msgid "McNemar requires a 2x2 table"
+msgstr ""
+
+#: R/conttablespaired.b.R
+msgid "Counts must be non-negative and finite"
+msgstr ""
+
+#: R/corrmatrix.b.R
+msgid "{ciWidth}% CI Upper"
+msgstr ""
+
+#: R/corrmatrix.b.R
+msgid "{ciWidth}% CI Lower"
+msgstr ""
+
+#: R/corrmatrix.b.R
+#: R/corrpart.b.R
+msgid "Hₐ is positive correlation"
+msgstr ""
+
+#: R/corrmatrix.b.R
+#: R/corrpart.b.R
+msgid "* p < .05, ** p < .01, *** p < .001, one-tailed"
+msgstr ""
+
+#: R/corrmatrix.b.R
+#: R/corrpart.b.R
+msgid "Hₐ is negative correlation"
+msgstr ""
+
+#: R/corrpart.b.R
+msgid "controlling for {items}"
+msgstr ""
+
+#: R/corrpart.b.R
+msgid "Semipartial Correlation"
+msgstr ""
+
+#: R/corrpart.b.R
+msgid "variation from the control variables is only removed from the variables in the columns"
+msgstr ""
+
+#: R/corrpart.b.R
+msgid "{} - Pearson's r"
+msgstr ""
+
+#: R/corrpart.b.R
+msgid "{} - Spearman's rho"
+msgstr ""
+
+#: R/corrpart.b.R
+msgid "{} - Kendall's Tau B"
+msgstr ""
+
+#: R/descriptives.b.R
+msgid "Std. error mean"
+msgstr ""
+
+#: R/descriptives.b.R
+msgid "lower bound"
+msgstr ""
+
+#: R/descriptives.b.R
+msgid "upper bound"
+msgstr ""
+
+#: R/descriptives.b.R
+msgid "Std. error skewness"
+msgstr ""
+
+#: R/descriptives.b.R
+msgid "Std. error kurtosis"
+msgstr ""
+
+#: R/descriptives.b.R
+msgid "Shapiro-Wilk W"
+msgstr ""
+
+#: R/descriptives.b.R
+msgid "Shapiro-Wilk p"
+msgstr ""
+
+#: R/descriptives.b.R
+msgid "{ciWidth}% CI mean {title}"
+msgstr ""
+
+#: R/descriptives.b.R
+msgid "Levels"
+msgstr ""
+
+#: R/descriptives.b.R
+msgid "% of Total"
+msgstr ""
+
+#: R/descriptives.b.R
+msgid "The variable {var} cannot be treated as numeric. Plots that expect numeric data will not be created for this variable."
+msgstr ""
+
+#: R/descriptives.b.R
+msgid "The variables {vars} cannot be treated as numeric. Plots that expect numeric data will not be created for these variables."
+msgstr ""
+
+#: R/descriptives.b.R
+msgid "More than one mode exists, only the first is reported"
+msgstr ""
+
+#: R/descriptives.b.R
+msgid "Unable to split by a continuous variable"
+msgstr ""
+
+#: R/descriptives.b.R
+msgid "The 'split by' variable '{var}' contains no data."
+msgstr ""
+
+#: R/descriptives.b.R
+msgid "th percentile"
+msgstr ""
+
+#: R/efa.b.R
+msgid "Factor Statistics"
+msgstr ""
+
+#: R/linreg.b.R
+msgid "Type 3 sum of squares"
+msgstr ""
+
+#: R/linreg.b.R
+msgid "Represents reference level"
+msgstr ""
+
+#: R/linreg.b.R
+msgid "Represents grand mean"
+msgstr ""
+
+#: R/linreg.b.R
+msgid "Fitted"
+msgstr ""
+
+#: R/linreg.b.R
+msgid "Marginal Mean"
+msgstr ""
+
+#: R/linreg.b.R
+msgid "{varType} of linear regression model{modelNo}"
+msgstr ""
+
+#: R/linreg.b.R
+#: R/logregbin.b.R
+#: R/logregmulti.b.R
+msgid "⁻ mean - 1SD, <sup>μ</sup> mean, ⁺ mean + 1SD"
+msgstr ""
+
+#: R/linreg.b.R
+msgid "Factor '{factor}' needs to have at least 2 levels"
+msgstr ""
+
+#: R/logregbin.b.R
+msgid "One or more coefficients in model '{modelNo}' could not be estimated due to perfect collinearity."
+msgstr ""
+
+#: R/logregbin.b.R
+msgid "Estimates represent the log odds of …"
+msgstr ""
+
+#: R/logregbin.b.R
+msgid "Estimates represent the log odds of \"{dep} = {level1}\" vs. \"{dep} = {level2}\""
+msgstr ""
+
+#: R/logregbin.b.R
+#: R/logregmulti.b.R
+msgid "Probability"
+msgstr ""
+
+#: R/logregbin.b.R
+msgid "Classification Table – {dep}"
+msgstr ""
+
+#: R/logregbin.b.R
+msgid "% Correct"
+msgstr ""
+
+#: R/logregbin.b.R
+msgid "Predicted"
+msgstr ""
+
+#: R/logregbin.b.R
+msgid "The cut-off value is set to {}"
+msgstr ""
+
+#: R/logregbin.b.R
+msgid "{varType} of binomial logistic regression model{modelNo}"
+msgstr ""
+
+#: R/logregbin.b.R
+msgid "Predicted probability of … = … (vs … = …)"
+msgstr ""
+
+#: R/logregbin.b.R
+msgid "Predicted probability of {dep} = {level1} (vs {dep} = {level2})"
+msgstr ""
+
+#: R/logregbin.b.R
+msgid "1 - Specificity"
+msgstr ""
+
+#: R/logregbin.b.R
+msgid "The dependent variable '{}' has more than two levels; binomial logistic regression can only be performed on dependent variables with two levels."
+msgstr ""
+
+#: R/logregmulti.b.R
+#: R/logregord.b.R
+msgid "The dependent variable \"{dep}\" has only two levels, consider doing a binomial logistic regression."
+msgstr ""
+
+#: R/logregord.b.R
+msgid "The dependent variable '{dep}' has the following order: {orderedLevels}"
+msgstr ""
+
+#: R/mancova.b.R
+msgid "Chi-Square Quantiles"
+msgstr ""
+
+#: R/mancova.b.R
+msgid "Squared Mahalanobis Distance"
+msgstr ""
+
+#: R/mancova.b.R
+msgid "No factors defined. Box's M test is only relevant when model contains factors."
+msgstr ""
+
+#: R/mancova.b.R
+msgid "Too few observations to calculate statistic. Each (sub)group must have at least as many observations as there are dependent variables."
+msgstr ""
+
+#: R/pca.b.R
+msgid "No components have an eigenvalue greater than {value}"
+msgstr ""
+
+#: R/pca.b.R
+msgid "varimax"
+msgstr ""
+
+#: R/pca.b.R
+msgid "quartimax"
+msgstr ""
+
+#: R/pca.b.R
+msgid "promax"
+msgstr ""
+
+#: R/pca.b.R
+msgid "oblimin"
+msgstr ""
+
+#: R/pca.b.R
+msgid "simplimax"
+msgstr ""
+
+#: R/pca.b.R
+msgid "none"
+msgstr ""
+
+#: R/pca.b.R
+msgid "'{rotation}' rotation was used"
+msgstr ""
+
+#: R/pca.b.R
+msgid "Principal axis factoring"
+msgstr ""
+
+#: R/pca.b.R
+msgid "Minimum residual"
+msgstr ""
+
+#: R/pca.b.R
+msgid "'{method}' extraction method was used in combination with a '{rotation}' rotation"
+msgstr ""
+
+#: R/pca.b.R
+msgid "Overall"
+msgstr ""
+
+#: R/pca.b.R
+msgid "Inter-Factor Correlations"
+msgstr ""
+
+#: R/pca.b.R
+msgid "Score Component"
+msgstr ""
+
+#: R/pca.b.R
+msgid "Score for component"
+msgstr ""
+
+#: R/pca.b.R
+msgid "Simulations"
+msgstr ""
+
+#: R/pca.b.R
+msgid "components"
+msgstr ""
+
+#: R/pca.b.R
+msgid "factors"
+msgstr ""
+
+#: R/proptest2.b.R
+msgid "Hₐ is proportion {direction} {testValue}"
+msgstr ""
+
+#: R/proptest2.b.R
+msgid "Likelihood"
+msgstr ""
+
+#: R/proptest2.b.R
+msgid "Posterior"
+msgstr ""
+
+#: R/proptest2.b.R
+msgid "Variable '{var}' contains no data"
+msgstr ""
+
+#: R/reliability.b.R
+msgid "reverse scaled item"
+msgstr ""
+
+#: R/reliability.b.R
+msgid "{type} score based on the variables {vars}"
+msgstr ""
+
+#: R/reliability.b.R
+msgid "item {item} correlates negatively with the total scale and probably should be reversed"
+msgstr ""
+
+#: R/reliability.b.R
+msgid "items {items} correlate negatively with the total scale and probably should be reversed"
+msgstr ""
+
+#: R/reliability.b.R
+msgid "Pearson{}Correlation"
+msgstr ""
+
+#: R/reliability.b.R
+msgid "Item '{item}' has no variance"
+msgstr ""
+
+#: R/reliability.b.R
+msgid "{varName} (reversed)"
+msgstr ""
+
+#: R/ttestis.b.R
+msgid "Grouping variable '{a}' must not also be a dependent variable"
+msgstr ""
+
+#: R/ttestis.b.R
+msgid "Grouping variable '{a}' must have exactly 2 levels"
+msgstr ""
+
+#: R/ttestis.b.R
+msgid "Grouping variable '{a}' has less than 2 levels after missing values are excluded"
+msgstr ""
+
+#: R/ttestis.b.R
+msgid "F-statistic could not be calculated"
+msgstr ""
+
+#: R/ttestis.b.R
+#: R/ttestones.b.R
+msgid "Variable is not numeric"
+msgstr ""
+
+#: R/ttestis.b.R
+#: R/ttestones.b.R
+msgid "Variable contains infinite values"
+msgstr ""
+
+#: R/ttestis.b.R
+msgid "One or both groups do not contain enough observations"
+msgstr ""
+
+#: R/ttestis.b.R
+#: R/ttestones.b.R
+#: R/ttestps.b.R
+msgid "All observations are tied"
+msgstr ""
+
+#: R/ttestis.b.R
+msgid "Levene's test is significant (p < .05), suggesting a violation of the assumption of equal variances"
+msgstr ""
+
+#: R/ttestis.b.R
+msgid "Too few samples to compute statistic (N < 3)"
+msgstr ""
+
+#: R/ttestis.b.R
+msgid "Too many samples to compute statistic (N > 5000)"
+msgstr ""
+
+#: R/ttestones.b.R
+msgid "Variable does not contain enough observations"
+msgstr ""
+
+#: R/ttestones.b.R
+#: R/ttestps.b.R
+msgid "Too few observations (N < 3) to compute statistic"
+msgstr ""
+
+#: R/ttestones.b.R
+#: R/ttestps.b.R
+msgid "Too many observations (N > 5000) to compute statistic"
+msgstr ""
+
+#: R/ttestps.b.R
+msgid "One or both variables are not numeric"
+msgstr ""
+
+#: R/ttestps.b.R
+msgid "One or both variables do not contain enough observations"
+msgstr ""
+
+#: R/ttestps.b.R
+msgid "One or both variables contain infinite values"
+msgstr ""
+
+#: R/ttestps.b.R
+msgid "{n} pair(s) of values were tied"
+msgstr ""
+
+#: R/ttestps.b.R
+msgid "One or both variables contain no observations"
+msgstr ""
+
+#: R/ttestps.b.R
+msgid "Measure 1 - Measure 2"
+msgstr ""
+
 #: cfa/options.description.R.usage
 msgid "data <- lavaan::HolzingerSwineford1939\n"
 "\n"
 "jmv::cfa(\n"
 "    data = data,\n"
 "    factors = list(\n"
-"        list(label=\"Visual", vars=c("x1", "x2", "x3")),\n"
-"        list(label="Textual", vars=c("x4", "x5", "x6")),\n"
-"        list(label="Speed", vars=c("x7", "x8", "x9"))),\n"
+"        list(label=\"Visual\", vars=c(\"x1\", \"x2\", \"x3\")),\n"
+"        list(label=\"Textual\", vars=c(\"x4\", \"x5\", \"x6\")),\n"
+"        list(label=\"Speed\", vars=c(\"x7\", \"x8\", \"x9\"))),\n"
 "    resCov = NULL)\n"
 "\n"
 "#\n"
@@ -6699,10 +7571,10 @@ msgid "data('mtcars')\n"
 "dat <- as.data.frame(tab)\n"
 "\n"
 "logLinear(data = dat, factors = vars(gear, cyl),  counts = Freq,\n"
-"          blocks = list(list(\"gear", "cyl", c("gear", "cyl"))),\n"
+"          blocks = list(list(\"gear\", \"cyl\", c(\"gear\", \"cyl\"))),\n"
 "          refLevels = list(\n"
-"              list(var="gear", ref="3"),\n"
-"              list(var="cyl", ref="4")))\n"
+"              list(var=\"gear\", ref=\"3\"),\n"
+"              list(var=\"cyl\", ref=\"4\")))\n"
 "\n"
 "#\n"
 "#  LOG-LINEAR REGRESSION\n"
@@ -6750,8 +7622,8 @@ msgid "data('birthwt', package='MASS')\n"
 "\n"
 "logRegBin(data = dat, dep = low,\n"
 "          covs = vars(age, bwt),\n"
-"          blocks = list(list(\"age", "bwt")),\n"
-"          refLevels = list(list(var="low", ref="0")))\n"
+"          blocks = list(list(\"age\", \"bwt\")),\n"
+"          refLevels = list(list(var=\"low\", ref=\"0\")))\n"
 "\n"
 "#\n"
 "#  BINOMIAL LOGISTIC REGRESSION\n"
@@ -6776,8 +7648,8 @@ msgid "data('birthwt', package='MASS')\n"
 "#    age            -0.00653       482.7    -1.35e-5    1.000\n"
 "#    bwt            -1.18532        87.0     -0.0136    0.989\n"
 "#  ────────────────────────────────────────────────────────────\n"
-"#    Note. Estimates represent the log odds of "low = 1"\n"
-"#    vs. "low = 0"\n"
+"#    Note. Estimates represent the log odds of \"low = 1\"\n"
+"#    vs. \"low = 0\"\n"
 "#\n"
 "#"
 msgstr ""
@@ -6792,10 +7664,10 @@ msgid "data('birthwt', package='MASS')\n"
 "\n"
 "logRegMulti(data = dat, dep = race,\n"
 "            covs = age, factors = low,\n"
-"            blocks = list(list(\"age", "low")),\n"
+"            blocks = list(list(\"age\", \"low\")),\n"
 "            refLevels = list(\n"
-"                list(var="race", ref="1"),\n"
-"                list(var="low", ref="0")))\n"
+"                list(var=\"race\", ref=\"1\"),\n"
+"                list(var=\"low\", ref=\"0\")))\n"
 "\n"
 "#\n"
 "#  MULTINOMIAL LOGISTIC REGRESSION\n"
@@ -6840,7 +7712,7 @@ msgid "set.seed(1337)\n"
 "\n"
 "logRegOrd(data = df, dep = y,\n"
 "          covs = vars(x1, x2),\n"
-"          blocks = list(list(\"x1", "x2")))\n"
+"          blocks = list(list(\"x1\", \"x2\")))\n"
 "\n"
 "#\n"
 "#  ORDINAL LOGISTIC REGRESSION\n"
@@ -6866,4 +7738,148 @@ msgid "set.seed(1337)\n"
 "#  ────────────────────────────────────────────────────\n"
 "#\n"
 "#"
+msgstr ""
+
+#: anovaOneW/results/anova.columns.content
+msgid "Fisher's"
+msgstr ""
+
+#: anovaOneW/results/assump/norm.notes.p
+#: ttestIS/results/assum/norm.notes.p
+#: ttestOneS/results/normality.notes.p
+#: ttestPS/results/norm.notes.p
+msgid "A low p-value suggests a violation of the assumption of normality"
+msgstr ""
+
+#: anovaOneW/results/postHoc.template.columns.content
+msgid "t-value"
+msgstr ""
+
+#: anovaOneW/results/postHoc.template.columns.content
+#: corrMatrix/results/matrix.columns.content
+#: corrPart/results/matrix.columns.content
+msgid "p-value"
+msgstr ""
+
+#: cfa/results/modelFit/fitMeasures.columns.superTitle
+#: pca/results/modelFit/fit.columns.superTitle
+msgid "RMSEA 90% CI"
+msgstr ""
+
+#: contTables/results/chiSq.columns.content
+msgid "z test difference in 2 proportions"
+msgstr ""
+
+#: contTables/results/odds.columns.content
+msgid "Difference in 2 proportions"
+msgstr ""
+
+#: contTables/results/odds.columns.superTitle
+#: contTables/results/gamma.columns.superTitle
+msgid "Confidence Intervals"
+msgstr ""
+
+#: contTables/results/nom.columns.content
+msgid "Phi-coefficient"
+msgstr ""
+
+#: contTables/results/nom.columns.content
+msgid "Cramer's V"
+msgstr ""
+
+#: corrMatrix/results/matrix.columns.content
+#: corrPart/results/matrix.columns.content
+msgid "Pearson's r"
+msgstr ""
+
+#: corrMatrix/results/matrix.columns.content
+msgid "CI Upper"
+msgstr ""
+
+#: corrMatrix/results/matrix.columns.content
+msgid "CI Lower"
+msgstr ""
+
+#: corrMatrix/results/matrix.columns.content
+#: corrPart/results/matrix.columns.content
+msgid "Spearman's rho"
+msgstr ""
+
+#: corrMatrix/results/matrix.columns.content
+#: corrPart/results/matrix.columns.content
+msgid "Kendall's Tau B"
+msgstr ""
+
+#: pca/results/modelFit/fit.columns.superTitle
+msgid "Model Test"
+msgstr ""
+
+#: propTest2/results/table.columns.superTitle
+msgid "Credible Interval"
+msgstr ""
+
+#: reliability/results/scale.columns.content
+msgid "scale"
+msgstr ""
+
+#: reliability/results/items.columns.superTitle
+msgid "if item dropped"
+msgstr ""
+
+#: ttestIS/results/ttest.columns.content
+#: ttestOneS/results/ttest.columns.content
+#: ttestPS/results/ttest.columns.content
+msgid "Student's t"
+msgstr ""
+
+#: ttestIS/results/ttest.columns.content
+msgid "Welch's t"
+msgstr ""
+
+#: ttestIS/results/ttest.columns.content
+#: ttestOneS/results/ttest.columns.content
+#: ttestPS/results/ttest.columns.content
+msgid "Rank biserial correlation"
+msgstr ""
+
+#: ttestIS/results/assum/eqv.notes.p
+msgid "A low p-value suggests a violation of the assumption of equal variances"
+msgstr ""
+
+#: ttestOneS/results/ttest.columns.content
+#: ttestPS/results/ttest.columns.content
+msgid "Wilcoxon W"
+msgstr ""
+
+#: R/errors.R
+msgid "'{col}' contains infinite values"
+msgstr ""
+
+#: R/errors.R
+msgid "'{col}' contains missing values"
+msgstr ""
+
+#: R/errors.R
+msgid "'{col}' contains only missing values"
+msgstr ""
+
+#: R/errors.R
+msgid "'{col}' contains only one unique value"
+msgstr ""
+
+#: R/utils.R
+msgid "{item1} and {item2}"
+msgstr ""
+
+#: R/utils.R
+msgid "{list}, {nextItem}"
+msgstr ""
+
+#: R/utils.R
+msgid "{list}, and {lastItem}"
+msgstr ""
+
+#: R/pca.b.R
+msgctxt "specific factor"
+msgid "Factor"
 msgstr ""
