@@ -130,29 +130,24 @@ tapply = function (X, INDEX, FUN = NULL, ..., simplify = TRUE, drop = TRUE)
     ansmat
 }
 
-listItems = function(self, items, quote = '\'') {
+listItems <- function(self, items, quote = '\'') {
+
+    items <- vapply(items, function(x) paste0(quote, x, quote), '', USE.NAMES=FALSE)
 
     if (length(items) == 1) {
 
-        l <- paste0(quote, items, quote)
+        l <- items
 
     } else if (length(items) == 2) {
 
-        itemsQuote <- character(length(items))
-        for (i in seq_along(items))
-            itemsQuote[i] <- paste0(quote, items[i], quote)
-
-        l <- paste0(itemsQuote, collapse = jmvcore::format(" {} ", .("and")))
+        l <- jmvcore::format(.('{item1} and {item2}'), item1=items[1], item2=items[2])
 
     } else {
 
-        itemsQuote <- character(length(items))
-        for (i in seq_along(items))
-            itemsQuote[i] <- paste0(quote, items[i], quote)
-
-        l <- paste0(itemsQuote[1:(length(itemsQuote)-1)], collapse = ', ')
-        l <- paste(l, itemsQuote[length(itemsQuote)], sep = jmvcore::format(', {} ', .("and")))
-
+        l <- items[1]
+        for (i in seq(2, length(items)-1))
+            l <- jmvcore::format(.('{list}, {nextItem}'), list=l, nextItem=items[i])
+        l <- jmvcore::format(.('{list}, and {lastItem}'), list=l, lastItem=items[length(items)])
     }
 
     return(l)
