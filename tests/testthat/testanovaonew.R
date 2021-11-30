@@ -4,12 +4,19 @@ context('anovaonew')
 data('ToothGrowth')
 
 test_that('anovaonew works', {
-
     dat <- ToothGrowth
     dat$dose <- factor(dat$dose)
 
-    r <- jmv::anovaOneW(dat, deps = "len", group = "dose", fishers = TRUE, desc = TRUE, eqv = TRUE,
-                        phMethod = "gamesHowell", phTest = TRUE)
+    r <- jmv::anovaOneW(
+        dat,
+        deps = "len",
+        group = "dose",
+        fishers = TRUE,
+        desc = TRUE,
+        eqv = TRUE,
+        phMethod = "gamesHowell",
+        phTest = TRUE,
+    )
 
     main <- as.data.frame(r$anova)
     desc <- as.data.frame(r$desc)
@@ -42,5 +49,4 @@ test_that('anovaonew works', {
     expect_equal(37.101, postHoc$getCell(rowKey="1", "2[df]")$value, tolerance = 1e-5)
     expect_equal(5.5686e-05, postHoc$getCell(rowKey="1", "2[p]")$value, tolerance = 1e-5)
     expect_equal(-15.495, postHoc$getCell(rowKey="0.5", "2[md]")$value, tolerance = 1e-5)
-
 })
