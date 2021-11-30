@@ -569,16 +569,27 @@ contTablesClass <- R6::R6Class(
                 return()
 
             rowVarName <- self$options$rows
+            if (! is.null(rowVarName))
+                rowVarName <- jmvcore::toB64(rowVarName)
+
             colVarName <- self$options$cols
+            if (! is.null(colVarName))
+                colVarName <- jmvcore::toB64(colVarName)
+
             countsName <- self$options$counts
+            if (! is.null(countsName))
+                countsName <- jmvcore::toB64(countsName)
+
             layerNames <- self$options$layers
+            if (! is.null(layerNames))
+                layerNames <- jmvcore::toB64(layerNames)
             if (length(layerNames) > 2)
                 layerNames <- layerNames[1:2] # max 2
 
             if (is.null(rowVarName) || is.null(colVarName))
                 return()
 
-            data <- private$.cleanData()
+            data <- private$.cleanData(B64 = TRUE)
             data <- na.omit(data)
 
             if (! is.null(countsName)){
@@ -645,9 +656,11 @@ contTablesClass <- R6::R6Class(
                 if (self$options$yaxisPc == "total_pc") {
                     p <- p + labs(y = .("Percentages of total"))
                 } else {
-                    p <- p + labs(y = jmvcore::format(.("Percentages within {var}"), var=pctVarName))
+                    p <- p + labs(y = jmvcore::format(.("Percentages within {var}"), var=jmvcore::fromB64(pctVarName)))
                 }
             }
+
+            p <- p + labs(x=jmvcore::fromB64(xVarName), fill=jmvcore::fromB64(zVarName))
 
             if (! is.null(layerNames)) {
                 if (length(layerNames) == 1)
@@ -663,7 +676,7 @@ contTablesClass <- R6::R6Class(
         },
 
         #### Helper functions ----
-        .cleanData = function() {
+        .cleanData = function(B64 = FALSE) {
 
             data <- self$data
 
@@ -672,16 +685,24 @@ contTablesClass <- R6::R6Class(
             layerNames <- self$options$layers
             countsName <- self$options$counts
 
-            if ( ! is.null(rowVarName))
-                data[[rowVarName]] <- as.factor(data[[rowVarName]])
-            if ( ! is.null(colVarName))
-                data[[colVarName]] <- as.factor(data[[colVarName]])
-            for (layerName in layerNames)
-                data[[layerName]] <- as.factor(data[[layerName]])
-            if ( ! is.null(countsName))
-                data[[countsName]] <- toNumeric(data[[countsName]])
+            if ( ! is.null(rowVarName)) {
+                rowVarNameNew <- ifelse(B64, jmvcore::toB64(rowVarName), rowVarName)
+                data[[rowVarNameNew]] <- as.factor(data[[rowVarName]])
+            }
+            if ( ! is.null(colVarName)) {
+                colVarNameNew <- ifelse(B64, jmvcore::toB64(colVarName), colVarName)
+                data[[colVarNameNew]] <- as.factor(data[[colVarName]])
+            }
+            for (layerName in layerNames) {
+                layerNameNew <- ifelse(B64, jmvcore::toB64(layerName), layerName)
+                data[[layerNameNew]] <- as.factor(data[[layerName]])
+            }
+            if ( ! is.null(countsName)) {
+                countsNameNew <- ifelse(B64, jmvcore::toB64(countsName), countsName)
+                data[[countsNameNew]] <- jmvcore::toNumeric(data[[countsName]])
+            }
 
-            data
+            return(data)
         },
         .matrices=function(data) {
 
