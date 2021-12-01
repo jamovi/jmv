@@ -15,7 +15,7 @@ test_that('anovaonew works', {
         desc = TRUE,
         eqv = TRUE,
         phMethod = "gamesHowell",
-        phTest = TRUE,
+        phTest = TRUE
     )
 
     main <- as.data.frame(r$anova)
