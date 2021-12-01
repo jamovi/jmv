@@ -43,8 +43,9 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             for (dep in self$options$deps) {
 
                 dataA <- data.frame(
-                    dep = jmvcore::toNumeric(data[[dep]]),
-                    group = data[[group]])
+                    dep = data[[dep]],
+                    group = data[[group]]
+                )
 
                 if (self$options$miss != 'listwise')
                     dataA <- na.omit(dataA)
@@ -67,8 +68,14 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
                 postHoc <- private$.postHoc(desc, method = self$options$phMethod)
 
-                r[[dep]] <- list(welch=welch, fisher=fisher, desc=desc, postHoc=postHoc,
-                                 levene=levene, residuals=residuals)
+                r[[dep]] <- list(
+                    welch=welch,
+                    fisher=fisher,
+                    desc=desc,
+                    postHoc=postHoc,
+                    levene=levene,
+                    residuals=residuals
+                )
             }
 
             return(r)
@@ -401,12 +408,15 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
         #### Helper functions ----
         .cleanData = function() {
-
             data <- self$data
+
+            for (dep in self$options$deps)
+                data[[dep]] <- jmvcore::toNumeric(data[[dep]])
+
             if (self$options$miss == 'listwise')
                 data <- na.omit(data)
 
-            data
+            return(data)
         },
         .descPlotSize = function() {
 
