@@ -9,21 +9,80 @@ children:
     stretchFactor: 1
     children:
       - type: TargetLayoutBox
+        label: Dependent Variables
         children:
           - type: VariablesListBox
             name: deps
             isTarget: true
+
       - type: TargetLayoutBox
+        label: Grouping Variable
         children:
           - type: VariablesListBox
             name: group
             maxItemCount: 1
             isTarget: true
+
+
   - type: LayoutBox
-    stretchFactor: 1
     margin: large
+    stretchFactor: 1
     children:
-      - type: CheckBox
-        name: es
-      - type: CheckBox
-        name: pairs
+      - type: LayoutBox
+        cell:
+          column: 0
+          row: 0
+        stretchFactor: 1
+        children:
+          - type: Label
+            label: Effect Size
+            children:
+              - type: CheckBox
+                name: es
+
+
+  - type: LayoutBox
+    margin: large
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        cell:
+          column: 0
+          row: 0
+        stretchFactor: 1
+        children:          
+          - type: Label
+            label: Post Hoc Tests
+            children:
+              - type: CheckBox
+                name: dscfpairs
+              - type: CheckBox
+                name: dunnpairs
+              - type: CheckBox
+                name: coimpairs
+
+      - type: LayoutBox
+        cell:
+          column: 1
+          row: 0
+        stretchFactor: 1
+        children:
+          - type: Label
+            label: Post Hoc Correction
+            children:
+              - name: postHocCorr_none
+                type: CheckBox
+                optionPart: none
+                optionName: postHocCorr
+              - name: postHocCorr_bonf
+                type: CheckBox
+                optionPart: bonf
+                optionName: postHocCorr
+              - name: postHocCorr_sidak
+                type: CheckBox
+                optionPart: sidak
+                optionName: postHocCorr
+              - name: postHocCorr_holm
+                type: CheckBox
+                optionPart: holm
+                optionName: postHocCorr

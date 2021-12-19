@@ -36,36 +36,147 @@ items:
           type: number
           visible: (es)
 
-    - name: comparisons
-      title: Dwass-Steel-Critchlow-Fligner pairwise comparisons
+    - name: postHoc
+      title: Post Hoc Tests
       type: Array
       description: an array of pairwise comparison tables
       items: (deps)
-      visible: (pairs)
+      visible: (dscfpairs || dunnpairs || coimpairs)
       clearWith:
         - group
 
       template:
-        title: Pairwise comparisons - $key
+        title: Post Hoc Comparisons - $key
         type: Table
-        rows: 0
-        clearWith:
+        rows: (pairs)
 
         columns:
           - name: p1
             title: ""
             content: .
             type: text
-
+            combineBelow: true
           - name: p2
             title: ""
             content: .
             type: text
 
-          - name: W
-            type: number
 
-          - name: p
+          - name: test[dscf]
+            title: ""
+            content: DSCF W
+            type: text
+            combineBelow: true
+            visible: (dscfpairs)
+          - name: stat[dscf]
+            title: Statistic
+            type: number
+            visible: (dscfpairs)
+          - name: pval[dscf]
             title: p
             type: number
             format: zto,pvalue
+            visible: (dscfpairs)
+
+          - name: pnone[dscf]
+            title: p<sub>none</sub>
+            content: NaN
+            type: number
+            format: zto,pvalue
+            visible: (dscfpairs && postHocCorr:none)
+          - name: pbonf[dscf]
+            title: p<sub>bonferroni</sub>
+            content: NaN
+            type: number
+            format: zto,pvalue
+            visible: (dscfpairs && postHocCorr:bonf)
+          - name: psidak[dscf]
+            title: p<sub>sidak</sub>
+            content: NaN
+            type: number
+            format: zto,pvalue
+            visible: (dscfpairs && postHocCorr:sidak)
+          - name: pholm[dscf]
+            title: p<sub>holm</sub>
+            content: NaN
+            type: number
+            format: zto,pvalue
+            visible: (dscfpairs && postHocCorr:holm)
+
+
+          - name: test[dunn]
+            title: ""
+            content: Dunn's z
+            type: text
+            combineBelow: true
+            visible: (dunnpairs)
+          - name: stat[dunn]
+            title: Statistic
+            type: number
+            visible: (dunnpairs)
+          - name: pval[dunn]
+            title: p
+            type: number
+            format: zto,pvalue
+            visible: (dunnpairs)
+
+          - name: pnone[dunn]
+            title: p<sub>none</sub>
+            type: number
+            format: zto,pvalue
+            visible: (dunnpairs && postHocCorr:none)
+          - name: pbonf[dunn]
+            title: p<sub>bonferroni</sub>
+            type: number
+            format: zto,pvalue
+            visible: (dunnpairs && postHocCorr:bonf)
+          - name: psidak[dunn]
+            title: p<sub>sidak</sub>
+            type: number
+            format: zto,pvalue
+            visible: (dunnpairs && postHocCorr:sidak)
+          - name: pholm[dunn]
+            title: p<sub>holm</sub>
+            type: number
+            format: zto,pvalue
+            visible: (dunnpairs && postHocCorr:holm)
+
+
+          - name: test[coim]
+            title: ""
+            content: Conover-Iman t
+            type: text
+            combineBelow: true
+            visible: (coimpairs)
+          - name: stat[coim]
+            title: Statistic
+            type: number
+            visible: (coimpairs)
+          - name: pval[coim]
+            title: p
+            type: number
+            format: zto,pvalue
+            visible: (coimpairs)
+
+          - name: pnone[coim]
+            title: p<sub>none</sub>
+            type: number
+            format: zto,pvalue
+            visible: (coimpairs && postHocCorr:none)
+          - name: pbonf[coim]
+            title: p<sub>bonferroni</sub>
+            type: number
+            format: zto,pvalue
+            visible: (coimpairs && postHocCorr:bonf)
+          - name: psidak[coim]
+            title: p<sub>sidak</sub>
+            type: number
+            format: zto,pvalue
+            visible: (coimpairs && postHocCorr:sidak)
+          - name: pholm[coim]
+            title: p<sub>holm</sub>
+            type: number
+            format: zto,pvalue
+            visible: (coimpairs && postHocCorr:holm)
+
+...

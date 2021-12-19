@@ -150,4 +150,18 @@
         `year`=2015, 
         `title`="ppcor: Partial and Semi-Partial (Part) Correlation", 
         `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=ppcor", 
-        `url`="https://cran.r-project.org/package=ppcor"))
+        `url`="https://cran.r-project.org/package=ppcor"), 
+    `dunn.test`=list(
+        `type`="software", 
+        `author`="Dinno, A.", 
+        `year`=2017, 
+        `title`="dunn.test: Dunn's Test of Multiple Comparisons Using Rank Sums", 
+        `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=dunn.test", 
+        `url`="https://cran.r-project.org/package=dunn.test"), 
+    `conover.test`=list(
+        `type`="software", 
+        `author`="Dinno, A.", 
+        `year`=2017, 
+        `title`="conover.test: Conover-Iman Test of Multiple Comparisons Using Rank Sums", 
+        `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=conover.test", 
+        `url`="https://cran.r-project.org/package=conover.test"))
