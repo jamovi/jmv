@@ -230,3 +230,61 @@ test_that("analysis throws error for factor with one level", {
         regexp = "needs to have at least 2 levels"
     )
 })
+
+test_that("analysis works with weights", {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    df <- data.frame(
+        weights = abs(rnorm(100)),
+        dep = rnorm(100),
+        cov = rnorm(100),
+        factor = factor(sample(LETTERS[1:3], 100, replace=TRUE))
+    )
+
+    refLevels = list(list(var="factor", ref="A"))
+
+    r <- jmv::linReg(
+        df,
+        dep="dep",
+        covs="cov",
+        factors="factor",
+        weights="weights",
+        blocks=list(list("cov", "factor")),
+        refLevels=refLevels,
+    )
+
+    coef <- r$models[[1]]$coef
+    coefDf <- coef$asDF
+
+    testthat::expect_equal("Weighted by 'weights'", coef$notes$weights$note)
+    testthat::expect_equal(coefDf$est[1], -0.100, tolerance = 1e-3)
+    testthat::expect_equal(coefDf$se[2], 0.089, tolerance = 1e-3)
+    testthat::expect_equal(coefDf$t[4], 1.004, tolerance = 1e-3)
+    testthat::expect_equal(coefDf$p[5], 0.247, tolerance = 1e-3)
+})
+
+test_that("analysis throws error with negative weights", {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    df <- data.frame(
+        weights = rnorm(100),
+        dep = rnorm(100),
+        cov = rnorm(100)
+    )
+
+    testthat::expect_error(
+        {
+            jmv::linReg(
+                df,
+                dep="dep",
+                covs="cov",
+                weights="weights",
+                blocks=list(list("cov")),
+            )
+        },
+        regexp = "Negative weights are not allowed"
+    )
+})
+
