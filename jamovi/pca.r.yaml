@@ -207,4 +207,5 @@ items:
         - nFactorMethod
         - nFactors
         - rotation
+        - factorScoreMethod
 ...

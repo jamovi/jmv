@@ -193,4 +193,29 @@ options:
       description:
           R: >
             `TRUE` or `FALSE` (default), show Bartlett's test of sphericity results
+
+    - name: factorScoresOV
+      title: Factor scores
+      type: Output
+
+    - name: factorScoreMethod
+      title: Estimation method
+      type: List
+      options:
+        - title: Thurstone
+          name: Thurstone
+        - title: Bartlett
+          name: Bartlett
+        - title: ten Berge
+          name: tenBerge
+        - title: Anderson & Rubin
+          name: Anderson
+        - title: Harman
+          name: Harman
+      default: Thurstone
+      description:
+          R: >
+            `'Thurstone'` (default), `'Bartlett'`, `'tenBerge'`, `'Anderson'`,
+            or `'Harman'` use respectively 'Thurstone', 'Bartlett', 'ten Berge',
+            'Anderson & Rubin', or 'Harman' method for estimating factor scores
 ...

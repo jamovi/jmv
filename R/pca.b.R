@@ -80,8 +80,8 @@ pcaClass <- R6::R6Class(
             return(private$.bartlett)
         },
         scores = function() {
-            if (is.null(private$.scores) && private$analysis == 'pca')
-                private$.scores <- private$.getPsychResult()$scores
+            if (is.null(private$.scores))
+                private$.scores <- private$.computeFactorScores()
 
             return(private$.scores)
         }
@@ -178,6 +178,19 @@ pcaClass <- R6::R6Class(
             })
 
             return(bartlett)
+        },
+        .computeFactorScores = function() {
+            if (private$analysis == 'pca') {
+                scores <- private$.getPsychResult()$scores
+            } else {
+                scores <- psych::factor.scores(
+                    self$dataProcessed,
+                    private$.getPsychResult(),
+                    method = self$options$factorScoreMethod
+                )$scores
+            }
+
+            return(scores)
         },
 
         #### Init tables/plots functions ----
@@ -424,15 +437,25 @@ pcaClass <- R6::R6Class(
 
             table$setRow(rowNo=1, values=list(chi=r$chisq, df=r$df, p=r$p.value))
         },
-        .populateOutputs = function() {
-            if (private$analysis == 'pca'
-                    && self$options$factorScoresOV
-                    && self$results$factorScoresOV$isNotFilled()) {
-
+        .populateOutputs = function(n) {
+            if (self$options$factorScoresOV && self$results$factorScoresOV$isNotFilled()) {
                 keys <- 1:self$nFactors
-                titles <- paste(.("Score Component"), 1:self$nFactors)
-                descriptions <- paste(.("Score for component"), 1:self$nFactors)
                 measureTypes <- rep("continuous", self$nFactors)
+
+                if (private$analysis == 'pca') {
+                    titles <- paste(.("Score Component"), keys)
+                    descriptions <- paste(.("Score for component"), keys)
+                } else {
+                    titles <- paste(.("Score Factor"), keys)
+                    descriptions <- character(length(keys))
+                    for (i in keys) {
+                        descriptions[i] = jmvcore::format(
+                            .("Score for factor {i}. Estimated using the '{fsMethod}' method."),
+                            i=i,
+                            fsMethod=self$options$factorScoreMethod
+                        )
+                    }
+                }
 
                 self$results$factorScoresOV$set(
                     keys=keys,
