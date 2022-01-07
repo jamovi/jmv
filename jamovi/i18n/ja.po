@@ -4,19 +4,16 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2021-07-26 12:08:06+01000\n"
-"PO-Revision-Date: 2021-11-30 23:22+0900\n"
+"PO-Revision-Date: 2021-07-29 16:59:59+01000\n"
 "Language: ja\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Project-Id-Version: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"X-Generator: Poedit 3.0\n"
 
 #: ancova/ui[5][1][1]/postHocES_d[0]/postHocEsCi/postHocEsCiWidth.suffix
 #: ancova/ui[6][1][0][1]/ciWidthEmm.suffix
 #: anova/ui[5][1][1]/postHocES_d[0]/postHocEsCi/postHocEsCiWidth.suffix
 #: anova/ui[6][1][0][1]/ciWidthEmm.suffix
-#: anovaRM/ui[5][1][0][1]/ciWidthEmm.suffix cfa/ui[3][1][0]/ci/ciWidth.suffix
+#: anovaRM/ui[5][1][0][1]/ciWidthEmm.suffix
+#: cfa/ui[3][1][0]/ci/ciWidth.suffix
 #: contTables/ui[1][0][0][1][0]/ci/ciWidth.suffix
 #: corrMatrix/ui[1][1]/ci/ciWidth.suffix
 #: descriptives/ui[2][2][1][0]/ci/ciWidth.suffix
@@ -62,11 +59,13 @@ msgstr "分散説明率（%）"
 msgid "% of total"
 msgstr "全体%"
 
-#: R/conttables.b.R R/conttablespaired.b.R
+#: R/conttables.b.R
+#: R/conttablespaired.b.R
 msgid "% within column"
 msgstr "列%"
 
-#: R/conttables.b.R R/conttablespaired.b.R
+#: R/conttables.b.R
+#: R/conttablespaired.b.R
 msgid "% within row"
 msgstr "行%"
 
@@ -94,7 +93,8 @@ msgstr "「{method}」で抽出した因子に「{rotation}」を適用した結
 msgid "'{rotation}' rotation was used"
 msgstr "「{rotation}」の結果です"
 
-#: R/corrmatrix.b.R R/corrpart.b.R
+#: R/corrmatrix.b.R
+#: R/corrpart.b.R
 msgid "* p < .05, ** p < .01, *** p < .001, one-tailed"
 msgstr "* p < .05, ** p < .01, *** p < .001, 片側検定"
 
@@ -107,8 +107,10 @@ msgstr "1"
 msgid "1 - Specificity"
 msgstr "1 - 特異度"
 
-#: package/analyses/logRegBin.menuTitle package/analyses/propTest2.menuTitle
-#: logRegBin/options.menuTitle propTest2/options.menuTitle
+#: package/analyses/logRegBin.menuTitle
+#: package/analyses/propTest2.menuTitle
+#: logRegBin/options.menuTitle
+#: propTest2/options.menuTitle
 msgid "2 Outcomes"
 msgstr "2値目的変数"
 
@@ -130,8 +132,10 @@ msgstr "> 検定値"
 msgid "A low p-value suggests a violation of the assumption of equal variances"
 msgstr "小さなp値は分散等質性の前提が満たされていない可能性を示します"
 
-#: anovaOneW/results/assump/norm.notes.p ttestIS/results/assum/norm.notes.p
-#: ttestOneS/results/normality.notes.p ttestPS/results/norm.notes.p
+#: anovaOneW/results/assump/norm.notes.p
+#: ttestIS/results/assum/norm.notes.p
+#: ttestOneS/results/normality.notes.p
+#: ttestPS/results/norm.notes.p
 msgid "A low p-value suggests a violation of the assumption of normality"
 msgstr "小さなp値は正規性の前提が満たされていない可能性を示します"
 
@@ -144,29 +148,48 @@ msgid "A repeated measures ANOVA data set"
 msgstr "反復測定分散分析用データセット"
 
 #: cfa/options/fitMeasures/aic.title
-#: cfa/results/modelFit/fitMeasures.columns.title linReg/options/aic.title
-#: linReg/results/modelFit.columns.title logLinear/options/aic.title
-#: logLinear/results/modelFit.columns.title logRegBin/options/aic.title
-#: logRegBin/results/modelFit.columns.title logRegMulti/options/aic.title
-#: logRegMulti/results/modelFit.columns.title logRegOrd/options/aic.title
+#: cfa/results/modelFit/fitMeasures.columns.title
+#: linReg/options/aic.title
+#: linReg/results/modelFit.columns.title
+#: logLinear/options/aic.title
+#: logLinear/results/modelFit.columns.title
+#: logRegBin/options/aic.title
+#: logRegBin/results/modelFit.columns.title
+#: logRegMulti/options/aic.title
+#: logRegMulti/results/modelFit.columns.title
+#: logRegOrd/options/aic.title
 #: logRegOrd/results/modelFit.columns.title
 msgid "AIC"
 msgstr "AIC"
 
-#: package/analyses/ancova.title package/analyses/ancova.menuTitle
-#: ancova/options.title ancova/ui.title ancova/results.title
+#: package/analyses/ancova.title
+#: package/analyses/ancova.menuTitle
+#: ancova/options.title
+#: ancova/ui.title
+#: ancova/results.title
 msgid "ANCOVA"
 msgstr "共分散分析"
 
-#: R/anova.b.R package/analyses/anovaOneW.menuGroup
-#: package/analyses/anova.title package/analyses/anova.menuGroup
-#: package/analyses/anova.menuTitle package/analyses/anovaRM.menuGroup
-#: package/analyses/ancova.menuGroup package/analyses/mancova.menuGroup
-#: package/analyses/anovaNP.menuGroup package/analyses/anovaRMNP.menuGroup
-#: ancova/options.menuGroup anova/options.title anova/options.menuGroup
-#: anova/ui.title anova/results.title anovaNP/options.menuGroup
-#: anovaOneW/options.menuGroup anovaRM/options.menuGroup
-#: anovaRMNP/options.menuGroup mancova/options.menuGroup
+#: R/anova.b.R
+#: package/analyses/anovaOneW.menuGroup
+#: package/analyses/anova.title
+#: package/analyses/anova.menuGroup
+#: package/analyses/anova.menuTitle
+#: package/analyses/anovaRM.menuGroup
+#: package/analyses/ancova.menuGroup
+#: package/analyses/mancova.menuGroup
+#: package/analyses/anovaNP.menuGroup
+#: package/analyses/anovaRMNP.menuGroup
+#: ancova/options.menuGroup
+#: anova/options.title
+#: anova/options.menuGroup
+#: anova/ui.title
+#: anova/results.title
+#: anovaNP/options.menuGroup
+#: anovaOneW/options.menuGroup
+#: anovaRM/options.menuGroup
+#: anovaRMNP/options.menuGroup
+#: mancova/options.menuGroup
 msgid "ANOVA"
 msgstr "分散分析"
 
@@ -206,31 +229,41 @@ msgstr "因子を追加"
 msgid "Add New Term"
 msgstr "項を追加"
 
-#: corrMatrix/ui[1][1].label corrPart/ui[1][3].label
+#: corrMatrix/ui[1][1].label
+#: corrPart/ui[1][3].label
 #: reliability/ui[1][0][1].label
 msgid "Additional Options"
 msgstr "追加オプション"
 
-#: cfa/ui[5].label efa/ui[1][1][2].label pca/ui[1][1][2].label
+#: cfa/ui[5].label
+#: efa/ui[1][1][2].label
+#: pca/ui[1][1][2].label
 msgid "Additional Output"
 msgstr "追加の出力"
 
-#: anovaOneW/ui[1][1][0].label propTest2/ui[1][1][0].label
-#: ttestIS/ui[1][1][0].label ttestOneS/ui[1][1][0].label
+#: anovaOneW/ui[1][1][0].label
+#: propTest2/ui[1][1][0].label
+#: ttestIS/ui[1][1][0].label
+#: ttestOneS/ui[1][1][0].label
 #: ttestPS/ui[1][1][0].label
 msgid "Additional Statistics"
 msgstr "追加の統計量"
 
-#: linReg/options/r2Adj.title linReg/results/modelFit.columns.title
+#: linReg/options/r2Adj.title
+#: linReg/results/modelFit.columns.title
 msgid "Adjusted R²"
 msgstr "調整済R²"
 
-#: R/ttestis.b.R R/ttestones.b.R R/ttestps.b.R
+#: R/ttestis.b.R
+#: R/ttestones.b.R
+#: R/ttestps.b.R
 msgid "All observations are tied"
 msgstr "データがすべて同順位です"
 
-#: contTables/options/hypothesis.title ttestIS/options/hypothesis.title
-#: ttestOneS/options/hypothesis.title ttestPS/options/hypothesis.title
+#: contTables/options/hypothesis.title
+#: ttestIS/options/hypothesis.title
+#: ttestOneS/options/hypothesis.title
+#: ttestPS/options/hypothesis.title
 msgid "Alternative hypothesis"
 msgstr "対立仮説"
 
@@ -241,6 +274,10 @@ msgstr "分散分析用のデータセット"
 #: package.title
 msgid "Analyses bundled with jamovi"
 msgstr "jamoviの基本分析ツール"
+
+#: efa/options/factorScoreMethod/Anderson.title
+msgid "Anderson & Rubin"
+msgstr ""
 
 #: package/datasets/Anderson's Iris Data.name
 msgid "Anderson's Iris Data"
@@ -254,19 +291,31 @@ msgstr "参加者間要因が指定されていないため、この前提はつ
 msgid "Assume equal (Fisher's)"
 msgstr "等質性を仮定（フィッシャー法）"
 
-#: ancova/ui[3].label ancova/results/assump.title anova/ui[3].label
-#: anova/results/assump.title anovaOneW/ui[1][1][1].label
-#: anovaOneW/results/assump.title anovaRM/ui[3].label efa/ui[1][1][0].label
-#: linReg/ui[3].label linReg/ui[3][0][0][0].label
-#: linReg/results/models.template/assump.title logRegBin/ui[3].label
-#: logRegBin/results/models.template/assump.title mancova/ui[1][1][0].label
-#: mancova/results/assump.title pca/ui[1][1][0].label pca/results/assump.title
-#: ttestIS/ui[1][1][1].label ttestOneS/ui[1][1][1].label
+#: ancova/ui[3].label
+#: ancova/results/assump.title
+#: anova/ui[3].label
+#: anova/results/assump.title
+#: anovaOneW/ui[1][1][1].label
+#: anovaOneW/results/assump.title
+#: anovaRM/ui[3].label
+#: efa/ui[1][1][0].label
+#: linReg/ui[3].label
+#: linReg/ui[3][0][0][0].label
+#: linReg/results/models.template/assump.title
+#: logRegBin/ui[3].label
+#: logRegBin/results/models.template/assump.title
+#: mancova/ui[1][1][0].label
+#: mancova/results/assump.title
+#: pca/ui[1][1][0].label
+#: pca/results/assump.title
+#: ttestIS/ui[1][1][1].label
+#: ttestOneS/ui[1][1][1].label
 #: ttestPS/ui[1][1][1].label
 msgid "Assumption Checks"
 msgstr "前提チェック"
 
-#: anovaRM/results/assump.title ttestIS/results/assum.title
+#: anovaRM/results/assump.title
+#: ttestIS/results/assum.title
 msgid "Assumptions"
 msgstr "前提チェック"
 
@@ -287,11 +336,16 @@ msgid "Available for 2x2 tables only"
 msgstr "2行2列の表でのみ算出されます"
 
 #: cfa/options/fitMeasures/bic.title
-#: cfa/results/modelFit/fitMeasures.columns.title linReg/options/bic.title
-#: linReg/results/modelFit.columns.title logLinear/options/bic.title
-#: logLinear/results/modelFit.columns.title logRegBin/options/bic.title
-#: logRegBin/results/modelFit.columns.title logRegMulti/options/bic.title
-#: logRegMulti/results/modelFit.columns.title logRegOrd/options/bic.title
+#: cfa/results/modelFit/fitMeasures.columns.title
+#: linReg/options/bic.title
+#: linReg/results/modelFit.columns.title
+#: logLinear/options/bic.title
+#: logLinear/results/modelFit.columns.title
+#: logRegBin/options/bic.title
+#: logRegBin/results/modelFit.columns.title
+#: logRegMulti/options/bic.title
+#: logRegMulti/results/modelFit.columns.title
+#: logRegOrd/options/bic.title
 #: logRegOrd/results/modelFit.columns.title
 #: pca/results/modelFit/fit.columns.title
 msgid "BIC"
@@ -305,7 +359,8 @@ msgstr "棒グラフ"
 msgid "Bar Plots"
 msgstr "棒グラフ"
 
-#: contTables/options/bartype.title contTables/ui[1][2][0][0][1].label
+#: contTables/options/bartype.title
+#: contTables/ui[1][2][0][0][1].label
 msgid "Bar Type"
 msgstr "棒グラフのタイプ"
 
@@ -313,11 +368,16 @@ msgstr "棒グラフのタイプ"
 msgid "Bar plot"
 msgstr "棒グラフ"
 
+#: efa/options/factorScoreMethod/Bartlett.title
+msgid "Bartlett"
+msgstr ""
+
 #: pca/results/assump/bartlett.title
 msgid "Bartlett's Test of Sphericity"
 msgstr "バートレットの球面性検定"
 
-#: efa/options/bartlett.title pca/options/bartlett.title
+#: efa/options/bartlett.title
+#: pca/options/bartlett.title
 msgid "Bartlett's test of sphericity"
 msgstr "バートレットの球面性検定"
 
@@ -331,14 +391,18 @@ msgstr "固有値に基づく"
 msgid "Based on parallel analysis"
 msgstr "平行分析に基づく"
 
-#: propTest2/options/bf.title ttestIS/options/bf.title
-#: ttestIS/ui[1][0][0]/students/bf.label ttestOneS/options/bf.title
-#: ttestOneS/ui[1][0][0]/students/bf.label ttestPS/options/bf.title
+#: propTest2/options/bf.title
+#: ttestIS/options/bf.title
+#: ttestIS/ui[1][0][0]/students/bf.label
+#: ttestOneS/options/bf.title
+#: ttestOneS/ui[1][0][0]/students/bf.label
+#: ttestPS/options/bf.title
 #: ttestPS/ui[1][0][0]/students/bf.label
 msgid "Bayes factor"
 msgstr "ベイズ因子"
 
-#: propTest2/results/table.columns.title ttestIS/results/ttest.columns.content
+#: propTest2/results/table.columns.title
+#: ttestIS/results/ttest.columns.content
 #: ttestOneS/results/ttest.columns.content
 #: ttestPS/results/ttest.columns.content
 msgid "Bayes factor₁₀"
@@ -364,13 +428,17 @@ msgstr "参加者間効果"
 msgid "Big 5 (Dolan, Oort, Stoel & Wicherts, 2009)"
 msgstr "Big 5 (Dolan, Oort, Stoel & Wicherts, 2009)"
 
-#: package/analyses/logRegBin.menuSubtitle logRegBin/options.menuSubtitle
+#: package/analyses/logRegBin.menuSubtitle
+#: logRegBin/options.menuSubtitle
 msgid "Binomial"
 msgstr "2項"
 
-#: package/analyses/logRegBin.title package/analyses/logRegBin.description
-#: logRegBin/options.title logRegBin/options.description.main
-#: logRegBin/ui.title logRegBin/results.title
+#: package/analyses/logRegBin.title
+#: package/analyses/logRegBin.description
+#: logRegBin/options.title
+#: logRegBin/options.description.main
+#: logRegBin/ui.title
+#: logRegBin/results.title
 msgid "Binomial Logistic Regression"
 msgstr "2項ロジスティック回帰"
 
@@ -378,7 +446,8 @@ msgstr "2項ロジスティック回帰"
 msgid "Binomial Test"
 msgstr "2項検定"
 
-#: package/analyses/propTest2.menuSubtitle propTest2/options.menuSubtitle
+#: package/analyses/propTest2.menuSubtitle
+#: propTest2/options.menuSubtitle
 msgid "Binomial test"
 msgstr "2項検定"
 
@@ -390,20 +459,27 @@ msgstr "2項検定"
 msgid "Block 1"
 msgstr "ブロック 1"
 
-#: jamovi/js/linreg.events.js:4 jamovi/js/linreg.events.js:40
-#: jamovi/js/loglinear.events.js:4 jamovi/js/loglinear.events.js:46
-#: jamovi/js/logregbin.events.js:4 jamovi/js/logregbin.events.js:55
-#: jamovi/js/logregord.events.js:38 jamovi/js/logregord.events.js:4
+#: jamovi/js/linreg.events.js:4
+#: jamovi/js/linreg.events.js:40
+#: jamovi/js/loglinear.events.js:4
+#: jamovi/js/loglinear.events.js:46
+#: jamovi/js/logregbin.events.js:4
+#: jamovi/js/logregbin.events.js:55
+#: jamovi/js/logregord.events.js:38
+#: jamovi/js/logregord.events.js:4
 msgid "Block {0}"
 msgstr "ブロック {0}"
 
-#: linReg/options/blocks.title logLinear/options/blocks.title
-#: logRegBin/options/blocks.title logRegMulti/options/blocks.title
+#: linReg/options/blocks.title
+#: logLinear/options/blocks.title
+#: logRegBin/options/blocks.title
+#: logRegMulti/options/blocks.title
 #: logRegOrd/options/blocks.title
 msgid "Blocks"
 msgstr "ブロック"
 
-#: ancova/options/postHocCorr/bonf.title anova/options/postHocCorr/bonf.title
+#: ancova/options/postHocCorr/bonf.title
+#: anova/options/postHocCorr/bonf.title
 #: anovaRM/options/postHocCorr/bonf.title
 msgid "Bonferroni"
 msgstr "ボンフェロニ法"
@@ -477,8 +553,10 @@ msgstr "クロス集計表 – {dep}"
 msgid "Classification table"
 msgstr "分類表"
 
-#: R/ancova.b.R ancova/options/postHocES/d.title
-#: anova/options/postHocES/d.title ttestIS/results/ttest.columns.content
+#: R/ancova.b.R
+#: ancova/options/postHocES/d.title
+#: anova/options/postHocES/d.title
+#: ttestIS/results/ttest.columns.content
 #: ttestOneS/results/ttest.columns.content
 #: ttestPS/results/ttest.columns.content
 msgid "Cohen's d"
@@ -489,11 +567,13 @@ msgstr "コーエンのd"
 msgid "Collinearity Statistics"
 msgstr "共線性統計量"
 
-#: linReg/options/collin.title logRegBin/options/collin.title
+#: linReg/options/collin.title
+#: logRegBin/options/collin.title
 msgid "Collinearity statistics"
 msgstr "共線性統計量"
 
-#: contTables/options/pcCol.title contTablesPaired/options/pcCol.title
+#: contTables/options/pcCol.title
+#: contTablesPaired/options/pcCol.title
 msgid "Column"
 msgstr "列"
 
@@ -501,11 +581,13 @@ msgstr "列"
 msgid "Column '{name}' contains unused levels (possible only when rows with missing values are excluded)"
 msgstr "「{name}」列に未使用の水準が含まれています（これは欠損値のある行が除外された場合に起こり得ます）"
 
-#: R/conttables.b.R R/conttablespaired.b.R
+#: R/conttables.b.R
+#: R/conttablespaired.b.R
 msgid "Column variable '{var}' contains fewer than 2 levels"
 msgstr "列変数「{var}」が1水準しかありません"
 
-#: contTables/options/cols.title contTables/options/xaxis/xcols.title
+#: contTables/options/cols.title
+#: contTables/options/xaxis/xcols.title
 #: contTablesPaired/options/cols.title
 msgid "Columns"
 msgstr "列"
@@ -522,7 +604,9 @@ msgstr "比較指標（2行2列の場合のみ）"
 msgid "Compare"
 msgstr "比較方法"
 
-#: R/ancova.b.R R/anovarm.b.R linReg/results/modelComp.columns.superTitle
+#: R/ancova.b.R
+#: R/anovarm.b.R
+#: linReg/results/modelComp.columns.superTitle
 #: logLinear/results/modelComp.columns.superTitle
 #: logRegBin/results/modelComp.columns.superTitle
 #: logRegMulti/results/modelComp.columns.superTitle
@@ -534,7 +618,8 @@ msgstr "比較"
 msgid "Comparisons are based on estimated marginal means"
 msgstr "比較は推定周辺平均値に基づく値です"
 
-#: R/pca.b.R pca/results/loadings.columns.superTitle
+#: R/pca.b.R
+#: pca/results/loadings.columns.superTitle
 #: pca/results/factorStats/factorSummary.columns.title
 #: pca/results/eigen/initEigen.columns.title
 msgid "Component"
@@ -560,15 +645,21 @@ msgstr "主成分得点"
 msgid "Component summary"
 msgstr "主成分の要約量"
 
-#: ancova/ui[2]/modelSupplier.label anova/ui[2]/modelSupplier.label
+#: ancova/ui[2]/modelSupplier.label
+#: anova/ui[2]/modelSupplier.label
 msgid "Components"
 msgstr "要因"
 
-#: ancova/options/postHocEsCi.title anova/options/postHocEsCi.title
-#: descriptives/options/ci.title propTest2/results/table.columns.superTitle
-#: ttestIS/options/ci.title ttestIS/options/ciES.title
-#: ttestOneS/options/ci.title ttestOneS/options/ciES.title
-#: ttestPS/options/ci.title ttestPS/options/ciES.title
+#: ancova/options/postHocEsCi.title
+#: anova/options/postHocEsCi.title
+#: descriptives/options/ci.title
+#: propTest2/results/table.columns.superTitle
+#: ttestIS/options/ci.title
+#: ttestIS/options/ciES.title
+#: ttestOneS/options/ci.title
+#: ttestOneS/options/ciES.title
+#: ttestPS/options/ci.title
+#: ttestPS/options/ciES.title
 msgid "Confidence Interval"
 msgstr "信頼区間"
 
@@ -579,17 +670,27 @@ msgstr "信頼区間"
 
 #: ancova/options/emmPlotError/ci.title
 #: ancova/ui[5][1][1]/postHocES_d[0]/postHocEsCi.label
-#: ancova/ui[6][1][0][1]/ciWidthEmm.label anova/options/emmPlotError/ci.title
+#: ancova/ui[6][1][0][1]/ciWidthEmm.label
+#: anova/options/emmPlotError/ci.title
 #: anova/ui[5][1][1]/postHocES_d[0]/postHocEsCi.label
-#: anova/ui[6][1][0][1]/ciWidthEmm.label anovaRM/options/emmPlotError/ci.title
-#: anovaRM/ui[5][1][0][1]/ciWidthEmm.label cfa/options/ci.title
-#: linReg/options/ci.title linReg/options/ciStdEst.title
-#: linReg/options/ciEmm.title logLinear/options/ci.title
-#: logLinear/options/ciRR.title logLinear/options/ciEmm.title
-#: logRegBin/options/ci.title logRegBin/options/ciOR.title
-#: logRegBin/options/ciEmm.title logRegMulti/options/ci.title
-#: logRegMulti/options/ciOR.title logRegMulti/options/ciEmm.title
-#: logRegOrd/options/ci.title logRegOrd/options/ciOR.title
+#: anova/ui[6][1][0][1]/ciWidthEmm.label
+#: anovaRM/options/emmPlotError/ci.title
+#: anovaRM/ui[5][1][0][1]/ciWidthEmm.label
+#: cfa/options/ci.title
+#: linReg/options/ci.title
+#: linReg/options/ciStdEst.title
+#: linReg/options/ciEmm.title
+#: logLinear/options/ci.title
+#: logLinear/options/ciRR.title
+#: logLinear/options/ciEmm.title
+#: logRegBin/options/ci.title
+#: logRegBin/options/ciOR.title
+#: logRegBin/options/ciEmm.title
+#: logRegMulti/options/ci.title
+#: logRegMulti/options/ciOR.title
+#: logRegMulti/options/ciEmm.title
+#: logRegOrd/options/ci.title
+#: logRegOrd/options/ciOR.title
 #: ttestIS/ui[1][1][0]/meanDiff[0]/ci.label
 #: ttestIS/ui[1][1][0]/effectSize[0]/ciES.label
 #: ttestOneS/ui[1][1][0]/meanDiff[0]/ci.label
@@ -603,57 +704,88 @@ msgstr "信頼区間"
 msgid "Confidence interval for Mean"
 msgstr "平均値の信頼区間"
 
-#: anova/options/ciWidthEmm.title corrMatrix/options/ciWidth.title
+#: anova/options/ciWidthEmm.title
+#: corrMatrix/options/ciWidth.title
 msgid "Confidence interval width"
 msgstr "信頼区間"
 
-#: contTables/options/ci.title corrMatrix/options/ci.title
-#: corrMatrix/ui[1][1]/ci.label propTest2/options/ci.title
+#: contTables/options/ci.title
+#: corrMatrix/options/ci.title
+#: corrMatrix/ui[1][1]/ci.label
+#: propTest2/options/ci.title
 msgid "Confidence intervals"
 msgstr "信頼区間"
 
-#: ancova/options/postHocEsCiWidth.title ancova/options/ciWidthEmm.title
-#: anova/options/postHocEsCiWidth.title anovaRM/options/ciWidthEmm.title
-#: cfa/options/ciWidth.title descriptives/options/ciWidth.title
-#: linReg/options/ciWidth.title linReg/options/ciWidthStdEst.title
-#: linReg/options/ciWidthEmm.title logLinear/options/ciWidth.title
-#: logLinear/options/ciWidthRR.title logLinear/options/ciWidthEmm.title
-#: logRegBin/options/ciWidth.title logRegBin/options/ciWidthOR.title
-#: logRegBin/options/ciWidthEmm.title logRegMulti/options/ciWidth.title
-#: logRegMulti/options/ciWidthOR.title logRegMulti/options/ciWidthEmm.title
-#: logRegOrd/options/ciWidth.title logRegOrd/options/ciWidthOR.title
-#: ttestIS/options/ciWidth.title ttestIS/options/ciWidthES.title
-#: ttestOneS/options/ciWidth.title ttestOneS/options/ciWidthES.title
-#: ttestPS/options/ciWidth.title ttestPS/options/ciWidthES.title
+#: ancova/options/postHocEsCiWidth.title
+#: ancova/options/ciWidthEmm.title
+#: anova/options/postHocEsCiWidth.title
+#: anovaRM/options/ciWidthEmm.title
+#: cfa/options/ciWidth.title
+#: descriptives/options/ciWidth.title
+#: linReg/options/ciWidth.title
+#: linReg/options/ciWidthStdEst.title
+#: linReg/options/ciWidthEmm.title
+#: logLinear/options/ciWidth.title
+#: logLinear/options/ciWidthRR.title
+#: logLinear/options/ciWidthEmm.title
+#: logRegBin/options/ciWidth.title
+#: logRegBin/options/ciWidthOR.title
+#: logRegBin/options/ciWidthEmm.title
+#: logRegMulti/options/ciWidth.title
+#: logRegMulti/options/ciWidthOR.title
+#: logRegMulti/options/ciWidthEmm.title
+#: logRegOrd/options/ciWidth.title
+#: logRegOrd/options/ciWidthOR.title
+#: ttestIS/options/ciWidth.title
+#: ttestIS/options/ciWidthES.title
+#: ttestOneS/options/ciWidth.title
+#: ttestOneS/options/ciWidthES.title
+#: ttestPS/options/ciWidth.title
+#: ttestPS/options/ciWidthES.title
 msgid "Confidence level"
 msgstr "信頼水準"
 
-#: package/analyses/cfa.title package/analyses/cfa.menuTitle
-#: package/analyses/cfa.description cfa/options.title
-#: cfa/options.description.main cfa/ui.title cfa/results.title
+#: package/analyses/cfa.title
+#: package/analyses/cfa.menuTitle
+#: package/analyses/cfa.description
+#: cfa/options.title
+#: cfa/options.description.main
+#: cfa/ui.title
+#: cfa/results.title
 msgid "Confirmatory Factor Analysis"
 msgstr "確認的因子分析"
 
-#: cfa/options/constrain.title cfa/ui[2][1][0].label
+#: cfa/options/constrain.title
+#: cfa/ui[2][1][0].label
 msgid "Constraints"
 msgstr "制約"
 
-#: package/analyses/contTables.title package/analyses/contTables.menuSubgroup
-#: package/analyses/contTablesPaired.menuSubgroup contTables/options.title
-#: contTables/options.menuSubgroup contTables/ui.title contTables/results.title
-#: contTables/results/freqs.title contTablesPaired/options.menuSubgroup
+#: package/analyses/contTables.title
+#: package/analyses/contTables.menuSubgroup
+#: package/analyses/contTablesPaired.menuSubgroup
+#: contTables/options.title
+#: contTables/options.menuSubgroup
+#: contTables/ui.title
+#: contTables/results.title
+#: contTables/results/freqs.title
+#: contTablesPaired/options.menuSubgroup
 #: contTablesPaired/results/freqs.title
 msgid "Contingency Tables"
 msgstr "クロス集計表"
 
-#: contTables/options/contCoef.title contTables/results/nom.columns.content
+#: contTables/options/contCoef.title
+#: contTables/results/nom.columns.content
 msgid "Contingency coefficient"
 msgstr "コンティンジェンシー係数"
 
-#: ancova/options/contrasts.title ancova/ui[4].label
-#: ancova/results/contrasts.title anova/options/contrasts.title
-#: anova/ui[4].label anova/results/contrasts.title
-#: anovaRM/options/contrasts.title anovaRM/results/contrasts.title
+#: ancova/options/contrasts.title
+#: ancova/ui[4].label
+#: ancova/results/contrasts.title
+#: anova/options/contrasts.title
+#: anova/ui[4].label
+#: anova/results/contrasts.title
+#: anovaRM/options/contrasts.title
+#: anovaRM/results/contrasts.title
 msgid "Contrasts"
 msgstr "対比"
 
@@ -677,18 +809,25 @@ msgstr "統制変数"
 msgid "Cook's Distance"
 msgstr "クックの距離"
 
-#: R/linreg.b.R R/logregbin.b.R linReg/options/cooks.title
-#: linReg/options/cooksOV.title logRegBin/options/cooks.title
-#: logRegBin/options/cooksOV.title logRegBin/results/cooksOV.title
+#: R/linreg.b.R
+#: R/logregbin.b.R
+#: linReg/options/cooks.title
+#: linReg/options/cooksOV.title
+#: logRegBin/options/cooks.title
+#: logRegBin/options/cooksOV.title
+#: logRegBin/results/cooksOV.title
 msgid "Cook's distance"
 msgstr "クックの距離"
 
-#: ancova/options/postHocCorr.title ancova/ui[5][1][0].label
-#: anova/options/postHocCorr.title anova/ui[5][1][0].label
+#: ancova/options/postHocCorr.title
+#: ancova/ui[5][1][0].label
+#: anova/options/postHocCorr.title
+#: anova/ui[5][1][0].label
 msgid "Correction"
 msgstr "修正"
 
-#: anovaRM/options/postHocCorr.title anovaRM/ui[4][1][0].label
+#: anovaRM/options/postHocCorr.title
+#: anovaRM/ui[4][1][0].label
 msgid "Corrections"
 msgstr "修正"
 
@@ -707,20 +846,26 @@ msgstr "負の相関あり"
 msgid "Correlated positively"
 msgstr "正の相関あり"
 
-#: R/corrpart.b.R corrPart/results/matrix.title
+#: R/corrpart.b.R
+#: corrPart/results/matrix.title
 msgid "Correlation"
 msgstr "相関"
 
-#: corrMatrix/ui[1][0].label corrPart/ui[1][0].label
+#: corrMatrix/ui[1][0].label
+#: corrPart/ui[1][0].label
 msgid "Correlation Coefficients"
 msgstr "相関係数"
 
-#: reliability/options/corPlot.title reliability/results/corPlot.title
+#: reliability/options/corPlot.title
+#: reliability/results/corPlot.title
 msgid "Correlation Heatmap"
 msgstr "相関ヒートマップ"
 
-#: package/analyses/corrMatrix.title package/analyses/corrMatrix.menuTitle
-#: corrMatrix/options.title corrMatrix/ui.title corrMatrix/results.title
+#: package/analyses/corrMatrix.title
+#: package/analyses/corrMatrix.menuTitle
+#: corrMatrix/options.title
+#: corrMatrix/ui.title
+#: corrMatrix/results.title
 #: corrMatrix/results/matrix.title
 msgid "Correlation Matrix"
 msgstr "相関行列"
@@ -734,16 +879,13 @@ msgid "Correlation heatmap"
 msgstr "相関ヒートマップ"
 
 #: package/analyses/corrMatrix.description
-msgid ""
-"Correlation matrices are a way to examine linear relationships between\n"
+msgid "Correlation matrices are a way to examine linear relationships between\n"
 "two or more continuous variables."
-msgstr ""
-"相関行列は、２つ以上の連続変数の間にある線形関係について調べるための\n"
+msgstr "相関行列は、２つ以上の連続変数の間にある線形関係について調べるための\n"
 "方法です。"
 
 #: corrMatrix/options.description.main
-msgid ""
-"Correlation matrices are a way to examine linear relationships between\n"
+msgid "Correlation matrices are a way to examine linear relationships between\n"
 "two or more continuous variables.\n"
 "\n"
 "For each pair of variables, a Pearson's r value indicates the strength\n"
@@ -760,8 +902,7 @@ msgid ""
 "correlation is zero and calculate a p-value. If the p-value is low, it\n"
 "suggests the correlation co-efficient is not zero, and there is a linear\n"
 "(or more complex) relationship between the two variables."
-msgstr ""
-"相関行列は、複数の連続変数間にある線形関係について調べるための\n"
+msgstr "相関行列は、複数の連続変数間にある線形関係について調べるための\n"
 "方法です。\n"
 "\n"
 "ピアソンの相関係数rは、各変数ペアについて、変数間の関係の強さと\n"
@@ -775,7 +916,8 @@ msgstr ""
 "ことが可能です。小さなp値は、相関係数が0ではなく、2つの変数の間に\n"
 "線形（またはより複雑な）関係があることを示します。"
 
-#: corrMatrix/options/plots.title corrMatrix/ui[1][3]/plots.label
+#: corrMatrix/options/plots.title
+#: corrMatrix/ui[1][3]/plots.label
 msgid "Correlation matrix"
 msgstr "相関行列"
 
@@ -783,28 +925,36 @@ msgstr "相関行列"
 msgid "Correlation type"
 msgstr "相関のタイプ"
 
-#: R/conttablespaired.b.R propTest2/results/table.columns.title
+#: R/conttablespaired.b.R
+#: propTest2/results/table.columns.title
 #: propTestN/results/props.columns.title
 msgid "Count"
 msgstr "度数"
 
-#: R/conttables.b.R R/descriptives.b.R R/loglinear.b.R
-#: contTables/options/yaxis/ycounts.title contTables/ui[1][1][0][0][0].label
+#: R/conttables.b.R
+#: R/descriptives.b.R
+#: R/loglinear.b.R
+#: contTables/options/yaxis/ycounts.title
+#: contTables/ui[1][1][0][0][0].label
 #: descriptives/options/barCounts.title
 msgid "Counts"
 msgstr "度数"
 
-#: contTables/options/counts.title contTablesPaired/options/counts.title
-#: logLinear/options/counts.title logLinear/ui[0][1].label
+#: contTables/options/counts.title
+#: contTablesPaired/options/counts.title
+#: logLinear/options/counts.title
+#: logLinear/ui[0][1].label
 #: propTestN/options/counts.title
 msgid "Counts (optional)"
 msgstr "度数（オプション）"
 
-#: R/conttables.b.R R/conttablespaired.b.R
+#: R/conttables.b.R
+#: R/conttablespaired.b.R
 msgid "Counts may not be infinite"
 msgstr "度数は有限でなくてはなりません"
 
-#: R/conttables.b.R R/conttablespaired.b.R
+#: R/conttables.b.R
+#: R/conttablespaired.b.R
 msgid "Counts may not be negative"
 msgstr "度数は正の値でなければなりません"
 
@@ -812,15 +962,22 @@ msgstr "度数は正の値でなければなりません"
 msgid "Counts must be non-negative and finite"
 msgstr "度数は有限な正の値でなくてはなりません"
 
-#: ancova/options/covs.title anovaRM/options/cov.title
-#: linReg/options/covs.title linReg/ui[0][1].label logRegBin/options/covs.title
-#: logRegBin/ui[0][1].label logRegMulti/options/covs.title
-#: logRegMulti/ui[0][1].label logRegOrd/options/covs.title
-#: logRegOrd/ui[0][1].label mancova/options/covs.title
+#: ancova/options/covs.title
+#: anovaRM/options/cov.title
+#: linReg/options/covs.title
+#: linReg/ui[0][1].label
+#: logRegBin/options/covs.title
+#: logRegBin/ui[0][1].label
+#: logRegMulti/options/covs.title
+#: logRegMulti/ui[0][1].label
+#: logRegOrd/options/covs.title
+#: logRegOrd/ui[0][1].label
+#: mancova/options/covs.title
 msgid "Covariates"
 msgstr "共変量"
 
-#: logLinear/options/pseudoR2/r2cs.title logRegBin/options/pseudoR2/r2cs.title
+#: logLinear/options/pseudoR2/r2cs.title
+#: logRegBin/options/pseudoR2/r2cs.title
 #: logRegMulti/options/pseudoR2/r2cs.title
 #: logRegOrd/options/pseudoR2/r2cs.title
 msgid "Cox & Snell's R²"
@@ -838,7 +995,8 @@ msgstr "ベイズ信頼区間"
 msgid "Credible intervals"
 msgstr "ベイズ信頼区間"
 
-#: reliability/options/alphaScale.title reliability/results/scale.columns.title
+#: reliability/options/alphaScale.title
+#: reliability/results/scale.columns.title
 #: reliability/results/items.columns.title
 msgid "Cronbach's α"
 msgstr "クロンバックのα"
@@ -847,7 +1005,8 @@ msgstr "クロンバックのα"
 msgid "Cronbach's α (if item is dropped)"
 msgstr "項目除外時のクロンバックα"
 
-#: R/descriptives.b.R pca/results/factorStats/factorSummary.columns.title
+#: R/descriptives.b.R
+#: pca/results/factorStats/factorSummary.columns.title
 #: pca/results/eigen/initEigen.columns.title
 msgid "Cumulative %"
 msgstr "累積%"
@@ -856,11 +1015,13 @@ msgstr "累積%"
 msgid "Cut point values"
 msgstr "分割数"
 
-#: descriptives/options/pcEqGr.title descriptives/ui[2][0][1][0]/pcEqGr.label
+#: descriptives/options/pcEqGr.title
+#: descriptives/ui[2][0][1][0]/pcEqGr.label
 msgid "Cut points for"
 msgstr "均等に"
 
-#: R/logregbin.b.R logRegBin/ui[7][0][0][0].label
+#: R/logregbin.b.R
+#: logRegBin/ui[7][0][0][0].label
 msgid "Cut-Off"
 msgstr "カットオフ"
 
@@ -884,16 +1045,19 @@ msgstr "多重比較（DSCF法）"
 msgid "DW Statistic"
 msgstr "DW統計量"
 
-#: R/pca.b.R descriptives/options/dot.title
+#: R/pca.b.R
+#: descriptives/options/dot.title
 msgid "Data"
 msgstr "データ"
 
-#: package/analyses/pca.menuSubgroup package/analyses/efa.menuSubgroup
+#: package/analyses/pca.menuSubgroup
+#: package/analyses/efa.menuSubgroup
 #: package/analyses/cfa.menuSubgroup
 msgid "Data Reduction"
 msgstr "データ縮約"
 
-#: linReg/ui[3][0][1][0].label linReg/results/models.template/dataSummary.title
+#: linReg/ui[3][0][1][0].label
+#: linReg/results/models.template/dataSummary.title
 #: logRegBin/results/models.template/dataSummary.title
 msgid "Data Summary"
 msgstr "データ要約"
@@ -902,7 +1066,8 @@ msgstr "データ要約"
 msgid "Densities for variables"
 msgstr "変数の密度曲線"
 
-#: R/proptest2.b.R descriptives/options/dens.title
+#: R/proptest2.b.R
+#: descriptives/options/dens.title
 msgid "Density"
 msgstr "密度曲線"
 
@@ -910,9 +1075,13 @@ msgstr "密度曲線"
 msgid "Dependent"
 msgstr "従属変数"
 
-#: ancova/options/dep.title anova/options/dep.title linReg/options/dep.title
-#: logRegBin/options/dep.title logRegMulti/options/dep.title
-#: logRegOrd/options/dep.title mancova/results/univar.columns.title
+#: ancova/options/dep.title
+#: anova/options/dep.title
+#: linReg/options/dep.title
+#: logRegBin/options/dep.title
+#: logRegMulti/options/dep.title
+#: logRegOrd/options/dep.title
+#: mancova/results/univar.columns.title
 msgid "Dependent Variable"
 msgstr "従属変数"
 
@@ -920,9 +1089,12 @@ msgstr "従属変数"
 msgid "Dependent Variable Label"
 msgstr "従属変数ラベル"
 
-#: anovaNP/options/deps.title anovaOneW/options/deps.title
-#: anovaOneW/ui[0][0].label mancova/options/deps.title
-#: ttestIS/options/vars.title ttestOneS/options/vars.title
+#: anovaNP/options/deps.title
+#: anovaOneW/options/deps.title
+#: anovaOneW/ui[0][0].label
+#: mancova/options/deps.title
+#: ttestIS/options/vars.title
+#: ttestOneS/options/vars.title
 msgid "Dependent Variables"
 msgstr "従属変数"
 
@@ -938,23 +1110,32 @@ msgstr "記述統計量のグラフ"
 msgid "Descriptive plot"
 msgstr "記述統計量のグラフ"
 
-#: package/analyses/descriptives.title package/analyses/descriptives.menuTitle
-#: anovaRMNP/options/desc.title anovaRMNP/results/desc.title
-#: descriptives/options.title descriptives/options/desc.title
-#: descriptives/ui.title descriptives/results.title
+#: package/analyses/descriptives.title
+#: package/analyses/descriptives.menuTitle
+#: anovaRMNP/options/desc.title
+#: anovaRMNP/results/desc.title
+#: descriptives/options.title
+#: descriptives/options/desc.title
+#: descriptives/ui.title
+#: descriptives/results.title
 #: descriptives/results/descriptives.title
-#: descriptives/results/descriptivesT.title ttestIS/ui[1][1][0]/desc.label
-#: ttestOneS/ui[1][1][0]/desc.label ttestOneS/results/descriptives.title
-#: ttestPS/ui[1][1][0]/desc.label ttestPS/results/desc.title
+#: descriptives/results/descriptivesT.title
+#: ttestIS/ui[1][1][0]/desc.label
+#: ttestOneS/ui[1][1][0]/desc.label
+#: ttestOneS/results/descriptives.title
+#: ttestPS/ui[1][1][0]/desc.label
+#: ttestPS/results/desc.title
 msgid "Descriptives"
 msgstr "記述統計"
 
-#: ttestIS/options/plots.title ttestOneS/options/plots.title
+#: ttestIS/options/plots.title
+#: ttestOneS/options/plots.title
 #: ttestPS/options/plots.title
 msgid "Descriptives Plots"
 msgstr "記述統計量のグラフ"
 
-#: ttestIS/options/desc.title ttestOneS/options/desc.title
+#: ttestIS/options/desc.title
+#: ttestOneS/options/desc.title
 #: ttestPS/options/desc.title
 msgid "Descriptives Table"
 msgstr "記述統計量の表"
@@ -964,8 +1145,10 @@ msgstr "記述統計量の表"
 msgid "Descriptives are an assortment of summarising statistics, and visualizations which allow exploring the shape and distribution of data. It is good practice to explore your data with descriptives before proceeding to more formal tests."
 msgstr "記述統計は、データ分布の特徴について探索するために、要約統計量の算出や視覚化を行います。より本格的な分析に進む前に、まず記述統計でデータの特徴を調べておくことをお勧めします。"
 
-#: anovaOneW/options/descPlot.title ttestIS/ui[1][1][0]/plots.label
-#: ttestOneS/ui[1][1][0]/plots.label ttestPS/ui[1][1][0]/plots.label
+#: anovaOneW/options/descPlot.title
+#: ttestIS/ui[1][1][0]/plots.label
+#: ttestOneS/ui[1][1][0]/plots.label
+#: ttestPS/ui[1][1][0]/plots.label
 msgid "Descriptives plots"
 msgstr "記述統計量のグラフ"
 
@@ -973,10 +1156,14 @@ msgstr "記述統計量のグラフ"
 msgid "Descriptives table"
 msgstr "記述統計量の表"
 
-#: logLinear/options/dev.title logLinear/results/modelFit.columns.title
-#: logRegBin/options/dev.title logRegBin/results/modelFit.columns.title
-#: logRegMulti/options/dev.title logRegMulti/results/modelFit.columns.title
-#: logRegOrd/options/dev.title logRegOrd/results/modelFit.columns.title
+#: logLinear/options/dev.title
+#: logLinear/results/modelFit.columns.title
+#: logRegBin/options/dev.title
+#: logRegBin/results/modelFit.columns.title
+#: logRegMulti/options/dev.title
+#: logRegMulti/results/modelFit.columns.title
+#: logRegOrd/options/dev.title
+#: logRegOrd/results/modelFit.columns.title
 msgid "Deviance"
 msgstr "逸脱度"
 
@@ -1020,23 +1207,34 @@ msgstr "ダービン=ワトソンの自己相関検定"
 msgid "Dwass-Steel-Critchlow-Fligner pairwise comparisons"
 msgstr "多重比較（ドゥワス=スティール=クリッチロウ=フリグナー法）"
 
-#: ancova/options/effectSize.title ancova/ui[1][1].label
-#: ancova/ui[5][1][1].label anova/options/effectSize.title anova/ui[1][1].label
-#: anova/ui[5][1][1].label anovaRM/options/effectSize.title
-#: anovaRM/ui[1][0][0].label ttestIS/options/effectSize.title
-#: ttestIS/results/ttest.columns.title ttestOneS/results/ttest.columns.title
-#: ttestPS/options/effectSize.title ttestPS/results/ttest.columns.title
+#: ancova/options/effectSize.title
+#: ancova/ui[1][1].label
+#: ancova/ui[5][1][1].label
+#: anova/options/effectSize.title
+#: anova/ui[1][1].label
+#: anova/ui[5][1][1].label
+#: anovaRM/options/effectSize.title
+#: anovaRM/ui[1][0][0].label
+#: ttestIS/options/effectSize.title
+#: ttestIS/results/ttest.columns.title
+#: ttestOneS/results/ttest.columns.title
+#: ttestPS/options/effectSize.title
+#: ttestPS/results/ttest.columns.title
 msgid "Effect Size"
 msgstr "効果量"
 
-#: ancova/options/postHocES.title anova/options/postHocES.title
-#: anovaNP/options/es.title ttestIS/ui[1][1][0]/effectSize.label
-#: ttestOneS/options/effectSize.title ttestOneS/ui[1][1][0]/effectSize.label
+#: ancova/options/postHocES.title
+#: anova/options/postHocES.title
+#: anovaNP/options/es.title
+#: ttestIS/ui[1][1][0]/effectSize.label
+#: ttestOneS/options/effectSize.title
+#: ttestOneS/ui[1][1][0]/effectSize.label
 #: ttestPS/ui[1][1][0]/effectSize.label
 msgid "Effect size"
 msgstr "効果量"
 
-#: R/pca.b.R pca/results/eigen/initEigen.columns.title
+#: R/pca.b.R
+#: pca/results/eigen/initEigen.columns.title
 msgid "Eigenvalue"
 msgstr "固有値"
 
@@ -1049,14 +1247,18 @@ msgstr "固有値"
 msgid "Eigenvalues greater than"
 msgstr "固有値の最小基準値"
 
-#: ancova/options/emmWeights.title anova/options/emmWeights.title
-#: anovaRM/options/emmWeights.title linReg/options/emmWeights.title
-#: logLinear/options/emmWeights.title logRegBin/options/emmWeights.title
+#: ancova/options/emmWeights.title
+#: anova/options/emmWeights.title
+#: anovaRM/options/emmWeights.title
+#: linReg/options/emmWeights.title
+#: logLinear/options/emmWeights.title
+#: logRegBin/options/emmWeights.title
 #: logRegMulti/options/emmWeights.title
 msgid "Equal cell weights"
 msgstr "均等重みづけ"
 
-#: ancova/options/emmPlotError.title anova/options/emmPlotError.title
+#: ancova/options/emmPlotError.title
+#: anova/options/emmPlotError.title
 #: anovaRM/options/emmPlotError.title
 msgid "Error bars"
 msgstr "誤差線"
@@ -1067,7 +1269,8 @@ msgstr "誤差線"
 #: cfa/results/factorEst/factorCov.columns.title
 #: cfa/results/factorEst/factorIntercept.columns.title
 #: cfa/results/resEst/resCov.columns.title
-#: cfa/results/resEst/resIntercept.columns.title linReg/ui[5][0][0][1].label
+#: cfa/results/resEst/resIntercept.columns.title
+#: linReg/ui[5][0][0][1].label
 #: linReg/results/models.template/coef.columns.title
 #: logLinear/results/models.template/coef.columns.title
 #: logRegBin/results/models.template/coef.columns.title
@@ -1078,7 +1281,8 @@ msgstr "誤差線"
 msgid "Estimate"
 msgstr "推定値"
 
-#: logRegBin/ui[5][0][0][1].label logRegMulti/ui[4][0][0][1].label
+#: logRegBin/ui[5][0][0][1].label
+#: logRegMulti/ui[4][0][0][1].label
 #: logRegOrd/ui[4][0][1][0].label
 msgid "Estimate (Log Odds Ratio)"
 msgstr "推定値（対数オッズ比）"
@@ -1087,16 +1291,28 @@ msgstr "推定値（対数オッズ比）"
 msgid "Estimate (Log Rate Ratio)"
 msgstr "推定値（対数率比）"
 
-#: ancova/ui[6].label ancova/results/emm.title anova/ui[6].label
-#: anova/results/emm.title anovaRM/ui[5].label anovaRM/results/emm.title
-#: linReg/ui[6].label linReg/results/models.template/emm.title
-#: logLinear/ui[5].label logLinear/results/models.template/emm.title
-#: logRegBin/ui[6].label logRegBin/results/models.template/emm.title
-#: logRegMulti/ui[5].label logRegMulti/results/models.template/emm.title
+#: ancova/ui[6].label
+#: ancova/results/emm.title
+#: anova/ui[6].label
+#: anova/results/emm.title
+#: anovaRM/ui[5].label
+#: anovaRM/results/emm.title
+#: linReg/ui[6].label
+#: linReg/results/models.template/emm.title
+#: logLinear/ui[5].label
+#: logLinear/results/models.template/emm.title
+#: logRegBin/ui[6].label
+#: logRegBin/results/models.template/emm.title
+#: logRegMulti/ui[5].label
+#: logRegMulti/results/models.template/emm.title
 msgid "Estimated Marginal Means"
 msgstr "推定周辺平均"
 
-#: R/ancova.b.R R/anovarm.b.R R/linreg.b.R R/loglinear.b.R R/logregbin.b.R
+#: R/ancova.b.R
+#: R/anovarm.b.R
+#: R/linreg.b.R
+#: R/loglinear.b.R
+#: R/logregbin.b.R
 #: R/logregmulti.b.R
 msgid "Estimated Marginal Means - {term}"
 msgstr "推定周辺平均値 - {term}"
@@ -1113,6 +1329,10 @@ msgstr "推定値は 「{dep} = {level1}」vs.「{dep} = {level2}」の対数オ
 msgid "Estimates represent the log odds of …"
 msgstr "推定値は次の対数オッズを表しています…"
 
+#: efa/options/factorScoreMethod.title
+msgid "Estimation method"
+msgstr ""
+
 #: anovaOneW/ui[1][0][1]/miss_perAnalysis.label
 #: ttestIS/ui[1][0][2]/miss_perAnalysis.label
 #: ttestOneS/ui[1][0][2]/miss_perAnalysis.label
@@ -1121,7 +1341,8 @@ msgid "Exclude cases analysis by analysis"
 msgstr "分析ごとに除外"
 
 #: anovaOneW/ui[1][0][1]/miss_listwise.label
-#: cfa/ui[2][0][0]/miss_listwise.label ttestIS/ui[1][0][2]/miss_listwise.label
+#: cfa/ui[2][0][0]/miss_listwise.label
+#: ttestIS/ui[1][0][2]/miss_listwise.label
 #: ttestOneS/ui[1][0][2]/miss_listwise.label
 #: ttestPS/ui[1][0][2]/miss_listwise.label
 msgid "Exclude cases listwise"
@@ -1131,25 +1352,34 @@ msgstr "行全体を除外"
 msgid "Excluded"
 msgstr "除外"
 
-#: R/conttables.b.R propTestN/results/props.columns.content
+#: R/conttables.b.R
+#: propTestN/results/props.columns.content
 msgid "Expected"
 msgstr "期待度数"
 
-#: propTestN/options/ratio.title propTestN/ui[2].label
+#: propTestN/options/ratio.title
+#: propTestN/ui[2].label
 msgid "Expected Proportions"
 msgstr "期待比率"
 
-#: contTables/options/exp.title propTestN/options/expected.title
+#: contTables/options/exp.title
+#: propTestN/options/expected.title
 msgid "Expected counts"
 msgstr "期待度数"
 
-#: package/analyses/descriptives.menuGroup descriptives/options.menuGroup
+#: package/analyses/descriptives.menuGroup
+#: descriptives/options.menuGroup
 msgid "Exploration"
 msgstr "探索"
 
-#: R/efa.b.R package/analyses/efa.title package/analyses/efa.menuTitle
-#: package/analyses/efa.description efa/options.title
-#: efa/options.description.main efa/ui.title efa/results.title
+#: R/efa.b.R
+#: package/analyses/efa.title
+#: package/analyses/efa.menuTitle
+#: package/analyses/efa.description
+#: efa/options.title
+#: efa/options.description.main
+#: efa/ui.title
+#: efa/results.title
 #: efa/results/text.title
 msgid "Exploratory Factor Analysis"
 msgstr "探索的因子分析"
@@ -1158,11 +1388,15 @@ msgstr "探索的因子分析"
 msgid "Extraction"
 msgstr "抽出法"
 
-#: ancova/results/main.columns.title anovaOneW/results/anova.columns.title
-#: anovaRM/results/rmTable.columns.title anovaRM/results/bsTable.columns.title
-#: linReg/results/modelFit.columns.title linReg/results/modelComp.columns.title
+#: ancova/results/main.columns.title
+#: anovaOneW/results/anova.columns.title
+#: anovaRM/results/rmTable.columns.title
+#: anovaRM/results/bsTable.columns.title
+#: linReg/results/modelFit.columns.title
+#: linReg/results/modelComp.columns.title
 #: linReg/results/models.template/anova.columns.title
-#: mancova/results/multivar.columns.title mancova/results/univar.columns.title
+#: mancova/results/multivar.columns.title
+#: mancova/results/univar.columns.title
 #: ttestIS/results/assum/eqv.columns.title
 msgid "F"
 msgstr "F"
@@ -1175,11 +1409,16 @@ msgstr "F検定"
 msgid "F-statistic could not be calculated"
 msgstr "F統計量を計算できません"
 
-#: R/efa.b.R package/analyses/reliability.menuGroup
-#: package/analyses/pca.menuGroup package/analyses/efa.menuGroup
-#: package/analyses/cfa.menuGroup cfa/options.menuGroup
-#: cfa/results/factorLoadings.columns.title efa/options.menuGroup
-#: pca/options.menuGroup reliability/options.menuGroup
+#: R/efa.b.R
+#: package/analyses/reliability.menuGroup
+#: package/analyses/pca.menuGroup
+#: package/analyses/efa.menuGroup
+#: package/analyses/cfa.menuGroup
+#: cfa/options.menuGroup
+#: cfa/results/factorLoadings.columns.title
+#: efa/options.menuGroup
+#: pca/options.menuGroup
+#: reliability/options.menuGroup
 msgid "Factor"
 msgstr "因子分析"
 
@@ -1211,7 +1450,9 @@ msgstr "因子推定値"
 msgid "Factor Intercepts"
 msgstr "因子切片"
 
-#: R/efa.b.R cfa/results/factorLoadings.title efa/ui[1][1][1].label
+#: R/efa.b.R
+#: cfa/results/factorLoadings.title
+#: efa/ui[1][1][1].label
 #: pca/ui[1][1][1].label
 msgid "Factor Loadings"
 msgstr "因子負荷"
@@ -1236,6 +1477,7 @@ msgstr "因子共分散"
 msgid "Factor intercepts"
 msgstr "因子の切片"
 
+#: efa/options/factorScoresOV.title
 #: pca/results/factorScoresOV.title
 msgid "Factor scores"
 msgstr "因子得点"
@@ -1252,12 +1494,19 @@ msgstr "因子の分散を1に固定"
 msgid "Factor {0}"
 msgstr "因子 {0}"
 
-#: cfa/options/factors.title cfa/ui[0][0].label linReg/options/factors.title
-#: linReg/ui[0][2].label logLinear/options/factors.title
-#: logLinear/ui[0][0].label logRegBin/options/factors.title
-#: logRegBin/ui[0][2].label logRegMulti/options/factors.title
-#: logRegMulti/ui[0][2].label logRegOrd/options/factors.title
-#: logRegOrd/ui[0][2].label mancova/options/factors.title
+#: cfa/options/factors.title
+#: cfa/ui[0][0].label
+#: linReg/options/factors.title
+#: linReg/ui[0][2].label
+#: logLinear/options/factors.title
+#: logLinear/ui[0][0].label
+#: logRegBin/options/factors.title
+#: logRegBin/ui[0][2].label
+#: logRegMulti/options/factors.title
+#: logRegMulti/ui[0][2].label
+#: logRegOrd/options/factors.title
+#: logRegOrd/ui[0][2].label
+#: mancova/options/factors.title
 msgid "Factors"
 msgstr "因子"
 
@@ -1265,14 +1514,19 @@ msgstr "因子"
 msgid "Fisher's"
 msgstr "フィッシャー法"
 
-#: contTables/options/fisher.title contTables/results/chiSq.columns.content
+#: contTables/options/fisher.title
+#: contTables/results/chiSq.columns.content
 msgid "Fisher's exact test"
 msgstr "フィッシャーの正確確率検定"
 
-#: cfa/options/fitMeasures.title cfa/ui[4][1][0]/fitMeasures.label
-#: cfa/results/modelFit/fitMeasures.title linReg/ui[4][0][0][0].label
-#: logLinear/ui[3][0][0][0].label logRegBin/ui[4][0][0][0].label
-#: logRegMulti/ui[3][0][0][0].label logRegOrd/ui[3][0][0][0].label
+#: cfa/options/fitMeasures.title
+#: cfa/ui[4][1][0]/fitMeasures.label
+#: cfa/results/modelFit/fitMeasures.title
+#: linReg/ui[4][0][0][0].label
+#: logLinear/ui[3][0][0][0].label
+#: logRegBin/ui[4][0][0][0].label
+#: logRegMulti/ui[3][0][0][0].label
+#: logRegOrd/ui[3][0][0][0].label
 msgid "Fit Measures"
 msgstr "適合度指標"
 
@@ -1280,7 +1534,8 @@ msgstr "適合度指標"
 msgid "Fitted"
 msgstr "予測値"
 
-#: ancova/options/factors.title anova/options/factors.title
+#: ancova/options/factors.title
+#: anova/options/factors.title
 msgid "Fixed Factors"
 msgstr "固定因子"
 
@@ -1293,16 +1548,21 @@ msgstr "数値指定"
 msgid "Flag significant comparisons"
 msgstr "差が有意なペアに印"
 
-#: corrMatrix/options/flag.title corrPart/options/flag.title
+#: corrMatrix/options/flag.title
+#: corrPart/options/flag.title
 msgid "Flag significant correlations"
 msgstr "有意な相関に印"
 
-#: package/analyses/propTest2.menuGroup package/analyses/propTestN.menuGroup
+#: package/analyses/propTest2.menuGroup
+#: package/analyses/propTestN.menuGroup
 #: package/analyses/contTables.menuGroup
 #: package/analyses/contTablesPaired.menuGroup
-#: package/analyses/logLinear.menuGroup contTables/options.menuGroup
-#: contTablesPaired/options.menuGroup descriptives/results/frequencies.title
-#: logLinear/options.menuGroup propTest2/options.menuGroup
+#: package/analyses/logLinear.menuGroup
+#: contTables/options.menuGroup
+#: contTablesPaired/options.menuGroup
+#: descriptives/results/frequencies.title
+#: logLinear/options.menuGroup
+#: propTest2/options.menuGroup
 #: propTestN/options.menuGroup
 msgid "Frequencies"
 msgstr "度数分析"
@@ -1311,11 +1571,13 @@ msgstr "度数分析"
 msgid "Frequencies of $key"
 msgstr "$keyの度数分布表"
 
-#: descriptives/options/freq.title descriptives/ui[1][1]/freq.label
+#: descriptives/options/freq.title
+#: descriptives/ui[1][1]/freq.label
 msgid "Frequency tables"
 msgstr "度数分布表"
 
-#: package/analyses/anovaRMNP.menuSubtitle anovaRMNP/options.menuSubtitle
+#: package/analyses/anovaRMNP.menuSubtitle
+#: anovaRMNP/options.menuSubtitle
 #: anovaRMNP/results/table.title
 msgid "Friedman"
 msgstr "フリードマン"
@@ -1332,14 +1594,18 @@ msgstr "ゲームス=ハウエル法（非等分散）"
 msgid "Games-Howell Post-Hoc Test – {dep}"
 msgstr "多重比較（ゲームス=ハウエル法） - {dep}"
 
-#: contTables/options/gamma.title contTables/results/gamma.title
+#: contTables/options/gamma.title
+#: contTables/results/gamma.title
 #: contTables/results/gamma.columns.title
 msgid "Gamma"
 msgstr "グッドマン=クラスカルのガンマ"
 
-#: ancova/ui[6][1][0][1].label anova/ui[6][1][0][1].label
-#: anovaRM/ui[5][1][0][1].label linReg/ui[6][1][0][0].label
-#: logLinear/ui[5][1][0][0].label logRegBin/ui[6][1][0][0].label
+#: ancova/ui[6][1][0][1].label
+#: anova/ui[6][1][0][1].label
+#: anovaRM/ui[5][1][0][1].label
+#: linReg/ui[6][1][0][0].label
+#: logLinear/ui[5][1][0][0].label
+#: logRegBin/ui[6][1][0][0].label
 #: logRegMulti/ui[5][1][0][0].label
 msgid "General Options"
 msgstr "全般オプション"
@@ -1352,7 +1618,8 @@ msgstr "一般化η²"
 msgid "Grand mean (simple coding)"
 msgstr "全体平均（シンプルコード）"
 
-#: anovaRM/options/spherCorr/GG.title anovaRM/results/rmTable.columns.content
+#: anovaRM/options/spherCorr/GG.title
+#: anovaRM/results/rmTable.columns.content
 msgid "Greenhouse-Geisser"
 msgstr "グリーンハウス=ガイザー"
 
@@ -1393,7 +1660,8 @@ msgstr "グループ１ ≠ グループ２"
 msgid "Group 2"
 msgstr "グループ2"
 
-#: anovaOneW/results/desc.title ttestIS/results/desc.title
+#: anovaOneW/results/desc.title
+#: ttestIS/results/desc.title
 msgid "Group Descriptives"
 msgstr "グループ統計量"
 
@@ -1405,8 +1673,10 @@ msgstr "グループの要約"
 msgid "Group summary"
 msgstr "グループの要約"
 
-#: anovaNP/options/group.title anovaOneW/options/group.title
-#: anovaOneW/ui[0][1].label ttestIS/options/group.title
+#: anovaNP/options/group.title
+#: anovaOneW/options/group.title
+#: anovaOneW/ui[0][1].label
+#: ttestIS/options/group.title
 msgid "Grouping Variable"
 msgstr "グループ変数"
 
@@ -1426,17 +1696,23 @@ msgstr "グループ変数「{a}」を同時に従属変数として使用する
 msgid "Haldane-Anscombe correction applied"
 msgstr "ホールデン=アンスコムの修正による修正値です"
 
+#: efa/options/factorScoreMethod/Harman.title
+msgid "Harman"
+msgstr ""
+
 #: ancova/options/contrasts.template/type/helmert.title
 #: anova/options/contrasts.template/type/helmert.title
 #: anovaRM/options/contrasts.template/type/helmert.title
 msgid "Helmert"
 msgstr "ヘルマート"
 
-#: efa/options/hideLoadings.title pca/options/hideLoadings.title
+#: efa/options/hideLoadings.title
+#: pca/options/hideLoadings.title
 msgid "Hide loadings below"
 msgstr "これ未満の負荷量を隠す"
 
-#: cfa/options/hlCorRes.title cfa/options/hlMI.title
+#: cfa/options/hlCorRes.title
+#: cfa/options/hlMI.title
 msgid "Highlight values above"
 msgstr "これ以上の値を強調"
 
@@ -1448,19 +1724,24 @@ msgstr "ヒストグラム"
 msgid "Histograms"
 msgstr "ヒストグラム"
 
-#: ancova/options/postHocCorr/holm.title anova/options/postHocCorr/holm.title
+#: ancova/options/postHocCorr/holm.title
+#: anova/options/postHocCorr/holm.title
 #: anovaRM/options/postHocCorr/holm.title
 msgid "Holm"
 msgstr "ホルム法"
 
-#: ancova/results/assump/homo.title anova/results/assump/homo.title
-#: anovaOneW/results/assump/eqv.title anovaRM/results/assump/leveneTable.title
+#: ancova/results/assump/homo.title
+#: anova/results/assump/homo.title
+#: anovaOneW/results/assump/eqv.title
+#: anovaRM/results/assump/leveneTable.title
 #: ttestIS/results/assum/eqv.title
 msgid "Homogeneity of Variances Test (Levene's)"
 msgstr "分散等質性検定（ルビーン検定）"
 
-#: ancova/options/homo.title anova/options/homo.title
-#: anovaOneW/options/eqv.title anovaRM/options/leveneTest.title
+#: ancova/options/homo.title
+#: anova/options/homo.title
+#: anovaOneW/options/eqv.title
+#: anovaRM/options/leveneTest.title
 #: ttestIS/options/eqv.title
 msgid "Homogeneity test"
 msgstr "等質性検定"
@@ -1470,7 +1751,8 @@ msgstr "等質性検定"
 msgid "Hotelling's Trace"
 msgstr "ホテリングのトレース"
 
-#: anovaRM/options/spherCorr/HF.title anovaRM/results/rmTable.columns.content
+#: anovaRM/options/spherCorr/HF.title
+#: anovaRM/results/rmTable.columns.content
 msgid "Huynh-Feldt"
 msgstr "ヒューン=フェルト"
 
@@ -1478,19 +1760,26 @@ msgstr "ヒューン=フェルト"
 msgid "Huynh-Feldt ε"
 msgstr "ヒューン=フェルトのε"
 
-#: contTables/ui[1][0][0][0][1].label corrMatrix/options/hypothesis.title
-#: corrMatrix/ui[1][2].label corrPart/options/hypothesis.title
-#: corrPart/ui[1][1].label propTest2/options/hypothesis.title
-#: propTest2/ui[1][0][1].label ttestIS/ui[1][0][1].label
-#: ttestOneS/ui[1][0][1].label ttestPS/ui[1][0][1].label
+#: contTables/ui[1][0][0][0][1].label
+#: corrMatrix/options/hypothesis.title
+#: corrMatrix/ui[1][2].label
+#: corrPart/options/hypothesis.title
+#: corrPart/ui[1][1].label
+#: propTest2/options/hypothesis.title
+#: propTest2/ui[1][0][1].label
+#: ttestIS/ui[1][0][1].label
+#: ttestOneS/ui[1][0][1].label
+#: ttestPS/ui[1][0][1].label
 msgid "Hypothesis"
 msgstr "仮説"
 
-#: R/corrmatrix.b.R R/corrpart.b.R
+#: R/corrmatrix.b.R
+#: R/corrpart.b.R
 msgid "Hₐ is negative correlation"
 msgstr "対立仮説：負の相関あり"
 
-#: R/corrmatrix.b.R R/corrpart.b.R
+#: R/corrmatrix.b.R
+#: R/corrpart.b.R
 msgid "Hₐ is positive correlation"
 msgstr "対立仮説：正の相関あり"
 
@@ -1498,16 +1787,21 @@ msgstr "対立仮説：正の相関あり"
 msgid "Hₐ is proportion {direction} {testValue}"
 msgstr "対立仮説：比率 {direction} {testValue}"
 
-#: R/descriptives.b.R descriptives/options/iqr.title
+#: R/descriptives.b.R
+#: descriptives/options/iqr.title
 msgid "IQR"
 msgstr "四分位範囲"
 
-#: package/analyses/contTables.menuTitle contTables/options.menuTitle
+#: package/analyses/contTables.menuTitle
+#: contTables/options.menuTitle
 msgid "Independent Samples"
 msgstr "対応なし"
 
-#: package/analyses/ttestIS.title package/analyses/ttestIS.menuTitle
-#: ttestIS/options.title ttestIS/ui.title ttestIS/results.title
+#: package/analyses/ttestIS.title
+#: package/analyses/ttestIS.menuTitle
+#: ttestIS/options.title
+#: ttestIS/ui.title
+#: ttestIS/results.title
 #: ttestIS/results/ttest.title
 msgid "Independent Samples T-Test"
 msgstr "対応なしt検定"
@@ -1520,7 +1814,8 @@ msgstr "観測変数"
 msgid "Initial Eigenvalues"
 msgstr "回転前の固有値"
 
-#: efa/options/eigen.title pca/options/eigen.title
+#: efa/options/eigen.title
+#: pca/options/eigen.title
 msgid "Initial eigenvalues"
 msgstr "回転前の固有値"
 
@@ -1532,13 +1827,19 @@ msgstr "主成分間の相関"
 msgid "Inter-Factor Correlations"
 msgstr "因子間の相関"
 
-#: R/linreg.b.R R/loglinear.b.R R/logregbin.b.R R/logregmulti.b.R
-#: linReg/options/intercept.title linReg/ui[2][1].label
+#: R/linreg.b.R
+#: R/loglinear.b.R
+#: R/logregbin.b.R
+#: R/logregmulti.b.R
+#: linReg/options/intercept.title
+#: linReg/ui[2][1].label
 msgid "Intercept"
 msgstr "切片"
 
-#: cfa/ui[3][1][0]/ci/ciWidth.label contTables/options/ciWidth.title
-#: corrMatrix/ui[1][1]/ci/ciWidth.label linReg/ui[5][0][0][1]/ci/ciWidth.label
+#: cfa/ui[3][1][0]/ci/ciWidth.label
+#: contTables/options/ciWidth.title
+#: corrMatrix/ui[1][1]/ci/ciWidth.label
+#: linReg/ui[5][0][0][1]/ci/ciWidth.label
 #: linReg/ui[5][0][1][0]/ciStdEst/ciWidthStdEst.label
 #: linReg/ui[6][1][0][0]/ciEmm/ciWidthEmm.label
 #: logLinear/ui[4][0][0][1]/ci/ciWidth.label
@@ -1561,11 +1862,13 @@ msgstr "区間幅"
 msgid "Item '{item}' consists of one level only"
 msgstr "項目「{item}」には1水準しかありません"
 
-#: R/anovarm.b.R R/reliability.b.R
+#: R/anovarm.b.R
+#: R/reliability.b.R
 msgid "Item '{item}' contains infinite values"
 msgstr "項目「{item}」に無限値が含まれています"
 
-#: R/anovarm.b.R R/reliability.b.R
+#: R/anovarm.b.R
+#: R/reliability.b.R
 msgid "Item '{item}' contains only missing values"
 msgstr "項目「{item}」には欠損値しかありません"
 
@@ -1601,7 +1904,8 @@ msgstr "ちりばめ"
 msgid "KMO Measure of Sampling Adequacy"
 msgstr "KMO標本妥当性指標（MSA）"
 
-#: efa/options/kmo.title pca/options/kmo.title
+#: efa/options/kmo.title
+#: pca/options/kmo.title
 msgid "KMO measure of sampling adequacy"
 msgstr "KMO標本妥当性指標"
 
@@ -1618,17 +1922,20 @@ msgstr "ケンドールの順位相関係数"
 msgid "Kendall's Tau-b"
 msgstr "ケンドールの順位相関係数"
 
-#: contTables/options/taub.title corrMatrix/options/kendall.title
+#: contTables/options/taub.title
+#: corrMatrix/options/kendall.title
 #: corrPart/options/kendall.title
 msgid "Kendall's tau-b"
 msgstr "ケンドールの順位相関係数"
 
-#: package/analyses/anovaNP.menuSubtitle anovaNP/options.menuSubtitle
+#: package/analyses/anovaNP.menuSubtitle
+#: anovaNP/options.menuSubtitle
 #: anovaNP/results/table.title
 msgid "Kruskal-Wallis"
 msgstr "クラスカル=ウォリス"
 
-#: R/descriptives.b.R descriptives/options/kurt.title
+#: R/descriptives.b.R
+#: descriptives/options/kurt.title
 msgid "Kurtosis"
 msgstr "尖度"
 
@@ -1636,7 +1943,8 @@ msgstr "尖度"
 msgid "Layers"
 msgstr "階層"
 
-#: propTest2/results/table.columns.title propTestN/ui[2]/ratio.columns.label
+#: propTest2/results/table.columns.title
+#: propTestN/ui[2]/ratio.columns.label
 #: propTestN/results/props.columns.title
 msgid "Level"
 msgstr "水準"
@@ -1661,27 +1969,34 @@ msgstr "ルビーン検定の結果が有意です（p < .05）。分散等質�
 msgid "Likelihood"
 msgstr "尤度"
 
-#: contTables/options/likeRat.title contTables/results/chiSq.columns.content
+#: contTables/options/likeRat.title
+#: contTables/results/chiSq.columns.content
 msgid "Likelihood ratio"
 msgstr "尤度比"
 
-#: logLinear/options/omni.title logRegBin/options/omni.title
-#: logRegMulti/options/omni.title logRegOrd/options/omni.title
+#: logLinear/options/omni.title
+#: logRegBin/options/omni.title
+#: logRegMulti/options/omni.title
+#: logRegOrd/options/omni.title
 msgid "Likelihood ratio tests"
 msgstr "尤度比検定"
 
-#: package/analyses/linReg.title package/analyses/linReg.menuTitle
-#: linReg/options.title linReg/ui.title linReg/results.title
+#: package/analyses/linReg.title
+#: package/analyses/linReg.menuTitle
+#: linReg/options.title
+#: linReg/ui.title
+#: linReg/results.title
 msgid "Linear Regression"
 msgstr "線形回帰"
 
-#: package/analyses/linReg.description linReg/options.description.main
+#: package/analyses/linReg.description
+#: linReg/options.description.main
 msgid "Linear regression is used to explore the relationship between a continuous dependent variable, and one or more continuous and/or categorical explanatory variables. Other statistical methods, such as ANOVA and ANCOVA, are in reality just forms of linear regression."
-msgstr ""
-"線形回帰は、連続型の目的変数と1つ以上の連続型または離散型説明変数との関係を調べるため\n"
+msgstr "線形回帰は、連続型の目的変数と1つ以上の連続型または離散型説明変数との関係を調べるため\n"
 "の方法です。分散分析や共分散分析などは、実際には線形回帰の一形態に過ぎません。"
 
-#: contTables/options/logOdds.title contTables/results/odds.columns.content
+#: contTables/options/logOdds.title
+#: contTables/results/odds.columns.content
 msgid "Log odds ratio"
 msgstr "対数オッズ比"
 
@@ -1690,41 +2005,58 @@ msgstr "対数オッズ比"
 msgid "Log odds ratio exact"
 msgstr "正確対数オッズ比"
 
-#: package/analyses/logLinear.title package/analyses/logLinear.menuTitle
-#: package/analyses/logLinear.description logLinear/options.title
-#: logLinear/options.menuTitle logLinear/options.description.main
-#: logLinear/ui.title logLinear/results.title
+#: package/analyses/logLinear.title
+#: package/analyses/logLinear.menuTitle
+#: package/analyses/logLinear.description
+#: logLinear/options.title
+#: logLinear/options.menuTitle
+#: logLinear/options.description.main
+#: logLinear/ui.title
+#: logLinear/results.title
 msgid "Log-Linear Regression"
 msgstr "対数線形回帰"
 
 #: package/analyses/logRegBin.menuSubgroup
 #: package/analyses/logRegMulti.menuSubgroup
-#: package/analyses/logRegOrd.menuSubgroup logRegBin/options.menuSubgroup
-#: logRegMulti/options.menuSubgroup logRegOrd/options.menuSubgroup
+#: package/analyses/logRegOrd.menuSubgroup
+#: logRegBin/options.menuSubgroup
+#: logRegMulti/options.menuSubgroup
+#: logRegOrd/options.menuSubgroup
 msgid "Logistic Regression"
 msgstr "ロジスティック回帰"
 
-#: R/ancova.b.R R/descriptives.b.R R/linreg.b.R R/loglinear.b.R R/logregbin.b.R
-#: R/logregmulti.b.R cfa/results/factorLoadings.columns.title
+#: R/ancova.b.R
+#: R/descriptives.b.R
+#: R/linreg.b.R
+#: R/loglinear.b.R
+#: R/logregbin.b.R
+#: R/logregmulti.b.R
+#: cfa/results/factorLoadings.columns.title
 #: cfa/results/factorEst/factorCov.columns.title
 #: cfa/results/factorEst/factorIntercept.columns.title
 #: cfa/results/resEst/resCov.columns.title
 #: cfa/results/resEst/resIntercept.columns.title
 #: cfa/results/modelFit/fitMeasures.columns.title
-#: contTables/results/odds.columns.title contTables/results/gamma.columns.title
+#: contTables/results/odds.columns.title
+#: contTables/results/gamma.columns.title
 #: linReg/results/models.template/coef.columns.title
 #: logLinear/results/models.template/coef.columns.title
 #: logRegBin/results/models.template/coef.columns.title
 #: logRegMulti/results/models.template/coef.columns.title
 #: logRegOrd/results/models.template/coef.columns.title
-#: pca/results/modelFit/fit.columns.title propTest2/results/table.columns.title
-#: ttestIS/results/ttest.columns.title ttestOneS/results/ttest.columns.title
+#: pca/results/modelFit/fit.columns.title
+#: propTest2/results/table.columns.title
+#: ttestIS/results/ttest.columns.title
+#: ttestOneS/results/ttest.columns.title
 #: ttestPS/results/ttest.columns.title
 msgid "Lower"
 msgstr "下限"
 
-#: package/analyses/mancova.title package/analyses/mancova.menuTitle
-#: mancova/options.title mancova/ui.title mancova/results.title
+#: package/analyses/mancova.title
+#: package/analyses/mancova.menuTitle
+#: mancova/options.title
+#: mancova/ui.title
+#: mancova/results.title
 msgid "MANCOVA"
 msgstr "多変量共分散分析"
 
@@ -1732,7 +2064,8 @@ msgstr "多変量共分散分析"
 msgid "MSA"
 msgstr "MSA"
 
-#: ttestIS/options/mann.title ttestIS/results/ttest.columns.content
+#: ttestIS/options/mann.title
+#: ttestIS/results/ttest.columns.content
 msgid "Mann-Whitney U"
 msgstr "マン=ホイットニーのU"
 
@@ -1748,23 +2081,32 @@ msgstr "マンテル=ヘンツェルの傾向性検定"
 msgid "Marginal Mean"
 msgstr "周辺平均値"
 
-#: ancova/options/emMeans.title anova/options/emMeans.title
-#: anovaRM/options/emMeans.title linReg/options/emMeans.title
-#: logLinear/options/emMeans.title logRegBin/options/emMeans.title
+#: ancova/options/emMeans.title
+#: anova/options/emMeans.title
+#: anovaRM/options/emMeans.title
+#: linReg/options/emMeans.title
+#: logLinear/options/emMeans.title
+#: logRegBin/options/emMeans.title
 #: logRegMulti/options/emMeans.title
 msgid "Marginal Means"
 msgstr "周辺平均値"
 
-#: ancova/options/emmPlots.title anova/options/emmPlots.title
-#: anovaRM/options/emmPlots.title linReg/options/emmPlots.title
-#: logLinear/options/emmPlots.title logRegBin/options/emmPlots.title
+#: ancova/options/emmPlots.title
+#: anova/options/emmPlots.title
+#: anovaRM/options/emmPlots.title
+#: linReg/options/emmPlots.title
+#: logLinear/options/emmPlots.title
+#: logRegBin/options/emmPlots.title
 #: logRegMulti/options/emmPlots.title
 msgid "Marginal means plots"
 msgstr "周辺平均値のグラフ"
 
-#: ancova/options/emmTables.title anova/options/emmTables.title
-#: anovaRM/options/emmTables.title linReg/options/emmTables.title
-#: logLinear/options/emmTables.title logRegBin/options/emmTables.title
+#: ancova/options/emmTables.title
+#: anova/options/emmTables.title
+#: anovaRM/options/emmTables.title
+#: linReg/options/emmTables.title
+#: logLinear/options/emmTables.title
+#: logRegBin/options/emmTables.title
 #: logRegMulti/options/emmTables.title
 msgid "Marginal means tables"
 msgstr "周辺平均値の表"
@@ -1778,15 +2120,18 @@ msgstr "モークリーのW"
 msgid "Max"
 msgstr "最大値"
 
-#: R/descriptives.b.R descriptives/options/max.title
+#: R/descriptives.b.R
+#: descriptives/options/max.title
 msgid "Maximum"
 msgstr "最大値"
 
-#: R/pca.b.R efa/options/extraction/ml.title
+#: R/pca.b.R
+#: efa/options/extraction/ml.title
 msgid "Maximum likelihood"
 msgstr "最尤法"
 
-#: reliability/options/omegaScale.title reliability/results/scale.columns.title
+#: reliability/options/omegaScale.title
+#: reliability/results/scale.columns.title
 #: reliability/results/items.columns.title
 msgid "McDonald's ω"
 msgstr "マクドナルドのω"
@@ -1795,7 +2140,8 @@ msgstr "マクドナルドのω"
 msgid "McDonald's ω (if item is dropped)"
 msgstr "項目除外時のマクドナルドω"
 
-#: logLinear/options/pseudoR2/r2mf.title logRegBin/options/pseudoR2/r2mf.title
+#: logLinear/options/pseudoR2/r2mf.title
+#: logRegBin/options/pseudoR2/r2mf.title
 #: logRegMulti/options/pseudoR2/r2mf.title
 #: logRegOrd/options/pseudoR2/r2mf.title
 msgid "McFadden's R²"
@@ -1816,23 +2162,32 @@ msgstr "マクニマー検定は2行2列の表でのみ利用可能です"
 msgid "McNemar test"
 msgstr "マクニマー検定"
 
-#: R/ancova.b.R R/anovarm.b.R R/descriptives.b.R R/reliability.b.R
-#: anovaOneW/results/desc.columns.title anovaRMNP/results/desc.columns.title
-#: descriptives/options/boxMean.title descriptives/options/mean.title
+#: R/ancova.b.R
+#: R/anovarm.b.R
+#: R/descriptives.b.R
+#: R/reliability.b.R
+#: anovaOneW/results/desc.columns.title
+#: anovaRMNP/results/desc.columns.title
+#: descriptives/options/boxMean.title
+#: descriptives/options/mean.title
 #: linReg/results/models.template/dataSummary/cooks.columns.title
 #: logRegBin/results/models.template/dataSummary/cooks.columns.title
-#: reliability/options/meanScale.title reliability/options/meanItems.title
+#: reliability/options/meanScale.title
+#: reliability/options/meanItems.title
 #: ttestIS/results/desc.columns.title
 #: ttestOneS/results/descriptives.columns.title
 #: ttestPS/results/desc.columns.title
 msgid "Mean"
 msgstr "平均値"
 
-#: R/anovaonew.b.R R/ttestis.b.R R/ttestps.b.R
+#: R/anovaonew.b.R
+#: R/ttestis.b.R
+#: R/ttestps.b.R
 msgid "Mean ({ciWidth}% CI)"
 msgstr "平均値（{ciWidth}%信頼区間）"
 
-#: R/ancova.b.R R/anovarm.b.R
+#: R/ancova.b.R
+#: R/anovarm.b.R
 msgid "Mean Difference"
 msgstr "平均値の差"
 
@@ -1840,7 +2195,8 @@ msgstr "平均値の差"
 msgid "Mean Dispersion"
 msgstr "平均値のばらつき"
 
-#: ancova/results/main.columns.title anovaRM/results/rmTable.columns.title
+#: ancova/results/main.columns.title
+#: anovaRM/results/rmTable.columns.title
 #: anovaRM/results/bsTable.columns.title
 #: linReg/results/models.template/anova.columns.title
 #: mancova/results/univar.columns.title
@@ -1849,15 +2205,20 @@ msgstr "2乗平均"
 
 #: anovaOneW/options/phMeanDif.title
 #: anovaOneW/results/postHoc.template.columns.content
-#: ttestIS/options/meanDiff.title ttestIS/ui[1][1][0]/meanDiff.label
-#: ttestIS/results/ttest.columns.title ttestOneS/options/meanDiff.title
-#: ttestOneS/ui[1][1][0]/meanDiff.label ttestOneS/results/ttest.columns.title
-#: ttestPS/options/meanDiff.title ttestPS/ui[1][1][0]/meanDiff.label
+#: ttestIS/options/meanDiff.title
+#: ttestIS/ui[1][1][0]/meanDiff.label
+#: ttestIS/results/ttest.columns.title
+#: ttestOneS/options/meanDiff.title
+#: ttestOneS/ui[1][1][0]/meanDiff.label
+#: ttestOneS/results/ttest.columns.title
+#: ttestPS/options/meanDiff.title
+#: ttestPS/ui[1][1][0]/meanDiff.label
 #: ttestPS/results/ttest.columns.title
 msgid "Mean difference"
 msgstr "平均値の差"
 
-#: reliability/options/meanScoreOV.title reliability/results/meanScoreOV.title
+#: reliability/options/meanScoreOV.title
+#: reliability/results/meanScoreOV.title
 msgid "Mean score"
 msgstr "平均得点"
 
@@ -1889,8 +2250,11 @@ msgstr "測定値 1 ≠ 測定値 2"
 msgid "Measures"
 msgstr "測定値"
 
-#: R/descriptives.b.R R/ttestis.b.R R/ttestps.b.R
-#: anovaRMNP/results/desc.columns.title descriptives/options/median.title
+#: R/descriptives.b.R
+#: R/ttestis.b.R
+#: R/ttestps.b.R
+#: anovaRMNP/results/desc.columns.title
+#: descriptives/options/median.title
 #: linReg/results/models.template/dataSummary/cooks.columns.title
 #: logRegBin/results/models.template/dataSummary/cooks.columns.title
 #: ttestIS/results/desc.columns.title
@@ -1903,7 +2267,8 @@ msgstr "中央値"
 msgid "Medians"
 msgstr "中央値"
 
-#: efa/ui[1][0][0].label pca/ui[1][0][0].label
+#: efa/ui[1][0][0].label
+#: pca/ui[1][0][0].label
 msgid "Method"
 msgstr "方法"
 
@@ -1912,7 +2277,8 @@ msgstr "方法"
 msgid "Min"
 msgstr "最小値"
 
-#: R/descriptives.b.R descriptives/options/min.title
+#: R/descriptives.b.R
+#: descriptives/options/min.title
 msgid "Minimum"
 msgstr "最小値"
 
@@ -1924,11 +2290,13 @@ msgstr "最小残差法"
 msgid "Minimum residuals"
 msgstr "最小残差法"
 
-#: efa/options/minEigen.title pca/options/minEigen.title
+#: efa/options/minEigen.title
+#: pca/options/minEigen.title
 msgid "Minimum value"
 msgstr "最小基準値"
 
-#: R/descriptives.b.R descriptives/options/missing.title
+#: R/descriptives.b.R
+#: descriptives/options/missing.title
 msgid "Missing"
 msgstr "欠損値"
 
@@ -1936,13 +2304,17 @@ msgstr "欠損値"
 msgid "Missing Values"
 msgstr "欠損値"
 
-#: cfa/options/miss.title cfa/ui[2][0][0].label
+#: cfa/options/miss.title
+#: cfa/ui[2][0][0].label
 msgid "Missing Values Method"
 msgstr "欠損値の処理"
 
-#: ttestIS/options/miss.title ttestIS/ui[1][0][2].label
-#: ttestOneS/options/miss.title ttestOneS/ui[1][0][2].label
-#: ttestPS/options/miss.title ttestPS/ui[1][0][2].label
+#: ttestIS/options/miss.title
+#: ttestIS/ui[1][0][2].label
+#: ttestOneS/options/miss.title
+#: ttestOneS/ui[1][0][2].label
+#: ttestPS/options/miss.title
+#: ttestPS/ui[1][0][2].label
 msgid "Missing values"
 msgstr "欠損値"
 
@@ -1950,12 +2322,17 @@ msgstr "欠損値"
 msgid "Missing values exclusion method"
 msgstr "欠損値の除外方法"
 
-#: R/descriptives.b.R descriptives/options/mode.title
+#: R/descriptives.b.R
+#: descriptives/options/mode.title
 msgid "Mode"
 msgstr "最頻値"
 
-#: R/logregbin.b.R ancova/ui[2].label anova/ui[2].label anovaRM/ui[2].label
-#: linReg/results/modelFit.columns.title linReg/results/modelComp.columns.title
+#: R/logregbin.b.R
+#: ancova/ui[2].label
+#: anova/ui[2].label
+#: anovaRM/ui[2].label
+#: linReg/results/modelFit.columns.title
+#: linReg/results/modelComp.columns.title
 #: logLinear/results/modelFit.columns.title
 #: logLinear/results/modelComp.columns.title
 #: logRegBin/results/modelFit.columns.title
@@ -1967,44 +2344,65 @@ msgstr "最頻値"
 msgid "Model"
 msgstr "モデル"
 
-#: linReg/ui[1].label logLinear/ui[1].label logRegBin/ui[1].label
-#: logRegMulti/ui[1].label logRegOrd/ui[1].label
+#: linReg/ui[1].label
+#: logLinear/ui[1].label
+#: logRegBin/ui[1].label
+#: logRegMulti/ui[1].label
+#: logRegOrd/ui[1].label
 msgid "Model Builder"
 msgstr "モデルビルダー"
 
-#: linReg/ui[5].label logLinear/ui[4].label
-#: logLinear/results/models.template/coef.title logRegBin/ui[5].label
-#: logRegMulti/ui[4].label logRegOrd/ui[4].label
+#: linReg/ui[5].label
+#: logLinear/ui[4].label
+#: logLinear/results/models.template/coef.title
+#: logRegBin/ui[5].label
+#: logRegMulti/ui[4].label
+#: logRegOrd/ui[4].label
 msgid "Model Coefficients"
 msgstr "モデル係数"
 
-#: linReg/results/modelComp.title logLinear/results/modelComp.title
-#: logRegBin/results/modelComp.title logRegMulti/results/modelComp.title
+#: linReg/results/modelComp.title
+#: logLinear/results/modelComp.title
+#: logRegBin/results/modelComp.title
+#: logRegMulti/results/modelComp.title
 #: logRegOrd/results/modelComp.title
 msgid "Model Comparisons"
 msgstr "モデル比較"
 
-#: ancova/ui[1][0].label anova/ui[1][0].label cfa/ui[4].label
-#: cfa/results/modelFit.title linReg/ui[4].label logLinear/ui[3].label
-#: logRegBin/ui[4].label logRegMulti/ui[3].label logRegOrd/ui[3].label
+#: ancova/ui[1][0].label
+#: anova/ui[1][0].label
+#: cfa/ui[4].label
+#: cfa/results/modelFit.title
+#: linReg/ui[4].label
+#: logLinear/ui[3].label
+#: logRegBin/ui[4].label
+#: logRegMulti/ui[3].label
+#: logRegOrd/ui[3].label
 #: pca/results/modelFit.title
 msgid "Model Fit"
 msgstr "モデル適合度"
 
-#: linReg/results/modelFit.title logLinear/results/modelFit.title
-#: logRegBin/results/modelFit.title logRegMulti/results/modelFit.title
-#: logRegOrd/results/modelFit.title pca/results/modelFit/fit.title
+#: linReg/results/modelFit.title
+#: logLinear/results/modelFit.title
+#: logRegBin/results/modelFit.title
+#: logRegMulti/results/modelFit.title
+#: logRegOrd/results/modelFit.title
+#: pca/results/modelFit/fit.title
 msgid "Model Fit Measures"
 msgstr "モデル適合度指標"
 
-#: linReg/results/models.title logLinear/results/models.title
-#: logRegBin/results/models.title logRegMulti/results/models.title
+#: linReg/results/models.title
+#: logLinear/results/models.title
+#: logRegBin/results/models.title
+#: logRegMulti/results/models.title
 #: logRegOrd/results/models.title
 msgid "Model Specific Results"
 msgstr "個別モデルの結果"
 
-#: ancova/options/modelTerms.title anova/options/modelTerms.title
-#: anovaRM/options/rmTerms.title anovaRM/options/bsTerms.title
+#: ancova/options/modelTerms.title
+#: anova/options/modelTerms.title
+#: anovaRM/options/rmTerms.title
+#: anovaRM/options/bsTerms.title
 msgid "Model Terms"
 msgstr "モデル項"
 
@@ -2036,21 +2434,27 @@ msgstr "修正指数"
 msgid "More than one mode exists, only the first is reported"
 msgstr "最頻値が複数存在しますが、ここでは最初の値のみ報告されています"
 
-#: package/analyses/logRegMulti.menuSubtitle logRegMulti/options.menuSubtitle
+#: package/analyses/logRegMulti.menuSubtitle
+#: logRegMulti/options.menuSubtitle
 msgid "Multinomial"
 msgstr "多項"
 
-#: package/analyses/logRegMulti.title package/analyses/logRegMulti.description
-#: logRegMulti/options.title logRegMulti/options.description.main
-#: logRegMulti/ui.title logRegMulti/results.title
+#: package/analyses/logRegMulti.title
+#: package/analyses/logRegMulti.description
+#: logRegMulti/options.title
+#: logRegMulti/options.description.main
+#: logRegMulti/ui.title
+#: logRegMulti/results.title
 msgid "Multinomial Logistic Regression"
 msgstr "多項ロジスティック回帰"
 
-#: package/analyses/mancova.description mancova/options.description.main
+#: package/analyses/mancova.description
+#: mancova/options.description.main
 msgid "Multivariate Analysis of (Co)Variance (MANCOVA) is used to explore the relationship between multiple dependent variables, and one or more categorical and/or continuous explanatory variables."
 msgstr "多変量共分散分析（MANCOVA）は、複数の従属変数と1つまたは複数の離散型説明変数、連続型の共変量の関係を調べるための分析方法です。"
 
-#: mancova/options/multivar.title mancova/ui[1][0][0].label
+#: mancova/options/multivar.title
+#: mancova/ui[1][0][0].label
 msgid "Multivariate Statistics"
 msgstr "多変量統計量"
 
@@ -2058,25 +2462,33 @@ msgstr "多変量統計量"
 msgid "Multivariate Tests"
 msgstr "多変量検定"
 
-#: R/descriptives.b.R anovaOneW/results/desc.columns.title
+#: R/descriptives.b.R
+#: anovaOneW/results/desc.columns.title
 #: anovaRM/results/groupSummary.columns.title
 #: contTables/results/chiSq.columns.content
-#: contTablesPaired/results/test.columns.content corrMatrix/options/n.title
-#: corrMatrix/results/matrix.columns.content corrPart/options/n.title
-#: corrPart/results/matrix.columns.content descriptives/options/n.title
+#: contTablesPaired/results/test.columns.content
+#: corrMatrix/options/n.title
+#: corrMatrix/results/matrix.columns.content
+#: corrPart/options/n.title
+#: corrPart/results/matrix.columns.content
+#: descriptives/options/n.title
 #: ttestIS/results/desc.columns.title
 #: ttestOneS/results/descriptives.columns.title
 #: ttestPS/results/desc.columns.title
 msgid "N"
 msgstr "N"
 
-#: package/analyses/logRegMulti.menuTitle package/analyses/propTestN.menuTitle
-#: logRegMulti/options.menuTitle propTestN/options.menuTitle
+#: package/analyses/logRegMulti.menuTitle
+#: package/analyses/propTestN.menuTitle
+#: logRegMulti/options.menuTitle
+#: propTestN/options.menuTitle
 msgid "N Outcomes"
 msgstr "多値目的変数"
 
-#: logLinear/options/pseudoR2/r2n.title logRegBin/options/pseudoR2/r2n.title
-#: logRegMulti/options/pseudoR2/r2n.title logRegOrd/options/pseudoR2/r2n.title
+#: logLinear/options/pseudoR2/r2n.title
+#: logRegBin/options/pseudoR2/r2n.title
+#: logRegMulti/options/pseudoR2/r2n.title
+#: logRegOrd/options/pseudoR2/r2n.title
 msgid "Nagelkerke's R²"
 msgstr "ナゲルケルケのR²"
 
@@ -2084,7 +2496,8 @@ msgstr "ナゲルケルケのR²"
 msgid "No components have an eigenvalue greater than {value}"
 msgstr "固有値が {value} より大きな主成分はありません"
 
-#: ancova/options/postHocCorr/none.title anova/options/postHocCorr/none.title
+#: ancova/options/postHocCorr/none.title
+#: anova/options/postHocCorr/none.title
 #: anovaRM/options/postHocCorr/none.title
 msgid "No correction"
 msgstr "修正なし"
@@ -2093,12 +2506,14 @@ msgstr "修正なし"
 msgid "No factors defined. Box's M test is only relevant when model contains factors."
 msgstr "因子が定義されていません。ボックスのM検定はモデルに因子が含まれる場合のみ使用可能です。"
 
-#: contTables/ui[1][0][1][0][0].label contTables/results/nom.title
+#: contTables/ui[1][0][1][0][0].label
+#: contTables/results/nom.title
 msgid "Nominal"
 msgstr "名義尺度"
 
 #: package/analyses/anovaNP.menuSubgroup
-#: package/analyses/anovaRMNP.menuSubgroup anovaNP/options.menuSubgroup
+#: package/analyses/anovaRMNP.menuSubgroup
+#: anovaNP/options.menuSubgroup
 #: anovaRMNP/options.menuSubgroup
 msgid "Non-Parametric"
 msgstr "ノンパラメトリック"
@@ -2111,7 +2526,8 @@ msgstr "ノンパラメトリック"
 #: anovaRM/options/spherCorr/none.title
 #: anovaRM/options/contrasts.template/type/none.title
 #: anovaRM/options/emmPlotError/none.title
-#: anovaRM/results/rmTable.columns.content efa/options/rotation/none.title
+#: anovaRM/results/rmTable.columns.content
+#: efa/options/rotation/none.title
 #: pca/options/rotation/none.title
 msgid "None"
 msgstr "なし"
@@ -2124,17 +2540,22 @@ msgstr "通常項目"
 msgid "Normality"
 msgstr "正規性"
 
-#: ancova/results/assump/norm.title anova/results/assump/norm.title
+#: ancova/results/assump/norm.title
+#: anova/results/assump/norm.title
 #: anovaOneW/results/assump/norm.title
 #: linReg/results/models.template/assump/norm.title
-#: ttestIS/results/assum/norm.title ttestOneS/results/normality.title
+#: ttestIS/results/assum/norm.title
+#: ttestOneS/results/normality.title
 #: ttestPS/results/norm.title
 msgid "Normality Test (Shapiro-Wilk)"
 msgstr "正規性検定（シャピロ=ウィルク）"
 
-#: ancova/options/norm.title anova/options/norm.title
-#: anovaOneW/options/norm.title linReg/options/norm.title
-#: ttestIS/options/norm.title ttestOneS/options/norm.title
+#: ancova/options/norm.title
+#: anova/options/norm.title
+#: anovaOneW/options/norm.title
+#: linReg/options/norm.title
+#: ttestIS/options/norm.title
+#: ttestOneS/options/norm.title
 #: ttestPS/options/norm.title
 msgid "Normality test"
 msgstr "正規性検定"
@@ -2155,11 +2576,14 @@ msgstr "主成分数"
 msgid "Number of factors"
 msgstr "因子数"
 
-#: efa/options/rotation/oblimin.title pca/options/rotation/oblimin.title
+#: efa/options/rotation/oblimin.title
+#: pca/options/rotation/oblimin.title
 msgid "Oblimin"
 msgstr "オブリミン"
 
-#: R/conttables.b.R R/logregbin.b.R propTestN/results/props.columns.content
+#: R/conttables.b.R
+#: R/logregbin.b.R
+#: propTestN/results/props.columns.content
 msgid "Observed"
 msgstr "観測度数"
 
@@ -2167,17 +2591,20 @@ msgstr "観測度数"
 msgid "Observed counts"
 msgstr "観測度数"
 
-#: ancova/options/emmPlotData.title anova/options/emmPlotData.title
+#: ancova/options/emmPlotData.title
+#: anova/options/emmPlotData.title
 #: anovaRM/options/emmPlotData.title
 msgid "Observed scores"
 msgstr "観測値"
 
-#: logRegBin/ui[5][0][1][0].label logRegMulti/ui[4][0][1][0].label
+#: logRegBin/ui[5][0][1][0].label
+#: logRegMulti/ui[4][0][1][0].label
 #: logRegOrd/ui[4][0][1][1].label
 msgid "Odds Ratio"
 msgstr "オッズ比"
 
-#: contTables/options/odds.title contTables/results/odds.columns.content
+#: contTables/options/odds.title
+#: contTables/results/odds.columns.content
 #: logRegBin/options/OR.title
 #: logRegBin/results/models.template/coef.columns.title
 #: logRegMulti/options/OR.title
@@ -2203,19 +2630,25 @@ msgstr "オムニバス尤度比検定"
 msgid "Omnibus Test"
 msgstr "オムニバス検定"
 
-#: logLinear/ui[4][0][0][0].label logRegBin/ui[5][0][0][0].label
-#: logRegMulti/ui[4][0][0][0].label logRegOrd/ui[4][0][0][0].label
+#: logLinear/ui[4][0][0][0].label
+#: logRegBin/ui[5][0][0][0].label
+#: logRegMulti/ui[4][0][0][0].label
+#: logRegOrd/ui[4][0][0][0].label
 msgid "Omnibus Tests"
 msgstr "オムニバス検定"
 
 #: package/analyses/propTest2.menuSubgroup
-#: package/analyses/propTestN.menuSubgroup propTest2/options.menuSubgroup
+#: package/analyses/propTestN.menuSubgroup
+#: propTest2/options.menuSubgroup
 #: propTestN/options.menuSubgroup
 msgid "One Sample Proportion Tests"
 msgstr "1標本比率検定"
 
-#: package/analyses/ttestOneS.title package/analyses/ttestOneS.menuTitle
-#: ttestOneS/options.title ttestOneS/ui.title ttestOneS/results.title
+#: package/analyses/ttestOneS.title
+#: package/analyses/ttestOneS.menuTitle
+#: ttestOneS/options.title
+#: ttestOneS/ui.title
+#: ttestOneS/results.title
 #: ttestOneS/results/ttest.title
 msgid "One Sample T-Test"
 msgstr "1標本t検定"
@@ -2244,9 +2677,13 @@ msgstr "両方またはいずれかの変数に十分なデータが含まれて
 msgid "One or more coefficients in model '{modelNo}' could not be estimated due to perfect collinearity."
 msgstr "完全な多重共線性のため、モデル ‘{modelNo}’ において1つ以上の係数が推定できませんでした。"
 
-#: package/analyses/anovaOneW.title package/analyses/anovaOneW.menuTitle
-#: package/analyses/anovaNP.menuTitle anovaNP/options.menuTitle
-#: anovaOneW/options.title anovaOneW/ui.title anovaOneW/results.title
+#: package/analyses/anovaOneW.title
+#: package/analyses/anovaOneW.menuTitle
+#: package/analyses/anovaNP.menuTitle
+#: anovaNP/options.menuTitle
+#: anovaOneW/options.title
+#: anovaOneW/ui.title
+#: anovaOneW/results.title
 #: anovaOneW/results/anova.title
 msgid "One-Way ANOVA"
 msgstr "1要因分散分析"
@@ -2255,7 +2692,9 @@ msgstr "1要因分散分析"
 msgid "One-Way ANOVA (Fisher's)"
 msgstr "1要因分散分析（フィッシャー法）"
 
-#: package/analyses/anovaNP.title anovaNP/options.title anovaNP/ui.title
+#: package/analyses/anovaNP.title
+#: anovaNP/options.title
+#: anovaNP/ui.title
 #: anovaNP/results.title
 msgid "One-Way ANOVA (Non-parametric)"
 msgstr "1要因分散分析（ノンパラメトリック）"
@@ -2264,7 +2703,8 @@ msgstr "1要因分散分析（ノンパラメトリック）"
 msgid "One-Way ANOVA (Welch's)"
 msgstr "1要因分散分析（ウェルチ法）"
 
-#: anovaRM/ui[6].label cfa/ui[2].label
+#: anovaRM/ui[6].label
+#: cfa/ui[2].label
 msgid "Options"
 msgstr "オプション"
 
@@ -2272,19 +2712,26 @@ msgstr "オプション"
 msgid "Ordinal"
 msgstr "順序尺度"
 
-#: package/analyses/logRegOrd.title package/analyses/logRegOrd.description
-#: logRegOrd/options.title logRegOrd/options.description.main
-#: logRegOrd/ui.title logRegOrd/results.title
+#: package/analyses/logRegOrd.title
+#: package/analyses/logRegOrd.description
+#: logRegOrd/options.title
+#: logRegOrd/options.description.main
+#: logRegOrd/ui.title
+#: logRegOrd/results.title
 msgid "Ordinal Logistic Regression"
 msgstr "順序ロジスティック回帰"
 
-#: package/analyses/logRegOrd.menuTitle logRegOrd/options.menuTitle
+#: package/analyses/logRegOrd.menuTitle
+#: logRegOrd/options.menuTitle
 msgid "Ordinal Outcomes"
 msgstr "順序目的変数"
 
-#: ancova/ui[6][1][0][0].label anova/ui[6][1][0][0].label
-#: anovaRM/ui[5][1][0][0].label linReg/ui[6][1][1][0].label
-#: logLinear/ui[5][1][1][0].label logRegBin/ui[6][1][1][0].label
+#: ancova/ui[6][1][0][0].label
+#: anova/ui[6][1][0][0].label
+#: anovaRM/ui[5][1][0][0].label
+#: linReg/ui[6][1][1][0].label
+#: logLinear/ui[5][1][1][0].label
+#: logRegBin/ui[6][1][1][0].label
 #: logRegMulti/ui[5][1][1][0].label
 msgid "Output"
 msgstr "出力"
@@ -2293,7 +2740,8 @@ msgstr "出力"
 msgid "Overall"
 msgstr "全体"
 
-#: linReg/ui[4][0][1][0].label linReg/results/modelFit.columns.superTitle
+#: linReg/ui[4][0][1][0].label
+#: linReg/results/modelFit.columns.superTitle
 #: logLinear/results/modelFit.columns.superTitle
 #: logRegBin/results/modelFit.columns.superTitle
 #: logRegMulti/results/modelFit.columns.superTitle
@@ -2305,9 +2753,12 @@ msgstr "モデル全体の検定"
 msgid "Overall model"
 msgstr "モデル全体"
 
-#: ancova/options/modelTest.title anova/options/modelTest.title
-#: logLinear/options/modelTest.title logRegBin/options/modelTest.title
-#: logRegMulti/options/modelTest.title logRegOrd/options/modelTest.title
+#: ancova/options/modelTest.title
+#: anova/options/modelTest.title
+#: logLinear/options/modelTest.title
+#: logRegBin/options/modelTest.title
+#: logRegMulti/options/modelTest.title
+#: logRegOrd/options/modelTest.title
 msgid "Overall model test"
 msgstr "モデル全体の検定"
 
@@ -2316,13 +2767,18 @@ msgstr "モデル全体の検定"
 msgid "Paired Samples"
 msgstr "対応あり"
 
-#: package/analyses/contTablesPaired.title contTablesPaired/options.title
-#: contTablesPaired/ui.title contTablesPaired/results.title
+#: package/analyses/contTablesPaired.title
+#: contTablesPaired/options.title
+#: contTablesPaired/ui.title
+#: contTablesPaired/results.title
 msgid "Paired Samples Contingency Tables"
 msgstr "対応ありクロス集計表"
 
-#: package/analyses/ttestPS.title package/analyses/ttestPS.menuTitle
-#: ttestPS/options.title ttestPS/ui.title ttestPS/results.title
+#: package/analyses/ttestPS.title
+#: package/analyses/ttestPS.menuTitle
+#: ttestPS/options.title
+#: ttestPS/ui.title
+#: ttestPS/results.title
 #: ttestPS/results/ttest.title
 msgid "Paired Samples T-Test"
 msgstr "対応ありt検定"
@@ -2347,24 +2803,24 @@ msgstr "多重比較 - $key"
 msgid "Partial"
 msgstr "偏相関"
 
-#: R/corrpart.b.R package/analyses/corrPart.title
-#: package/analyses/corrPart.menuTitle corrPart/options.title corrPart/ui.title
+#: R/corrpart.b.R
+#: package/analyses/corrPart.title
+#: package/analyses/corrPart.menuTitle
+#: corrPart/options.title
+#: corrPart/ui.title
 #: corrPart/results.title
 msgid "Partial Correlation"
 msgstr "偏相関"
 
 #: package/analyses/corrPart.description
-msgid ""
-"Partial correlation matrices are a way to examine linear relationships\n"
+msgid "Partial correlation matrices are a way to examine linear relationships\n"
 "between two or more continuous variables while controlling for other\n"
 "variables"
-msgstr ""
-"偏相関行列は、他の変数による影響を制御しながら、複数の連続変数間の\n"
+msgstr "偏相関行列は、他の変数による影響を制御しながら、複数の連続変数間の\n"
 "線形関係について調べるための方法でです"
 
 #: corrPart/options.description.main
-msgid ""
-"Partial correlation matrices are a way to examine linear relationships\n"
+msgid "Partial correlation matrices are a way to examine linear relationships\n"
 "between two or more continuous variables while controlling for other\n"
 "variables\n"
 "\n"
@@ -2382,8 +2838,7 @@ msgid ""
 "correlation is zero and calculate a p-value. If the p-value is low, it\n"
 "suggests the correlation co-efficient is not zero, and there is a linear\n"
 "(or more complex) relationship between the two variables."
-msgstr ""
-"偏相関行列は、他の変数による影響を制御しながら、複数の連続変数間の\n"
+msgstr "偏相関行列は、他の変数による影響を制御しながら、複数の連続変数間の\n"
 "線形関係について調べるための方法です。\n"
 "\n"
 "ピアソンの相関係数rは、各変数ペアについて、変数間の関係の強さと\n"
@@ -2409,8 +2864,10 @@ msgstr "パス図"
 msgid "Path diagram"
 msgstr "パス図"
 
-#: corrMatrix/options/pearson.title corrMatrix/ui[1][0]/pearson.label
-#: corrPart/options/pearson.title corrPart/ui[1][0]/pearson.label
+#: corrMatrix/options/pearson.title
+#: corrMatrix/ui[1][0]/pearson.label
+#: corrPart/options/pearson.title
+#: corrPart/ui[1][0]/pearson.label
 msgid "Pearson"
 msgstr "ピアソンの相関係数"
 
@@ -2423,7 +2880,8 @@ msgstr "ピアソンの相関係数"
 msgid "Pearson{}Correlation"
 msgstr "ピアソンの相関係数"
 
-#: contTables/options/yaxis/ypc.title contTables/ui[1][1][0][1][0].label
+#: contTables/options/yaxis/ypc.title
+#: contTables/ui[1][1][0][1][0].label
 #: contTablesPaired/ui[2][0].label
 msgid "Percentages"
 msgstr "パーセント"
@@ -2448,7 +2906,8 @@ msgstr "パーセンタイル値"
 msgid "Percentile values"
 msgstr "パーセンタイルの指定値"
 
-#: R/descriptives.b.R descriptives/ui[2][0][1][1]/pc.label
+#: R/descriptives.b.R
+#: descriptives/ui[2][0][1][1]/pc.label
 msgid "Percentiles"
 msgstr "パーセンタイル"
 
@@ -2465,8 +2924,10 @@ msgstr "ファイ係数"
 msgid "Pillai's Trace"
 msgstr "ピライのトレース"
 
-#: ancova/ui[6][1][1][0].label anova/ui[6][1][1][0].label
-#: anovaRM/ui[5][1][1][0].label corrMatrix/ui[1][3].label
+#: ancova/ui[6][1][1][0].label
+#: anova/ui[6][1][1][0].label
+#: anovaRM/ui[5][1][1][0].label
+#: corrMatrix/ui[1][3].label
 #: corrMatrix/results/plot.title
 msgid "Plot"
 msgstr "グラフ"
@@ -2475,11 +2936,16 @@ msgstr "グラフ"
 msgid "Plot Type"
 msgstr "グラフタイプ"
 
-#: anovaOneW/results/plots.title cfa/ui[5][1][0].label
-#: contTables/ui[1][2].label contTables/ui[1][2][0][0][0].label
-#: contTables/results/barplot.title descriptives/ui[3].label
-#: descriptives/results/plots.title propTest2/ui[2][0][1].label
-#: ttestIS/results/plots.title ttestOneS/results/plots.title
+#: anovaOneW/results/plots.title
+#: cfa/ui[5][1][0].label
+#: contTables/ui[1][2].label
+#: contTables/ui[1][2][0][0][0].label
+#: contTables/results/barplot.title
+#: descriptives/ui[3].label
+#: descriptives/results/plots.title
+#: propTest2/ui[2][0][1].label
+#: ttestIS/results/plots.title
+#: ttestOneS/results/plots.title
 #: ttestPS/results/plots.title
 msgid "Plots"
 msgstr "グラフ"
@@ -2490,14 +2956,21 @@ msgstr "グラフ"
 msgid "Polynomial"
 msgstr "多項式"
 
-#: R/ancova.b.R R/anovarm.b.R
+#: R/ancova.b.R
+#: R/anovarm.b.R
 msgid "Post Hoc Comparisons - {term}"
 msgstr "多重比較 - {term}"
 
-#: ancova/options/postHoc.title ancova/ui[5].label ancova/results/postHoc.title
-#: anova/options/postHoc.title anova/ui[5].label anova/results/postHoc.title
-#: anovaOneW/results/postHoc.title anovaRM/options/postHoc.title
-#: anovaRM/ui[4].label anovaRM/results/postHoc.title
+#: ancova/options/postHoc.title
+#: ancova/ui[5].label
+#: ancova/results/postHoc.title
+#: anova/options/postHoc.title
+#: anova/ui[5].label
+#: anova/results/postHoc.title
+#: anovaOneW/results/postHoc.title
+#: anovaRM/options/postHoc.title
+#: anovaRM/ui[4].label
+#: anovaRM/results/postHoc.title
 msgid "Post Hoc Tests"
 msgstr "事後検定"
 
@@ -2505,7 +2978,8 @@ msgstr "事後検定"
 msgid "Post Hoc Tests – $key"
 msgstr "事後検定 – $key"
 
-#: cfa/ui[5][0][0].label cfa/results/modelPerformance.title
+#: cfa/ui[5][0][0].label
+#: cfa/results/modelPerformance.title
 msgid "Post-Hoc Model Performance"
 msgstr "モデルの事後修正"
 
@@ -2513,7 +2987,8 @@ msgstr "モデルの事後修正"
 msgid "Post-Hoc Test"
 msgstr "事後検定"
 
-#: anovaOneW/options/phMethod.title anovaOneW/ui[2].label
+#: anovaOneW/options/phMethod.title
+#: anovaOneW/ui[2].label
 msgid "Post-Hoc Tests"
 msgstr "事後検定"
 
@@ -2541,12 +3016,16 @@ msgstr "{dep} = {level1} の確率（vs. {dep} = {level2}）"
 msgid "Predicted probability of … = … (vs … = …)"
 msgstr "… = … の確率（vs … = …）"
 
-#: R/linreg.b.R linReg/options/predictOV.title linReg/results/predictOV.title
-#: logRegBin/options/predictOV.title logRegBin/results/predictOV.title
+#: R/linreg.b.R
+#: linReg/options/predictOV.title
+#: linReg/results/predictOV.title
+#: logRegBin/options/predictOV.title
+#: logRegBin/results/predictOV.title
 msgid "Predicted values"
 msgstr "予測値"
 
-#: logRegBin/ui[7].label logRegBin/results/models.template/pred.title
+#: logRegBin/ui[7].label
+#: logRegBin/results/models.template/pred.title
 msgid "Prediction"
 msgstr "予測"
 
@@ -2568,15 +3047,21 @@ msgstr "予測指標"
 msgid "Predictor"
 msgstr "予測変数"
 
-#: linReg/ui[1]/modelSupplier.label logLinear/ui[1]/modelSupplier.label
-#: logRegBin/ui[1]/modelSupplier.label logRegMulti/ui[1]/modelSupplier.label
+#: linReg/ui[1]/modelSupplier.label
+#: logLinear/ui[1]/modelSupplier.label
+#: logRegBin/ui[1]/modelSupplier.label
+#: logRegMulti/ui[1]/modelSupplier.label
 #: logRegOrd/ui[1]/modelSupplier.label
 msgid "Predictors"
 msgstr "予測変数"
 
-#: package/analyses/pca.title package/analyses/pca.menuTitle
-#: package/analyses/pca.description pca/options.title
-#: pca/options.description.main pca/ui.title pca/results.title
+#: package/analyses/pca.title
+#: package/analyses/pca.menuTitle
+#: package/analyses/pca.description
+#: pca/options.title
+#: pca/options.description.main
+#: pca/ui.title
+#: pca/results.title
 msgid "Principal Component Analysis"
 msgstr "主成分分析"
 
@@ -2588,45 +3073,59 @@ msgstr "主因子法"
 msgid "Principal axis factoring"
 msgstr "主因子法"
 
-#: R/proptest2.b.R propTest2/ui[2][0][0].label
+#: R/proptest2.b.R
+#: propTest2/ui[2][0][0].label
 #: ttestIS/ui[1][0][0]/students/bf/bfPrior.label
 #: ttestOneS/ui[1][0][0]/students/bf/bfPrior.label
 #: ttestPS/ui[1][0][0]/students/bf/bfPrior.label
 msgid "Prior"
 msgstr "事前分布"
 
-#: ttestIS/options/bfPrior.title ttestOneS/options/bfPrior.title
+#: ttestIS/options/bfPrior.title
+#: ttestOneS/options/bfPrior.title
 #: ttestPS/options/bfPrior.title
 msgid "Prior width"
 msgstr "幅の事前値"
 
-#: R/logregbin.b.R R/logregmulti.b.R
+#: R/logregbin.b.R
+#: R/logregmulti.b.R
 msgid "Probability"
 msgstr "確率"
 
-#: efa/options/rotation/promax.title pca/options/rotation/promax.title
+#: efa/options/rotation/promax.title
+#: pca/options/rotation/promax.title
 msgid "Promax"
 msgstr "プロマックス"
 
-#: R/proptest2.b.R propTest2/results/table.columns.title
-#: propTestN/ui[2]/ratio.columns.label propTestN/results/props.columns.title
+#: R/proptest2.b.R
+#: propTest2/results/table.columns.title
+#: propTestN/ui[2]/ratio.columns.label
+#: propTestN/results/props.columns.title
 msgid "Proportion"
 msgstr "比率"
 
-#: package/analyses/propTest2.title propTest2/options.title propTest2/ui.title
+#: package/analyses/propTest2.title
+#: propTest2/options.title
+#: propTest2/ui.title
 #: propTest2/results.title
 msgid "Proportion Test (2 Outcomes)"
 msgstr "比率の検定（2値）"
 
-#: package/analyses/propTestN.title propTestN/options.title propTestN/ui.title
+#: package/analyses/propTestN.title
+#: propTestN/options.title
+#: propTestN/ui.title
 #: propTestN/results.title
 msgid "Proportion Test (N Outcomes)"
 msgstr "比率の検定（多値）"
 
-#: logLinear/options/pseudoR2.title logLinear/ui[3][0][1]/pseudoR2.label
-#: logRegBin/options/pseudoR2.title logRegBin/ui[4][0][1]/pseudoR2.label
-#: logRegMulti/options/pseudoR2.title logRegMulti/ui[3][0][1]/pseudoR2.label
-#: logRegOrd/options/pseudoR2.title logRegOrd/ui[3][0][1]/pseudoR2.label
+#: logLinear/options/pseudoR2.title
+#: logLinear/ui[3][0][1]/pseudoR2.label
+#: logRegBin/options/pseudoR2.title
+#: logRegBin/ui[4][0][1]/pseudoR2.label
+#: logRegMulti/options/pseudoR2.title
+#: logRegMulti/ui[3][0][1]/pseudoR2.label
+#: logRegOrd/options/pseudoR2.title
+#: logRegOrd/ui[3][0][1]/pseudoR2.label
 msgid "Pseudo R²"
 msgstr "疑似R²"
 
@@ -2634,12 +3133,16 @@ msgstr "疑似R²"
 msgid "Q-Q"
 msgstr "Q-Qプロット"
 
-#: ancova/options/qq.title ancova/results/assump/qq.title
-#: anova/options/qq.title anova/results/assump/qq.title
-#: anovaOneW/options/qq.title anovaRM/options/qq.title
+#: ancova/options/qq.title
+#: ancova/results/assump/qq.title
+#: anova/options/qq.title
+#: anova/results/assump/qq.title
+#: anovaOneW/options/qq.title
+#: anovaRM/options/qq.title
 #: anovaRM/results/assump/qq.title
 #: linReg/results/models.template/assump/qqPlot.title
-#: ttestOneS/options/qq.title ttestPS/options/qq.title
+#: ttestOneS/options/qq.title
+#: ttestPS/options/qq.title
 msgid "Q-Q Plot"
 msgstr "Q-Qプロット"
 
@@ -2652,7 +3155,8 @@ msgid "Q-Q Plots"
 msgstr "Q-Qプロット"
 
 #: anovaOneW/results/plots.template/qq.description
-#: descriptives/options/qq.title ttestIS/options/qq.title
+#: descriptives/options/qq.title
+#: ttestIS/options/qq.title
 #: ttestIS/results/plots.template/qq.description
 #: ttestOneS/results/qq.template.description
 #: ttestPS/results/plots.template/qq.description
@@ -2671,11 +3175,13 @@ msgstr "残差Q-Qプロット"
 msgid "Q-Q plots"
 msgstr "Q-Qプロット"
 
-#: efa/options/rotation/quartimax.title pca/options/rotation/quartimax.title
+#: efa/options/rotation/quartimax.title
+#: pca/options/rotation/quartimax.title
 msgid "Quartimax"
 msgstr "クォ―ティマックス"
 
-#: linReg/options/r.title linReg/results/modelFit.columns.title
+#: linReg/options/r.title
+#: linReg/results/modelFit.columns.title
 msgid "R"
 msgstr "R"
 
@@ -2687,7 +3193,8 @@ msgstr "反復測定因子 1"
 msgid "RM Factor {0}"
 msgstr "反復測定因子 {0}"
 
-#: linReg/options/rmse.title linReg/results/modelFit.columns.title
+#: linReg/options/rmse.title
+#: linReg/results/modelFit.columns.title
 msgid "RMSE"
 msgstr "RMSE"
 
@@ -2714,7 +3221,8 @@ msgstr "ROC曲線"
 msgid "ROC curve"
 msgstr "ROC曲線"
 
-#: R/descriptives.b.R descriptives/options/range.title
+#: R/descriptives.b.R
+#: descriptives/options/range.title
 #: linReg/results/models.template/dataSummary/cooks.columns.superTitle
 #: logRegBin/results/models.template/dataSummary/cooks.columns.superTitle
 msgid "Range"
@@ -2739,18 +3247,24 @@ msgstr "率比"
 msgid "Ratio"
 msgstr "比率"
 
-#: linReg/ui[2]/refLevels.columns.label logLinear/ui[2]/refLevels.columns.label
+#: linReg/ui[2]/refLevels.columns.label
+#: logLinear/ui[2]/refLevels.columns.label
 #: logRegBin/ui[2]/refLevels.columns.label
 #: logRegMulti/ui[2]/refLevels.columns.label
 #: logRegOrd/ui[2]/refLevels.columns.label
 msgid "Reference Level"
 msgstr "基準レベル"
 
-#: linReg/options/refLevels.title linReg/ui[2].label
-#: logLinear/options/refLevels.title logLinear/ui[2].label
-#: logRegBin/options/refLevels.title logRegBin/ui[2].label
-#: logRegMulti/options/refLevels.title logRegMulti/ui[2].label
-#: logRegOrd/options/refLevels.title logRegOrd/ui[2].label
+#: linReg/options/refLevels.title
+#: linReg/ui[2].label
+#: logLinear/options/refLevels.title
+#: logLinear/ui[2].label
+#: logRegBin/options/refLevels.title
+#: logRegBin/ui[2].label
+#: logRegMulti/options/refLevels.title
+#: logRegMulti/ui[2].label
+#: logRegOrd/options/refLevels.title
+#: logRegOrd/ui[2].label
 msgid "Reference Levels"
 msgstr "基準レベル"
 
@@ -2758,22 +3272,32 @@ msgstr "基準レベル"
 msgid "Reference level (dummy coding)"
 msgstr "基準レベル（ダミーコード）"
 
-#: package/analyses/corrMatrix.menuGroup package/analyses/corrPart.menuGroup
-#: package/analyses/linReg.menuGroup package/analyses/logRegBin.menuGroup
-#: package/analyses/logRegMulti.menuGroup package/analyses/logRegOrd.menuGroup
-#: corrMatrix/options.menuGroup corrPart/options.menuGroup
-#: linReg/options.menuGroup logRegBin/options.menuGroup
-#: logRegMulti/options.menuGroup logRegOrd/options.menuGroup
+#: package/analyses/corrMatrix.menuGroup
+#: package/analyses/corrPart.menuGroup
+#: package/analyses/linReg.menuGroup
+#: package/analyses/logRegBin.menuGroup
+#: package/analyses/logRegMulti.menuGroup
+#: package/analyses/logRegOrd.menuGroup
+#: corrMatrix/options.menuGroup
+#: corrPart/options.menuGroup
+#: linReg/options.menuGroup
+#: logRegBin/options.menuGroup
+#: logRegMulti/options.menuGroup
+#: logRegOrd/options.menuGroup
 msgid "Regression"
 msgstr "回帰分析"
 
-#: contTables/options/relRisk.title contTables/results/odds.columns.content
+#: contTables/options/relRisk.title
+#: contTables/results/odds.columns.content
 msgid "Relative risk"
 msgstr "リスク比"
 
-#: package/analyses/reliability.title package/analyses/reliability.menuTitle
-#: package/analyses/reliability.description reliability/options.title
-#: reliability/options.description.main reliability/ui.title
+#: package/analyses/reliability.title
+#: package/analyses/reliability.menuTitle
+#: package/analyses/reliability.description
+#: reliability/options.title
+#: reliability/options.description.main
+#: reliability/ui.title
 #: reliability/results.title
 msgid "Reliability Analysis"
 msgstr "信頼性分析"
@@ -2784,13 +3308,19 @@ msgstr "信頼性分析"
 msgid "Repeated"
 msgstr "反復"
 
-#: package/analyses/anovaRM.title package/analyses/anovaRM.menuTitle
-#: package/analyses/anovaRMNP.menuTitle anovaRM/options.title anovaRM/ui.title
-#: anovaRM/results.title anovaRMNP/options.menuTitle
+#: package/analyses/anovaRM.title
+#: package/analyses/anovaRM.menuTitle
+#: package/analyses/anovaRMNP.menuTitle
+#: anovaRM/options.title
+#: anovaRM/ui.title
+#: anovaRM/results.title
+#: anovaRMNP/options.menuTitle
 msgid "Repeated Measures ANOVA"
 msgstr "反復測定分散分析"
 
-#: package/analyses/anovaRMNP.title anovaRMNP/options.title anovaRMNP/ui.title
+#: package/analyses/anovaRMNP.title
+#: anovaRMNP/options.title
+#: anovaRMNP/ui.title
 #: anovaRMNP/results.title
 msgid "Repeated Measures ANOVA (Non-parametric)"
 msgstr "反復測定分散分析（ノンパラメトリック）"
@@ -2803,11 +3333,13 @@ msgstr "反復測定セル"
 msgid "Repeated Measures Components"
 msgstr "反復測定要因"
 
-#: anovaRM/options/rm.title anovaRM/ui/variablesupplier/rm.label
+#: anovaRM/options/rm.title
+#: anovaRM/ui/variablesupplier/rm.label
 msgid "Repeated Measures Factors"
 msgstr "反復測定因子"
 
-#: anovaOneW/options/phSig.title corrMatrix/options/sig.title
+#: anovaOneW/options/phSig.title
+#: corrMatrix/options/sig.title
 #: corrPart/options/sig.title
 msgid "Report significance"
 msgstr "有意性を報告"
@@ -2824,7 +3356,9 @@ msgstr "基準レベルの値を示しています"
 msgid "Residual"
 msgstr "残差"
 
-#: cfa/options/resCov.title cfa/ui[1].label cfa/ui[1]/resCovSupplier[0].label
+#: cfa/options/resCov.title
+#: cfa/ui[1].label
+#: cfa/ui[1]/resCovSupplier[0].label
 #: cfa/results/resEst/resCov.title
 msgid "Residual Covariances"
 msgstr "残差共分散"
@@ -2857,11 +3391,18 @@ msgstr "残差プロット"
 msgid "Residual sum of squares and/or degrees of freedom is zero, indicating a perfect fit"
 msgstr "残差2乗和と自由度のいずれかまたは両方が0です。これは完全な一致を意味します"
 
-#: R/ancova.b.R R/linreg.b.R R/logregbin.b.R R/mancova.b.R
-#: ancova/options/residsOV.title ancova/results/residsOV.title
-#: anova/options/residsOV.title anova/results/residsOV.title
-#: linReg/options/residsOV.title linReg/results/residsOV.title
-#: logRegBin/options/residsOV.title logRegBin/results/residsOV.title
+#: R/ancova.b.R
+#: R/linreg.b.R
+#: R/logregbin.b.R
+#: R/mancova.b.R
+#: ancova/options/residsOV.title
+#: ancova/results/residsOV.title
+#: anova/options/residsOV.title
+#: anova/results/residsOV.title
+#: linReg/options/residsOV.title
+#: linReg/results/residsOV.title
+#: logRegBin/options/residsOV.title
+#: logRegBin/results/residsOV.title
 msgid "Residuals"
 msgstr "残差"
 
@@ -2881,38 +3422,49 @@ msgstr "分散分析の残差"
 msgid "Residuals observed correlation matrix"
 msgstr "相関行列の残差"
 
-#: package/analyses/empty.title package/analyses/empty.menuTitle
-#: cfa/ui[3][0][0].label empty/options.title empty/ui.title empty/results.title
+#: package/analyses/empty.title
+#: package/analyses/empty.menuTitle
+#: cfa/ui[3][0][0].label
+#: empty/options.title
+#: empty/ui.title
+#: empty/results.title
 msgid "Results"
 msgstr "結果"
 
-#: reliability/options/revItems.title reliability/ui[2].label
+#: reliability/options/revItems.title
+#: reliability/ui[2].label
 #: reliability/ui[2]/revItemsSupplier[0].label
 msgid "Reverse Scaled Items"
 msgstr "逆転項目"
 
-#: efa/options/rotation.title pca/options/rotation.title
+#: efa/options/rotation.title
+#: pca/options/rotation.title
 msgid "Rotation"
 msgstr "回転法"
 
-#: contTables/options/pcRow.title contTablesPaired/options/pcRow.title
+#: contTables/options/pcRow.title
+#: contTablesPaired/options/pcRow.title
 msgid "Row"
 msgstr "行"
 
-#: R/conttables.b.R R/conttablespaired.b.R
+#: R/conttables.b.R
+#: R/conttablespaired.b.R
 msgid "Row variable '{var}' contains fewer than 2 levels"
 msgstr "行変数「{var}」が1水準しかありません"
 
-#: contTables/options/rows.title contTables/options/xaxis/xrows.title
+#: contTables/options/rows.title
+#: contTables/options/xaxis/xrows.title
 #: contTablesPaired/options/rows.title
 msgid "Rows"
 msgstr "行"
 
-#: mancova/options/multivar/roy.title mancova/results/multivar.columns.content
+#: mancova/options/multivar/roy.title
+#: mancova/results/multivar.columns.content
 msgid "Roy's Largest Root"
 msgstr "ロイの最大根"
 
-#: linReg/options/r2.title linReg/results/modelFit.columns.title
+#: linReg/options/r2.title
+#: linReg/results/modelFit.columns.title
 msgid "R²"
 msgstr "R²"
 
@@ -2937,7 +3489,8 @@ msgstr "R²<sub>マク</sub>"
 msgid "R²<sub>N</sub>"
 msgstr "R²<sub>ナゲ</sub>"
 
-#: R/descriptives.b.R anovaOneW/results/desc.columns.title
+#: R/descriptives.b.R
+#: anovaOneW/results/desc.columns.title
 #: linReg/results/models.template/dataSummary/cooks.columns.title
 #: logRegBin/results/models.template/dataSummary/cooks.columns.title
 #: ttestIS/results/desc.columns.title
@@ -2946,8 +3499,13 @@ msgstr "R²<sub>ナゲ</sub>"
 msgid "SD"
 msgstr "標準偏差"
 
-#: R/ancova.b.R R/descriptives.b.R R/linreg.b.R R/loglinear.b.R R/logregbin.b.R
-#: R/logregmulti.b.R ancova/results/contrasts.template.columns.title
+#: R/ancova.b.R
+#: R/descriptives.b.R
+#: R/linreg.b.R
+#: R/loglinear.b.R
+#: R/logregbin.b.R
+#: R/logregmulti.b.R
+#: ancova/results/contrasts.template.columns.title
 #: anovaOneW/results/desc.columns.title
 #: anovaRM/results/contrasts.template.columns.title
 #: cfa/results/factorLoadings.columns.title
@@ -2968,7 +3526,8 @@ msgstr "標準偏差"
 msgid "SE"
 msgstr "標準誤差"
 
-#: ttestIS/results/ttest.columns.title ttestPS/results/ttest.columns.title
+#: ttestIS/results/ttest.columns.title
+#: ttestPS/results/ttest.columns.title
 msgid "SE difference"
 msgstr "差の標準誤差"
 
@@ -2985,8 +3544,13 @@ msgstr "負荷量2乗和"
 msgid "Sample Size"
 msgstr "標本サイズ"
 
-#: ancova/ui[7].label anova/ui[7].label linReg/ui[7].label
-#: logRegBin/ui[8].label pca/ui[2].label reliability/ui[3].label
+#: ancova/ui[7].label
+#: anova/ui[7].label
+#: efa/ui[2].label
+#: linReg/ui[7].label
+#: logRegBin/ui[8].label
+#: pca/ui[2].label
+#: reliability/ui[3].label
 msgid "Save"
 msgstr "保存"
 
@@ -3017,14 +3581,23 @@ msgid "Score Component"
 msgstr "主成分"
 
 #: R/pca.b.R
+msgid "Score Factor"
+msgstr ""
+
+#: R/pca.b.R
 msgid "Score for component"
 msgstr "主成分得点"
+
+#: R/pca.b.R
+msgid "Score for factor {i}. Estimated using the '{fsMethod}' method."
+msgstr ""
 
 #: pca/results/eigen/screePlot.title
 msgid "Scree Plot"
 msgstr "スクリープロット"
 
-#: efa/options/screePlot.title pca/options/screePlot.title
+#: efa/options/screePlot.title
+#: pca/options/screePlot.title
 msgid "Scree plot"
 msgstr "スクリープロット"
 
@@ -3036,12 +3609,14 @@ msgstr "部分相関"
 msgid "Semipartial Correlation"
 msgstr "部分相関係数"
 
-#: R/logregbin.b.R logRegBin/options/sens.title
+#: R/logregbin.b.R
+#: logRegBin/options/sens.title
 #: logRegBin/results/models.template/pred/measures.columns.title
 msgid "Sensitivity"
 msgstr "感度"
 
-#: R/descriptives.b.R ancova/results/assump/norm.columns.content
+#: R/descriptives.b.R
+#: ancova/results/assump/norm.columns.content
 #: descriptives/options/sw.title
 #: linReg/results/models.template/assump/norm.columns.content
 msgid "Shapiro-Wilk"
@@ -3077,7 +3652,8 @@ msgstr "横並び"
 msgid "Simple"
 msgstr "単純"
 
-#: efa/options/rotation/simplimax.title pca/options/rotation/simplimax.title
+#: efa/options/rotation/simplimax.title
+#: pca/options/rotation/simplimax.title
 msgid "Simplimax"
 msgstr "シンプリマックス"
 
@@ -3093,16 +3669,20 @@ msgstr "特異適合が発生しました。1つまたは複数の予測変数�
 msgid "Singularity error. Sphericity tests are not available"
 msgstr "特異点エラーです。球面性の検定ができません"
 
-#: R/descriptives.b.R descriptives/options/skew.title
+#: R/descriptives.b.R
+#: descriptives/options/skew.title
 msgid "Skewness"
 msgstr "歪度"
 
-#: efa/options/sortLoadings.title pca/options/sortLoadings.title
+#: efa/options/sortLoadings.title
+#: pca/options/sortLoadings.title
 msgid "Sort loadings by size"
 msgstr "負荷量順に並び替え"
 
-#: corrMatrix/options/spearman.title corrMatrix/ui[1][0]/spearman.label
-#: corrPart/options/spearman.title corrPart/ui[1][0]/spearman.label
+#: corrMatrix/options/spearman.title
+#: corrMatrix/ui[1][0]/spearman.label
+#: corrPart/options/spearman.title
+#: corrPart/ui[1][0]/spearman.label
 msgid "Spearman"
 msgstr "スピアマンの順位相関係数"
 
@@ -3111,7 +3691,8 @@ msgstr "スピアマンの順位相関係数"
 msgid "Spearman's rho"
 msgstr "スピアマンの順位相関係数"
 
-#: R/logregbin.b.R logRegBin/options/spec.title
+#: R/logregbin.b.R
+#: logRegBin/options/spec.title
 #: logRegBin/results/models.template/pred/measures.columns.title
 msgid "Specificity"
 msgstr "特異度"
@@ -3120,7 +3701,8 @@ msgstr "特異度"
 msgid "Sphericity Correction"
 msgstr "球面性補正"
 
-#: anovaRM/options/spherCorr.title anovaRM/ui[3][1][0].label
+#: anovaRM/options/spherCorr.title
+#: anovaRM/ui[3][1][0].label
 msgid "Sphericity corrections"
 msgstr "球面性補正"
 
@@ -3128,7 +3710,8 @@ msgstr "球面性補正"
 msgid "Sphericity tests"
 msgstr "球面性検定"
 
-#: descriptives/options/splitBy.title descriptives/ui[0][1].label
+#: descriptives/options/splitBy.title
+#: descriptives/ui[0][1].label
 msgid "Split by"
 msgstr "グループ変数"
 
@@ -3150,16 +3733,20 @@ msgstr "積み上げ"
 msgid "Stand. Estimate"
 msgstr "標準化推定値"
 
-#: anova/options/emmPlotError/se.title contTables/results/gamma.columns.title
+#: anova/options/emmPlotError/se.title
+#: contTables/results/gamma.columns.title
 msgid "Standard Error"
 msgstr "標準誤差"
 
-#: R/descriptives.b.R descriptives/options/sd.title
-#: reliability/options/sdScale.title reliability/options/sdItems.title
+#: R/descriptives.b.R
+#: descriptives/options/sd.title
+#: reliability/options/sdScale.title
+#: reliability/options/sdItems.title
 msgid "Standard deviation"
 msgstr "標準偏差"
 
-#: ancova/options/emmPlotError/se.title anovaRM/options/emmPlotError/se.title
+#: ancova/options/emmPlotError/se.title
+#: anovaRM/options/emmPlotError/se.title
 #: descriptives/options/se.title
 msgid "Standard error"
 msgstr "標準誤差"
@@ -3168,26 +3755,37 @@ msgstr "標準誤差"
 msgid "Standardized Estimate"
 msgstr "標準化推定値"
 
-#: R/ancova.b.R R/anovaonew.b.R R/anovarm.b.R R/descriptives.b.R R/linreg.b.R
-#: R/ttestis.b.R R/ttestones.b.R R/ttestps.b.R
+#: R/ancova.b.R
+#: R/anovaonew.b.R
+#: R/anovarm.b.R
+#: R/descriptives.b.R
+#: R/linreg.b.R
+#: R/ttestis.b.R
+#: R/ttestones.b.R
+#: R/ttestps.b.R
 msgid "Standardized Residuals"
 msgstr "標準化残差"
 
-#: cfa/options/stdEst.title linReg/options/stdEst.title
+#: cfa/options/stdEst.title
+#: linReg/options/stdEst.title
 msgid "Standardized estimate"
 msgstr "標準化推定値"
 
 #: ancova/results/assump/norm.columns.title
 #: anovaRMNP/results/comp.columns.title
 #: linReg/results/models.template/assump/norm.columns.title
-#: ttestIS/results/ttest.columns.title ttestOneS/results/ttest.columns.title
+#: ttestIS/results/ttest.columns.title
+#: ttestOneS/results/ttest.columns.title
 #: ttestPS/results/ttest.columns.title
 msgid "Statistic"
 msgstr "統計量"
 
-#: anovaOneW/ui[2][0][1][0].label cfa/ui[3][1][0].label
-#: contTables/ui[1][0].label corrMatrix/options/plotStats.title
-#: descriptives/ui[2].label propTest2/ui[2][1][0].label
+#: anovaOneW/ui[2][0][1][0].label
+#: cfa/ui[3][1][0].label
+#: contTables/ui[1][0].label
+#: corrMatrix/options/plotStats.title
+#: descriptives/ui[2].label
+#: propTest2/ui[2][1][0].label
 msgid "Statistics"
 msgstr "統計量"
 
@@ -3211,7 +3809,8 @@ msgstr "平均値の標準誤差"
 msgid "Std. error skewness"
 msgstr "標準誤差（歪度）"
 
-#: ttestIS/options/students.title ttestOneS/ui[1][0][0]/students.label
+#: ttestIS/options/students.title
+#: ttestOneS/ui[1][0][0]/students.label
 #: ttestPS/ui[1][0][0]/students.label
 msgid "Student's"
 msgstr "スチューデント法"
@@ -3222,26 +3821,33 @@ msgstr "スチューデント法"
 msgid "Student's t"
 msgstr "スチューデントのt"
 
-#: ttestOneS/options/students.title ttestPS/options/students.title
+#: ttestOneS/options/students.title
+#: ttestPS/options/students.title
 msgid "Student's test"
 msgstr "スチューデントの検定"
 
-#: R/descriptives.b.R R/reliability.b.R descriptives/options/sum.title
+#: R/descriptives.b.R
+#: R/reliability.b.R
+#: descriptives/options/sum.title
 msgid "Sum"
 msgstr "合計値"
 
-#: ancova/results/main.columns.title anovaRM/results/rmTable.columns.title
+#: ancova/results/main.columns.title
+#: anovaRM/results/rmTable.columns.title
 #: anovaRM/results/bsTable.columns.title
 #: linReg/results/models.template/anova.columns.title
 #: mancova/results/univar.columns.title
 msgid "Sum of Squares"
 msgstr "2乗和"
 
-#: ancova/options/ss.title anova/options/ss.title anovaRM/options/ss.title
+#: ancova/options/ss.title
+#: anova/options/ss.title
+#: anovaRM/options/ss.title
 msgid "Sum of squares"
 msgstr "2乗和"
 
-#: reliability/options/sumScoreOV.title reliability/results/sumScoreOV.title
+#: reliability/options/sumScoreOV.title
+#: reliability/results/sumScoreOV.title
 msgid "Sum score"
 msgstr "合計得点"
 
@@ -3249,9 +3855,12 @@ msgstr "合計得点"
 msgid "Summary"
 msgstr "要約"
 
-#: package/analyses/ttestIS.menuGroup package/analyses/ttestPS.menuGroup
-#: package/analyses/ttestOneS.menuGroup ttestIS/options.menuGroup
-#: ttestOneS/options.menuGroup ttestPS/options.menuGroup
+#: package/analyses/ttestIS.menuGroup
+#: package/analyses/ttestPS.menuGroup
+#: package/analyses/ttestOneS.menuGroup
+#: ttestIS/options.menuGroup
+#: ttestOneS/options.menuGroup
+#: ttestPS/options.menuGroup
 msgid "T-Tests"
 msgstr "t検定"
 
@@ -3271,11 +3880,17 @@ msgstr "TLI"
 msgid "Term 1"
 msgstr "項 1"
 
-#: jamovi/js/ancova.events.js:51 jamovi/js/ancova.events.js:7
-#: jamovi/js/anova.js:45 jamovi/js/anova.js:9 jamovi/js/anovarm.events.js:16
-#: jamovi/js/anovarm.events.js:77 jamovi/js/linreg.events.js:10
-#: jamovi/js/linreg.events.js:47 jamovi/js/loglinear.events.js:10
-#: jamovi/js/loglinear.events.js:52 jamovi/js/logregbin.events.js:10
+#: jamovi/js/ancova.events.js:51
+#: jamovi/js/ancova.events.js:7
+#: jamovi/js/anova.js:45
+#: jamovi/js/anova.js:9
+#: jamovi/js/anovarm.events.js:16
+#: jamovi/js/anovarm.events.js:77
+#: jamovi/js/linreg.events.js:10
+#: jamovi/js/linreg.events.js:47
+#: jamovi/js/loglinear.events.js:10
+#: jamovi/js/loglinear.events.js:52
+#: jamovi/js/logregbin.events.js:10
 #: jamovi/js/logregbin.events.js:61
 msgid "Term {0}"
 msgstr "項 {0}"
@@ -3284,7 +3899,8 @@ msgstr "項 {0}"
 msgid "Test Value"
 msgstr "検定値"
 
-#: cfa/ui[4][0][0][0].label cfa/results/modelFit/test.title
+#: cfa/ui[4][0][0][0].label
+#: cfa/results/modelFit/test.title
 msgid "Test for Exact Fit"
 msgstr "適合度検定"
 
@@ -3296,12 +3912,15 @@ msgstr "検定結果（tと自由度）"
 msgid "Test statistics"
 msgstr "検定統計量"
 
-#: propTest2/options/testValue.title ttestOneS/ui[1][0][1][0]/testValue.label
+#: propTest2/options/testValue.title
+#: ttestOneS/ui[1][0][1][0]/testValue.label
 msgid "Test value"
 msgstr "検定値"
 
-#: contTables/ui[1][0][0][0][0].label ttestIS/ui[1][0][0].label
-#: ttestOneS/ui[1][0][0].label ttestPS/ui[1][0][0].label
+#: contTables/ui[1][0][0][0][0].label
+#: ttestIS/ui[1][0][0].label
+#: ttestOneS/ui[1][0][0].label
+#: ttestPS/ui[1][0][0].label
 msgid "Tests"
 msgstr "検定"
 
@@ -3317,30 +3936,26 @@ msgstr "Rに付属の’iris’データセット"
 msgid "The 'split by' variable '{var}' contains no data."
 msgstr "グループ変数「{var}」にデータがありません。"
 
-#: package/analyses/ancova.description ancova/options.description.main
-msgid ""
-"The Analysis of Covariance (ANCOVA) is used to explore the relationship\n"
+#: package/analyses/ancova.description
+#: ancova/options.description.main
+msgid "The Analysis of Covariance (ANCOVA) is used to explore the relationship\n"
 "between a continuous dependent variable, one or more categorical\n"
 "explanatory variables, and one or more continuous explanatory variables\n"
 "(or covariates). It is essentially the same analysis as ANOVA, but\n"
 "with the addition of covariates."
-msgstr ""
-"共分散分析（ANCOVA）は、連続型の従属変数、1つまたは複数の離散型\n"
+msgstr "共分散分析（ANCOVA）は、連続型の従属変数、1つまたは複数の離散型\n"
 "説明変数、および1つまたは複数の連続型共変量の関係を調べるための分析方法\n"
 "です。基本的には分散分析と同じですが、共変量を含む点が異なります。"
 
 #: package/analyses/anova.description
-msgid ""
-"The Analysis of Variance (ANOVA) is used to explore the relationship\n"
+msgid "The Analysis of Variance (ANOVA) is used to explore the relationship\n"
 "between a continuous dependent variable, and one or more categorical\n"
 "explanatory variables."
-msgstr ""
-"分散分析（ANOVA）は、連続型の従属変数と、1つまたは複数の離散型\n"
+msgstr "分散分析（ANOVA）は、連続型の従属変数と、1つまたは複数の離散型\n"
 "説明変数との関係を調べるための分析方法です。"
 
 #: anova/options.description.main
-msgid ""
-"The Analysis of Variance (ANOVA) is used to explore the relationship\n"
+msgid "The Analysis of Variance (ANOVA) is used to explore the relationship\n"
 "between a continuous dependent variable, and one or more categorical\n"
 "explanatory variables.\n"
 "\n"
@@ -3351,8 +3966,7 @@ msgid ""
 "factor). Alternatively, if one is unwilling to assume that the data is\n"
 "normally distributed, a non-parametric approach (such as Kruskal-Wallis)\n"
 "can be used."
-msgstr ""
-"分散分析（ANOVA）は、連続型の従属変数と、1つまたは複数の離散型\n"
+msgstr "分散分析（ANOVA）は、連続型の従属変数と、1つまたは複数の離散型\n"
 "説明変数との関係を調べるための分析方法です。\n"
 "\n"
 "分散分析は、残差が正規分布しており、すべてのグループで分散が等しい\n"
@@ -3362,15 +3976,13 @@ msgstr ""
 "メトリック検定（クラスカル=ウォリス検定など）を用いることができます。"
 
 #: package/analyses/anovaOneW.description
-msgid ""
-"The Analysis of Variance (ANOVA) is used to explore the relationship\n"
+msgid "The Analysis of Variance (ANOVA) is used to explore the relationship\n"
 "between a continuous dependent variable, and one or more categorical\n"
 "explanatory variables. This 'One-Way ANOVA' is a simplified version of\n"
 "the 'normal' ANOVA, allowing only a single explanatory factor, however\n"
 "also providing a Welch's ANOVA. The Welch's ANOVA has the advantage that\n"
 "it need not assume that the variances of all groups are equal."
-msgstr ""
-"分散分析（ANOVA）は、連続型の従属変数と、1つまたは複数の離散型\n"
+msgstr "分散分析（ANOVA）は、連続型の従属変数と、1つまたは複数の離散型\n"
 "説明変数との関係を調べるための分析方法です。この「1要因分散分析」の\n"
 "メニューは「通常の」分散分析の簡略版で、要因は1つしか使用できません\n"
 "が、ウェルチ法による分散分析も可能です。ウェルチ法による分散分析\n"
@@ -3378,8 +3990,7 @@ msgstr ""
 "利点があります。"
 
 #: anovaOneW/options.description.main
-msgid ""
-"The Analysis of Variance (ANOVA) is used to explore the relationship\n"
+msgid "The Analysis of Variance (ANOVA) is used to explore the relationship\n"
 "between a continuous dependent variable, and one or more categorical\n"
 "explanatory variables. This 'One-Way ANOVA' is a simplified version of\n"
 "the 'normal' ANOVA, allowing only a single explanatory factor, however\n"
@@ -3391,8 +4002,7 @@ msgid ""
 "\n"
 "Note that the Welch's ANOVA is the same procedure as the Welch's\n"
 "independent samples t-test."
-msgstr ""
-"分散分析（ANOVA）は、連続型の従属変数と、1つまたは複数の離散型\n"
+msgstr "分散分析（ANOVA）は、連続型の従属変数と、1つまたは複数の離散型\n"
 "説明変数との関係を調べるための分析方法です。この「1要因分散分析」の\n"
 "メニューは「通常の」分散分析の簡略版で、要因は1つしか使用できませんが、\n"
 "ウェルチ法による分散分析も可能です。ウェルチ法による分散分析では、\n"
@@ -3403,36 +4013,36 @@ msgstr ""
 "検定を一度に実施することもできます。\n"
 "なお、ウェルチ法の分散分析は、ウェルチ法による対応なしt検定と同じ手法です。"
 
-#: package/analyses/propTest2.description propTest2/options.description.main
+#: package/analyses/propTest2.description
+#: propTest2/options.description.main
 msgid "The Binomial test is used to test the Null hypothesis that the proportion of observations match some expected value. If the p-value is low, this suggests that the Null hypothesis is false, and that the true proportion must be some other value."
 msgstr "2項検定は、観察された比率が期待値に一致するという帰無仮説を検定するための方法です。小さなp値は、帰無仮説が偽、つまり実際の比率が期待値とは異なることを示します。"
 
-#: package/analyses/anovaRMNP.description anovaRMNP/options.description.main
+#: package/analyses/anovaRMNP.description
+#: anovaRMNP/options.description.main
 msgid "The Friedman test is used to explore the relationship between a continuous dependent variable and a categorical explanatory variable, where the explanatory variable is 'within subjects' (where multiple measurements are from the same subject). It is analagous to Repeated Measures ANOVA, but with the advantage of being non-parametric, and not requiring the assumptions of normality or homogeneity of variances. However, it has the limitation that it can only test a single explanatory variable at a time."
 msgstr "フリードマン検定は、同じ参加者から複数の測定値が得られている場合に、連続型の従属変数と離散型説明変数の間の関係性を探索するための分析方法です。反復測定分散分析に似ていますが、ノンパラメトリック検定であり、正規性や分散等質性の仮定が必要ないという利点があります。ただし、この検定で分析可能なのは、1つの要因による影響のみに限られます。"
 
-#: package/analyses/anovaNP.description anovaNP/options.description.main
+#: package/analyses/anovaNP.description
+#: anovaNP/options.description.main
 msgid "The Kruskal-Wallis test is used to explore the relationship between a continuous dependent variable, and a categorical explanatory variable. It is analagous to ANOVA, but with the advantage of being non-parametric and having fewer assumptions. However, it has the limitation that it can only test a single explanatory variable at a time."
 msgstr "クラスカル=ウォリス検定は、連続型の従属変数と離散型説明変数との関係を調べるための方法です。分散分析と似ていますが、これはノンパラメトリック検定で、分析に必要な前提がより少なくすむという利点があります。ただし、この検定で分析可能なのは、1つの要因による影響のみに限られます。"
 
 #: package/analyses/anovaRM.description
-msgid ""
-"The Repeated Measures ANOVA is used to explore the relationship\n"
+msgid "The Repeated Measures ANOVA is used to explore the relationship\n"
 "between a continuous dependent variable and one or more categorical\n"
 "explanatory variables, where one or more of the explanatory variables\n"
 "are 'within subjects' (where multiple measurements are from the same\n"
 "subject). Additionally, this analysis allows the inclusion of\n"
 "covariates, allowing for repeated measures ANCOVAs as well."
-msgstr ""
-"反復測定分散分析は、連続型の従属変数と、1つまたは複数の離散型\n"
+msgstr "反復測定分散分析は、連続型の従属変数と、1つまたは複数の離散型\n"
 "説明変数との関係を調べるための分析方法ですが、とくに説明変数の\n"
 "1つまたは複数が同じ参加者から繰り返し得られている場合に用いられ\n"
 "ます。なお、この分析メニューでは共変量を用いることができるため、\n"
 "反復測定共分散分析を実施することも可能です。"
 
 #: anovaRM/options.description.main
-msgid ""
-"The Repeated Measures ANOVA is used to explore the relationship\n"
+msgid "The Repeated Measures ANOVA is used to explore the relationship\n"
 "between a continuous dependent variable and one or more categorical\n"
 "explanatory variables, where one or more of the explanatory variables\n"
 "are 'within subjects' (where multiple measurements are from the same\n"
@@ -3446,8 +4056,7 @@ msgid ""
 "A non-parametric equivalent of the repeated measures ANOVA also exists;\n"
 "the Friedman test. However, it has the limitation of only being able to\n"
 "test a single factor."
-msgstr ""
-"反復測定分散分析は、連続型の従属変数と、1つまたは複数の離散型\n"
+msgstr "反復測定分散分析は、連続型の従属変数と、1つまたは複数の離散型\n"
 "説明変数との関係を調べるための分析方法ですが、とくに説明変数の\n"
 "1つまたは複数が同じ参加者から繰り返し得られている場合に用いられ\n"
 "ます。なお、この分析メニューでは共変量を用いることができるため、\n"
@@ -3462,19 +4071,16 @@ msgstr ""
 "1要因の影響のみです。"
 
 #: package/analyses/ttestIS.description
-msgid ""
-"The Student's Independent samples t-test (sometimes called a two-samples\n"
+msgid "The Student's Independent samples t-test (sometimes called a two-samples\n"
 "t-test) is used to test the null hypothesis that two groups have the\n"
 "same mean. A low p-value suggests that the null hypothesis is not true,\n"
 "and therefore the group means are different."
-msgstr ""
-"スチューデントの対応なしt検定（独立標本t検定）は、2つのグループで平均値が\n"
+msgstr "スチューデントの対応なしt検定（独立標本t検定）は、2つのグループで平均値が\n"
 "等しいという帰無仮説を検定するための分析方法です。小さなp値は、帰無仮説が\n"
 "真ではない、つまりグループ間で平均が異なる可能性を示します。"
 
 #: ttestIS/options.description.main
-msgid ""
-"The Student's Independent samples t-test (sometimes called a two-samples\n"
+msgid "The Student's Independent samples t-test (sometimes called a two-samples\n"
 "t-test) is used to test the null hypothesis that two groups have the\n"
 "same mean. A low p-value suggests that the null hypothesis is not true,\n"
 "and therefore the group means are different.\n"
@@ -3487,8 +4093,7 @@ msgid ""
 "distribution, the non-parametric Mann-Whitney U test can be used instead\n"
 "(However, note that the Mann-Whitney U test has a slightly different\n"
 "null hypothesis; that the distributions of each group is equal)."
-msgstr ""
-"スチューデントの対応なしt検定（独立標本t検定）は、2つのグループで平均値が\n"
+msgstr "スチューデントの対応なしt検定（独立標本t検定）は、2つのグループで平均値が\n"
 "等しいという帰無仮説を検定するための分析方法です。小さなp値は、帰無仮説が\n"
 "真ではない、つまりグループ間で平均が異なる可能性を示します。\n"
 "\n"
@@ -3501,19 +4106,16 @@ msgstr ""
 "という、わずかに異なる帰無仮説を用いる点には注意が必要です）。"
 
 #: package/analyses/ttestOneS.description
-msgid ""
-"The Student's One-sample t-test is used to test the null hypothesis that\n"
+msgid "The Student's One-sample t-test is used to test the null hypothesis that\n"
 "the true mean is equal to a particular value (typically zero). A low\n"
 "p-value suggests that the null hypothesis is not true, and therefore\n"
 "the true mean must be different from the test value."
-msgstr ""
-"スチューデントの1標本t検定は、真の平均値が特定の値（通常は0）に等しいと\n"
+msgstr "スチューデントの1標本t検定は、真の平均値が特定の値（通常は0）に等しいと\n"
 "いう帰無仮説を検定するための分析方法です。低いp値は、帰無仮説が真では\n"
 "ない、つまり真の平均が検定値と異なる可能性を示します。"
 
 #: ttestOneS/options.description.main
-msgid ""
-"The Student's One-sample t-test is used to test the null hypothesis that\n"
+msgid "The Student's One-sample t-test is used to test the null hypothesis that\n"
 "the true mean is equal to a particular value (typically zero). A low\n"
 "p-value suggests that the null hypothesis is not true, and therefore\n"
 "the true mean must be different from the test value.\n"
@@ -3523,8 +4125,7 @@ msgid ""
 "non-parametric Wilcoxon signed-rank can be used in it's place (However,\n"
 "note that the Wilcoxon signed-rank has a slightly different null\n"
 "hypothesis; that the *median* is equal to the test value)."
-msgstr ""
-"スチューデントの1標本t検定は、真の平均値が特定の値（通常は0）に等しい\n"
+msgstr "スチューデントの1標本t検定は、真の平均値が特定の値（通常は0）に等しい\n"
 "という帰無仮説を検定するための分析方法です。低いp値は、帰無仮説が真では\n"
 "ない、つまり真の平均が検定値と異なる可能性を示します。\n"
 "\n"
@@ -3535,21 +4136,18 @@ msgstr ""
 "異なる帰無仮説を用いる点には注意が必要です）。"
 
 #: package/analyses/ttestPS.description
-msgid ""
-"The Student's paired samples t-test (sometimes called a\n"
+msgid "The Student's paired samples t-test (sometimes called a\n"
 "dependent-samples t-test) is used to test the null hypothesis that the\n"
 "difference between pairs of measurements is equal to zero. A low p-value\n"
 "suggests that the null hypothesis is not true, and that the\n"
 "difference between the measurement pairs is not zero."
-msgstr ""
-"スチューデントの対応ありt検定は、測定値ペアの差が0である\n"
+msgstr "スチューデントの対応ありt検定は、測定値ペアの差が0である\n"
 "という帰無仮説を検定するための分析方法です。小さなp値は、\n"
 "帰無仮説が真ではなく、測定ペアの差が0ではない可能性を示\n"
 "します。"
 
 #: ttestPS/options.description.main
-msgid ""
-"The Student's paired samples t-test (sometimes called a\n"
+msgid "The Student's paired samples t-test (sometimes called a\n"
 "dependent-samples t-test) is used to test the null hypothesis that the\n"
 "difference between pairs of measurements is equal to zero. A low p-value\n"
 "suggests that the null hypothesis is not true, and that the\n"
@@ -3561,8 +4159,7 @@ msgid ""
 "(However, note that the Wilcoxon signed-rank has a slightly different\n"
 "null hypothesis; that the two groups of measurements follow the same\n"
 "distribution)."
-msgstr ""
-"スチューデントの対応ありt検定は、測定値ペアの差が0であるという\n"
+msgstr "スチューデントの対応ありt検定は、測定値ペアの差が0であるという\n"
 "帰無仮説を検定するための分析方法です。小さなp値は、帰無仮説が\n"
 "真ではなく、測定ペアの差が0ではない可能性を示します。\n"
 "\n"
@@ -3577,7 +4174,8 @@ msgstr ""
 msgid "The cut-off value is set to {}"
 msgstr "カットオフ値 = {}"
 
-#: R/logregmulti.b.R R/logregord.b.R
+#: R/logregmulti.b.R
+#: R/logregord.b.R
 msgid "The dependent variable \"{dep}\" has only two levels, consider doing a binomial logistic regression."
 msgstr "従属変数「{dep}」には2水準しかありません。2項ロジスティック回帰の使用を検討してください。"
 
@@ -3597,7 +4195,8 @@ msgstr "反復測定要因の水準数が2です。反復測定要因が2水準�
 msgid "The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels."
 msgstr "反復測定要因の水準数が2です。反復測定要因が2水準しかない場合、球面性の前提はつねに満たされます。"
 
-#: ancova/results/model.description anova/results/model.description
+#: ancova/results/model.description
+#: anova/results/model.description
 msgid "The underlying `aov` object"
 msgstr "`aov`オブジェクト"
 
@@ -3609,16 +4208,24 @@ msgstr "変数 {var} を数値として扱うことができません。その�
 msgid "The variables {vars} cannot be treated as numeric. Plots that expect numeric data will not be created for these variables."
 msgstr "変数 {var} を数値として扱うことができません。そのため、これらの変数については数値データを想定したグラフは作成されません。"
 
-#: package/analyses/propTestN.description propTestN/options.description.main
+#: package/analyses/propTestN.description
+#: propTestN/options.description.main
 msgid "The χ² Goodness of fit test (not to be confused with the χ² test of independence), tests the Null hypothesis that the proportions of observations match some expected proportions. If the p-value is low, this suggests that the Null hypothesis is false, and that the true proportions are different to those tested."
 msgstr "χ²適合度検定（χ²独立性検定と混同しないように）は、観察された比率が期待比率に一致するという帰無仮説について検定する方法です。小さなp値は、帰無仮説が偽、つまり実際の比率が期待値とは異なることを示します。"
 
-#: package/analyses/contTables.description contTables/options.description.main
+#: package/analyses/contTables.description
+#: contTables/options.description.main
 msgid "The χ² test of association (not to be confused with the χ² goodness of fit) is used to test whether two categorical variables are independent or associated. If the p-value is low, it suggests the variables are not independent, and that there is a relationship between the two variables."
 msgstr "χ²独立性検定（χ²適合度検定と混同しないように）は、2つの離散型変数が独立かどうかについて検定するための方法です。p値が小さければ、2つの変数は独立ではなく、何らかの関連がある可能性を示します。"
 
-#: R/ancova.b.R R/anovaonew.b.R R/anovarm.b.R R/descriptives.b.R R/linreg.b.R
-#: R/ttestis.b.R R/ttestones.b.R R/ttestps.b.R
+#: R/ancova.b.R
+#: R/anovaonew.b.R
+#: R/anovarm.b.R
+#: R/descriptives.b.R
+#: R/linreg.b.R
+#: R/ttestis.b.R
+#: R/ttestones.b.R
+#: R/ttestps.b.R
 msgid "Theoretical Quantiles"
 msgstr "理論的分位点"
 
@@ -3634,12 +4241,17 @@ msgstr "閾値"
 msgid "Thresholds"
 msgstr "閾値"
 
+#: efa/options/factorScoreMethod/Thurstone.title
+msgid "Thurstone"
+msgstr ""
+
 #: linReg/results/models.template/assump/collin.columns.title
 #: logRegBin/results/models.template/assump/collin.columns.title
 msgid "Tolerance"
 msgstr "トレランス"
 
-#: R/ttestones.b.R R/ttestps.b.R
+#: R/ttestones.b.R
+#: R/ttestps.b.R
 msgid "Too few observations (N < 3) to compute statistic"
 msgstr "データが少なすぎて統計量を算出できません（N < 3）"
 
@@ -3655,7 +4267,8 @@ msgstr "標本サイズが小さすぎて統計量を算出できません（N <
 msgid "Too few samples to compute statistic (N < {n})"
 msgstr "サンプルサイズが小さすぎて統計量を算出できません（N < {n}）"
 
-#: R/ttestones.b.R R/ttestps.b.R
+#: R/ttestones.b.R
+#: R/ttestps.b.R
 msgid "Too many observations (N > 5000) to compute statistic"
 msgstr "データが多すぎて統計量を算出できません（N > 5000）"
 
@@ -3671,12 +4284,15 @@ msgstr "サンプルサイズが大きすぎて統計量を算出できません
 msgid "Tooth Growth"
 msgstr "歯の成長データ"
 
-#: R/conttables.b.R R/conttablespaired.b.R contTables/options/pcTot.title
+#: R/conttables.b.R
+#: R/conttablespaired.b.R
+#: contTables/options/pcTot.title
 #: propTest2/results/table.columns.title
 msgid "Total"
 msgstr "全体"
 
-#: ancova/options/postHocCorr/tukey.title anova/options/postHocCorr/tukey.title
+#: ancova/options/postHocCorr/tukey.title
+#: anova/options/postHocCorr/tukey.title
 #: anovaRM/options/postHocCorr/tukey.title
 msgid "Tukey"
 msgstr "テューキー法"
@@ -3689,16 +4305,19 @@ msgstr "テューキー法（等分散）"
 msgid "Tukey Post-Hoc Test – {dep}"
 msgstr "多重比較（テューキー法）- {dep}"
 
-#: ancova/options/ss/1.title anova/options/ss/1.title
+#: ancova/options/ss/1.title
+#: anova/options/ss/1.title
 msgid "Type 1"
 msgstr "タイプ1"
 
-#: ancova/options/ss/2.title anova/options/ss/2.title
+#: ancova/options/ss/2.title
+#: anova/options/ss/2.title
 #: anovaRM/options/ss/2.title
 msgid "Type 2"
 msgstr "タイプ2"
 
-#: ancova/options/ss/3.title anova/options/ss/3.title
+#: ancova/options/ss/3.title
+#: anova/options/ss/3.title
 #: anovaRM/options/ss/3.title
 msgid "Type 3"
 msgstr "タイプ3"
@@ -3723,21 +4342,29 @@ msgstr "独自性"
 msgid "Univariate Tests"
 msgstr "単変量検定"
 
-#: R/ancova.b.R R/descriptives.b.R R/linreg.b.R R/loglinear.b.R R/logregbin.b.R
-#: R/logregmulti.b.R cfa/results/factorLoadings.columns.title
+#: R/ancova.b.R
+#: R/descriptives.b.R
+#: R/linreg.b.R
+#: R/loglinear.b.R
+#: R/logregbin.b.R
+#: R/logregmulti.b.R
+#: cfa/results/factorLoadings.columns.title
 #: cfa/results/factorEst/factorCov.columns.title
 #: cfa/results/factorEst/factorIntercept.columns.title
 #: cfa/results/resEst/resCov.columns.title
 #: cfa/results/resEst/resIntercept.columns.title
 #: cfa/results/modelFit/fitMeasures.columns.title
-#: contTables/results/odds.columns.title contTables/results/gamma.columns.title
+#: contTables/results/odds.columns.title
+#: contTables/results/gamma.columns.title
 #: linReg/results/models.template/coef.columns.title
 #: logLinear/results/models.template/coef.columns.title
 #: logRegBin/results/models.template/coef.columns.title
 #: logRegMulti/results/models.template/coef.columns.title
 #: logRegOrd/results/models.template/coef.columns.title
-#: pca/results/modelFit/fit.columns.title propTest2/results/table.columns.title
-#: ttestIS/results/ttest.columns.title ttestOneS/results/ttest.columns.title
+#: pca/results/modelFit/fit.columns.title
+#: propTest2/results/table.columns.title
+#: ttestIS/results/ttest.columns.title
+#: ttestOneS/results/ttest.columns.title
 #: ttestPS/results/ttest.columns.title
 msgid "Upper"
 msgstr "上限"
@@ -3747,8 +4374,10 @@ msgstr "上限"
 msgid "VIF"
 msgstr "VIF"
 
-#: R/anovarmnp.b.R contTables/results/chiSq.columns.title
-#: contTables/results/odds.columns.title contTables/results/nom.columns.title
+#: R/anovarmnp.b.R
+#: contTables/results/chiSq.columns.title
+#: contTables/results/odds.columns.title
+#: contTables/results/nom.columns.title
 #: contTablesPaired/results/test.columns.title
 msgid "Value"
 msgstr "値 "
@@ -3757,10 +4386,12 @@ msgstr "値 "
 msgid "Values are counts"
 msgstr "度数として処理"
 
-#: linReg/ui[2]/refLevels.columns.label logLinear/ui[2]/refLevels.columns.label
+#: linReg/ui[2]/refLevels.columns.label
+#: logLinear/ui[2]/refLevels.columns.label
 #: logRegBin/ui[2]/refLevels.columns.label
 #: logRegMulti/ui[2]/refLevels.columns.label
-#: logRegOrd/ui[2]/refLevels.columns.label propTestN/options/var.title
+#: logRegOrd/ui[2]/refLevels.columns.label
+#: propTestN/options/var.title
 msgid "Variable"
 msgstr "変数"
 
@@ -3768,7 +4399,8 @@ msgstr "変数"
 msgid "Variable '{var}' contains no data"
 msgstr "変数「{var}」にデータがありません"
 
-#: R/ttestis.b.R R/ttestones.b.R
+#: R/ttestis.b.R
+#: R/ttestones.b.R
 msgid "Variable contains infinite values"
 msgstr "変数に無限値が含まれています"
 
@@ -3776,13 +4408,18 @@ msgstr "変数に無限値が含まれています"
 msgid "Variable does not contain enough observations"
 msgstr "変数に十分な数のデータが含まれていません"
 
-#: R/ttestis.b.R R/ttestones.b.R
+#: R/ttestis.b.R
+#: R/ttestones.b.R
 msgid "Variable is not numeric"
 msgstr "変数値が数値ではありません"
 
-#: corrMatrix/options/vars.title corrPart/options/vars.title
-#: corrPart/ui/variablesupplier[0].label descriptives/options/vars.title
-#: descriptives/ui[0][0].label efa/options/vars.title pca/options/vars.title
+#: corrMatrix/options/vars.title
+#: corrPart/options/vars.title
+#: corrPart/ui/variablesupplier[0].label
+#: descriptives/options/vars.title
+#: descriptives/ui[0][0].label
+#: efa/options/vars.title
+#: pca/options/vars.title
 #: propTest2/options/vars.title
 msgid "Variables"
 msgstr "変数"
@@ -3799,7 +4436,8 @@ msgstr "行に変数を配置"
 msgid "Variables must have at least two levels"
 msgstr "変数値は2水準以上でなければなりません"
 
-#: R/descriptives.b.R descriptives/options/variance.title
+#: R/descriptives.b.R
+#: descriptives/options/variance.title
 msgid "Variance"
 msgstr "分散"
 
@@ -3807,7 +4445,8 @@ msgstr "分散"
 msgid "Variances"
 msgstr "分散"
 
-#: efa/options/rotation/varimax.title pca/options/rotation/varimax.title
+#: efa/options/rotation/varimax.title
+#: pca/options/rotation/varimax.title
 msgid "Varimax"
 msgstr "バリマックス"
 
@@ -3815,14 +4454,17 @@ msgstr "バリマックス"
 msgid "Violin"
 msgstr "バイオリン図"
 
-#: R/descriptives.b.R anovaOneW/results/assump/norm.columns.title
+#: R/descriptives.b.R
+#: anovaOneW/results/assump/norm.columns.title
 #: mancova/results/assump/shapiro.columns.title
 #: ttestIS/results/assum/norm.columns.title
-#: ttestOneS/results/normality.columns.title ttestPS/results/norm.columns.title
+#: ttestOneS/results/normality.columns.title
+#: ttestPS/results/norm.columns.title
 msgid "W"
 msgstr "W"
 
-#: anovaOneW/results/anova.columns.content ttestIS/options/welchs.title
+#: anovaOneW/results/anova.columns.content
+#: ttestIS/options/welchs.title
 msgid "Welch's"
 msgstr "ウェルチ法"
 
@@ -3835,11 +4477,13 @@ msgstr "ウェルチのt"
 msgid "Wilcoxon W"
 msgstr "ウィルコクソンのW"
 
-#: ttestOneS/ui[1][0][0]/wilcoxon.label ttestPS/ui[1][0][0]/wilcoxon.label
+#: ttestOneS/ui[1][0][0]/wilcoxon.label
+#: ttestPS/ui[1][0][0]/wilcoxon.label
 msgid "Wilcoxon rank"
 msgstr "ウィルコクソン順位"
 
-#: ttestOneS/options/wilcoxon.title ttestPS/options/wilcoxon.title
+#: ttestOneS/options/wilcoxon.title
+#: ttestPS/options/wilcoxon.title
 msgid "Wilcoxon signed rank test"
 msgstr "ウィルコクソンの符号順位検定"
 
@@ -3882,13 +4526,18 @@ msgstr "縦軸"
 msgid "Z"
 msgstr "Z"
 
-#: ancova/options/ss.description.R anova/options/ss.description.R
+#: ancova/options/ss.description.R
+#: anova/options/ss.description.R
 msgid "`'1'`, `'2'` or `'3'` (default), the sum of squares to use"
 msgstr "使用する2乗和のタイプを`’1’`、`’2’`、または`’3’`（初期値）で指定します"
 
 #: anovaRM/options/ss.description.R
 msgid "`'2'` or `'3'` (default), the sum of squares to use"
 msgstr "使用する2乗和のタイプを`2`または`3`（初期値）で指定します"
+
+#: efa/options/factorScoreMethod.description.R
+msgid "`'Thurstone'` (default), `'Bartlett'`, `'tenBerge'`, `'Anderson'`, or `'Harman'` use respectively 'Thurstone', 'Bartlett', 'ten Berge', 'Anderson & Rubin', or 'Harman' method for estimating factor scores"
+msgstr ""
 
 #: contTables/options/hypothesis.description.R
 #: ttestIS/options/hypothesis.description.R
@@ -3950,7 +4599,8 @@ msgstr "因子数の決定方法を`’parallel’`（平行分析、初期値�
 msgid "`'perAnalysis'` or `'listwise'`, how to handle missing values; `'perAnalysis'` excludes missing values for individual dependent variables, `'listwise'` excludes a row from all analyses if one of its entries is missing"
 msgstr "`’perAnalysis’`または`’listwise’`で欠損値の取り扱いを指定します。`’perAnalysis’`は従属変数の欠損値を分析ごとに除外します。`’listwise’`は欠損値が1つでも含まれている行をすべての分析から除外します"
 
-#: anovaOneW/options/miss.description.R ttestIS/options/miss.description.R
+#: anovaOneW/options/miss.description.R
+#: ttestIS/options/miss.description.R
 #: ttestOneS/options/miss.description.R
 msgid "`'perAnalysis'` or `'listwise'`, how to handle missing values; `'perAnalysis'` excludes missing values for individual dependent variables, `'listwise'` excludes a row from all analyses if one of its entries is missing."
 msgstr "`’perAnalysis’`または`’listwise’`で欠損値の取り扱いを指定します。`’perAnalysis’`は従属変数の欠損値を分析ごとに除外します。`’listwise’`は欠損値が1つでも含まれている行をすべての分析から除外します。"
@@ -3999,8 +4649,10 @@ msgstr "分散の等質性を仮定しないウェルチ法による1要因分�
 msgid "`TRUE` (default) or `FALSE`, provide 'Z' and 'p' values for the model estimates"
 msgstr "モデル推定における’Z’と’p’の表示するかどうかを`TRUE`（初期値）または`FALSE`で指定します"
 
-#: logLinear/options/aic.description.R logRegBin/options/aic.description.R
-#: logRegMulti/options/aic.description.R logRegOrd/options/aic.description.R
+#: logLinear/options/aic.description.R
+#: logRegBin/options/aic.description.R
+#: logRegMulti/options/aic.description.R
+#: logRegOrd/options/aic.description.R
 msgid "`TRUE` (default) or `FALSE`, provide Aikaike's Information Criterion (AIC) for the models"
 msgstr "モデルの赤池情報量規準（AIC）を算出するかどうかを`TRUE`（初期値）または`FALSE`で指定します"
 
@@ -4017,14 +4669,17 @@ msgstr "ピアソンの相関係数（r）を算出するかどうかを`TRUE`�
 msgid "`TRUE` (default) or `FALSE`, provide a chi-square test for exact fit that compares the model with the perfect fitting model"
 msgstr "推定モデルと完全モデルの一致度についてのカイ2乗検定の有無を`TRUE`（初期値）または`FALSE`で指定します"
 
-#: linReg/options/ciEmm.description.R logLinear/options/ciEmm.description.R
+#: linReg/options/ciEmm.description.R
+#: logLinear/options/ciEmm.description.R
 #: logRegBin/options/ciEmm.description.R
 #: logRegMulti/options/ciEmm.description.R
 msgid "`TRUE` (default) or `FALSE`, provide a confidence interval for the estimated marginal means"
 msgstr "周辺平均値の信頼区間を算出するかどうかを`TRUE`（初期値）または`FALSE`で指定します"
 
-#: ancova/options/emmPlots.description.R anova/options/emmPlots.description.R
-#: anovaRM/options/emmPlots.description.R linReg/options/emmPlots.description.R
+#: ancova/options/emmPlots.description.R
+#: anova/options/emmPlots.description.R
+#: anovaRM/options/emmPlots.description.R
+#: linReg/options/emmPlots.description.R
 #: logLinear/options/emmPlots.description.R
 #: logRegBin/options/emmPlots.description.R
 #: logRegMulti/options/emmPlots.description.R
@@ -4043,7 +4698,8 @@ msgstr "残差の分散・共分散の推定値を表示するかどうかを`TR
 msgid "`TRUE` (default) or `FALSE`, provide mean differences for post-hoc tests"
 msgstr "事後検定における平均値の差を表示するかどうかを`TRUE`（初期値）または`FALSE`で指定します"
 
-#: corrMatrix/options/sig.description.R corrPart/options/sig.description.R
+#: corrMatrix/options/sig.description.R
+#: corrPart/options/sig.description.R
 msgid "`TRUE` (default) or `FALSE`, provide significance levels"
 msgstr "有意確率を表示するかどうかを`TRUE`（初期値）または`FALSE`で指定します"
 
@@ -4051,8 +4707,10 @@ msgstr "有意確率を表示するかどうかを`TRUE`（初期値）または
 msgid "`TRUE` (default) or `FALSE`, provide significance levels for post-hoc tests"
 msgstr "事後検定における有意確率を表示するかどうかを`TRUE`（初期値）または`FALSE`で指定します"
 
-#: logLinear/options/dev.description.R logRegBin/options/dev.description.R
-#: logRegMulti/options/dev.description.R logRegOrd/options/dev.description.R
+#: logLinear/options/dev.description.R
+#: logRegBin/options/dev.description.R
+#: logRegMulti/options/dev.description.R
+#: logRegOrd/options/dev.description.R
 msgid "`TRUE` (default) or `FALSE`, provide the deviance (or -2LogLikelihood) for the models"
 msgstr "モデルの逸脱度（すなわち-2×対数尤度）を算出するかどうかを`TRUE`（初期値）または`FALSE`で指定します"
 
@@ -4111,7 +4769,8 @@ msgstr "棒グラフに度数を追加するかどうかを`TRUE`または`FALSE
 msgid "`TRUE` or `FALSE` (default), add mean to box plot"
 msgstr "箱ひげ図に平均値を示すかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: corrMatrix/options/flag.description.R corrPart/options/flag.description.R
+#: corrMatrix/options/flag.description.R
+#: corrPart/options/flag.description.R
 msgid "`TRUE` or `FALSE` (default), flag significant correlations"
 msgstr "有意な相関係数に印をつけるかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
@@ -4139,7 +4798,8 @@ msgstr "マン=ホイットニーのU検定を実施するかどうかを`TRUE`�
 msgid "`TRUE` or `FALSE` (default), perform Shapiro-Wilk test of normality"
 msgstr "シャピロ=ウィルク正規性検定を実施するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: ancova/options/norm.description.R anova/options/norm.description.R
+#: ancova/options/norm.description.R
+#: anova/options/norm.description.R
 #: ttestIS/options/norm.description.R
 msgid "`TRUE` or `FALSE` (default), perform Shapiro-Wilk tests of normality"
 msgstr "シャピロ=ウィルク正規性検定を実施するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
@@ -4165,11 +4825,13 @@ msgstr "ウィルコクソンの符号順位検定を実施するかどうかを
 msgid "`TRUE` or `FALSE` (default), perform a Shapiro-Wilk test on the residuals"
 msgstr "残差についてシャピロ=ウィルク検定を行うかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: ancova/options/homo.description.R anova/options/homo.description.R
+#: ancova/options/homo.description.R
+#: anova/options/homo.description.R
 msgid "`TRUE` or `FALSE` (default), perform homogeneity tests"
 msgstr "等質性検定を実施するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: anovaNP/options/pairs.description.R anovaRMNP/options/pairs.description.R
+#: anovaNP/options/pairs.description.R
+#: anovaRMNP/options/pairs.description.R
 msgid "`TRUE` or `FALSE` (default), perform pairwise comparisons"
 msgstr "多重比較を行うかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
@@ -4187,13 +4849,17 @@ msgstr "周辺平均値に加えてデータをプロットするかどうかを
 msgid "`TRUE` or `FALSE` (default), provide Aikaike's Information Criterion (AIC) for the models"
 msgstr "モデルのAIC（赤池情報量規準）を算出するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: propTest2/options/bf.description.R ttestIS/options/bf.description.R
-#: ttestOneS/options/bf.description.R ttestPS/options/bf.description.R
+#: propTest2/options/bf.description.R
+#: ttestIS/options/bf.description.R
+#: ttestOneS/options/bf.description.R
+#: ttestPS/options/bf.description.R
 msgid "`TRUE` or `FALSE` (default), provide Bayes factors"
 msgstr "ベイズ因子を算出するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: linReg/options/bic.description.R logLinear/options/bic.description.R
-#: logRegBin/options/bic.description.R logRegMulti/options/bic.description.R
+#: linReg/options/bic.description.R
+#: logLinear/options/bic.description.R
+#: logRegBin/options/bic.description.R
+#: logRegMulti/options/bic.description.R
 #: logRegOrd/options/bic.description.R
 msgid "`TRUE` or `FALSE` (default), provide Bayesian Information Criterion (BIC) for the models"
 msgstr "モデルのBIC（ベイズ情報量規準）を算出するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
@@ -4261,7 +4927,8 @@ msgstr "シャピロ=ウィルク検定を実施するかどうかを`TRUE`ま�
 msgid "`TRUE` or `FALSE` (default), provide Spearman's rho"
 msgstr "スピアマンの順位相関係数（ρ）を算出するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: linReg/options/collin.description.R logRegBin/options/collin.description.R
+#: linReg/options/collin.description.R
+#: logRegBin/options/collin.description.R
 msgid "`TRUE` or `FALSE` (default), provide VIF and tolerence collinearity statistics"
 msgstr "共線性統計量としてVIF（分散拡大係数）およびトレランスを算出するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
@@ -4269,9 +4936,12 @@ msgstr "共線性統計量としてVIF（分散拡大係数）およびトレラ
 msgid "`TRUE` or `FALSE` (default), provide a Q-Q plot of multivariate normality"
 msgstr "多変量正規Q-Qプロットを作成するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: ancova/options/qq.description.R anova/options/qq.description.R
-#: anovaOneW/options/qq.description.R anovaRM/options/qq.description.R
-#: linReg/options/qqPlot.description.R ttestOneS/options/qq.description.R
+#: ancova/options/qq.description.R
+#: anova/options/qq.description.R
+#: anovaOneW/options/qq.description.R
+#: anovaRM/options/qq.description.R
+#: linReg/options/qqPlot.description.R
+#: ttestOneS/options/qq.description.R
 #: ttestPS/options/qq.description.R
 msgid "`TRUE` or `FALSE` (default), provide a Q-Q plot of residuals"
 msgstr "残差Q-Qプロットを作成するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
@@ -4280,12 +4950,15 @@ msgstr "残差Q-Qプロットを作成するかどうかを`TRUE`または`FALSE
 msgid "`TRUE` or `FALSE` (default), provide a ROC curve plot"
 msgstr "ROC曲線のグラフを作成するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: logLinear/options/ci.description.R logRegBin/options/ci.description.R
-#: logRegMulti/options/ci.description.R logRegOrd/options/ci.description.R
+#: logLinear/options/ci.description.R
+#: logRegBin/options/ci.description.R
+#: logRegMulti/options/ci.description.R
+#: logRegOrd/options/ci.description.R
 msgid "`TRUE` or `FALSE` (default), provide a confidence interval for the model coefficient estimates"
 msgstr "モデル係数の推定値について信頼区間を算出するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: logRegBin/options/ciOR.description.R logRegMulti/options/ciOR.description.R
+#: logRegBin/options/ciOR.description.R
+#: logRegMulti/options/ciOR.description.R
 #: logRegOrd/options/ciOR.description.R
 msgid "`TRUE` or `FALSE` (default), provide a confidence interval for the model coefficient odds ratio estimates"
 msgstr "オッズ比の信頼区間を算出するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
@@ -4359,8 +5032,10 @@ msgstr "箱ひげ図を作成するかどうかを`TRUE`または`FALSE`（初�
 msgid "`TRUE` or `FALSE` (default), provide column percentages"
 msgstr "列合計に対するパーセントを算出するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: corrMatrix/options/ci.description.R propTest2/options/ci.description.R
-#: ttestIS/options/ci.description.R ttestPS/options/ci.description.R
+#: corrMatrix/options/ci.description.R
+#: propTest2/options/ci.description.R
+#: ttestIS/options/ci.description.R
+#: ttestPS/options/ci.description.R
 msgid "`TRUE` or `FALSE` (default), provide confidence intervals"
 msgstr "信頼区間の有無を`TRUE`または`FALSE`（初期値）で指定します"
 
@@ -4368,7 +5043,8 @@ msgstr "信頼区間の有無を`TRUE`または`FALSE`（初期値）で指定�
 msgid "`TRUE` or `FALSE` (default), provide confidence intervals for the comparative measures"
 msgstr "比較指標の信頼区間の有無を`TRUE`または`FALSE`（初期値）で指定します"
 
-#: ttestIS/options/ciES.description.R ttestOneS/options/ciES.description.R
+#: ttestIS/options/ciES.description.R
+#: ttestOneS/options/ciES.description.R
 #: ttestPS/options/ciES.description.R
 msgid "`TRUE` or `FALSE` (default), provide confidence intervals for the effect-sizes"
 msgstr "効果量の信頼区間を算出するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
@@ -4394,13 +5070,17 @@ msgstr "相関行列プロットに密度曲線を表示するかどうかを`TR
 msgid "`TRUE` or `FALSE` (default), provide density plots (continuous variables only)"
 msgstr "密度曲線を作成するかどうかを`TRUE`または`FALSE`（初期値）で指定します（連続型変数でのみ使用可能です）"
 
-#: anovaOneW/options/descPlot.description.R ttestIS/options/plots.description.R
-#: ttestOneS/options/plots.description.R ttestPS/options/plots.description.R
+#: anovaOneW/options/descPlot.description.R
+#: ttestIS/options/plots.description.R
+#: ttestOneS/options/plots.description.R
+#: ttestPS/options/plots.description.R
 msgid "`TRUE` or `FALSE` (default), provide descriptive plots"
 msgstr "記述統計量のグラフを作成するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: anovaOneW/options/desc.description.R anovaRMNP/options/desc.description.R
-#: ttestIS/options/desc.description.R ttestOneS/options/desc.description.R
+#: anovaOneW/options/desc.description.R
+#: anovaRMNP/options/desc.description.R
+#: ttestIS/options/desc.description.R
+#: ttestOneS/options/desc.description.R
 #: ttestPS/options/desc.description.R
 msgid "`TRUE` or `FALSE` (default), provide descriptive statistics"
 msgstr "記述統計量を算出するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
@@ -4418,7 +5098,8 @@ msgstr "効果量を算出するかどうかを`TRUE`または`FALSE`（初期�
 msgid "`TRUE` or `FALSE` (default), provide effect-sizes"
 msgstr "効果量を算出するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: ancova/options/emmTables.description.R anova/options/emmTables.description.R
+#: ancova/options/emmTables.description.R
+#: anova/options/emmTables.description.R
 #: anovaRM/options/emmTables.description.R
 #: linReg/options/emmTables.description.R
 #: logLinear/options/emmTables.description.R
@@ -4501,7 +5182,8 @@ msgstr "行合計に対するパーセントを算出するかどうかを`TRUE`
 msgid "`TRUE` or `FALSE` (default), provide statistics in the correlation matrix plot"
 msgstr "相関行列プロットに相関係数を表示するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: linReg/options/cooks.description.R logRegBin/options/cooks.description.R
+#: linReg/options/cooks.description.R
+#: logRegBin/options/cooks.description.R
 msgid "`TRUE` or `FALSE` (default), provide summary statistics for the Cook's distance"
 msgstr "クックの距離の要約統計量を算出するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
@@ -4521,7 +5203,8 @@ msgstr "比率の差の表示の有無を`TRUE`または`FALSE`（初期値）�
 msgid "`TRUE` or `FALSE` (default), provide the expected counts"
 msgstr "期待度数の表示の有無を`TRUE`または`FALSE`（初期値）で指定します"
 
-#: logRegBin/options/OR.description.R logRegMulti/options/OR.description.R
+#: logRegBin/options/OR.description.R
+#: logRegMulti/options/OR.description.R
 #: logRegOrd/options/OR.description.R
 msgid "`TRUE` or `FALSE` (default), provide the exponential of the log-odds ratio estimate, or the odds ratio estimate"
 msgstr "対数オッズ比の指数変換値、すなわちオッズ比の推定値を算出するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
@@ -4569,7 +5252,8 @@ msgstr "最頻値を表示するかどうかを`TRUE`または`FALSE`（初期�
 msgid "`TRUE` or `FALSE` (default), provide the model comparison between the models and the NULL model"
 msgstr "帰無モデルと分析モデルの比較を行うかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: corrMatrix/options/n.description.R corrPart/options/n.description.R
+#: corrMatrix/options/n.description.R
+#: corrPart/options/n.description.R
 msgid "`TRUE` or `FALSE` (default), provide the number of cases"
 msgstr "標本サイズを表示するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
@@ -4585,8 +5269,10 @@ msgstr "オッズ比の表示の有無を`TRUE`または`FALSE`（初期値）�
 msgid "`TRUE` or `FALSE` (default), provide the omnibus ANOVA test for the predictors"
 msgstr "各説明変数（予測変数）についてANOVAによるオムニバス検定を行うかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: logLinear/options/omni.description.R logRegBin/options/omni.description.R
-#: logRegMulti/options/omni.description.R logRegOrd/options/omni.description.R
+#: logLinear/options/omni.description.R
+#: logRegBin/options/omni.description.R
+#: logRegMulti/options/omni.description.R
+#: logRegOrd/options/omni.description.R
 msgid "`TRUE` or `FALSE` (default), provide the omnibus likelihood ratio tests for the predictors"
 msgstr "予測変数についてのオムニバス検定として尤度比検定を実施するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
@@ -4675,11 +5361,13 @@ msgstr "グループの要約を作成するかどうかを`TRUE`または`FALSE
 msgid "`TRUE` or `FALSE` (default), set a cut-off used for the predictions"
 msgstr "予測値にカットオフ値を設定するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: efa/options/bartlett.description.R pca/options/bartlett.description.R
+#: efa/options/bartlett.description.R
+#: pca/options/bartlett.description.R
 msgid "`TRUE` or `FALSE` (default), show Bartlett's test of sphericity results"
 msgstr "バートレットの球面性検定を実施するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: efa/options/kmo.description.R pca/options/kmo.description.R
+#: efa/options/kmo.description.R
+#: pca/options/kmo.description.R
 msgid "`TRUE` or `FALSE` (default), show Kaiser-Meyer-Olkin (KMO) measure of sampling adequacy (MSA) results"
 msgstr "標本妥当性（MSA）についてのカイザー=マイヤー=オルキン（KMO）指標を算出するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
@@ -4687,7 +5375,8 @@ msgstr "標本妥当性（MSA）についてのカイザー=マイヤー=オル�
 msgid "`TRUE` or `FALSE` (default), show barplots"
 msgstr "棒グラフを作成するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: efa/options/eigen.description.R pca/options/eigen.description.R
+#: efa/options/eigen.description.R
+#: pca/options/eigen.description.R
 msgid "`TRUE` or `FALSE` (default), show eigenvalue table"
 msgstr "固有値の表を作成するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
@@ -4696,7 +5385,8 @@ msgstr "固有値の表を作成するかどうかを`TRUE`または`FALSE`（�
 msgid "`TRUE` or `FALSE` (default), show factor summary"
 msgstr "因子の要約情報を表示するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: efa/options/factorCor.description.R pca/options/factorCor.description.R
+#: efa/options/factorCor.description.R
+#: pca/options/factorCor.description.R
 msgid "`TRUE` or `FALSE` (default), show inter-factor correlations"
 msgstr "因子間の相関係数を表示するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
@@ -4704,7 +5394,8 @@ msgstr "因子間の相関係数を表示するかどうかを`TRUE`または`FA
 msgid "`TRUE` or `FALSE` (default), show model fit measures and test"
 msgstr "モデル適合度や検定結果を表示するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: efa/options/screePlot.description.R pca/options/screePlot.description.R
+#: efa/options/screePlot.description.R
+#: pca/options/screePlot.description.R
 msgid "`TRUE` or `FALSE` (default), show scree plot"
 msgstr "スクリープロット作成の有無を`TRUE`または`FALSE`（初期値）で指定します"
 
@@ -4725,7 +5416,8 @@ msgstr "変数に含まれる値を度数として処理するかどうかを`TR
 msgid "`TRUE` or `FALSE` (default), whether expected counts should be displayed"
 msgstr "期待度数を表示するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
-#: ancova/options/modelTest.description.R anova/options/modelTest.description.R
+#: ancova/options/modelTest.description.R
+#: anova/options/modelTest.description.R
 msgid "`TRUE` or `FALSE` (default); perform an overall model test"
 msgstr "モデル全体の検定を実施するかどうかを`TRUE`または`FALSE`（初期値）で指定します"
 
@@ -4753,7 +5445,8 @@ msgstr "相関行列の表です"
 msgid "a descriptives plot"
 msgstr "記述統計量のグラフです"
 
-#: ancova/options/emMeans.description.R anova/options/emMeans.description.R
+#: ancova/options/emMeans.description.R
+#: anova/options/emMeans.description.R
 msgid "a formula containing the terms to estimate marginal means for (see the examples)"
 msgstr "推定周辺平均値を算出する項を含む式です（例を参照してください）"
 
@@ -4761,7 +5454,8 @@ msgstr "推定周辺平均値を算出する項を含む式です（例を参照
 msgid "a formula containing the terms to estimate marginal means for, supports up to three variables per term"
 msgstr "周辺平均値を算出する項を含む式です。各項につき3変数まで指定できます"
 
-#: ancova/options/postHoc.description.R anova/options/postHoc.description.R
+#: ancova/options/postHoc.description.R
+#: anova/options/postHoc.description.R
 msgid "a formula containing the terms to perform post-hoc tests on (see the examples)"
 msgstr "事後検定を実施する項を含んだ式です（例を参照してください）"
 
@@ -4774,7 +5468,8 @@ msgstr "モデルに含める項の記述式です（式を用いる場合は不
 msgid "a list containing named lists that define the `label` of the factor and the `vars` that belong to that factor"
 msgstr "因子の`label`と、その因子に含まれる`vars`の名前を記述したリストで構成されたリストです"
 
-#: linReg/options/blocks.description.R logLinear/options/blocks.description.R
+#: linReg/options/blocks.description.R
+#: logLinear/options/blocks.description.R
 #: logRegBin/options/blocks.description.R
 #: logRegMulti/options/blocks.description.R
 #: logRegOrd/options/blocks.description.R
@@ -4801,7 +5496,8 @@ msgstr "モデルに含まれる反復測定項を記述した文字ベクトル
 msgid "a list of lists specifying reference levels of the dependent variable and all the factors"
 msgstr "モデルに含まれる全要因と従属変数（目的変数）の基準レベルを指定したリストで構成されるリストです"
 
-#: ancova/options/contrasts.description.R anova/options/contrasts.description.R
+#: ancova/options/contrasts.description.R
+#: anova/options/contrasts.description.R
 msgid "a list of lists specifying the factor and type of contrast to use, one of `'deviation'`, `'simple'`, `'difference'`, `'helmert'`, `'repeated'` or `'polynomial'`"
 msgstr "使用する対比と要因を指定したリストで構成されるリストです。`’deviation’`、`’simple’`、`’difference’`、`’helmert’`、`’repeated’`、`’polynomial’`から1つを指定します"
 
@@ -4864,7 +5560,8 @@ msgstr "主成分の固有値の最小基準値（初期値：1）を指定し�
 msgid "a number (default: 3), highlight values in the `'modIndices'` tables above this value"
 msgstr "`’modIndices’`の表で強調表示する値の基準値（初期値：3）を指定します"
 
-#: ttestIS/options/bfPrior.description.R ttestPS/options/bfPrior.description.R
+#: ttestIS/options/bfPrior.description.R
+#: ttestPS/options/bfPrior.description.R
 msgid "a number between 0.5 and 2 (default 0.707), the prior width to use in calculating Bayes factors"
 msgstr "ベイズ因子算出の際に使用される事前値です。0.5から2（初期値：0.707）で指定します"
 
@@ -4941,7 +5638,8 @@ msgstr "帰無仮説に使用する数値を指定します"
 msgid "a parameter"
 msgstr "パラメータa"
 
-#: ancova/options/postHocES.description.R anova/options/postHocES.description.R
+#: ancova/options/postHocES.description.R
+#: anova/options/postHocES.description.R
 msgid "a possible value of `'d'`; provide cohen's d measure of effect size for the post-hoc tests"
 msgstr "`’d’`の値です。事後検定の効果量としてコーエンのdを算出します"
 
@@ -4953,7 +5651,8 @@ msgstr "事後検定結果の表です"
 msgid "a proportions table"
 msgstr "比率の表"
 
-#: ancova/results/assump/qq.description anova/results/assump/qq.description
+#: ancova/results/assump/qq.description
+#: anova/results/assump/qq.description
 #: anovaRM/results/assump/qq.description
 msgid "a q-q plot"
 msgstr "Q-Qプロットです"
@@ -4966,7 +5665,8 @@ msgstr "分析で使用する従属変数用のラベル文字列（初期値：
 msgid "a string naming a variable in `data` containing counts, or NULL if each row represents a single observation"
 msgstr "`data`の変数のうち、測定値の度数が含まれる変数名の文字列です。各行がそれぞれ個別の測定値の場合（1行に1人分の測定値が入力されている場合）には、これはNULLになります"
 
-#: logRegBin/options/dep.description.R logRegMulti/options/dep.description.R
+#: logRegBin/options/dep.description.R
+#: logRegMulti/options/dep.description.R
 #: logRegOrd/options/dep.description.R
 msgid "a string naming the dependent variable from `data`, variable must be a factor"
 msgstr "`data`に含まれる従属変数名の文字列です。変数は因子型である必要があります"
@@ -4983,7 +5683,8 @@ msgstr "`data`における従属変数名を指定します"
 msgid "a string naming the dependent variables in `data`"
 msgstr "`data`における従属変数の変数名です"
 
-#: anovaNP/options/group.description.R anovaOneW/options/group.description.R
+#: anovaNP/options/group.description.R
+#: anovaOneW/options/group.description.R
 msgid "a string naming the grouping or independent variable in `data`"
 msgstr "`data`におけるグループ変数または独立変数名を指定します"
 
@@ -5042,7 +5743,8 @@ msgid "a table containing the collinearity statistics"
 msgstr "共線性統計量の表です"
 
 #: anovaRMNP/results/desc.description
-#: ttestOneS/results/descriptives.description ttestPS/results/desc.description
+#: ttestOneS/results/descriptives.description
+#: ttestPS/results/desc.description
 msgid "a table containing the descriptives"
 msgstr "記述統計量の表です"
 
@@ -5050,7 +5752,8 @@ msgstr "記述統計量の表です"
 msgid "a table containing the factor loadings"
 msgstr "因子負荷量の表です"
 
-#: anovaOneW/results/desc.description ttestIS/results/desc.description
+#: anovaOneW/results/desc.description
+#: ttestIS/results/desc.description
 msgid "a table containing the group descriptives"
 msgstr "グループ記述統計量の表です"
 
@@ -5058,7 +5761,8 @@ msgstr "グループ記述統計量の表です"
 msgid "a table containing the homogeneity of variances tests"
 msgstr "分散等質性検定の結果の表です"
 
-#: ttestOneS/results/normality.description ttestPS/results/norm.description
+#: ttestOneS/results/normality.description
+#: ttestPS/results/norm.description
 msgid "a table containing the normality test results"
 msgstr "正規性検定の結果の表です"
 
@@ -5071,7 +5775,8 @@ msgstr "正規性検定の結果の表です"
 msgid "a table containing the results from the Box-Tidwell test"
 msgstr "ボックス=ティドウェル（Box-Tidwell）検定結果の表です"
 
-#: ttestIS/results/ttest.description ttestOneS/results/ttest.description
+#: ttestIS/results/ttest.description
+#: ttestOneS/results/ttest.description
 #: ttestPS/results/ttest.description
 msgid "a table containing the t-test results"
 msgstr "t検定の結果の表です"
@@ -5093,7 +5798,8 @@ msgstr "比較指標の表です"
 msgid "a table of homogeneity of variances tests"
 msgstr "分散の等質性検定の表です"
 
-#: ancova/results/assump/homo.description anova/results/assump/homo.description
+#: ancova/results/assump/homo.description
+#: anova/results/assump/homo.description
 msgid "a table of homogeneity tests"
 msgstr "等質性検定の表です"
 
@@ -5116,7 +5822,8 @@ msgstr "モデル係数の閾値の表です"
 msgid "a table of model coefficients"
 msgstr "モデル係数の表です"
 
-#: ancova/results/assump/norm.description anova/results/assump/norm.description
+#: ancova/results/assump/norm.description
+#: anova/results/assump/norm.description
 #: linReg/results/models.template/assump/norm.description
 msgid "a table of normality tests"
 msgstr "正規性検定の表です"
@@ -5174,7 +5881,8 @@ msgstr "比率の表です"
 msgid "a table of the proportions and test results"
 msgstr "比率と検定結果の表です"
 
-#: anovaNP/results/table.description anovaOneW/results/anova.description
+#: anovaNP/results/table.description
+#: anovaOneW/results/anova.description
 #: propTestN/results/tests.description
 msgid "a table of the test results"
 msgstr "検定結果の表です"
@@ -5199,8 +5907,10 @@ msgstr "`data`の参加者間因子の名前を文字列ベクトルで指定し
 msgid "a vector of strings naming the control variables in `data`"
 msgstr "`data`に含まれる統制変数名を文字列ベクトルで指定します"
 
-#: logRegBin/options/covs.description.R logRegMulti/options/covs.description.R
-#: logRegOrd/options/covs.description.R mancova/options/covs.description.R
+#: logRegBin/options/covs.description.R
+#: logRegMulti/options/covs.description.R
+#: logRegOrd/options/covs.description.R
+#: mancova/options/covs.description.R
 msgid "a vector of strings naming the covariates from `data`"
 msgstr "`data`の共変量の変数名を含む文字列ベクトルです"
 
@@ -5223,13 +5933,17 @@ msgstr "`data`に含まれる固定因子名の文字列ベクトルです"
 msgid "a vector of strings naming the repeated measures variables"
 msgstr "反復測定変数の名前を文字列ベクトルで指定します"
 
-#: descriptives/options/vars.description.R efa/options/vars.description.R
-#: pca/options/vars.description.R propTest2/options/vars.description.R
-#: reliability/options/vars.description.R ttestOneS/options/vars.description.R
+#: descriptives/options/vars.description.R
+#: efa/options/vars.description.R
+#: pca/options/vars.description.R
+#: propTest2/options/vars.description.R
+#: reliability/options/vars.description.R
+#: ttestOneS/options/vars.description.R
 msgid "a vector of strings naming the variables of interest in `data`"
 msgstr "`data`に含まれる関心対象の変数名を文字列ベクトルで指定します"
 
-#: corrMatrix/options/vars.description.R corrPart/options/vars.description.R
+#: corrMatrix/options/vars.description.R
+#: corrPart/options/vars.description.R
 msgid "a vector of strings naming the variables to correlate in `data`"
 msgstr "相関係数を算出したい`data`の変数名を文字列ベクトルで指定します"
 
@@ -5241,7 +5955,8 @@ msgstr "`vars`の分割に使用する変数の名前を文字列ベクトルで
 msgid "an array of Q-Q plots"
 msgstr "Q-Qプロットの配列です"
 
-#: ancova/results/contrasts.description anova/results/contrasts.description
+#: ancova/results/contrasts.description
+#: anova/results/contrasts.description
 msgid "an array of contrasts tables"
 msgstr "対比結果の表の配列です"
 
@@ -5253,12 +5968,15 @@ msgstr "記述統計量グラフの配列です"
 msgid "an array of frequency tables"
 msgstr "度数分布表の配列です"
 
-#: anovaOneW/results/plots.description ttestIS/results/plots.description
+#: anovaOneW/results/plots.description
+#: ttestIS/results/plots.description
 msgid "an array of groups of plots"
 msgstr "グラフの配列です"
 
-#: linReg/results/models.description logLinear/results/models.description
-#: logRegBin/results/models.description logRegMulti/results/models.description
+#: linReg/results/models.description
+#: logLinear/results/models.description
+#: logRegBin/results/models.description
+#: logRegMulti/results/models.description
 #: logRegOrd/results/models.description
 msgid "an array of model specific results"
 msgstr "モデルごとの結果の配列です"
@@ -5267,7 +5985,8 @@ msgstr "モデルごとの結果の配列です"
 msgid "an array of pairwise comparison tables"
 msgstr "多重比較結果の表の配列です"
 
-#: ancova/results/postHoc.description anova/results/postHoc.description
+#: ancova/results/postHoc.description
+#: anova/results/postHoc.description
 #: anovaOneW/results/postHoc.description
 msgid "an array of post-hoc tables"
 msgstr "事後検定結果の表です"
@@ -5276,7 +5995,8 @@ msgstr "事後検定結果の表です"
 msgid "an array of the descriptive plots"
 msgstr "記述統計量のグラフの配列です"
 
-#: ancova/results/emm.description anova/results/emm.description
+#: ancova/results/emm.description
+#: anova/results/emm.description
 #: anovaRM/results/emm.description
 #: linReg/results/models.template/emm.description
 #: logLinear/results/models.template/emm.description
@@ -5346,8 +6066,7 @@ msgid "cubic"
 msgstr "3次"
 
 #: contTablesPaired/options.description.R.usage
-msgid ""
-"dat <- data.frame(\n"
+msgid "dat <- data.frame(\n"
 "    `1st survey` = c('Approve', 'Approve', 'Disapprove', 'Disapprove'),\n"
 "    `2nd survey` = c('Approve', 'Disapprove', 'Approve', 'Disapprove'),\n"
 "    `Counts` = c(794, 150, 86, 570),\n"
@@ -5382,8 +6101,7 @@ msgid ""
 "# formula if each row represents a single observation:\n"
 "\n"
 "contTablesPaired(formula = ~ `1st survey`:`2nd survey`, data = dat)"
-msgstr ""
-"dat <- data.frame(\n"
+msgstr "dat <- data.frame(\n"
 "    `1st survey` = c(‘Approve’, ‘Approve’, ‘Disapprove’, ‘Disapprove’),\n"
 "    `2nd survey` = c(‘Approve’, ‘Disapprove’, ‘Approve’, ‘Disapprove’),\n"
 "    `Counts` = c(794, 150, 86, 570),\n"
@@ -5420,8 +6138,7 @@ msgstr ""
 "contTablesPaired(formula = ~ `1st survey`:`2nd survey`, data = dat)"
 
 #: propTest2/options.description.R.usage
-msgid ""
-"dat <- data.frame(x=c(8, 15))\n"
+msgid "dat <- data.frame(x=c(8, 15))\n"
 "\n"
 "propTest2(dat, vars = x, areCounts = TRUE)\n"
 "\n"
@@ -5437,8 +6154,7 @@ msgid ""
 "#  ───────────────────────────────────────────────────────\n"
 "#    Note. Hₐ is proportion ≠ 0.5\n"
 "#"
-msgstr ""
-"dat <- data.frame(x=c(8, 15))\n"
+msgstr "dat <- data.frame(x=c(8, 15))\n"
 "\n"
 "propTest2(dat, vars = x, areCounts = TRUE)\n"
 "\n"
@@ -5456,8 +6172,7 @@ msgstr ""
 "#"
 
 #: cfa/options.description.R.usage
-msgid ""
-"data <- lavaan::HolzingerSwineford1939\n"
+msgid "data <- lavaan::HolzingerSwineford1939\n"
 "\n"
 "jmv::cfa(\n"
 "    data = data,\n"
@@ -5519,8 +6234,7 @@ msgid ""
 "#    0.931    0.896    0.0921    0.0714    0.114\n"
 "#  ───────────────────────────────────────────────\n"
 "#"
-msgstr ""
-"data <- lavaan::HolzingerSwineford1939\n"
+msgstr "data <- lavaan::HolzingerSwineford1939\n"
 "\n"
 "jmv::cfa(\n"
 "    data = data,\n"
@@ -5584,8 +6298,7 @@ msgstr ""
 "#"
 
 #: contTables/options.description.R.usage
-msgid ""
-"data('HairEyeColor')\n"
+msgid "data('HairEyeColor')\n"
 "dat <- as.data.frame(HairEyeColor)\n"
 "\n"
 "contTables(formula = Freq ~ Hair:Eye, dat)\n"
@@ -5618,8 +6331,7 @@ msgid ""
 "# represents a single observation:\n"
 "\n"
 "contTables(formula = ~ Hair:Eye, dat)"
-msgstr ""
-"data(‘HairEyeColor’)\n"
+msgstr "data(‘HairEyeColor’)\n"
 "dat <- as.data.frame(HairEyeColor)\n"
 "\n"
 "contTables(formula = Freq ~ Hair:Eye, dat)\n"
@@ -5654,8 +6366,7 @@ msgstr ""
 "contTables(formula = ~ Hair:Eye, dat)"
 
 #: propTestN/options.description.R.usage
-msgid ""
-"data('HairEyeColor')\n"
+msgid "data('HairEyeColor')\n"
 "dat <- as.data.frame(HairEyeColor)\n"
 "\n"
 "propTestN(formula = Freq ~ Eye, data = dat, ratio = c(1,1,1,1))\n"
@@ -5681,8 +6392,7 @@ msgid ""
 "#    133     3    < .001\n"
 "#  ───────────────────────\n"
 "#"
-msgstr ""
-"data(‘HairEyeColor’)\n"
+msgstr "data(‘HairEyeColor’)\n"
 "dat <- as.data.frame(HairEyeColor)\n"
 "\n"
 "propTestN(formula = Freq ~ Eye, data = dat, ratio = c(1,1,1,1))\n"
@@ -5710,8 +6420,7 @@ msgstr ""
 "#"
 
 #: linReg/options.description.R.usage
-msgid ""
-"data('Prestige', package='carData')\n"
+msgid "data('Prestige', package='carData')\n"
 "\n"
 "linReg(data = Prestige, dep = income,\n"
 "       covs = vars(education, prestige, women),\n"
@@ -5743,8 +6452,7 @@ msgid ""
 "#    education       177.2     187.63     0.944     0.347\n"
 "#  ────────────────────────────────────────────────────────\n"
 "#"
-msgstr ""
-"data(‘Prestige’, package=‘carData’)\n"
+msgstr "data(‘Prestige’, package=‘carData’)\n"
 "\n"
 "linReg(data = Prestige, dep = income,\n"
 "       covs = vars(education, prestige, women),\n"
@@ -5778,8 +6486,7 @@ msgstr ""
 "#"
 
 #: anova/options.description.R.usage
-msgid ""
-"data('ToothGrowth')\n"
+msgid "data('ToothGrowth')\n"
 "\n"
 "ANOVA(formula = len ~ dose * supp, data = ToothGrowth)\n"
 "\n"
@@ -5803,8 +6510,7 @@ msgid ""
 "    emMeans = ~ supp + dose:supp, # est. marginal means for supp and dose:supp\n"
 "    emmPlots = TRUE,              # produce plots of those marginal means\n"
 "    emmTables = TRUE)             # produce tables of those marginal means"
-msgstr ""
-"data(‘ToothGrowth’)\n"
+msgstr "data(‘ToothGrowth’)\n"
 "\n"
 "ANOVA(formula = len ~ dose * supp, data = ToothGrowth)\n"
 "\n"
@@ -5830,8 +6536,7 @@ msgstr ""
 "    emmTables = TRUE)             # 周辺平均値の表を作成"
 
 #: ancova/options.description.R.usage
-msgid ""
-"data('ToothGrowth')\n"
+msgid "data('ToothGrowth')\n"
 "\n"
 "ancova(formula = len ~ supp + dose, data = ToothGrowth)\n"
 "\n"
@@ -5853,8 +6558,7 @@ msgid ""
 "    data = ToothGrowth,\n"
 "    postHoc = ~ supp,\n"
 "    emMeans = ~ supp)"
-msgstr ""
-"data(‘ToothGrowth’)\n"
+msgstr "data(‘ToothGrowth’)\n"
 "\n"
 "ancova(formula = len ~ supp + dose, data = ToothGrowth)\n"
 "\n"
@@ -5878,8 +6582,7 @@ msgstr ""
 "    emMeans = ~ supp)"
 
 #: anovaNP/options.description.R.usage
-msgid ""
-"data('ToothGrowth')\n"
+msgid "data('ToothGrowth')\n"
 "\n"
 "anovaNP(formula = len ~ dose, data=ToothGrowth)\n"
 "\n"
@@ -5893,8 +6596,7 @@ msgid ""
 "#    len    40.7     2    < .001\n"
 "#  ───────────────────────────────\n"
 "#"
-msgstr ""
-"data(‘ToothGrowth’)\n"
+msgstr "data(‘ToothGrowth’)\n"
 "\n"
 "anovaNP(formula = len ~ dose, data=ToothGrowth)\n"
 "\n"
@@ -5910,8 +6612,7 @@ msgstr ""
 "#"
 
 #: ttestIS/options.description.R.usage
-msgid ""
-"data('ToothGrowth')\n"
+msgid "data('ToothGrowth')\n"
 "\n"
 "ttestIS(formula = len ~ supp, data = ToothGrowth)\n"
 "\n"
@@ -5925,8 +6626,7 @@ msgid ""
 "#    len    Student's t         1.92    58.0    0.060\n"
 "#  ────────────────────────────────────────────────────\n"
 "#"
-msgstr ""
-"description:\n"
+msgstr "description:\n"
 "main:|\n"
 "data(‘ToothGrowth’)\n"
 "\n"
@@ -5944,8 +6644,7 @@ msgstr ""
 "#"
 
 #: ttestOneS/options.description.R.usage
-msgid ""
-"data('ToothGrowth')\n"
+msgid "data('ToothGrowth')\n"
 "\n"
 "ttestOneS(ToothGrowth, vars = vars(len, dose))\n"
 "\n"
@@ -5960,8 +6659,7 @@ msgid ""
 "#    dose    Student's t         14.4    59.0    < .001\n"
 "#  ──────────────────────────────────────────────────────\n"
 "#"
-msgstr ""
-"description:\n"
+msgstr "description:\n"
 "main:|\n"
 "data(‘ToothGrowth’)\n"
 "\n"
@@ -5980,8 +6678,7 @@ msgstr ""
 "#"
 
 #: anovaOneW/options.description.R.usage
-msgid ""
-"data('ToothGrowth')\n"
+msgid "data('ToothGrowth')\n"
 "dat <- ToothGrowth\n"
 "dat$dose <- factor(dat$dose)\n"
 "\n"
@@ -5997,8 +6694,7 @@ msgid ""
 "#    len    68.4      2    37.7    < .001\n"
 "#  ────────────────────────────────────────\n"
 "#"
-msgstr ""
-"data(‘ToothGrowth’)\n"
+msgstr "data(‘ToothGrowth’)\n"
 "dat <- ToothGrowth\n"
 "dat$dose <- factor(dat$dose)\n"
 "\n"
@@ -6016,8 +6712,7 @@ msgstr ""
 "#"
 
 #: logRegBin/options.description.R.usage
-msgid ""
-"data('birthwt', package='MASS')\n"
+msgid "data('birthwt', package='MASS')\n"
 "\n"
 "dat <- data.frame(\n"
 "            low = factor(birthwt$low),\n"
@@ -6056,8 +6751,7 @@ msgid ""
 "#    vs. \"low = 0\"\n"
 "#\n"
 "#"
-msgstr ""
-"data(‘birthwt’, package=‘MASS’)\n"
+msgstr "data(‘birthwt’, package=‘MASS’)\n"
 "\n"
 "dat <- data.frame(\n"
 "            low = factor(birthwt$low),\n"
@@ -6098,8 +6792,7 @@ msgstr ""
 "#"
 
 #: logRegMulti/options.description.R.usage
-msgid ""
-"data('birthwt', package='MASS')\n"
+msgid "data('birthwt', package='MASS')\n"
 "\n"
 "dat <- data.frame(\n"
 "            race = factor(birthwt$race),\n"
@@ -6143,8 +6836,7 @@ msgid ""
 "#  ───────────────────────────────────────────────────────────────\n"
 "#\n"
 "#"
-msgstr ""
-"data(‘birthwt’, package=‘MASS’)\n"
+msgstr "data(‘birthwt’, package=‘MASS’)\n"
 "\n"
 "dat <- data.frame(\n"
 "            race = factor(birthwt$race),\n"
@@ -6190,8 +6882,7 @@ msgstr ""
 "#"
 
 #: anovaRM/options.description.R.usage
-msgid ""
-"data('bugs', package = 'jmv')\n"
+msgid "data('bugs', package = 'jmv')\n"
 "\n"
 "anovaRM(\n"
 "    data = bugs,\n"
@@ -6231,8 +6922,7 @@ msgid ""
 "#  ─────────────────────────────────────────────────────────────────\n"
 "#    Note. Type 3 Sums of Squares\n"
 "#"
-msgstr ""
-"data(‘bugs’, package = ‘jmv’)\n"
+msgstr "data(‘bugs’, package = ‘jmv’)\n"
 "\n"
 "anovaRM(\n"
 "    data = bugs,\n"
@@ -6274,8 +6964,7 @@ msgstr ""
 "#"
 
 #: anovaRMNP/options.description.R.usage
-msgid ""
-"data('bugs', package = 'jmv')\n"
+msgid "data('bugs', package = 'jmv')\n"
 "\n"
 "anovaRMNP(bugs, measures = vars(LDLF, LDHF, HDLF, HDHF))\n"
 "\n"
@@ -6289,8 +6978,7 @@ msgid ""
 "#    55.8     3    < .001\n"
 "#  ────────────────────────\n"
 "#"
-msgstr ""
-"data(‘bugs’, package = ‘jmv’)\n"
+msgstr "data(‘bugs’, package = ‘jmv’)\n"
 "\n"
 "anovaRMNP(bugs, measures = vars(LDLF, LDHF, HDLF, HDHF))\n"
 "\n"
@@ -6306,8 +6994,7 @@ msgstr ""
 "#"
 
 #: ttestPS/options.description.R.usage
-msgid ""
-"data('bugs', package = 'jmv')\n"
+msgid "data('bugs', package = 'jmv')\n"
 "\n"
 "ttestPS(bugs, pairs = list(\n"
 "        list(i1 = 'LDLF', i2 = 'LDHF')))\n"
@@ -6322,8 +7009,7 @@ msgid ""
 "#    LDLF    LDHF    Student's t        -6.65    90.0    < .001\n"
 "#  ──────────────────────────────────────────────────────────────\n"
 "#"
-msgstr ""
-"data(‘bugs’, package = ‘jmv’)\n"
+msgstr "data(‘bugs’, package = ‘jmv’)\n"
 "\n"
 "ttestPS(bugs, pairs = list(\n"
 "        list(i1 = ‘LDLF’, i2 = ‘LDHF’)))\n"
@@ -6340,8 +7026,7 @@ msgstr ""
 "#"
 
 #: efa/options.description.R.usage
-msgid ""
-"data('iris')\n"
+msgid "data('iris')\n"
 "\n"
 "efa(iris, vars = vars(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width))\n"
 "\n"
@@ -6359,8 +7044,7 @@ msgid ""
 "#  ────────────────────────────────────────────────\n"
 "#    Note. 'oblimin' rotation was used\n"
 "#"
-msgstr ""
-"data(‘iris’)\n"
+msgstr "data(‘iris’)\n"
 "\n"
 "efa(iris, vars = vars(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width))\n"
 "\n"
@@ -6380,8 +7064,7 @@ msgstr ""
 "#"
 
 #: mancova/options.description.R.usage
-msgid ""
-"data('iris')\n"
+msgid "data('iris')\n"
 "\n"
 "mancova(data = iris,\n"
 "    deps = vars(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width),\n"
@@ -6415,8 +7098,7 @@ msgid ""
 "#                 Petal.Width                     6.16    147         0.0419\n"
 "#  ───────────────────────────────────────────────────────────────────────────────────────────────\n"
 "#"
-msgstr ""
-"data(‘iris’)\n"
+msgstr "data(‘iris’)\n"
 "\n"
 "mancova(data = iris,\n"
 "    deps = vars(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width),\n"
@@ -6452,8 +7134,7 @@ msgstr ""
 "#"
 
 #: pca/options.description.R.usage
-msgid ""
-"data('iris')\n"
+msgid "data('iris')\n"
 "\n"
 "pca(iris, vars = vars(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width))\n"
 "\n"
@@ -6471,8 +7152,7 @@ msgid ""
 "#  ────────────────────────────────────────\n"
 "#    Note. 'varimax' rotation was used\n"
 "#"
-msgstr ""
-"data(‘iris’)\n"
+msgstr "data(‘iris’)\n"
 "\n"
 "pca(iris, vars = vars(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width))\n"
 "\n"
@@ -6492,8 +7172,7 @@ msgstr ""
 "#"
 
 #: reliability/options.description.R.usage
-msgid ""
-"data('iris')\n"
+msgid "data('iris')\n"
 "\n"
 "reliability(iris, vars = c('Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'),\n"
 "            omegaScale = TRUE)\n"
@@ -6508,8 +7187,7 @@ msgid ""
 "#    scale           0.708           0.848\n"
 "#  ─────────────────────────────────────────\n"
 "#"
-msgstr ""
-"data(‘iris’)\n"
+msgstr "data(‘iris’)\n"
 "\n"
 "reliability(iris, vars = c(‘Sepal.Length’, ‘Sepal.Width’, ‘Petal.Length’, ‘Petal.Width’),\n"
 "            omegaScale = TRUE)\n"
@@ -6526,8 +7204,7 @@ msgstr ""
 "#"
 
 #: corrMatrix/options.description.R.usage
-msgid ""
-"data('mtcars')\n"
+msgid "data('mtcars')\n"
 "\n"
 "corrMatrix(mtcars, vars = vars(mpg, cyl, disp, hp))\n"
 "\n"
@@ -6551,8 +7228,7 @@ msgid ""
 "#            p-value                                          —\n"
 "#  ──────────────────────────────────────────────────────────────\n"
 "#"
-msgstr ""
-"data(‘mtcars’)\n"
+msgstr "data(‘mtcars’)\n"
 "\n"
 "corrMatrix(mtcars, vars = vars(mpg, cyl, disp, hp))\n"
 "\n"
@@ -6578,8 +7254,7 @@ msgstr ""
 "#"
 
 #: corrPart/options.description.R.usage
-msgid ""
-"data('mtcars')\n"
+msgid "data('mtcars')\n"
 "\n"
 "corrPart(mtcars, vars = vars(mpg, cyl, disp), controls = vars(hp))\n"
 "\n"
@@ -6601,8 +7276,7 @@ msgid ""
 "#  ────────────────────────────────────────────────────\n"
 "#    Note. controlling for 'hp'\n"
 "#"
-msgstr ""
-"data(‘mtcars’)\n"
+msgstr "data(‘mtcars’)\n"
 "\n"
 "corrPart(mtcars, vars = vars(mpg, cyl, disp), controls = vars(hp))\n"
 "\n"
@@ -6626,8 +7300,7 @@ msgstr ""
 "#"
 
 #: logLinear/options.description.R.usage
-msgid ""
-"data('mtcars')\n"
+msgid "data('mtcars')\n"
 "\n"
 "tab <- table('gear'=mtcars$gear, 'cyl'=mtcars$cyl)\n"
 "dat <- as.data.frame(tab)\n"
@@ -6672,8 +7345,7 @@ msgid ""
 "#  ──────────────────────────────────────────────────────────────────\n"
 "#\n"
 "#"
-msgstr ""
-"data(‘mtcars’)\n"
+msgstr "data(‘mtcars’)\n"
 "\n"
 "tab <- table(‘gear’=mtcars$gear, ‘cyl’=mtcars$cyl)\n"
 "dat <- as.data.frame(tab)\n"
@@ -6720,8 +7392,7 @@ msgstr ""
 "#"
 
 #: descriptives/options.description.R.usage
-msgid ""
-"data('mtcars')\n"
+msgid "data('mtcars')\n"
 "dat <- mtcars\n"
 "\n"
 "# frequency tables can be provided for factors\n"
@@ -6768,8 +7439,7 @@ msgid ""
 "# splitting by multiple variables\n"
 "descriptives(formula = mpg ~ cyl:gear, dat,\n"
 "    median=F, min=F, max=F, missing=F)"
-msgstr ""
-"data(‘mtcars’)\n"
+msgstr "data(‘mtcars’)\n"
 "dat <- mtcars\n"
 "\n"
 "# 度数分布表は因子型として使用可能です。\n"
@@ -6827,17 +7497,21 @@ msgstr "廃止予定"
 msgid "descriptives plot"
 msgstr "記述統計量のグラフ"
 
-#: package/analyses/empty.menuGroup empty/options.menuGroup
+#: package/analyses/empty.menuGroup
+#: empty/options.menuGroup
 msgid "dev"
 msgstr "dev"
 
-#: R/ancova.b.R ancova/results/main.columns.title
+#: R/ancova.b.R
+#: ancova/results/main.columns.title
 #: anovaNP/results/table.columns.title
 #: anovaOneW/results/postHoc.template.columns.content
-#: anovaRM/results/rmTable.columns.title anovaRM/results/bsTable.columns.title
+#: anovaRM/results/rmTable.columns.title
+#: anovaRM/results/bsTable.columns.title
 #: anovaRMNP/results/table.columns.title
 #: cfa/results/modelFit/test.columns.title
-#: contTables/results/chiSq.columns.title contTables/results/mh.columns.title
+#: contTables/results/chiSq.columns.title
+#: contTables/results/mh.columns.title
 #: contTablesPaired/results/test.columns.title
 #: linReg/results/models.template/anova.columns.title
 #: logLinear/results/modelFit.columns.title
@@ -6856,18 +7530,22 @@ msgstr "dev"
 #: mancova/results/assump/boxM.columns.title
 #: pca/results/modelFit/fit.columns.title
 #: pca/results/assump/bartlett.columns.title
-#: propTestN/results/tests.columns.title ttestIS/results/ttest.columns.title
-#: ttestOneS/results/ttest.columns.title ttestPS/results/ttest.columns.title
+#: propTestN/results/tests.columns.title
+#: ttestIS/results/ttest.columns.title
+#: ttestOneS/results/ttest.columns.title
+#: ttestPS/results/ttest.columns.title
 msgid "df"
 msgstr "自由度"
 
-#: anovaOneW/results/anova.columns.title linReg/results/modelFit.columns.title
+#: anovaOneW/results/anova.columns.title
+#: linReg/results/modelFit.columns.title
 #: linReg/results/modelComp.columns.title
 #: mancova/results/multivar.columns.title
 msgid "df1"
 msgstr "自由度1"
 
-#: anovaOneW/results/anova.columns.title linReg/results/modelFit.columns.title
+#: anovaOneW/results/anova.columns.title
+#: linReg/results/modelFit.columns.title
 #: linReg/results/modelComp.columns.title
 #: mancova/results/multivar.columns.title
 msgid "df2"
@@ -6897,7 +7575,8 @@ msgstr "変数をここにドラッグ"
 msgid "equal groups"
 msgstr "群に分割"
 
-#: ttestIS/results/ttest.columns.title ttestOneS/results/ttest.columns.title
+#: ttestIS/results/ttest.columns.title
+#: ttestOneS/results/ttest.columns.title
 #: ttestPS/results/ttest.columns.title
 msgid "error %"
 msgstr "誤差%"
@@ -6914,7 +7593,8 @@ msgstr "因子"
 msgid "fixed parameter"
 msgstr "固定されている値です"
 
-#: corrMatrix/options/flag.description.ui corrPart/options/flag.description.ui
+#: corrMatrix/options/flag.description.ui
+#: corrPart/options/flag.description.ui
 msgid "flag significant correlations (p < .05) with symbols."
 msgstr "相関係数が有意（p < .05）であるペアに印をつけます。"
 
@@ -7018,27 +7698,33 @@ msgstr "多変量統計量として、`’pillai’`（ピライのトレース�
 msgid "one or more of `'r2mf'`, `'r2cs'`, or `'r2n'`; use McFadden's, Cox & Snell, and Nagelkerke pseudo-R², respectively"
 msgstr "疑似R²として、`’r2mf’`（マクファデン）、`’r2cs’`（コックス=スネル）、`’r2n’`（ナゲルケルケ）のどれを用いるかを指定します"
 
-#: R/ancova.b.R R/descriptives.b.R ancova/results/main.columns.title
+#: R/ancova.b.R
+#: R/descriptives.b.R
+#: ancova/results/main.columns.title
 #: ancova/results/assump/norm.columns.title
 #: ancova/results/contrasts.template.columns.title
 #: anovaNP/results/table.columns.title
 #: anovaNP/results/comparisons.template.columns.title
 #: anovaOneW/results/anova.columns.title
 #: anovaOneW/results/assump/norm.columns.title
-#: anovaRM/results/rmTable.columns.title anovaRM/results/bsTable.columns.title
+#: anovaRM/results/rmTable.columns.title
+#: anovaRM/results/bsTable.columns.title
 #: anovaRM/results/assump/spherTable.columns.title
 #: anovaRM/results/contrasts.template.columns.title
-#: anovaRMNP/results/table.columns.title anovaRMNP/results/comp.columns.title
+#: anovaRMNP/results/table.columns.title
+#: anovaRMNP/results/comp.columns.title
 #: cfa/results/factorLoadings.columns.title
 #: cfa/results/factorEst/factorCov.columns.title
 #: cfa/results/factorEst/factorIntercept.columns.title
 #: cfa/results/resEst/resCov.columns.title
 #: cfa/results/resEst/resIntercept.columns.title
 #: cfa/results/modelFit/test.columns.title
-#: contTables/results/chiSq.columns.title contTables/results/taub.columns.title
+#: contTables/results/chiSq.columns.title
+#: contTables/results/taub.columns.title
 #: contTables/results/mh.columns.title
 #: contTablesPaired/results/test.columns.title
-#: linReg/results/modelFit.columns.title linReg/results/modelComp.columns.title
+#: linReg/results/modelFit.columns.title
+#: linReg/results/modelComp.columns.title
 #: linReg/results/models.template/anova.columns.title
 #: linReg/results/models.template/coef.columns.title
 #: linReg/results/models.template/assump/durbin.columns.title
@@ -7061,14 +7747,18 @@ msgstr "疑似R²として、`’r2mf’`（マクファデン）、`’r2cs’`
 #: logRegOrd/results/models.template/lrt.columns.title
 #: logRegOrd/results/models.template/coef.columns.title
 #: logRegOrd/results/models.template/thres.columns.title
-#: mancova/results/multivar.columns.title mancova/results/univar.columns.title
+#: mancova/results/multivar.columns.title
+#: mancova/results/univar.columns.title
 #: mancova/results/assump/boxM.columns.title
 #: mancova/results/assump/shapiro.columns.title
 #: pca/results/modelFit/fit.columns.title
 #: pca/results/assump/bartlett.columns.title
-#: propTest2/results/table.columns.title propTestN/results/tests.columns.title
-#: ttestIS/results/ttest.columns.title ttestIS/results/assum/norm.columns.title
-#: ttestOneS/results/ttest.columns.title ttestPS/results/ttest.columns.title
+#: propTest2/results/table.columns.title
+#: propTestN/results/tests.columns.title
+#: ttestIS/results/ttest.columns.title
+#: ttestIS/results/assum/norm.columns.title
+#: ttestOneS/results/ttest.columns.title
+#: ttestPS/results/ttest.columns.title
 msgid "p"
 msgstr "p"
 
@@ -7103,11 +7793,13 @@ msgstr "偏η²"
 msgid "perform Fisher's (or what might be call 'normal') ANOVAs."
 msgstr "フィッシャー法による（いわゆる普通の）分散分析を実施します。"
 
-#: ttestIS/options/norm.description.ui ttestPS/options/norm.description.ui
+#: ttestIS/options/norm.description.ui
+#: ttestPS/options/norm.description.ui
 msgid "perform Shapiro-Wilk tests of normality. A low p-value suggests the data is not from a normal distribution."
 msgstr "シャピロ=ウィルクの正規性検定を実施します。小さなp値はデータが正規分布から抽出されたものでないことを示します。"
 
-#: ancova/options/norm.description.ui anova/options/norm.description.ui
+#: ancova/options/norm.description.ui
+#: anova/options/norm.description.ui
 msgid "perform Shapiro-Wilk tests of normality. A low p-value suggests the residuals are not normally distributed."
 msgstr "シャピロ=ウィルク正規性検定を実施します。低いp値は、残差が正規分布でないことを示しています。"
 
@@ -7175,21 +7867,25 @@ msgstr "スチューデントの1標本t検定についてベイズ因子を算�
 msgid "provide Bayes factors for the Student's paired samples t-tests."
 msgstr "スチューデントの対応ありt検定についてベイズ因子を算出します。"
 
-#: ancova/options/homo.description.ui anova/options/homo.description.ui
+#: ancova/options/homo.description.ui
+#: anova/options/homo.description.ui
 #: anovaRM/options/leveneTest.description.ui
 msgid "provide Levene's test for homogeneity of variances. A low p-value suggests the groups have unequal variances."
 msgstr "分散の等質性についてルビーン検定を実施します。低いp値は、両グループの分散が等しくないことを示します。"
 
-#: anovaOneW/options/eqv.description.ui ttestIS/options/eqv.description.ui
+#: anovaOneW/options/eqv.description.ui
+#: ttestIS/options/eqv.description.ui
 msgid "provide Levene's tests for the homogeneity of variances. A low p-value suggests the groups have unequal variances."
 msgstr "分散の等質性についてルビーン検定を実施します。低いp値は、両グループの分散が等しくないことを示します。"
 
-#: anovaOneW/options/qq.description.ui ttestIS/options/qq.description.ui
+#: anovaOneW/options/qq.description.ui
+#: ttestIS/options/qq.description.ui
 #: ttestPS/options/qq.description.ui
 msgid "provide Q-Q plots of residuals -- a plot of the actual residuals against what would be expected if the data were *perfectly* normally distributed. Large deviations from the diagonal line suggest the data is not from a normal distribution."
 msgstr "残差Q-Qプロット（データが*完全な*正規分布である場合に期待される値に対する実際の残差のプロット）を作成します。対角線からの乖離が大きい場合、残差が正規分布していないことを示しています。"
 
-#: ancova/options/qq.description.ui anova/options/qq.description.ui
+#: ancova/options/qq.description.ui
+#: anova/options/qq.description.ui
 #: anovaRM/options/qq.description.ui
 msgid "provide Q-Q plots of residuals -- a plot of the actual residuals against what would be expected if the data were *perfectly* normally distributed. Large deviations from the diagonal line suggest the residuals are not normally distributed."
 msgstr "残差Q-Qプロット（データが*完全な*正規分布である場合に期待される値に対する実際の残差のプロット）を作成します。対角線からの乖離が大きい場合、残差が正規分布していないことを示しています。"
@@ -7226,7 +7922,8 @@ msgstr "推定平均値と検定値の差の信頼区間を算出します。"
 msgid "provide a correlation matrix plot."
 msgstr "相関行列を図示します。"
 
-#: corrMatrix/options/sig.description.ui corrPart/options/sig.description.ui
+#: corrMatrix/options/sig.description.ui
+#: corrPart/options/sig.description.ui
 msgid "provide a p-value for each correlation co-efficient."
 msgstr "各相関係数についてp値を算出します。"
 
@@ -7244,12 +7941,14 @@ msgstr "推定周辺平均値の表を作成します。"
 msgid "provide confidence intervals for Pearson's r."
 msgstr "ピアソンの相関係数（r）の信頼区間を算出します。"
 
-#: ttestIS/options/ciES.description.ui ttestOneS/options/ciES.description.ui
+#: ttestIS/options/ciES.description.ui
+#: ttestOneS/options/ciES.description.ui
 #: ttestPS/options/ciES.description.ui
 msgid "provide confidence intervals for the effect-sizes"
 msgstr "効果量の信頼区間を算出します"
 
-#: ttestIS/options/ci.description.ui ttestPS/options/ci.description.ui
+#: ttestIS/options/ci.description.ui
+#: ttestPS/options/ci.description.ui
 msgid "provide confidence intervals for the mean differences."
 msgstr "平均値の差の信頼区間を算出します。"
 
@@ -7274,7 +7973,8 @@ msgstr "各変数の記述統計量のグラフを作成します。"
 msgid "provide descriptives for each group of measurements."
 msgstr "各測定値グループについて記述統計量を算出します。"
 
-#: anovaOneW/options/desc.description.ui ttestIS/options/desc.description.ui
+#: anovaOneW/options/desc.description.ui
+#: ttestIS/options/desc.description.ui
 msgid "provide descriptives for each group."
 msgstr "グループ毎の記述統計量を算出します。"
 
@@ -7314,12 +8014,14 @@ msgstr "効果量（η²、偏η²、ω²）を算出します。"
 msgid "provide p-value corrections for sphericity."
 msgstr "球面性検定におけるp値を修正します。"
 
-#: ancova/options/emmPlots.description.ui anova/options/emmPlots.description.ui
+#: ancova/options/emmPlots.description.ui
+#: anova/options/emmPlots.description.ui
 #: anovaRM/options/emmPlots.description.ui
 msgid "provide plots of the estimated marginal means."
 msgstr "推定周辺平均値のグラフを作成します。"
 
-#: ancova/options/postHoc.description.ui anova/options/postHoc.description.ui
+#: ancova/options/postHoc.description.ui
+#: anova/options/postHoc.description.ui
 #: anovaOneW/options/phMethod.description.ui
 #: anovaRM/options/postHoc.description.ui
 msgid "provide post-hoc tests."
@@ -7337,7 +8039,8 @@ msgstr "球面性検定を実施します。"
 msgid "provide test results (t-value and degrees of freedom) for post-hoc tests."
 msgstr "事後検定における検定結果（tと自由度）を表示します。"
 
-#: corrMatrix/options/n.description.ui corrPart/options/n.description.ui
+#: corrMatrix/options/n.description.ui
+#: corrPart/options/n.description.ui
 msgid "provide the number of cases."
 msgstr "標本サイズを表示します。"
 
@@ -7383,8 +8086,7 @@ msgid "septic"
 msgstr "7次"
 
 #: logRegOrd/options.description.R.usage
-msgid ""
-"set.seed(1337)\n"
+msgid "set.seed(1337)\n"
 "\n"
 "y <- factor(sample(1:3, 100, replace = TRUE))\n"
 "x1 <- rnorm(100)\n"
@@ -7420,8 +8122,7 @@ msgid ""
 "#  ────────────────────────────────────────────────────\n"
 "#\n"
 "#"
-msgstr ""
-"set.seed(1337)\n"
+msgstr "set.seed(1337)\n"
 "\n"
 "y <- factor(sample(1:3, 100, replace = TRUE))\n"
 "x1 <- rnorm(100)\n"
@@ -7479,7 +8180,8 @@ msgstr "棒グラフを積み上げで表示するか横並び（初期値）で
 msgid "statistic"
 msgstr "統計量"
 
-#: R/ancova.b.R contTables/results/taub.columns.title
+#: R/ancova.b.R
+#: contTables/results/taub.columns.title
 #: linReg/results/models.template/coef.columns.title
 msgid "t"
 msgstr "t"
@@ -7488,21 +8190,23 @@ msgstr "t"
 msgid "t-value"
 msgstr "t値"
 
+#: efa/options/factorScoreMethod/tenBerge.title
+msgid "ten Berge"
+msgstr ""
+
 #: R/descriptives.b.R
 msgid "th percentile"
 msgstr "%点"
 
 #: ttestOneS/options/hypothesis.description.ui
-msgid ""
-"the alternative and null hypotheses;\n"
+msgid "the alternative and null hypotheses;\n"
 "\n"
 "|              | Alternative (Hₐ)  | Null (H₀)          |\n"
 "|--------------|-------------------|--------------------|\n"
 "| ≠ Test value | Mean ≠ Test value | Mean = Test value  |\n"
 "| > Test value | Mean > Test value | Mean <= Test value |\n"
 "| < Test value | Mean < Test value | Mean >= Test value |"
-msgstr ""
-"対立仮説と帰無仮説\n"
+msgstr "対立仮説と帰無仮説\n"
 "\n"
 "|              | 対立仮説 (Hₐ)  | 帰無仮説 (H₀)          |\n"
 "|———————|—————————|——————————|\n"
@@ -7576,19 +8280,31 @@ msgstr "共変量です。これを指定すると共分散分析になります
 msgid "the covariates from `data`"
 msgstr "`data`に含まれる共変量です"
 
-#: ancova/options/data.description.R anova/options/data.description.R
-#: anovaNP/options/data.description.R anovaOneW/options/data.description.R
-#: anovaRM/options/data.description.R anovaRMNP/options/data.description.R
-#: cfa/options/data.description.R contTables/options/data.description.R
+#: ancova/options/data.description.R
+#: anova/options/data.description.R
+#: anovaNP/options/data.description.R
+#: anovaOneW/options/data.description.R
+#: anovaRM/options/data.description.R
+#: anovaRMNP/options/data.description.R
+#: cfa/options/data.description.R
+#: contTables/options/data.description.R
 #: contTablesPaired/options/data.description.R
-#: corrMatrix/options/data.description.R corrPart/options/data.description.R
-#: descriptives/options/data.description.R efa/options/data.description.R
-#: linReg/options/data.description.R logLinear/options/data.description.R
-#: logRegBin/options/data.description.R logRegMulti/options/data.description.R
-#: logRegOrd/options/data.description.R mancova/options/data.description.R
-#: pca/options/data.description.R propTest2/options/data.description.R
-#: propTestN/options/data.description.R reliability/options/data.description.R
-#: ttestIS/options/data.description.R ttestOneS/options/data.description.R
+#: corrMatrix/options/data.description.R
+#: corrPart/options/data.description.R
+#: descriptives/options/data.description.R
+#: efa/options/data.description.R
+#: linReg/options/data.description.R
+#: logLinear/options/data.description.R
+#: logRegBin/options/data.description.R
+#: logRegMulti/options/data.description.R
+#: logRegOrd/options/data.description.R
+#: mancova/options/data.description.R
+#: pca/options/data.description.R
+#: propTest2/options/data.description.R
+#: propTestN/options/data.description.R
+#: reliability/options/data.description.R
+#: ttestIS/options/data.description.R
+#: ttestOneS/options/data.description.R
 #: ttestPS/options/data.description.R
 msgid "the data as a data frame"
 msgstr "データフレームのデータ"
@@ -7597,7 +8313,8 @@ msgstr "データフレームのデータ"
 msgid "the dependent variable from `data`, variable must be numeric"
 msgstr "`data`に含まれる従属変数（目的変数）です。数値型である必要があります"
 
-#: ancova/options/dep.description.R anova/options/dep.description.R
+#: ancova/options/dep.description.R
+#: anova/options/dep.description.R
 msgid "the dependent variable from `data`, variable must be numeric (not necessary when providing a formula, see examples)"
 msgstr "`data`に含まれる従属変数です。変数は数値である必要があります（式を用いる場合は不要です。例を参照してください）"
 
@@ -7631,7 +8348,8 @@ msgstr "周辺平均値のグラフに使用する誤差線を指定します。
 msgid "the explanatory covariates (not necessary when providing a formula, see examples)"
 msgstr "説明変数の共変量です（式を用いる場合は不要です。例を参照してください）"
 
-#: ancova/options/factors.description.R anova/options/factors.description.R
+#: ancova/options/factors.description.R
+#: anova/options/factors.description.R
 msgid "the explanatory factors in `data` (not necessary when providing a formula, see examples)"
 msgstr "`data`に含まれる説明要因です（式を用いる場合は不要です。例を参照してください）"
 
@@ -7659,7 +8377,8 @@ msgstr "従属変数用のラベルです。"
 msgid "the lavaan syntax used to fit the model"
 msgstr "モデル指定に用いられるlavaanのシンタックスです"
 
-#: anovaOneW/options/miss.description.ui ttestIS/options/miss.description.ui
+#: anovaOneW/options/miss.description.ui
+#: ttestIS/options/miss.description.ui
 #: ttestPS/options/miss.description.ui
 msgid "the missing value exclusion method. `Analysis by analysis` excludes missing values from each analysis. `Listwise` excludes a row from all analyses if one of its values is missing."
 msgstr "欠損値の除外方法です。「分析ごとに除外」では、分析ごとに欠損値を除外します。「行全体を除外」では、行の値が1つでも欠損していた場合、その行のデータをすべての分析から除外します。"
@@ -7704,7 +8423,8 @@ msgstr "反復測定された測定値です。"
 msgid "the repeated measures terms of the model."
 msgstr "モデルの反復測定項です。"
 
-#: ancova/options/emMeans.description.ui anova/options/emMeans.description.ui
+#: ancova/options/emMeans.description.ui
+#: anova/options/emMeans.description.ui
 #: anovaRM/options/emMeans.description.ui
 msgid "the terms to provide estimated marginal means for. Here you can specify multiple terms."
 msgstr "推定周辺平均値を算出する項を指定します。ここでは複数の項を指定することができます。"
@@ -7717,7 +8437,8 @@ msgstr "検定に使用する基準値です（多くの場合0が用いられ�
 msgid "the type of correlation to calculate"
 msgstr "算出する相関係数のタイプです"
 
-#: ancova/options/ss.description.ui anova/options/ss.description.ui
+#: ancova/options/ss.description.ui
+#: anova/options/ss.description.ui
 msgid "the type of sums of squares to use; Type 1, 2, or 3."
 msgstr "使用する2乗和のタイプ（タイプ1、2、3）"
 
@@ -7752,7 +8473,8 @@ msgstr "クロス集計表の行として使用する変数です（式を用い
 msgid "the variables of interest -- a separate t-test is performed for each variable specified."
 msgstr "関心対象の変数です。複数の変数が指定されている場合は、それぞれについて個別にt検定が実施されます。"
 
-#: corrMatrix/options/vars.description.ui corrPart/options/vars.description.ui
+#: corrMatrix/options/vars.description.ui
+#: corrPart/options/vars.description.ui
 msgid "the variables of interest."
 msgstr "関心対象の変数です。"
 
@@ -7828,9 +8550,19 @@ msgstr "{ciWidth}%信頼区間上限"
 msgid "{ciWidth}% CI mean {title}"
 msgstr "{ciWidth}%信頼区間 {title}"
 
-#: R/ancova.b.R R/anovarm.b.R R/cfa.b.R R/descriptives.b.R R/linreg.b.R
-#: R/loglinear.b.R R/logregbin.b.R R/logregmulti.b.R R/logregord.b.R
-#: R/proptest2.b.R R/ttestis.b.R R/ttestones.b.R R/ttestps.b.R
+#: R/ancova.b.R
+#: R/anovarm.b.R
+#: R/cfa.b.R
+#: R/descriptives.b.R
+#: R/linreg.b.R
+#: R/loglinear.b.R
+#: R/logregbin.b.R
+#: R/logregmulti.b.R
+#: R/logregord.b.R
+#: R/proptest2.b.R
+#: R/ttestis.b.R
+#: R/ttestones.b.R
+#: R/ttestps.b.R
 msgid "{ciWidth}% Confidence Interval"
 msgstr "{ciWidth}%信頼区間"
 
@@ -7882,7 +8614,8 @@ msgstr "{} - ピアソンの相関係数"
 msgid "{} - Spearman's rho"
 msgstr "{} - スピアマンの順位相関係数"
 
-#: ttestIS/results/ttest.columns.title ttestOneS/results/ttest.columns.title
+#: ttestIS/results/ttest.columns.title
+#: ttestOneS/results/ttest.columns.title
 #: ttestPS/results/ttest.columns.title
 msgid "±%"
 msgstr "±%"
@@ -7895,17 +8628,22 @@ msgstr "R²差分"
 msgid "ε²"
 msgstr "ε²"
 
-#: ancova/options/effectSize/eta.title ancova/results/main.columns.title
-#: anova/options/effectSize/eta.title anovaRM/options/effectSize/eta.title
-#: anovaRM/results/rmTable.columns.title anovaRM/results/bsTable.columns.title
+#: ancova/options/effectSize/eta.title
+#: ancova/results/main.columns.title
+#: anova/options/effectSize/eta.title
+#: anovaRM/options/effectSize/eta.title
+#: anovaRM/results/rmTable.columns.title
+#: anovaRM/results/bsTable.columns.title
 msgid "η²"
 msgstr "η²"
 
-#: anovaRM/results/rmTable.columns.title anovaRM/results/bsTable.columns.title
+#: anovaRM/results/rmTable.columns.title
+#: anovaRM/results/bsTable.columns.title
 msgid "η²<sub>G</sub>"
 msgstr "η²<sub>G</sub>"
 
-#: anovaRM/results/rmTable.columns.title anovaRM/results/bsTable.columns.title
+#: anovaRM/results/rmTable.columns.title
+#: anovaRM/results/bsTable.columns.title
 msgid "η²<sub>p</sub>"
 msgstr "η²<sub>p</sub>"
 
@@ -7913,9 +8651,12 @@ msgstr "η²<sub>p</sub>"
 msgid "η²p"
 msgstr "η²p"
 
-#: anovaNP/results/table.columns.title anovaRMNP/results/table.columns.title
-#: cfa/results/modelFit/test.columns.title contTables/options/chiSq.title
-#: contTables/results/chiSq.columns.content contTables/results/mh.columns.title
+#: anovaNP/results/table.columns.title
+#: anovaRMNP/results/table.columns.title
+#: cfa/results/modelFit/test.columns.title
+#: contTables/options/chiSq.title
+#: contTables/results/chiSq.columns.content
+#: contTables/results/mh.columns.title
 #: contTablesPaired/options/chiSq.title
 #: contTablesPaired/results/test.columns.content
 #: logLinear/results/modelFit.columns.title
@@ -7941,7 +8682,8 @@ msgstr "χ²"
 msgid "χ² Goodness of Fit"
 msgstr "χ² 適合度検定"
 
-#: package/analyses/propTestN.menuSubtitle propTestN/options.menuSubtitle
+#: package/analyses/propTestN.menuSubtitle
+#: propTestN/options.menuSubtitle
 msgid "χ² Goodness of fit"
 msgstr "χ²適合度検定"
 
@@ -7949,7 +8691,8 @@ msgstr "χ²適合度検定"
 msgid "χ² Tests"
 msgstr "χ² 検定"
 
-#: contTables/options/chiSqCorr.title contTables/results/chiSq.columns.content
+#: contTables/options/chiSqCorr.title
+#: contTables/results/chiSq.columns.content
 #: contTablesPaired/options/chiSqCorr.title
 #: contTablesPaired/results/test.columns.content
 msgid "χ² continuity correction"
@@ -7959,17 +8702,23 @@ msgstr "連続性の修正"
 msgid "χ² test"
 msgstr "χ² 検定"
 
-#: package/analyses/contTables.menuSubtitle contTables/options.menuSubtitle
+#: package/analyses/contTables.menuSubtitle
+#: contTables/options.menuSubtitle
 msgid "χ² test of association"
 msgstr "χ²独立性検定"
 
-#: ancova/options/effectSize/omega.title ancova/results/main.columns.title
-#: anova/options/effectSize/omega.title anovaRM/options/effectSize/omega.title
-#: anovaRM/results/rmTable.columns.title anovaRM/results/bsTable.columns.title
+#: ancova/options/effectSize/omega.title
+#: ancova/results/main.columns.title
+#: anova/options/effectSize/omega.title
+#: anovaRM/options/effectSize/omega.title
+#: anovaRM/results/rmTable.columns.title
+#: anovaRM/results/bsTable.columns.title
 msgid "ω²"
 msgstr "ω²"
 
-#: R/linreg.b.R R/logregbin.b.R R/logregmulti.b.R
+#: R/linreg.b.R
+#: R/logregbin.b.R
+#: R/logregmulti.b.R
 msgid "⁻ mean - 1SD, <sup>μ</sup> mean, ⁺ mean + 1SD"
 msgstr "⁻ 平均値 - 1SD, <sup>μ</sup> 平均値, ⁺ 平均値 + 1SD"
 
