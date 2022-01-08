@@ -1162,7 +1162,7 @@ msgstr "偏差"
 #: anova/options/contrasts.template/type/deviation.title
 #: anovaRM/options/contrasts.template/type/deviation.title
 msgid "Deviation"
-msgstr "偏差"
+msgstr "离差"
 
 #: ancova/options/contrasts.template/type/difference.title
 #: anova/options/contrasts.template/type/difference.title
