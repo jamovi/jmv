@@ -584,7 +584,7 @@ msgstr "列“{name}”包含未使用的水平(仅在删除有缺失值的行�
 #: R/conttables.b.R
 #: R/conttablespaired.b.R
 msgid "Column variable '{var}' contains fewer than 2 levels"
-msgstr "列变量{var}少于2个水平"
+msgstr "列变量“{var}”少于2个水平"
 
 #: contTables/options/cols.title
 #: contTables/options/xaxis/xcols.title
@@ -1415,15 +1415,15 @@ msgstr "因子"
 
 #: R/ancova.b.R
 msgid "Factor '{factorName}' contains no data"
-msgstr "因子'{factorName}' 不包含任何数据"
+msgstr "因子“{factorName}”不包含任何数据"
 
 #: R/ancova.b.R
 msgid "Factor '{factorName}' contains only a single level"
-msgstr "因子 '{factorName}' 只有一个水平"
+msgstr "因子“{factorName}”只有一个水平"
 
 #: R/linreg.b.R
 msgid "Factor '{factor}' needs to have at least 2 levels"
-msgstr "因子 '{factorName}' 至少需要两个水平"
+msgstr "因子“{factorName}”至少需要两个水平"
 
 #: cfa/options/factors.default[0].label
 msgid "Factor 1"
@@ -1673,15 +1673,15 @@ msgstr "分组变量"
 
 #: R/ttestis.b.R
 msgid "Grouping variable '{a}' has less than 2 levels after missing values are excluded"
-msgstr "排除缺失值后，分组变量'{a}' 少于2个水平"
+msgstr "排除缺失值后，分组变量“{a}”少于2个水平"
 
 #: R/ttestis.b.R
 msgid "Grouping variable '{a}' must have exactly 2 levels"
-msgstr "分组变量 '{a}' 必须正好有两个水平"
+msgstr "分组变量“{a}”必须正好有两个水平"
 
 #: R/ttestis.b.R
 msgid "Grouping variable '{a}' must not also be a dependent variable"
-msgstr "分组变量’{a}’ 不能同时是因变量"
+msgstr "分组变量“{a}”不能同时是因变量"
 
 #: R/conttables.b.R
 msgid "Haldane-Anscombe correction applied"
@@ -1851,25 +1851,25 @@ msgstr "区间"
 
 #: R/anovarm.b.R
 msgid "Item '{item}' consists of one level only"
-msgstr "条目'{item}' 仅包含一个水平"
+msgstr "条目“{item}”仅包含一个水平"
 
 #: R/anovarm.b.R
 #: R/reliability.b.R
 msgid "Item '{item}' contains infinite values"
-msgstr "条目’{item}’ 包含无限值"
+msgstr "条目“{item}”包含无限值"
 
 #: R/anovarm.b.R
 #: R/reliability.b.R
 msgid "Item '{item}' contains only missing values"
-msgstr "条目 ‘{item}’ 中仅包含缺失值"
+msgstr "条目“{item}”中仅包含缺失值"
 
 #: R/reliability.b.R
 msgid "Item '{item}' has no variance"
-msgstr "条目 '{item}' 中的值都相等"
+msgstr "条目“{item}”中的值都相等"
 
 #: R/anovarm.b.R
 msgid "Item '{item}' needs to be numeric"
-msgstr "条目 '{item}' 必须是数值型变量"
+msgstr "条目“{item}”必须是数值型变量"
 
 #: reliability/results/items.title
 msgid "Item Reliability Statistics"
@@ -2665,7 +2665,7 @@ msgstr "某一个或两个变量的例数太少"
 
 #: R/logregbin.b.R
 msgid "One or more coefficients in model '{modelNo}' could not be estimated due to perfect collinearity."
-msgstr "由于存在严重共线性问题，无法估计模型{modelNo}中的一个或多个系数。"
+msgstr "由于存在严重共线性问题，无法估计模型“{modelNo}”中的一个或多个系数。"
 
 #: package/analyses/anovaOneW.title
 #: package/analyses/anovaOneW.menuTitle
@@ -3430,7 +3430,7 @@ msgstr "行"
 #: R/conttables.b.R
 #: R/conttablespaired.b.R
 msgid "Row variable '{var}' contains fewer than 2 levels"
-msgstr "行变量'{var}' 的水平数少于2个"
+msgstr "行变量“{var}”的水平数少于2个"
 
 #: contTables/options/rows.title
 #: contTables/options/xaxis/xrows.title
@@ -3570,7 +3570,7 @@ msgstr "成分的得分"
 
 #: R/pca.b.R
 msgid "Score for factor {i}. Estimated using the '{fsMethod}' method."
-msgstr "因子 {i} 的分数. 使用 {fsMethod} 方法估计"
+msgstr "因子 {i} 的分数. 使用“{fsMethod}”方法估计"
 
 #: pca/results/eigen/screePlot.title
 msgid "Scree Plot"
@@ -3914,7 +3914,7 @@ msgstr "来自R的“iris”数据集"
 
 #: R/descriptives.b.R
 msgid "The 'split by' variable '{var}' contains no data."
-msgstr "”拆分“变量'{var}'没有数据。"
+msgstr "“拆分”变量“{var}”没有数据。"
 
 #: package/analyses/ancova.description
 #: ancova/options.description.main
@@ -4095,11 +4095,11 @@ msgstr "因变量“{DEP}”只有两个水平，因此可考虑使用二分类L
 
 #: R/logregord.b.R
 msgid "The dependent variable '{dep}' has the following order: {orderedLevels}"
-msgstr "因变量'{dep}'的顺序如下：{orderedLevels}"
+msgstr "因变量“{dep}”的顺序如下：{orderedLevels}"
 
 #: R/logregbin.b.R
 msgid "The dependent variable '{}' has more than two levels; binomial logistic regression can only be performed on dependent variables with two levels."
-msgstr "因变量'{}' 的水平多于两个；二分类logistic回归只能对两水平的因变量进行分析。"
+msgstr "因变量“{}”的水平多于两个；二分类logistic回归只能对两水平的因变量进行分析。"
 
 #: R/anovarm.b.R
 msgid "The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels"
@@ -4311,7 +4311,7 @@ msgstr "变量"
 
 #: R/proptest2.b.R
 msgid "Variable '{var}' contains no data"
-msgstr "变量'{var}' 中无数据"
+msgstr "变量“{var}”中无数据"
 
 #: R/ttestis.b.R
 #: R/ttestones.b.R
