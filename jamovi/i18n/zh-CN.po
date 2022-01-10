@@ -75,15 +75,15 @@ msgstr "“{col}”包含无限值"
 
 #: R/errors.R
 msgid "'{col}' contains missing values"
-msgstr "'{col}' 包含缺失值"
+msgstr "“{col}”包含缺失值"
 
 #: R/errors.R
 msgid "'{col}' contains only missing values"
-msgstr "'{col}' 全为缺失值"
+msgstr "“{col}”全为缺失值"
 
 #: R/errors.R
 msgid "'{col}' contains only one unique value"
-msgstr "'{col}' 仅包含唯一值"
+msgstr "“{col}”仅包含唯一值"
 
 #: R/pca.b.R
 msgid "'{method}' extraction method was used in combination with a '{rotation}' rotation"
@@ -91,7 +91,7 @@ msgstr "“{method}”提取法和“{rotation}”旋转法相结合使用"
 
 #: R/pca.b.R
 msgid "'{rotation}' rotation was used"
-msgstr "'{rotation}' 使用旋转法"
+msgstr "“{rotation}”使用旋转法"
 
 #: R/corrmatrix.b.R
 #: R/corrpart.b.R
