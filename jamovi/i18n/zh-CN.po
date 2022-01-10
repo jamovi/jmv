@@ -160,7 +160,7 @@ msgstr "重复测量方差分析数据集"
 #: logRegOrd/options/aic.title
 #: logRegOrd/results/modelFit.columns.title
 msgid "AIC"
-msgstr "赤池信息准则"
+msgstr "AIC"
 
 #: package/analyses/ancova.title
 #: package/analyses/ancova.menuTitle
@@ -349,7 +349,7 @@ msgstr "仅限于2x2四格表"
 #: logRegOrd/results/modelFit.columns.title
 #: pca/results/modelFit/fit.columns.title
 msgid "BIC"
-msgstr "贝叶斯信息准则"
+msgstr "BIC"
 
 #: contTables/options/barplot.title
 msgid "Bar Plot"
@@ -980,11 +980,11 @@ msgstr "Cramer’s V系数"
 
 #: propTest2/results/table.columns.superTitle
 msgid "Credible Interval"
-msgstr "置信区间"
+msgstr "可信区间"
 
 #: propTest2/options/ciBayes.title
 msgid "Credible intervals"
-msgstr "置信区间"
+msgstr "可信区间"
 
 #: reliability/options/alphaScale.title
 #: reliability/results/scale.columns.title
@@ -4568,7 +4568,7 @@ msgstr "`正确` (默认) 或 `错误`, 提供模型估计的'Z'值和'p'值"
 #: logRegMulti/options/aic.description.R
 #: logRegOrd/options/aic.description.R
 msgid "`TRUE` (default) or `FALSE`, provide Aikaike's Information Criterion (AIC) for the models"
-msgstr "`正确` (默认) 或 `错误`, 提供模型的赤池信息准则（AIC）"
+msgstr "`正确` (默认) 或 `错误`, 提供模型的AIC"
 
 #: reliability/options/alphaScale.description.R
 msgid "`TRUE` (default) or `FALSE`, provide Cronbach's α"
@@ -4761,7 +4761,7 @@ msgstr "`正确` 或 `错误`(默认) , 将数据绘制在边际均值上方"
 
 #: linReg/options/aic.description.R
 msgid "`TRUE` or `FALSE` (default), provide Aikaike's Information Criterion (AIC) for the models"
-msgstr "`正确` 或 `错误`(默认) , 提供模型的赤池信息准则（AIC）"
+msgstr "`正确` 或 `错误`(默认) , 提供模型的AIC"
 
 #: propTest2/options/bf.description.R
 #: ttestIS/options/bf.description.R
@@ -4776,11 +4776,11 @@ msgstr "`正确` 或 `错误`(默认) , 提供贝叶斯因子"
 #: logRegMulti/options/bic.description.R
 #: logRegOrd/options/bic.description.R
 msgid "`TRUE` or `FALSE` (default), provide Bayesian Information Criterion (BIC) for the models"
-msgstr "`正确` 或 `错误`(默认) , 提供模型的贝叶斯信息准则（BIC）"
+msgstr "`正确` 或 `错误`(默认) , 提供模型的BIC"
 
 #: propTest2/options/ciBayes.description.R
 msgid "`TRUE` or `FALSE` (default), provide Bayesian credible intervals"
-msgstr "`正确` 或 `错误`(默认) , 提供贝叶斯置信区间"
+msgstr "`正确` 或 `错误`(默认) , 提供贝叶斯可信区间"
 
 #: mancova/options/boxM.description.R
 msgid "`TRUE` or `FALSE` (default), provide Box's M test"
@@ -5516,7 +5516,7 @@ msgstr "介于50和99.9之间的数字（默认为95），置信区间宽度"
 
 #: propTest2/options/ciBayesWidth.description.R
 msgid "a number between 50 and 99.9 (default: 95), the credible interval width"
-msgstr "介于50和99.9之间的数字（默认为95），置信区间宽度"
+msgstr "介于50和99.9之间的数字（默认为95），可信区间宽度"
 
 #: descriptives/options/ciWidth.description.R
 #: ttestIS/options/ciWidth.description.R
