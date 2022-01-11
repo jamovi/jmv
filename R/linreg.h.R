@@ -9,6 +9,7 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             dep = NULL,
             covs = NULL,
             factors = NULL,
+            weights = NULL,
             blocks = list(
                 list()),
             refLevels = NULL,
@@ -69,6 +70,14 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "nominal"),
                 permitted=list(
                     "factor"),
+                default=NULL)
+            private$..weights <- jmvcore::OptionVariable$new(
+                "weights",
+                weights,
+                suggested=list(
+                    "continuous"),
+                permitted=list(
+                    "numeric"),
                 default=NULL)
             private$..blocks <- jmvcore::OptionArray$new(
                 "blocks",
@@ -221,6 +230,7 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..dep)
             self$.addOption(private$..covs)
             self$.addOption(private$..factors)
+            self$.addOption(private$..weights)
             self$.addOption(private$..blocks)
             self$.addOption(private$..refLevels)
             self$.addOption(private$..intercept)
@@ -257,6 +267,7 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         dep = function() private$..dep$value,
         covs = function() private$..covs$value,
         factors = function() private$..factors$value,
+        weights = function() private$..weights$value,
         blocks = function() private$..blocks$value,
         refLevels = function() private$..refLevels$value,
         intercept = function() private$..intercept$value,
@@ -292,6 +303,7 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..dep = NA,
         ..covs = NA,
         ..factors = NA,
+        ..weights = NA,
         ..blocks = NA,
         ..refLevels = NA,
         ..intercept = NA,
@@ -348,7 +360,8 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 title="Model Fit Measures",
                 clearWith=list(
                     "dep",
-                    "blocks"),
+                    "blocks",
+                    "weights"),
                 visible="(r || r2 || r2Adj || aic || bic || rmse || modelTest)",
                 columns=list(
                     list(
@@ -416,7 +429,8 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 title="Model Comparisons",
                 clearWith=list(
                     "dep",
-                    "blocks"),
+                    "blocks",
+                    "weights"),
                 columns=list(
                     list(
                         `name`="model1", 
@@ -489,7 +503,8 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                 refs="car",
                                 clearWith=list(
                                     "dep",
-                                    "blocks"),
+                                    "blocks",
+                                    "weights"),
                                 columns=list(
                                     list(
                                         `name`="term", 
@@ -526,7 +541,8 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                     "refLevels",
                                     "ciWidth",
                                     "ciWidthStdEst",
-                                    "intercept"),
+                                    "intercept",
+                                    "weights"),
                                 columns=list(
                                     list(
                                         `name`="term", 
@@ -593,7 +609,8 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                             visible="(cooks)",
                                             clearWith=list(
                                                 "dep",
-                                                "blocks"),
+                                                "blocks",
+                                                "weights"),
                                             columns=list(
                                                 list(
                                                     `name`="mean", 
@@ -641,7 +658,8 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                             refs="car",
                                             clearWith=list(
                                                 "dep",
-                                                "blocks"),
+                                                "blocks",
+                                                "weights"),
                                             columns=list(
                                                 list(
                                                     `name`="autoCor", 
@@ -664,7 +682,8 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                             refs="car",
                                             clearWith=list(
                                                 "dep",
-                                                "blocks"),
+                                                "blocks",
+                                                "weights"),
                                             columns=list(
                                                 list(
                                                     `name`="term", 
@@ -686,7 +705,8 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                             rows=1,
                                             clearWith=list(
                                                 "dep",
-                                                "blocks"),
+                                                "blocks",
+                                                "weights"),
                                             columns=list(
                                                 list(
                                                     `name`="t[sw]", 
@@ -712,7 +732,8 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                             requiresData=TRUE,
                                             clearWith=list(
                                                 "dep",
-                                                "blocks")))
+                                                "blocks",
+                                                "weights")))
                                         self$add(jmvcore::Array$new(
                                             options=options,
                                             name="resPlots",
@@ -724,7 +745,8 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                                 requiresData=TRUE,
                                                 clearWith=list(
                                                     "dep",
-                                                    "blocks"))))}))$new(options=options))
+                                                    "blocks",
+                                                    "weights"))))}))$new(options=options))
                             self$add(jmvcore::Array$new(
                                 options=options,
                                 name="emm",
@@ -733,6 +755,7 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                 clearWith=list(
                                     "dep",
                                     "blocks",
+                                    "weights",
                                     "emMeans"),
                                 template=R6::R6Class(
                                     inherit = jmvcore::Group,
@@ -757,6 +780,7 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                                 clearWith=list(
                                                     "dep",
                                                     "blocks",
+                                                    "weights",
                                                     "refLevels",
                                                     "ciEmm",
                                                     "ciWidthEmm",
@@ -770,6 +794,7 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                                 clearWith=list(
                                                     "dep",
                                                     "blocks",
+                                                    "weights",
                                                     "refLevels",
                                                     "ciWidthEmm",
                                                     "emmWeights")))}))$new(options=options)))}))$new(options=options)))
@@ -782,7 +807,8 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 measureType="continuous",
                 clearWith=list(
                     "dep",
-                    "blocks")))
+                    "blocks",
+                    "weights")))
             self$add(jmvcore::Output$new(
                 options=options,
                 name="residsOV",
@@ -792,7 +818,8 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 measureType="continuous",
                 clearWith=list(
                     "dep",
-                    "blocks")))
+                    "blocks",
+                    "weights")))
             self$add(jmvcore::Output$new(
                 options=options,
                 name="cooksOV",
@@ -802,7 +829,8 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 measureType="continuous",
                 clearWith=list(
                     "dep",
-                    "blocks")))}))
+                    "blocks",
+                    "weights")))}))
 
 linRegBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "linRegBase",
@@ -871,6 +899,8 @@ linRegBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   numeric
 #' @param covs the covariates from \code{data}
 #' @param factors the fixed factors from \code{data}
+#' @param weights the (optional) weights from \code{data} to be used in the
+#'   fitting process
 #' @param blocks a list containing vectors of strings that name the predictors
 #'   that are added to the model. The elements are added to the model according
 #'   to their order in the list
@@ -952,6 +982,7 @@ linReg <- function(
     dep,
     covs = NULL,
     factors = NULL,
+    weights = NULL,
     blocks = list(
                 list()),
     refLevels = NULL,
@@ -989,12 +1020,14 @@ linReg <- function(
     if ( ! missing(dep)) dep <- jmvcore::resolveQuo(jmvcore::enquo(dep))
     if ( ! missing(covs)) covs <- jmvcore::resolveQuo(jmvcore::enquo(covs))
     if ( ! missing(factors)) factors <- jmvcore::resolveQuo(jmvcore::enquo(factors))
+    if ( ! missing(weights)) weights <- jmvcore::resolveQuo(jmvcore::enquo(weights))
     if (missing(data))
         data <- jmvcore::marshalData(
             parent.frame(),
             `if`( ! missing(dep), dep, NULL),
             `if`( ! missing(covs), covs, NULL),
-            `if`( ! missing(factors), factors, NULL))
+            `if`( ! missing(factors), factors, NULL),
+            `if`( ! missing(weights), weights, NULL))
 
     for (v in factors) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
     if (inherits(emMeans, "formula")) emMeans <- jmvcore::decomposeFormula(emMeans)
@@ -1003,6 +1036,7 @@ linReg <- function(
         dep = dep,
         covs = covs,
         factors = factors,
+        weights = weights,
         blocks = blocks,
         refLevels = refLevels,
         intercept = intercept,

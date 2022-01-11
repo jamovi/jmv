@@ -87,6 +87,17 @@ options:
       description:
           R: the fixed factors from `data`
 
+    - name: weights
+      type: Variable
+      title: Weights (optional)
+      suggested:
+        - continuous
+      permitted:
+        - numeric
+      default:
+      description:
+          R: the (optional) weights from `data` to be used in the fitting process
+
     - name: blocks
       title: Blocks
       type: Array
