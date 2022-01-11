@@ -284,7 +284,7 @@ test_that("analysis throws error with negative weights", {
                 blocks=list(list("cov")),
             )
         },
-        regexp = "Negative weights are not allowed"
+        regexp = "Negative weights are not permitted"
     )
 })
 
