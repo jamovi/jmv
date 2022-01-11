@@ -10,6 +10,7 @@ items:
       clearWith:
         - dep
         - blocks
+        - weights
       visible: (r || r2 || r2Adj || aic || bic || rmse || modelTest)
 
       columns:
@@ -78,6 +79,7 @@ items:
       clearWith:
         - dep
         - blocks
+        - weights
 
       columns:
         - name: model1
@@ -143,6 +145,7 @@ items:
               clearWith:
                 - dep
                 - blocks
+                - weights
               columns:
                 - name: term
                   title: ""
@@ -180,6 +183,7 @@ items:
                 - ciWidth
                 - ciWidthStdEst
                 - intercept
+                - weights
 
               columns:
                 - name: term
@@ -241,6 +245,7 @@ items:
                   clearWith:
                     - dep
                     - blocks
+                    - weights
 
                   columns:
                     - name: mean
@@ -278,6 +283,7 @@ items:
                   clearWith:
                     - dep
                     - blocks
+                    - weights
 
                   columns:
                     - name: autoCor
@@ -301,6 +307,7 @@ items:
                   clearWith:
                     - dep
                     - blocks
+                    - weights
 
                   columns:
                     - name: term
@@ -324,6 +331,7 @@ items:
                   clearWith:
                     - dep
                     - blocks
+                    - weights
                   columns:
                     - name: t[sw]
                       title: ''
@@ -349,6 +357,7 @@ items:
                   clearWith:
                     - dep
                     - blocks
+                    - weights
 
                 - name: resPlots
                   title: Residuals Plots
@@ -361,6 +370,7 @@ items:
                       clearWith:
                         - dep
                         - blocks
+                        - weights
 
             - name: emm
               title: Estimated Marginal Means
@@ -372,6 +382,7 @@ items:
               clearWith:
                 - dep
                 - blocks
+                - weights
                 - emMeans
               template:
 
@@ -389,6 +400,7 @@ items:
                       clearWith:
                         - dep
                         - blocks
+                        - weights
                         - refLevels
                         - ciEmm
                         - ciWidthEmm
@@ -403,6 +415,7 @@ items:
                       clearWith:
                         - dep
                         - blocks
+                        - weights
                         - refLevels
                         - ciWidthEmm
                         - emmWeights
@@ -416,6 +429,7 @@ items:
       clearWith:
         - dep
         - blocks
+        - weights
 
     - name: residsOV
       type: Output
@@ -426,6 +440,7 @@ items:
       clearWith:
         - dep
         - blocks
+        - weights
 
     - name: cooksOV
       type: Output
@@ -436,3 +451,4 @@ items:
       clearWith:
         - dep
         - blocks
+        - weights

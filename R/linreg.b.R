@@ -11,6 +11,12 @@ linRegClass <- R6::R6Class(
 
             return(private$.dataProcessed)
         },
+        weights = function() {
+            if (is.null(private$.weights))
+                private$.weights <- private$.computeWeights()
+
+            return(private$.weights)
+        },
         models = function() {
             if (is.null(private$.models))
                 private$.models <- private$.computeModels()
@@ -112,6 +118,7 @@ linRegClass <- R6::R6Class(
         #### Member variables ----
         .dataProcessed = NULL,
         .dataRowNums = NULL,
+        .weights = NULL,
         .models = NULL,
         .modelsScaled = NULL,
         .isAliased = NULL,
@@ -182,9 +189,25 @@ linRegClass <- R6::R6Class(
 
             models <- list()
             for (i in seq_along(formulas))
-                models[[i]] <- lm(formulas[[i]], data=data)
+                models[[i]] <- lm(formulas[[i]], data=data, weights=self$weights)
 
             return(models)
+        },
+        .computeWeights = function() {
+            var <- self$options$weights
+            if (is.null(var)) {
+                weights <- NULL
+            } else {
+                weights <- self$dataProcessed[[jmvcore::toB64(var)]]
+                if (any(weights < 0)) {
+                    jmvcore::reject(
+                        .("'{var}' contains negative values. Negative weights are not permitted."),
+                        var=var
+                    )
+                }
+            }
+
+            return(weights)
         },
         .computeAnovaModelTerms = function() {
             anovaTerms <- list()
@@ -394,6 +417,7 @@ linRegClass <- R6::R6Class(
         .initCoefTable = function() {
             groups <- self$results$models
             factors <- self$options$factors
+            weights <- self$options$weights
             termsAll <- private$.getModelTerms()
             rowNamesModel <- private$.getRowNamesModel()
 
@@ -413,6 +437,14 @@ linRegClass <- R6::R6Class(
                 coefTerms <- rowNamesModel[[i]]
 
                 table$addRow(rowKey="`(Intercept)`", values=list(term = .("Intercept")))
+
+
+                if (! is.null(weights)) {
+                    table$setNote(
+                        "weights",
+                        jmvcore::format(.("Weighted by '{varName}'"), varName=weights)
+                    )
+                }
 
                 if ( ! is.null(factors)) {
                     note <- ifelse(self$options$intercept == 'refLevel',
@@ -1266,6 +1298,7 @@ linRegClass <- R6::R6Class(
             dep <- self$options$dep
             covs <- self$options$covs
             factors <- self$options$factors
+            weights <- self$options$weights
             refLevels <- self$options$refLevels
 
             dataRaw <- self$data
@@ -1291,7 +1324,7 @@ linRegClass <- R6::R6Class(
                 stats::contrasts(data[[jmvcore::toB64(factor)]]) <- private$.createContrasts(levels(column))
             }
 
-            for (cov in c(dep, covs))
+            for (cov in c(dep, covs, weights))
                 data[[jmvcore::toB64(cov)]] <- jmvcore::toNumeric(dataRaw[[cov]])
 
             attr(data, 'row.names') <- rownames(self$data)
