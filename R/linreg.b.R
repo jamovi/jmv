@@ -201,7 +201,7 @@ linRegClass <- R6::R6Class(
                 weights <- self$dataProcessed[[jmvcore::toB64(var)]]
                 if (any(weights < 0)) {
                     jmvcore::reject(
-                        .("'{var}' contains negative values. Negative weights are not allowed!"),
+                        .("'{var}' contains negative values. Negative weights are not permitted."),
                         var=var
                     )
                 }
