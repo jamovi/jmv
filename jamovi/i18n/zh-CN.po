@@ -91,7 +91,7 @@ msgstr "“{method}”提取法和“{rotation}”旋转法相结合使用"
 
 #: R/pca.b.R
 msgid "'{rotation}' rotation was used"
-msgstr "“{rotation}”使用旋转法"
+msgstr "“{rotation}”进行旋转"
 
 #: R/corrmatrix.b.R
 #: R/corrpart.b.R
@@ -112,7 +112,7 @@ msgstr "1-特异度"
 #: logRegBin/options.menuTitle
 #: propTest2/options.menuTitle
 msgid "2 Outcomes"
-msgstr "二分类"
+msgstr "二分类结局"
 
 #: descriptives/options/pcValues.default
 msgid "25,50,75"
@@ -200,7 +200,7 @@ msgstr "方差分析"
 #: logRegBin/options/auc.title
 #: logRegBin/results/models.template/pred/measures.columns.title
 msgid "AUC"
-msgstr "ROC曲线下面积"
+msgstr "AUC"
 
 #: logRegBin/options/acc.title
 #: logRegBin/results/models.template/pred/measures.columns.title
@@ -213,7 +213,7 @@ msgstr "准确度"
 #: logRegMulti/ui[1]/modelSupplier[0]/blocks.addButton
 #: logRegOrd/ui[1]/modelSupplier[0]/blocks.addButton
 msgid "Add New Block"
-msgstr "添加新的块"
+msgstr "添加新的层"
 
 #: cfa/ui[0][0]/factors.addButton
 msgid "Add New Factor"
@@ -317,7 +317,7 @@ msgstr "适用条件判断"
 #: anovaRM/results/assump.title
 #: ttestIS/results/assum.title
 msgid "Assumptions"
-msgstr "假设"
+msgstr "假设检验"
 
 #: R/conttables.b.R
 msgid "At least one variable must have two levels"
@@ -399,7 +399,7 @@ msgstr "基于平行性分析"
 #: ttestPS/options/bf.title
 #: ttestPS/ui[1][0][0]/students/bf.label
 msgid "Bayes factor"
-msgstr "贝叶斯因子"
+msgstr "贝叶斯因子法"
 
 #: propTest2/results/table.columns.title
 #: ttestIS/results/ttest.columns.content
@@ -418,7 +418,7 @@ msgstr "组间因子"
 
 #: anovaRM/ui[2]/bscModelSupplier.label
 msgid "Between Subjects Components"
-msgstr "组间成分"
+msgstr "组间构成"
 
 #: anovaRM/results/bsTable.title
 msgid "Between Subjects Effects"
@@ -440,7 +440,7 @@ msgstr "二分类"
 #: logRegBin/ui.title
 #: logRegBin/results.title
 msgid "Binomial Logistic Regression"
-msgstr "二分类逻辑回归"
+msgstr "二分类Logistic回归"
 
 #: propTest2/results/table.title
 msgid "Binomial Test"
@@ -457,7 +457,7 @@ msgstr "二项分布检验"
 #: logRegMulti/ui[1]/modelSupplier[0]/blocks.template/blockName.label
 #: logRegOrd/ui[1]/modelSupplier[0]/blocks.template/blockName.label
 msgid "Block 1"
-msgstr "块1"
+msgstr "层 1"
 
 #: jamovi/js/linreg.events.js:4
 #: jamovi/js/linreg.events.js:40
@@ -468,7 +468,7 @@ msgstr "块1"
 #: jamovi/js/logregord.events.js:38
 #: jamovi/js/logregord.events.js:4
 msgid "Block {0}"
-msgstr "块{0}"
+msgstr "层{0}"
 
 #: linReg/options/blocks.title
 #: logLinear/options/blocks.title
@@ -476,13 +476,13 @@ msgstr "块{0}"
 #: logRegMulti/options/blocks.title
 #: logRegOrd/options/blocks.title
 msgid "Blocks"
-msgstr "块"
+msgstr "层"
 
 #: ancova/options/postHocCorr/bonf.title
 #: anova/options/postHocCorr/bonf.title
 #: anovaRM/options/postHocCorr/bonf.title
 msgid "Bonferroni"
-msgstr "Bonferroni"
+msgstr "Bonferroni法"
 
 #: descriptives/ui[3][0][1].label
 msgid "Box Plots"
@@ -994,7 +994,7 @@ msgstr "Cronbach's α系数"
 
 #: reliability/options/alphaItems.title
 msgid "Cronbach's α (if item is dropped)"
-msgstr "删除该条目后的Cronbach's α系数"
+msgstr "删除条目后的Cronbach's α系数"
 
 #: R/descriptives.b.R
 #: pca/results/factorStats/factorSummary.columns.title
@@ -1009,7 +1009,7 @@ msgstr "截断值"
 #: descriptives/options/pcEqGr.title
 #: descriptives/ui[2][0][1][0]/pcEqGr.label
 msgid "Cut points for"
-msgstr "截断值"
+msgstr "截断为"
 
 #: R/logregbin.b.R
 #: logRegBin/ui[7][0][0][0].label
@@ -1045,7 +1045,7 @@ msgstr "数据"
 #: package/analyses/efa.menuSubgroup
 #: package/analyses/cfa.menuSubgroup
 msgid "Data Reduction"
-msgstr "数据整理"
+msgstr "数据降维"
 
 #: linReg/ui[3][0][1][0].label
 #: linReg/results/models.template/dataSummary.title
@@ -1276,11 +1276,11 @@ msgstr "系数"
 #: logRegMulti/ui[4][0][0][1].label
 #: logRegOrd/ui[4][0][1][0].label
 msgid "Estimate (Log Odds Ratio)"
-msgstr "系数（对数OR）"
+msgstr "系数（对数比值比）"
 
 #: logLinear/ui[4][0][0][1].label
 msgid "Estimate (Log Rate Ratio)"
-msgstr "系数（对数RR）"
+msgstr "系数（对数率比）"
 
 #: ancova/ui[6].label
 #: ancova/results/emm.title
@@ -1314,11 +1314,11 @@ msgstr "系数"
 
 #: R/logregbin.b.R
 msgid "Estimates represent the log odds of \"{dep} = {level1}\" vs. \"{dep} = {level2}\""
-msgstr "估计系数表示 \"{dep} = {level1}\"与 \"{dep} = {level2}\"相比的对数比"
+msgstr "系数表示 \"{dep} = {level1}\"与 \"{dep} = {level2}\"相比的对数比"
 
 #: R/logregbin.b.R
 msgid "Estimates represent the log odds of …"
-msgstr "估计系数表示…的比值对数"
+msgstr "系数表示…的比值对数"
 
 #: efa/options/factorScoreMethod.title
 msgid "Estimation method"
@@ -1351,12 +1351,12 @@ msgstr "期望"
 #: propTestN/options/ratio.title
 #: propTestN/ui[2].label
 msgid "Expected Proportions"
-msgstr "期望比例"
+msgstr "理论比例"
 
 #: contTables/options/exp.title
 #: propTestN/options/expected.title
 msgid "Expected counts"
-msgstr "期望频数"
+msgstr "理论频数"
 
 #: package/analyses/descriptives.menuGroup
 #: descriptives/options.menuGroup
@@ -1503,7 +1503,7 @@ msgstr "因子"
 
 #: anovaOneW/results/anova.columns.content
 msgid "Fisher's"
-msgstr "Fisher's"
+msgstr "Fisher's法"
 
 #: contTables/options/fisher.title
 #: contTables/results/chiSq.columns.content
@@ -1533,7 +1533,7 @@ msgstr "固定因子"
 #: efa/options/nFactorMethod/fixed.title
 #: pca/ui[1][0][1]/nFactorMethod_fixed.label
 msgid "Fixed number"
-msgstr "固定个数"
+msgstr "固定主成分个数"
 
 #: anovaOneW/options/phFlag.title
 msgid "Flag significant comparisons"
@@ -1571,7 +1571,7 @@ msgstr "频数表"
 #: anovaRMNP/options.menuSubtitle
 #: anovaRMNP/results/table.title
 msgid "Friedman"
-msgstr "Friedman"
+msgstr "Friedman检验"
 
 #: cfa/ui[2][0][0]/miss_fiml.label
 msgid "Full information maximum likelihood"
@@ -1589,7 +1589,7 @@ msgstr "Games-Howell 事后检验 – {dep}"
 #: contTables/results/gamma.title
 #: contTables/results/gamma.columns.title
 msgid "Gamma"
-msgstr "Gamma"
+msgstr "Gamma系数"
 
 #: ancova/ui[6][1][0][1].label
 #: anova/ui[6][1][0][1].label
@@ -1620,7 +1620,7 @@ msgstr "Greenhouse-Geisser ε"
 
 #: ttestIS/results/desc.columns.title
 msgid "Group"
-msgstr "组"
+msgstr "分组"
 
 #: R/conttables.b.R
 msgid "Group 1"
@@ -1700,12 +1700,12 @@ msgstr "Helmert"
 #: efa/options/hideLoadings.title
 #: pca/options/hideLoadings.title
 msgid "Hide loadings below"
-msgstr "隐藏低于……的因子载荷"
+msgstr "隐藏低于此值的因子载荷"
 
 #: cfa/options/hlCorRes.title
 #: cfa/options/hlMI.title
 msgid "Highlight values above"
-msgstr "突出显示高于……的值"
+msgstr "突出显示高于此值的结果"
 
 #: descriptives/options/hist.title
 msgid "Histogram"
@@ -1719,7 +1719,7 @@ msgstr "直方图"
 #: anova/options/postHocCorr/holm.title
 #: anovaRM/options/postHocCorr/holm.title
 msgid "Holm"
-msgstr "Holm"
+msgstr "Holm法"
 
 #: ancova/results/assump/homo.title
 #: anova/results/assump/homo.title
@@ -1740,7 +1740,7 @@ msgstr "方差齐性检验"
 #: mancova/options/multivar/hotel.title
 #: mancova/results/multivar.columns.content
 msgid "Hotelling's Trace"
-msgstr "Hotelling's Trace"
+msgstr "Hotelling's Trace法"
 
 #: anovaRM/options/spherCorr/HF.title
 #: anovaRM/results/rmTable.columns.content
@@ -1881,7 +1881,7 @@ msgstr "条目统计"
 
 #: reliability/options/itemRestCor.title
 msgid "Item-rest correlation"
-msgstr "条目残差相关性"
+msgstr "条目剩余相关性"
 
 #: reliability/options/vars.title
 msgid "Items"
@@ -2013,7 +2013,7 @@ msgstr "对数线性回归"
 #: logRegMulti/options.menuSubgroup
 #: logRegOrd/options.menuSubgroup
 msgid "Logistic Regression"
-msgstr "逻辑回归"
+msgstr "Logistic回归"
 
 #: R/ancova.b.R
 #: R/descriptives.b.R
@@ -2052,7 +2052,7 @@ msgstr "多元协方差分析"
 
 #: pca/results/assump/kmo.columns.title
 msgid "MSA"
-msgstr "抽样适合性系数"
+msgstr "MSA系数"
 
 #: ttestIS/options/mann.title
 #: ttestIS/results/ttest.columns.content
@@ -2128,7 +2128,7 @@ msgstr "McDonald's ω系数"
 
 #: reliability/options/omegaItems.title
 msgid "McDonald's ω (if item is dropped)"
-msgstr "删除该条目后的McDonald's ω系数"
+msgstr "删除条目后的McDonald's ω系数"
 
 #: logLinear/options/pseudoR2/r2mf.title
 #: logRegBin/options/pseudoR2/r2mf.title
@@ -2222,23 +2222,23 @@ msgstr "估算值"
 
 #: R/ttestps.b.R
 msgid "Measure 1 - Measure 2"
-msgstr "估算值1－估算值2"
+msgstr "检测值1－检测值2"
 
 #: ttestPS/ui[1][0][1]/hypothesis_twoGreater.label
 msgid "Measure 1 < Measure 2"
-msgstr "估算值1＜估算值2"
+msgstr "检测值1＜检测值2"
 
 #: ttestPS/ui[1][0][1]/hypothesis_oneGreater.label
 msgid "Measure 1 > Measure 2"
-msgstr "估算值1＞估算值2"
+msgstr "检测值1＞检测值2"
 
 #: ttestPS/ui[1][0][1]/hypothesis_different.label
 msgid "Measure 1 ≠ Measure 2"
-msgstr "估算值1≠估算值2"
+msgstr "检测值1≠检测值2"
 
 #: anovaRMNP/options/measures.title
 msgid "Measures"
-msgstr "估算值"
+msgstr "检测值"
 
 #: R/descriptives.b.R
 #: R/ttestis.b.R
@@ -2278,7 +2278,7 @@ msgstr "最小残差"
 
 #: efa/options/extraction/minres.title
 msgid "Minimum residuals"
-msgstr "最小残差"
+msgstr "最小残差法"
 
 #: efa/options/minEigen.title
 #: pca/options/minEigen.title
@@ -2422,7 +2422,7 @@ msgstr "修正指数"
 
 #: R/descriptives.b.R
 msgid "More than one mode exists, only the first is reported"
-msgstr "当存在多个模式时，仅报告第一个"
+msgstr "当存在多个众数时，仅报告第一个"
 
 #: package/analyses/logRegMulti.menuSubtitle
 #: logRegMulti/options.menuSubtitle
@@ -2436,7 +2436,7 @@ msgstr "无序多分类"
 #: logRegMulti/ui.title
 #: logRegMulti/results.title
 msgid "Multinomial Logistic Regression"
-msgstr "无序多分类逻辑回归"
+msgstr "无序多分类Logistic回归"
 
 #: package/analyses/mancova.description
 #: mancova/options.description.main
@@ -2466,14 +2466,14 @@ msgstr "多变量检验"
 #: ttestOneS/results/descriptives.columns.title
 #: ttestPS/results/desc.columns.title
 msgid "N"
-msgstr "例数"
+msgstr "个案数"
 
 #: package/analyses/logRegMulti.menuTitle
 #: package/analyses/propTestN.menuTitle
 #: logRegMulti/options.menuTitle
 #: propTestN/options.menuTitle
 msgid "N Outcomes"
-msgstr "多分类"
+msgstr "多分类结局"
 
 #: logLinear/options/pseudoR2/r2n.title
 #: logRegBin/options/pseudoR2/r2n.title
@@ -2499,7 +2499,7 @@ msgstr "不存在任何因子。Box's M检验仅在模型中包含因子时才�
 #: contTables/ui[1][0][1][0][0].label
 #: contTables/results/nom.title
 msgid "Nominal"
-msgstr "无序多分类变量"
+msgstr "无序多分类"
 
 #: package/analyses/anovaNP.menuSubgroup
 #: package/analyses/anovaRMNP.menuSubgroup
@@ -2569,7 +2569,7 @@ msgstr "因子个数"
 #: efa/options/rotation/oblimin.title
 #: pca/options/rotation/oblimin.title
 msgid "Oblimin"
-msgstr "斜交"
+msgstr "斜交法"
 
 #: R/conttables.b.R
 #: R/logregbin.b.R
@@ -2585,7 +2585,7 @@ msgstr "实际频数"
 #: anova/options/emmPlotData.title
 #: anovaRM/options/emmPlotData.title
 msgid "Observed scores"
-msgstr "实际得分"
+msgstr "实际值"
 
 #: logRegBin/ui[5][0][1][0].label
 #: logRegMulti/ui[4][0][1][0].label
@@ -2645,7 +2645,7 @@ msgstr "单样本T检验"
 
 #: R/ttestis.b.R
 msgid "One or both groups do not contain enough observations"
-msgstr "某一组或两组内例数太少"
+msgstr "某一组或两组内个案数太少"
 
 #: R/ttestps.b.R
 msgid "One or both variables are not numeric"
@@ -2657,11 +2657,11 @@ msgstr "某一个或两个变量包含无限值"
 
 #: R/ttestps.b.R
 msgid "One or both variables contain no observations"
-msgstr "某一个或两个变量的例数为0"
+msgstr "某一个或两个变量的个案数为0"
 
 #: R/ttestps.b.R
 msgid "One or both variables do not contain enough observations"
-msgstr "某一个或两个变量的例数太少"
+msgstr "某一个或两个变量的个案数太少"
 
 #: R/logregbin.b.R
 msgid "One or more coefficients in model '{modelNo}' could not be estimated due to perfect collinearity."
@@ -2700,7 +2700,7 @@ msgstr "选项"
 
 #: contTables/ui[1][0][1][1][0].label
 msgid "Ordinal"
-msgstr "有序"
+msgstr "有序多分类"
 
 #: package/analyses/logRegOrd.title
 #: package/analyses/logRegOrd.description
@@ -2709,12 +2709,12 @@ msgstr "有序"
 #: logRegOrd/ui.title
 #: logRegOrd/results.title
 msgid "Ordinal Logistic Regression"
-msgstr "有序逻辑回归"
+msgstr "有序Logistic回归"
 
 #: package/analyses/logRegOrd.menuTitle
 #: logRegOrd/options.menuTitle
 msgid "Ordinal Outcomes"
-msgstr "有序分类"
+msgstr "有序分类结局"
 
 #: ancova/ui[6][1][0][0].label
 #: anova/ui[6][1][0][0].label
@@ -2791,7 +2791,7 @@ msgstr "两两比较- $key"
 
 #: corrPart/options/type/part.title
 msgid "Partial"
-msgstr "偏"
+msgstr "偏相关"
 
 #: R/corrpart.b.R
 #: package/analyses/corrPart.title
@@ -2849,7 +2849,7 @@ msgstr "路径图"
 #: corrPart/options/pearson.title
 #: corrPart/ui[1][0]/pearson.label
 msgid "Pearson"
-msgstr "Pearson"
+msgstr "Pearson系数"
 
 #: corrMatrix/results/matrix.columns.content
 #: corrPart/results/matrix.columns.content
@@ -2902,7 +2902,7 @@ msgstr "φ系数"
 #: mancova/options/multivar/pillai.title
 #: mancova/results/multivar.columns.content
 msgid "Pillai's Trace"
-msgstr "Pillai's Trace系数"
+msgstr "Pillai's Trace系数法"
 
 #: ancova/ui[6][1][1][0].label
 #: anova/ui[6][1][1][0].label
@@ -3047,7 +3047,7 @@ msgstr "主成分分析"
 
 #: efa/options/extraction/pa.title
 msgid "Principal axis"
-msgstr "主轴"
+msgstr "主轴法"
 
 #: R/pca.b.R
 msgid "Principal axis factoring"
@@ -3145,7 +3145,7 @@ msgstr "Q-Q图"
 
 #: mancova/options/qqPlot.title
 msgid "Q-Q plot of multivariate normality"
-msgstr "多元正态性的Q-Q图"
+msgstr "多元正态Q-Q图"
 
 #: linReg/options/qqPlot.title
 msgid "Q-Q plot of residuals"
@@ -3322,7 +3322,7 @@ msgstr "重复测量因子"
 #: corrMatrix/options/sig.title
 #: corrPart/options/sig.title
 msgid "Report significance"
-msgstr "报告有统计学意义的结果"
+msgstr "报告p值"
 
 #: R/linreg.b.R
 msgid "Represents grand mean"
@@ -3441,7 +3441,7 @@ msgstr "行"
 #: mancova/options/multivar/roy.title
 #: mancova/results/multivar.columns.content
 msgid "Roy's Largest Root"
-msgstr "Roy's 最大根"
+msgstr "Roy's 最大根法"
 
 #: linReg/options/r2.title
 #: linReg/results/modelFit.columns.title
@@ -3544,7 +3544,7 @@ msgstr "量表信度统计"
 
 #: reliability/ui[1][0][0].label
 msgid "Scale Statistics"
-msgstr "量表统计"
+msgstr "标度统计"
 
 #: cfa/ui[2][1][0]/constrain_facInd.label
 msgid "Scale factor = scale first indicator"
@@ -3583,7 +3583,7 @@ msgstr "碎石图"
 
 #: corrPart/options/type/semi.title
 msgid "Semipartial"
-msgstr "半偏"
+msgstr "半偏相关"
 
 #: R/corrpart.b.R
 msgid "Semipartial Correlation"
@@ -3657,14 +3657,14 @@ msgstr "偏度"
 #: efa/options/sortLoadings.title
 #: pca/options/sortLoadings.title
 msgid "Sort loadings by size"
-msgstr "按大小排序"
+msgstr "按载荷大小排序"
 
 #: corrMatrix/options/spearman.title
 #: corrMatrix/ui[1][0]/spearman.label
 #: corrPart/options/spearman.title
 #: corrPart/ui[1][0]/spearman.label
 msgid "Spearman"
-msgstr "Spearman"
+msgstr "Spearman系数"
 
 #: corrMatrix/results/matrix.columns.content
 #: corrPart/results/matrix.columns.content
@@ -3793,7 +3793,7 @@ msgstr "偏度标准误"
 #: ttestOneS/ui[1][0][0]/students.label
 #: ttestPS/ui[1][0][0]/students.label
 msgid "Student's"
-msgstr "Student's"
+msgstr "Student's法"
 
 #: ttestIS/results/ttest.columns.content
 #: ttestOneS/results/ttest.columns.content
@@ -3810,7 +3810,7 @@ msgstr "Student's t检验"
 #: R/reliability.b.R
 #: descriptives/options/sum.title
 msgid "Sum"
-msgstr "合"
+msgstr "总数"
 
 #: ancova/results/main.columns.title
 #: anovaRM/results/rmTable.columns.title
@@ -4320,7 +4320,7 @@ msgstr "变量包含无限值"
 
 #: R/ttestones.b.R
 msgid "Variable does not contain enough observations"
-msgstr "变量中的例数不够"
+msgstr "变量中的个案数不够"
 
 #: R/ttestis.b.R
 #: R/ttestones.b.R
@@ -4394,7 +4394,7 @@ msgstr "Wilcoxon W值"
 #: ttestOneS/ui[1][0][0]/wilcoxon.label
 #: ttestPS/ui[1][0][0]/wilcoxon.label
 msgid "Wilcoxon rank"
-msgstr "Wilcoxon 秩"
+msgstr "Wilcoxon 秩和检验"
 
 #: ttestOneS/options/wilcoxon.title
 #: ttestPS/options/wilcoxon.title
@@ -4404,7 +4404,7 @@ msgstr "Wilcoxon 符号秩检验"
 #: mancova/options/multivar/wilks.title
 #: mancova/results/multivar.columns.content
 msgid "Wilks' Lambda"
-msgstr "Wilks' Lambda值"
+msgstr "Wilks' Lambda值法"
 
 #: anovaRM/results/rmTable.title
 msgid "Within Subjects Effects"
@@ -4533,7 +4533,7 @@ msgstr "`协方差分析- ${dep}`"
 
 #: anova/results/main.title
 msgid "`ANOVA - ${dep}`"
-msgstr "`协方差分析- ${dep}`"
+msgstr "`方差分析- ${dep}`"
 
 #: linReg/results/models.template/coef.title
 msgid "`Model Coefficients - ${ dep }`"
@@ -4642,7 +4642,7 @@ msgstr "`正确` (默认) 或 `错误`, 提供模型与空模型的比较结果"
 
 #: descriptives/options/missing.description.R
 msgid "`TRUE` (default) or `FALSE`, provide the number of missing values"
-msgstr "`正确` (默认) 或 `错误`, 提供缺失值的例数"
+msgstr "`正确` (默认) 或 `错误`, 提供缺失值的数量"
 
 #: descriptives/options/n.description.R
 msgid "`TRUE` (default) or `FALSE`, provide the sample size"
@@ -4788,7 +4788,7 @@ msgstr "`正确` 或 `错误`(默认) , 提供Box's M检验"
 
 #: logRegBin/options/boxTidwell.description.R
 msgid "`TRUE` or `FALSE` (default), provide Box-Tidwell test for linearity of the logit"
-msgstr "`正确` 或 `错误`(默认) , 为逻辑回归的线性部分提供 Box-Tidwell检验"
+msgstr "`正确` 或 `错误`(默认) , 为Logistic回归的线性部分提供 Box-Tidwell检验"
 
 #: ttestOneS/options/effectSize.description.R
 msgid "`TRUE` or `FALSE` (default), provide Cohen's d effect sizes"
@@ -4869,21 +4869,21 @@ msgstr "`正确` 或 `错误`(默认) , 提供ROC曲线图"
 #: logRegMulti/options/ci.description.R
 #: logRegOrd/options/ci.description.R
 msgid "`TRUE` or `FALSE` (default), provide a confidence interval for the model coefficient estimates"
-msgstr "`正确` 或 `错误`(默认) , 提供模型估计系数的置信区间"
+msgstr "`正确` 或 `错误`(默认) , 提供模型系数的置信区间"
 
 #: logRegBin/options/ciOR.description.R
 #: logRegMulti/options/ciOR.description.R
 #: logRegOrd/options/ciOR.description.R
 msgid "`TRUE` or `FALSE` (default), provide a confidence interval for the model coefficient odds ratio estimates"
-msgstr "`正确` 或 `错误`(默认) , 提供模型估计系数OR值的置信区间"
+msgstr "`正确` 或 `错误`(默认) , 提供模型系数OR值的置信区间"
 
 #: logLinear/options/ciRR.description.R
 msgid "`TRUE` or `FALSE` (default), provide a confidence interval for the model coefficient rate ratio estimates"
-msgstr "`正确` 或 `错误`(默认) , 提供模型估计系数RR值的置信区间"
+msgstr "`正确` 或 `错误`(默认) , 提供模型系数rr值的置信区间"
 
 #: linReg/options/ciStdEst.description.R
 msgid "`TRUE` or `FALSE` (default), provide a confidence interval for the model coefficient standardized estimates"
-msgstr "`正确` 或 `错误`(默认) , 提供模型标准化估计系数的置信区间"
+msgstr "`正确` 或 `错误`(默认) , 提供模型标准化系数的置信区间"
 
 #: linReg/options/ci.description.R
 msgid "`TRUE` or `FALSE` (default), provide a confidence interval for the model coefficients"
@@ -4891,7 +4891,7 @@ msgstr "`正确` 或 `错误`(默认) , 提供模型系数的置信区间"
 
 #: cfa/options/ci.description.R
 msgid "`TRUE` or `FALSE` (default), provide a confidence interval for the model estimates"
-msgstr "`正确` 或 `错误`(默认) , 提供模型估计系数的置信区间"
+msgstr "`正确` 或 `错误`(默认) , 提供模型系数的置信区间"
 
 #: corrMatrix/options/plots.description.R
 msgid "`TRUE` or `FALSE` (default), provide a correlation matrix plot"
@@ -4919,11 +4919,11 @@ msgstr "`正确` 或 `错误`(默认) , 提供预测分类表（或混合矩阵�
 
 #: linReg/options/stdEst.description.R
 msgid "`TRUE` or `FALSE` (default), provide a standardized estimate for the model coefficients"
-msgstr "`正确` 或 `错误`(默认) , 提供模型标准化估计系数"
+msgstr "`正确` 或 `错误`(默认) , 提供模型标准化系数"
 
 #: cfa/options/stdEst.description.R
 msgid "`TRUE` or `FALSE` (default), provide a standardized estimate for the model estimates"
-msgstr "`正确` 或 `错误`(默认) , 提供模型标准化估计系数"
+msgstr "`正确` 或 `错误`(默认) , 提供模型标准化系数"
 
 #: contTables/options/zProp.description.R
 msgid "`TRUE` or `FALSE` (default), provide a z test for differences between two proportions"
@@ -4931,7 +4931,7 @@ msgstr "`正确` 或 `错误`(默认) , 提供两比例差异比较的Z检验"
 
 #: contTablesPaired/options/exact.description.R
 msgid "`TRUE` or `FALSE` (default), provide an exact log odds ratio (requires exact2x2 to be installed)"
-msgstr "`正确` 或 `错误`(默认) , 提供精确的对数OR值（需要安装2x2精确法模块）"
+msgstr "`正确` 或 `错误`(默认) , 提供精确的对数OR（需要安装2x2精确法模块）"
 
 #: descriptives/options/bar.description.R
 msgid "`TRUE` or `FALSE` (default), provide bar plots (nominal, ordinal variables only)"
@@ -5052,7 +5052,7 @@ msgstr "`正确` 或 `错误`(默认) ,提供条目标准差"
 
 #: reliability/options/itemRestCor.description.R
 msgid "`TRUE` or `FALSE` (default), provide item-rest correlations"
-msgstr "`正确` 或 `错误`(默认) ,提供条目残差相关性"
+msgstr "`正确` 或 `错误`(默认) ,提供条目剩余相关性"
 
 #: ttestOneS/options/meanDiff.description.R
 msgid "`TRUE` or `FALSE` (default), provide means and standard deviations"
@@ -5413,7 +5413,7 @@ msgstr "设置因变量和所有因子参考水平的列表"
 #: ancova/options/contrasts.description.R
 #: anova/options/contrasts.description.R
 msgid "a list of lists specifying the factor and type of contrast to use, one of `'deviation'`, `'simple'`, `'difference'`, `'helmert'`, `'repeated'` or `'polynomial'`"
-msgstr "指定因子和待使用类型的列表，如，“偏差”、“单独”、“差异”、“赫尔默特”、“重复”或“多项式”"
+msgstr "指定因子和待使用类型的列表，如，“离差”、“单独”、“差异”、“赫尔默特”、“重复”或“多项式”"
 
 #: ttestPS/options/pairs.description.R
 msgid "a list of lists specifying the pairs of measurement in `data`"
@@ -5550,7 +5550,7 @@ msgstr "设定零假设的数值"
 
 #: propTest2/ui[2][0][0]/priorA.label
 msgid "a parameter"
-msgstr "参数"
+msgstr "a参数"
 
 #: ancova/options/postHocES.description.R
 #: anova/options/postHocES.description.R
@@ -5969,7 +5969,7 @@ msgstr "主成分"
 
 #: R/pca.b.R
 msgid "components"
-msgstr "主成分"
+msgstr "组成"
 
 #: R/corrpart.b.R
 msgid "controlling for {items}"
@@ -6269,7 +6269,7 @@ msgstr "data('HairEyeColor')\n"
 "#          统计量    自由度    p值\n"
 "#  ───────────────────────────────\n"
 "#    χ²值  138         9       < .001\n"
-"#    例数   592\n"
+"#    个案数   592\n"
 "#  ───────────────────────────────\n"
 "#\n"
 "\n"
@@ -6672,7 +6672,7 @@ msgstr "data('birthwt', package='MASS')\n"
 "          refLevels = list(list(var=\"low\", ref=\"0\")))\n"
 "\n"
 "#\n"
-"#  二分类逻辑回归\n"
+"#  二分类Logistic回归\n"
 "#\n"
 "#  模型拟合评价\n"
 "#  ───────────────────────────────────────\n"
@@ -6694,7 +6694,7 @@ msgstr "data('birthwt', package='MASS')\n"
 "#    age            -0.00653         482.7          -1.35e-5     1.000\n"
 "#    bwt            -1.18532         87.0            -0.0136       0.989\n"
 "#  ────────────────────────────────────────────────────────────\n"
-"#    注. 估计系数表示\"low = 1\"与\"low = 0\"相比的对数比"
+"#    注. 系数表示\"low = 1\"与\"low = 0\"相比的对数比"
 
 #: logRegMulti/options.description.R.usage
 msgid "data('birthwt', package='MASS')\n"
@@ -6756,7 +6756,7 @@ msgstr "data('birthwt', package='MASS')\n"
 "                list(var=\"low\", ref=\"0\")))\n"
 "\n"
 "#\n"
-"#  无序多分类逻辑回归\n"
+"#  无序多分类Logistic回归\n"
 "#\n"
 "#  模型拟合评价\n"
 "#  ──────────────────────────────────────\n"
@@ -7357,7 +7357,7 @@ msgstr "data('mtcars')\n"
 "#  ───────────────────────────────────────────\n"
 "#               mpg     cyl     disp    gear\n"
 "#  ───────────────────────────────────────────\n"
-"#    例数            32      32      32      32\n"
+"#    个案数           32      32      32      32\n"
 "#    缺失值       0       0       0       0\n"
 "#    均值       20.1    6.19     231    3.69\n"
 "#    中位数     19.2    6.00     196    4.00\n"
@@ -7476,7 +7476,7 @@ msgstr "将变量选入这里"
 
 #: descriptives/ui[2][0][1][0]/pcEqGr/pcNEqGr.suffix
 msgid "equal groups"
-msgstr "相等的组"
+msgstr "个相等的组"
 
 #: ttestIS/results/ttest.columns.title
 #: ttestOneS/results/ttest.columns.title
@@ -7945,7 +7945,7 @@ msgstr "提供事后检验结果（t值和自由度）"
 #: corrMatrix/options/n.description.ui
 #: corrPart/options/n.description.ui
 msgid "provide the number of cases."
-msgstr "提供案例数."
+msgstr "提供个案数."
 
 #: R/ancova.b.R
 msgid "quadratic"
@@ -8038,7 +8038,7 @@ msgstr "set.seed(1337)\n"
 "          blocks = list(list(\"x1\", \"x2\")))\n"
 "\n"
 "#\n"
-"#  有序逻辑回归\n"
+"#  有序Logistic回归\n"
 "#\n"
 "#  模型拟合评价\n"
 "#  ───────────────────────────────────────\n"
@@ -8081,7 +8081,7 @@ msgstr "堆积或并排（默认），条形图类型"
 
 #: ttestPS/results/ttest.columns.title
 msgid "statistic"
-msgstr "统计"
+msgstr "统计量"
 
 #: R/ancova.b.R
 #: contTables/results/taub.columns.title
@@ -8435,7 +8435,7 @@ msgstr "2比例差异的z检验"
 
 #: contTables/options/zProp.title
 msgid "z test for difference in 2 proportions"
-msgstr "2比例差异的z检验"
+msgstr "z检验"
 
 #: R/conttables.b.R
 msgid "z test only available for 2x2 tables"
@@ -8499,7 +8499,7 @@ msgstr "{varName} (反向)"
 
 #: R/logregbin.b.R
 msgid "{varType} of binomial logistic regression model{modelNo}"
-msgstr "二分类逻辑回归模型{modelNo}的{varType}"
+msgstr "二分类Logistic回归模型{modelNo}的{varType}"
 
 #: R/linreg.b.R
 msgid "{varType} of linear regression model{modelNo}"
@@ -8538,7 +8538,7 @@ msgstr "ε²"
 #: anovaRM/results/rmTable.columns.title
 #: anovaRM/results/bsTable.columns.title
 msgid "η²"
-msgstr "η²"
+msgstr "η²值"
 
 #: anovaRM/results/rmTable.columns.title
 #: anovaRM/results/bsTable.columns.title
@@ -8628,4 +8628,4 @@ msgstr "⁻ 均值 - 1个标准差, <sup>μ</sup> 均值, ⁺ 均值 + 1个标�
 #: propTest2/ui[1][0][1]/hypothesis_notequal.label
 #: ttestOneS/ui[1][0][1]/hypothesis_dt.label
 msgid "≠ Test value"
-msgstr "≠ 比较值"
+msgstr "≠ 检测值"
