@@ -289,7 +289,7 @@ msgstr "未指定组间因子，该假设始终满足。"
 
 #: anovaOneW/options/fishers.title
 msgid "Assume equal (Fisher's)"
-msgstr "假设方差齐(Fisher's)"
+msgstr "方差齐(Fisher's)"
 
 #: ancova/ui[3].label
 #: ancova/results/assump.title
@@ -357,7 +357,7 @@ msgstr "条形图"
 
 #: descriptives/ui[3][0][2].label
 msgid "Bar Plots"
-msgstr "绘制条形图"
+msgstr "条形图"
 
 #: contTables/options/bartype.title
 #: contTables/ui[1][2][0][0][1].label
@@ -486,7 +486,7 @@ msgstr "Bonferroni法"
 
 #: descriptives/ui[3][0][1].label
 msgid "Box Plots"
-msgstr "绘制箱线图"
+msgstr "箱线图"
 
 #: descriptives/options/box.title
 msgid "Box plot"
@@ -648,7 +648,7 @@ msgstr "成分摘要"
 #: ancova/ui[2]/modelSupplier.label
 #: anova/ui[2]/modelSupplier.label
 msgid "Components"
-msgstr "主成分"
+msgstr "组分"
 
 #: ancova/options/postHocEsCi.title
 #: anova/options/postHocEsCi.title
@@ -1123,7 +1123,7 @@ msgstr "描述"
 #: ttestOneS/options/plots.title
 #: ttestPS/options/plots.title
 msgid "Descriptives Plots"
-msgstr "绘制描述图"
+msgstr "描述图"
 
 #: ttestIS/options/desc.title
 #: ttestOneS/options/desc.title
@@ -1141,7 +1141,7 @@ msgstr "统计描述是对数据进行分类和可视化的过程，以探索数
 #: ttestOneS/ui[1][1][0]/plots.label
 #: ttestPS/ui[1][1][0]/plots.label
 msgid "Descriptives plots"
-msgstr "绘制描述图"
+msgstr "描述图"
 
 #: anovaOneW/options/desc.title
 msgid "Descriptives table"
@@ -1156,7 +1156,7 @@ msgstr "描述表"
 #: logRegOrd/options/dev.title
 #: logRegOrd/results/modelFit.columns.title
 msgid "Deviance"
-msgstr "偏差"
+msgstr "离差"
 
 #: ancova/options/contrasts.template/type/deviation.title
 #: anova/options/contrasts.template/type/deviation.title
@@ -2089,7 +2089,7 @@ msgstr "边际均值"
 #: logRegBin/options/emmPlots.title
 #: logRegMulti/options/emmPlots.title
 msgid "Marginal means plots"
-msgstr "绘制边际均值图"
+msgstr "边际均值图"
 
 #: ancova/options/emmTables.title
 #: anova/options/emmTables.title
@@ -2238,7 +2238,7 @@ msgstr "检测值1≠检测值2"
 
 #: anovaRMNP/options/measures.title
 msgid "Measures"
-msgstr "检测值"
+msgstr "检验值"
 
 #: R/descriptives.b.R
 #: R/ttestis.b.R
@@ -2978,7 +2978,7 @@ msgstr "后验"
 
 #: propTest2/results/postPlots.title
 msgid "Posterior Plots"
-msgstr "绘制后验图"
+msgstr "后验图"
 
 #: propTest2/options/postPlots.title
 msgid "Posterior plot"
@@ -3132,7 +3132,7 @@ msgstr "评估多元正态性的Q-Q图"
 
 #: descriptives/ui[3][0][0][1].label
 msgid "Q-Q Plots"
-msgstr "绘制Q-Q图"
+msgstr "Q-Q图"
 
 #: anovaOneW/results/plots.template/qq.description
 #: descriptives/options/qq.title
@@ -3153,7 +3153,7 @@ msgstr "残差Q-Q图"
 
 #: ttestOneS/results/qq.title
 msgid "Q-Q plots"
-msgstr "绘制Q-Q图"
+msgstr "Q-Q图"
 
 #: efa/options/rotation/quartimax.title
 #: pca/options/rotation/quartimax.title
@@ -3365,7 +3365,7 @@ msgstr "残差截距"
 
 #: linReg/options/resPlots.title
 msgid "Residual plots"
-msgstr "绘制残差图"
+msgstr "残差图"
 
 #: R/ancova.b.R
 msgid "Residual sum of squares and/or degrees of freedom is zero, indicating a perfect fit"
@@ -3388,7 +3388,7 @@ msgstr "残差"
 
 #: linReg/results/models.template/assump/resPlots.title
 msgid "Residuals Plots"
-msgstr "绘制残差图"
+msgstr "残差图"
 
 #: cfa/results/modelPerformance/corRes.title
 msgid "Residuals for Observed Correlation Matrix"
@@ -3758,7 +3758,7 @@ msgstr "标准化系数"
 #: ttestOneS/results/ttest.columns.title
 #: ttestPS/results/ttest.columns.title
 msgid "Statistic"
-msgstr "统计"
+msgstr "统计量"
 
 #: anovaOneW/ui[2][0][1][0].label
 #: cfa/ui[3][1][0].label
@@ -3890,7 +3890,7 @@ msgstr "检验结果(t值和自由度df)"
 
 #: cfa/options/estTest.title
 msgid "Test statistics"
-msgstr "检验统计量"
+msgstr "检验统计"
 
 #: propTest2/options/testValue.title
 #: ttestOneS/ui[1][0][1][0]/testValue.label
@@ -4167,32 +4167,32 @@ msgstr "容忍度"
 #: R/ttestones.b.R
 #: R/ttestps.b.R
 msgid "Too few observations (N < 3) to compute statistic"
-msgstr "观测值太少（N < 3）不能计算统计值"
+msgstr "观测值太少（N < 3）不能计算统计量"
 
 #: R/mancova.b.R
 msgid "Too few observations to calculate statistic. Each (sub)group must have at least as many observations as there are dependent variables."
-msgstr "观测值太少不能计算统计值。每个（亚）组必须至少包含与因变量相同的观测值。"
+msgstr "观测值太少不能计算统计量。每个（亚）组必须至少包含与因变量相同的观测值。"
 
 #: R/ttestis.b.R
 msgid "Too few samples to compute statistic (N < 3)"
-msgstr "样本量太小（N < 3）不能计算统计值"
+msgstr "样本量太小（N < 3）不能计算统计量"
 
 #: R/anovaonew.b.R
 msgid "Too few samples to compute statistic (N < {n})"
-msgstr "样本量太小(N < {n})不能计算统计值"
+msgstr "样本量太小(N < {n})不能计算统计量"
 
 #: R/ttestones.b.R
 #: R/ttestps.b.R
 msgid "Too many observations (N > 5000) to compute statistic"
-msgstr "观测值太多 (N > 5000) 不能计算统计值"
+msgstr "观测值太多 (N > 5000) 不能计算统计量"
 
 #: R/ttestis.b.R
 msgid "Too many samples to compute statistic (N > 5000)"
-msgstr "样本量太大 (N > 5000) 不能计算统计值"
+msgstr "样本量太大 (N > 5000) 不能计算统计量"
 
 #: R/anovaonew.b.R
 msgid "Too many samples to compute statistic (N > {n})"
-msgstr "样本量太大 (N > {n}) 不能计算统计值"
+msgstr "样本量太大 (N > {n}) 不能计算统计量"
 
 #: package/datasets/Tooth Growth.name
 msgid "Tooth Growth"
@@ -6038,7 +6038,7 @@ msgstr "dat <- data.frame(\n"
 "#\n"
 "#  McNemar 检验\n"
 "#  ─────────────────────────────────────────────────────\n"
-"#                                统计值    自由度    p值\n"
+"#                                统计量    自由度    p值\n"
 "#  ─────────────────────────────────────────────────────\n"
 "#    χ²                           17.4     1    < .001\n"
 "#    连续校正χ²             16.8     1    < .001\n"
@@ -7012,7 +7012,7 @@ msgstr "data('iris')\n"
 "#\n"
 "#  多变量检验\n"
 "#  ───────────────────────────────────────────────────────────────────────────\n"
-"#                                             统计值     F值      自由度1    自由度2    p值\n"
+"#                                             统计量     F值      自由度1    自由度2    p值\n"
 "#  ───────────────────────────────────────────────────────────────────────────\n"
 "#    Species    Pillai's Trace          1.19    53.5      8    290    < .001\n"
 "#               Wilks' Lambda         0.0234     199      8    288    < .001\n"
