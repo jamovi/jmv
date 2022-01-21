@@ -1346,7 +1346,7 @@ msgstr "删除"
 #: R/conttables.b.R
 #: propTestN/results/props.columns.content
 msgid "Expected"
-msgstr "期望"
+msgstr "理论"
 
 #: propTestN/options/ratio.title
 #: propTestN/ui[2].label
@@ -2902,7 +2902,7 @@ msgstr "φ系数"
 #: mancova/options/multivar/pillai.title
 #: mancova/results/multivar.columns.content
 msgid "Pillai's Trace"
-msgstr "Pillai's Trace系数法"
+msgstr "Pillai's Trace法"
 
 #: ancova/ui[6][1][1][0].label
 #: anova/ui[6][1][1][0].label
@@ -4404,7 +4404,7 @@ msgstr "Wilcoxon 符号秩检验"
 #: mancova/options/multivar/wilks.title
 #: mancova/results/multivar.columns.content
 msgid "Wilks' Lambda"
-msgstr "Wilks' Lambda值法"
+msgstr "Wilks' Lambda法"
 
 #: anovaRM/results/rmTable.title
 msgid "Within Subjects Effects"
