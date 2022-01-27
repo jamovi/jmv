@@ -528,8 +528,11 @@ contTablesClass <- R6::R6Class(
                         `v[rr]`=rr$rr,
                         `cil[rr]`=rr$lower,
                         `ciu[rr]`=rr$upper))
-                    odds$addFootnote(rowNo=othRowNo, 'v[dp]', paste(self$options$compare, .('compared')))
-                    odds$addFootnote(rowNo=othRowNo, 'v[rr]', paste(self$options$compare, .('compared')))
+                    
+                    footnote <- `if`(self$options$compare == 'rows', .('Rows compared'), .('Columns compared'))
+                    odds$addFootnote(rowNo=othRowNo, 'v[dp]', footnote)
+                    odds$addFootnote(rowNo=othRowNo, 'v[rr]', footnote)
+                    
                     if (any(mat == 0)){
                         odds$addFootnote(rowNo=othRowNo, 'v[lo]', .('Haldane-Anscombe correction applied'))
                         odds$addFootnote(rowNo=othRowNo, 'v[o]', .('Haldane-Anscombe correction applied'))
