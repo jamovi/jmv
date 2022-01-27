@@ -7,7 +7,7 @@ menuSubgroup: Non-Parametric
 menuTitle: One-Way ANOVA
 menuSubtitle: Kruskal-Wallis
 
-version: '1.0.0'
+version: '1.0.2'
 jas: '1.2'
 
 completeWhenFilled: true
@@ -19,7 +19,8 @@ description:
         It is analagous to ANOVA, but with the advantage of being
         non-parametric and having fewer assumptions. However, it has the
         limitation that it can only test a single explanatory variable at a
-        time.
+        time. Conover-Iman and Dunn test available to report results across 
+        multiple pairwise comparisons.
 
     R:
         dontrun: false
@@ -77,18 +78,53 @@ options:
           R: a string naming the grouping or independent variable in `data`
 
     - name: es
-      title: Effect size
+      title: ε²
       type: Bool
       default: false
       description:
           R: >
             `TRUE` or `FALSE` (default), provide effect-sizes
 
-    - name: pairs
-      title: DSCF pairwise comparisons
+    - name: dscfpairs
+      title: Dwass-Steel-Critchlow-Flinger
       type: Bool
       default: false
       description:
           R: >
             `TRUE` or `FALSE` (default), perform pairwise comparisons
+
+    - name: dunnpairs
+      title: Dunn's
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), perform pairwise comparisons
+
+    - name: coimpairs
+      title: Conover
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), perform pairwise comparisons
+
+    - name: postHocCorr
+      title: Post Hoc Correction
+      type: NMXList
+      options:
+        - name: none
+          title: No correction
+        - name: bonf
+          title: Bonferroni
+        - name: sidak
+          title: Sidak
+        - name: holm
+          title: Holm
+      description:
+          ui: >
+            the post-hoc multiple comparisons corrections to use.
+          R: >
+            one or more of `'bonferroni'`, `'sidak'`, `'holm'`
+            Post Hoc corrections respectively
 ...

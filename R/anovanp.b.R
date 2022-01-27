@@ -1,5 +1,5 @@
 
-anovaNPClass <- R6::R6Class(
+anovaNPClass <- if (requireNamespace('jmvcore')) R6::R6Class(
     "anovaNPClass",
     inherit=anovaNPBase,
     private=list(
@@ -10,54 +10,161 @@ anovaNPClass <- R6::R6Class(
             if (length(deps) == 0 || is.null(group))
                 return()
 
-            data <- self$data
-            table <- self$results$get('table')
-            groupColumn  <- as.factor(data[[group]])
+            data        <- self$data
+            table       <- self$results$get('table')
+            groupColumn <- as.factor(data[[group]])
+            pairs       <- private$.genPairs(groupColumn)
 
-            for (depName in self$options$get('deps')) {
+            nGroups = nlevels(groupColumn)
+
+            for (depName in deps) {
+
+                ## Kruskal-Wallis test ---
                 depColumn <- jmvcore::toNumeric(data[[depName]])
-                subset <- data.frame(y=depColumn, x=groupColumn)
-                subset <- na.omit(subset)
-                n <- nrow(subset)
-                result <- kruskal.test(y ~ x, subset)
-                es <- result$statistic * (n+1) / (n^2-1)
-                table$setRow(rowKey=depName, values=list(
-                    chiSq=result$statistic,
-                    df=result$parameter,
-                    p=result$p.value,
-                    es=es
-                ))
+                subset    <- data.frame(y=depColumn, x=groupColumn)
+                subset    <- na.omit(subset)
+                n         <- nrow(subset)
+                result    <- kruskal.test(y ~ x, subset)
+                es        <- result$statistic * (n+1) / (n^2-1)
+                table$setRow(rowKey=depName, 
+                             values=list(chiSq = result$statistic,
+                                         df    = result$parameter,
+                                         p     = result$p.value,
+                                         es    = es))
             }
 
-            if (self$options$get("pairs")) {
+            ## Dwass-Steel-Critchlow-Flinger test
+            if (self$options$get("dscfpairs")) {
 
-                nGroups = nlevels(groupColumn)
-                pairs <- private$.genPairs(groupColumn)
-
+                #footnote <- .('This correction is unnecessary for this test.')
+                footnote <- 'This correction is unnecessary for this test.'
                 for (depName in deps) {
 
                     depColumn <- data[[depName]]
-                    table <- self$results$get('comparisons')$get(depName)
+                    phtable   <- self$results$get('postHoc')$get(depName)
 
                     sdata <- base::split(depColumn, groupColumn)
 
                     for (pair in pairs) {
-                        if (table$getCell(rowKey=pair, 'W')$isEmpty) {
+                        if (phtable$getCell(rowKey = pair, 'stat[dscf]')$isEmpty) {
 
-                            table$setStatus('running')
+                            phtable$setStatus('running')
                             private$.checkpoint()
 
                             pairData <- list(sdata[[pair[1]]], sdata[[pair[2]]])
-                            result <- pSDCFlig(pairData, method="Asymptotic", n.g=nGroups)
+                            result <- try(pSDCFlig(pairData, 
+                                                   method = "Asymptotic", 
+                                                   n.g    = nGroups))
 
-                            table$setRow(rowKey=pair, list(
-                                p1=pair[1],
-                                p2=pair[2],
-                                W=result$obs.stat,
-                                p=result$p.val
-                            ))
+                            if ( ! jmvcore::isError(result)) {
+                                phtable$setRow(rowKey            = pair,
+                                               list(p1           = pair[1],
+                                                    p2           = pair[2],
+                                                    'stat[dscf]' = result$obs.stat,
+                                                    'pval[dscf]' = result$p.val))
 
-                            table$setStatus('complete')
+                                phtable$addFootnote(rowKey=pair, col='pnone[dscf]',  footnote)
+                                phtable$addFootnote(rowKey=pair, col='pbonf[dscf]',  footnote)
+                                phtable$addFootnote(rowKey=pair, col='psidak[dscf]', footnote)
+                                phtable$addFootnote(rowKey=pair, col='pholm[dscf]',  footnote)
+
+                                phtable$setStatus('complete')
+                            } else {
+
+                                message <- jmvcore::extractErrorMessage(result)
+                                phtable$setError(message)
+                            }    
+                        }
+                    }
+                }
+            }
+
+            ## 20211017 - The tests of Dunn and Conover-Iman have been added
+            ## Dunn test
+            if (self$options$get("dunnpairs")) {
+
+                for (depName in deps) {
+
+                    depColumn <- jmvcore::toNumeric(data[[depName]])
+                    phtable   <- self$results$get('postHoc')$get(depName)
+
+                    nc = 0
+                    for (pair in pairs) {
+
+                        if (phtable$getCell(rowKey = pair, 'stat[dunn]')$isEmpty) {
+
+                            nc = nc+1
+                            phtable$setStatus('running')
+                            private$.checkpoint()
+
+                            result <- try(private$.phTest(x    = depColumn,
+                                                          g    = groupColumn, 
+                                                          test = 'dunn',
+                                                          n.g  = nGroups)
+                            )
+
+                            if ( ! jmvcore::isError(result)) {
+                                phtable$setRow(rowKey             = pair,
+                                               list(p1            = pair[1],
+                                                    p2            = pair[2],
+                                                    'stat[dunn]'  = unlist(result$none$Z)[nc],
+                                                    'pval[dunn]'  = unlist(result$none$P)[nc],
+                                                    'pnone[dunn]' = unlist(result$none$P.adjusted)[nc],
+                                                    'pbonf[dunn]' = unlist(result$bonf$P.adjusted)[nc],
+                                                    'psidak[dunn]'= unlist(result$sidak$P.adjusted)[nc],
+                                                    'pholm[dunn]' = unlist(result$holm$P.adjusted)[nc]
+                                               ))
+                                phtable$setStatus('complete')
+                            } else {
+
+                                message <- jmvcore::extractErrorMessage(result)
+                                phtable$setError(message)
+                            }
+                        }
+                    }
+                }
+            }
+
+            ## Conover-Iman test
+            if (self$options$get("coimpairs")) {
+
+                for (depName in deps) {
+
+                    depColumn <- jmvcore::toNumeric(data[[depName]])
+                    phtable <- self$results$get('postHoc')$get(depName)
+
+                    nc = 0
+                    for (pair in pairs) {
+
+                        if (phtable$getCell(rowKey = pair, 'stat[coim]')$isEmpty) {
+
+                            nc = nc+1
+                            phtable$setStatus('running')
+                            private$.checkpoint()
+
+                            result <- try(private$.phTest(x    = depColumn,
+                                                          g    = groupColumn,
+                                                          test = 'coim',
+                                                          n.g  = nGroups)
+                            )
+
+                            if ( ! jmvcore::isError(result)) {
+                                phtable$setRow(rowKey             = pair,
+                                               list(p1            = pair[1],
+                                                    p2            = pair[2],
+                                                    'stat[coim]'  = unlist(result$none$T)[nc],
+                                                    'pval[coim]'  = unlist(result$none$P)[nc],
+                                                    'pnone[coim]' = unlist(result$none$P.adjusted)[nc],
+                                                    'pbonf[coim]' = unlist(result$bonf$P.adjusted)[nc],
+                                                    'psidak[coim]'= unlist(result$sidak$P.adjusted)[nc],
+                                                    'pholm[coim]' = unlist(result$holm$P.adjusted)[nc]
+                                               ))
+                                phtable$setStatus('complete')
+                            } else {
+
+                                message <- jmvcore::extractErrorMessage(result)
+                                phtable$setError(message)
+                            }
                         }
                     }
                 }
@@ -65,17 +172,18 @@ anovaNPClass <- R6::R6Class(
         },
         .init=function() {
 
-            data <- self$data
-            deps <- self$options$get('deps')
+            data  <- self$data
+            deps  <- self$options$get('deps')
             group <- self$options$get('group')
 
             if (is.null(group))
                 return()
 
-            compTables <- self$results$get('comparisons')
+            #compTables <- self$results$get('comparisons')
+            compTables  <- self$results$get('postHoc')
 
             groupColumn <- data[[group]]
-            pairs <- private$.genPairs(groupColumn)
+            pairs       <- private$.genPairs(groupColumn)
 
             for (depName in deps) {
                 depColumn <- data[[depName]]
@@ -86,6 +194,36 @@ anovaNPClass <- R6::R6Class(
                         p2=pair[2]))
                 }
             }
+        },
+        .phTest = function(x, g, test, n.g) {
+
+            if ( n.g < 3L)
+                phList <- list(none='none', bonf='none', sidak='none', holm='none')
+            else
+                phList <- list(none='none', bonf='bonferroni', sidak='sidak', holm='holm')
+
+            for(n in 1:4) {
+
+                if ( test == 'dunn' ) 
+                    phList[n] <- list(
+                        dunn.test::dunn.test(x, g, 
+                                             method = phList[n],
+                                             kw     = FALSE,
+                                             label  = FALSE,
+                                             table  = FALSE,
+                                             altp   = FALSE))
+
+                if ( test == 'coim' ) 
+                    phList[n] <- list(
+                        conover.test::conover.test(x, g,
+                                                   method = phList[n],
+                                                   kw     = FALSE,
+                                                   label  = FALSE,
+                                                   table  = FALSE,
+                                                   altp   = FALSE))
+            }
+
+            phList
         },
         .genPairs=function(groupColumn) {
             groupLevels <- base::levels(groupColumn)

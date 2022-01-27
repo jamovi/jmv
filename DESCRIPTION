@@ -34,7 +34,9 @@ Imports:
     ggridges,
     ROCR,
     nnet,
-    MASS
+    MASS,
+    conover.test (>= 1.1.5),
+    dunn.test (>= 1.3.5)
 Suggests:
     exact2x2,
     testthat,

@@ -9,7 +9,10 @@ anovaNPOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             deps = NULL,
             group = NULL,
             es = FALSE,
-            pairs = FALSE, ...) {
+            dscfpairs = FALSE,
+            dunnpairs = FALSE,
+            coimpairs = FALSE,
+            postHocCorr = NULL, ...) {
 
             super$initialize(
                 package="jmv",
@@ -38,26 +41,51 @@ anovaNPOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "es",
                 es,
                 default=FALSE)
-            private$..pairs <- jmvcore::OptionBool$new(
-                "pairs",
-                pairs,
+            private$..dscfpairs <- jmvcore::OptionBool$new(
+                "dscfpairs",
+                dscfpairs,
                 default=FALSE)
+            private$..dunnpairs <- jmvcore::OptionBool$new(
+                "dunnpairs",
+                dunnpairs,
+                default=FALSE)
+            private$..coimpairs <- jmvcore::OptionBool$new(
+                "coimpairs",
+                coimpairs,
+                default=FALSE)
+            private$..postHocCorr <- jmvcore::OptionNMXList$new(
+                "postHocCorr",
+                postHocCorr,
+                options=list(
+                    "none",
+                    "bonf",
+                    "sidak",
+                    "holm"))
 
             self$.addOption(private$..deps)
             self$.addOption(private$..group)
             self$.addOption(private$..es)
-            self$.addOption(private$..pairs)
+            self$.addOption(private$..dscfpairs)
+            self$.addOption(private$..dunnpairs)
+            self$.addOption(private$..coimpairs)
+            self$.addOption(private$..postHocCorr)
         }),
     active = list(
         deps = function() private$..deps$value,
         group = function() private$..group$value,
         es = function() private$..es$value,
-        pairs = function() private$..pairs$value),
+        dscfpairs = function() private$..dscfpairs$value,
+        dunnpairs = function() private$..dunnpairs$value,
+        coimpairs = function() private$..coimpairs$value,
+        postHocCorr = function() private$..postHocCorr$value),
     private = list(
         ..deps = NA,
         ..group = NA,
         ..es = NA,
-        ..pairs = NA)
+        ..dscfpairs = NA,
+        ..dunnpairs = NA,
+        ..coimpairs = NA,
+        ..postHocCorr = NA)
 )
 
 anovaNPResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -65,7 +93,7 @@ anovaNPResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         table = function() private$.items[["table"]],
-        comparisons = function() private$.items[["comparisons"]]),
+        postHoc = function() private$.items[["postHoc"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -106,36 +134,158 @@ anovaNPResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                         `visible`="(es)"))))
             self$add(jmvcore::Array$new(
                 options=options,
-                name="comparisons",
-                title="Dwass-Steel-Critchlow-Fligner pairwise comparisons",
+                name="postHoc",
+                title="Post Hoc Tests",
                 items="(deps)",
-                visible="(pairs)",
+                visible="(dscfpairs || dunnpairs || coimpairs)",
                 clearWith=list(
                     "group"),
                 template=jmvcore::Table$new(
                     options=options,
-                    title="Pairwise comparisons - $key",
-                    rows=0,
-                    clearWith=NULL,
+                    title="Post Hoc Comparisons - $key",
+                    rows="(pairs)",
                     columns=list(
                         list(
                             `name`="p1", 
                             `title`="", 
                             `content`=".", 
-                            `type`="text"),
+                            `type`="text", 
+                            `combineBelow`=TRUE),
                         list(
                             `name`="p2", 
                             `title`="", 
                             `content`=".", 
                             `type`="text"),
                         list(
-                            `name`="W", 
-                            `type`="number"),
+                            `name`="test[dscf]", 
+                            `title`="", 
+                            `content`="DSCF W", 
+                            `type`="text", 
+                            `combineBelow`=TRUE, 
+                            `visible`="(dscfpairs)"),
                         list(
-                            `name`="p", 
+                            `name`="stat[dscf]", 
+                            `title`="Statistic", 
+                            `type`="number", 
+                            `visible`="(dscfpairs)"),
+                        list(
+                            `name`="pval[dscf]", 
                             `title`="p", 
                             `type`="number", 
-                            `format`="zto,pvalue")))))}))
+                            `format`="zto,pvalue", 
+                            `visible`="(dscfpairs)"),
+                        list(
+                            `name`="pnone[dscf]", 
+                            `title`="p<sub>none</sub>", 
+                            `content`="NaN", 
+                            `type`="number", 
+                            `format`="zto,pvalue", 
+                            `visible`="(dscfpairs && postHocCorr:none)"),
+                        list(
+                            `name`="pbonf[dscf]", 
+                            `title`="p<sub>bonferroni</sub>", 
+                            `content`="NaN", 
+                            `type`="number", 
+                            `format`="zto,pvalue", 
+                            `visible`="(dscfpairs && postHocCorr:bonf)"),
+                        list(
+                            `name`="psidak[dscf]", 
+                            `title`="p<sub>sidak</sub>", 
+                            `content`="NaN", 
+                            `type`="number", 
+                            `format`="zto,pvalue", 
+                            `visible`="(dscfpairs && postHocCorr:sidak)"),
+                        list(
+                            `name`="pholm[dscf]", 
+                            `title`="p<sub>holm</sub>", 
+                            `content`="NaN", 
+                            `type`="number", 
+                            `format`="zto,pvalue", 
+                            `visible`="(dscfpairs && postHocCorr:holm)"),
+                        list(
+                            `name`="test[dunn]", 
+                            `title`="", 
+                            `content`="Dunn's z", 
+                            `type`="text", 
+                            `combineBelow`=TRUE, 
+                            `visible`="(dunnpairs)"),
+                        list(
+                            `name`="stat[dunn]", 
+                            `title`="Statistic", 
+                            `type`="number", 
+                            `visible`="(dunnpairs)"),
+                        list(
+                            `name`="pval[dunn]", 
+                            `title`="p", 
+                            `type`="number", 
+                            `format`="zto,pvalue", 
+                            `visible`="(dunnpairs)"),
+                        list(
+                            `name`="pnone[dunn]", 
+                            `title`="p<sub>none</sub>", 
+                            `type`="number", 
+                            `format`="zto,pvalue", 
+                            `visible`="(dunnpairs && postHocCorr:none)"),
+                        list(
+                            `name`="pbonf[dunn]", 
+                            `title`="p<sub>bonferroni</sub>", 
+                            `type`="number", 
+                            `format`="zto,pvalue", 
+                            `visible`="(dunnpairs && postHocCorr:bonf)"),
+                        list(
+                            `name`="psidak[dunn]", 
+                            `title`="p<sub>sidak</sub>", 
+                            `type`="number", 
+                            `format`="zto,pvalue", 
+                            `visible`="(dunnpairs && postHocCorr:sidak)"),
+                        list(
+                            `name`="pholm[dunn]", 
+                            `title`="p<sub>holm</sub>", 
+                            `type`="number", 
+                            `format`="zto,pvalue", 
+                            `visible`="(dunnpairs && postHocCorr:holm)"),
+                        list(
+                            `name`="test[coim]", 
+                            `title`="", 
+                            `content`="Conover-Iman t", 
+                            `type`="text", 
+                            `combineBelow`=TRUE, 
+                            `visible`="(coimpairs)"),
+                        list(
+                            `name`="stat[coim]", 
+                            `title`="Statistic", 
+                            `type`="number", 
+                            `visible`="(coimpairs)"),
+                        list(
+                            `name`="pval[coim]", 
+                            `title`="p", 
+                            `type`="number", 
+                            `format`="zto,pvalue", 
+                            `visible`="(coimpairs)"),
+                        list(
+                            `name`="pnone[coim]", 
+                            `title`="p<sub>none</sub>", 
+                            `type`="number", 
+                            `format`="zto,pvalue", 
+                            `visible`="(coimpairs && postHocCorr:none)"),
+                        list(
+                            `name`="pbonf[coim]", 
+                            `title`="p<sub>bonferroni</sub>", 
+                            `type`="number", 
+                            `format`="zto,pvalue", 
+                            `visible`="(coimpairs && postHocCorr:bonf)"),
+                        list(
+                            `name`="psidak[coim]", 
+                            `title`="p<sub>sidak</sub>", 
+                            `type`="number", 
+                            `format`="zto,pvalue", 
+                            `visible`="(coimpairs && postHocCorr:sidak)"),
+                        list(
+                            `name`="pholm[coim]", 
+                            `title`="p<sub>holm</sub>", 
+                            `type`="number", 
+                            `format`="zto,pvalue", 
+                            `visible`="(coimpairs && postHocCorr:holm)")))))}))
 
 anovaNPBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "anovaNPBase",
@@ -145,7 +295,7 @@ anovaNPBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             super$initialize(
                 package = "jmv",
                 name = "anovaNP",
-                version = c(1,0,0),
+                version = c(1,0,2),
                 options = options,
                 results = anovaNPResults$new(options=options),
                 data = data,
@@ -163,7 +313,8 @@ anovaNPBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' continuous dependent variable, and a categorical explanatory variable. It 
 #' is analagous to ANOVA, but with the advantage of being non-parametric and 
 #' having fewer assumptions. However, it has the limitation that it can only 
-#' test a single explanatory variable at a time.
+#' test a single explanatory variable at a time. Conover-Iman and Dunn test 
+#' available to report results across  multiple pairwise comparisons.
 #' 
 #'
 #' @examples
@@ -187,13 +338,19 @@ anovaNPBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param group a string naming the grouping or independent variable in
 #'   \code{data}
 #' @param es \code{TRUE} or \code{FALSE} (default), provide effect-sizes
-#' @param pairs \code{TRUE} or \code{FALSE} (default), perform pairwise
+#' @param dscfpairs \code{TRUE} or \code{FALSE} (default), perform pairwise
 #'   comparisons
+#' @param dunnpairs \code{TRUE} or \code{FALSE} (default), perform pairwise
+#'   comparisons
+#' @param coimpairs \code{TRUE} or \code{FALSE} (default), perform pairwise
+#'   comparisons
+#' @param postHocCorr one or more of \code{'bonferroni'}, \code{'sidak'},
+#'   \code{'holm'} Post Hoc corrections respectively
 #' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$table} \tab \tab \tab \tab \tab a table of the test results \cr
-#'   \code{results$comparisons} \tab \tab \tab \tab \tab an array of pairwise comparison tables \cr
+#'   \code{results$postHoc} \tab \tab \tab \tab \tab an array of pairwise comparison tables \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -208,7 +365,10 @@ anovaNP <- function(
     deps,
     group,
     es = FALSE,
-    pairs = FALSE,
+    dscfpairs = FALSE,
+    dunnpairs = FALSE,
+    coimpairs = FALSE,
+    postHocCorr,
     formula) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
@@ -243,7 +403,10 @@ anovaNP <- function(
         deps = deps,
         group = group,
         es = es,
-        pairs = pairs)
+        dscfpairs = dscfpairs,
+        dunnpairs = dunnpairs,
+        coimpairs = coimpairs,
+        postHocCorr = postHocCorr)
 
     analysis <- anovaNPClass$new(
         options = options,
