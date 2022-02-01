@@ -93,6 +93,10 @@ msgstr "「{method}」で抽出した因子に「{rotation}」を適用した結
 msgid "'{rotation}' rotation was used"
 msgstr "「{rotation}」の結果です"
 
+#: R/linreg.b.R
+msgid "'{var}' contains negative values. Negative weights are not permitted."
+msgstr ""
+
 #: R/corrmatrix.b.R
 #: R/corrpart.b.R
 msgid "* p < .05, ** p < .01, *** p < .001, one-tailed"
@@ -591,6 +595,10 @@ msgstr "列変数「{var}」が1水準しかありません"
 #: contTablesPaired/options/cols.title
 msgid "Columns"
 msgstr "列"
+
+#: R/conttables.b.R
+msgid "Columns compared"
+msgstr ""
 
 #: contTables/results/odds.title
 msgid "Comparative Measures"
@@ -3458,6 +3466,10 @@ msgstr "行変数「{var}」が1水準しかありません"
 msgid "Rows"
 msgstr "行"
 
+#: R/conttables.b.R
+msgid "Rows compared"
+msgstr ""
+
 #: mancova/options/multivar/roy.title
 #: mancova/results/multivar.columns.content
 msgid "Roy's Largest Root"
@@ -4462,6 +4474,14 @@ msgstr "バイオリン図"
 #: ttestPS/results/norm.columns.title
 msgid "W"
 msgstr "W"
+
+#: R/linreg.b.R
+msgid "Weighted by '{varName}'"
+msgstr ""
+
+#: linReg/options/weights.title
+msgid "Weights (optional)"
+msgstr ""
 
 #: anovaOneW/results/anova.columns.content
 #: ttestIS/options/welchs.title
@@ -6044,10 +6064,6 @@ msgstr "パラメータb"
 #: contTables/options/compare/columns.title
 msgid "columns"
 msgstr "列"
-
-#: R/conttables.b.R
-msgid "compared"
-msgstr "比較"
 
 #: pca/ui[1][0][1]/nFactorMethod_fixed/nFactors.suffix
 msgid "component(s)"
@@ -8197,6 +8213,10 @@ msgstr ""
 #: R/descriptives.b.R
 msgid "th percentile"
 msgstr "%点"
+
+#: linReg/options/weights.description.R
+msgid "the (optional) weights from `data` to be used in the fitting process"
+msgstr ""
 
 #: ttestOneS/options/hypothesis.description.ui
 msgid "the alternative and null hypotheses;\n"

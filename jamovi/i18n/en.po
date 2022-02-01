@@ -93,6 +93,10 @@ msgstr ""
 msgid "'{rotation}' rotation was used"
 msgstr ""
 
+#: R/linreg.b.R
+msgid "'{var}' contains negative values. Negative weights are not permitted."
+msgstr ""
+
 #: R/corrmatrix.b.R
 #: R/corrpart.b.R
 msgid "* p < .05, ** p < .01, *** p < .001, one-tailed"
@@ -590,6 +594,10 @@ msgstr ""
 #: contTables/options/xaxis/xcols.title
 #: contTablesPaired/options/cols.title
 msgid "Columns"
+msgstr ""
+
+#: R/conttables.b.R
+msgid "Columns compared"
 msgstr ""
 
 #: contTables/results/odds.title
@@ -3431,6 +3439,10 @@ msgstr ""
 msgid "Rows"
 msgstr ""
 
+#: R/conttables.b.R
+msgid "Rows compared"
+msgstr ""
+
 #: mancova/options/multivar/roy.title
 #: mancova/results/multivar.columns.content
 msgid "Roy's Largest Root"
@@ -4360,6 +4372,14 @@ msgstr ""
 #: ttestOneS/results/normality.columns.title
 #: ttestPS/results/norm.columns.title
 msgid "W"
+msgstr ""
+
+#: R/linreg.b.R
+msgid "Weighted by '{varName}'"
+msgstr ""
+
+#: linReg/options/weights.title
+msgid "Weights (optional)"
 msgstr ""
 
 #: anovaOneW/results/anova.columns.content
@@ -5944,10 +5964,6 @@ msgstr ""
 msgid "columns"
 msgstr ""
 
-#: R/conttables.b.R
-msgid "compared"
-msgstr ""
-
 #: pca/ui[1][0][1]/nFactorMethod_fixed/nFactors.suffix
 msgid "component(s)"
 msgstr ""
@@ -7397,6 +7413,10 @@ msgstr ""
 
 #: R/descriptives.b.R
 msgid "th percentile"
+msgstr ""
+
+#: linReg/options/weights.description.R
+msgid "the (optional) weights from `data` to be used in the fitting process"
 msgstr ""
 
 #: ttestOneS/options/hypothesis.description.ui

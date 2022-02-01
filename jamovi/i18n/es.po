@@ -93,6 +93,10 @@ msgstr "El método de extracción ‘{method}’ se usó en combinación con una
 msgid "'{rotation}' rotation was used"
 msgstr "Se utilizó la rotación ‘{rotation}’"
 
+#: R/linreg.b.R
+msgid "'{var}' contains negative values. Negative weights are not permitted."
+msgstr ""
+
 #: R/corrmatrix.b.R
 #: R/corrpart.b.R
 msgid "* p < .05, ** p < .01, *** p < .001, one-tailed"
@@ -591,6 +595,10 @@ msgstr "La variable de columna ‘{var}’ contiene menos de 2 niveles"
 #: contTablesPaired/options/cols.title
 msgid "Columns"
 msgstr "Columnas"
+
+#: R/conttables.b.R
+msgid "Columns compared"
+msgstr ""
 
 #: contTables/results/odds.title
 msgid "Comparative Measures"
@@ -3466,6 +3474,10 @@ msgstr "La variable en filas ‘{var}’ tiene menos de 2 niveles"
 msgid "Rows"
 msgstr "Filas"
 
+#: R/conttables.b.R
+msgid "Rows compared"
+msgstr ""
+
 #: mancova/options/multivar/roy.title
 #: mancova/results/multivar.columns.content
 msgid "Roy's Largest Root"
@@ -4489,6 +4501,14 @@ msgstr "Violin"
 #: ttestPS/results/norm.columns.title
 msgid "W"
 msgstr "W"
+
+#: R/linreg.b.R
+msgid "Weighted by '{varName}'"
+msgstr ""
+
+#: linReg/options/weights.title
+msgid "Weights (optional)"
+msgstr ""
 
 #: anovaOneW/results/anova.columns.content
 #: ttestIS/options/welchs.title
@@ -6072,10 +6092,6 @@ msgstr "parámetro beta 'b'"
 msgid "columns"
 msgstr "columnas"
 
-#: R/conttables.b.R
-msgid "compared"
-msgstr "comparados"
-
 #: pca/ui[1][0][1]/nFactorMethod_fixed/nFactors.suffix
 msgid "component(s)"
 msgstr "componente(s)"
@@ -7499,8 +7515,10 @@ msgstr "set.seed(1337)\n"
 "          blocks = list(list(\"x1\", \"x2\")))\n"
 "\n"
 "#\n"
-"# REGRESIÓN LOGÍSTICA ORDINAL \n#\n"
+"# REGRESIÓN LOGÍSTICA ORDINAL \n"
+"#\n"
 "# Medidas de ajuste del modelo \n"
+""
 
 #: R/ancova.b.R
 msgid "sextic"
@@ -7540,6 +7558,10 @@ msgstr ""
 #: R/descriptives.b.R
 msgid "th percentile"
 msgstr "percentil"
+
+#: linReg/options/weights.description.R
+msgid "the (optional) weights from `data` to be used in the fitting process"
+msgstr ""
 
 #: ttestOneS/options/hypothesis.description.ui
 msgid "the alternative and null hypotheses;\n"

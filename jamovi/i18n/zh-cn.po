@@ -93,6 +93,10 @@ msgstr "“{method}”提取法和“{rotation}”旋转法相结合使用"
 msgid "'{rotation}' rotation was used"
 msgstr "“{rotation}”进行旋转"
 
+#: R/linreg.b.R
+msgid "'{var}' contains negative values. Negative weights are not permitted."
+msgstr ""
+
 #: R/corrmatrix.b.R
 #: R/corrpart.b.R
 msgid "* p < .05, ** p < .01, *** p < .001, one-tailed"
@@ -591,6 +595,10 @@ msgstr "列变量“{var}”少于2个水平"
 #: contTablesPaired/options/cols.title
 msgid "Columns"
 msgstr "列"
+
+#: R/conttables.b.R
+msgid "Columns compared"
+msgstr ""
 
 #: contTables/results/odds.title
 msgid "Comparative Measures"
@@ -3438,6 +3446,10 @@ msgstr "行变量“{var}”的水平数少于2个"
 msgid "Rows"
 msgstr "行"
 
+#: R/conttables.b.R
+msgid "Rows compared"
+msgstr ""
+
 #: mancova/options/multivar/roy.title
 #: mancova/results/multivar.columns.content
 msgid "Roy's Largest Root"
@@ -4376,6 +4388,14 @@ msgstr "小提琴图"
 #: ttestPS/results/norm.columns.title
 msgid "W"
 msgstr "W值"
+
+#: R/linreg.b.R
+msgid "Weighted by '{varName}'"
+msgstr ""
+
+#: linReg/options/weights.title
+msgid "Weights (optional)"
+msgstr ""
 
 #: anovaOneW/results/anova.columns.content
 #: ttestIS/options/welchs.title
@@ -5958,10 +5978,6 @@ msgstr "β分布的'b'参数"
 #: contTables/options/compare/columns.title
 msgid "columns"
 msgstr "列"
-
-#: R/conttables.b.R
-msgid "compared"
-msgstr "对比"
 
 #: pca/ui[1][0][1]/nFactorMethod_fixed/nFactors.suffix
 msgid "component(s)"
@@ -8100,6 +8116,10 @@ msgstr "ten Berge 法"
 #: R/descriptives.b.R
 msgid "th percentile"
 msgstr "百分位数"
+
+#: linReg/options/weights.description.R
+msgid "the (optional) weights from `data` to be used in the fitting process"
+msgstr ""
 
 #: ttestOneS/options/hypothesis.description.ui
 msgid "the alternative and null hypotheses;\n"
