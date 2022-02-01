@@ -4,7 +4,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2021-07-26 12:08:06+01000\n"
-"PO-Revision-Date: 2021-07-29 16:59:59+01000\n"
+"PO-Revision-Date: 2022-02-01 12:38+0900\n"
 "Language: ja\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -12,7 +12,7 @@ msgstr ""
 #: ancova/ui[6][1][0][1]/ciWidthEmm.suffix
 #: anova/ui[5][1][1]/postHocES_d[0]/postHocEsCi/postHocEsCiWidth.suffix
 #: anova/ui[6][1][0][1]/ciWidthEmm.suffix
-#: anovaRM/ui[5][1][0][1]/ciWidthEmm.suffix
+#: anovaRM/ui[5][1][0][1]/ciWidthEmm.suffix 
 #: cfa/ui[3][1][0]/ci/ciWidth.suffix
 #: contTables/ui[1][0][0][1][0]/ci/ciWidth.suffix
 #: corrMatrix/ui[1][1]/ci/ciWidth.suffix
@@ -95,7 +95,7 @@ msgstr "「{rotation}」の結果です"
 
 #: R/linreg.b.R
 msgid "'{var}' contains negative values. Negative weights are not permitted."
-msgstr ""
+msgstr "「{var}」は負の値を含んでいます。負の値で重みづけすることはできません。"
 
 #: R/corrmatrix.b.R
 #: R/corrpart.b.R
@@ -136,9 +136,9 @@ msgstr "> 検定値"
 msgid "A low p-value suggests a violation of the assumption of equal variances"
 msgstr "小さなp値は分散等質性の前提が満たされていない可能性を示します"
 
-#: anovaOneW/results/assump/norm.notes.p
+#: anovaOneW/results/assump/norm.notes.p 
 #: ttestIS/results/assum/norm.notes.p
-#: ttestOneS/results/normality.notes.p
+#: ttestOneS/results/normality.notes.p 
 #: ttestPS/results/norm.notes.p
 msgid "A low p-value suggests a violation of the assumption of normality"
 msgstr "小さなp値は正規性の前提が満たされていない可能性を示します"
@@ -281,7 +281,7 @@ msgstr "jamoviの基本分析ツール"
 
 #: efa/options/factorScoreMethod/Anderson.title
 msgid "Anderson & Rubin"
-msgstr ""
+msgstr "アンダーソン=ルビン"
 
 #: package/datasets/Anderson's Iris Data.name
 msgid "Anderson's Iris Data"
@@ -293,7 +293,7 @@ msgstr "参加者間要因が指定されていないため、この前提はつ
 
 #: anovaOneW/options/fishers.title
 msgid "Assume equal (Fisher's)"
-msgstr "等質性を仮定（フィッシャー法）"
+msgstr "等質性を仮定（フィッシャー）"
 
 #: ancova/ui[3].label
 #: ancova/results/assump.title
@@ -374,7 +374,7 @@ msgstr "棒グラフ"
 
 #: efa/options/factorScoreMethod/Bartlett.title
 msgid "Bartlett"
-msgstr ""
+msgstr "バートレット"
 
 #: pca/results/assump/bartlett.title
 msgid "Bartlett's Test of Sphericity"
@@ -463,13 +463,13 @@ msgstr "2項検定"
 msgid "Block 1"
 msgstr "ブロック 1"
 
-#: jamovi/js/linreg.events.js:4
+#: jamovi/js/linreg.events.js:4 
 #: jamovi/js/linreg.events.js:40
-#: jamovi/js/loglinear.events.js:4
+#: jamovi/js/loglinear.events.js:4 
 #: jamovi/js/loglinear.events.js:46
-#: jamovi/js/logregbin.events.js:4
+#: jamovi/js/logregbin.events.js:4 
 #: jamovi/js/logregbin.events.js:55
-#: jamovi/js/logregord.events.js:38
+#: jamovi/js/logregord.events.js:38 
 #: jamovi/js/logregord.events.js:4
 msgid "Block {0}"
 msgstr "ブロック {0}"
@@ -486,7 +486,7 @@ msgstr "ブロック"
 #: anova/options/postHocCorr/bonf.title
 #: anovaRM/options/postHocCorr/bonf.title
 msgid "Bonferroni"
-msgstr "ボンフェロニ法"
+msgstr "ボンフェロニ"
 
 #: descriptives/ui[3][0][1].label
 msgid "Box Plots"
@@ -598,7 +598,7 @@ msgstr "列"
 
 #: R/conttables.b.R
 msgid "Columns compared"
-msgstr ""
+msgstr "比較列"
 
 #: contTables/results/odds.title
 msgid "Comparative Measures"
@@ -1047,7 +1047,7 @@ msgstr "カットオフ値"
 
 #: anovaNP/options/pairs.title
 msgid "DSCF pairwise comparisons"
-msgstr "多重比較（DSCF法）"
+msgstr "多重比較（DSCF）"
 
 #: linReg/results/models.template/assump/durbin.columns.title
 msgid "DW Statistic"
@@ -1205,7 +1205,7 @@ msgstr "分布"
 
 #: anovaOneW/options/welchs.title
 msgid "Don't assume equal (Welch's)"
-msgstr "等質性を仮定しない（ウェルチ法）"
+msgstr "等質性を仮定しない（ウェルチ）"
 
 #: linReg/results/models.template/assump/durbin.title
 msgid "Durbin–Watson Test for Autocorrelation"
@@ -1213,7 +1213,7 @@ msgstr "ダービン=ワトソンの自己相関検定"
 
 #: anovaNP/results/comparisons.title
 msgid "Dwass-Steel-Critchlow-Fligner pairwise comparisons"
-msgstr "多重比較（ドゥワス=スティール=クリッチロウ=フリグナー法）"
+msgstr "多重比較（ドゥワス=スティール=クリッチロウ=フリグナー）"
 
 #: ancova/options/effectSize.title
 #: ancova/ui[1][1].label
@@ -1339,7 +1339,7 @@ msgstr "推定値は次の対数オッズを表しています…"
 
 #: efa/options/factorScoreMethod.title
 msgid "Estimation method"
-msgstr ""
+msgstr "推定法"
 
 #: anovaOneW/ui[1][0][1]/miss_perAnalysis.label
 #: ttestIS/ui[1][0][2]/miss_perAnalysis.label
@@ -1596,7 +1596,7 @@ msgstr "完全情報最尤推定法"
 
 #: anovaOneW/ui[2][0][0][0]/phMethod_gamesHowell.label
 msgid "Games-Howell (unequal variances)"
-msgstr "ゲームス=ハウエル法（非等分散）"
+msgstr "ゲームス=ハウエル（非等分散）"
 
 #: R/anovaonew.b.R
 msgid "Games-Howell Post-Hoc Test – {dep}"
@@ -1706,7 +1706,7 @@ msgstr "ホールデン=アンスコムの修正による修正値です"
 
 #: efa/options/factorScoreMethod/Harman.title
 msgid "Harman"
-msgstr ""
+msgstr "ハーマン"
 
 #: ancova/options/contrasts.template/type/helmert.title
 #: anova/options/contrasts.template/type/helmert.title
@@ -1736,7 +1736,7 @@ msgstr "ヒストグラム"
 #: anova/options/postHocCorr/holm.title
 #: anovaRM/options/postHocCorr/holm.title
 msgid "Holm"
-msgstr "ホルム法"
+msgstr "ホルム"
 
 #: ancova/results/assump/homo.title
 #: anova/results/assump/homo.title
@@ -3468,7 +3468,7 @@ msgstr "行"
 
 #: R/conttables.b.R
 msgid "Rows compared"
-msgstr ""
+msgstr "比較行"
 
 #: mancova/options/multivar/roy.title
 #: mancova/results/multivar.columns.content
@@ -3586,15 +3586,15 @@ msgstr "最初の係数を1に固定"
 #: anova/options/postHocCorr/scheffe.title
 #: anovaRM/options/postHocCorr/scheffe.title
 msgid "Scheffe"
-msgstr "シェフェ法"
+msgstr "シェフェ"
 
 #: R/pca.b.R
 msgid "Score Component"
-msgstr "主成分"
+msgstr "主成分得点"
 
 #: R/pca.b.R
 msgid "Score Factor"
-msgstr ""
+msgstr "因子得点"
 
 #: R/pca.b.R
 msgid "Score for component"
@@ -3602,7 +3602,7 @@ msgstr "主成分得点"
 
 #: R/pca.b.R
 msgid "Score for factor {i}. Estimated using the '{fsMethod}' method."
-msgstr ""
+msgstr "因子{i}の因子得点。’{fsMethod}’法による推定値。"
 
 #: pca/results/eigen/screePlot.title
 msgid "Scree Plot"
@@ -4255,7 +4255,7 @@ msgstr "閾値"
 
 #: efa/options/factorScoreMethod/Thurstone.title
 msgid "Thurstone"
-msgstr ""
+msgstr "サーストン"
 
 #: linReg/results/models.template/assump/collin.columns.title
 #: logRegBin/results/models.template/assump/collin.columns.title
@@ -4307,11 +4307,11 @@ msgstr "全体"
 #: anova/options/postHocCorr/tukey.title
 #: anovaRM/options/postHocCorr/tukey.title
 msgid "Tukey"
-msgstr "テューキー法"
+msgstr "テューキー"
 
 #: anovaOneW/ui[2][0][0][0]/phMethod_tukey.label
 msgid "Tukey (equal variances)"
-msgstr "テューキー法（等分散）"
+msgstr "テューキー（等分散）"
 
 #: R/anovaonew.b.R
 msgid "Tukey Post-Hoc Test – {dep}"
@@ -4477,11 +4477,11 @@ msgstr "W"
 
 #: R/linreg.b.R
 msgid "Weighted by '{varName}'"
-msgstr ""
+msgstr "‘{varName}’による重みづけあり"
 
 #: linReg/options/weights.title
 msgid "Weights (optional)"
-msgstr ""
+msgstr "重みづけ（オプション）"
 
 #: anovaOneW/results/anova.columns.content
 #: ttestIS/options/welchs.title
@@ -4557,7 +4557,7 @@ msgstr "使用する2乗和のタイプを`2`または`3`（初期値）で指�
 
 #: efa/options/factorScoreMethod.description.R
 msgid "`'Thurstone'` (default), `'Bartlett'`, `'tenBerge'`, `'Anderson'`, or `'Harman'` use respectively 'Thurstone', 'Bartlett', 'ten Berge', 'Anderson & Rubin', or 'Harman' method for estimating factor scores"
-msgstr ""
+msgstr "`’Thurstone’` (サーストン法：初期値)、`’Bartlett’`（バートレット法）、`’tenBerge’`（テン・ベルヘ法）、`’Anderson’`（アンダーソン=ルビン法）、`’Harman’`（ハーマン法）のいずれかから因子得点の推定法を指定します。"
 
 #: contTables/options/hypothesis.description.R
 #: ttestIS/options/hypothesis.description.R
@@ -7696,12 +7696,12 @@ msgstr "球面性検定におけるp値の修正方法について、`’none’
 
 #: anovaRM/options/postHocCorr.description.R
 msgid "one or more of `'none'`, `'tukey'` (default), `'scheffe'`, `'bonf'`, or `'holm'`; use no, Tukey, Scheffe, Bonferroni and Holm posthoc corrections, respectively"
-msgstr "`’none’`（修正なし）、`’tukey’（テューキー法、初期値）、`’scheffe’`（シェフェ法）、`’bonf’`（ボンフェロニ法）、`’holm’`（ホルム法）のいずれか1つ、または複数を指定します"
+msgstr "`’none’`（修正なし）、`’tukey’（テューキー、初期値）、`’scheffe’`（シェフェ）、`’bonf’`（ボンフェロニ）、`’holm’`（ホルム）のいずれか1つ、または複数を指定します"
 
 #: ancova/options/postHocCorr.description.R
 #: anova/options/postHocCorr.description.R
 msgid "one or more of `'none'`, `'tukey'`, `'scheffe'`, `'bonf'`, or `'holm'`; provide no, Tukey, Scheffe, Bonferroni, and Holm Post Hoc corrections respectively"
-msgstr "`’none’`（修正なし）、`’tukey’`（テューキー法）、`’scheffe’`（シェフェ法）、`’bonf’`（ボンフェロニ法）、`’holm’`（ホルム法）から1つまたは複数を指定します。"
+msgstr "`’none’`（修正なし）、`’tukey’`（テューキー）、`’scheffe’`（シェフェ）、`’bonf’`（ボンフェロニ）、`’holm’`（ホルム）から1つまたは複数を指定します。"
 
 #: mancova/options/multivar.description.R
 msgid "one or more of `'pillai'`, `'wilks'`, `'hotel'`, or `'roy'`; use Pillai's Trace, Wilks' Lambda, Hotelling's Trace, and Roy's Largest Root multivariate statistics, respectively"
@@ -8208,7 +8208,7 @@ msgstr "t値"
 
 #: efa/options/factorScoreMethod/tenBerge.title
 msgid "ten Berge"
-msgstr ""
+msgstr "テン・ベルヘ"
 
 #: R/descriptives.b.R
 msgid "th percentile"
@@ -8216,7 +8216,7 @@ msgstr "%点"
 
 #: linReg/options/weights.description.R
 msgid "the (optional) weights from `data` to be used in the fitting process"
-msgstr ""
+msgstr "あてはめには`data`からの（最適な）重みづけが使用されます。"
 
 #: ttestOneS/options/hypothesis.description.ui
 msgid "the alternative and null hypotheses;\n"
