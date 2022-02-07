@@ -2,7 +2,7 @@ Package: jmv
 Type: Package
 Title: The 'jamovi' Analyses
 Version: 2.3
-Date: 2021-11-18
+Date: 2022-02-07
 Author: Ravi Selker, Jonathon Love, Damian Dropmann, Victor Moreno
 Maintainer: Jonathon Love <jon@thon.cc>
 Description: A suite of common statistical methods such as descriptives,
