@@ -198,6 +198,16 @@ options:
           R: >
             `TRUE` or `FALSE` (default), add mean to box plot
 
+    - name: boxLabelOutliers
+      title: Label outliers
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, add labels with the row number to the
+            outliers in the box plot
+
+
     - name: qq
       title: Q-Q plot
       type: Bool

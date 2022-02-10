@@ -19,6 +19,7 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             dot = FALSE,
             dotType = "jitter",
             boxMean = FALSE,
+            boxLabelOutliers = TRUE,
             qq = FALSE,
             n = TRUE,
             missing = TRUE,
@@ -116,6 +117,10 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 "boxMean",
                 boxMean,
                 default=FALSE)
+            private$..boxLabelOutliers <- jmvcore::OptionBool$new(
+                "boxLabelOutliers",
+                boxLabelOutliers,
+                default=TRUE)
             private$..qq <- jmvcore::OptionBool$new(
                 "qq",
                 qq,
@@ -226,6 +231,7 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$.addOption(private$..dot)
             self$.addOption(private$..dotType)
             self$.addOption(private$..boxMean)
+            self$.addOption(private$..boxLabelOutliers)
             self$.addOption(private$..qq)
             self$.addOption(private$..n)
             self$.addOption(private$..missing)
@@ -264,6 +270,7 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         dot = function() private$..dot$value,
         dotType = function() private$..dotType$value,
         boxMean = function() private$..boxMean$value,
+        boxLabelOutliers = function() private$..boxLabelOutliers$value,
         qq = function() private$..qq$value,
         n = function() private$..n$value,
         missing = function() private$..missing$value,
@@ -301,6 +308,7 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         ..dot = NA,
         ..dotType = NA,
         ..boxMean = NA,
+        ..boxLabelOutliers = NA,
         ..qq = NA,
         ..n = NA,
         ..missing = NA,
@@ -497,6 +505,8 @@ descriptivesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   (continuous variables only)
 #' @param dotType .
 #' @param boxMean \code{TRUE} or \code{FALSE} (default), add mean to box plot
+#' @param boxLabelOutliers \code{TRUE} (default) or \code{FALSE}, add labels
+#'   with the row number to the outliers in the box plot
 #' @param qq \code{TRUE} or \code{FALSE} (default), provide Q-Q plots
 #'   (continuous variables only)
 #' @param n \code{TRUE} (default) or \code{FALSE}, provide the sample size
@@ -560,6 +570,7 @@ descriptives <- function(
     dot = FALSE,
     dotType = "jitter",
     boxMean = FALSE,
+    boxLabelOutliers = TRUE,
     qq = FALSE,
     n = TRUE,
     missing = TRUE,
@@ -627,6 +638,7 @@ descriptives <- function(
         dot = dot,
         dotType = dotType,
         boxMean = boxMean,
+        boxLabelOutliers = boxLabelOutliers,
         qq = qq,
         n = n,
         missing = missing,
