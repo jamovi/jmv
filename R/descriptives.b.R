@@ -1130,8 +1130,8 @@ descriptivesClass <- R6::R6Class(
                     x <- names$s1
 
                 if (self$options$box && self$options$boxLabelOutliers) {
+                    data$.ROWNAMES <- rownames(data)
                     data <- data %>%
-                        tibble::rownames_to_column('.ROWNAMES') %>%
                         dplyr::group_by_at(x) %>%
                         dplyr::mutate(outlier=private$.isOutlier(x))
                 }
