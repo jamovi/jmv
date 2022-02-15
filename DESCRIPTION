@@ -34,7 +34,10 @@ Imports:
     ggridges,
     ROCR,
     nnet,
-    MASS
+    MASS,
+    ggrepel,
+    dplyr,
+    magrittr
 Suggests:
     exact2x2,
     testthat,
@@ -43,5 +46,5 @@ Suggests:
     knitr,
     rmarkdown
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr

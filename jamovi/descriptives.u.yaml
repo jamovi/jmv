@@ -232,6 +232,10 @@ children:
             children:
               - type: CheckBox
                 name: box
+                children:
+                  - type: CheckBox
+                    name: boxLabelOutliers
+                    enable: (box)
               - type: CheckBox
                 name: violin
               - type: CheckBox
