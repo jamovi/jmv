@@ -1,7 +1,7 @@
 ---
 title: Analyses bundled with jamovi
 name: jmv
-version: 2.2.3
+version: 2.3
 jms: '1.0'
 authors:
   - Jonathon Love
@@ -9,7 +9,7 @@ authors:
   - Ravi Selker
   - Victor Moreno
 maintainer: Jonathon Love <jon@thon.cc>
-date: '2021-011-18'
+date: '2022-02-07'
 description: >
   This module represents the analyses included with jamovi. It contains many
   common analyses (such as t-tests, ANOVAs, regression, correlation matrices,
