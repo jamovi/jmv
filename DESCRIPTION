@@ -1,7 +1,7 @@
 Package: jmv
 Type: Package
 Title: The 'jamovi' Analyses
-Version: 2.3
+Version: 2.3.1
 Date: 2022-02-07
 Author: Ravi Selker, Jonathon Love, Damian Dropmann, Victor Moreno
 Maintainer: Jonathon Love <jon@thon.cc>
