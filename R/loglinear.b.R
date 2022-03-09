@@ -136,7 +136,7 @@ logLinearClass <- R6::R6Class(
                 #     next()
 
                 for (j in seq_along(terms))
-                    table$addRow(rowKey=paste0(terms[[j]]), values=list(term = jmvcore::stringifyTerm(terms[j])))
+                    table$addRow(rowKey=paste0(terms[[j]]), values=list(term = jmvcore::stringifyTerm(terms[[j]])))
             }
         },
         .initCoefTables = function() {

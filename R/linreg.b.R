@@ -406,7 +406,7 @@ linRegClass <- R6::R6Class(
                 terms <- termsAll[[i]]
 
                 for (j in seq_along(terms))
-                    table$addRow(rowKey=paste0(terms[[j]]), values=list(term = jmvcore::stringifyTerm(terms[j])))
+                    table$addRow(rowKey=paste0(terms[[j]]), values=list(term = jmvcore::stringifyTerm(terms[[j]])))
 
                 table$addRow(rowKey='.RES', values=list(term = .('Residuals')))
                 table$addFormat(col=1, rowKey='.RES', format=Cell.BEGIN_GROUP)
