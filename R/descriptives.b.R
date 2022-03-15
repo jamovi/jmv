@@ -1338,8 +1338,10 @@ descriptivesClass <- R6::R6Class(
                 stats[['min']] <- min(column)
                 stats[['max']] <- max(column)
                 stats[['se']] <- sqrt(var(column)/length(column))
-                zQuant <- 1 - ((1 - self$options$ciWidth/100) / 2)
-                ciDiff <- qnorm(zQuant) * stats[['se']]
+                #zQuant <- 1 - ((1 - self$options$ciWidth/100) / 2)
+                tQuant <- 1 - ((1 - self$options$ciWidth/100) / 2)
+                #ciDiff <- qnorm(zQuant) * stats[['se']]
+                ciDiff <- qnorm(tQuant, df=length(column)-1 ) * stats[['se']]
                 stats[['ciLower']] <- stats[['mean']] - ciDiff
                 stats[['ciUpper']] <- stats[['mean']] + ciDiff
                 stats[['iqr']] <- diff(as.numeric(quantile(column, c(.25,.75))))
