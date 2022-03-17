@@ -20,7 +20,8 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             factorSummary = FALSE,
             modelFit = FALSE,
             kmo = FALSE,
-            bartlett = FALSE, ...) {
+            bartlett = FALSE,
+            factorScoreMethod = "Thurstone", ...) {
 
             super$initialize(
                 package="jmv",
@@ -110,6 +111,18 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "bartlett",
                 bartlett,
                 default=FALSE)
+            private$..factorScoresOV <- jmvcore::OptionOutput$new(
+                "factorScoresOV")
+            private$..factorScoreMethod <- jmvcore::OptionList$new(
+                "factorScoreMethod",
+                factorScoreMethod,
+                options=list(
+                    "Thurstone",
+                    "Bartlett",
+                    "tenBerge",
+                    "Anderson",
+                    "Harman"),
+                default="Thurstone")
 
             self$.addOption(private$..vars)
             self$.addOption(private$..nFactorMethod)
@@ -126,6 +139,8 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..modelFit)
             self$.addOption(private$..kmo)
             self$.addOption(private$..bartlett)
+            self$.addOption(private$..factorScoresOV)
+            self$.addOption(private$..factorScoreMethod)
         }),
     active = list(
         vars = function() private$..vars$value,
@@ -142,7 +157,9 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         factorSummary = function() private$..factorSummary$value,
         modelFit = function() private$..modelFit$value,
         kmo = function() private$..kmo$value,
-        bartlett = function() private$..bartlett$value),
+        bartlett = function() private$..bartlett$value,
+        factorScoresOV = function() private$..factorScoresOV$value,
+        factorScoreMethod = function() private$..factorScoreMethod$value),
     private = list(
         ..vars = NA,
         ..nFactorMethod = NA,
@@ -158,7 +175,9 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..factorSummary = NA,
         ..modelFit = NA,
         ..kmo = NA,
-        ..bartlett = NA)
+        ..bartlett = NA,
+        ..factorScoresOV = NA,
+        ..factorScoreMethod = NA)
 )
 
 efaResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -259,6 +278,10 @@ efaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   (KMO) measure of sampling adequacy (MSA) results
 #' @param bartlett \code{TRUE} or \code{FALSE} (default), show Bartlett's test
 #'   of sphericity results
+#' @param factorScoreMethod \code{'Thurstone'} (default), \code{'Bartlett'},
+#'   \code{'tenBerge'}, \code{'Anderson'}, or \code{'Harman'} use respectively
+#'   'Thurstone', 'Bartlett', 'ten Berge', 'Anderson & Rubin', or 'Harman'
+#'   method for estimating factor scores
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$text} \tab \tab \tab \tab \tab a preformatted \cr
@@ -281,7 +304,8 @@ efa <- function(
     factorSummary = FALSE,
     modelFit = FALSE,
     kmo = FALSE,
-    bartlett = FALSE) {
+    bartlett = FALSE,
+    factorScoreMethod = "Thurstone") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("efa requires jmvcore to be installed (restart may be required)")
@@ -309,7 +333,8 @@ efa <- function(
         factorSummary = factorSummary,
         modelFit = modelFit,
         kmo = kmo,
-        bartlett = bartlett)
+        bartlett = bartlett,
+        factorScoreMethod = factorScoreMethod)
 
     analysis <- efaClass$new(
         options = options,

@@ -420,7 +420,8 @@ pcaResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "vars",
                     "nFactorMethod",
                     "nFactors",
-                    "rotation")))}))
+                    "rotation",
+                    "factorScoreMethod")))}))
 
 pcaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "pcaBase",

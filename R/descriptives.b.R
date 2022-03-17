@@ -1,4 +1,5 @@
 
+#' @importFrom magrittr %>%
 #' @importFrom jmvcore .
 descriptivesClass <- R6::R6Class(
     "descriptivesClass",
@@ -448,7 +449,7 @@ descriptivesClass <- R6::R6Class(
                             renderFun = ".boxPlot",
                             width = size[1],
                             height = size[2],
-                            clearWith = list("splitBy", "box", "violin", "dot", "dotType", "boxMean")
+                            clearWith = list("splitBy", "box", "violin", "dot", "dotType", "boxMean", "boxLabelOutliers")
                         )
 
                         group$add(image)
@@ -1117,7 +1118,7 @@ descriptivesClass <- R6::R6Class(
 
             themeSpec <- NULL
 
-            # hide outliers it plotting the data
+            # hide outliers if plotting the data
             outlierShape <- `if`(self$options$dot, NA, 19)
 
             if (is.null(splitBy) || length(splitBy) == 1) {
@@ -1127,6 +1128,13 @@ descriptivesClass <- R6::R6Class(
                     x <- "placeHolder"
                 else
                     x <- names$s1
+
+                if (self$options$box && self$options$boxLabelOutliers) {
+                    data$.ROWNAMES <- rownames(data)
+                    data <- data %>%
+                        dplyr::group_by_at(x) %>%
+                        dplyr::mutate(outlier=private$.isOutlier(x))
+                }
 
                 plot <- ggplot(data=data, aes_string(x=x, y=names$x)) +
                     labs(x=labels$s1, y=labels$x)
@@ -1167,6 +1175,15 @@ descriptivesClass <- R6::R6Class(
                             outlier.colour=theme$color[1],
                             outlier.shape=outlierShape
                         )
+
+                    if (self$options$boxLabelOutliers) {
+                        plot <- plot +
+                            ggrepel::geom_label_repel(
+                                data=. %>% dplyr::filter(outlier),
+                                aes(label=.ROWNAMES),
+                                position = position_dodge(0.8)
+                            )
+                    }
                 }
 
                 if (self$options$boxMean) {
@@ -1588,6 +1605,9 @@ descriptivesClass <- R6::R6Class(
             if (length(self$options$splitBy) == 0)
                 return('')
             jmvcore:::composeFormula(self$options$vars, list(self$options$splitBy))
+        },
+        .isOutlier = function(x) {
+            return(x < quantile(x, 0.25) - 1.5 * IQR(x) | x > quantile(x, 0.75) + 1.5 * IQR(x))
         }
     )
 )

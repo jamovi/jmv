@@ -36,8 +36,7 @@ anovaNPClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             ## Dwass-Steel-Critchlow-Flinger test
             if (self$options$get("dscfpairs")) {
 
-                #footnote <- .('This correction is unnecessary for this test.')
-                footnote <- 'This correction is unnecessary for this test.'
+                footnote <- .('This correction is unnecessary for this test.')
                 for (depName in deps) {
 
                     depColumn <- data[[depName]]

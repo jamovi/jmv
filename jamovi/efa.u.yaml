@@ -99,3 +99,18 @@ children:
                 type: CheckBox
               - name: screePlot
                 type: CheckBox
+  - type: CollapseBox
+    label: Save
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        children:
+          - type: Output
+            name: factorScoresOV
+            children:
+              - type: ComboBox
+                name: factorScoreMethod
+                enable: (factorScoresOV)

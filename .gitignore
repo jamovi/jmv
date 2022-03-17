@@ -48,6 +48,9 @@ jamovi/ui/*.options.js
 build/
 build*/
 
+# i18n
+inst/i18n
+
 # other files / folders
 temp/
 man/

@@ -33,6 +33,12 @@ children:
             isTarget: true
             events:
               change: './linreg.events::onChange_factors'
+      - type: TargetLayoutBox
+        children:
+          - type: VariablesListBox
+            name: weights
+            isTarget: true
+            maxItemCount: 1
   - type: CollapseBox
     label: Model Builder
     collapsed: true

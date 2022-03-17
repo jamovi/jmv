@@ -1,7 +1,7 @@
 ---
 title: Analyses bundled with jamovi
 name: jmv
-version: 2.2.3
+version: 2.3.1
 jms: '1.0'
 authors:
   - Jonathon Love
@@ -9,7 +9,7 @@ authors:
   - Ravi Selker
   - Victor Moreno
 maintainer: Jonathon Love <jon@thon.cc>
-date: 2021-011-18
+date: '2022-02-07'
 description: >
   This module represents the analyses included with jamovi. It contains many
   common analyses (such as t-tests, ANOVAs, regression, correlation matrices,
@@ -121,7 +121,7 @@ analyses:
       continuous dependent variable, and a categorical explanatory variable. It
       is analagous to ANOVA, but with the advantage of being non-parametric and
       having fewer assumptions. However, it has the limitation that it can only
-      test a single explanatory variable at a time. Conover-Iman and Dunn test
+      test a single explanatory variable at a time.  Conover-Iman and Dunn test
       available to report results across  multiple pairwise comparisons.
   - title: Repeated Measures ANOVA (Non-parametric)
     name: anovaRMNP
