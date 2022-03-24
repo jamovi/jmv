@@ -281,7 +281,7 @@ datasets:
     path: ToothGrowth.csv
     description: An uninspiring ANOVA data set
   - name: 'Bugs (Ryan, Wilde & Crist, 2013)'
-    path: Bugs.csv
+    path: bugs.csv
     description: A repeated measures ANOVA data set
   - name: Anderson's Iris Data
     path: iris.csv
