@@ -48,6 +48,7 @@ test_that('linreg works', {
     expect_equal(0.394, coef2$stdEstUpper[3], tolerance = 1e-3)
 
     # Test different intercept codings
+    data('ToothGrowth', package='datasets')
     data <- ToothGrowth
     data$dose <- factor(data$dose)
 

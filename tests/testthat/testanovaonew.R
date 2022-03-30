@@ -1,7 +1,7 @@
 
 context('anovaonew')
 
-data('ToothGrowth')
+data('ToothGrowth', package='datasets')
 
 test_that('anovaonew works', {
     dat <- ToothGrowth
