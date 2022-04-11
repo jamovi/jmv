@@ -528,11 +528,11 @@ contTablesClass <- R6::R6Class(
                         `v[rr]`=rr$rr,
                         `cil[rr]`=rr$lower,
                         `ciu[rr]`=rr$upper))
-                    
+
                     footnote <- `if`(self$options$compare == 'rows', .('Rows compared'), .('Columns compared'))
                     odds$addFootnote(rowNo=othRowNo, 'v[dp]', footnote)
                     odds$addFootnote(rowNo=othRowNo, 'v[rr]', footnote)
-                    
+
                     if (any(mat == 0)){
                         odds$addFootnote(rowNo=othRowNo, 'v[lo]', .('Haldane-Anscombe correction applied'))
                         odds$addFootnote(rowNo=othRowNo, 'v[o]', .('Haldane-Anscombe correction applied'))
@@ -584,7 +584,7 @@ contTablesClass <- R6::R6Class(
                 countsName <- jmvcore::toB64(countsName)
 
             layerNames <- self$options$layers
-            if (! is.null(layerNames))
+            if (length(layerNames) > 0)
                 layerNames <- jmvcore::toB64(layerNames)
             if (length(layerNames) > 2)
                 layerNames <- layerNames[1:2] # max 2
@@ -665,7 +665,7 @@ contTablesClass <- R6::R6Class(
 
             p <- p + labs(x=jmvcore::fromB64(xVarName), fill=jmvcore::fromB64(zVarName))
 
-            if (! is.null(layerNames)) {
+            if (length(layerNames) > 0) {
                 if (length(layerNames) == 1)
                     layers <- as.formula(jmvcore::composeFormula(NULL, layerNames))
                 else
