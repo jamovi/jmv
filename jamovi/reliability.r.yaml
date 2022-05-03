@@ -20,11 +20,11 @@ items:
           content: scale
 
         - name: mean
-          title: mean
+          title: Mean
           visible: (meanScale)
 
         - name: sd
-          title: sd
+          title: SD
           visible: (sdScale)
 
         - name: alpha
@@ -51,25 +51,25 @@ items:
           content: ($key)
 
         - name: mean
-          title: mean
+          title: Mean
           visible: (meanItems)
 
         - name: sd
-          title: sd
+          title: SD
           visible: (sdItems)
 
         - name: itemRestCor
-          title: item-rest correlation
+          title: Item-rest correlation
           visible: (itemRestCor)
 
         - name: alpha
           title: Cronbach's α
-          superTitle: 'if item dropped'
+          superTitle: 'If item dropped'
           visible: (alphaItems)
 
         - name: omega
           title: McDonald's ω
-          superTitle: 'if item dropped'
+          superTitle: 'If item dropped'
           visible: (omegaItems)
 
     - name: corPlot
