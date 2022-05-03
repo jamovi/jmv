@@ -164,11 +164,11 @@ reliabilityResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                         `content`="scale"),
                     list(
                         `name`="mean", 
-                        `title`="mean", 
+                        `title`="Mean", 
                         `visible`="(meanScale)"),
                     list(
                         `name`="sd", 
-                        `title`="sd", 
+                        `title`="SD", 
                         `visible`="(sdScale)"),
                     list(
                         `name`="alpha", 
@@ -195,25 +195,25 @@ reliabilityResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                         `content`="($key)"),
                     list(
                         `name`="mean", 
-                        `title`="mean", 
+                        `title`="Mean", 
                         `visible`="(meanItems)"),
                     list(
                         `name`="sd", 
-                        `title`="sd", 
+                        `title`="SD", 
                         `visible`="(sdItems)"),
                     list(
                         `name`="itemRestCor", 
-                        `title`="item-rest correlation", 
+                        `title`="Item-rest correlation", 
                         `visible`="(itemRestCor)"),
                     list(
                         `name`="alpha", 
                         `title`="Cronbach's \u03B1", 
-                        `superTitle`="if item dropped", 
+                        `superTitle`="If item dropped", 
                         `visible`="(alphaItems)"),
                     list(
                         `name`="omega", 
                         `title`="McDonald's \u03C9", 
-                        `superTitle`="if item dropped", 
+                        `superTitle`="If item dropped", 
                         `visible`="(omegaItems)"))))
             self$add(jmvcore::Image$new(
                 options=options,
