@@ -76,14 +76,8 @@ descriptivesClass <- R6::R6Class(
             freq <- list()
             for (var in vars) {
                 column <- data[[var]]
-                if (private$.treatAsFactor(column)) {
-                    if (length(splitBy) > 0) {
-                        cols <- c(var, splitBy[-1], splitBy[1])
-                        freq[[var]] <- table(data[cols])
-                    } else {
-                        freq[[var]] <- table(column)
-                    }
-                }
+                if (is.factor(column))
+                    freq[[var]] <- table(jmvcore::select(self$data, c(var, splitBy)))
 
                 column <- jmvcore::toNumeric(column)
                 if (length(splitBy) > 0) {
@@ -275,73 +269,26 @@ descriptivesClass <- R6::R6Class(
                 var <- vars[i]
                 column <- self$data[[var]]
 
-                if (private$.treatAsFactor(column)) {
-                    table <- tables$get(var)
-                    levels <- base::levels(column)
-                    if (is.null(levels)) {
-                        levels <- levels(factor(naOmit(column)))
-                        table$setVisible(TRUE)
-                    }
+                if (! is.factor(column))
+                    next()
 
-                    if (length(splitBy) == 0) {
-                        table$addColumn(
-                            name='levels', title=.('Levels'), type='text'
-                        )
-                        table$addColumn(
-                            name='counts', title=.('Counts'), type='integer'
-                        )
-                        table$addColumn(
-                            name='pc', title=.('% of Total'), type='number', format='pc'
-                        )
-                        table$addColumn(
-                            name='cumpc', title=.('Cumulative %'), type='number', format='pc'
-                        )
+                tableVars <- c(var, splitBy)
+                allLevels <- lapply(jmvcore::select(self$data, tableVars), levels)
+                grid <- rev(expand.grid(rev(allLevels)))
 
-                        for (k in seq_along(levels)) {
-                            table$addRow(
-                                levels[k], values = list(levels = levels[k])
-                            )
-                        }
-                    } else {
+                table <- tables$get(var)
 
-                        expandGrid <- function(...) expand.grid(..., stringsAsFactors = FALSE)
-                        grid <- rev(do.call(expandGrid, rev(c(list(levels), private$.getLevels()[-1]))))
-                        cols <- c(var, splitBy[-1])
+                for (var in tableVars)
+                    table$addColumn(name=var, title=var, type="text", combineBelow=TRUE)
+                table$addColumn(name='counts', title=.('Counts'), type='integer')
+                table$addColumn(name='pc', title=.('% of Total'), type='number', format='pc')
+                table$addColumn(name='cumpc', title=.('Cumulative %'), type='number', format='pc')
 
-                        for (col in cols) {
-                            table$addColumn(
-                                name=col,
-                                title=col,
-                                type='text',
-                                combineBelow=TRUE
-                            )
-                        }
-
-                        if (length(private$.getLevels()) >= 1) {
-                            for (lev in private$.getLevels()[[1]]) {
-                                table$addColumn(
-                                    name=paste0(lev),
-                                    title=lev,
-                                    type='integer',
-                                    superTitle=splitBy[1]
-                                )
-                            }
-                        }
-
-                        prev <- NULL
-                        for (j in seq_len(nrow(grid))) {
-                            row <- list()
-                            for (k in seq_along(cols))
-                                row[[cols[k]]] <- grid[j,k]
-
-                            table$addRow(rowKey=j, values=row)
-
-                            if (length(splitBy) > 1 && (j == 1 || grid[j,1] != prev))
-                                table$addFormat(rowNo=j, col=1, Cell.BEGIN_GROUP)
-
-                            prev <- grid[j,1]
-                        }
-                    }
+                for (row in 1:nrow(grid)) {
+                    rowValues <- list()
+                    for (col in tableVars)
+                        rowValues[[col]] <- as.character(grid[row, col])
+                    table$addRow(rowKey=row, values=rowValues)
                 }
             }
         },
@@ -659,54 +606,28 @@ descriptivesClass <- R6::R6Class(
                 var <- vars[i]
                 column <- self$data[[var]]
 
-                if (private$.treatAsFactor(column)) {
-                    table <- tables$get(var)
+                if (! is.factor(column))
+                    next()
 
-                    if ( ! table$visible)
-                        next()
+                table <- tables$get(var)
+                freq <- freqs[[var]]
 
-                    levels <- base::levels(column)
-                    if (is.null(levels)) {
-                        levels <- levels(factor(naOmit(column)))
-                        table$setVisible(TRUE)
-                    }
-                    freq <- freqs[[var]]
+                tableVars <- c(var, splitBy)
+                allLevels <- lapply(jmvcore::select(self$data, tableVars), levels)
+                grid <- rev(expand.grid(rev(allLevels)))
 
-                    if (length(splitBy) == 0) {
-                        n <- sum(freq)
-                        cumsum <- 0
-                        for (k in seq_along(levels)) {
-                            counts <- as.numeric(freq[levels[k]])
-                            cumsum <- cumsum + counts
-                            pc <- counts / n
-                            cumpc <- cumsum / n
-                            if (is.na(pc)) pc <- 0
-                            if (is.na(cumpc)) cumpc <- 0
-                            table$setRow(
-                                rowNo=k,
-                                values=list(
-                                    counts=counts,
-                                    pc=pc,
-                                    cumpc=cumpc
-                                )
-                            )
-                        }
-                    } else {
-                        expandGrid <- function(...) expand.grid(..., stringsAsFactors = FALSE)
-                        grid <- rev(do.call(expandGrid, rev(c(list(levels), private$.getLevels()[-1]))))
-                        cols <- c(var, splitBy[-1])
+                n <- sum(freq)
+                cumsum <- 0
 
-                        for (j in seq_len(nrow(grid))) {
-                            row <- list()
-                            for (lev in private$.getLevels()[[1]]) {
-                                indices <- c(grid[j,], lev)
-                                counts <- do.call("[", c(list(freq), indices))[[1]]
-                                row[[lev]] <- as.numeric(counts)
-                            }
+                for (row in 1:nrow(grid)) {
+                    counts <- do.call("[", c(list(freq), grid[row, ]))
+                    cumsum <- cumsum + counts
+                    pc <- counts / n
+                    cumpc <- cumsum / n
+                    if (is.na(pc)) pc <- 0
+                    if (is.na(cumpc)) cumpc <- 0
 
-                            table$setRow(rowKey=j, values=row)
-                        }
-                    }
+                    table$setRow(rowNo=row, value=list(counts=counts, pc=pc, cumpc=cumpc))
                 }
             }
         },

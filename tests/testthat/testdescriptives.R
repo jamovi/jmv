@@ -93,6 +93,60 @@ test_that('descriptives transposed table works with splitBy', {
     )
 })
 
+test_that("Frequency table is displayed correctly for empty data set", {
+    df <- data.frame(
+        dep = factor(levels = letters[1:3]),
+        group = factor(levels = LETTERS[1:3])
+    )
+
+    desc <- jmv::descriptives(data = df, vars = "dep", splitBy = "group", freq = TRUE)
+    freq <- desc$frequencies[[1]]$asDF
+
+    expect_equal(rep(letters[1:3], each=3), freq[[1]])
+    expect_equal(rep(LETTERS[1:3], times=3), freq[[2]])
+    expect_equal(rep(0, 9), freq$counts)
+    expect_equal(rep(0, 9), freq$pc)
+    expect_equal(rep(0, 9), freq$cumpc)
+})
+
+test_that("Non-grouped frequency table is displayed correctly", {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    df <- data.frame(
+        dep = factor(sample(letters[1:3], 100, replace = TRUE), levels = letters[1:3])
+    )
+
+    desc <- jmv::descriptives(data = df, vars = "dep", freq = TRUE)
+    freq <- desc$frequencies[[1]]$asDF
+
+    counts <- as.vector(table(df))
+
+    expect_equal(letters[1:3], freq$dep)
+    expect_equal(counts, freq$counts)
+    expect_equal(counts / sum(counts), freq$pc)
+    expect_equal(cumsum(counts) / sum(counts), freq$cumpc)
+})
+
+test_that("Grouped frequency table is displayed correctly", {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    df <- data.frame(
+        dep = factor(sample(1:3, 100, replace = TRUE), levels = 1:3),
+        group = factor(sample(letters[1:3], 100, replace = TRUE), levels = letters[1:3])
+    )
+
+    desc <- jmv::descriptives(data = df, vars = "dep", splitBy = "group", freq = TRUE)
+    freq <- desc$frequencies[[1]]$asDF
+
+    expect_equal(as.character(rep(1:3, each=3)), freq[[1]])
+    expect_equal(rep(letters[1:3], times=3), freq[[2]])
+    expect_equal(c(13, 10, 10, 7, 15, 6, 13, 10, 16), freq$counts)
+    expect_equal(c(0.13, 0.1, 0.1, 0.07, 0.15, 0.06, 0.13, 0.1, 0.16), freq$pc)
+    expect_equal(c(0.13, 0.23, 0.33, 0.4, 0.55, 0.61, 0.74, 0.84, 1), freq$cumpc)
+})
+
 test_that('descriptives works old scenario', {
 
     w <- as.factor(rep(c("1", "2","3"), each=4))
@@ -109,8 +163,7 @@ test_that('descriptives works old scenario', {
     descr <- desc$descriptives$asDF
 
     # Test frequency table numerical values
-    expect_equal(1, freq[1,3], tolerance = 1e-3)
-    expect_equal(2, freq[3,4], tolerance = 1e-3)
+    expect_equal(c(2, 1, 1, 1, 2, 1, 1, 1, 2), freq$counts)
 
     # Test descriptives table numerical values
     expect_equal(2.619, descr$`y[seKurtb]`, tolerance = 1e-3)
