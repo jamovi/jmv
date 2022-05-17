@@ -20,9 +20,9 @@ test_that('descriptive statistics work for continuous variables without split by
     n <- length(x) - missing
     mean <- mean(x)
     se <- sd(x) / sqrt(n)
-    zQuant <- 1 - ((1 - CI_WIDTH) / 2)
-    ciLower <- mean - qnorm(zQuant) * se
-    ciUpper <- mean + qnorm(zQuant) * se
+    tCriticalValue <- 1 - ((1 - CI_WIDTH) / 2)
+    ciLower <- mean - qt(tCriticalValue, df=n-1) * se
+    ciUpper <- mean + qt(tCriticalValue, df=n-1) * se
     mode <- as.numeric(names(table(x)[table(x)==max(table(x))]))[1]
     shapiro <- shapiro.test(x)
     quantiles <- quantile(x, QUANTS)
@@ -51,6 +51,9 @@ test_that('descriptive statistics work for continuous variables without split by
     expect_equal(as.numeric(quantiles[1]), r[["x[quant1]"]], tolerance = 1e-5)
     expect_equal(as.numeric(quantiles[2]), r[["x[quant2]"]], tolerance = 1e-5)
     expect_equal(as.numeric(quantiles[3]), r[["x[quant3]"]], tolerance = 1e-5)
+
+    # Check footnote for including CI
+    expect_match(desc$descriptives$notes$ci$note, "t-distribution")
 })
 
 test_that('descriptives transposed table works with splitBy', {
