@@ -80,7 +80,7 @@ ancovaClass <- R6::R6Class(
             modelTerms <- private$.modelTerms()
 
             singularErrorMessage <- .("Singular fit encountered; one or more predictor variables are a linear combination of other predictor variables.")
-            perfectFitErrorMessage <- .("Residual sum of squares and/or degrees of freedom is zero, indicating a perfect fit")
+            perfectFitErrorMessage <- .("Residual sum of squares and/or degrees of freedom are zero, indicating a perfect fit")
 
             suppressWarnings({
 
@@ -649,7 +649,7 @@ ancovaClass <- R6::R6Class(
         #### Plot functions ----
         .qqPlot=function(image, ggtheme, theme, ...) {
             residuals <- rstandard(self$model)
-            if (is.null(residuals))
+            if (is.null(residuals) || all(is.na(residuals)))
                 return()
 
             df <- as.data.frame(qqnorm(residuals, plot.it=FALSE))
