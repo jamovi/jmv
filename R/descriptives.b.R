@@ -192,8 +192,12 @@ descriptivesClass <- R6::R6Class(
                     }
                 }
 
-                if (ciOptionVisible)
-                    table$setNote("ci", .("The CI of the mean assumes the mean follows a t-distribution with N - 1 degrees of freedom"))
+                if (ciOptionVisible) {
+                    table$setNote(
+                        "ci",
+                        .("The CI of the mean assumes sample means follow a t-distribution with N - 1 degrees of freedom")
+                    )
+                }
             }
         },
         .initDescriptivesTTable = function() {
@@ -244,8 +248,12 @@ descriptivesClass <- R6::R6Class(
                 )
             }
 
-            if (ciOptionVisible)
-                table$setNote("ci", .("The CI of the mean assumes the mean follows a t-distribution with N - 1 degrees of freedom"))
+            if (ciOptionVisible) {
+                table$setNote(
+                    "ci",
+                    .("The CI of the mean assumes sample means follow a t-distribution with N - 1 degrees of freedom")
+                )
+            }
 
             vars <- self$options$vars
             grid <- private$.getSplitByGrid()
