@@ -108,6 +108,7 @@ descriptivesClass <- R6::R6Class(
 
             grid <- private$.getSplitByGrid()
             colArgs <- private$colArgs
+            ciOptionVisible <- FALSE
 
             for (i in seq_along(colArgs$name)) {
                 if (private$.skipOption(colArgs$visible[i]))
@@ -123,6 +124,7 @@ descriptivesClass <- R6::R6Class(
                     title <- jmvcore::format(
                         .("{ciWidth}% CI mean {title}"), ciWidth=self$options$ciWidth, title=title
                     )
+                    ciOptionVisible <- TRUE
                 }
 
                 if (length(splitBy) > 0) {
@@ -189,6 +191,13 @@ descriptivesClass <- R6::R6Class(
                         )
                     }
                 }
+
+                if (ciOptionVisible) {
+                    table$setNote(
+                        "ci",
+                        .("The CI of the mean assumes sample means follow a t-distribution with N - 1 degrees of freedom")
+                    )
+                }
             }
         },
         .initDescriptivesTTable = function() {
@@ -214,16 +223,20 @@ descriptivesClass <- R6::R6Class(
                 )
             }
 
+            ciOptionVisible <- FALSE
+
             for (i in seq_along(colArgs$name)) {
                 if (private$.skipOption(colArgs$visible[i]))
                     next
 
-                if (colArgs$superTitle[i] == "ci")
+                if (colArgs$superTitle[i] == "ci") {
                     superTitle <- jmvcore::format(
                         .('{ciWidth}% Confidence Interval'), ciWidth=self$options$ciWidth
                     )
-                else
+                    ciOptionVisible <- TRUE
+                } else {
                     superTitle <- colArgs$superTitle[i]
+                }
 
                 table$addColumn(
                     name=colArgs$name[i],
@@ -232,6 +245,13 @@ descriptivesClass <- R6::R6Class(
                     format=colArgs$format[i],
                     visible=colArgs$visible[i],
                     superTitle=superTitle
+                )
+            }
+
+            if (ciOptionVisible) {
+                table$setNote(
+                    "ci",
+                    .("The CI of the mean assumes sample means follow a t-distribution with N - 1 degrees of freedom")
                 )
             }
 
@@ -1338,10 +1358,13 @@ descriptivesClass <- R6::R6Class(
                 stats[['min']] <- min(column)
                 stats[['max']] <- max(column)
                 stats[['se']] <- sqrt(var(column)/length(column))
-                zQuant <- 1 - ((1 - self$options$ciWidth/100) / 2)
-                ciDiff <- qnorm(zQuant) * stats[['se']]
+
+                # Calculate CI of the mean based on a t distribution
+                tCriticalValue <- 1 - ((1 - self$options$ciWidth/100) / 2)
+                ciDiff <- qt(tCriticalValue, df=stats[['n']] - 1) * stats[['se']]
                 stats[['ciLower']] <- stats[['mean']] - ciDiff
                 stats[['ciUpper']] <- stats[['mean']] + ciDiff
+
                 stats[['iqr']] <- diff(as.numeric(quantile(column, c(.25,.75))))
 
                 deviation <- column-mean(column)
