@@ -117,18 +117,18 @@ ancovaClass <- R6::R6Class(
                 } else {
 
                     results <- try({
-                        r <- car::Anova(private$.model, type=3, singular.ok=FALSE, silent=TRUE)
+                        r <- car::Anova(private$.model, type=3, singular.ok=FALSE)
                         r <- r[-1,]
-                    })
+                    }, silent=TRUE)
 
                     if (isError(results)) {
                         message <- extractErrorMessage(results)
                         if (message == 'there are aliased coefficients in the model')
                             singular <- singularErrorMessage
                         results <- try({
-                            r <- car::Anova(private$.model, type=3, singular.ok=TRUE, silent=TRUE)
+                            r <- car::Anova(private$.model, type=3, singular.ok=TRUE)
                             r <- r[-1,]
-                        })
+                        },  silent=TRUE)
                     }
                 }
 
