@@ -54,7 +54,7 @@ mancovaClass <- R6::R6Class(
             boxM <- private$.boxM(data)
 
             dataDeps <- t(as.matrix(data[jmvcore::toB64(deps)]))
-            shapiro <- mvnormtest::mshapiro.test(dataDeps)
+            shapiro <- try(mvnormtest::mshapiro.test(dataDeps))
 
             return(list(pillai=pillai, wilks=wilks, hotel=hotel, roy=roy, univar=univar,
                         boxM=boxM, shapiro=shapiro))
@@ -200,10 +200,18 @@ mancovaClass <- R6::R6Class(
             table <- self$results$assump$shapiro
             shapiro <- results$shapiro
 
-            w <- as.numeric(shapiro$statistic)
-            p <- as.numeric(shapiro$p.value)
+            if (jmvcore::isError(shapiro)) {
 
-            table$setRow(rowNo=1, values=list(w=w, p=p))
+                fn <- .('Not available due to too large number of cases (> 5000).')
+
+                table$setRow(rowNo=1, values=list(w=NaN, p=NaN))
+                table$addFootnote(rowNo=1, col='w', note=fn)
+                table$addFootnote(rowNo=1, col='p', note=fn)
+
+            } else 
+                table$setRow(rowNo=1, 
+                             values=list(w=as.numeric(shapiro$statistic), 
+                                         p=as.numeric(shapiro$p.value)))
 
         },
 
