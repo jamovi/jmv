@@ -208,10 +208,11 @@ mancovaClass <- R6::R6Class(
                 table$addFootnote(rowNo=1, col='w', note=fn)
                 table$addFootnote(rowNo=1, col='p', note=fn)
 
-            } else 
+            } else {
                 table$setRow(rowNo=1, 
                              values=list(w=as.numeric(shapiro$statistic), 
                                          p=as.numeric(shapiro$p.value)))
+            }
 
         },
 
