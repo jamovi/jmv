@@ -193,3 +193,12 @@ test_that('histogram is created for nominal numeric variable', {
 
     expect_true(desc$plots[[2]]$.render())
 })
+
+testthat::test_that("No error is thrown when an empty factor is used as variable", {
+    data <- data.frame(x = factor(rep(NA, 10)))
+    result <- jmv::descriptives(data, "x", freq = TRUE)
+    desc <- result$descriptives$asDF
+
+    testthat::expect_equal(desc[["x[n]"]], 0)
+    testthat::expect_equal(desc[["x[missing]"]], 10)
+})
