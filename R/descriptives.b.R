@@ -790,7 +790,7 @@ descriptivesClass <- R6::R6Class(
                             }
 
                         } else {
-                            plotData <- data.frame(x=character())
+                            plotData <- data.frame(x=numeric())
                             names <- list("x"="x", "s1"=NULL, "s2"=NULL, "s3"=NULL)
                             labels <- list("x"=var, "s1"=NULL, "s2"=NULL, "s3"=NULL)
                         }
