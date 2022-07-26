@@ -46,6 +46,9 @@ descriptivesClass <- R6::R6Class(
             )
 
             private$.addQuantiles()
+
+            private$.errorCheck()
+
             private$.initDescriptivesTable()
             private$.initDescriptivesTTable()
             private$.initFrequencyTables()
@@ -128,7 +131,7 @@ descriptivesClass <- R6::R6Class(
                 }
 
                 if (length(splitBy) > 0) {
-                    for (j in 1:nrow(grid)) {
+                    for (j in seq_len(nrow(grid))) {
                         post <- paste0(
                             "[", name, paste0(grid[j,], collapse = ""), "]"
                         )
@@ -261,7 +264,7 @@ descriptivesClass <- R6::R6Class(
             iter <- 1
             for (i in seq_along(vars)) {
                 if (length(splitBy) > 0) {
-                    for (j in 1:nrow(grid)) {
+                    for (j in seq_len(nrow(grid))) {
                         values <- list("vars"=vars[i])
                         for (k in seq_along(splitBy))
                             values[[splitBy[k]]] <- grid[j, k]
@@ -466,7 +469,7 @@ descriptivesClass <- R6::R6Class(
             iter <- 1
             for (i in seq_along(vars)) {
                 if (length(splitBy) > 0) {
-                    for (j in 1:nrow(grid)) {
+                    for (j in seq_len(nrow(grid))) {
                         for (k in seq_along(colNames)) {
                             name <- colNames[k]
                             post <- paste0("[", name, paste0(grid[j,], collapse = ""), "]")
@@ -510,7 +513,7 @@ descriptivesClass <- R6::R6Class(
 
                 r <- desc[[vars[i]]]
                 if (length(splitBy) > 0) {
-                    for (j in 1:nrow(grid)) {
+                    for (j in seq_len(nrow(grid))) {
                         indices <- grid[j,]
                         stats <- do.call("[", c(list(r), indices))[[1]]
 
@@ -573,7 +576,7 @@ descriptivesClass <- R6::R6Class(
             for (i in seq_along(vars)) {
                 r <- desc[[vars[i]]]
                 if (length(splitBy) > 0) {
-                    for (j in 1:nrow(grid)) {
+                    for (j in seq_len(nrow(grid))) {
                         stats <- do.call("[", c(list(r), grid[j,]))[[1]]
                         values <- list()
                         for (k in seq_along(colNames)) {
@@ -1230,20 +1233,16 @@ descriptivesClass <- R6::R6Class(
                 for (item in splitBy) {
                     if ( ! is.factor(data[[item]])) {
                         jmvcore::reject(
-                            .('Unable to split by a continuous variable')
+                            .('Unable to split by a continuous variable'),
+                            code=exceptions$valueError
+                        )
+                    } else if (length(levels(data[[item]])) == 0) {
+                        jmvcore::reject(
+                            .("The 'split by' variable '{var}' contains no data."),
+                            code=exceptions$valueError,
+                            var=item
                         )
                     }
-                }
-            }
-
-            for (var in splitBy) {
-                if (length(levels(data[[var]])) == 0) {
-                    jmvcore::reject(
-                        jmvcore::format(
-                            .("The 'split by' variable '{var}' contains no data."), var=var
-                        ),
-                        code=''
-                    )
                 }
             }
         },

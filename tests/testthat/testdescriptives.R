@@ -202,3 +202,15 @@ testthat::test_that("No error is thrown when an empty factor is used as variable
     testthat::expect_equal(desc[["x[n]"]], 0)
     testthat::expect_equal(desc[["x[missing]"]], 10)
 })
+
+testthat::test_that('Sensible error message is provided when splitBy var contains no data', {
+    df <- data.frame(
+        var = 1:10,
+        group = factor(rep(NA, 10))
+    )
+
+    testthat::expect_error(
+        jmv::descriptives(formula=var~group, data=df),
+        "The 'split by' variable 'group' contains no data."
+    )
+})

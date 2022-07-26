@@ -68,3 +68,13 @@ checkData = function(self, data, types, B64 = FALSE) {
             variableContainsOneUniqueValue(self, col, colName)
     }
 }
+
+exceptions = list(
+    "attributeError" = "attributeError",
+    "indexError" = "indexError",
+    "keyError" = "keyError",
+    "modelError" = "modelError",
+    "nameError" = "nameError",
+    "valueError" = "valueError"
+)
+
