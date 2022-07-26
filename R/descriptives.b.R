@@ -304,7 +304,7 @@ descriptivesClass <- R6::R6Class(
                 table$addColumn(name='pc', title=.('% of Total'), type='number', format='pc')
                 table$addColumn(name='cumpc', title=.('Cumulative %'), type='number', format='pc')
 
-                for (row in 1:nrow(grid)) {
+                for (row in seq_len(nrow(grid))) {
                     rowValues <- list()
                     for (col in tableVars)
                         rowValues[[col]] <- as.character(grid[row, col])
@@ -639,7 +639,7 @@ descriptivesClass <- R6::R6Class(
                 n <- sum(freq)
                 cumsum <- 0
 
-                for (row in 1:nrow(grid)) {
+                for (row in seq_len(nrow(grid))) {
                     counts <- do.call("[", c(list(freq), grid[row, ]))
                     cumsum <- cumsum + counts
                     pc <- counts / n
