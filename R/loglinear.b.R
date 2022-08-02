@@ -11,7 +11,6 @@ logLinearClass <- R6::R6Class(
 
         #### Init + run functions ----
         .init = function() {
-
             private$.modelTerms()
 
             private$.initModelFitTable()
@@ -21,27 +20,22 @@ logLinearClass <- R6::R6Class(
             private$.initCoefTables()
             private$.initEmm()
             private$.initEmmTable()
-
         },
         .run = function() {
-
-            ready <- TRUE
             if (length(self$options$blocks) < 1 || length(self$options$blocks[[1]]) == 0)
-                ready <- FALSE
+                return()
 
-            if (ready) {
+            data <- private$.cleanData()
+            private$.checkData(data)
 
-                data <- private$.cleanData()
+            results <- private$.compute(data)
 
-                results <- private$.compute(data)
-
-                private$.populateModelFitTable(results)
-                private$.populateModelCompTable(results)
-                private$.populateLrtTables(results)
-                private$.populateCoefTables(results)
-                private$.prepareEmmPlots(results$models, data=data)
-                private$.populateEmmTables()
-            }
+            private$.populateModelFitTable(results)
+            private$.populateModelCompTable(results)
+            private$.populateLrtTables(results)
+            private$.populateCoefTables(results)
+            private$.prepareEmmPlots(results$models, data=data)
+            private$.populateEmmTables()
         },
 
         #### Compute results ----
@@ -605,6 +599,18 @@ logLinearClass <- R6::R6Class(
             }
 
             return(formulas)
+        },
+        .checkData = function(data) {
+            for (factor in self$options$factors) {
+                nLevels = length(levels(data[[jmvcore::toB64(factor)]]))
+                if (nLevels <= 1) {
+                    jmvcore::reject(
+                        .("Factor '{factor}' has less than two levels. Factors must have at least two levels"),
+                        code=exceptions$dataError,
+                        factor=factor
+                    )
+                }
+            }
         },
         .cleanData = function() {
             counts <- self$options$counts
