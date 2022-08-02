@@ -35,7 +35,6 @@ ancovaClass <- R6::R6Class(
 
         },
         .run=function() {
-
             dep <- self$options$dep
             factors <- self$options$factors
             modelTerms <- private$.modelTerms()
@@ -43,22 +42,14 @@ ancovaClass <- R6::R6Class(
             if (is.null(dep) || length(factors) == 0 || length(modelTerms) == 0)
                 return()
 
+            private$.dataCheck()
+
             data <- self$finalData
-
-            errorMessage <- .("Column '{name}' contains unused levels (possible only when rows with missing values are excluded)")
-            for (name in colnames(data)) {
-                column <- data[[name]]
-                if (is.factor(column) && any(table(column) == 0))
-                    reject(errorMessage, name=name)
-            }
-
             dataB64 <- lapply(data, function(x) {
                 if (is.factor(x))
                     levels(x) <- toB64(levels(x))
                 return(x)
             })
-
-            private$.errorCheck(dataB64)
 
             results <- private$.compute(dataB64)
 
@@ -1003,20 +994,59 @@ ancovaClass <- R6::R6Class(
 
             return(c(width, height))
         },
-        .errorCheck = function(data) {
-
+        .dataCheck = function() {
             dep <- self$options$dep
             factors <- self$options$factors
 
-            if (is.factor(data[[dep]]))
-                reject(.('Dependent variable must be numeric'))
+            if (is.factor(self$finalData[[dep]])) {
+                jmvcore::reject(
+                    .("Dependent variable '{dep}' must be continuous"),
+                    code=exceptions$dataError,
+                    dep=dep
+                )
+            }
+
+            uniqueValues = length(unique(self$finalData[[dep]]))
+            if (uniqueValues == 0) {
+                jmvcore::reject(
+                    .("Dependent variable '{dep}' contains no data"),
+                    code=exceptions$dataError,
+                    dep=dep
+                )
+            } else if (uniqueValues == 1) {
+                jmvcore::reject(
+                    .("Dependent variable '{dep}' contains only one unqiue value"),
+                    code=exceptions$dataError,
+                    dep=dep
+                )
+            }
+
 
             for (factorName in factors) {
-                lvls <- base::levels(data[[factorName]])
+                lvls <- base::levels(self$finalData[[factorName]])
                 if (length(lvls) == 1) {
-                    reject(.("Factor '{factorName}' contains only a single level"), factorName=factorName)
+                    jmvcore::reject(
+                        .("Factor '{factorName}' contains only a single level"),
+                        code=exceptions$dataError,
+                        factorName=factorName
+                    )
                 } else if (length(lvls) == 0) {
-                    reject(.("Factor '{factorName}' contains no data"), factorName=factorName)
+                    jmvcore::reject(
+                        .("Factor '{factorName}' contains no data"),
+                        code=exceptions$dataError,
+                        factorName=factorName
+                    )
+                }
+            }
+
+            for (name in colnames(self$finalData)) {
+                column <- self$finalData[[name]]
+                if (is.factor(column) && any(table(column) == 0)) {
+                    jmvcore::reject(
+                        .("Column '{name}' contains unused levels (possible only when rows with missing values are excluded)"),
+                        code=exceptions$dataError,
+                        name=name
+                    )
                 }
             }
         }),
