@@ -40,18 +40,18 @@ testthat::test_that('Provide error message when dep variable contains only one u
     )
 })
 
-# test_that('Sensible error message is provided with factor with just missing values', {
-#     df <- data.frame(
-#         dep = 1:7,
-#         var = rep(NA, 7)
-#     )
-#
-#     testthat::expect_error(
-#         jmv::ANOVA(formula=dep~var, data=df),
-#         "Some sensible error message"
-#     )
-# })
-#
+testthat::test_that('Provide error message when a variable contains only missing values', {
+    df <- data.frame(
+        dep = 1:7,
+        var = rep(NA, 7)
+    )
+
+    testthat::expect_error(
+        jmv::ANOVA(formula=dep~var, data=df),
+        "The dataset contains 0 rows"
+    )
+})
+
 # test_that('Sensible error message is provided with dependent var with an infinte value', {
 #     df <- data.frame(
 #         dep = c(1:6, Inf),

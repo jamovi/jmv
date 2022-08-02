@@ -126,11 +126,11 @@ ancovaClass <- R6::R6Class(
                 if (isError(results)) {
                     message <- extractErrorMessage(results)
                     if (message == 'residual df = 0')
-                        reject(perfectFitErrorMessage)
+                        reject(perfectFitErrorMessage, code=exceptions$modelError)
                 }
 
                 if (results['Residuals', 'Sum Sq'] == 0 || results['Residuals', 'Df'] == 0)
-                    reject(perfectFitErrorMessage)
+                    reject(perfectFitErrorMessage, code=exceptions$modelError)
 
             }) # suppressWarnings
 
@@ -1006,44 +1006,47 @@ ancovaClass <- R6::R6Class(
                 )
             }
 
+            if (nrow(self$finalData) == 0) {
+                jmvcore::reject(
+                    .("The dataset contains 0 rows (after removing rows with missing values)"),
+                    code=exceptions$dataError
+                )
+            }
+
             uniqueValues = length(unique(self$finalData[[dep]]))
             if (uniqueValues == 0) {
                 jmvcore::reject(
-                    .("Dependent variable '{dep}' contains no data"),
+                    .("Dependent variable '{dep}' contains no data (after removing rows with missing values)"),
                     code=exceptions$dataError,
                     dep=dep
                 )
             } else if (uniqueValues == 1) {
                 jmvcore::reject(
-                    .("Dependent variable '{dep}' contains only one unqiue value"),
+                    .("Dependent variable '{dep}' contains only one unqiue value (after removing rows with missing values)"),
                     code=exceptions$dataError,
                     dep=dep
                 )
             }
 
-
             for (factorName in factors) {
                 lvls <- base::levels(self$finalData[[factorName]])
                 if (length(lvls) == 1) {
                     jmvcore::reject(
-                        .("Factor '{factorName}' contains only a single level"),
+                        .("Factor '{factorName}' contains only a single level (after removing rows with missing values)"),
                         code=exceptions$dataError,
                         factorName=factorName
                     )
                 } else if (length(lvls) == 0) {
                     jmvcore::reject(
-                        .("Factor '{factorName}' contains no data"),
+                        .("Factor '{factorName}' contains no data (after removing rows with missing values)"),
                         code=exceptions$dataError,
                         factorName=factorName
                     )
                 }
-            }
 
-            for (name in colnames(self$finalData)) {
-                column <- self$finalData[[name]]
-                if (is.factor(column) && any(table(column) == 0)) {
+                if (any(table(self$finalData[[factorName]]) == 0)) {
                     jmvcore::reject(
-                        .("Column '{name}' contains unused levels (possible only when rows with missing values are excluded)"),
+                        .("Factor '{factorName}' contains unused levels (after removing rows with missing values)"),
                         code=exceptions$dataError,
                         name=name
                     )
