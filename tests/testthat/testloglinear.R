@@ -40,16 +40,16 @@ testthat::test_that('Provide error message when factor contains fewer than two l
     )
 })
 
-# testthat::test_that('Sensible error message is provided var with only missing values', {
-#     df <- data.frame(x = factor(rep(NA, 7)))
-#
-#     testthat::expect_error(
-#         jmv::logLinear(
-#             data=df,
-#             factors="x",
-#             blocks=list(list("x")),
-#             refLevels = list(list(var="x", ref=NULL))
-#         ),
-#         "Some sensible error message"
-#     )
-# })
+testthat::test_that('Provide error message when data contains only missing values', {
+    df <- data.frame(x = factor(rep(NA, 7)))
+
+    testthat::expect_error(
+        jmv::logLinear(
+            data=df,
+            factors="x",
+            blocks=list(list("x")),
+            refLevels = list(list(var="x", ref=NULL))
+        ),
+        "The dataset contains 0 cases"
+    )
+})
