@@ -75,6 +75,7 @@ exceptions = list(
     "keyError" = "keyError",
     "modelError" = "modelError",
     "nameError" = "nameError",
-    "valueError" = "valueError"
+    "valueError" = "valueError",
+    "dataError" = "dataError"
 )
 

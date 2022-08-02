@@ -53,6 +53,8 @@ descriptivesClass <- R6::R6Class(
             private$.initDescriptivesTTable()
             private$.initFrequencyTables()
             private$.initPlots()
+
+            private$.errorCheck()
         },
         .clear = function(vChanges, ...) {
             private$.clearDescriptivesTable(vChanges)
