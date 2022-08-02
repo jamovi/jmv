@@ -1028,6 +1028,14 @@ ancovaClass <- R6::R6Class(
                 )
             }
 
+            if (any((is.infinite(self$finalData[[dep]])))) {
+                jmvcore::reject(
+                    .("Dependent variable '{dep}' contains infinite values"),
+                    code=exceptions$dataError,
+                    dep=dep
+                )
+            }
+
             for (factorName in factors) {
                 lvls <- base::levels(self$finalData[[factorName]])
                 if (length(lvls) == 1) {

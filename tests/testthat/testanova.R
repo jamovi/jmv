@@ -52,14 +52,14 @@ testthat::test_that('Provide error message when a variable contains only missing
     )
 })
 
-# test_that('Sensible error message is provided with dependent var with an infinte value', {
-#     df <- data.frame(
-#         dep = c(1:6, Inf),
-#         var = rep(1:2, length.out = 7)
-#     )
-#
-#     testthat::expect_error(
-#         jmv::ANOVA(formula=dep~var, data=df),
-#         "Some sensible error message"
-#     )
-# })
+testthat::test_that('Provide error message when dep variable contains infinte values', {
+    df <- data.frame(
+        dep = c(1:6, Inf),
+        var = rep(1:2, length.out = 7)
+    )
+
+    testthat::expect_error(
+        jmv::ANOVA(formula=dep~var, data=df),
+        "Dependent variable 'dep' contains infinite values"
+    )
+})
