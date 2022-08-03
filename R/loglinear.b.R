@@ -603,7 +603,7 @@ logLinearClass <- R6::R6Class(
         .checkData = function(data) {
             if (nrow(data) == 0) {
                 jmvcore::reject(
-                    .("The dataset contains 0 cases (after removing rows with missing values)"),
+                    .("The dataset contains 0 rows (or all rows contain missing values)"),
                     code=exceptions$dataError
                 )
             }
@@ -612,7 +612,7 @@ logLinearClass <- R6::R6Class(
                 nLevels = length(levels(data[[jmvcore::toB64(factor)]]))
                 if (nLevels <= 1) {
                     jmvcore::reject(
-                        .("Factor '{factor}' has fewer than two levels. Factors must have at least two levels"),
+                        .("Factor '{factor}' has less than two levels. Factors must have at least two levels"),
                         code=exceptions$dataError,
                         factor=factor
                     )
