@@ -1,7 +1,6 @@
 context('anovarm')
 
-test_that('anovarm works', {
-
+testthat::test_that('anovarm works', {
     # simulate data set
     suppressWarnings(RNGversion("3.5.0"))
     set.seed(210)
@@ -40,19 +39,19 @@ test_that('anovarm works', {
                       postHoc = postHoc)
 
     # Test rm table
-    expect_equal(2.26500538322502, r$rmTable$getCell(rowNo=2, "ss[none]")$value)
-    expect_equal(4, r$rmTable$getCell(rowNo=2, "df[none]")$value)
-    expect_equal(0.566251345806256, r$rmTable$getCell(rowNo=2, "ms[none]")$value)
-    expect_equal(0.598380091504137, r$rmTable$getCell(rowNo=2, "F[none]")$value)
-    expect_equal(0.664545185431145, r$rmTable$getCell(rowNo=2, "p[none]")$value)
-    expect_equal('', r$rmTable$getCell(rowNo=3, "F[none]")$value)
+    testthat::expect_equal(2.26500538322502, r$rmTable$getCell(rowNo=2, "ss[none]")$value)
+    testthat::expect_equal(4, r$rmTable$getCell(rowNo=2, "df[none]")$value)
+    testthat::expect_equal(0.566251345806256, r$rmTable$getCell(rowNo=2, "ms[none]")$value)
+    testthat::expect_equal(0.598380091504137, r$rmTable$getCell(rowNo=2, "F[none]")$value)
+    testthat::expect_equal(0.664545185431145, r$rmTable$getCell(rowNo=2, "p[none]")$value)
+    testthat::expect_equal('', r$rmTable$getCell(rowNo=3, "F[none]")$value)
 
     # Test rm table
-    expect_equal(0.415787240953556, r$bsTable$getCell(rowNo=1, "ss")$value)
-    expect_equal(0.842271353755428, r$bsTable$getCell(rowNo=1, "p")$value)
+    testthat::expect_equal(0.415787240953556, r$bsTable$getCell(rowNo=1, "ss")$value)
+    testthat::expect_equal(0.842271353755428, r$bsTable$getCell(rowNo=1, "p")$value)
+})
 
-
-    # Test sphericity footnote when there's a singularity error
+testthat::test_that("Test sphericity footnote when there's a singularity error", {
     data <- data.frame(
         'id' = 1:15,
         'x1' = c(4, 13, 15, 12, 12, 2, 19, 10, 22, 13, 10, 22, 10, 14, 22),
@@ -83,7 +82,7 @@ test_that('anovarm works', {
     testthat::expect_equal(spher$mauch, NaN)
 })
 
-test_that('emmeans work for unbalanced data', {
+testthat::test_that('emmeans work for unbalanced data', {
     set.seed(1337)
     N <- 100
     data <- data.frame(
@@ -120,10 +119,44 @@ test_that('emmeans work for unbalanced data', {
     means <- aggregate(data[, -4], data[4], mean)
     emmeans <- r$emm[[1]]$emmTable$asDF
 
-    expect_equal(means[1, 2], emmeans[1, "mean"], tolerance = 1e-4)
-    expect_equal(means[2, 2], emmeans[2, "mean"], tolerance = 1e-4)
-    expect_equal(means[1, 3], emmeans[3, "mean"], tolerance = 1e-4)
-    expect_equal(means[2, 3], emmeans[4, "mean"], tolerance = 1e-4)
-    expect_equal(means[1, 4], emmeans[5, "mean"], tolerance = 1e-4)
-    expect_equal(means[2, 4], emmeans[6, "mean"], tolerance = 1e-4)
+    testthat::expect_equal(means[1, 2], emmeans[1, "mean"], tolerance = 1e-4)
+    testthat::expect_equal(means[2, 2], emmeans[2, "mean"], tolerance = 1e-4)
+    testthat::expect_equal(means[1, 3], emmeans[3, "mean"], tolerance = 1e-4)
+    testthat::expect_equal(means[2, 3], emmeans[4, "mean"], tolerance = 1e-4)
+    testthat::expect_equal(means[1, 4], emmeans[5, "mean"], tolerance = 1e-4)
+    testthat::expect_equal(means[2, 4], emmeans[6, "mean"], tolerance = 1e-4)
 })
+
+testthat::test_that('Provide error message when there are empty cells in bs design', {
+    df <- data.frame(
+        measure1 = 20:24,
+        measure2 = 24:20,
+        bsFactor1 = c("A", "A", "B", "A", "A"),
+        bsFactor2 = c("A", "A", "B", "A", "A"),
+        stringsAsFactors = TRUE
+    )
+
+    rm = list(list(
+        label="rmFactor",
+        levels=c("measure1", "measure2")
+    ))
+
+    rmCells = list(
+        list(measure="measure1", cell="measure1"),
+        list(measure="measure2", cell="measure2")
+    )
+
+    testthat::expect_error(
+        jmv::anovaRM(
+            data=df,
+            rm=rm,
+            rmCells=rmCells,
+            bs=c("bsFactor1", "bsFactor2"),
+            rmTerms=list("rmFactor"),
+            bsTerms=list("bsFactor1", "bsFactor2")
+        ),
+        "Empty cells in between subject design"
+    )
+})
+
+
