@@ -19,31 +19,31 @@ mancovaClass <- R6::R6Class(
         },
         pillai = function() {
             if (is.null(private$.pillai))
-                private$.pillai <- summary(self$model, test="Pillai")
+                private$.pillai <- private$.computeMultivar(test="Pillai")
 
             return(private$.pillai)
         },
         wilks = function() {
             if (is.null(private$.wilks))
-                private$.wilks <- summary(self$model, test="Wilks")
+                private$.wilks <- private$.computeMultivar(test="Wilks")
 
             return(private$.wilks)
         },
         hotel = function() {
             if (is.null(private$.hotel))
-                private$.hotel <- summary(self$model, test="Hotelling-Lawley")
+                private$.hotel <- private$.computeMultivar(test="Hotelling-Lawley")
 
             return(private$.hotel)
         },
         roy = function() {
             if (is.null(private$.roy))
-                private$.roy <- summary(self$model, test="Roy")
+                private$.roy <- private$.computeMultivar(test="Roy")
 
             return(private$.roy)
         },
         univar = function() {
             if (is.null(private$.univar))
-                private$.univar <- summary.aov(self$model)
+                private$.univar <- private$.computeUnivar()
 
             return(private$.univar)
         },
@@ -96,7 +96,35 @@ mancovaClass <- R6::R6Class(
         #### Compute results ----
         .computeModel = function() {
             model <- stats::manova(private$.getFormula(), data=self$dataProcessed)
+
+            if (model$df.residual == 0) {
+                jmvcore::reject(
+                    .("Not enough degrees of freedom to estimate all the model effects"),
+                    code=exceptions$modelError
+                )
+            }
+
             return(model)
+        },
+        .computeMultivar = function(test) {
+            multivar = tryCatch(
+                summary(self$model, test=test),
+                error = function(e) {
+                    if (e$message == "residuals have rank 1 < 2") {
+                        jmvcore::reject(
+                            .("Dependent variables are very highly correlated"),
+                            code=exceptions$dataError
+                        )
+                    }
+                    stop(e)
+                }
+            )
+
+            return(multivar)
+        },
+        .computeUnivar = function() {
+            r <- summary.aov(self$model)
+            return(r)
         },
         .computeBoxM = function() {
             deps <- self$options$deps
