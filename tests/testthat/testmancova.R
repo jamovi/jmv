@@ -43,5 +43,33 @@ testthat::test_that('mancova works', {
     testthat::expect_equal(0.0974751087311048, r$assump$shapiro$getCell(rowNo=1, "p")$value)
 })
 
+testthat::test_that('Provide error message when dependent variables are highly correlated', {
+    df <- data.frame(
+        dep1 = 1:10,
+        dep2 = 1:10,
+        factor = rep(letters[1:2], length.out=10),
+        stringsAsFactors = TRUE
+    )
 
+    testthat::expect_error(
+        jmv::mancova(data = df, deps = c("dep1","dep2"), factors = c("factor")),
+        "Dependent variables are very highly correlated"
+    )
+})
+
+testthat::test_that('Provide error message if residual degrees of freedom are equal to 0', {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+    df <- data.frame(
+        dep1 = rnorm(22),
+        dep2 = rnorm(22),
+        factor1 = rep(letters[1:10], length.out=22),
+        factor2 = rep(LETTERS[1:3], length.out=22),
+        stringsAsFactors = TRUE
+    )
+
+    testthat::expect_error(
+        jmv::mancova(data = df, deps = c("dep1","dep2"), factors = c("factor1", "factor2")),
+        "Not enough degrees of freedom to estimate all the model effects"
+    )
 })
