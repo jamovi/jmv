@@ -396,4 +396,22 @@ options:
       description:
           R: >
             a comma-sepated list (default: 25,50,75) specifying the percentiles
+
+    - name: extreme
+      title: Extreme values
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide top-N extreme (highest and lowest) values
+
+    - name: extremeN
+      title: Number of extreme values
+      type: Integer
+      default: 5
+      min: 1
+      max: 20
+      description:
+          R: >
+            an integer (default: 5) specifying the number of extreme values
 ...

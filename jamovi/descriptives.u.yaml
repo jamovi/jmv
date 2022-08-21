@@ -57,7 +57,7 @@ children:
     collapsed: true
     children:
       - type: LayoutBox
-        stretchFactor: 2
+        stretchFactor: 3
         margin: large
         cell:
           column: 0
@@ -107,7 +107,7 @@ children:
                         width: large
                         enable: (pc)
       - type: LayoutBox
-        stretchFactor: 1
+        stretchFactor: 2
         margin: large
         cell:
           column: 1
@@ -126,7 +126,7 @@ children:
               - type: CheckBox
                 name: sum
       - type: LayoutBox
-        stretchFactor: 2
+        stretchFactor: 3
         margin: large
         cell:
           column: 0
@@ -178,7 +178,7 @@ children:
                         format: number
                         enable: (ci)
       - type: LayoutBox
-        stretchFactor: 1
+        stretchFactor: 2
         margin: large
         cell:
           column: 1
@@ -197,6 +197,23 @@ children:
             children:
               - type: CheckBox
                 name: sw
+          - type: Label
+            label: Outliers
+            children:
+              - type: LayoutBox
+                children:
+                  - type: CheckBox
+                    name: extreme
+                    label: Extremest
+                    style: inline
+                    verticalAlignment: center
+                    children:
+                      - type: TextBox
+                        name: extremeN
+                        label: ''
+                        suffix: values
+                        format: number
+                        enable: (extreme)
   - type: CollapseBox
     label: Plots
     collapsed: true
