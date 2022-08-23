@@ -52,6 +52,7 @@ descriptivesClass <- R6::R6Class(
             private$.initDescriptivesTable()
             private$.initDescriptivesTTable()
             private$.initFrequencyTables()
+            private$.initExtremeTables()
             private$.initPlots()
 
             private$.errorCheck()
@@ -67,6 +68,7 @@ descriptivesClass <- R6::R6Class(
                 private$.populateDescriptivesTable(results)
                 private$.populateDescriptivesTTable(results)
                 private$.populateFrequencyTables(results)
+                private$.populateExtremeTables(results)
                 private$.preparePlots()
             }
         },
@@ -79,10 +81,15 @@ descriptivesClass <- R6::R6Class(
 
             desc <- list()
             freq <- list()
+            extreme <- list()
             for (var in vars) {
                 column <- data[[var]]
                 if (is.factor(column))
                     freq[[var]] <- table(jmvcore::select(self$data, c(var, splitBy)))
+
+                extreme[[var]] <- private$.computeExtreme(
+                    data.frame(rows=rownames(self$data), values=column)
+                )
 
                 column <- jmvcore::toNumeric(column)
                 if (length(splitBy) > 0) {
@@ -95,7 +102,7 @@ descriptivesClass <- R6::R6Class(
                 }
             }
 
-            return(list(desc=desc, freq=freq))
+            return(list(desc=desc, freq=freq, extreme=extreme))
         },
 
         #### Init tables/plots functions ----
@@ -314,6 +321,37 @@ descriptivesClass <- R6::R6Class(
                     for (col in tableVars)
                         rowValues[[col]] <- as.character(grid[row, col])
                     table$addRow(rowKey=row, values=rowValues)
+                }
+            }
+        },
+        .initExtremeTables = function() {
+            if ( ! self$options$extreme)
+                return()
+
+            extremeN <- self$options$extremeN
+            tables <- self$results$extremeValues
+            vars <- self$options$vars
+
+            for (i in seq_along(vars)) {
+                var <- vars[i]
+                table <- tables[[i]]
+
+                if (! jmvcore::canBeNumeric(self$data[[var]])) {
+                    table$setVisible(FALSE)
+                    next()
+                }
+
+                table$addFormat(rowNo=extremeN+1, col=1, Cell.BEGIN_GROUP)
+
+                iter <- 1
+                for (n in seq_len(extremeN)) {
+                    table$setRow(rowNo=iter, values=list(type="Highest", place=n))
+                    iter <- iter + 1
+                }
+
+                for (n in seq_len(extremeN)) {
+                    table$setRow(rowNo=iter, values=list(type="Lowest", place=n))
+                    iter <- iter + 1
                 }
             }
         },
@@ -654,6 +692,47 @@ descriptivesClass <- R6::R6Class(
 
                     table$setRow(rowNo=row, value=list(counts=counts, pc=pc, cumpc=cumpc))
                 }
+            }
+        },
+        .populateExtremeTables = function(results) {
+            if ( ! self$options$extreme)
+                return()
+
+            extremeN <- self$options$extremeN
+            tables <- self$results$extremeValues
+            vars <- self$options$vars
+
+            for (i in seq_along(vars)) {
+                r <- results$extreme[[ vars[i] ]]
+
+                if (is.null(r))
+                    next()
+
+                table <- tables[[i]]
+
+                for (n in 1:nrow(r$highest)) {
+                    table$setRow(
+                        rowNo=n,
+                        values=list(
+                            row=r$highest[n,"rows"],
+                            value=r$highest[n,"values"]
+                        )
+                    )
+                }
+
+                for (n in 1:nrow(r$lowest)) {
+                    table$setRow(
+                        rowNo=extremeN + n,
+                        values=list(
+                            row=r$lowest[n,"rows"],
+                            value=r$lowest[n,"values"]
+                        )
+                    )
+                }
+
+                note <- .('Number of requested extreme values is higher than the number of rows in the data.')
+                if (extremeN > nrow(r$highest))
+                    table$setNote("insufficientData", note)
             }
         },
 
@@ -1448,6 +1527,19 @@ descriptivesClass <- R6::R6Class(
                 stats <- append(stats, l)
             }
             return(stats)
+        },
+        .computeExtreme = function(df) {
+            extremeN = self$options$extremeN
+
+            if (! jmvcore::canBeNumeric(df$values))
+                return(NULL)
+
+            df$values = jmvcore::toNumeric(df$values)
+
+            lowest = head(df[order(df$values),], extremeN)
+            highest <- head(df[order(-df$values),], extremeN)
+
+            return(list(highest=highest, lowest=lowest))
         },
         .plotSize = function(levels, plot) {
             nLevels <- as.numeric(sapply(levels, length))

@@ -42,7 +42,9 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             pcEqGr = FALSE,
             pcNEqGr = 4,
             pc = FALSE,
-            pcValues = "25,50,75", ...) {
+            pcValues = "25,50,75",
+            extreme = FALSE,
+            extremeN = 5, ...) {
 
             super$initialize(
                 package="jmv",
@@ -217,6 +219,16 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 "pcValues",
                 pcValues,
                 default="25,50,75")
+            private$..extreme <- jmvcore::OptionBool$new(
+                "extreme",
+                extreme,
+                default=FALSE)
+            private$..extremeN <- jmvcore::OptionInteger$new(
+                "extremeN",
+                extremeN,
+                default=5,
+                min=1,
+                max=20)
 
             self$.addOption(private$..vars)
             self$.addOption(private$..splitBy)
@@ -255,6 +267,8 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$.addOption(private$..pcNEqGr)
             self$.addOption(private$..pc)
             self$.addOption(private$..pcValues)
+            self$.addOption(private$..extreme)
+            self$.addOption(private$..extremeN)
         }),
     active = list(
         vars = function() private$..vars$value,
@@ -293,7 +307,9 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         pcEqGr = function() private$..pcEqGr$value,
         pcNEqGr = function() private$..pcNEqGr$value,
         pc = function() private$..pc$value,
-        pcValues = function() private$..pcValues$value),
+        pcValues = function() private$..pcValues$value,
+        extreme = function() private$..extreme$value,
+        extremeN = function() private$..extremeN$value),
     private = list(
         ..vars = NA,
         ..splitBy = NA,
@@ -331,7 +347,9 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         ..pcEqGr = NA,
         ..pcNEqGr = NA,
         ..pc = NA,
-        ..pcValues = NA)
+        ..pcValues = NA,
+        ..extreme = NA,
+        ..extremeN = NA)
 )
 
 descriptivesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -341,6 +359,7 @@ descriptivesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         descriptives = function() private$.items[["descriptives"]],
         descriptivesT = function() private$.items[["descriptivesT"]],
         frequencies = function() private$.items[["frequencies"]],
+        extremeValues = function() private$.items[["extremeValues"]],
         plots = function() private$.items[["plots"]]),
     private = list(),
     public=list(
@@ -386,6 +405,34 @@ descriptivesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                     clearWith=list(
                         "splitBy"),
                     columns=list())))
+            self$add(jmvcore::Array$new(
+                options=options,
+                name="extremeValues",
+                title="Extreme Values",
+                visible="(extreme)",
+                items="(vars)",
+                template=jmvcore::Table$new(
+                    options=options,
+                    title="Extreme values of $key",
+                    rows="(extremeN * 2)",
+                    columns=list(
+                        list(
+                            `name`="type", 
+                            `title`="", 
+                            `type`="text", 
+                            `combineBelow`=TRUE),
+                        list(
+                            `name`="place", 
+                            `title`="", 
+                            `type`="integer"),
+                        list(
+                            `name`="row", 
+                            `title`="Row number", 
+                            `type`="integer"),
+                        list(
+                            `name`="value", 
+                            `title`="Value", 
+                            `type`="number")))))
             self$add(jmvcore::Array$new(
                 options=options,
                 name="plots",
@@ -539,12 +586,17 @@ descriptivesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param pc \code{TRUE} or \code{FALSE} (default), provide percentiles
 #' @param pcValues a comma-sepated list (default: 25,50,75) specifying the
 #'   percentiles
+#' @param extreme \code{TRUE} or \code{FALSE} (default), provide N most
+#'   extreme (highest and lowest) values
+#' @param extremeN an integer (default: 5) specifying the number of extreme
+#'   values
 #' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$descriptives} \tab \tab \tab \tab \tab a table of the descriptive statistics \cr
 #'   \code{results$descriptivesT} \tab \tab \tab \tab \tab a table of the descriptive statistics \cr
 #'   \code{results$frequencies} \tab \tab \tab \tab \tab an array of frequency tables \cr
+#'   \code{results$extremeValues} \tab \tab \tab \tab \tab an array of extreme values tables \cr
 #'   \code{results$plots} \tab \tab \tab \tab \tab an array of descriptive plots \cr
 #' }
 #'
@@ -594,6 +646,8 @@ descriptives <- function(
     pcNEqGr = 4,
     pc = FALSE,
     pcValues = "25,50,75",
+    extreme = FALSE,
+    extremeN = 5,
     formula) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
@@ -661,7 +715,9 @@ descriptives <- function(
         pcEqGr = pcEqGr,
         pcNEqGr = pcNEqGr,
         pc = pc,
-        pcValues = pcValues)
+        pcValues = pcValues,
+        extreme = extreme,
+        extremeN = extremeN)
 
     analysis <- descriptivesClass$new(
         options = options,

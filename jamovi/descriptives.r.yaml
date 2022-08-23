@@ -45,6 +45,31 @@ items:
             - splitBy
           columns: []
 
+    - name: extremeValues
+      title: Extreme Values
+      type: Array
+      description: an array of extreme values tables
+      visible: (extreme)
+      items: (vars)
+      template:
+          title: Extreme values of $key
+          type: Table
+          rows: (extremeN * 2)
+          columns:
+            - name: type
+              title: ''
+              type: text
+              combineBelow: true
+            - name: place
+              title: ''
+              type: integer
+            - name: row
+              title: 'Row number'
+              type: integer
+            - name: value
+              title: 'Value'
+              type: number
+
     - name: plots
       title: Plots
       type: Array
