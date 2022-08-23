@@ -403,7 +403,7 @@ options:
       default: false
       description:
           R: >
-            `TRUE` or `FALSE` (default), provide top-N extreme (highest and lowest) values
+            `TRUE` or `FALSE` (default), provide N most extreme (highest and lowest) values
 
     - name: extremeN
       title: Number of extreme values

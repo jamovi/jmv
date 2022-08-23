@@ -702,8 +702,6 @@ descriptivesClass <- R6::R6Class(
             tables <- self$results$extremeValues
             vars <- self$options$vars
 
-            note <- .('Number of requested extreme values is higher than the number of rows in the data.')
-
             for (i in seq_along(vars)) {
                 r <- results$extreme[[ vars[i] ]]
 
@@ -732,6 +730,7 @@ descriptivesClass <- R6::R6Class(
                     )
                 }
 
+                note <- .('Number of requested extreme values is higher than the number of rows in the data.')
                 if (extremeN > nrow(r$highest))
                     table$setNote("insufficientData", note)
             }

@@ -586,8 +586,8 @@ descriptivesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param pc \code{TRUE} or \code{FALSE} (default), provide percentiles
 #' @param pcValues a comma-sepated list (default: 25,50,75) specifying the
 #'   percentiles
-#' @param extreme \code{TRUE} or \code{FALSE} (default), provide top-N extreme
-#'   (highest and lowest) values
+#' @param extreme \code{TRUE} or \code{FALSE} (default), provide N most
+#'   extreme (highest and lowest) values
 #' @param extremeN an integer (default: 5) specifying the number of extreme
 #'   values
 #' @param formula (optional) the formula to use, see the examples
