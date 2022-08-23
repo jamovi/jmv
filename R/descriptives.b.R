@@ -1003,10 +1003,18 @@ descriptivesClass <- R6::R6Class(
                                    axis.ticks.y=element_blank())
 
             } else {
-                data$s1rev <- factor(data$s1, rev(levels(data$s1)))
+                if (nSplits == 1)
+                    fill <- "s1"
+                else if (nSplits == 2)
+                    fill <- "s2"
+                else
+                    fill <- "s3"
 
-                plot <- ggplot(data=data, aes_string(x='x', y='s1rev', fill='s1')) +
-                    labs(x=labels$x, y=labels$s1) +
+                data$fillrev <- factor(data[[fill]], rev(levels(data[[fill]])))
+
+
+                plot <- ggplot(data=data, aes_string(x='x', y='fillrev', fill=fill)) +
+                    labs(x=labels$x, y=labels[[fill]]) +
                     scale_y_discrete(expand = c(0.05, 0)) +
                     scale_x_continuous(expand = c(0.01, 0))
 
@@ -1017,9 +1025,9 @@ descriptivesClass <- R6::R6Class(
                     plot <- plot + ggridges::geom_density_ridges(scale=0.9, alpha=alpha)
 
                 if (nSplits == 2) {
-                    plot <- plot + facet_grid(cols=vars(s2))
+                    plot <- plot + facet_grid(cols=vars(s1))
                 } else if (nSplits > 2) {
-                    plot <- plot + facet_grid(cols=vars(s2), rows=vars(s3))
+                    plot <- plot + facet_grid(cols=vars(s1), rows=vars(s2))
                 }
 
                 themeSpec <- theme(legend.position = 'none')
@@ -1138,9 +1146,6 @@ descriptivesClass <- R6::R6Class(
 
             fill <- theme$fill[2]
             color <- theme$color[2]
-            if (length(splitBy) > 2)
-                formula <- as.formula(paste(". ~", names$s3))
-
             themeSpec <- NULL
 
             # hide outliers if plotting the data
@@ -1227,13 +1232,25 @@ descriptivesClass <- R6::R6Class(
                                        axis.ticks.x=element_blank(),
                                        axis.title.x=element_blank())
             } else {
+                if (length(splitBy) > 2) {
+                    x <- names$s2
+                    xLabel <- labels$s2
+                    split <- names$s3
+                    splitLabel <- labels$s3
+                } else {
+                    x <- names$s1
+                    xLabel <- labels$s1
+                    split <- names$s2
+                    splitLabel <- labels$s2
+                }
+
                 plot <-
                     ggplot(
                         data=data,
-                        aes_string(x=names$s2, y=names$x, fill=names$s1)
+                        aes_string(x=x, y=names$x, fill=split)
                     ) +
                     labs(
-                        x=labels$s2, y=labels$x, fill=labels$s1, color=labels$s1
+                        x=xLabel, y=labels$x, fill=splitLabel, color=splitLabel
                     )
 
                 if (self$options$violin) {
@@ -1250,7 +1267,7 @@ descriptivesClass <- R6::R6Class(
                         plot <-
                             plot +
                             ggplot2::geom_jitter(
-                                aes_string(color=names$s1),
+                                aes_string(color=split),
                                 alpha=0.7,
                                 position=position_jitterdodge(
                                     jitter.width=0.1, dodge.width = 0.9
@@ -1297,8 +1314,10 @@ descriptivesClass <- R6::R6Class(
                 }
             }
 
-            if (length(splitBy) > 2)
+            if (length(splitBy) > 2) {
+                formula <- as.formula(paste(". ~", names$s1))
                 plot <- plot + facet_grid(formula)
+            }
 
             plot <- plot + ggtheme + themeSpec
 
@@ -1548,6 +1567,7 @@ descriptivesClass <- R6::R6Class(
             nCharLevels <- ifelse(is.na(nCharLevels[1:4]), 0, nCharLevels[1:4])
             nCharNames <- as.numeric(nchar(names(levels)))
             nCharNames <- ifelse(is.na(nCharNames[1:4]), 0, nCharNames[1:4])
+            nSplits <- length(self$options$splitBy)
 
             if (plot == "bar") {
                 xAxis <- 30 + 20
@@ -1563,9 +1583,11 @@ descriptivesClass <- R6::R6Class(
                 yAxis <- 30 + 20
                 width <- max(300, 70 * nLevels[1] * nLevels[2] * nLevels[3])
                 height <- 300
-                legend <- max(25 + 21 + 3.5 + 8.3 * nCharLevels[1] + 28, 25 + 10 * nCharNames[1] + 28)
 
-                width <- yAxis + width + ifelse(nLevels[1] > 1, legend, 0)
+                legendVar <- min(max(nSplits, 1), 3)
+                legend <- max(25 + 21 + 3.5 + 8.3 * nCharLevels[legendVar] + 28, 25 + 10 * nCharNames[legendVar] + 28)
+
+                width <- yAxis + width + ifelse(nLevels[legendVar] > 1, legend, 0)
                 height <- xAxis + height
             } else if (plot == "qq") {
                 xAxis <- 30 + 20
@@ -1589,9 +1611,22 @@ descriptivesClass <- R6::R6Class(
                 height <- xAxis + height
             } else {
                 xAxis <- 30 + 20
-                yAxis <- 45 + 11 + 8.3 * nCharLevels[1]
-                width <- 300 * nLevels[2]
-                height <- max(300, 50 * nLevels[1] * nLevels[3])
+                yAxis <- 45 + 11
+                width <- 300
+                height <- 300
+
+                if (nSplits == 1) {
+                    yAxis <- yAxis + 8.3 * nCharLevels[1]
+                    height <- max(height, 50 * nLevels[1])
+                } else if (nSplits == 2) {
+                    yAxis <- yAxis + 8.3 * nCharLevels[2]
+                    width <- width * nLevels[1]
+                    height <- max(height, 50 * nLevels[2])
+                } else if (nSplits > 2) {
+                    yAxis <- yAxis + 8.3 * nCharLevels[3]
+                    width <- width * nLevels[1]
+                    height <- max(height, 50 * nLevels[2] * nLevels[3])
+                }
 
                 width <- yAxis + width
                 height <- xAxis + height
