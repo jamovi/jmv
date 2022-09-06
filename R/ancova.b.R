@@ -1022,7 +1022,7 @@ ancovaClass <- R6::R6Class(
                 )
             } else if (uniqueValues == 1) {
                 jmvcore::reject(
-                    .("Dependent variable '{dep}' contains only one unqiue value (after removing rows with missing values)"),
+                    .("Dependent variable '{dep}' contains only one unique value (after removing rows with missing values)"),
                     code=exceptions$dataError,
                     dep=dep
                 )
