@@ -36,7 +36,7 @@ testthat::test_that('Provide error message when dep variable contains only one u
 
     testthat::expect_error(
         jmv::ANOVA(formula=dep~var, data=df),
-        "Dependent variable 'dep' contains only one unqiue value"
+        "Dependent variable 'dep' contains only one unique value"
     )
 })
 
