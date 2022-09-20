@@ -63,3 +63,46 @@ testthat::test_that('Provide error message when dep variable contains infinte va
         "Dependent variable 'dep' contains infinite values"
     )
 })
+
+testthat::test_that("Contrasts work", {
+    df <- data.frame(
+        dep = c(1,6,3,2,6,2,3,1,9,2),
+        var = factor(rep(1:2, length.out = 10))
+    )
+
+    contrasts <- list(
+        list(var="var", type="deviation")
+    )
+
+    r <- jmv::ANOVA(data=df,dep="dep", factors=c("var"), contrasts=contrasts)
+
+    contr <- r$contrasts[[1]]$asDF
+
+    testthat::expect_equal(contr$est, -0.9)
+    testthat::expect_equal(contr$se, 0.825, tolerance=1e-3)
+    testthat::expect_equal(contr$t, -1.091, tolerance=1e-3)
+    testthat::expect_equal(contr$p, 0.307, tolerance=1e-3)
+})
+
+
+testthat::test_that("Contrasts work with special characters in variable name", {
+    df <- data.frame(
+        dep = c(1,6,3,2,6,2,3,1,9,2),
+        var = factor(rep(1:2, length.out = 10))
+    )
+    names(df) <- c("dep~A", "var A")
+
+    contrasts <- list(
+        list(var="var A", type="deviation")
+    )
+
+    r <- jmv::ANOVA(data=df,dep="dep~A", factors=c("var A"), contrasts=contrasts)
+
+    contr <- r$contrasts[[1]]$asDF
+
+    testthat::expect_equal(contr$est, -0.9)
+    testthat::expect_equal(contr$se, 0.825, tolerance=1e-3)
+    testthat::expect_equal(contr$t, -1.091, tolerance=1e-3)
+    testthat::expect_equal(contr$p, 0.307, tolerance=1e-3)
+})
+

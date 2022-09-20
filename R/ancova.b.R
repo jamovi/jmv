@@ -542,7 +542,7 @@ ancovaClass <- R6::R6Class(
 
                 for (i in seq_along(labels)) {
                     label <- labels[[i]]
-                    name <- paste0(var, i)
+                    name <- paste0(jmvcore::composeTerm(var), i)
                     table$setRow(rowNo=i, list(
                         contrast=label,
                         est=contrResults[name, "Estimate"],
