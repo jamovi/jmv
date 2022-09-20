@@ -229,8 +229,8 @@ testthat::test_that('Extreme values table works', {
     )
 
     e1 <- r$extremeValues[[1]]$asDF
-    lowest <- head(df[order(df$numeric),], topN)
-    highest <- head(df[order(-df$numeric),], topN)
+    lowest <- head(df[order(df$numeric),], extremeN)
+    highest <- head(df[order(-df$numeric),], extremeN)
     casesExpected <- c(rownames(highest), rownames(lowest))
     valuesExpected <- c(highest$numeric, lowest$numeric)
 
@@ -238,8 +238,8 @@ testthat::test_that('Extreme values table works', {
     testthat::expect_equal(e1$value, valuesExpected)
 
     e2 <- r$extremeValues[[2]]$asDF
-    lowest <- head(df[order(df$ordinal),], topN)
-    highest <- head(df[order(-df$ordinal),], topN)
+    lowest <- head(df[order(df$ordinal),], extremeN)
+    highest <- head(df[order(-df$ordinal),], extremeN)
     casesExpected <- c(rownames(highest), rownames(lowest))
     valuesExpected <- c(highest$ordinal, lowest$ordinal)
 
