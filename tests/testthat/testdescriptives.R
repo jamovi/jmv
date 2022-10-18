@@ -1,6 +1,6 @@
 testthat::context('descriptives')
 
-testthat::test_that('descriptive statistics work for continuous variables without split by sunny', {
+testthat::test_that('All options in the descriptives work for cont vars without split by (sunny)', {
     CI_WIDTH <- 0.95
     QUANTS <- c(0.25, 0.50, 0.75)
 
@@ -9,8 +9,20 @@ testthat::test_that('descriptive statistics work for continuous variables withou
     df <- data.frame(x=x)
 
     desc <- jmv::descriptives(
-        data=df, vars=x, mode=TRUE, sum=TRUE, variance=TRUE, range=TRUE,
-        se=TRUE, ci=TRUE, skew=TRUE, kurt=TRUE, sw=TRUE, pcEqGr=TRUE, pc=TRUE
+        data=df,
+        vars=x,
+        mode=TRUE,
+        sum=TRUE,
+        variance=TRUE,
+        range=TRUE,
+        se=TRUE,
+        ci=TRUE,
+        iqr=TRUE,
+        skew=TRUE,
+        kurt=TRUE,
+        sw=TRUE,
+        pcEqGr=TRUE,
+        pc=TRUE
     )
 
     r <- desc$descriptives$asDF
@@ -39,6 +51,7 @@ testthat::test_that('descriptive statistics work for continuous variables withou
     testthat::expect_equal(sum(x), r[["x[sum]"]], tolerance = 1e-5)
     testthat::expect_equal(sd(x), r[["x[sd]"]], tolerance = 1e-5)
     testthat::expect_equal(var(x), r[["x[variance]"]], tolerance = 1e-5)
+    testthat::expect_equal(IQR(x), r[["x[iqr]"]], tolerance = 1e-5)
     testthat::expect_equal(range(x)[2] - range(x)[1], r[["x[range]"]], tolerance = 1e-5)
     testthat::expect_equal(min(x), r[["x[min]"]], tolerance = 1e-5)
     testthat::expect_equal(max(x), r[["x[max]"]], tolerance = 1e-5)
@@ -56,7 +69,7 @@ testthat::test_that('descriptive statistics work for continuous variables withou
     testthat::expect_match(desc$descriptives$notes$ci$note, "t-distribution")
 })
 
-testthat::test_that('descriptives transposed table works with splitBy', {
+testthat::test_that('Descriptives transposed table works with splitBy', {
     suppressWarnings(RNGversion("3.5.0"))
     set.seed(1337)
     df <- data.frame(
@@ -150,8 +163,7 @@ testthat::test_that("Grouped frequency table is displayed correctly", {
     testthat::expect_equal(c(0.13, 0.23, 0.33, 0.4, 0.55, 0.61, 0.74, 0.84, 1), freq$cumpc)
 })
 
-testthat::test_that('descriptives works old scenario', {
-
+testthat::test_that('Descriptives works old scenario', {
     w <- as.factor(rep(c("1", "2","3"), each=4))
     x <- as.factor(rep(c("a", "b","c"), 4))
     y <- c(4,4,3,4,8,0,9,8,8,6,0,3)
@@ -179,8 +191,8 @@ testthat::test_that('descriptives works old scenario', {
 
 })
 
-testthat::test_that('histogram is created for nominal numeric variable', {
-
+testthat::test_that('Histogram is created for nominal numeric variable', {
+    suppressWarnings(RNGversion("3.5.0"))
     set.seed(1337)
     data <- data.frame(
         a1 = rnorm(100, 0, 10),
