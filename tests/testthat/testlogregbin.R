@@ -178,3 +178,148 @@ testthat::test_that('logregbin works with ordered factors', {
     testthat::expect_equal(0.873, coef$p[3], tolerance = 1e-3)
     testthat::expect_equal(0.813, coef$p[4], tolerance = 1e-3)
 })
+
+testthat::test_that('Emmeans work with nuisance parameters (no interactions)', {
+    #' Test that nuisance factors are handled correctly in the estimated marginal means
+    #' See: https://cran.r-project.org/web/packages/emmeans/vignettes/messy-data.html
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+    df <- data.frame(
+        dep = sample(0:1, 100, replace=TRUE),
+        cov1 = rnorm(100),
+        cov2 = rnorm(100),
+        factor1 = sample(letters[1:3], 100, replace=TRUE),
+        factor2 = sample(LETTERS[1:2], 100, replace=TRUE),
+        stringsAsFactors = TRUE
+    )
+
+    dep <- "dep"
+    covs <- paste0("cov", 1:2)
+    factors <- paste0("factor", 1:2)
+    blocks = list(as.list(c(covs, factors)))
+    refLevels = list(
+        list(var="dep", ref="0"),
+        list(var=factors[1], ref="a"),
+        list(var=factors[2], ref="A")
+    )
+
+    r <- jmv::logRegBin(
+        df,
+        dep = !!dep,
+        covs = !!covs,
+        factors = !!factors,
+        blocks = blocks,
+        refLevels = refLevels,
+        emMeans = ~ cov1:cov2,
+        emmPlots = FALSE,
+        emmTables = TRUE
+    )
+
+    # Test estimated marginal means
+    emmeansTable <- r$models[[1]]$emm[[1]]$emmTable$asDF
+    testthat::expect_equal(
+        c(-1.149, -1.149, -1.149, -0.08, -0.08, -0.08, 0.988, 0.988, 0.988),
+        emmeansTable[['cov2']],
+        tolerance = 1e-3
+    )
+    testthat::expect_equal(
+        c(-0.852, 0.116, 1.083, -0.852, 0.116, 1.083, -0.852, 0.116, 1.083),
+        emmeansTable[['cov1']],
+        tolerance = 1e-3
+    )
+    testthat::expect_equal(
+        c(0.593, 0.59, 0.587, 0.549, 0.546, 0.543, 0.505, 0.502, 0.499),
+        emmeansTable[['prob']],
+        tolerance = 1e-3
+    )
+    testthat::expect_equal(
+        c(0.089, 0.072, 0.088, 0.074, 0.051, 0.073, 0.09, 0.073, 0.091),
+        emmeansTable[['se']],
+        tolerance = 1e-3
+    )
+    testthat::expect_equal(
+        c(0.414, 0.445, 0.411, 0.405, 0.446, 0.4, 0.335, 0.362, 0.328),
+        emmeansTable[['lower']],
+        tolerance = 1e-3
+    )
+    testthat::expect_equal(
+        c(0.75, 0.721, 0.743, 0.686, 0.643, 0.68, 0.674, 0.641, 0.67),
+        emmeansTable[['upper']]
+        , tolerance = 1e-3
+    )
+})
+
+
+testthat::test_that('Emmeans work with nuisance parameters (with interactions)', {
+    #' Test that nuisance factors are handled correctly in the estimated marginal means
+    #' When a nuisance factor is included in an interaction it should still be included
+    #' in the reference grid.
+    #' See: https://cran.r-project.org/web/packages/emmeans/vignettes/messy-data.html
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+    df <- data.frame(
+        dep = sample(0:1, 100, replace=TRUE),
+        cov1 = rnorm(100),
+        cov2 = rnorm(100),
+        factor1 = sample(letters[1:3], 100, replace=TRUE),
+        factor2 = sample(LETTERS[1:2], 100, replace=TRUE),
+        stringsAsFactors = TRUE
+    )
+
+    dep <- "dep"
+    covs <- c("cov1", "cov2")
+    factors <- c("factor1", "factor2")
+    blocks = list(list("cov1", "cov2", "factor1", "factor2", c("cov1", "factor1")))
+    refLevels = list(
+        list(var="dep", ref="0"),
+        list(var=factors[1], ref="a"),
+        list(var=factors[2], ref="A")
+    )
+
+    r <- jmv::linReg(
+        df,
+        dep = !!dep,
+        covs = !!covs,
+        factors = !!factors,
+        blocks = blocks,
+        refLevels = refLevels,
+        emMeans = ~ cov1:cov2,
+        emmPlots = FALSE,
+        emmTables = TRUE
+    )
+
+    # Test estimated marginal means
+    emmeansTable <- r$models[[1]]$emm[[1]]$emmTable$asDF
+    testthat::expect_equal(
+        c(-1.149, -1.149, -1.149, -0.08, -0.08, -0.08, 0.988, 0.988, 0.988),
+        emmeansTable[['cov2']],
+        tolerance = 1e-3
+    )
+    testthat::expect_equal(
+        c(-0.852, 0.116, 1.083, -0.852, 0.116, 1.083, -0.852, 0.116, 1.083),
+        emmeansTable[['cov1']],
+        tolerance = 1e-3
+    )
+    testthat::expect_equal(
+        c(0.613, 0.589, 0.564, 0.567, 0.542, 0.518, 0.521, 0.496, 0.472),
+        emmeansTable[['emmean']],
+        tolerance = 1e-3
+    )
+    testthat::expect_equal(
+        c(0.089, 0.071, 0.088, 0.073, 0.05, 0.074, 0.088, 0.072, 0.091),
+        emmeansTable[['se']],
+        tolerance = 1e-3
+    )
+    testthat::expect_equal(
+        c(0.436, 0.447, 0.389, 0.423, 0.442, 0.372, 0.346, 0.352, 0.291),
+        emmeansTable[['lower']],
+        tolerance = 1e-3
+    )
+    testthat::expect_equal(
+        c(0.791, 0.731, 0.74, 0.711, 0.643, 0.664, 0.696, 0.64, 0.652),
+        emmeansTable[['upper']],
+        tolerance = 1e-3
+    )
+})
+
+
