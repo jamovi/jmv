@@ -397,9 +397,16 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                             emmeans::emm_options(sep=",", parens="a^", cov.keep=1)
 
                             mm <- try(
-                                emmeans::emmeans(model, formula, cov.reduce=FUN, type='response',
-                                                 options=list(level=self$options$ciWidthEmm / 100),
-                                                 weights=weights, data=self$dataProcessed),
+                                emmeans::emmeans(
+                                    model,
+                                    formula,
+                                    cov.reduce=FUN,
+                                    type='response',
+                                    options=list(level=self$options$ciWidthEmm / 100),
+                                    weights=weights,
+                                    data=self$dataProcessed,
+                                    non.nuis = all.vars(formula),
+                                ),
                                 silent = TRUE
                             )
 
@@ -1019,6 +1026,9 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
         #### Plot functions ----
         .prepareEmmPlots = function() {
+            if (! self$options$emmPlots)
+                return()
+
             covs <- self$options$covs
             dep <- self$options$dep
 
@@ -1052,18 +1062,26 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                                         levels(d[[ termB64[k] ]]) <- c('-1SD', 'Mean', '+1SD')
                                     }
                                 } else {
-                                    d[[ termB64[k] ]] <- factor(jmvcore::fromB64(d[[ termB64[k] ]]),
-                                                                jmvcore::fromB64(levels(d[[ termB64[k] ]])))
+                                    d[[ termB64[k] ]] <- factor(
+                                        jmvcore::fromB64(d[[ termB64[k] ]]),
+                                        jmvcore::fromB64(levels(d[[ termB64[k] ]]))
+                                    )
                                 }
                             }
                         }
 
-                        names <- list('x'=termB64[1], 'y'='prob', 'lines'=termB64[2],
-                                      'plots'=termB64[3], 'lower'='asymp.LCL', 'upper'='asymp.UCL')
+                        names <- list(
+                            'x'=termB64[1], 'y'='prob', 'lines'=termB64[2], 'plots'=termB64[3],
+                            'lower'='asymp.LCL', 'upper'='asymp.UCL'
+                        )
                         names <- lapply(names, function(x) if (is.na(x)) NULL else x)
 
-                        labels <- list('x'=term[1], 'y'=paste0('P(', dep, ' = ', private$.getLevelsDep()$other,')'),
-                                       'lines'=term[2], 'plots'=term[3])
+                        labels <- list(
+                            'x'=term[1],
+                            'y'=paste0('P(', dep, ' = ', private$.getLevelsDep()$other,')'),
+                            'lines'=term[2],
+                            'plots'=term[3]
+                        )
                         labels <- lapply(labels, function(x) if (is.na(x)) NULL else x)
 
                         image$setState(list(data=d, names=names, labels=labels, cont=cont))
