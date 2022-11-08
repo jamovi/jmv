@@ -351,9 +351,15 @@ linRegClass <- R6::R6Class(
                             emmeans::emm_options(sep=",", parens="a^", cov.keep=1)
 
                             mm <- try(
-                                emmeans::emmeans(model, formula, cov.reduce=FUN,
-                                                 options=list(level=self$options$ciWidthEmm / 100),
-                                                 weights=weights, data=self$dataProcessed),
+                                emmeans::emmeans(
+                                    model,
+                                    formula,
+                                    cov.reduce = FUN,
+                                    options = list(level=self$options$ciWidthEmm / 100),
+                                    weights = weights,
+                                    data = self$dataProcessed,
+                                    non.nuis = all.vars(formula),
+                                ),
                                 silent = TRUE
                             )
 
@@ -1041,6 +1047,9 @@ linRegClass <- R6::R6Class(
             return(p)
         },
         .prepareEmmPlots = function() {
+            if (! self$options$emmPlots)
+                return()
+
             covs <- self$options$covs
             dep <- self$options$dep
 
@@ -1074,14 +1083,18 @@ linRegClass <- R6::R6Class(
                                         levels(d[[ termB64[k] ]]) <- c('-1SD', 'Mean', '+1SD')
                                     }
                                 } else {
-                                    d[[ termB64[k] ]] <- factor(jmvcore::fromB64(d[[ termB64[k] ]]),
-                                                                jmvcore::fromB64(levels(d[[ termB64[k] ]])))
+                                    d[[ termB64[k] ]] <- factor(
+                                        jmvcore::fromB64(d[[ termB64[k] ]]),
+                                        jmvcore::fromB64(levels(d[[ termB64[k] ]]))
+                                    )
                                 }
                             }
                         }
 
-                        names <- list('x'=termB64[1], 'y'='emmean', 'lines'=termB64[2],
-                                      'plots'=termB64[3], 'lower'='lower.CL', 'upper'='upper.CL')
+                        names <- list(
+                            'x'=termB64[1], 'y'='emmean', 'lines'=termB64[2], 'plots'=termB64[3],
+                            'lower'='lower.CL', 'upper'='upper.CL'
+                        )
                         names <- lapply(names, function(x) if (is.na(x)) NULL else x)
 
                         labels <- list('x'=term[1], 'y'=dep, 'lines'=term[2], 'plots'=term[3])
