@@ -122,7 +122,7 @@ anovaRMClass <- R6::R6Class(
 
             if (length(bsTerms) > 0) {
                 for (term in bsTerms) {
-                    if (term == 'Residual') {
+                    if (length(term) == 1 && term == 'Residual') {
                         name <- .('Residual')
                     } else {
                         name <- stringifyTerm(term)

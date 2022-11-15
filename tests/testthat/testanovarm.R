@@ -367,4 +367,35 @@ testthat::test_that('Provide error message when there are empty cells in bs desi
     )
 })
 
+testthat::test_that("No warnings are thrown when bs terms contains interaction", {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+    df <- data.frame(
+        measure1 = rnorm(100),
+        measure2 = rnorm(100),
+        bsFactor1 = sample(LETTERS[1:2], 100, replace = TRUE),
+        bsFactor2 = sample(LETTERS[1:2], 100, replace = TRUE),
+        stringsAsFactors = TRUE
+    )
 
+    rm = list(list(
+        label="rmFactor",
+        levels=c("measure1", "measure2")
+    ))
+
+    rmCells = list(
+        list(measure="measure1", cell="measure1"),
+        list(measure="measure2", cell="measure2")
+    )
+
+    testthat::expect_no_warning(
+        jmv::anovaRM(
+            data=df,
+            rm=rm,
+            rmCells=rmCells,
+            bs=vars(bsFactor1, bsFactor2),
+            rmTerms=~rmFactor,
+            bsTerms=~bsFactor1 + bsFactor2 + bsFactor1:bsFactor2,
+        )
+    )
+})
