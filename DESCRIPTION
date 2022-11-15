@@ -40,7 +40,7 @@ Imports:
     magrittr
 Suggests:
     exact2x2,
-    testthat,
+    testthat  (>= 3.1.5),
     semPlot,
     carData,
     knitr,
