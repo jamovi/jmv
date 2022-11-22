@@ -1345,7 +1345,7 @@ linRegClass <- R6::R6Class(
 
             if (naOmit) {
                 data <- tibble::rownames_to_column(data)
-                data <- tidyr::drop_na(data, -naSkip)
+                data <- tidyr::drop_na(data, -tidyselect::all_of(naSkip))
                 data <- tibble::column_to_rownames(data)
             }
 
