@@ -11,3 +11,4 @@
 ^package.json$
 ^README.md$
 ^\.Rproj\.user$
+^\.github$
