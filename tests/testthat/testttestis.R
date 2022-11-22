@@ -38,7 +38,7 @@ testthat::test_that('All options in the ttestIS work (sunny)', {
     testthat::expect_equal(c(0.166, 0.522), ttestTable[['ciu[stud]']], tolerance = 1e-3)
     testthat::expect_equal(c(-0.243, 0.118), ttestTable[['es[stud]']], tolerance = 1e-3)
     testthat::expect_equal(c(-0.638, -0.277), ttestTable[['ciles[stud]']], tolerance = 1e-3)
-    testthat::expect_equal(c(0.155, 0.512), ttestTable[['ciues[stud]']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.153, 0.512), ttestTable[['ciues[stud]']], tolerance = 1e-3)
     testthat::expect_equal(c(0.404, 0.247), ttestTable[['stat[bf]']], tolerance = 1e-3)
     testthat::expect_equal(c(0, 0), ttestTable[['err[bf]']], tolerance = 1e-3)
     testthat::expect_equal(c(-1.217, 0.591), ttestTable[['stat[welc]']], tolerance = 1e-3)
