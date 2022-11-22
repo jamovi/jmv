@@ -20,7 +20,7 @@ Imports:
     car (>= 3.0.0),
     multcomp,
     ggplot2 (>= 2.2.1),
-    PMCMR,
+    PMCMRplus,
     emmeans (>= 1.4.2),
     vcd,
     vcdExtra,

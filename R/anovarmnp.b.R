@@ -31,7 +31,7 @@ anovaRMNPClass <- R6::R6Class(
         if (self$options$get('pairs')) {
 
             table  <- self$results$get('comp')
-            result <- PMCMR::posthoc.durbin.test(mat, p.adjust='none')
+            result <- PMCMRplus::durbinAllPairsTest(mat, p.adjust='none')
 
             n <- length(measureNames)-1
             rowNo <- 1
