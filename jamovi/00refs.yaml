@@ -81,14 +81,6 @@ refs:
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=PMCMR'
         url: https://cran.r-project.org/package=PMCMR
 
-    PMCMRplus:
-        type: 'software'
-        author: Pohlert, T.
-        year: 2022
-        title: 'PMCMRplus: Calculate Pairwise Multiple Comparisons of Mean Rank Sums Extended'
-        publisher: '[R package]. Retrieved from https://cran.r-project.org/package=PMCMRplus'
-        url: https://cran.r-project.org/package=PMCMRplus
-
     ROCR:
         type: 'software'
         author: Sing, T., Sander, O., Beerenwinkel, N., & Lengauer, T.

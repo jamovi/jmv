@@ -30,7 +30,7 @@ items:
       title: Pairwise Comparisons (Durbin-Conover)
       type: Table
       description: a table of the pairwise comparisons
-      refs: PMCMRplus
+      refs: PMCMR
       visible: (pairs)
       clearWith:
         - measures
