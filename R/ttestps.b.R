@@ -332,7 +332,10 @@ ttestPSClass <- R6::R6Class(
                     jmvcore::format("H\u2090 \u03BC\u2009<sub>{}</sub> < 0", .("Measure 1 - Measure 2"))
                 )
             } else {
-                ttestTable$setNote("hyp", NULL)
+                ttestTable$setNote(
+                    "hyp",
+                    jmvcore::format("H\u2090 \u03BC\u2009<sub>{}</sub> \u2260 0", .("Measure 1 - Measure 2"))
+                )
             }
 
             pairs <- self$options$pairs
