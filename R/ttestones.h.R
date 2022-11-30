@@ -503,7 +503,8 @@ ttestOneSResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 renderFun=".desc",
                 clearWith=list(
                     "vars",
-                    "miss")))
+                    "miss",
+                    "testValue")))
             self$add(jmvcore::Array$new(
                 options=options,
                 name="qq",

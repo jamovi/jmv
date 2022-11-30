@@ -304,6 +304,7 @@ items:
       clearWith:
         - vars
         - miss
+        - testValue
 
     - name: qq
       title: Q-Q plots

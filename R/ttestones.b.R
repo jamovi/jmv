@@ -297,16 +297,17 @@ ttestOneSClass <- R6::R6Class(
                 return(FALSE)
 
             ciw <- self$options$get('ciWidth')
+            testValue <- self$options$get("testValue")
 
             pd <- position_dodge(0.2)
 
             plot <- ggplot(data=image$state, aes(x=var, y=stat, shape=type)) +
+                geom_hline(yintercept = testValue, linetype="dashed") +
                 geom_errorbar(aes(x=var, ymin=stat-cie, ymax=stat+cie, shape=type, width=.1),
                               size=.8, colour=theme$color[1], position=pd) +
                 geom_point(aes(x=var, y=stat, colour=type, shape=type),
                            fill=theme$fill[1], size=3, colour=theme$color[1], position=pd) +
                 labs(x='', y='') +
-                expand_limits(y=0) +
                 scale_shape_manual(name='', values=c(mean=21, median=22),
                                    labels=c(mean=paste0('Mean (', ciw, '% CI)'), median='Median')) +
                 ggtheme +
