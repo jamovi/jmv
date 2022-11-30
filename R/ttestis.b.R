@@ -521,7 +521,8 @@ ttestISClass <- R6::R6Class(
             else if (hypothesis == 'twoGreater')
                 table$setNote("hyp", jmvcore::format("H\u2090 \u03BC\u2009<sub>{}</sub> < \u03BC\u2009<sub>{}</sub>", groups[1], groups[2]))
             else
-                table$setNote("hyp", NULL)
+                table$setNote("hyp", jmvcore::format("H\u2090 \u03BC\u2009<sub>{}</sub> \u2260 \u03BC\u2009<sub>{}</sub>", groups[1], groups[2]))
+
         },
         .desc=function(image, ggtheme, theme, ...) {
 

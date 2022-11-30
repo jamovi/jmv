@@ -282,9 +282,7 @@ ttestOneSClass <- R6::R6Class(
             table$getColumn('ciues[wilc]')$setSuperTitle(ciTitleES)
             table$getColumn('ciles[wilc]')$setSuperTitle(ciTitleES)
 
-            if (hypothesis == 'dt' && testValue == 0)
-                table$setNote("hyp", NULL)
-            else if (hypothesis == 'dt')
+            if (hypothesis == 'dt')
                 table$setNote("hyp", jmvcore::format("H\u2090 \u03BC \u2260 {}", testValue))
             else if (hypothesis == 'gt')
                 table$setNote("hyp", jmvcore::format("H\u2090 \u03BC > {}", testValue))
