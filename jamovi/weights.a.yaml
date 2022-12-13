@@ -1,0 +1,21 @@
+---
+name:  weights
+title: Weights
+menuGroup: hidden
+version: '1.0.0'
+jas: '1.2'
+export: false
+
+options:
+    - name: data
+      type: Data
+
+    - name: weights
+      title: Weight Variable
+      type: Variable
+      permitted:
+        - numeric
+      suggested:
+        - continuous
+
+...
