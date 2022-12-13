@@ -1,0 +1,12 @@
+---
+name:  weights
+title: Weights
+jrs:   '1.1'
+
+items:
+    - name:  text
+      title: ''
+      type:  Html
+      content: Data set is currently unweighted
+
+...

@@ -271,8 +271,14 @@ analyses:
   - title: Results
     name: empty
     ns: jmv
-    menuGroup: dev
+    menuGroup: hidden
     menuTitle: Results
+    hidden: true
+  - title: Weights
+    name: weights
+    ns: jmv
+    menuGroup: hidden
+    menuTitle: Weights
     hidden: true
 datasets:
   - name: 'Big 5 (Dolan, Oort, Stoel & Wicherts, 2009)'
