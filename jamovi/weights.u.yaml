@@ -1,0 +1,17 @@
+title: Weights
+name: weights
+jus: '3.0'
+stage: 0
+compilerMode: aggressive
+children:
+  - type: VariableSupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: TargetLayoutBox
+        label: Weight Variable
+        children:
+          - type: VariablesListBox
+            name: weights
+            maxItemCount: 1
+            isTarget: true
