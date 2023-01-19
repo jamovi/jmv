@@ -94,33 +94,33 @@ corrMatrixClass <- R6::R6Class(
 
     },
     .run=function() {
-
+        
         matrix <- self$results$matrix
         vars <- self$options$vars
         nVars <- length(vars)
-
+        
         hyp <- self$options$hypothesis
         flag <- self$options$flag
-
+        
         if (hyp == 'pos')
             hyp <- 'greater'
         else if (hyp == 'neg')
             hyp <- 'less'
         else
             hyp <- 'two.sided'
-
+        
         if (nVars > 1) {
             for (i in 2:nVars) {
                 rowVarName <- vars[[i]]
                 rowVar <- jmvcore::toNumeric(self$data[[rowVarName]])
                 for (j in seq_len(i-1)) {
                     values <- list()
-
+                    
                     colVarName <- vars[[j]]
                     colVar <- jmvcore::toNumeric(self$data[[colVarName]])
-
+                    
                     result <- private$.test(rowVar, colVar, hyp)
-
+                    
                     values[[paste0(colVarName, '[r]')]] <- result$r
                     values[[paste0(colVarName, '[rp]')]] <- result$rp
                     values[[paste0(colVarName, '[rciu]')]] <- result$rciu
@@ -129,29 +129,33 @@ corrMatrixClass <- R6::R6Class(
                     values[[paste0(colVarName, '[rhop]')]] <- result$rhop
                     values[[paste0(colVarName, '[tau]')]] <- result$tau
                     values[[paste0(colVarName, '[taup]')]] <- result$taup
-                    values[[paste0(colVarName, '[taup]')]] <- result$taup
-
+                    #values[[paste0(colVarName, '[taup]')]] <- result$taup
+                    
                     values[[paste0(colVarName, '[n]')]] <- sum( ! (is.na(colVar) | is.na(rowVar)))
-
+                    
                     matrix$setRow(rowNo=i, values)
-
+                    
                     if (flag) {
-                        if (result$rp < .001)
+                        if ( ! self$options$pearson || is.factor(rowVar) || is.factor(colVar))
+                        {}  # do nothing
+                        else if (result$rp < .001)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[r]'), '***')
                         else if (result$rp < .01)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[r]'), '**')
                         else if (result$rp < .05)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[r]'), '*')
-
-                        if (result$rhop < .001)
+                        
+                        if ( ! self$options$spearman)
+                        {}  # do nothing
+                        else if (result$rhop < .001)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[rho]'), '***')
                         else if (result$rhop < .01)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[rho]'), '**')
                         else if (result$rhop < .05)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[rho]'), '*')
-
+                        
                         if ( ! self$options$kendall)
-                            {}  # do nothing
+                        {}  # do nothing
                         else if (result$taup < .001)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[tau]'), '***')
                         else if (result$taup < .01)
@@ -162,53 +166,64 @@ corrMatrixClass <- R6::R6Class(
                 }
             }
         }
-
+        
     },
     .test=function(var1, var2, hyp) {
         results <- list()
-
+        
+        if(is.factor(var1) || is.factor(var2)) {
+            var1 <- as.numeric(var1)
+            var2 <- as.numeric(var2)
+        } 
+        
         suppressWarnings({
-
-            ciw <- self$options$ciWidth / 100
-            res <- try(cor.test(var1, var2, alternative=hyp, method='pearson', conf.level=ciw))
-            if ( ! base::inherits(res, 'try-error')) {
-                results$r  <- res$estimate
-                results$rp <- res$p.value
-                results$rciu <- res$conf.int[2]
-                results$rcil <- res$conf.int[1]
+            
+            if (self$options$pearson) {
+                ciw <- self$options$ciWidth / 100
+                res <- try(cor.test(var1, var2, alternative=hyp, method='pearson', conf.level=ciw))
+                
+                if ( ! base::inherits(res, 'try-error')) {
+                    results$r  <- res$estimate
+                    results$rp <- res$p.value
+                    results$rciu <- res$conf.int[2]
+                    results$rcil <- res$conf.int[1]
+                }
+                else {
+                    results$r <- NaN
+                    results$rp <- NaN
+                    results$rciu <- NaN
+                    results$rcil <- NaN
+                }
             }
-            else {
-                results$r <- NaN
-                results$rp <- NaN
-                results$rciu <- NaN
-                results$rcil <- NaN
+            
+            if (self$options$spearman) {
+                res <- try(cor.test(var1, var2, alternative=hyp, method='spearman'))
+                
+                if ( ! base::inherits(res, 'try-error')) {
+                    results$rho <- res$estimate
+                    results$rhop <- res$p.value
+                }
+                else {
+                    results$rho <- NaN
+                    results$rhop <- NaN
+                }
             }
-
-            res <- try(cor.test(var1, var2, alternative=hyp, method='spearman'))
-            if ( ! base::inherits(res, 'try-error')) {
-                results$rho <- res$estimate
-                results$rhop <- res$p.value
-            }
-            else {
-                results$rho <- NaN
-                results$rhop <- NaN
-            }
-
-            res <- list()
-            if (self$options$kendall)
+            
+            if (self$options$kendall){
                 res <- try(cor.test(var1, var2, alternative=hyp, method='kendall'))
-
-            if ( ! base::inherits(res, 'try-error')) {
-                results$tau <- res$estimate
-                results$taup <- res$p.value
-            }
-            else {
-                results$tau <- NaN
-                results$taup <- NaN
+                
+                if ( ! base::inherits(res, 'try-error')) {
+                    results$tau <- res$estimate
+                    results$taup <- res$p.value
+                }
+                else {
+                    results$tau <- NaN
+                    results$taup <- NaN
+                }
             }
         }) # suppressWarnings
-
-        results
+        
+        return(results)
     },
     .plot=function(image, ggtheme, ...) {
 
