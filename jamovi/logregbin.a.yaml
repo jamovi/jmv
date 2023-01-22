@@ -172,6 +172,8 @@ options:
             title: Cox & Snell's R²
           - name: r2n
             title: Nagelkerke's R²
+          - name: r2t
+            title: Tjur's R²
       default:
           - r2mf
       description:
@@ -397,6 +399,10 @@ options:
     - name: predictOV
       title: Predicted values
       type: Output
+
+    - name: grmembershipOV
+      title: Group Membership
+      type: Output      
 
     - name: residsOV
       title: Residuals

@@ -47,6 +47,11 @@ items:
           type: number
           visible: (pseudoR2:r2n)
 
+        - name: r2t
+          title: R²<sub>T</sub>
+          type: number
+          visible: (pseudoR2:r2t)
+
         - name: chi
           title: χ²
           type: number
@@ -420,6 +425,15 @@ items:
 
     - name: predictOV
       title: Predicted values
+      type: Output
+      measureType: continuous
+      clearWith:
+        - dep
+        - blocks
+        - refLevels
+
+    - name: grmembershipOV
+      title: Group Membership
       type: Output
       measureType: continuous
       clearWith:

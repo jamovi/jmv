@@ -119,7 +119,8 @@ logRegBinOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=list(
                     "r2mf",
                     "r2cs",
-                    "r2n"),
+                    "r2n",
+                    "r2t"),
                 default=list(
                     "r2mf"))
             private$..omni <- jmvcore::OptionBool$new(
@@ -230,6 +231,8 @@ logRegBinOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 hidden=TRUE)
             private$..predictOV <- jmvcore::OptionOutput$new(
                 "predictOV")
+            private$..grmembershipOV <- jmvcore::OptionOutput$new(
+                "grmembershipOV")
             private$..residsOV <- jmvcore::OptionOutput$new(
                 "residsOV")
             private$..cooksOV <- jmvcore::OptionOutput$new(
@@ -269,6 +272,7 @@ logRegBinOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..boxTidwell)
             self$.addOption(private$..cooks)
             self$.addOption(private$..predictOV)
+            self$.addOption(private$..grmembershipOV)
             self$.addOption(private$..residsOV)
             self$.addOption(private$..cooksOV)
         }),
@@ -307,6 +311,7 @@ logRegBinOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         boxTidwell = function() private$..boxTidwell$value,
         cooks = function() private$..cooks$value,
         predictOV = function() private$..predictOV$value,
+        grmembershipOV = function() private$..grmembershipOV$value,
         residsOV = function() private$..residsOV$value,
         cooksOV = function() private$..cooksOV$value),
     private = list(
@@ -344,6 +349,7 @@ logRegBinOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..boxTidwell = NA,
         ..cooks = NA,
         ..predictOV = NA,
+        ..grmembershipOV = NA,
         ..residsOV = NA,
         ..cooksOV = NA)
 )
@@ -356,6 +362,7 @@ logRegBinResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         modelComp = function() private$.items[["modelComp"]],
         models = function() private$.items[["models"]],
         predictOV = function() private$.items[["predictOV"]],
+        grmembershipOV = function() private$.items[["grmembershipOV"]],
         residsOV = function() private$.items[["residsOV"]],
         cooksOV = function() private$.items[["cooksOV"]]),
     private = list(),
@@ -408,6 +415,11 @@ logRegBinResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                         `title`="R\u00B2<sub>N</sub>", 
                         `type`="number", 
                         `visible`="(pseudoR2:r2n)"),
+                    list(
+                        `name`="r2t", 
+                        `title`="R\u00B2<sub>T</sub>", 
+                        `type`="number", 
+                        `visible`="(pseudoR2:r2t)"),
                     list(
                         `name`="chi", 
                         `title`="\u03C7\u00B2", 
@@ -822,6 +834,15 @@ logRegBinResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "refLevels")))
             self$add(jmvcore::Output$new(
                 options=options,
+                name="grmembershipOV",
+                title="Group Membership",
+                measureType="continuous",
+                clearWith=list(
+                    "dep",
+                    "blocks",
+                    "refLevels")))
+            self$add(jmvcore::Output$new(
+                options=options,
                 name="residsOV",
                 title="Residuals",
                 measureType="continuous",
@@ -979,6 +1000,7 @@ logRegBinBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   \code{results$modelComp} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$models} \tab \tab \tab \tab \tab an array of model specific results \cr
 #'   \code{results$predictOV} \tab \tab \tab \tab \tab an output \cr
+#'   \code{results$grmembershipOV} \tab \tab \tab \tab \tab an output \cr
 #'   \code{results$residsOV} \tab \tab \tab \tab \tab an output \cr
 #'   \code{results$cooksOV} \tab \tab \tab \tab \tab an output \cr
 #' }
