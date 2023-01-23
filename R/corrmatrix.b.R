@@ -10,8 +10,12 @@ corrMatrixClass <- R6::R6Class(
         nVars <- length(vars)
         ciw <- self$options$ciWidth
 
+        mtord <- FALSE
         for (i in seq_along(vars)) {
             var <- vars[[i]]
+
+            if(is.factor(self$data[[var]]) && self$options$pearson)
+                mtord <- TRUE
 
             matrix$addColumn(name=paste0(var, '[r]'), title=var,
                 type='number', format='zto', visible='(pearson)')
@@ -92,6 +96,11 @@ corrMatrixClass <- R6::R6Class(
         if ( ! flag)
             matrix$setNote('flag', NULL)
 
+        if (mtord)
+            matrix$setNote('mtord', .('Pearson correlation cannot be calculated for ordered values'))
+        else
+            matrix$setNote('mtord', NULL)
+
     },
     .run=function() {
 
@@ -119,7 +128,12 @@ corrMatrixClass <- R6::R6Class(
                     colVarName <- vars[[j]]
                     colVar <- jmvcore::toNumeric(self$data[[colVarName]])
 
-                    result <- private$.test(rowVar, colVar, hyp)
+                    if(is.factor(self$data[[rowVarName]]) || is.factor(self$data[[colVarName]]))
+                        mtord <- TRUE
+                    else
+                        mtord <- TRUE
+
+                    result <- private$.test(rowVar, colVar, hyp, mtord)
 
                     values[[paste0(colVarName, '[r]')]] <- result$r
                     values[[paste0(colVarName, '[rp]')]] <- result$rp
@@ -129,21 +143,25 @@ corrMatrixClass <- R6::R6Class(
                     values[[paste0(colVarName, '[rhop]')]] <- result$rhop
                     values[[paste0(colVarName, '[tau]')]] <- result$tau
                     values[[paste0(colVarName, '[taup]')]] <- result$taup
-                    values[[paste0(colVarName, '[taup]')]] <- result$taup
+                    #values[[paste0(colVarName, '[taup]')]] <- result$taup
 
                     values[[paste0(colVarName, '[n]')]] <- sum( ! (is.na(colVar) | is.na(rowVar)))
 
                     matrix$setRow(rowNo=i, values)
 
                     if (flag) {
-                        if (result$rp < .001)
+                        if ( ! self$options$pearson || mtord)
+                        {}  # do nothing
+                        else if (result$rp < .001)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[r]'), '***')
                         else if (result$rp < .01)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[r]'), '**')
                         else if (result$rp < .05)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[r]'), '*')
 
-                        if (result$rhop < .001)
+                        if ( ! self$options$spearman)
+                        {}  # do nothing
+                        else if (result$rhop < .001)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[rho]'), '***')
                         else if (result$rhop < .01)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[rho]'), '**')
@@ -151,7 +169,7 @@ corrMatrixClass <- R6::R6Class(
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[rho]'), '*')
 
                         if ( ! self$options$kendall)
-                            {}  # do nothing
+                        {}  # do nothing
                         else if (result$taup < .001)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[tau]'), '***')
                         else if (result$taup < .01)
@@ -162,53 +180,64 @@ corrMatrixClass <- R6::R6Class(
                 }
             }
         }
-
     },
-    .test=function(var1, var2, hyp) {
+    .test=function(var1, var2, hyp, mtord) {
         results <- list()
 
         suppressWarnings({
 
-            ciw <- self$options$ciWidth / 100
-            res <- try(cor.test(var1, var2, alternative=hyp, method='pearson', conf.level=ciw))
-            if ( ! base::inherits(res, 'try-error')) {
-                results$r  <- res$estimate
-                results$rp <- res$p.value
-                results$rciu <- res$conf.int[2]
-                results$rcil <- res$conf.int[1]
-            }
-            else {
+            if (mtord) {
                 results$r <- NaN
                 results$rp <- NaN
                 results$rciu <- NaN
                 results$rcil <- NaN
             }
+            else if(self$options$pearson) {
+                ciw <- self$options$ciWidth / 100
+                res <- try(cor.test(var1, var2, alternative=hyp, method='pearson', conf.level=ciw))
 
-            res <- try(cor.test(var1, var2, alternative=hyp, method='spearman'))
-            if ( ! base::inherits(res, 'try-error')) {
-                results$rho <- res$estimate
-                results$rhop <- res$p.value
-            }
-            else {
-                results$rho <- NaN
-                results$rhop <- NaN
+                if ( ! base::inherits(res, 'try-error')) {
+                    results$r  <- res$estimate
+                    results$rp <- res$p.value
+                    results$rciu <- res$conf.int[2]
+                    results$rcil <- res$conf.int[1]
+                }
+                else {
+                    results$r <- NaN
+                    results$rp <- NaN
+                    results$rciu <- NaN
+                    results$rcil <- NaN
+                }
             }
 
-            res <- list()
-            if (self$options$kendall)
-                res <- try(cor.test(var1, var2, alternative=hyp, method='kendall'))
+            if (self$options$spearman) {
+                res <- try(cor.test(as.numeric(var1), as.numeric(var2), alternative=hyp, method='spearman'))
 
-            if ( ! base::inherits(res, 'try-error')) {
-                results$tau <- res$estimate
-                results$taup <- res$p.value
+                if ( ! base::inherits(res, 'try-error')) {
+                    results$rho <- res$estimate
+                    results$rhop <- res$p.value
+                }
+                else {
+                    results$rho <- NaN
+                    results$rhop <- NaN
+                }
             }
-            else {
-                results$tau <- NaN
-                results$taup <- NaN
+
+            if (self$options$kendall){
+                res <- try(cor.test(as.numeric(var1), as.numeric(var2), alternative=hyp, method='kendall'))
+
+                if ( ! base::inherits(res, 'try-error')) {
+                    results$tau <- res$estimate
+                    results$taup <- res$p.value
+                }
+                else {
+                    results$tau <- NaN
+                    results$taup <- NaN
+                }
             }
         }) # suppressWarnings
 
-        results
+        return(results)
     },
     .plot=function(image, ggtheme, ...) {
 

@@ -34,7 +34,8 @@ corrMatrixOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "continuous",
                     "ordinal"),
                 permitted=list(
-                    "numeric"))
+                    "numeric",
+                    "factor"))
             private$..pearson <- jmvcore::OptionBool$new(
                 "pearson",
                 pearson,
