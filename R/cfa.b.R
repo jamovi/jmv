@@ -28,7 +28,7 @@ cfaClass <- R6::R6Class(
         },
         fitMeasures = function() {
             if (is.null(private$.fitMeasures))
-                private$.fitMeasures <- lavaan::fitMeasures(self$model)
+                private$.fitMeasures <- private$.computeFitMeasures()
 
             return(private$.fitMeasures)
         },
@@ -94,21 +94,33 @@ cfaClass <- R6::R6Class(
             std.lv <- self$options$constrain == "facVar"
             missing <- self$options$miss
 
-            suppressWarnings({
-                fit <- lavaan::cfa(
-                    model=model,
-                    data=self$dataProcessed,
-                    std.lv=std.lv,
-                    missing=missing,
-                    meanstructure=TRUE
-                )
-            })
-            return(fit)
+            result <- private$.catchErrorsAndWarnings(
+                {
+                    lavaan::cfa(
+                        model = model,
+                        data = self$dataProcessed,
+                        std.lv = std.lv,
+                        missing = missing,
+                        meanstructure = TRUE
+                    )
+                },
+                handleErrors = TRUE
+            )
+
+            return(result$result)
+        },
+        .computeFitMeasures = function() {
+            result <- private$.catchErrorsAndWarnings(
+                {
+                    lavaan::fitMeasures(self$model)
+                },
+                handleErrors = TRUE
+            )
+            return(result$result)
         },
 
         #### Init tables/plots functions ----
         .initFactorLoadingsTable = function() {
-
             table <- self$results$factorLoadings
             factors <- self$options$factors
             rowNo <- 1
@@ -793,5 +805,54 @@ cfaClass <- R6::R6Class(
             }
 
             return(model)
+        },
+        #' Run an expression while catching the errors and warnings
+        #'
+        #' @param expr The expression to catch the errors from
+        #' @param handleErrors Perform error handling, if thrown. If `TRUE`, and an error is present,
+        #'   the analysis will throw an error and stop.
+        #'
+        #' @return A list containing the result of the expression, the errors, and the warnings
+        .catchErrorsAndWarnings = function(expr, handleErrors=FALSE) {
+            warnings <- list()
+            errors <- list()
+            result <- tryCatch(
+                {
+                    withCallingHandlers(
+                        expr,
+                        warning = function(w) {
+                            warnings <<- c(warnings, list(w))
+                            invokeRestart("muffleWarning")
+                        }
+                    )
+                },
+                error = function(e) {
+                    errors <<- c(errors, list(e))
+                }
+            )
+
+            if (handleErrors && length(errors) > 0)
+                private$.handleErrors(errors)
+
+            return(list(result=result, errors=errors, warnings=warnings))
+        },
+        #' Handle errors by throwing a new error
+        #'
+        #' @param errors Errors
+        .handleErrors = function(errors) {
+            lapply(errors, private$.handleError)
+        },
+        .handleError = function(error) {
+            for (cfaError in cfaErrors) {
+                if (grepl(cfaError$originalMessage, error$message, fixed=TRUE)) {
+                    rlang::abort(
+                        cfaError$message,
+                        class=cfaError$class,
+                        parent=error
+                    )
+                }
+            }
+
+            stop(error)
         })
 )
