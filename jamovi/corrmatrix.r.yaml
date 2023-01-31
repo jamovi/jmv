@@ -28,6 +28,19 @@ items:
             content: Pearson's r
             visible: (pearson && (sig || spearman || kendall || ci || n))
 
+          - name: .name[rdf]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (pearson && sig)
+
+          - name: .stat[rdf]
+            title: ""
+            type: text
+            content: df
+            visible: (pearson && sig)
+
           - name: .name[rp]
             title: ""
             type: text
@@ -79,6 +92,19 @@ items:
             type: text
             content: Spearman's rho
             visible: (spearman && (sig || pearson || kendall || n))
+
+          - name: .name[rhodf]
+            title: ""
+            type: text
+            content: ($key)
+            combineBelow: true
+            visible: (spearman && sig)
+
+          - name: .stat[rhodf]
+            title: ""
+            type: text
+            content: df
+            visible: (spearman && sig)
 
           - name: .name[rhop]
             title: ""
