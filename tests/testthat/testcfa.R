@@ -278,3 +278,23 @@ testthat::test_that('All options in the cfa work (sunny)', {
         modIndResCov[['XeDk']], tolerance = 1e-3
     )
 })
+
+testthat::test_that('Human readable error message is thrown when model does not converge', {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    nVars <- 20
+    nCases <- 10
+
+    data <- list()
+    for (i in 1:nVars)
+        data[[paste0("w",i)]] <- rnorm(nCases)
+    data <- as.data.frame(data)
+
+    factors <- list(list(label='factor_1', vars=paste0("w", 1:nVars)))
+
+    testthat::expect_error(
+        jmv::cfa(data = data, factors = factors, resCov = NULL, stdEst = TRUE, corRes = TRUE),
+        class = exceptions$modelError
+    )
+})
