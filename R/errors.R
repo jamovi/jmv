@@ -79,3 +79,18 @@ exceptions = list(
     "dataError" = "dataError"
 )
 
+cfaErrors = list(
+    list(
+        originalMessage = paste0(
+            'invalid object for slot "fx.group" in class "Fit": got class "NULL", should be or',
+            ' extend class "numeric"'
+        ),
+        message = "Model dit not converge",
+        class = exceptions$modelError
+    ),
+    list(
+        originalMessage = 'lavaan ERROR: fit measures not available if model did not converge',
+        message = "Model dit not converge",
+        class = exceptions$modelError
+    )
+)

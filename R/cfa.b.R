@@ -3,13 +3,63 @@
 cfaClass <- R6::R6Class(
     "cfaClass",
     inherit = cfaBase,
+    #### Active bindings ----
+    active = list(
+        dataProcessed = function() {
+            if (is.null(private$.dataProcessed))
+                private$.dataProcessed <- private$.cleanData()
+
+            return(private$.dataProcessed)
+        },
+        model = function() {
+            if (is.null(private$.model))
+                private$.model <- private$.computeModel()
+
+            return(private$.model)
+        },
+        estimates = function() {
+            if (is.null(private$.estimates)) {
+                private$.estimates <- lavaan::parameterestimates(
+                    self$model, standardized = TRUE, level = self$options$ciWidth / 100
+                )
+            }
+
+            return(private$.estimates)
+        },
+        fitMeasures = function() {
+            if (is.null(private$.fitMeasures))
+                private$.fitMeasures <- private$.computeFitMeasures()
+
+            return(private$.fitMeasures)
+        },
+        residuals = function() {
+            if (is.null(private$.residuals))
+                private$.residuals <- lavaan::residuals(self$model, type = "cor")[[2]]
+
+            return(private$.residuals)
+        },
+        modIndices = function() {
+            if (is.null(private$.modIndices)) {
+                private$.modIndices <- lavaan::modificationIndices(
+                    self$model, sort.=FALSE, minimum.value=0
+                )
+            }
+
+            return(private$.modIndices)
+        }
+    ),
     private = list(
         #### Member variables ----
         estResCov = NULL,
+        .dataProcessed = NULL,
+        .model = NULL,
+        .estimates = NULL,
+        .fitMeasures = NULL,
+        .residuals = NULL,
+        .modIndices = NULL,
 
         #### Init + run functions ----
         .init = function() {
-
             private$.initFactorLoadingsTable()
             private$.initFactorCovTable()
             private$.initFactorInterceptTable()
@@ -21,56 +71,56 @@ cfaClass <- R6::R6Class(
 
             syntax <- private$.lavaanify(FALSE)
             self$results$.setModelSyntax(syntax)
-
         },
         .run = function() {
-
-            ready <- private$.ready()
-
-            if (ready) {
-
-                data <- private$.cleanData()
-                results <- private$.compute(data)
-
-                private$.populateFactorLoadingsTable(results)
-                private$.populateFactorCovTable(results)
-                private$.populateFactorInterceptTable(results)
-                private$.populateResCovTable(results)
-                private$.populateResInterceptTable(results)
-                private$.populateFitMeasuresTable(results)
-                private$.populateTestTable(results)
-                private$.populateCorResTable(results)
-                private$.populateResCovModTable(results)
-                private$.populateFactorLoadingsModTable(results)
-                private$.preparePathDiagram(results)
-
+            if (private$.ready()) {
+                private$.populateFactorLoadingsTable()
+                private$.populateFactorCovTable()
+                private$.populateFactorInterceptTable()
+                private$.populateResCovTable()
+                private$.populateResInterceptTable()
+                private$.populateFitMeasuresTable()
+                private$.populateTestTable()
+                private$.populateCorResTable()
+                private$.populateResCovModTable()
+                private$.populateFactorLoadingsModTable()
+                private$.preparePathDiagram()
             }
         },
 
         #### Compute results ----
-        .compute = function(data) {
-
+        .computeModel = function() {
             model <- private$.lavaanify()
             std.lv <- self$options$constrain == "facVar"
             missing <- self$options$miss
 
-            suppressWarnings({
+            result <- private$.catchErrorsAndWarnings(
+                {
+                    lavaan::cfa(
+                        model = model,
+                        data = self$dataProcessed,
+                        std.lv = std.lv,
+                        missing = missing,
+                        meanstructure = TRUE
+                    )
+                },
+                handleErrors = TRUE
+            )
 
-                fit <- lavaan::cfa(model = model, data=data, std.lv=std.lv, missing=missing, meanstructure=TRUE)
-                estimates <- lavaan::parameterestimates(fit, standardized = TRUE, level = self$options$ciWidth / 100)
-                fitMeasures <- lavaan::fitMeasures(fit)
-                residuals <- lavaan::residuals(fit, type = "cor")[[2]]
-                modIndices <- lavaan::modificationIndices(fit, sort.=FALSE, minimum.value=0)
-
-            }) # suppressWarnings
-
-            return(list('fit'=fit, 'estimates'=estimates, 'fitMeasures'=fitMeasures,
-                        'residuals'=residuals, 'modIndices'=modIndices))
+            return(result$result)
+        },
+        .computeFitMeasures = function() {
+            result <- private$.catchErrorsAndWarnings(
+                {
+                    lavaan::fitMeasures(self$model)
+                },
+                handleErrors = TRUE
+            )
+            return(result$result)
         },
 
         #### Init tables/plots functions ----
         .initFactorLoadingsTable = function() {
-
             table <- self$results$factorLoadings
             factors <- self$options$factors
             rowNo <- 1
@@ -329,12 +379,11 @@ cfaClass <- R6::R6Class(
         },
 
         #### Populate tables ----
-        .populateFactorLoadingsTable = function(results) {
-
+        .populateFactorLoadingsTable = function() {
             table <- self$results$factorLoadings
 
             factors <- self$options$factors
-            r <- results$estimates
+            r <- self$estimates
 
             rowNo <- 1
 
@@ -369,12 +418,12 @@ cfaClass <- R6::R6Class(
                 }
             }
         },
-        .populateFactorCovTable = function(results) {
+        .populateFactorCovTable = function() {
 
             table <- self$results$factorEst$factorCov
             factors <- sapply(self$options$factors, function(x) x$label)
 
-            r <- results$estimates
+            r <- self$estimates
             rowNo <- 1
 
             for (i in 1:length(factors)) {
@@ -405,12 +454,12 @@ cfaClass <- R6::R6Class(
                 }
             }
         },
-        .populateFactorInterceptTable = function(results) {
+        .populateFactorInterceptTable = function() {
 
             table <- self$results$factorEst$factorIntercept
             factors <- sapply(self$options$factors, function(x) x$label)
 
-            r <- results$estimates
+            r <- self$estimates
 
             # for (i in 1:length(factors)) {
             #
@@ -430,12 +479,12 @@ cfaClass <- R6::R6Class(
             #         table$setRow(rowNo=i, values=row)
             # }
         },
-        .populateResCovTable = function(results) {
+        .populateResCovTable = function() {
 
             table <- self$results$resEst$resCov
             vars <- unique(unlist(lapply(self$options$factors, function(x) x$vars)))
 
-            r <- results$estimates
+            r <- self$estimates
             varsMatrix <- private$estResCov
             rowNo <- 1
 
@@ -467,12 +516,12 @@ cfaClass <- R6::R6Class(
                 }
             }
         },
-        .populateResInterceptTable = function(results) {
+        .populateResInterceptTable = function() {
 
             table <- self$results$resEst$resIntercept
             vars <- unique(unlist(lapply(self$options$factors, function(x) x$vars)))
 
-            r <- results$estimates
+            r <- self$estimates
 
             for (i in 1:length(vars)) {
 
@@ -492,10 +541,10 @@ cfaClass <- R6::R6Class(
                 table$setRow(rowNo=i, values=row)
             }
         },
-        .populateFitMeasuresTable = function(results) {
+        .populateFitMeasuresTable = function() {
 
             table <- self$results$modelFit$fitMeasures
-            r <- results$fitMeasures
+            r <- self$fitMeasures
 
             row <- list()
             row[['cfi']] <- as.numeric(r['cfi'])
@@ -509,10 +558,10 @@ cfaClass <- R6::R6Class(
 
             table$setRow(rowNo=1, values=row)
         },
-        .populateTestTable = function(results) {
+        .populateTestTable = function() {
 
             table <- self$results$modelFit$test
-            r <- results$fitMeasures
+            r <- self$fitMeasures
 
             row <- list()
             row[['chi']] <- as.numeric(r['chisq'])
@@ -521,13 +570,13 @@ cfaClass <- R6::R6Class(
 
             table$setRow(rowNo=1, values=row)
         },
-        .populateCorResTable = function(results) {
+        .populateCorResTable = function() {
 
             table <- self$results$modelPerformance$corRes
             vars <- unique(unlist(lapply(self$options$factors, function(x) x$vars)))
             highlight <- self$options$hlCorRes
 
-            r <- results$residuals
+            r <- self$residuals
 
             for (i in 1:(length(vars) - 1)) {
                 row <- list()
@@ -544,13 +593,13 @@ cfaClass <- R6::R6Class(
                     table$addFormat(col=highVar, rowNo=i, Cell.NEGATIVE)
             }
         },
-        .populateResCovModTable = function(results) {
+        .populateResCovModTable = function() {
 
             table <- self$results$modelPerformance$modIndices$resCovMod
             vars <- unique(unlist(lapply(self$options$factors, function(x) x$vars)))
             highlight <- self$options$hlMI
 
-            r <- results$modIndices
+            r <- self$modIndices
 
             varsMatrix <- private$estResCov
             varsMatrix <- abs(varsMatrix - 1)
@@ -586,14 +635,14 @@ cfaClass <- R6::R6Class(
                     table$addFormat(col=highVar, rowNo=i, Cell.NEGATIVE)
             }
         },
-        .populateFactorLoadingsModTable = function(results) {
+        .populateFactorLoadingsModTable = function() {
 
             table <- self$results$modelPerformance$modIndices$factorLoadingsMod
             vars <- unique(unlist(lapply(self$options$factors, function(x) x$vars)))
             factors <- sapply(self$options$factors, function(x) x$label)
             highlight <- self$options$hlMI
 
-            r <- results$modIndices
+            r <- self$modIndices
 
             for (i in seq_along(vars)) {
 
@@ -629,9 +678,9 @@ cfaClass <- R6::R6Class(
         },
 
         #### Plot functions ----
-        .preparePathDiagram = function(results) {
+        .preparePathDiagram = function() {
 
-            fit <- results$fit
+            fit <- self$model
 
             fit@ParTable$rhs <- jmvcore::fromB64(fit@ParTable$rhs)
             fit@ParTable$lhs <- jmvcore::fromB64(fit@ParTable$lhs)
@@ -756,5 +805,54 @@ cfaClass <- R6::R6Class(
             }
 
             return(model)
+        },
+        #' Run an expression while catching the errors and warnings
+        #'
+        #' @param expr The expression to catch the errors from
+        #' @param handleErrors Perform error handling, if thrown. If `TRUE`, and an error is present,
+        #'   the analysis will throw an error and stop.
+        #'
+        #' @return A list containing the result of the expression, the errors, and the warnings
+        .catchErrorsAndWarnings = function(expr, handleErrors=FALSE) {
+            warnings <- list()
+            errors <- list()
+            result <- tryCatch(
+                {
+                    withCallingHandlers(
+                        expr,
+                        warning = function(w) {
+                            warnings <<- c(warnings, list(w))
+                            invokeRestart("muffleWarning")
+                        }
+                    )
+                },
+                error = function(e) {
+                    errors <<- c(errors, list(e))
+                }
+            )
+
+            if (handleErrors && length(errors) > 0)
+                private$.handleErrors(errors)
+
+            return(list(result=result, errors=errors, warnings=warnings))
+        },
+        #' Handle errors by throwing a new error
+        #'
+        #' @param errors Errors
+        .handleErrors = function(errors) {
+            lapply(errors, private$.handleError)
+        },
+        .handleError = function(error) {
+            for (cfaError in cfaErrors) {
+                if (grepl(cfaError$originalMessage, error$message, fixed=TRUE)) {
+                    rlang::abort(
+                        cfaError$message,
+                        class=cfaError$class,
+                        parent=error
+                    )
+                }
+            }
+
+            stop(error)
         })
 )
