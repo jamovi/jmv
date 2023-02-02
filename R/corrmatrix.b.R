@@ -14,7 +14,7 @@ corrMatrixClass <- R6::R6Class(
         for (i in seq_along(vars)) {
             var <- vars[[i]]
 
-            if(is.ordered(self$data[[var]]) && self$options$pearson)
+            if (is.factor(self$data[[var]]) && self$options$pearson)
                 mtord <- TRUE
 
             matrix$addColumn(name=paste0(var, '[r]'), title=var,
