@@ -14,7 +14,7 @@ corrMatrixClass <- R6::R6Class(
         for (i in seq_along(vars)) {
             var <- vars[[i]]
 
-            if(is.factor(self$data[[var]]) && self$options$pearson)
+            if(is.ordered(self$data[[var]]) && self$options$pearson)
                 mtord <- TRUE
 
             matrix$addColumn(name=paste0(var, '[r]'), title=var,
@@ -128,10 +128,10 @@ corrMatrixClass <- R6::R6Class(
                     colVarName <- vars[[j]]
                     colVar <- jmvcore::toNumeric(self$data[[colVarName]])
 
-                    if(is.factor(self$data[[rowVarName]]) || is.factor(self$data[[colVarName]]))
+                    if(is.ordered(self$data[[rowVarName]]) || is.ordered(self$data[[colVarName]]))
                         mtord <- TRUE
                     else
-                        mtord <- TRUE
+                        mtord <- FALSE
 
                     result <- private$.test(rowVar, colVar, hyp, mtord)
 
