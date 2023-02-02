@@ -19,6 +19,8 @@ corrMatrixClass <- R6::R6Class(
 
             matrix$addColumn(name=paste0(var, '[r]'), title=var,
                 type='number', format='zto', visible='(pearson)')
+            matrix$addColumn(name=paste0(var, '[rdf]'), title=var,
+                type='integer', visible='(pearson && sig)')
             matrix$addColumn(name=paste0(var, '[rp]'), title=var,
                 type='number', format='zto,pvalue', visible='(pearson && sig)')
             matrix$addColumn(name=paste0(var, '[rciu]'), title=var,
@@ -27,6 +29,8 @@ corrMatrixClass <- R6::R6Class(
                 type='number', format='zto', visible='(pearson && ci)')
             matrix$addColumn(name=paste0(var, '[rho]'), title=var,
                 type='number', format='zto', visible='(spearman)')
+            matrix$addColumn(name=paste0(var, '[rhodf]'), title=var,
+                type='integer', visible='(spearman && sig)')
             matrix$addColumn(name=paste0(var, '[rhop]'), title=var,
                 type='number', format='zto,pvalue', visible='(spearman && sig)')
             matrix$addColumn(name=paste0(var, '[tau]'), title=var,
@@ -45,10 +49,12 @@ corrMatrixClass <- R6::R6Class(
             for (j in seq(i, nVars)) {
                 v <- vars[[j]]
                 values[[paste0(v, '[r]')]] <- ''
+                values[[paste0(v, '[rdf]')]] <- ''
                 values[[paste0(v, '[rp]')]] <- ''
                 values[[paste0(v, '[rciu]')]] <- ''
                 values[[paste0(v, '[rcil]')]] <- ''
                 values[[paste0(v, '[rho]')]] <- ''
+                values[[paste0(v, '[rhodf]')]] <- ''
                 values[[paste0(v, '[rhop]')]] <- ''
                 values[[paste0(v, '[tau]')]] <- ''
                 values[[paste0(v, '[taup]')]] <- ''
@@ -56,10 +62,12 @@ corrMatrixClass <- R6::R6Class(
             }
 
             values[[paste0(var, '[r]')]] <- '\u2014'
+            values[[paste0(var, '[rdf]')]] <- '\u2014'
             values[[paste0(var, '[rp]')]] <- '\u2014'
             values[[paste0(var, '[rciu]')]] <- '\u2014'
             values[[paste0(var, '[rcil]')]] <- '\u2014'
             values[[paste0(var, '[rho]')]] <- '\u2014'
+            values[[paste0(var, '[rhodf]')]] <- '\u2014'
             values[[paste0(var, '[rhop]')]] <- '\u2014'
             values[[paste0(var, '[tau]')]] <- '\u2014'
             values[[paste0(var, '[taup]')]] <- '\u2014'
@@ -139,7 +147,11 @@ corrMatrixClass <- R6::R6Class(
                     values[[paste0(colVarName, '[tau]')]] <- result$tau
                     values[[paste0(colVarName, '[taup]')]] <- result$taup
 
-                    values[[paste0(colVarName, '[n]')]] <- sum( ! (is.na(colVar) | is.na(rowVar)))
+                    n <- sum( ! (is.na(colVar) | is.na(rowVar)))
+                    df <- n - 2
+                    values[[paste0(colVarName, '[n]')]] <- n
+                    values[[paste0(colVarName, '[rdf]')]] <- df
+                    values[[paste0(colVarName, '[rhodf]')]] <- df
 
                     matrix$setRow(rowNo=i, values)
 

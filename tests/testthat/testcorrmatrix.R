@@ -31,6 +31,11 @@ testthat::test_that('All options in the corrMatrix work (sunny)', {
         -0.647, as.numeric(corTable$getCell(rowKey="var 3", "var 2[r]")$value), tolerance = 1e-3
     )
 
+    # Test Pearson's r degrees of freedom
+    testthat::expect_equal(9, as.numeric(corTable$getCell(rowKey="var 2", "var 1[rdf]")$value))
+    testthat::expect_equal(11, as.numeric(corTable$getCell(rowKey="var 3", "var 1[rdf]")$value))
+    testthat::expect_equal(9, as.numeric(corTable$getCell(rowKey="var 3", "var 2[rdf]")$value))
+
     # Test Pearson's r p-value
     testthat::expect_equal(
         0.807, as.numeric(corTable$getCell(rowKey="var 2", "var 1[rp]")$value), tolerance = 1e-3
@@ -74,6 +79,11 @@ testthat::test_that('All options in the corrMatrix work (sunny)', {
     testthat::expect_equal(
         -0.569, as.numeric(corTable$getCell(rowKey="var 3", "var 2[rho]")$value), tolerance = 1e-3
     )
+
+    # Test Spearman's rho degrees of freedom
+    testthat::expect_equal(9, as.numeric(corTable$getCell(rowKey="var 2", "var 1[rhodf]")$value))
+    testthat::expect_equal(11, as.numeric(corTable$getCell(rowKey="var 3", "var 1[rhodf]")$value))
+    testthat::expect_equal(9, as.numeric(corTable$getCell(rowKey="var 3", "var 2[rhodf]")$value))
 
     # Test Spearman's rho p-value
     testthat::expect_equal(

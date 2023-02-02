@@ -172,6 +172,19 @@ corrMatrixResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                         `content`="Pearson's r", 
                         `visible`="(pearson && (sig || spearman || kendall || ci || n))"),
                     list(
+                        `name`=".name[rdf]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="($key)", 
+                        `combineBelow`=TRUE, 
+                        `visible`="(pearson && sig)"),
+                    list(
+                        `name`=".stat[rdf]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="df", 
+                        `visible`="(pearson && sig)"),
+                    list(
                         `name`=".name[rp]", 
                         `title`="", 
                         `type`="text", 
@@ -223,6 +236,19 @@ corrMatrixResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                         `type`="text", 
                         `content`="Spearman's rho", 
                         `visible`="(spearman && (sig || pearson || kendall || n))"),
+                    list(
+                        `name`=".name[rhodf]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="($key)", 
+                        `combineBelow`=TRUE, 
+                        `visible`="(spearman && sig)"),
+                    list(
+                        `name`=".stat[rhodf]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="df", 
+                        `visible`="(spearman && sig)"),
                     list(
                         `name`=".name[rhop]", 
                         `title`="", 
