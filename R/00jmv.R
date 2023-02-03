@@ -82,14 +82,14 @@
         `url`="https://cran.r-project.org/package=ROCR"), 
     `nnet`=list(
         `type`="software", 
-        `author`="Ripley, B., Venables W.", 
+        `author`="Ripley, B., Venables, W.", 
         `year`=2016, 
         `title`="nnet: Feed-Forward Neural Networks and Multinomial Log-Linear Models", 
         `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=nnet", 
         `url`="https://cran.r-project.org/package=nnet"), 
     `MASS`=list(
         `type`="software", 
-        `author`="Ripley, B., Venables W., Bates, D. M., Hornik, K., Gebhardt, A., & Firth, D.", 
+        `author`="Ripley, B., Venables, W., Bates, D. M., Hornik, K., Gebhardt, A., & Firth, D.", 
         `year`=2018, 
         `title`="MASS: Support Functions and Datasets for Venables and Ripley's MASS", 
         `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=MASS", 
@@ -103,7 +103,7 @@
         `url`="https://cran.r-project.org/package=vcd"), 
     `vcdExtra`=list(
         `type`="software", 
-        `author`="Friendly M., Turner, H., Zeileis, A., Murdoch, D., & Firth, D.", 
+        `author`="Friendly, M., Turner, H., Zeileis, A., Murdoch, D., & Firth, D.", 
         `year`=2017, 
         `title`="vcdExtra: 'vcd' Extensions and Additions", 
         `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=vcdExtra", 
