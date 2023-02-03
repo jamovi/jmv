@@ -226,7 +226,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             fitted <- list()
             for (i in seq_along(self$models))
                 fitted[[i]] <- self$models[[i]]$fitted.values
-            
+
             return(fitted)
         },
         .computePredicted = function() {
@@ -234,7 +234,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             predicted <- list()
             for (i in seq_along(self$models))
                 predicted[[i]] <- predict(self$models[[i]], data, type="response")
-            
+
             return(predicted)
         },
         .computeCooks = function() {
