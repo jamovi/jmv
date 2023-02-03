@@ -225,8 +225,8 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         .computeFitted = function() {
             fitted <- list()
             for (i in seq_along(self$models))
-                fitted[[i]] <- ifelse(self$models[[i]]$fitted.values > 0.5, 1, 0)
-
+                fitted[[i]] <- self$models[[i]]$fitted.values
+            
             return(fitted)
         },
         .computePredicted = function() {
@@ -234,7 +234,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             predicted <- list()
             for (i in seq_along(self$models))
                 predicted[[i]] <- predict(self$models[[i]], data, type="response")
-
+            
             return(predicted)
         },
         .computeCooks = function() {
@@ -288,10 +288,8 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 r2mf <- 1 - dev/nullDev
                 r2cs <- 1 - exp(-(nullDev - dev) / n)
                 r2n <- r2cs / (1 - exp(-nullDev / n))
-                r2t <- unname(diff(tapply(self$models[[i]]$fitted.values,
-                                          self$models[[i]]$y, 
-                                          mean,
-                                          na.rm=TRUE)))
+                r2t <- unname(diff(tapply(predict(self$models[[i]], type="response"), 
+                                          self$models[[i]]$y, mean, na.rm=TRUE)))
 
                 pR2[[i]] <- list(r2mf=r2mf, r2cs=r2cs, r2n=r2n, r2t=r2t)
             }
@@ -1025,8 +1023,8 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             if (self$options$grmembershipOV && self$results$grmembershipOV$isNotFilled()) {
                 self$results$grmembershipOV$setRowNums(private$.getDataRowNums())
                 for (i in seq_along(self$fitted))
-                    self$results$grmembershipOV$setValues(index=i, self$fitted[[i]])
-
+                    self$results$grmembershipOV$setValues(index=i, 
+                                                          ifelse(self$fitted[[i]] > 0.5, 1, 0))
             }
 
             if (self$options$residsOV && self$results$residsOV$isNotFilled()) {
