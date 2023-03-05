@@ -15,6 +15,7 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             bar = FALSE,
             barCounts = FALSE,
             box = FALSE,
+            boxNotched = FALSE,
             violin = FALSE,
             dot = FALSE,
             dotType = "jitter",
@@ -99,6 +100,10 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             private$..box <- jmvcore::OptionBool$new(
                 "box",
                 box,
+                default=FALSE)
+            private$..boxNotched <- jmvcore::OptionBool$new(
+                "boxNotched",
+                boxNotched,
                 default=FALSE)
             private$..violin <- jmvcore::OptionBool$new(
                 "violin",
@@ -239,6 +244,7 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$.addOption(private$..bar)
             self$.addOption(private$..barCounts)
             self$.addOption(private$..box)
+            self$.addOption(private$..boxNotched)
             self$.addOption(private$..violin)
             self$.addOption(private$..dot)
             self$.addOption(private$..dotType)
@@ -280,6 +286,7 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         bar = function() private$..bar$value,
         barCounts = function() private$..barCounts$value,
         box = function() private$..box$value,
+        boxNotched = function() private$..boxNotched$value,
         violin = function() private$..violin$value,
         dot = function() private$..dot$value,
         dotType = function() private$..dotType$value,
@@ -320,6 +327,7 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         ..bar = NA,
         ..barCounts = NA,
         ..box = NA,
+        ..boxNotched = NA,
         ..violin = NA,
         ..dot = NA,
         ..dotType = NA,
@@ -417,21 +425,21 @@ descriptivesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                     rows="(extremeN * 2)",
                     columns=list(
                         list(
-                            `name`="type", 
-                            `title`="", 
-                            `type`="text", 
+                            `name`="type",
+                            `title`="",
+                            `type`="text",
                             `combineBelow`=TRUE),
                         list(
-                            `name`="place", 
-                            `title`="", 
+                            `name`="place",
+                            `title`="",
                             `type`="integer"),
                         list(
-                            `name`="row", 
-                            `title`="Row number", 
+                            `name`="row",
+                            `title`="Row number",
                             `type`="integer"),
                         list(
-                            `name`="value", 
-                            `title`="Value", 
+                            `name`="value",
+                            `title`="Value",
                             `type`="number")))))
             self$add(jmvcore::Array$new(
                 options=options,
@@ -471,11 +479,11 @@ descriptivesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 
 #' Descriptives
 #'
-#' Descriptives are an assortment of summarising statistics, and 
-#' visualizations which allow exploring the shape and distribution of data. It 
-#' is good practice to explore your data with descriptives before proceeding 
+#' Descriptives are an assortment of summarising statistics, and
+#' visualizations which allow exploring the shape and distribution of data. It
+#' is good practice to explore your data with descriptives before proceeding
 #' to more formal tests.
-#' 
+#'
 #'
 #' @examples
 #' \dontrun{
@@ -546,6 +554,8 @@ descriptivesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   bar plots
 #' @param box \code{TRUE} or \code{FALSE} (default), provide box plots
 #'   (continuous variables only)
+#' @param boxNotched \code{TRUE} or \code{FALSE} (default), provide box plots
+#'   notched (continuous variables only)
 #' @param violin \code{TRUE} or \code{FALSE} (default), provide violin plots
 #'   (continuous variables only)
 #' @param dot \code{TRUE} or \code{FALSE} (default), provide dot plots
@@ -618,6 +628,7 @@ descriptives <- function(
     bar = FALSE,
     barCounts = FALSE,
     box = FALSE,
+    boxNotched = FALSE,
     violin = FALSE,
     dot = FALSE,
     dotType = "jitter",
@@ -688,6 +699,7 @@ descriptives <- function(
         bar = bar,
         barCounts = barCounts,
         box = box,
+        boxNotched = boxNotched,
         violin = violin,
         dot = dot,
         dotType = dotType,

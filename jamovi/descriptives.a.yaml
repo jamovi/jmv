@@ -164,6 +164,14 @@ options:
           R: >
             `TRUE` or `FALSE` (default), provide box plots (continuous variables only)
 
+    - name: boxNotched
+      title: Notched
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide box plots notched (continuous variables only)
+
     - name: violin
       title: Violin
       type: Bool

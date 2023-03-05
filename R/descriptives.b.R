@@ -459,7 +459,7 @@ descriptivesClass <- R6::R6Class(
                             renderFun = ".boxPlot",
                             width = size[1],
                             height = size[2],
-                            clearWith = list("splitBy", "box", "violin", "dot", "dotType", "boxMean", "boxLabelOutliers")
+                            clearWith = list("splitBy", "box", "violin", "dot", "dotType", "boxMean", "boxNotched","boxLabelOutliers")
                         )
 
                         group$add(image)
@@ -1202,6 +1202,7 @@ descriptivesClass <- R6::R6Class(
                             width=0.3,
                             alpha=0.9,
                             fill=theme$fill[2],
+                            notch=ifelse(self$options$boxNotched, TRUE, FALSE),
                             outlier.colour=theme$color[1],
                             outlier.shape=outlierShape
                         )
