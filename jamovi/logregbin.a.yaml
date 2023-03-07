@@ -400,9 +400,9 @@ options:
       title: Predicted values
       type: Output
 
-    - name: grmembershipOV
-      title: Group Membership
-      type: Output      
+    #- name: grmembershipOV
+    #  title: Group Membership
+    #  type: Output      
 
     - name: residsOV
       title: Residuals
