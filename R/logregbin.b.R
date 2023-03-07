@@ -1020,11 +1020,11 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                     self$results$predictOV$setValues(index=i, as.numeric(self$predicted[[i]]))
             }
 
-            if (self$options$grmembershipOV && self$results$grmembershipOV$isNotFilled()) {
-                self$results$grmembershipOV$setRowNums(private$.getDataRowNums())
-                for (i in seq_along(self$fitted))
-                    self$results$grmembershipOV$setValues(index=i, ifelse(self$fitted[[i]] > 0.5, 1, 0))
-            }
+            #if (self$options$grmembershipOV && self$results$grmembershipOV$isNotFilled()) {
+            #    self$results$grmembershipOV$setRowNums(private$.getDataRowNums())
+            #    for (i in seq_along(self$fitted))
+            #        self$results$grmembershipOV$setValues(index=i, ifelse(self$fitted[[i]] > 0.5, 1, 0))
+            #}
 
             if (self$options$residsOV && self$results$residsOV$isNotFilled()) {
                 self$results$residsOV$setRowNums(private$.getDataRowNums())
