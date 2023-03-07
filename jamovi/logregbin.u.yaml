@@ -371,8 +371,6 @@ children:
           - type: Output
             name: predictOV
           - type: Output
-            name: grmembershipOV            
-          - type: Output
             name: residsOV
           - type: Output
             name: cooksOV
