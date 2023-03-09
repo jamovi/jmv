@@ -23,7 +23,7 @@ testthat::test_that('All options in the logRegBin work (sunny)', {
         refLevels = list(list(var="dep 1", ref="0")),
         modelTest = TRUE,
         bic = TRUE,
-        pseudoR2 = c("r2mf", "r2cs", "r2n"),
+        pseudoR2 = c("r2mf", "r2cs", "r2n", "r2t"),
         omni = TRUE,
         ci = TRUE,
         OR = TRUE,
@@ -48,6 +48,7 @@ testthat::test_that('All options in the logRegBin work (sunny)', {
     testthat::expect_equal(0.701, modelFitTable[['r2mf']], tolerance = 1e-3)
     testthat::expect_equal(0.6, modelFitTable[['r2cs']], tolerance = 1e-3)
     testthat::expect_equal(0.823, modelFitTable[['r2n']], tolerance = 1e-3)
+    testthat::expect_equal(0.733, modelFitTable[['r2t']], tolerance = 1e-3)
     testthat::expect_equal(91.645, modelFitTable[['chi']], tolerance = 1e-3)
     testthat::expect_equal(2, modelFitTable[['df']])
     testthat::expect_equal(0, modelFitTable[['p']])
