@@ -431,15 +431,6 @@ items:
         - blocks
         - refLevels
 
-    #- name: grmembershipOV
-    #  title: Group Membership
-    #  type: Output
-    #  measureType: continuous
-    #  clearWith:
-    #    - dep
-    #    - blocks
-    #    - refLevels
-
     - name: residsOV
       title: Residuals
       type: Output

@@ -288,8 +288,11 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 r2mf <- 1 - dev/nullDev
                 r2cs <- 1 - exp(-(nullDev - dev) / n)
                 r2n <- r2cs / (1 - exp(-nullDev / n))
-                r2t <- unname(diff(tapply(predict(self$models[[i]], type="response"),
-                                          self$models[[i]]$y, mean, na.rm=TRUE)))
+
+                meanFittedProbs <- tapply(
+                    self$models[[i]]$fitted.values, self$models[[i]]$y, mean, na.rm=TRUE
+                )
+                r2t <- unname(diff(meanFittedProbs))
 
                 pR2[[i]] <- list(r2mf=r2mf, r2cs=r2cs, r2n=r2n, r2t=r2t)
             }
@@ -708,7 +711,6 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             }
 
             predictTitle <- .("Predicted")
-            #grmembshipTitle <- .("Group Membership")
             residsTitle <- .("Residuals")
             cooksTitle <- .("Cook's distance")
 
@@ -728,7 +730,6 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             if (self$nModels == 1) {
 
                 self$results$predictOV$set(1, title(predictTitle, dep), description(predictDescPrefix), 'continuous')
-                #self$results$grmembershipOV$set(1, grmembshipTitle, description(grmembshipTitle), 'continuous')
                 self$results$residsOV$set(1, residsTitle, description(residsTitle), 'continuous')
                 self$results$cooksOV$set(1, cooksTitle, description(cooksTitle), 'continuous')
 
@@ -740,10 +741,6 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 titles <- vapply(keys, function(key) title(predictTitle, paste(dep, key)), '')
                 descriptions <- vapply(keys, function(key) description(predictDescPrefix, key), '')
                 self$results$predictOV$set(keys, titles, descriptions, measureTypes)
-
-                #titles <- vapply(keys, function(key) title(grmembshipTitle, key), '')
-                #descriptions <- vapply(keys, function(key) description(grmembshipTitle, key), '')
-                #self$results$grmembershipOV$set(keys, titles, descriptions, measureTypes)
 
                 titles <- vapply(keys, function(key) title(residsTitle, key), '')
                 descriptions <- vapply(keys, function(key) description(residsTitle, key), '')
@@ -1019,12 +1016,6 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 for (i in seq_along(self$predicted))
                     self$results$predictOV$setValues(index=i, as.numeric(self$predicted[[i]]))
             }
-
-            #if (self$options$grmembershipOV && self$results$grmembershipOV$isNotFilled()) {
-            #    self$results$grmembershipOV$setRowNums(private$.getDataRowNums())
-            #    for (i in seq_along(self$fitted))
-            #        self$results$grmembershipOV$setValues(index=i, ifelse(self$fitted[[i]] > 0.5, 1, 0))
-            #}
 
             if (self$options$residsOV && self$results$residsOV$isNotFilled()) {
                 self$results$residsOV$setRowNums(private$.getDataRowNums())
