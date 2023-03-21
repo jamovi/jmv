@@ -289,7 +289,12 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 r2cs <- 1 - exp(-(nullDev - dev) / n)
                 r2n <- r2cs / (1 - exp(-nullDev / n))
 
-                pR2[[i]] <- list(r2mf=r2mf, r2cs=r2cs, r2n=r2n)
+                meanFittedProbs <- tapply(
+                    self$models[[i]]$fitted.values, self$models[[i]]$y, mean, na.rm=TRUE
+                )
+                r2t <- unname(diff(meanFittedProbs))
+
+                pR2[[i]] <- list(r2mf=r2mf, r2cs=r2cs, r2n=r2n, r2t=r2t)
             }
             return(pR2)
         },
@@ -755,6 +760,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 row[["r2mf"]] <- self$pseudoR2[[i]]$r2mf
                 row[["r2cs"]] <- self$pseudoR2[[i]]$r2cs
                 row[["r2n"]] <- self$pseudoR2[[i]]$r2n
+                row[["r2t"]] <- self$pseudoR2[[i]]$r2t
                 row[["dev"]] <- self$deviance[[i]]
                 row[["aic"]] <- self$AIC[[i]]
                 row[["bic"]] <- self$BIC[[i]]

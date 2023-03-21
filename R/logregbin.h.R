@@ -119,7 +119,8 @@ logRegBinOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=list(
                     "r2mf",
                     "r2cs",
-                    "r2n"),
+                    "r2n",
+                    "r2t"),
                 default=list(
                     "r2mf"))
             private$..omni <- jmvcore::OptionBool$new(
@@ -408,6 +409,11 @@ logRegBinResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                         `title`="R\u00B2<sub>N</sub>", 
                         `type`="number", 
                         `visible`="(pseudoR2:r2n)"),
+                    list(
+                        `name`="r2t", 
+                        `title`="R\u00B2<sub>T</sub>", 
+                        `type`="number", 
+                        `visible`="(pseudoR2:r2t)"),
                     list(
                         `name`="chi", 
                         `title`="\u03C7\u00B2", 

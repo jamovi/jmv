@@ -172,6 +172,8 @@ options:
             title: Cox & Snell's R²
           - name: r2n
             title: Nagelkerke's R²
+          - name: r2t
+            title: Tjur's R²
       default:
           - r2mf
       description:

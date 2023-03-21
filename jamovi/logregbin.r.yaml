@@ -47,6 +47,11 @@ items:
           type: number
           visible: (pseudoR2:r2n)
 
+        - name: r2t
+          title: R²<sub>T</sub>
+          type: number
+          visible: (pseudoR2:r2t)
+
         - name: chi
           title: χ²
           type: number
@@ -340,7 +345,6 @@ items:
                       - refLevels
                       - ciWidthEmm
                       - emmWeights
-
 
           - name: pred
             title: Prediction

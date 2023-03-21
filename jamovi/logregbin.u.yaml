@@ -45,7 +45,7 @@ children:
         stretchFactor: 1
         format: term
         events:
-            update: './logregbin.events::onUpdate_modelSupplier'
+          update: './logregbin.events::onUpdate_modelSupplier'
         children:
           - type: TargetLayoutBox
             transferAction: interactions
@@ -165,6 +165,10 @@ children:
                     type: CheckBox
                     optionName: pseudoR2
                     optionPart: r2n
+                  - name: pseudoR2_r2t
+                    type: CheckBox
+                    optionName: pseudoR2
+                    optionPart: r2t
                 name: pseudoR2
   - type: CollapseBox
     label: Model Coefficients
@@ -234,8 +238,8 @@ children:
             persistentItems: true
             stretchFactor: 1
             events:
-                change: './logregbin.events::onChange_emMeansSupplier'
-                update: './logregbin.events::onUpdate_emMeansSupplier'
+              change: './logregbin.events::onChange_emMeansSupplier'
+              update: './logregbin.events::onUpdate_emMeansSupplier'
             children:
               - type: TargetLayoutBox
                 children:
