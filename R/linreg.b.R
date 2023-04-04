@@ -194,17 +194,23 @@ linRegClass <- R6::R6Class(
             return(models)
         },
         .computeWeights = function() {
-            var <- self$options$weights
-            if (is.null(var)) {
-                weights <- NULL
+            legacy_weights <- self$options$weights
+            global_weights <- attr(self$data, "jmv-weights")
+
+            if (is.null(legacy_weights) && is.null(global_weights))
+                return()
+
+            if (! is.null(legacy_weights)) {
+                weights <- self$dataProcessed[[jmvcore::toB64(legacy_weights)]]
             } else {
-                weights <- self$dataProcessed[[jmvcore::toB64(var)]]
-                if (any(weights < 0)) {
-                    jmvcore::reject(
-                        .("'{var}' contains negative values. Negative weights are not permitted."),
-                        var=var
-                    )
-                }
+                weights <- self$dataProcessed[[".WEIGHTS"]]
+            }
+
+            if (any(weights < 0)) {
+                jmvcore::reject(
+                    .("'{var}' contains negative values. Negative weights are not permitted."),
+                    var=legacy_weights
+                )
             }
 
             return(weights)
@@ -443,7 +449,6 @@ linRegClass <- R6::R6Class(
                 coefTerms <- rowNamesModel[[i]]
 
                 table$addRow(rowKey="`(Intercept)`", values=list(term = .("Intercept")))
-
 
                 if (! is.null(weights)) {
                     table$setNote(
@@ -1339,6 +1344,10 @@ linRegClass <- R6::R6Class(
 
             for (cov in c(dep, covs, weights))
                 data[[jmvcore::toB64(cov)]] <- jmvcore::toNumeric(dataRaw[[cov]])
+
+            global_weights <- attr(dataRaw, "jmv-weights")
+            if (is.null(weights) && ! is.null(global_weights))
+                data[[".WEIGHTS"]] = jmvcore::toNumeric(global_weights)
 
             attr(data, 'row.names') <- rownames(self$data)
             attr(data, 'class') <- 'data.frame'

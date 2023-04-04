@@ -420,7 +420,38 @@ testthat::test_that("Analysis throws error for factor with one level", {
     )
 })
 
-testthat::test_that("Analysis works with weights", {
+testthat::test_that("Analysis works with global weights", {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    weights <- abs(rnorm(100))
+
+    df <- data.frame(
+        dep = rnorm(100),
+        cov = rnorm(100),
+        factor = factor(sample(LETTERS[1:3], 100, replace=TRUE))
+    )
+    attr(df, "jmv-weights") <- weights
+
+    refLevels = list(list(var="factor", ref="A"))
+
+    r <- jmv::linReg(
+        df,
+        dep="dep",
+        covs="cov",
+        factors="factor",
+        blocks=list(list("cov", "factor")),
+        refLevels=refLevels,
+    )
+
+    coef <- r$models[[1]]$coef$asDF
+    testthat::expect_equal(coef$est[1], -0.100, tolerance = 1e-3)
+    testthat::expect_equal(coef$se[2], 0.089, tolerance = 1e-3)
+    testthat::expect_equal(coef$t[4], 1.004, tolerance = 1e-3)
+    testthat::expect_equal(coef$p[5], 0.247, tolerance = 1e-3)
+})
+
+testthat::test_that("Analysis works with legacy weights", {
     suppressWarnings(RNGversion("3.5.0"))
     set.seed(1337)
 
