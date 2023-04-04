@@ -120,7 +120,7 @@ ttestOneSClass <- R6::R6Class(
 
                     if ( ! isError(res)) {
 
-                        nTies <- sum(column == 0)
+                        nTies <- sum(column == testValue)
                         totalRankSum <- ((n-nTies) * ((n-nTies) + 1)) / 2
                         biSerial <- (2 * (res$statistic / totalRankSum)) - 1
 

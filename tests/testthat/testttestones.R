@@ -78,3 +78,15 @@ testthat::test_that('Matched rank biserial correlation is correct', {
     testthat::expect_equal(0.234, ttestTable[['p[wilc]']], tolerance = 1e-3)
     testthat::expect_equal(0.5, ttestTable[['es[wilc]']])
 })
+
+testthat::test_that('Matched rank biserial correlation works with non zero test value', {
+    df <- data.frame(x = c(1, 5, 3, 4, 4, 2, 3, 2, 1, 4, 5, 4, 3, 1))
+
+    r <- jmv::ttestOneS(
+        df, testValue=3, vars="x", hypothesis="gt", wilcoxon=TRUE, students=FALSE, effectSize=TRUE
+    )
+
+    # Test rank biserial correlation
+    ttestTable <- r$ttest$asDF
+    testthat::expect_equal(-0.0303, ttestTable[['es[wilc]']], tolerance = 1e-4)
+})
