@@ -200,3 +200,58 @@ testthat::test_that('All options in the logRegMulti work (sunny)', {
         c(0.379, 0.516, 0.561, 0.582, 0.331, 0.537), emmeansTable3[['upper']], tolerance = 1e-3
     )
 })
+
+
+testthat::test_that("Analysis works with global weights", {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    weights <- sample(1:10, 100, replace=TRUE)
+
+    df <- data.frame(
+        dep = sample(letters[1:3], 100, replace = TRUE),
+        cov = rnorm(100),
+        factor = sample(LETTERS[20:21], 100, replace = TRUE),
+        check.names = FALSE,
+        stringsAsFactors = TRUE
+    )
+    attr(df, "jmv-weights") <- weights
+
+    refLevels = list(list(var="dep", ref=letters[1]), list(var="factor", ref=LETTERS[20]))
+
+    r <- jmv::logRegMulti(
+        df,
+        dep = "dep",
+        covs = "cov",
+        factors = "factor",
+        blocks = list(list("cov", "factor")),
+        refLevels = refLevels,
+    )
+
+    # Test model fit table
+    modelFitTable <- r$modelFit$asDF
+    testthat::expect_equal(1, modelFitTable[['model']])
+    testthat::expect_equal(1241.675, modelFitTable[['dev']], tolerance = 1e-3)
+    testthat::expect_equal(1253.675, modelFitTable[['aic']], tolerance = 1e-3)
+    testthat::expect_equal(0.032, modelFitTable[['r2mf']], tolerance = 1e-3)
+
+    # Test model coefficients table
+    coefTable <- r$models[[1]]$coef$asDF
+    testthat::expect_equal(
+        c(0.164, -0.189, NA, -0.112, -0.186, -0.567, NA, 0.447),
+        coefTable[['est']], tolerance = 1e-3
+    )
+    testthat::expect_equal(
+        c(0.14, 0.1, NA, 0.207, 0.154, 0.111, NA, 0.212),
+        coefTable[['se']], tolerance = 1e-3
+    )
+    testthat::expect_equal(
+        c(1.172, -1.896, NA, -0.539, -1.203, -5.088, NA, 2.104),
+        coefTable[['z']], tolerance = 1e-3
+    )
+    testthat::expect_equal(
+        c(0.241, 0.058, NA, 0.59, 0.229, 0, NA, 0.035),
+        coefTable[['p']], tolerance = 1e-3
+    )
+})
+
