@@ -250,7 +250,6 @@ testthat::test_that('Emmeans work with nuisance parameters (no interactions)', {
     )
 })
 
-
 testthat::test_that('Emmeans work with nuisance parameters (with interactions)', {
     #' Test that nuisance factors are handled correctly in the estimated marginal means
     #' When a nuisance factor is included in an interaction it should still be included
@@ -321,6 +320,45 @@ testthat::test_that('Emmeans work with nuisance parameters (with interactions)',
         emmeansTable[['upper']],
         tolerance = 1e-3
     )
+})
+
+testthat::test_that("Analysis works with global weights", {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    weights <- sample(1:10, 100, replace=TRUE)
+
+    df <- data.frame(
+        dep = factor(sample(0:1, 100, replace=TRUE)),
+        cov = rnorm(100),
+        factor = factor(sample(LETTERS[1:3], 100, replace=TRUE))
+    )
+    attr(df, "jmv-weights") <- weights
+
+    refLevels = list(list(var="dep", ref="0"), list(var="factor", ref="A"))
+
+    r <- jmv::logRegBin(
+        df,
+        dep="dep",
+        covs="cov",
+        factors="factor",
+        blocks=list(list("cov", "factor")),
+        refLevels=refLevels,
+    )
+
+    # Test model fit table
+    modelFitTable <- r$modelFit$asDF
+    testthat::expect_equal(1, modelFitTable[['model']], tolerance = 1e-3)
+    testthat::expect_equal(793.107, modelFitTable[['dev']], tolerance = 1e-3)
+    testthat::expect_equal(801.107, modelFitTable[['aic']], tolerance = 1e-3)
+    testthat::expect_equal(0.02, modelFitTable[['r2mf']], tolerance = 1e-3)
+
+    # Test model coefficients table
+    coefTable <- r$models[[1]]$coef$asDF
+    testthat::expect_equal(c(-0.199, -0.251, NA, 0.457, 0.027), coefTable[['est']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.14, 0.085, NA, 0.201, 0.21), coefTable[['se']], tolerance = 1e-3)
+    testthat::expect_equal(c(-1.418, -2.949, NA, 2.276, 0.128), coefTable[['z']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.156, 0.003, NA, 0.023, 0.899), coefTable[['p']], tolerance = 1e-3)
 })
 
 

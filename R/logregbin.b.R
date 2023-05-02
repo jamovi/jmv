@@ -11,6 +11,12 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             return(private$.dataProcessed)
         },
+        weights = function() {
+            if (is.null(private$.weights))
+                private$.weights <- private$.computeWeights()
+
+            return(private$.weights)
+        },
         formulas = function() {
             if (is.null(private$.formulas))
                 private$.formulas <- private$.getFormulas()
@@ -136,6 +142,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         #### Member variables ----
         .dataProcessed = NULL,
         .dataRowNums = NULL,
+        .weights = NULL,
         .formulas = NULL,
         .models = NULL,
         .nModels = NULL,
@@ -210,10 +217,29 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 formulas <- formulas[modelNo]
 
             models <- list()
-            for (i in seq_along(formulas))
-                models[[i]] <- stats::glm(formulas[[i]],  data=data, family="binomial")
+            for (i in seq_along(formulas)) {
+                models[[i]] <- stats::glm(
+                    formulas[[i]],  data=data, family="binomial", weights=self$weights
+                )
+            }
 
             return(models)
+        },
+        .computeWeights = function() {
+            global_weights <- attr(self$data, "jmv-weights")
+
+            if (is.null(global_weights))
+                return()
+
+            weights <- self$dataProcessed[[".WEIGHTS"]]
+
+            if (any(weights < 0)) {
+                jmvcore::reject(
+                    .("Weights contains negative values. Negative weights are not permitted.")
+                )
+            }
+
+            return(weights)
         },
         .computeResiduals = function() {
             res <- list()
@@ -1324,6 +1350,10 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             for (cov in covs)
                 data[[jmvcore::toB64(cov)]] <- jmvcore::toNumeric(dataRaw[[cov]])
+
+            global_weights <- attr(dataRaw, "jmv-weights")
+            if (! is.null(global_weights))
+                data[[".WEIGHTS"]] = jmvcore::toNumeric(global_weights)
 
             attr(data, 'row.names') <- rownames(self$data)
             attr(data, 'class') <- 'data.frame'
