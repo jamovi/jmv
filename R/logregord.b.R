@@ -11,6 +11,12 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             return(private$.dataProcessed)
         },
+        weights = function() {
+            if (is.null(private$.weights))
+                private$.weights <- private$.computeWeights()
+
+            return(private$.weights)
+        },
         formulas = function() {
             if (is.null(private$.formulas))
                 private$.formulas <- private$.getFormulas()
@@ -97,6 +103,7 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
     private = list(
         #### Member variables ----
         .dataProcessed = NULL,
+        .weights = NULL,
         .models = NULL,
         .nModels = NULL,
         .nullModel = NULL,
@@ -159,7 +166,9 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             models <- list()
             for (i in seq_along(formulas)) {
-                models[[i]] <- MASS::polr(formulas[[i]], data=data, model=TRUE, Hess=TRUE)
+                models[[i]] <- MASS::polr(
+                    formulas[[i]], data=data, model=TRUE, Hess=TRUE, weights=self$weights
+                )
                 models[[i]]$call$formula <- formulas[[i]]
             }
 
@@ -167,8 +176,26 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         },
         .computeNullModel = function() {
             nullFormula <- as.formula(paste0(jmvcore::toB64(self$options$dep), '~ 1'))
-            nullModel <-  MASS::polr(nullFormula, data=self$dataProcessed, model=TRUE, Hess=TRUE)
+            nullModel <-  MASS::polr(
+                nullFormula, data=self$dataProcessed, model=TRUE, Hess=TRUE, weights=self$weights
+            )
             return(list(dev=nullModel$deviance, df=nullModel$edf))
+        },
+        .computeWeights = function() {
+            global_weights <- attr(self$data, "jmv-weights")
+
+            if (is.null(global_weights))
+                return()
+
+            weights <- self$dataProcessed[[".WEIGHTS"]]
+
+            if (any(weights < 0)) {
+                jmvcore::reject(
+                    .("Weights contains negative values. Negative weights are not permitted.")
+                )
+            }
+
+            return(weights)
         },
         .computeLrtModelTerms = function() {
             lrtModelTerms <- list()
@@ -676,6 +703,10 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             for (cov in covs)
                 data[[jmvcore::toB64(cov)]] <- jmvcore::toNumeric(dataRaw[[cov]])
+
+            global_weights <- attr(dataRaw, "jmv-weights")
+            if (! is.null(global_weights))
+                data[[".WEIGHTS"]] <- jmvcore::toNumeric(global_weights)
 
             attr(data, 'row.names') <- seq_len(length(data[[1]]))
             attr(data, 'class') <- 'data.frame'
