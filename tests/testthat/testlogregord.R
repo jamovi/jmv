@@ -74,3 +74,44 @@ testthat::test_that('All options in the logRegOrd work (sunny)', {
     testthat::expect_equal(c(0.001, 0.339), thresTable[['p']], tolerance = 1e-3)
     testthat::expect_equal(c(0.401, 1.291), thresTable[['odds']], tolerance = 1e-3)
 })
+
+testthat::test_that("Analysis works with global weights", {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    weights <- sample(1:10, 100, replace=TRUE)
+
+    df <- data.frame(
+        dep = sample(letters[1:3], 100, replace = TRUE),
+        cov = rnorm(100),
+        factor = sample(LETTERS[20:21], 100, replace = TRUE),
+        check.names = FALSE,
+        stringsAsFactors = TRUE
+    )
+    attr(df, "jmv-weights") <- weights
+
+    r <- jmv::logRegOrd(
+        data = df,
+        dep = "dep",
+        covs = "cov",
+        factors = "factor",
+        blocks = list(list("cov", "factor")),
+        refLevels = list(
+            list(var="factor", ref=LETTERS[20])
+        )
+    )
+
+    # Test model fit table
+    modelFitTable <- r$modelFit$asDF
+    testthat::expect_equal(1, modelFitTable[['model']])
+    testthat::expect_equal(1246.297, modelFitTable[['dev']], tolerance = 1e-3)
+    testthat::expect_equal(1254.297, modelFitTable[['aic']], tolerance = 1e-3)
+    testthat::expect_equal(0.028, modelFitTable[['r2mf']], tolerance = 1e-3)
+
+    # Test model coefficients table
+    coefTable <- r$models[[1]]$coef$asDF
+    testthat::expect_equal(c(-0.41, NA, 0.326), coefTable[['est']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.079, NA, 0.156), coefTable[['se']], tolerance = 1e-3)
+    testthat::expect_equal(c(-5.204, NA, 2.092), coefTable[['z']], tolerance = 1e-3)
+    testthat::expect_equal(c(0, NA, 0.036), coefTable[['p']], tolerance = 1e-3)
+})
