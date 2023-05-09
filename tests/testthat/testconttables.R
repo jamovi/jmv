@@ -194,6 +194,30 @@ testthat::test_that("conttables works with counts", {
     testthat::expect_equal(32, freqs[12, '2[count]'])
 })
 
+testthat::test_that("conttables works with global integer weights", {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(212)
+
+    rows <- factor(c("A","B","C","A","B","C","A","B","C","A","B","C"), c("A","B","C"))
+    cols <- factor(c("1","1","1","2","2","2","1","1","1","2","2","2"), c("1","2"))
+    layer <- factor(c("I","I","I","I","I","I","II","II","II","II","II","II"), c("I","II"))
+    counts <- sample(0:20, 12, replace = TRUE)
+
+    data <- data.frame(rows = rows, cols = cols, layer = layer)
+    attr(data, "jmv-weights") <- counts
+
+    table <- jmv::contTables(data=data, rows="rows", cols="cols", layers="layer")
+
+    freqs <- as.data.frame(table$freqs)
+
+    testthat::expect_equal(8, freqs[1, '1[count]'])
+    testthat::expect_equal(3, freqs[1, '2[count]'])
+    testthat::expect_equal(17, freqs[2, '1[count]'])
+    testthat::expect_equal(0, freqs[2, '2[count]'])
+    testthat::expect_equal(84, freqs[12, '1[count]'])
+    testthat::expect_equal(32, freqs[12, '2[count]'])
+})
+
 testthat::test_that("bar plots work with spaces in variable name", {
     data <- ToothGrowth
     data$dose <- factor(data$dose)
