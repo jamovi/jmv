@@ -3,7 +3,24 @@
 contTablesClass <- R6::R6Class(
     "contTablesClass",
     inherit=contTablesBase,
+    #### Active bindings ----
+    active = list(
+        countsName = function() {
+            if (is.null(private$.countsName)) {
+                analysisCounts <- self$options$counts
+                if ( ! is.null(analysisCounts))
+                    private$.countsName <- analysisCounts
+                else if ( ! is.null(attr(self$data, "jmv-weights"))) {
+                    private$.countsName <- ".COUNTS"
+                }
+            }
+
+            return(private$.countsName)
+        }
+    ),
     private=list(
+        #### Member variables ----
+        .countsName = NULL,
         #### Init + run functions ----
         .init=function() {
 
@@ -221,7 +238,7 @@ contTablesClass <- R6::R6Class(
 
             rowVarName <- self$options$rows
             colVarName <- self$options$cols
-            countsName <- self$options$counts
+            countsName <- self$countsName
 
             if (is.null(rowVarName) || is.null(colVarName))
                 return()
@@ -579,7 +596,7 @@ contTablesClass <- R6::R6Class(
             if (! is.null(colVarName))
                 colVarName <- jmvcore::toB64(colVarName)
 
-            countsName <- self$options$counts
+            countsName <- self$countsName
             if (! is.null(countsName))
                 countsName <- jmvcore::toB64(countsName)
 
@@ -595,12 +612,7 @@ contTablesClass <- R6::R6Class(
             data <- private$.cleanData(B64 = TRUE)
             data <- na.omit(data)
 
-            if (! is.null(countsName)){
-                untable <- function (df, counts) df[rep(1:nrow(df), counts), ]
-                data <- untable(data[, c(rowVarName, colVarName, layerNames)], counts=data[, countsName])
-            }
-
-            formula <- jmvcore::composeFormula(NULL, c(rowVarName, colVarName, layerNames))
+            formula <- jmvcore::composeFormula(countsName, c(rowVarName, colVarName, layerNames))
             counts <- xtabs(formula, data)
             d <- dim(counts)
 
@@ -680,7 +692,6 @@ contTablesClass <- R6::R6Class(
 
         #### Helper functions ----
         .cleanData = function(B64 = FALSE) {
-
             data <- self$data
 
             rowVarName <- self$options$rows
@@ -703,6 +714,9 @@ contTablesClass <- R6::R6Class(
             if ( ! is.null(countsName)) {
                 countsNameNew <- ifelse(B64, jmvcore::toB64(countsName), countsName)
                 data[[countsNameNew]] <- jmvcore::toNumeric(data[[countsName]])
+            } else if ( ! is.null(attr(data, "jmv-weights"))) {
+                countsNameNew <- ifelse(B64, jmvcore::toB64(".COUNTS"), ".COUNTS")
+                data[[countsNameNew]] = jmvcore::toNumeric(attr(data, "jmv-weights"))
             }
 
             return(data)
@@ -714,7 +728,7 @@ contTablesClass <- R6::R6Class(
             rowVarName <- self$options$rows
             colVarName <- self$options$cols
             layerNames <- self$options$layers
-            countsName <- self$options$counts
+            countsName <- self$countsName
 
             if (length(layerNames) == 0) {
 
