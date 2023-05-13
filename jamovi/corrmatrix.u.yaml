@@ -8,8 +8,6 @@ children:
     suggested:
       - continuous
       - ordinal
-    permitted:
-      - numeric
     persistentItems: false
     stretchFactor: 1
     children:
