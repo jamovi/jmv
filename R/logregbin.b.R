@@ -866,6 +866,14 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                     index <- which(length(term) == sapply(rowTerms, length) &
                                        sapply(rowTerms, function(x) all(term %in% x)))
 
+                    if (length(index) != 1) {
+                        table$setNote(
+                            "singular",
+                            .("Not all coefficients could be estimated (likely due to singular fit)")
+                        )
+                        next
+                    }
+
                     row <- list()
                     row[["est"]] <- coef[index, 'Estimate']
                     row[["se"]] <- coef[index, 'Std. Error']

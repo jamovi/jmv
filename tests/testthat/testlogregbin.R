@@ -362,3 +362,30 @@ testthat::test_that("Analysis works with global weights", {
 })
 
 
+testthat::test_that("Analysis adds note when design matrix is singular", {
+    # GIVEN a singular data set
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+    df <- data.frame(
+        dep = rep(0:1, times=50),
+        var1 = c(sample(letters[2:3], replace=TRUE, 50), rep(letters[1], 50)),
+        var2 = c(sample(LETTERS[2:3], replace=TRUE, 50), rep(LETTERS[1], 50))
+    )
+    refLevels = list(
+        list(var="dep", ref="0"), list(var="var1", ref=letters[1]), list(var="var2", ref=LETTERS[1])
+    )
+
+    # WHEN a binomial logistic regression is run on this data set
+    r <- jmv::logRegBin(
+        df,
+        dep="dep",
+        factors=c("var1", "var2"),
+        blocks=list(list("var1", "var2")),
+        refLevels=refLevels
+    )
+
+    # THEN the coefficients table contains a note informing the user on the singularity of the data
+    notes <- r$models[[1]]$coef$notes
+    testthat::expect_true("singular" %in% names(notes))
+})
+
