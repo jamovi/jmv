@@ -44,6 +44,11 @@ jobs:
           extra-packages: any::rcmdcheck, any::XML, any::roxygen2
           needs: check
 
+      - name: Install jmvcore from GitHub
+        run: |
+          Rscript -e "install.packages('remotes')"
+          Rscript -e "remotes::install_github('jamovi/jmvcore')"
+
       - name: Document
         run: roxygen2::roxygenise(roclets = "rd")
         shell: Rscript {0}
