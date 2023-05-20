@@ -11,7 +11,7 @@ weightsOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             super$initialize(
                 package="jmv",
                 name="weights",
-                requiresData=TRUE,
+                requiresData=FALSE,
                 ...)
 
             private$..weights <- jmvcore::OptionVariable$new(
