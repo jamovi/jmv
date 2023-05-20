@@ -7,8 +7,6 @@ jas: '1.2'
 export: false
 
 options:
-    - name: data
-      type: Data
 
     - name: weights
       title: Weight Variable
