@@ -7,6 +7,7 @@ menuTitle: N Outcomes
 menuSubtitle: Multinomial
 version: '1.0.0'
 jas: '1.2'
+weightsSupport: 'integerOnly'
 
 description:
     main: Multinomial Logistic Regression

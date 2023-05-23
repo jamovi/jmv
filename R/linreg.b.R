@@ -451,6 +451,7 @@ linRegClass <- R6::R6Class(
                 table$addRow(rowKey="`(Intercept)`", values=list(term = .("Intercept")))
 
                 if (! is.null(weights)) {
+                    private$.weightsName <- weights
                     table$setNote(
                         "weights",
                         jmvcore::format(.("Weighted by '{varName}'"), varName=weights)
