@@ -10,6 +10,8 @@ menuSubtitle: χ² test of association
 version: '1.0.0'
 jas: '1.2'
 
+weightsSupport: 'integerOnly'
+
 description:
     main: >
         The χ² test of association (not to be confused with the χ² goodness of

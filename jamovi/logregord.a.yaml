@@ -6,6 +6,7 @@ menuSubgroup: Logistic Regression
 menuTitle: Ordinal Outcomes
 version: '1.0.0'
 jas: '1.2'
+weightsSupport: 'integerOnly'
 
 description:
     main: Ordinal Logistic Regression
