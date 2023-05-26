@@ -342,6 +342,14 @@ contTablesClass <- R6::R6Class(
                     dp <- NULL
                     lor <- NULL
                     fish <- try(stats::fisher.test(mat, conf.level=ciWidth, alternative=Ha), silent=TRUE)
+
+                    if (base::inherits(fish, 'try-error')) {
+                        # Monte Carlo simulation for p-value
+                        fish <- try(stats::fisher.test(mat, alternative=Ha, simulate.p.value=TRUE), silent=TRUE)
+                        MCpsimul <- TRUE
+                    } else
+                        MCpsimul <- FALSE
+
                     if (all(dim(mat) == 2) && all(rowSums(mat) > 0) && all(colSums(mat) > 0)) {
                         dp <- private$.diffProp(mat, Ha)
                         lor <- vcd::loddsratio(mat)
@@ -442,11 +450,10 @@ contTablesClass <- R6::R6Class(
                         `value[N]`=n)
                 } else {
 
-                    if (inherits(fish, 'htest')) {
+                    if (base::inherits(fish, 'try-error'))
+                        fishP <- NaN
+                    else
                         fishP <- fish$p.value
-                    } else {
-                        fishP <- ''
-                    }
 
                     if (is.null(zP)) {
                         zPstat <- NaN
@@ -491,6 +498,9 @@ contTablesClass <- R6::R6Class(
 
                 if (inherits(fish, 'htest') && all(dim(mat) == 2) && hypothesis != "different")
                     chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', hypothesisTested)
+
+                if (MCpsimul)
+                    chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', .('Monte Carlo simulation (B=2000)'))
 
                 values <- list(
                     `v[cont]`=asso$contingency,
