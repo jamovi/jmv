@@ -500,7 +500,7 @@ contTablesClass <- R6::R6Class(
                     chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', hypothesisTested)
 
                 if (MCpsimul)
-                    chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', .('Monte Carlo simulation (B=2000)'))
+                    chiSq$addFootnote(rowNo=othRowNo, 'p[fisher]', .('Monte Carlo simulation'))
 
                 values <- list(
                     `v[cont]`=asso$contingency,

@@ -33,8 +33,6 @@ contTablesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             pcRow = FALSE,
             pcCol = FALSE,
             pcTot = FALSE,
-            resP = FALSE,
-            resS = FALSE,
             barplot = FALSE,
             yaxis = "ycounts",
             yaxisPc = "total_pc",
@@ -42,7 +40,7 @@ contTablesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             bartype = "dodge", ...) {
 
             super$initialize(
-                package="magojamtests",
+                package="jmv",
                 name="contTables",
                 requiresData=TRUE,
                 ...)
@@ -178,14 +176,6 @@ contTablesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "pcTot",
                 pcTot,
                 default=FALSE)
-            private$..resP <- jmvcore::OptionBool$new(
-                "resP",
-                resP,
-                default=FALSE)
-            private$..resS <- jmvcore::OptionBool$new(
-                "resS",
-                resS,
-                default=FALSE)
             private$..barplot <- jmvcore::OptionBool$new(
                 "barplot",
                 barplot,
@@ -247,8 +237,6 @@ contTablesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..pcRow)
             self$.addOption(private$..pcCol)
             self$.addOption(private$..pcTot)
-            self$.addOption(private$..resP)
-            self$.addOption(private$..resS)
             self$.addOption(private$..barplot)
             self$.addOption(private$..yaxis)
             self$.addOption(private$..yaxisPc)
@@ -283,8 +271,6 @@ contTablesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         pcRow = function() private$..pcRow$value,
         pcCol = function() private$..pcCol$value,
         pcTot = function() private$..pcTot$value,
-        resP = function() private$..resP$value,
-        resS = function() private$..resS$value,
         barplot = function() private$..barplot$value,
         yaxis = function() private$..yaxis$value,
         yaxisPc = function() private$..yaxisPc$value,
@@ -318,8 +304,6 @@ contTablesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..pcRow = NA,
         ..pcCol = NA,
         ..pcTot = NA,
-        ..resP = NA,
-        ..resS = NA,
         ..barplot = NA,
         ..yaxis = NA,
         ..yaxisPc = NA,
@@ -332,7 +316,6 @@ contTablesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         freqs = function() private$.items[["freqs"]],
-        phoc = function() private$.items[["phoc"]],
         chiSq = function() private$.items[["chiSq"]],
         odds = function() private$.items[["odds"]],
         nom = function() private$.items[["nom"]],
@@ -351,17 +334,6 @@ contTablesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=options,
                 name="freqs",
                 title="Contingency Tables",
-                columns=list(),
-                clearWith=list(
-                    "rows",
-                    "cols",
-                    "counts",
-                    "layers")))
-            self$add(jmvcore::Table$new(
-                options=options,
-                name="phoc",
-                title="Post-hoc (residuals)",
-                visible="(resP || resS)",
                 columns=list(),
                 clearWith=list(
                     "rows",
@@ -715,7 +687,7 @@ contTablesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
-                package = "magojamtests",
+                package = "jmv",
                 name = "contTables",
                 version = c(1,0,0),
                 options = options,
@@ -729,7 +701,7 @@ contTablesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 requiresMissings = FALSE)
         }))
 
-#' Tabella di Contingenza
+#' Contingency Tables
 #'
 #' The X² test of association (not to be confused with the X² goodness of fit)
 #' is used to test whether two categorical variables are independent or
@@ -825,10 +797,6 @@ contTablesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   percentages
 #' @param pcTot \code{TRUE} or \code{FALSE} (default), provide total
 #'   percentages
-#' @param resP \code{TRUE} or \code{FALSE} (default), provide Pearson
-#'   residuals
-#' @param resS \code{TRUE} or \code{FALSE} (default), provide Standardized
-#'   residuals
 #' @param barplot \code{TRUE} or \code{FALSE} (default), show barplots
 #' @param yaxis ycounts (default) or ypc. Use respectively \code{counts} or
 #'   \code{percentages} for the bar plot y-axis
@@ -841,7 +809,6 @@ contTablesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$freqs} \tab \tab \tab \tab \tab a table of proportions \cr
-#'   \code{results$phoc} \tab \tab \tab \tab \tab a table of residuals \cr
 #'   \code{results$chiSq} \tab \tab \tab \tab \tab a table of X² test results \cr
 #'   \code{results$odds} \tab \tab \tab \tab \tab a table of comparative measures \cr
 #'   \code{results$nom} \tab \tab \tab \tab \tab a table of the 'nominal' test results \cr
@@ -887,8 +854,6 @@ contTables <- function(
     pcRow = FALSE,
     pcCol = FALSE,
     pcTot = FALSE,
-    resP = FALSE,
-    resS = FALSE,
     barplot = FALSE,
     yaxis = "ycounts",
     yaxisPc = "total_pc",
@@ -974,8 +939,6 @@ contTables <- function(
         pcRow = pcRow,
         pcCol = pcCol,
         pcTot = pcTot,
-        resP = resP,
-        resS = resS,
         barplot = barplot,
         yaxis = yaxis,
         yaxisPc = yaxisPc,
