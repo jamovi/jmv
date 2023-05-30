@@ -224,7 +224,8 @@ contTablesPairedBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
                 revision = revision,
                 pause = NULL,
                 completeWhenFilled = TRUE,
-                requiresMissings = FALSE)
+                requiresMissings = FALSE,
+                weightsSupport = 'auto')
         }))
 
 #' Paired Samples Contingency Tables
