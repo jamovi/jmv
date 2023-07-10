@@ -109,14 +109,14 @@ options:
       title: Prior width
       type: Number
       default: 0.707
-      min: 0.5
+      min: 0.01
       max: 2.0
       description:
           ui: >
             the prior width for the Student's t-test's Bayes factors.
-            Requires a value between 0.5 and 2.0, default 0.707.
+            Requires a value between 0.01 and 2.0, default 0.707.
           R: >
-            a number between 0.5 and 2 (default 0.707), the prior width to use
+            a number between 0.01 and 2 (default 0.707), the prior width to use
             in calculating Bayes factors
 
     - name: welchs
