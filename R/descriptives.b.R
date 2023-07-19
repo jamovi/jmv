@@ -373,10 +373,10 @@ descriptivesClass <- R6::R6Class(
             }
 
             if ( ! is.null(varsCannotBeNumeric)) {
-                html <- jmvcore::Html$new(
+                notice <- jmvcore::Notice$new(
                     options = self$options,
-                    name = 'warningMessage'
-                )
+                    name = 'warningMessage',
+                    type = jmvcore::NoticeType$WARNING)
 
                 if (length(varsCannotBeNumeric) == 1) {
                     warningMessage <- jmvcore::format(
@@ -390,15 +390,8 @@ descriptivesClass <- R6::R6Class(
                     )
                 }
 
-                content <- jmvcore::format(
-                    "<p class=\"warning\">
-                        {}
-                    </p>",
-                    warningMessage
-                )
-
-                html$setContent(content)
-                plots$setHeader(html)
+                notice$setContent(warningMessage)
+                plots$setHeader(notice)
             }
 
             for (var in vars) {
