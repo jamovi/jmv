@@ -353,113 +353,113 @@ contTablesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "compare"),
                 columns=list(
                     list(
-                        `name`="test[chiSq]",
-                        `title`="",
-                        `type`="text",
-                        `content`="\u03C7\u00B2",
+                        `name`="test[chiSq]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="\u03C7\u00B2", 
                         `visible`="(chiSq)"),
                     list(
-                        `name`="value[chiSq]",
-                        `title`="Value",
+                        `name`="value[chiSq]", 
+                        `title`="Value", 
                         `visible`="(chiSq)"),
                     list(
-                        `name`="df[chiSq]",
-                        `title`="df",
-                        `type`="integer",
+                        `name`="df[chiSq]", 
+                        `title`="df", 
+                        `type`="integer", 
                         `visible`="(chiSq)"),
                     list(
-                        `name`="p[chiSq]",
-                        `title`="p",
-                        `type`="number",
-                        `format`="zto,pvalue",
+                        `name`="p[chiSq]", 
+                        `title`="p", 
+                        `type`="number", 
+                        `format`="zto,pvalue", 
                         `visible`="(chiSq)"),
                     list(
-                        `name`="test[chiSqCorr]",
-                        `title`="",
-                        `type`="text",
-                        `content`="\u03C7\u00B2 continuity correction",
+                        `name`="test[chiSqCorr]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="\u03C7\u00B2 continuity correction", 
                         `visible`="(chiSqCorr)"),
                     list(
-                        `name`="value[chiSqCorr]",
-                        `title`="Value",
+                        `name`="value[chiSqCorr]", 
+                        `title`="Value", 
                         `visible`="(chiSqCorr)"),
                     list(
-                        `name`="df[chiSqCorr]",
-                        `title`="df",
-                        `type`="integer",
+                        `name`="df[chiSqCorr]", 
+                        `title`="df", 
+                        `type`="integer", 
                         `visible`="(chiSqCorr)"),
                     list(
-                        `name`="p[chiSqCorr]",
-                        `title`="p",
-                        `type`="number",
-                        `format`="zto,pvalue",
+                        `name`="p[chiSqCorr]", 
+                        `title`="p", 
+                        `type`="number", 
+                        `format`="zto,pvalue", 
                         `visible`="(chiSqCorr)"),
                     list(
-                        `name`="test[zProp]",
-                        `title`="",
-                        `type`="text",
-                        `content`="z test difference in 2 proportions",
+                        `name`="test[zProp]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="z test difference in 2 proportions", 
                         `visible`="(zProp)"),
                     list(
-                        `name`="value[zProp]",
-                        `title`="Value",
+                        `name`="value[zProp]", 
+                        `title`="Value", 
                         `visible`="(zProp)"),
                     list(
-                        `name`="df[zProp]",
-                        `title`="df",
+                        `name`="df[zProp]", 
+                        `title`="df", 
                         `visible`="(zProp)"),
                     list(
-                        `name`="p[zProp]",
-                        `title`="p",
-                        `type`="number",
-                        `format`="zto,pvalue",
+                        `name`="p[zProp]", 
+                        `title`="p", 
+                        `type`="number", 
+                        `format`="zto,pvalue", 
                         `visible`="(zProp)"),
                     list(
-                        `name`="test[likeRat]",
-                        `title`="",
-                        `type`="text",
-                        `content`="Likelihood ratio",
-                        `visible`="(likeRat)",
+                        `name`="test[likeRat]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="Likelihood ratio", 
+                        `visible`="(likeRat)", 
                         `refs`="vcd"),
                     list(
-                        `name`="value[likeRat]",
-                        `title`="Value",
+                        `name`="value[likeRat]", 
+                        `title`="Value", 
                         `visible`="(likeRat)"),
                     list(
-                        `name`="df[likeRat]",
-                        `title`="df",
-                        `type`="integer",
+                        `name`="df[likeRat]", 
+                        `title`="df", 
+                        `type`="integer", 
                         `visible`="(likeRat)"),
                     list(
-                        `name`="p[likeRat]",
-                        `title`="p",
-                        `type`="number",
-                        `format`="zto,pvalue",
+                        `name`="p[likeRat]", 
+                        `title`="p", 
+                        `type`="number", 
+                        `format`="zto,pvalue", 
                         `visible`="(likeRat)"),
                     list(
-                        `name`="test[fisher]",
-                        `title`="",
-                        `type`="text",
-                        `content`="Fisher's exact test",
+                        `name`="test[fisher]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="Fisher's exact test", 
                         `visible`="(fisher)"),
                     list(
-                        `name`="value[fisher]",
-                        `title`="Value",
+                        `name`="value[fisher]", 
+                        `title`="Value", 
                         `visible`="(fisher)"),
                     list(
-                        `name`="p[fisher]",
-                        `title`="p",
-                        `type`="number",
-                        `format`="zto,pvalue",
+                        `name`="p[fisher]", 
+                        `title`="p", 
+                        `type`="number", 
+                        `format`="zto,pvalue", 
                         `visible`="(fisher)"),
                     list(
-                        `name`="test[N]",
-                        `title`="",
-                        `type`="text",
+                        `name`="test[N]", 
+                        `title`="", 
+                        `type`="text", 
                         `content`="N"),
                     list(
-                        `name`="value[N]",
-                        `title`="Value",
+                        `name`="value[N]", 
+                        `title`="Value", 
                         `type`="integer"))))
             self$add(jmvcore::Table$new(
                 options=options,
@@ -475,85 +475,85 @@ contTablesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "compare"),
                 columns=list(
                     list(
-                        `name`="t[dp]",
-                        `title`="",
-                        `type`="text",
-                        `content`="Difference in 2 proportions",
+                        `name`="t[dp]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="Difference in 2 proportions", 
                         `visible`="(diffProp)"),
                     list(
-                        `name`="v[dp]",
-                        `title`="Value",
+                        `name`="v[dp]", 
+                        `title`="Value", 
                         `visible`="(diffProp)"),
                     list(
-                        `name`="cil[dp]",
-                        `title`="Lower",
-                        `superTitle`="Confidence Intervals",
+                        `name`="cil[dp]", 
+                        `title`="Lower", 
+                        `superTitle`="Confidence Intervals", 
                         `visible`="(diffProp && ci)"),
                     list(
-                        `name`="ciu[dp]",
-                        `title`="Upper",
-                        `superTitle`="Confidence Intervals",
+                        `name`="ciu[dp]", 
+                        `title`="Upper", 
+                        `superTitle`="Confidence Intervals", 
                         `visible`="(diffProp && ci)"),
                     list(
-                        `name`="t[lo]",
-                        `title`="",
-                        `type`="text",
-                        `content`="Log odds ratio",
-                        `visible`="(logOdds)",
+                        `name`="t[lo]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="Log odds ratio", 
+                        `visible`="(logOdds)", 
                         `refs`="vcd"),
                     list(
-                        `name`="v[lo]",
-                        `title`="Value",
+                        `name`="v[lo]", 
+                        `title`="Value", 
                         `visible`="(logOdds)"),
                     list(
-                        `name`="cil[lo]",
-                        `title`="Lower",
-                        `superTitle`="Confidence Intervals",
+                        `name`="cil[lo]", 
+                        `title`="Lower", 
+                        `superTitle`="Confidence Intervals", 
                         `visible`="(logOdds && ci)"),
                     list(
-                        `name`="ciu[lo]",
-                        `title`="Upper",
-                        `superTitle`="Confidence Intervals",
+                        `name`="ciu[lo]", 
+                        `title`="Upper", 
+                        `superTitle`="Confidence Intervals", 
                         `visible`="(logOdds && ci)"),
                     list(
-                        `name`="t[o]",
-                        `title`="",
-                        `type`="text",
-                        `content`="Odds ratio",
+                        `name`="t[o]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="Odds ratio", 
                         `visible`="(odds)"),
                     list(
-                        `name`="v[o]",
-                        `title`="Value",
+                        `name`="v[o]", 
+                        `title`="Value", 
                         `visible`="(odds)"),
                     list(
-                        `name`="cil[o]",
-                        `title`="Lower",
-                        `superTitle`="Confidence Intervals",
+                        `name`="cil[o]", 
+                        `title`="Lower", 
+                        `superTitle`="Confidence Intervals", 
                         `visible`="(odds && ci)"),
                     list(
-                        `name`="ciu[o]",
-                        `title`="Upper",
-                        `superTitle`="Confidence Intervals",
+                        `name`="ciu[o]", 
+                        `title`="Upper", 
+                        `superTitle`="Confidence Intervals", 
                         `visible`="(odds && ci)"),
                     list(
-                        `name`="t[rr]",
-                        `title`="",
-                        `type`="text",
-                        `content`="Relative risk",
+                        `name`="t[rr]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="Relative risk", 
                         `visible`="(relRisk)"),
                     list(
-                        `name`="v[rr]",
-                        `title`="Value",
+                        `name`="v[rr]", 
+                        `title`="Value", 
                         `visible`="(relRisk)"),
                     list(
-                        `name`="cil[rr]",
-                        `title`="Lower",
-                        `superTitle`="Confidence Intervals",
+                        `name`="cil[rr]", 
+                        `title`="Lower", 
+                        `superTitle`="Confidence Intervals", 
                         `visible`="(relRisk && ci)"),
                     list(
-                        `name`="ciu[rr]",
-                        `title`="Upper",
-                        `superTitle`="Confidence Intervals",
+                        `name`="ciu[rr]", 
+                        `title`="Upper", 
+                        `superTitle`="Confidence Intervals", 
                         `visible`="(relRisk && ci)"))))
             self$add(jmvcore::Table$new(
                 options=options,
@@ -562,34 +562,34 @@ contTablesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 visible="(contCoef || phiCra)",
                 columns=list(
                     list(
-                        `name`="t[cont]",
-                        `title`="",
-                        `type`="text",
-                        `content`="Contingency coefficient",
+                        `name`="t[cont]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="Contingency coefficient", 
                         `visible`="(contCoef)"),
                     list(
-                        `name`="v[cont]",
-                        `title`="Value",
+                        `name`="v[cont]", 
+                        `title`="Value", 
                         `visible`="(contCoef)"),
                     list(
-                        `name`="t[phi]",
-                        `title`="",
-                        `type`="text",
-                        `content`="Phi-coefficient",
+                        `name`="t[phi]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="Phi-coefficient", 
                         `visible`="(phiCra)"),
                     list(
-                        `name`="v[phi]",
-                        `title`="Value",
+                        `name`="v[phi]", 
+                        `title`="Value", 
                         `visible`="(phiCra)"),
                     list(
-                        `name`="t[cra]",
-                        `title`="",
-                        `type`="text",
-                        `content`="Cramer's V",
+                        `name`="t[cra]", 
+                        `title`="", 
+                        `type`="text", 
+                        `content`="Cramer's V", 
                         `visible`="(phiCra)"),
                     list(
-                        `name`="v[cra]",
-                        `title`="Value",
+                        `name`="v[cra]", 
+                        `title`="Value", 
                         `visible`="(phiCra)"))))
             self$add(jmvcore::Table$new(
                 options=options,
@@ -604,18 +604,18 @@ contTablesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "layers"),
                 columns=list(
                     list(
-                        `name`="gamma",
+                        `name`="gamma", 
                         `title`="Gamma"),
                     list(
-                        `name`="se",
+                        `name`="se", 
                         `title`="Standard Error"),
                     list(
-                        `name`="cil",
-                        `title`="Lower",
+                        `name`="cil", 
+                        `title`="Lower", 
                         `superTitle`="Confidence Intervals"),
                     list(
-                        `name`="ciu",
-                        `title`="Upper",
+                        `name`="ciu", 
+                        `title`="Upper", 
                         `superTitle`="Confidence Intervals"))))
             self$add(jmvcore::Table$new(
                 options=options,
@@ -629,15 +629,15 @@ contTablesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "layers"),
                 columns=list(
                     list(
-                        `name`="taub",
+                        `name`="taub", 
                         `title`="Kendall's Tau-B"),
                     list(
-                        `name`="t",
+                        `name`="t", 
                         `title`="t"),
                     list(
-                        `name`="p",
-                        `title`="p",
-                        `type`="number",
+                        `name`="p", 
+                        `title`="p", 
+                        `type`="number", 
                         `format`="zto,pvalue"))))
             self$add(jmvcore::Table$new(
                 options=options,
@@ -651,16 +651,16 @@ contTablesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "layers"),
                 columns=list(
                     list(
-                        `name`="chi2",
+                        `name`="chi2", 
                         `title`="\u03C7\u00B2"),
                     list(
-                        `name`="df",
-                        `title`="df",
+                        `name`="df", 
+                        `title`="df", 
                         `type`="integer"),
                     list(
-                        `name`="p",
-                        `title`="p",
-                        `type`="number",
+                        `name`="p", 
+                        `title`="p", 
+                        `type`="number", 
                         `format`="zto,pvalue"))))
             self$add(jmvcore::Image$new(
                 options=options,
@@ -699,16 +699,16 @@ contTablesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 pause = NULL,
                 completeWhenFilled = TRUE,
                 requiresMissings = FALSE,
-                weightsSupport = 'integerOnly')
+                weightsSupport = 'full')
         }))
 
 #' Contingency Tables
 #'
-#' The X² test of association (not to be confused with the X² goodness of fit)
-#' is used to test whether two categorical variables are independent or
-#' associated. If the p-value is low, it suggests the variables are not
+#' The X² test of association (not to be confused with the X² goodness of fit) 
+#' is used to test whether two categorical variables are independent or 
+#' associated. If the p-value is low, it suggests the variables are not 
 #' independent, and that there is a relationship between the two variables.
-#'
+#' 
 #'
 #' @examples
 #' data('HairEyeColor')
