@@ -61,7 +61,7 @@ ttestISOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "bfPrior",
                 bfPrior,
                 default=0.707,
-                min=0.5,
+                min=0.01,
                 max=2)
             private$..welchs <- jmvcore::OptionBool$new(
                 "welchs",
@@ -769,7 +769,7 @@ ttestISBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param students \code{TRUE} (default) or \code{FALSE}, perform Student's
 #'   t-tests
 #' @param bf \code{TRUE} or \code{FALSE} (default), provide Bayes factors
-#' @param bfPrior a number between 0.5 and 2 (default 0.707), the prior width
+#' @param bfPrior a number between 0.01 and 2 (default 0.707), the prior width
 #'   to use in calculating Bayes factors
 #' @param welchs \code{TRUE} or \code{FALSE} (default), perform Welch's
 #'   t-tests
