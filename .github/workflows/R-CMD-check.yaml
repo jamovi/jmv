@@ -41,13 +41,8 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck, any::XML, any::roxygen2
+          extra-packages: any::rcmdcheck, any::XML, any::roxygen2, github::jamovi/jmvcore
           needs: check
-
-      - name: Install jmvcore from GitHub
-        run: |
-          Rscript -e "install.packages('remotes')"
-          Rscript -e "remotes::install_github('jamovi/jmvcore')"
 
       - name: Document
         run: roxygen2::roxygenise(roclets = "rd")
