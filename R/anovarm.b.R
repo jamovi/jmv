@@ -890,7 +890,7 @@ anovaRMClass <- R6::R6Class(
 
             rm <- sapply(self$options$rmCells, function(x) return(x$measure))
             bs <- unlist(self$options$bs)
-            cov <- unlist(self$opions$cov)
+            cov <- unlist(self$options$cov)
 
             varsNumeric <- c(rm, cov)
 
