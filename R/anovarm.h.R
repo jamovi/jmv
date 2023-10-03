@@ -913,10 +913,10 @@ anovaRMBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param rm a list of lists, where each list describes the \code{label} (as a
 #'   string) and the \code{levels} (as vector of strings) of a particular
 #'   repeated measures factor
-#' @param rmCells a list of lists, where each list decribes a repeated measure
-#'   (as a string) from \code{data} defined as \code{measure} and the particular
-#'   combination of levels from \code{rm} that it belongs to (as a vector of
-#'   strings) defined as \code{cell}
+#' @param rmCells a list of lists, where each list describes a repeated
+#'   measure (as a string) from \code{data} defined as \code{measure} and the
+#'   particular combination of levels from \code{rm} that it belongs to (as a
+#'   vector of strings) defined as \code{cell}
 #' @param bs a vector of strings naming the between subjects factors from
 #'   \code{data}
 #' @param cov a vector of strings naming the covariates from \code{data}.
@@ -935,7 +935,7 @@ anovaRMBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   tests
 #' @param spherCorr one or more of \code{'none'} (default), \code{'GG'}, or
 #'   \code{}HF\code{}; use no p-value correction, the Greenhouse-Geisser p-value
-#'   correction, and the Huynh-Feldt p-value correction for shericity,
+#'   correction, and the Huynh-Feldt p-value correction for sphericity,
 #'   respectively
 #' @param leveneTest \code{TRUE} or \code{FALSE} (default), test for
 #'   homogeneity of variances (i.e., Levene's test)
@@ -945,8 +945,8 @@ anovaRMBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param postHoc a list of character vectors describing the post-hoc tests
 #'   that need to be computed
 #' @param postHocCorr one or more of \code{'none'}, \code{'tukey'} (default),
-#'   \code{'scheffe'}, \code{'bonf'}, or \code{'holm'}; use no, Tukey, Scheffe,
-#'   Bonferroni and Holm posthoc corrections, respectively
+#'   \code{'scheffe'}, \code{'bonf'}, or \code{'holm'}; use no, Tukey, Scheffé,
+#'   Bonferroni and Holm post-hoc corrections, respectively
 #' @param emMeans a list of lists specifying the variables for which the
 #'   estimated marginal means need to be calculate. Supports up to three
 #'   variables per term.

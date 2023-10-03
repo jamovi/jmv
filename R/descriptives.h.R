@@ -472,7 +472,7 @@ descriptivesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 
 #' Descriptives
 #'
-#' Descriptives are an assortment of summarising statistics, and 
+#' Descriptives are an assortment of summarizing statistics, and 
 #' visualizations which allow exploring the shape and distribution of data. It 
 #' is good practice to explore your data with descriptives before proceeding 
 #' to more formal tests.
@@ -585,7 +585,7 @@ descriptivesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param pcNEqGr an integer (default: 4) specifying the number of equal
 #'   groups
 #' @param pc \code{TRUE} or \code{FALSE} (default), provide percentiles
-#' @param pcValues a comma-sepated list (default: 25,50,75) specifying the
+#' @param pcValues a comma-separated list (default: 25,50,75) specifying the
 #'   percentiles
 #' @param extreme \code{TRUE} or \code{FALSE} (default), provide N most
 #'   extreme (highest and lowest) values

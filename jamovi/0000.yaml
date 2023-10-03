@@ -22,7 +22,7 @@ analyses:
     menuGroup: Exploration
     menuTitle: Descriptives
     description: >
-      Descriptives are an assortment of summarising statistics, and
+      Descriptives are an assortment of summarizing statistics, and
       visualizations which allow exploring the shape and distribution of data.
       It is good practice to explore your data with descriptives before
       proceeding to more formal tests.
@@ -120,7 +120,7 @@ analyses:
     description: >
       The Kruskal-Wallis test is used to explore the relationship between a
       continuous dependent variable, and a categorical explanatory variable. It
-      is analagous to ANOVA, but with the advantage of being non-parametric and
+      is analogous to ANOVA, but with the advantage of being non-parametric and
       having fewer assumptions. However, it has the limitation that it can only
       test a single explanatory variable at a time.
   - title: Repeated Measures ANOVA (Non-parametric)
@@ -134,7 +134,7 @@ analyses:
       The Friedman test is used to explore the relationship between a continuous
       dependent variable and a categorical explanatory variable, where the
       explanatory variable is 'within subjects' (where multiple measurements are
-      from the same subject). It is analagous to Repeated Measures ANOVA, but
+      from the same subject). It is analogous to Repeated Measures ANOVA, but
       with the advantage of being non-parametric, and not requiring the
       assumptions of normality or homogeneity of variances. However, it has the
       limitation that it can only test a single explanatory variable at a time.
@@ -295,5 +295,6 @@ datasets:
     description: The 'iris' data set from R
 usesNative: true
 minApp: 1.0.8
+index: 0
 
 ...

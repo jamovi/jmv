@@ -142,8 +142,8 @@ options:
       default: true
       description:
           R: >
-            `TRUE` (default) or `FALSE`, provide the deviance (or -2LogLikelihood)
-            for the models
+            `TRUE` (default) or `FALSE`, provide the deviance (or -2LL /
+            log-likelihood ratio) for the models
 
     - name: aic
       title: AIC
@@ -151,7 +151,7 @@ options:
       default: true
       description:
           R: >
-            `TRUE` (default) or `FALSE`, provide Aikaike's Information Criterion (AIC)
+            `TRUE` (default) or `FALSE`, provide Akaike's Information Criterion (AIC)
             for the models
 
     - name: bic
@@ -339,7 +339,7 @@ options:
       default: false
       description:
           R: >
-            `TRUE` or `FALSE` (default), provide the rea under the
+            `TRUE` or `FALSE` (default), provide the area under the
             ROC curve (AUC)
 
     - name: rocPlot
@@ -374,7 +374,7 @@ options:
       default: false
       description:
           R: >
-            `TRUE` or `FALSE` (default), provide VIF and tolerence
+            `TRUE` or `FALSE` (default), provide VIF and tolerance
             collinearity statistics
 
     - name: boxTidwell

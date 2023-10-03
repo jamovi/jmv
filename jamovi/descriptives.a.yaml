@@ -7,7 +7,7 @@ jas: '1.2'
 
 description:
     main: >
-        Descriptives are an assortment of summarising statistics, and
+        Descriptives are an assortment of summarizing statistics, and
         visualizations which allow exploring the shape and distribution of
         data. It is good practice to explore your data with descriptives before
         proceeding to more formal tests.
@@ -395,7 +395,7 @@ options:
       default: "25,50,75"
       description:
           R: >
-            a comma-sepated list (default: 25,50,75) specifying the percentiles
+            a comma-separated list (default: 25,50,75) specifying the percentiles
 
     - name: extreme
       title: Extreme values

@@ -308,7 +308,7 @@ reliabilityBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   deviations
 #' @param itemRestCor \code{TRUE} or \code{FALSE} (default), provide item-rest
 #'   correlations
-#' @param revItems a vector containing strings naming the varibales that are
+#' @param revItems a vector containing strings naming the variables that are
 #'   reverse scaled
 #' @return A results object containing:
 #' \tabular{llllll}{

@@ -581,8 +581,8 @@ logLinearBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param modelTest \code{TRUE} or \code{FALSE} (default), provide the model
 #'   comparison between the models and the NULL model
 #' @param dev \code{TRUE} (default) or \code{FALSE}, provide the deviance (or
-#'   -2LogLikelihood) for the models
-#' @param aic \code{TRUE} (default) or \code{FALSE}, provide Aikaike's
+#'   -2LL / log-likelihood ratio) for the models
+#' @param aic \code{TRUE} (default) or \code{FALSE}, provide Akaike's
 #'   Information Criterion (AIC) for the models
 #' @param bic \code{TRUE} or \code{FALSE} (default), provide Bayesian
 #'   Information Criterion (BIC) for the models

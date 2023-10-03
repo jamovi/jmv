@@ -789,7 +789,7 @@ cfaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   values; \code{'listwise'} excludes a row from all analyses if one of its
 #'   entries is missing, \code{'fiml'} uses a full information maximum
 #'   likelihood method to estimate the model.
-#' @param constrain \code{'facVar'} or \code{'facInd'}, how to contrain the
+#' @param constrain \code{'facVar'} or \code{'facInd'}, how to constrain the
 #'   model; \code{'facVar'} fixes the factor variances to one, \code{'facInd'}
 #'   fixes each factor to the scale of its first indicator.
 #' @param estTest \code{TRUE} (default) or \code{FALSE}, provide 'Z' and 'p'

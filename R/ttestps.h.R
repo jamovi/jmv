@@ -618,7 +618,7 @@ ttestPSBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   \code{'twoGreater'}, the alternative hypothesis; measure 1 different to
 #'   measure 2, measure 1 greater than measure 2, and measure 2 greater than
 #'   measure 1 respectively
-#' @param norm \code{TRUE} or \code{FALSE} (default), perform Shapiro-wilk
+#' @param norm \code{TRUE} or \code{FALSE} (default), perform Shapiro-Wilk
 #'   normality tests
 #' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
 #'   residuals

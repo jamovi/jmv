@@ -3,7 +3,7 @@
 
 This module represents the analyses included with jamovi. It contains many
 common statistical tests (such as t-tests, ANOVAs, correlation matrices,
-proportion tests, contingency tables, etc).
+proportion tests, contingency tables, etc.).
 
 As with all jamovi modules, this can also be installed as an R package.
 
