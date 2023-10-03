@@ -1,13 +1,13 @@
 Package: jmv
 Type: Package
 Title: The 'jamovi' Analyses
-Version: 2.3.4
-Date: 2022-03-29
+Version: 2.4.9
+Date: 2023-10-03
 Author: Ravi Selker, Jonathon Love, Damian Dropmann, Victor Moreno, Maurizio Agosti
 Maintainer: Jonathon Love <jon@thon.cc>
 Description: A suite of common statistical methods such as descriptives,
     t-tests, ANOVAs, regression, correlation matrices, proportion tests,
-    contingency tables, and factor analysis. This package is also useable from
+    contingency tables, and factor analysis. This package is also usable from
     the 'jamovi' statistical spreadsheet (see <https://www.jamovi.org> for more
     information).
 BugReports: https://github.com/jamovi/jmv/issues
