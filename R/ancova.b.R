@@ -75,6 +75,9 @@ ancovaClass <- R6::R6Class(
 
             suppressWarnings({
 
+                old <- base::options()
+                on.exit(options(old))
+
                 base::options(contrasts = c("contr.sum","contr.poly"))
 
                 for (contrast in self$options$contrasts) {
@@ -1109,6 +1112,9 @@ ancovaClass <- R6::R6Class(
                 data <- self$finalData
 
                 suppressWarnings({
+
+                    old <- base::options()
+                    on.exit(options(old))
 
                     base::options(contrasts = c("contr.sum","contr.poly"))
 

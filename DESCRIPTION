@@ -1,9 +1,13 @@
 Package: jmv
 Type: Package
 Title: The 'jamovi' Analyses
-Version: 2.3.4
-Date: 2022-03-29
-Author: Ravi Selker, Jonathon Love, Damian Dropmann, Victor Moreno, Maurizio Agosti
+Version: 2.4.9
+Date: 2023-10-04
+Authors@R: c(person("Ravi", "Selker", role=c("aut", "cph")),
+    person("Jonathon", "Love", role=c("aut", "cre", "cph"), email="jon@thon.cc"),
+    person("Damian", "Dropmann", role=c("aut", "cph")),
+    person("Victor", "Moreno", role=c("ctb", "cph")),
+    person("Maurizio", "Agosti", role=c("ctb", "cph")))
 Maintainer: Jonathon Love <jon@thon.cc>
 Description: A suite of common statistical methods such as descriptives,
     t-tests, ANOVAs, regression, correlation matrices, proportion tests,
