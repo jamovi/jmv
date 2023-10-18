@@ -1317,6 +1317,8 @@ linRegClass <- R6::R6Class(
 
             return(private$.isAliased)
         },
+        # Returns the names of the factor contrasts as they are
+        # defined by the lm function
         .contrastModel = function(terms) {
 
             factors <- self$options$factors
