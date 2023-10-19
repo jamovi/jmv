@@ -1631,6 +1631,10 @@ descriptivesClass <- R6::R6Class(
             # https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-whats-with-the-different-formulas-for-kurtosis/
 
             n <- length(x)
+            # the kurtosis needs at least n = 4 to be calculated;
+            # for n == 0, the numerator in e1 below becomes 0,
+            # for 1 <= n <= 3, the denominator becomes 0
+            if (n < 4) return(list(kurt = NA, seKurt = NA))
             s2 <- sum((x - mean(x))^2)
             s4 <- sum((x - mean(x))^4)
             v <- s2 / (n-1)
@@ -1644,12 +1648,15 @@ descriptivesClass <- R6::R6Class(
             varKurt <- 4 * (n^2 - 1) * varSkew / ((n - 3) * (n + 5))
             seKurt <- sqrt(varKurt)
 
-            return(list(kurt=kurtosis, seKurt=seKurt))
+            return(list(kurt = kurtosis, seKurt = seKurt))
         },
         .skewness = function(x) {
             n <- length(x)
+            # the kurtosis needs at least n = 3 to be calculated;
+            # for 0 <= n <= 1, the numerator in e1 below becomes 0,
+            # for n == 2, the denominator becomes 0
+            if (n < 4) return(list(skew = NA, seSkew = NA))
             x <- x - mean(x)
-
             e1 <- sqrt(n * (n - 1))/(n - 2)
             e2 <- sqrt(n) * sum(x^3)/(sum(x^2)^(3/2))
             skewness <- e1 * e2
@@ -1657,7 +1664,7 @@ descriptivesClass <- R6::R6Class(
             varSkew <- 6 * n * (n - 1) / ((n - 2) * (n + 1) * (n + 3))
             seSkew <- sqrt(varSkew)
 
-            return(list(skew=skewness, seSkew=seSkew))
+            return(list(skew = skewness, seSkew = seSkew))
         },
         .sourcifyOption = function(option) {
             if (option$name == 'vars' && length(self$options$splitBy) > 0)
