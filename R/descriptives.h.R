@@ -518,15 +518,18 @@ descriptivesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'
 #' # spliting by a variable
 #' descriptives(formula = disp + mpg ~ cyl, dat,
-#'     median=F, min=F, max=F, n=F, missing=F)
+#'     median=FALSE, min=FALSE, max=FALSE, n=FALSE,
+#'     missing=FALSE)
 #'
 #' # providing histograms
-#' descriptives(formula = mpg ~ cyl, dat, hist=T,
-#'     median=F, min=F, max=F, n=F, missing=F)
+#' descriptives(formula = mpg ~ cyl, dat, hist=TRUE,
+#'     median=FALSE, min=FALSE, max=FALSE, n=FALSE,
+#'     missing=FALSE)
 #'
 #' # splitting by multiple variables
 #' descriptives(formula = mpg ~ cyl:gear, dat,
-#'     median=F, min=F, max=F, missing=F)
+#'     median=FALSE, min=FALSE, max=FALSE,
+#'     missing=FALSE)
 #'}
 #' @param data the data as a data frame
 #' @param vars a vector of strings naming the variables of interest in
