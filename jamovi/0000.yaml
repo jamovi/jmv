@@ -1,7 +1,7 @@
 ---
 title: Analyses bundled with jamovi
 name: jmv
-version: 2.4.11
+version: 2.4.12
 jms: '1.0'
 authors:
   - Jonathon Love
