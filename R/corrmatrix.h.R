@@ -361,7 +361,7 @@ corrMatrixBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' 
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' data('mtcars')
 #'
 #' corrMatrix(mtcars, vars = vars(mpg, cyl, disp, hp))
