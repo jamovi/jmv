@@ -251,6 +251,9 @@ children:
                 name: box
                 children:
                   - type: CheckBox
+                    name: boxNotched
+                    enable: (box)
+                  - type: CheckBox
                     name: boxLabelOutliers
                     enable: (box)
               - type: CheckBox
