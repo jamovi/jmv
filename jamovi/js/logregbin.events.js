@@ -19,8 +19,8 @@ const events = {
     },
 
     onUpdate_modelSupplier: function(ui) {
-        let variableList = this.cloneArray(ui.covs.value(), []);
-        variableList = variableList.concat(this.cloneArray(ui.factors.value(), []));
+        let variableList = this.clone(ui.covs.value(), []);
+        variableList = variableList.concat(this.clone(ui.factors.value(), []));
         ui.modelSupplier.setValue(this.valuesToItems(variableList, FormatDef.variable));
     },
 
@@ -53,7 +53,7 @@ const events = {
 
     onEvent_test_listItemsChanged: function(ui) {
         updateModelLabels(ui.blocks, _('Block {0}'));
-        let blocks = this.cloneArray(ui.blocks.value(), []);
+        let blocks = this.clone(ui.blocks.value(), []);
         this.workspace["blocks"] = blocks;
     },
 
@@ -64,7 +64,7 @@ const events = {
 
 let calcMarginalMeansSupplier = function(ui, context) {
 
-    let blocks = context.cloneArray(ui.blocks.value(), []);
+    let blocks = context.clone(ui.blocks.value(), []);
     let variableList = [];
     for (let blockIndex = 0; blockIndex < blocks.length; blockIndex++)  {
         for (let term of blocks[blockIndex])
@@ -76,7 +76,7 @@ let calcMarginalMeansSupplier = function(ui, context) {
 };
 
 var calcModelTerms = function(ui, context) {
-    var variableList = context.cloneArray(ui.factors.value(), []);
+    var variableList = context.clone(ui.factors.value(), []);
     let depVar = ui.dep.value();
     if (depVar)
         variableList.unshift(depVar);
@@ -93,7 +93,7 @@ var updateLevelControls = function(ui, context) {
 };
 
 var updateContrasts = function(ui, variableList, context) {
-    var currentList = context.cloneArray(ui.refLevels.value(), []);
+    var currentList = context.clone(ui.refLevels.value(), []);
 
     var list3 = [];
     for (let i = 0; i < variableList.length; i++) {
@@ -122,14 +122,14 @@ let updateModelLabels = function(list, blockName) {
 
 
 let calcBlocks = function(ui, context) {
-    let variableList = context.cloneArray(ui.covs.value(), []);
-    variableList = variableList.concat(context.cloneArray(ui.factors.value(), []));
+    let variableList = context.clone(ui.covs.value(), []);
+    variableList = variableList.concat(context.clone(ui.factors.value(), []));
 
     ui.modelSupplier.setValue(context.valuesToItems(variableList, FormatDef.variable));
 
 
     let varsDiff = context.findChanges("variableList", variableList, true, FormatDef.variable);
-    let termsList = context.cloneArray(ui.blocks.value(), []);
+    let termsList = context.clone(ui.blocks.value(), []);
 
     var termsChanged = false;
     for (var i = 0; i < varsDiff.removed.length; i++) {
@@ -178,7 +178,7 @@ let inOtherBlock = function(blocks, value, blockIndex) {
 
 let checkForNullBlocks = function(ui, context) {
     let changed = false;
-    let blocks = context.cloneArray(ui.blocks.value(), []);
+    let blocks = context.clone(ui.blocks.value(), []);
     for (let blockIndex = 0; blockIndex < blocks.length; blockIndex++)  {
         if (blocks[blockIndex] === null) {
             changed = true;
@@ -192,7 +192,7 @@ let checkForNullBlocks = function(ui, context) {
 
 let filterBlocks = function(ui, context) {
     let changed = false;
-    let blocks = context.cloneArray(ui.blocks.value(), []);
+    let blocks = context.clone(ui.blocks.value(), []);
 
     let prevBlocks = context.workspace["blocks"];
 
