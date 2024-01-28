@@ -25,8 +25,8 @@ const events = {
     },
 
     onUpdate_modelSupplier: function(ui) {
-        let variableList = this.cloneArray(ui.factors.value(), []);
-        let covariatesList = this.cloneArray(ui.covs.value(), []);
+        let variableList = this.clone(ui.factors.value(), []);
+        let covariatesList = this.clone(ui.covs.value(), []);
 
         let combinedList = variableList.concat(covariatesList);
 
@@ -54,7 +54,7 @@ const events = {
 
 let calcMarginalMeansSupplier = function(ui, context) {
 
-    let b1 = context.cloneArray(ui.factors.value(), []);
+    let b1 = context.clone(ui.factors.value(), []);
     b1 = context.valuesToItems(b1, FormatDef.variable);
 
     if (ui.emMeansSupplier)
@@ -68,8 +68,8 @@ let updateModelLabels = function(list, blockName) {
 };
 
 var calcModelTerms = function(ui, context) {
-    var variableList = context.cloneArray(ui.factors.value(), []);
-    var covariatesList = context.cloneArray(ui.covs.value(), []);
+    var variableList = context.clone(ui.factors.value(), []);
+    var covariatesList = context.clone(ui.covs.value(), []);
 
     var combinedList = variableList.concat(covariatesList);
 
@@ -82,7 +82,7 @@ var calcModelTerms = function(ui, context) {
     var diff2 = context.findChanges("covariatesList", covariatesList, true, FormatDef.variable);
     var combinedDiff = context.findChanges("combinedList", combinedList, true, FormatDef.variable);
 
-    var termsList = context.cloneArray(ui.modelTerms.value(), []);
+    var termsList = context.clone(ui.modelTerms.value(), []);
     var termsChanged = false;
 
     for (var i = 0; i < combinedDiff.removed.length; i++) {
@@ -131,8 +131,8 @@ var calcModelTerms = function(ui, context) {
 };
 
 var updatePostHocSupplier = function(ui, context) {
-    var termsList = context.cloneArray(ui.modelTerms.value(), []);
-    var covariatesList = context.cloneArray(ui.covs.value(), []);
+    var termsList = context.clone(ui.modelTerms.value(), []);
+    var covariatesList = context.clone(ui.covs.value(), []);
     var list = [];
     for (var j = 0; j < termsList.length; j++) {
         var term = termsList[j];
@@ -143,7 +143,7 @@ var updatePostHocSupplier = function(ui, context) {
 };
 
 var filterModelTerms = function(ui, context) {
-    var termsList = context.cloneArray(ui.modelTerms.value(), []);
+    var termsList = context.clone(ui.modelTerms.value(), []);
     var diff = context.findChanges("termsList", termsList, true, FormatDef.term);
 
     var changed = false;
@@ -172,7 +172,7 @@ var filterModelTerms = function(ui, context) {
 };
 
 var updateContrasts = function(ui, variableList, context) {
-    var currentList = context.cloneArray(ui.contrasts.value(), []);
+    var currentList = context.clone(ui.contrasts.value(), []);
 
     var list3 = [];
     for (let i = 0; i < variableList.length; i++) {

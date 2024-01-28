@@ -29,7 +29,7 @@ const updateRatios = function(ui, context) {
 
     context._updatingRatios += 1;
     let columnName = ui.var.value();
-    let oldRatios = context.cloneArray(ui.ratio.value(), []);
+    let oldRatios = context.clone(ui.ratio.value(), []);
     let promise = context.requestData("column", { columnName: columnName, properties: ["levels"] })
     promise.then(rData => {
         let data = [];
