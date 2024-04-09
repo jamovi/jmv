@@ -280,13 +280,13 @@ analyses:
     menuTitle: Weights
     hidden: true
 datasets:
-  - name: 'Big 5 (Dolan, Oort, Stoel & Wicherts, 2009)'
+  - name: Big 5 (Dolan, Oort, Stoel & Wicherts, 2009)
     path: Big5.csv
     description: A nice correlation data set
   - name: Tooth Growth
     path: ToothGrowth.csv
     description: An uninspiring ANOVA data set
-  - name: 'Bugs (Ryan, Wilde & Crist, 2013)'
+  - name: Bugs (Ryan, Wilde & Crist, 2013)
     path: bugs.csv
     description: A repeated measures ANOVA data set
   - name: Anderson's Iris Data
