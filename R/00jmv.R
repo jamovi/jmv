@@ -19,14 +19,14 @@
     `R`=list(
         `type`="software", 
         `author`="R Core Team", 
-        `year`=2022, 
+        `year`=2023, 
         `title`="A Language and Envionment for Statistical Computing", 
-        `publisher`="(Version 4.1) [Computer software]. Retrieved from https://cran.r-project.org/", 
+        `publisher`="(Version 4.3) [Computer software]. Retrieved from https://cran.r-project.org/", 
         `url`="https://cran.r-project.org/"), 
     `BF`=list(
         `type`="software", 
         `author`="Morey, R. D., Rouder, J. N., Jamil T., Urbanek, S., Forner, K., & Ly, A.", 
-        `year`=2022, 
+        `year`=2023, 
         `title`="BayesFactor: Computation of Bayes Factors for Common Designs", 
         `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=BayesFactor", 
         `url`="https://cran.r-project.org/package=BayesFactor"), 
@@ -41,7 +41,7 @@
     `car`=list(
         `type`="software", 
         `author`="Fox, J., & Weisberg, S.", 
-        `year`=2020, 
+        `year`=2023, 
         `title`="car: Companion to Applied Regression", 
         `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=car", 
         `url`="https://cran.r-project.org/package=car"), 
@@ -55,14 +55,14 @@
     `ggridges`=list(
         `type`="software", 
         `author`="Wilke, C.", 
-        `year`=2018, 
+        `year`=2023, 
         `title`="ggridges: Ridgeline Plots in ggplot2", 
         `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=ggridges", 
         `url`="https://cran.r-project.org/package=ggridges"), 
     `mvnormtest`=list(
         `type`="software", 
         `author`="Jarek, S.", 
-        `year`=2012, 
+        `year`=2009, 
         `title`="mvnormtest: Normality test for multivariate variables", 
         `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=mvnormtest", 
         `url`="https://cran.r-project.org/package=mvnormtest"), 
