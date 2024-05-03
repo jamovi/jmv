@@ -106,6 +106,7 @@ children:
               - type: TextBox
                 name: depLabel
                 format: string
+                margin: large
                 width: largest
   - type: CollapseBox
     label: Model
