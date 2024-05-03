@@ -43,7 +43,7 @@ const updateModelLabels = function(ui, context) {
 
 const calcModelTerms = function(ui, context) {
 
-    let factorList = context.cloneArray(ui.factors.value(), []);
+    let factorList = context.clone(ui.factors.value(), []);
 
     let variables = [];
     for (let i = 0 ; i < factorList.length; i++) {

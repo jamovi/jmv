@@ -678,7 +678,8 @@ ttestISResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 items="(vars)",
                 clearWith=list(
                     "group",
-                    "miss"),
+                    "miss",
+                    "ciWidth"),
                 template=R6::R6Class(
                     inherit = jmvcore::Group,
                     active = list(

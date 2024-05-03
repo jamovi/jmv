@@ -815,7 +815,7 @@ anovaRMResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 clearWith=list(
                     "dep",
                     "factors",
-                    "covs"),
+                    "cov"),
                 columns=list(
                     list(
                         `name`="n", 
@@ -866,7 +866,7 @@ anovaRMBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' 
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' 
 #' data('bugs', package = 'jmv')
 #'

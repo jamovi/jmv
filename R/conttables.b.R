@@ -6,28 +6,22 @@ contTablesClass <- R6::R6Class(
     #### Active bindings ----
     active = list(
         countsName = function() {
-            if (is.null(private$.countsName)) {
-                analysisCounts <- self$options$counts
-                if ( ! is.null(analysisCounts))
-                    private$.countsName <- analysisCounts
-                else if ( ! is.null(attr(self$data, "jmv-weights"))) {
-                    private$.countsName <- ".COUNTS"
-                }
+            if ( ! is.null(self$options$counts)) {
+                return(self$options$counts)
+            } else if ( ! is.null(attr(self$data, "jmv-weights-name"))) {
+                return (attr(self$data, "jmv-weights-name"))
             }
-
-            return(private$.countsName)
+            NULL
         }
     ),
     private=list(
-        #### Member variables ----
-        .countsName = NULL,
         #### Init + run functions ----
         .init=function() {
 
             rowVarName <- self$options$rows
             colVarName <- self$options$cols
             layerNames <- self$options$layers
-            countsName <- self$options$counts
+            countsName <- self$countsName
 
             freqs <- self$results$freqs
             chiSq <- self$results$chiSq
@@ -38,6 +32,23 @@ contTablesClass <- R6::R6Class(
             mh  <- self$results$mh
 
             data <- private$.cleanData()
+
+            if ( ! is.null(countsName)) {
+                message <- ..('The data is weighted by the variable {}.', countsName)
+                type <- NoticeType$WARNING
+
+                # if ( ! is.integer(data[['.COUNTS']])) {
+                #     type <- NoticeType$STRONG_WARNING
+                #     message <- ..('The data is weighted by the variable {}, however the use of non-integer weights may result in cell counts being rounded.', countsName)
+                # }
+
+                weightsNotice <- jmvcore::Notice$new(
+                    self$options,
+                    name='.weights',
+                    type=type,
+                    content=message)
+                self$results$insert(1, weightsNotice)
+            }
 
             reversed <- rev(layerNames)
             for (i in seq_along(reversed)) {
@@ -76,10 +87,12 @@ contTablesClass <- R6::R6Class(
                 levels <- c('.', '.')
             }
 
+            countsType <- `if`(is.integer(data$.COUNTS), 'integer', 'number')
+
             subNames  <- c('[count]', '[expected]', '[pcRow]', '[pcCol]', '[pcTot]')
             subTitles <- c(.('Observed'), .('Expected'), .('% within row'), .('% within column'), .('% of total'))
             visible   <- c('(obs)', '(exp)', '(pcRow)', '(pcCol)', '(pcTot)')
-            types     <- c('integer', 'number', 'number', 'number', 'number')
+            types     <- c(countsType, 'number', 'number', 'number', 'number')
             formats   <- c('', '', 'pc', 'pc', 'pc')
 
             # iterate over the sub rows
@@ -119,7 +132,7 @@ contTablesClass <- R6::R6Class(
                 freqs$addColumn(
                     name='.total[count]',
                     title=.('Total'),
-                    type='integer')
+                    type=countsType)
             }
 
             if (self$options$exp) {
@@ -238,7 +251,7 @@ contTablesClass <- R6::R6Class(
 
             rowVarName <- self$options$rows
             colVarName <- self$options$cols
-            countsName <- self$countsName
+            countsName <- self$options$counts
 
             if (is.null(rowVarName) || is.null(colVarName))
                 return()
@@ -250,11 +263,10 @@ contTablesClass <- R6::R6Class(
             if (nlevels(data[[colVarName]]) < 2)
                 jmvcore::reject(.("Column variable '{var}' contains fewer than 2 levels"), code='', var=colVarName)
 
-            if ( ! is.null(countsName)) {
-                countCol <- data[[countsName]]
-                if (any(countCol < 0, na.rm=TRUE))
+            if ( ! is.null(data$.COUNTS)) {
+                if (any(data$.COUNTS < 0, na.rm=TRUE))
                     jmvcore::reject(.('Counts may not be negative'))
-                if (any(is.infinite(countCol)))
+                if (any(is.infinite(data$.COUNTS)))
                     jmvcore::reject(.('Counts may not be infinite'))
             }
 
@@ -606,9 +618,7 @@ contTablesClass <- R6::R6Class(
             if (! is.null(colVarName))
                 colVarName <- jmvcore::toB64(colVarName)
 
-            countsName <- self$countsName
-            if (! is.null(countsName))
-                countsName <- jmvcore::toB64(countsName)
+            countsName <- jmvcore::toB64('.COUNTS')
 
             layerNames <- self$options$layers
             if (length(layerNames) > 0)
@@ -702,6 +712,7 @@ contTablesClass <- R6::R6Class(
 
         #### Helper functions ----
         .cleanData = function(B64 = FALSE) {
+
             data <- self$data
 
             rowVarName <- self$options$rows
@@ -709,27 +720,33 @@ contTablesClass <- R6::R6Class(
             layerNames <- self$options$layers
             countsName <- self$options$counts
 
+            columns <- list()
+
             if ( ! is.null(rowVarName)) {
-                rowVarNameNew <- ifelse(B64, jmvcore::toB64(rowVarName), rowVarName)
-                data[[rowVarNameNew]] <- as.factor(data[[rowVarName]])
+                columns[[rowVarName]] <- as.factor(data[[rowVarName]])
             }
             if ( ! is.null(colVarName)) {
-                colVarNameNew <- ifelse(B64, jmvcore::toB64(colVarName), colVarName)
-                data[[colVarNameNew]] <- as.factor(data[[colVarName]])
+                columns[[colVarName]] <- as.factor(data[[colVarName]])
             }
             for (layerName in layerNames) {
-                layerNameNew <- ifelse(B64, jmvcore::toB64(layerName), layerName)
-                data[[layerNameNew]] <- as.factor(data[[layerName]])
-            }
-            if ( ! is.null(countsName)) {
-                countsNameNew <- ifelse(B64, jmvcore::toB64(countsName), countsName)
-                data[[countsNameNew]] <- jmvcore::toNumeric(data[[countsName]])
-            } else if ( ! is.null(attr(data, "jmv-weights"))) {
-                countsNameNew <- ifelse(B64, jmvcore::toB64(".COUNTS"), ".COUNTS")
-                data[[countsNameNew]] = jmvcore::toNumeric(attr(data, "jmv-weights"))
+                columns[[layerName]] <- as.factor(data[[layerName]])
             }
 
-            return(data)
+            if ( ! is.null(countsName)) {
+                columns[['.COUNTS']] <- jmvcore::toNumeric(data[[countsName]])
+            } else if ( ! is.null(attr(data, "jmv-weights"))) {
+                columns[['.COUNTS']] <- jmvcore::toNumeric(attr(data, "jmv-weights"))
+            } else {
+                columns[['.COUNTS']] <- as.integer(rep(1, nrow(data)))
+            }
+
+            if (B64)
+                names(columns) <- jmvcore::toB64(names(columns))
+
+            attr(columns, 'row.names') <- paste(seq_len(length(columns[[1]])))
+            class(columns) <- 'data.frame'
+
+            columns
         },
         .matrices=function(data) {
 
@@ -738,18 +755,10 @@ contTablesClass <- R6::R6Class(
             rowVarName <- self$options$rows
             colVarName <- self$options$cols
             layerNames <- self$options$layers
-            countsName <- self$countsName
 
             if (length(layerNames) == 0) {
 
-                subData <- jmvcore::select(data, c(rowVarName, colVarName))
-
-                if (is.null(countsName))
-                    .COUNTS <- rep(1, nrow(subData))
-                else
-                    .COUNTS <- jmvcore::toNumeric(data[[countsName]])
-
-                matrices <- list(ftable(xtabs(.COUNTS ~ ., data=subData)))
+                matrices <- list(ftable(xtabs(.COUNTS ~ ., data=data)))
 
             } else {
 
@@ -758,12 +767,7 @@ contTablesClass <- R6::R6Class(
 
                 tables <- lapply(dataList, function(x) {
 
-                    xTemp <- jmvcore::select(x, c(rowVarName, colVarName))
-
-                    if (is.null(countsName))
-                        .COUNTS <- rep(1, nrow(xTemp))
-                    else
-                        .COUNTS <- jmvcore::toNumeric(x[[countsName]])
+                    xTemp <- jmvcore::select(x, c('.COUNTS', rowVarName, colVarName))
 
                     ftable(xtabs(.COUNTS ~ ., data=xTemp))
                 })
@@ -790,7 +794,7 @@ contTablesClass <- R6::R6Class(
                             indices <- c(indices, j)
                     }
 
-                    matrices[[i]] <- Reduce("+", tables[indices])
+                    matrices[[i]] <- Reduce(`+`, tables[indices])
                 }
 
             }
@@ -896,7 +900,7 @@ contTablesClass <- R6::R6Class(
                     rhs <- c(rhs, self$options$layers)
                 }
             }
-            jmvcore:::composeFormula(self$options$counts, list(rhs))
+            jmvcore:::composeFormula('.COUNTS', list(rhs))
         }
     )
 )

@@ -51,8 +51,10 @@ anovaRMNPClass <- R6::R6Class(
         desc <- self$results$get('desc')
         descData <- private$desc
 
-        for (i in seq_along(measureNames))
-            desc$setRow(rowKey=i, list(mean=descData$mean[i], median=descData$median[i]))
+        for (m in measureNames) {
+            index <- which(descData$group == m)
+            desc$setRow(rowKey=m, list(mean=descData[index, 'mean'], median=descData[index, 'median']))
+        }
 
     },
     .init=function() {
@@ -74,8 +76,8 @@ anovaRMNPClass <- R6::R6Class(
 
         desc <- self$results$get('desc')
 
-        for (i in seq_along(measureNames))
-            desc$addRow(rowKey=i, list(level=measureNames[i]))
+        for (m in measureNames)
+            desc$addRow(rowKey=m, list(level=m))
     },
     .preparePlot=function(data) {
 

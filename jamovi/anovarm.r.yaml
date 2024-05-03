@@ -476,7 +476,7 @@ items:
       clearWith:
         - dep
         - factors
-        - covs
+        - cov
 
       columns:
 
