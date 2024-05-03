@@ -358,3 +358,5 @@ children:
             name: residsOV
           - type: Output
             name: cooksOV
+          - type: Output
+            name: mahalOV

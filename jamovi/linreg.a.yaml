@@ -381,4 +381,8 @@ options:
     - name: cooksOV
       title: Cook's distance
       type: Output
+
+    - name: mahalOV
+      title: Mahalanobis distance
+      type: Output   
 ...
