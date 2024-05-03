@@ -1,8 +1,8 @@
 Package: jmv
 Type: Package
 Title: The 'jamovi' Analyses
-Version: 2.4.11
-Date: 2023-10-12
+Version: 2.4.12
+Date: 2023-10-19
 Authors@R: c(person("Ravi", "Selker", role=c("aut", "cph")),
     person("Jonathon", "Love", role=c("aut", "cre", "cph"), email="jon@thon.cc"),
     person("Damian", "Dropmann", role=c("aut", "cph")),
@@ -11,7 +11,7 @@ Authors@R: c(person("Ravi", "Selker", role=c("aut", "cph")),
 Maintainer: Jonathon Love <jon@thon.cc>
 Description: A suite of common statistical methods such as descriptives,
     t-tests, ANOVAs, regression, correlation matrices, proportion tests,
-    contingency tables, and factor analysis. This package is also useable from
+    contingency tables, and factor analysis. This package is also usable from
     the 'jamovi' statistical spreadsheet (see <https://www.jamovi.org> for more
     information).
 BugReports: https://github.com/jamovi/jmv/issues
@@ -49,5 +49,6 @@ Suggests:
     carData,
     knitr,
     rmarkdown
+Language: en-GB
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.2.3

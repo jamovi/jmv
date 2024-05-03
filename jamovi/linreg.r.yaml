@@ -452,3 +452,14 @@ items:
         - dep
         - blocks
         - weights
+
+    - name: mahalOV
+      type: Output
+      title: Mahalanobis Distance
+      varTitle: Mahalanobis distance
+      varDescription: Mahalanobis distance of the independent variables of linear regression
+      measureType: continuous
+      clearWith:
+        - dep
+        - blocks
+        - weights

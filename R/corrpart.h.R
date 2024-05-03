@@ -312,7 +312,7 @@ corrPartBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param kendall \code{TRUE} or \code{FALSE} (default), provide Kendall's
 #'   tau-b
 #' @param type one of \code{'part'} (default) or \code{'semi'} specifying the
-#'   type of partial correlation to calculate; partial or semipartial
+#'   type of partial correlation to calculate; partial or semi-partial
 #'   correlation.
 #' @param sig \code{TRUE} (default) or \code{FALSE}, provide significance
 #'   levels
@@ -320,7 +320,7 @@ corrPartBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   correlations
 #' @param n \code{TRUE} or \code{FALSE} (default), provide the number of cases
 #' @param hypothesis one of \code{'corr'} (default), \code{'pos'},
-#'   \code{'neg'} specifying the alernative hypothesis; correlated, correlated
+#'   \code{'neg'} specifying the alternative hypothesis; correlated, correlated
 #'   positively, correlated negatively respectively.
 #' @return A results object containing:
 #' \tabular{llllll}{

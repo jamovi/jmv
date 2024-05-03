@@ -925,8 +925,8 @@ logRegBinBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param modelTest \code{TRUE} or \code{FALSE} (default), provide the model
 #'   comparison between the models and the NULL model
 #' @param dev \code{TRUE} (default) or \code{FALSE}, provide the deviance (or
-#'   -2LogLikelihood) for the models
-#' @param aic \code{TRUE} (default) or \code{FALSE}, provide Aikaike's
+#'   -2LL / log-likelihood ratio) for the models
+#' @param aic \code{TRUE} (default) or \code{FALSE}, provide Akaike's
 #'   Information Criterion (AIC) for the models
 #' @param bic \code{TRUE} or \code{FALSE} (default), provide Bayesian
 #'   Information Criterion (BIC) for the models
@@ -966,8 +966,8 @@ logRegBinBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   specificity of outcomes grouped by the cut-off value
 #' @param sens \code{TRUE} or \code{FALSE} (default), provide the predicted
 #'   sensitivity of outcomes grouped by the cut-off value
-#' @param auc \code{TRUE} or \code{FALSE} (default), provide the rea under the
-#'   ROC curve (AUC)
+#' @param auc \code{TRUE} or \code{FALSE} (default), provide the area under
+#'   the ROC curve (AUC)
 #' @param rocPlot \code{TRUE} or \code{FALSE} (default), provide a ROC curve
 #'   plot
 #' @param cutOff \code{TRUE} or \code{FALSE} (default), set a cut-off used for
@@ -975,7 +975,7 @@ logRegBinBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param cutOffPlot \code{TRUE} or \code{FALSE} (default), provide a cut-off
 #'   plot
 #' @param collin \code{TRUE} or \code{FALSE} (default), provide VIF and
-#'   tolerence collinearity statistics
+#'   tolerance collinearity statistics
 #' @param boxTidwell \code{TRUE} or \code{FALSE} (default), provide
 #'   Box-Tidwell test for linearity of the logit
 #' @param cooks \code{TRUE} or \code{FALSE} (default), provide summary

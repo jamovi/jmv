@@ -249,7 +249,7 @@ options:
         - name: tukey
           title: Tukey
         - name: scheffe
-          title: Scheffe
+          title: Scheffé
         - name: bonf
           title: Bonferroni
         - name: holm
@@ -261,7 +261,7 @@ options:
             the post-hoc multiple comparisons corrections to use.
           R: >
             one or more of `'none'`, `'tukey'`, `'scheffe'`, `'bonf'`, or `'holm'`;
-            provide no, Tukey, Scheffe, Bonferroni, and Holm Post Hoc corrections
+            provide no, Tukey, Scheffé, Bonferroni, and Holm Post Hoc corrections
             respectively
 
     - name: postHocES
@@ -275,7 +275,7 @@ options:
           ui: >
             provide a Cohen's d measure of effect size for the post-hoc tests.
           R: >
-            a possible value of `'d'`; provide cohen's d measure of effect size
+            a possible value of `'d'`; provide Cohen's d measure of effect size
             for the post-hoc tests
 
     - name: postHocEsCi

@@ -1374,9 +1374,9 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             return(data)
         },
+        # Returns the names of the factor contrasts as they are
+        # defined by the glm function
         .contrastModel = function(terms) {
-            #' Returns the names of the factor contrasts as they are
-            #' defined by the glm function
 
             factors <- self$options$factors
 
@@ -1403,9 +1403,9 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             return(contrastTerms)
         },
+        # Returns the names of the factor contrasts as they are
+        # displayed in the jmv coef table
         .contrastsCoefTable = function(terms) {
-            #' Returns the names of the factor contrasts as they are
-            #' displayed in the jmv coef table
 
             factors <- self$options$factors
             refLevels <- self$options$refLevels

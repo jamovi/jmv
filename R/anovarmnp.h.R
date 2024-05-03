@@ -189,7 +189,7 @@ anovaRMNPBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' The Friedman test is used to explore the relationship between a continuous 
 #' dependent variable and a categorical explanatory variable, where the 
 #' explanatory variable is 'within subjects' (where multiple measurements are 
-#' from the same subject). It is analagous to Repeated Measures ANOVA, but 
+#' from the same subject). It is analogous to Repeated Measures ANOVA, but 
 #' with the advantage of being non-parametric, and not requiring the 
 #' assumptions of normality or homogeneity of variances. However, it has the 
 #' limitation that it can only test a single explanatory variable at a time.

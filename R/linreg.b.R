@@ -1238,9 +1238,9 @@ linRegClass <- R6::R6Class(
 
             return(private$.isAliased)
         },
+        # Returns the names of the factor contrasts as they are
+        # defined by the lm function
         .contrastModel = function(terms) {
-            #' Returns the names of the factor contrasts as they are
-            #' defined by the lm function
 
             factors <- self$options$factors
 
@@ -1264,9 +1264,9 @@ linRegClass <- R6::R6Class(
 
             return(contrastTerms)
         },
+        # Returns the names of the factor contrasts as they are
+        # displayed in the coef table
         .contrastsCoefTable = function(terms) {
-            #' Returns the names of the factor contrasts as they are
-            #' displayed in the coef table
 
             factors <- self$options$factors
             refLevels <- self$options$refLevels

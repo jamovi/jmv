@@ -147,8 +147,8 @@ options:
       default: true
       description:
           R: >
-            `TRUE` (default) or `FALSE`, provide the deviance (or -2LogLikelihood)
-            for the models
+            `TRUE` (default) or `FALSE`, provide the deviance (or -2LL /
+            log-likelihood ratio) for the models
 
     - name: aic
       title: AIC
@@ -156,7 +156,7 @@ options:
       default: true
       description:
           R: >
-            `TRUE` (default) or `FALSE`, provide Aikaike's Information Criterion (AIC)
+            `TRUE` (default) or `FALSE`, provide Akaike's Information Criterion (AIC)
             for the models
 
     - name: bic

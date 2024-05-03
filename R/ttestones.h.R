@@ -587,7 +587,7 @@ ttestOneSBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param hypothesis \code{'dt'} (default), \code{'gt'} or \code{'lt'}, the
 #'   alternative hypothesis; different to \code{testValue}, greater than
 #'   \code{testValue}, and less than \code{testValue} respectively
-#' @param norm \code{TRUE} or \code{FALSE} (default), perform Shapiro-wilk
+#' @param norm \code{TRUE} or \code{FALSE} (default), perform Shapiro-Wilk
 #'   tests of normality
 #' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
 #'   residuals

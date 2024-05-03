@@ -117,8 +117,8 @@ options:
           ui: >
             the repeated measures measurements.
           R: >
-            a list of lists, where each list decribes a repeated measure (as a
-            string) from `data` defined as `measure` and the
+            a list of lists, where each list describes a repeated measure
+            (as a string) from `data` defined as `measure` and the
             particular combination of levels from `rm` that it belongs to
             (as a vector of strings) defined as `cell`
 
@@ -251,8 +251,8 @@ options:
           R: >
             one or more of `'none'` (default), `'GG'`, or ``HF``;
             use no p-value correction, the Greenhouse-Geisser p-value
-            correction, and the Huynh-Feldt p-value correction for shericity,
-            respectively
+            correction, and the Huynh-Feldt p-value correction for
+            sphericity, respectively
 
     - name: leveneTest
       title: Homogeneity test
@@ -312,7 +312,7 @@ options:
           R: in development
 
     - name: postHoc
-      title: Post Hoc Tests
+      title: Post-Hoc Tests
       type: Array
       template:
           type: Array
@@ -335,7 +335,7 @@ options:
           - name: tukey
             title: Tukey
           - name: scheffe
-            title: Scheffe
+            title: Scheffé
           - name: bonf
             title: Bonferroni
           - name: holm
@@ -347,8 +347,8 @@ options:
             the post-hoc multiple comparisons corrections to use.
           R: >
             one or more of `'none'`, `'tukey'` (default), `'scheffe'`,
-            `'bonf'`, or `'holm'`; use no, Tukey, Scheffe, Bonferroni and
-            Holm posthoc corrections, respectively
+            `'bonf'`, or `'holm'`; use no, Tukey, Scheffé, Bonferroni and
+            Holm post-hoc corrections, respectively
 
     - name: emMeans
       title: Marginal Means

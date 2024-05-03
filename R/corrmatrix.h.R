@@ -411,7 +411,7 @@ corrMatrixBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param plotStats \code{TRUE} or \code{FALSE} (default), provide statistics
 #'   in the correlation matrix plot
 #' @param hypothesis one of \code{'corr'} (default), \code{'pos'},
-#'   \code{'neg'} specifying the alernative hypothesis; correlated, correlated
+#'   \code{'neg'} specifying the alternative hypothesis; correlated, correlated
 #'   positively, correlated negatively respectively.
 #' @return A results object containing:
 #' \tabular{llllll}{
