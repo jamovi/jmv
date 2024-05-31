@@ -54,7 +54,7 @@ testthat::test_that('All options in the ttestIS work (sunny)', {
     testthat::expect_equal(c(-0.328, 0.019), ttestTable[['md[mann]']], tolerance = 1e-3)
     testthat::expect_equal(c(-0.738, -0.37), ttestTable[['cil[mann]']], tolerance = 1e-3)
     testthat::expect_equal(c(0.115, 0.422), ttestTable[['ciu[mann]']], tolerance = 1e-3)
-    testthat::expect_equal(c(0.174, 0.013), ttestTable[['es[mann]']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.174, -0.013), ttestTable[['es[mann]']], tolerance = 1e-3)
 
     # Test normality tests table
     normTable <- r$assum$norm$asDF
@@ -128,5 +128,21 @@ testthat::test_that('Matched rank biserial correlation is correct', {
     ttestTable <- r$ttest$asDF
     testthat::expect_equal(2, ttestTable[['stat[mann]']])
     testthat::expect_equal(0.063, ttestTable[['p[mann]']], tolerance = 1e-3)
-    testthat::expect_equal(0.8, ttestTable[['es[mann]']])
+    testthat::expect_equal(-0.8, ttestTable[['es[mann]']])
+})
+
+testthat::test_that('Rank biserial correlation can be negative', {
+    df <- data.frame(
+        score = c(3, 4, 7, 8, 5, 9),
+        group = c('spr', 'spr', 'spr', 'ctrl', 'ctrl', 'ctrl'),
+        stringsAsFactors = TRUE
+    )
+
+    r <- jmv::ttestIS(df, vars="score", group="group", mann=TRUE, students=FALSE, effectSize=TRUE)
+
+    # Test rank biserial correlation
+    ttestTable <- r$ttest$asDF
+    testthat::expect_equal(1, ttestTable[['stat[mann]']])
+    testthat::expect_equal(0.2, ttestTable[['p[mann]']])
+    testthat::expect_equal(-0.778, ttestTable[['es[mann]']], tolerance = 1e-3)
 })
