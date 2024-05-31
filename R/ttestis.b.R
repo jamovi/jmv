@@ -126,7 +126,7 @@ ttestISClass <- R6::R6Class(
                     else if (any(is.infinite(dataTTest$dep)))
                         res <- createError(.('Variable contains infinite values'))
                     else
-                        res <- try(t.test(dep ~ group, data=dataTTest, var.equal=TRUE, paired=FALSE,
+                        res <- try(t.test(dep ~ group, data=dataTTest, var.equal=TRUE,
                                           alternative=Ha, conf.level=confInt), silent=TRUE)
 
                     if (isError(res)) {
@@ -181,7 +181,7 @@ ttestISClass <- R6::R6Class(
                     else if (any(is.infinite(dataTTest$dep)))
                         res <- createError(.('Variable contains infinite values'))
                     else
-                        res <- try(t.test(dep ~ group, data=dataTTest, var.equal=FALSE, paired=FALSE,
+                        res <- try(t.test(dep ~ group, data=dataTTest, var.equal=FALSE,
                                           alternative=Ha, conf.level=confInt), silent=TRUE)
 
                     if ( ! isError(res)) {
