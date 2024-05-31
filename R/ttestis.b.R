@@ -281,8 +281,7 @@ ttestISClass <- R6::R6Class(
                         if ( ! is.na(m1) && m2 < m1)
                             res <- res2
 
-                        biSerial <- 1 - (2 * res$statistic / (n[1] * n[2]))
-
+                        biSerial <- 1 - (2 * m1 / (n[1] * n[2]))
                     }
 
                     if ( ! isError(res)) {
