@@ -399,3 +399,36 @@ testthat::test_that("No warnings are thrown when bs terms contains interaction",
         )
     )
 })
+
+testthat::test_that("Full model is used when terms are not defined by user", {
+    # GIVEN a simple RM dataset with one bs factor
+    df <- data.frame(
+        measure1 = rnorm(100),
+        measure2 = rnorm(100),
+        `bsFactor 1` = sample(LETTERS[1:2], 100, replace = TRUE),
+        check.names = FALSE,
+        stringsAsFactors = TRUE
+    )
+
+    # WHEN I run this analysis
+    # BUT I don't add the bs and rm factors as parameters
+    rm = list(list(
+        label="rmFactor 1",
+        levels=c("measure1", "measure2")
+    ))
+    rmCells = list(
+        list(measure="measure1", cell="measure1"),
+        list(measure="measure2", cell="measure2")
+    )
+    r <- jmv::anovaRM(data = df, rm = rm, bs = list("bsFactor 1"), rmCells = rmCells)
+
+    # THEN the rmFactor is added to the table
+    rmTable <- r$rmTable$asDF
+    testthat::expect_equal(rmTable$name, c("rmFactor 1", "rmFactor 1:bsFactor 1", "Residual"))
+    testthat::expect_equal(rmTable$df, c(1, 1, 98))
+
+    # And the bsFactor is added to the table
+    bsTable <- r$bsTable$asDF
+    testthat::expect_equal(bsTable$name, c("bsFactor 1", "Residual"))
+    testthat::expect_equal(bsTable$df, c(1, 98))
+})
