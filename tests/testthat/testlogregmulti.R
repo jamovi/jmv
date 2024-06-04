@@ -255,3 +255,21 @@ testthat::test_that("Analysis works with global weights", {
     )
 })
 
+testthat::test_that('Model fit table contains sample size footnote', {
+    df <- data.frame(
+        y = sample(0:2, 16, replace = TRUE),
+        x = rnorm(16)
+    )
+
+    r <- jmv::logRegMulti(
+        df,
+        dep="y",
+        covs="x",
+        blocks=list(list("x")),
+        refLevels=list(list(var="y", ref="0"))
+    )
+
+    testthat::expect_match(r$modelFit$notes$n$note, "N=16")
+})
+
+

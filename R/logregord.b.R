@@ -293,6 +293,12 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                     orderedLevels=paste(depLevels, collapse = ' | ')
                 )
             )
+            table$setNote(
+                "n",
+                jmvcore::format(
+                    .("Models estimated using sample size of N={n}"), n="..."
+                )
+            )
         },
         .initModelCompTable = function() {
             table <- self$results$modelComp
@@ -443,6 +449,14 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
                 table$setRow(rowNo=i, values = row)
             }
+
+            table$setNote(
+                "n",
+                jmvcore::format(
+                    "Models estimated using sample size of N={n}",
+                    n=nrow(model.frame(self$models[[1]]))
+                )
+            )
         },
         .populateModelCompTable = function() {
             if (length(self$nModels) <= 1)
