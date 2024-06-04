@@ -101,20 +101,6 @@ testthat::test_that('Error is thrown if grouping var has more than 2 levels', {
     )
 })
 
-testthat::test_that('Error is thrown if grouping var has more than 2 levels', {
-    df <- data.frame(
-        dep = c(1, 7, 4),
-        group = c("a", "b", "c"),
-        stringsAsFactors = TRUE
-    )
-
-    testthat::expect_error(
-        jmv::ttestIS(df, vars = "dep", group = "group"),
-        "Grouping variable 'group' must have exactly 2 levels",
-        fixed=TRUE
-    )
-})
-
 testthat::test_that('Matched rank biserial correlation is correct', {
     df <- data.frame(
         score = c(220, 221, 223, 225, 226, 228, 229, 230, 232),
