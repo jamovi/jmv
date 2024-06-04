@@ -115,3 +115,23 @@ testthat::test_that("Analysis works with global weights", {
     testthat::expect_equal(c(-5.204, NA, 2.092), coefTable[['z']], tolerance = 1e-3)
     testthat::expect_equal(c(0, NA, 0.036), coefTable[['p']], tolerance = 1e-3)
 })
+
+testthat::test_that('Model fit table contains sample size footnote', {
+    df <- data.frame(
+        y = sample(letters[1:3], 15, replace = TRUE),
+        x = rnorm(15),
+        check.names = FALSE,
+        stringsAsFactors = TRUE
+    )
+
+    r <- jmv::logRegOrd(
+        df,
+        dep="y",
+        covs="x",
+        blocks=list(list("x"))
+    )
+
+    testthat::expect_match(r$modelFit$notes$n$note, "N=15")
+})
+
+
