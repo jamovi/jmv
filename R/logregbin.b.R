@@ -458,6 +458,13 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             for (i in seq_along(private$.getModelTerms()))
                 table$addRow(rowKey=i, values=list(model = i))
+
+            table$setNote(
+                "n",
+                jmvcore::format(
+                    .("Models estimated using sample size of N={n}"), n="..."
+                )
+            )
         },
         .initModelCompTable = function() {
             table <- self$results$modelComp
@@ -796,6 +803,14 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
                 table$setRow(rowNo=i, values = row)
             }
+
+            table$setNote(
+                "n",
+                jmvcore::format(
+                    "Models estimated using sample size of N={n}",
+                    n=length(self$models[[1]]$fitted.values)
+                )
+            )
         },
         .populateModelCompTable = function() {
             if (self$nModels <= 1)

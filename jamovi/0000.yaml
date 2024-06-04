@@ -294,5 +294,6 @@ datasets:
     description: The 'iris' data set from R
 usesNative: true
 minApp: 1.0.8
+index: 0
 
 ...

@@ -650,4 +650,19 @@ testthat::test_that('Emmeans work with nuisance parameters (with interactions)',
 })
 
 
+testthat::test_that('Model fit table contains sample size footnote', {
+    df <- data.frame(
+        x = rnorm(13),
+        y = rnorm(13)
+    )
+
+    r <- jmv::linReg(
+        df,
+        dep="y",
+        covs="x",
+        blocks=list(list("x")),
+    )
+
+    testthat::expect_match(r$modelFit$notes$n$note, "N=13")
+})
 

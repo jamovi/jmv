@@ -389,3 +389,20 @@ testthat::test_that("Analysis adds note when design matrix is singular", {
     testthat::expect_true("singular" %in% names(notes))
 })
 
+
+testthat::test_that('Model fit table contains sample size footnote', {
+    df <- data.frame(
+        y = sample(0:1, 11, replace = TRUE),
+        x = rnorm(11)
+    )
+
+    r <- jmv::logRegBin(
+        df,
+        dep="y",
+        covs="x",
+        blocks=list(list("x")),
+        refLevels=list(list(var="y", ref="0"))
+    )
+
+    testthat::expect_match(r$modelFit$notes$n$note, "N=11")
+})
