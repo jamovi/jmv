@@ -3,15 +3,31 @@
 anovaRMClass <- R6::R6Class(
     "anovaRMClass",
     inherit=anovaRMBase,
-    private=list(
+    #### Active bindings ----
+    active = list(
+        rmTerms = function() {
+            if (is.null(private$.rmTerms))
+                private$.rmTerms <- private$.getRmTerms()
+
+            return(private$.rmTerms)
+        },
+        bsTerms = function() {
+            if (is.null(private$.bsTerms))
+                private$.bsTerms <- private$.getBsTerms()
+
+            return(private$.bsTerms)
+        }
+    ),
+    private = list(
         #### Member variables ----
-        .model = NA,
-        .postHocRows = NA,
+        .rmTerms = NULL,
+        .bsTerms = NULL,
+        .model = NULL,
+        .postHocRows = NULL,
         emMeans = list(),
 
         #### Init + run functions ----
         .init=function() {
-
             private$.initRMTable()
             private$.initBSTable()
             private$.initSpericityTable()
@@ -28,10 +44,9 @@ anovaRMClass <- R6::R6Class(
                 self$setStatus('complete')
         },
         .run=function() {
-
             dataSelected <- ! sapply(lapply(self$options$rmCells, function(x) return(x$measure)), is.null)
 
-            ready <- sum(dataSelected) == length(self$options$rmCells) && length(self$options$rmTerms) > 0
+            ready <- sum(dataSelected) == length(self$options$rmCells) && length(self$rmTerms) > 0
 
             if (ready) {
 
@@ -41,9 +56,15 @@ anovaRMClass <- R6::R6Class(
 
                 suppressMessages({
                     suppressWarnings({
-
-                    result <- try(afex::aov_car(modelFormula, data, type=self$options$ss, factorize = FALSE), silent=TRUE)
-
+                        result <- try(
+                            afex::aov_car(
+                                modelFormula,
+                                data,
+                                type=self$options$ss,
+                                factorize = FALSE
+                            ),
+                            silent=TRUE
+                        )
                     }) # suppressWarnings
                 }) # suppressMessages
 
@@ -65,12 +86,17 @@ anovaRMClass <- R6::R6Class(
 
         #### Init tables/plots functions ----
         .initRMTable=function() {
-            ssTypeNote <- .("Type {ssType} Sums of Squares")
-
             rmTable <- self$results$rmTable
-            rmTable$setNote('Note', jmvcore::format(ssTypeNote, ssType=self$options$ss))
 
-            rm <- private$.rmTerms()
+            rmTable$setNote(
+                'Note',
+                jmvcore::format(
+                    .("Type {ssType} Sums of Squares"),
+                    ssType=self$options$ss
+                )
+            )
+
+            rm <- private$.rmTableRowLabels()
             rmTerms <- rm$terms
             rmSpacing <- rm$spacing
 
@@ -113,12 +139,17 @@ anovaRMClass <- R6::R6Class(
             }
         },
         .initBSTable=function() {
-            ssTypeNote <- .("Type {ssType} Sums of Squares")
-
             bsTable <- self$results$bsTable
-            bsTable$setNote('Note', jmvcore::format(ssTypeNote, ssType=self$options$ss))
 
-            bsTerms <- private$.bsTerms()
+            bsTable$setNote(
+                'Note',
+                jmvcore::format(
+                    .("Type {ssType} Sums of Squares"),
+                    ssType=self$options$ss
+                )
+            )
+
+            bsTerms <- c(self$bsTerms, 'Residual')
 
             if (length(bsTerms) > 0) {
                 for (term in bsTerms) {
@@ -135,7 +166,7 @@ anovaRMClass <- R6::R6Class(
         },
         .initSpericityTable=function() {
             spherTable <- self$results$get('assump')$get('spherTable')
-            for (term in self$options$rmTerms)
+            for (term in self$rmTerms)
                 spherTable$addRow(rowKey=term, list(name=stringifyTerm(term)))
         },
         .initLeveneTable=function() {
@@ -502,7 +533,7 @@ anovaRMClass <- R6::R6Class(
 
             if (any(nLevels > 2) && length(resultRows) > 0) {
 
-                for (term in self$options$rmTerms) {
+                for (term in self$rmTerms) {
 
                     index <- which(sapply(as.list(resultRows), function(x) setequal(x, toB64(term))))
 
@@ -525,7 +556,7 @@ anovaRMClass <- R6::R6Class(
                 }
             } else {
 
-                for (term in self$options$rmTerms) {
+                for (term in self$rmTerms) {
 
                     if (any(nLevels > 2)) {
                         spherTable$setRow(rowKey=term, values=list('mauch'=NaN, 'p'=NaN, 'gg'=NaN, 'hf'=NaN))
@@ -885,7 +916,6 @@ anovaRMClass <- R6::R6Class(
 
         #### Helper functions ----
         .dataCheck=function() {
-
             data <- self$data
 
             rm <- sapply(self$options$rmCells, function(x) return(x$measure))
@@ -943,130 +973,73 @@ anovaRMClass <- R6::R6Class(
             # if (any(noVarItems))
             #     jmvcore::reject("Item '{}' has no variance", code='error', varsNumeric[noVarItems])
         },
-        .rmTerms=function() {
+        .getAllInteractions = function(vars) {
+            n <- length(vars)
+            terms <- list()
+            for (i in 1:n) {
+                comb <- combn(vars, i, simplify = FALSE)
+                terms <- c(terms, comb)
+            }
+            terms
+        },
+        .getRmTerms = function() {
+            rmTerms <- self$options$rmTerms
+            if (length(rmTerms) > 0)
+                return(rmTerms)
 
-            if (length(self$options$rmTerms) == 0) { # if no specific model is specified
+            rm <- self$options$rm
+            if (length(rm) == 0)
+                return(list())
 
-                rmFactors <- self$options$rm
-                bsFactors <- self$options$bs
-                covariates <- self$options$cov
+            rmNames <- sapply(rm, function(x) x$label, simplify = TRUE)
+            rmTerms <- private$.getAllInteractions(rmNames)
 
-                if (length(rmFactors) == 0)
-                    rmFactors <- list(list(label='RM Factor 1'))
+            return(rmTerms)
+        },
+        .getBsTerms = function() {
+            bsTerms <- self$options$bsTerms
+            if (length(bsTerms) > 0)
+                return(bsTerms)
 
-                bsNames <- c(bsFactors, covariates)
+            bs <- self$options$bs
+            cov <- self$options$cov
 
-                rmNames <- sapply(rmFactors, function(x) x$label, simplify=TRUE)
-                rmFormula <- as.formula(paste('~', paste(paste0('`', rmNames, '`'), collapse='*')))
-                rmTerms <- attr(stats::terms(rmFormula), 'term.labels')
-                rmTerms <- sapply(rmTerms, function(x) as.list(strsplit(x, ':')), USE.NAMES=FALSE)
+            if (length(bs) == 0 && length(cov) == 0)
+                return(list())
 
-                if (length(bsFactors) > 0) {
-                    bsFormula <- as.formula(paste('~', paste(paste0('`', bsFactors, '`'), collapse='*')))
-                    bsTerms <- attr(stats::terms(bsFormula), 'term.labels')
-                    bsTerms <- sapply(bsTerms, function(x) as.list(strsplit(x, ':')), USE.NAMES=FALSE)
-                } else {
-                    bsTerms <- NULL
-                }
+            if (length(bs) == 0) {
+                bsTerms <- list()
+            } else {
+                bsTerms <- private$.getAllInteractions(bs)
+            }
 
-                terms <- list()
-                spacing <- list()
+            for (i in seq_along(cov))
+                bsTerms[[length(bsTerms) + 1]] <- cov[i]
 
-                for (i in seq_along(rmTerms)) {
+            return(bsTerms)
+        },
+        .rmTableRowLabels = function() {
+            rmTerms <- self$rmTerms
+            bsTerms <- self$bsTerms
 
-                    rmTerm <- rmTerms[[i]]
-                    terms[[length(terms)+1]] <- rmTerm
+            terms <- list()
+            spacing <- list()
 
-                    for (j in seq_along(bsTerms))
-                        terms[[length(terms)+1]] <- c(rmTerm, bsTerms[[j]])
+            for (i in seq_along(rmTerms)) {
+                rmTerm <- rmTerms[[i]]
+                terms[[length(terms) + 1]] <- rmTerm
+                spacing[[length(terms)]] <- 'above'
 
-                    terms[[length(terms)+1]] <- 'Residual'
-                    spacing[[length(terms)]] <- 'below'
-                }
+                for (j in seq_along(bsTerms))
+                    terms[[length(terms) + 1]] <- c(rmTerm, bsTerms[[j]])
 
-            } else { # if the user specifies a model
-
-                rmTerms <- self$options$rmTerms
-                bsTerms <- self$options$bsTerms
-
-                terms <- list()
-                spacing <- list()
-
-                for (i in seq_along(rmTerms)) {
-
-                    rmTerm <- rmTerms[[i]]
-                    terms[[length(terms) + 1]] <- rmTerm
-                    spacing[[length(terms)]] <- 'above'
-
-                    for (j in seq_along(bsTerms))
-                        terms[[length(terms) + 1]] <- c(rmTerm, bsTerms[[j]])
-
-                    terms[[length(terms) + 1]] <- 'Residual'
-                    spacing[[length(terms)]] <- 'below'
-                }
+                terms[[length(terms) + 1]] <- 'Residual'
+                spacing[[length(terms)]] <- 'below'
             }
 
             return(list(terms = terms, spacing = spacing))
         },
-        .bsTerms=function() {
-
-            if (length(self$options$bsTerms) == 0 && length(self$options$rmTerms) == 0) { # if no specific model is specified
-
-                bsFactors <- self$options$bs
-                covariates <- self$options$cov
-
-                if (length(bsFactors) > 0) {
-                    bsFormula <- as.formula(paste('~', paste(paste0('`', bsFactors, '`'), collapse='*')))
-                    bsTerms <- attr(stats::terms(bsFormula), 'term.labels')
-                    bsTerms <- sapply(bsTerms, function(x) as.list(strsplit(x, ':')), USE.NAMES=FALSE)
-                } else {
-                    bsTerms <- list()
-                }
-
-                terms <- bsTerms
-
-                for (i  in seq_along(covariates))
-                    terms[[length(terms) + 1]] <- covariates[i]
-
-                terms[[length(terms) + 1]] <- 'Residual'
-
-            } else { # if the user specifies a model
-
-                bsTerms <- self$options$bsTerms
-                bsFactors <- self$options$bs
-                covariates <- self$options$cov
-
-                terms <- list()
-
-                # terms that include covariates:
-                covTerms <- logical()
-                if (length(covariates) > 0) {
-                    for (i in seq_along(bsTerms)) {
-                        covTerms[i] <- any(covariates %in% bsTerms[[i]])
-                    }
-                }
-
-                if (sum(covTerms) != length(covariates) || length(covTerms) == 0) {
-
-                    terms <- c(terms, bsTerms)
-                    terms[[length(terms) + 1]] <- 'Residual'
-
-                } else {
-
-                    terms <- c(terms, bsTerms[ ! covTerms])
-
-                    for (i in seq_along(covariates))
-                        terms[[length(terms) + 1]] <- covariates[[i]]
-
-                    terms[[length(terms) + 1]] <- 'Residual'
-
-                }
-            }
-
-            return(terms)
-        },
         .wideToLong=function() {
-
             rmVars <- sapply(self$options$rmCells, function(x) return(x$measure))
             bsVars <- self$options$bs
             covVars <- self$options$cov
@@ -1088,7 +1061,14 @@ anovaRMClass <- R6::R6Class(
 
             data <- cbind(data, '.SUBJECT'=1:nrow(data))
 
-            dataLong <- as.list(reshape2:::melt.data.frame(data, id.vars=c(bsVars, covVars, '.SUBJECT'), measure.vars=rmVars, value.name='.DEPENDENT'))
+            dataLong <- as.list(
+                reshape2:::melt.data.frame(
+                    data,
+                    id.vars=c(bsVars, covVars, '.SUBJECT'),
+                    measure.vars=rmVars,
+                    value.name='.DEPENDENT'
+                )
+            )
 
             col <- dataLong[['variable']]
             temp <- numeric(length(col))
@@ -1113,45 +1093,35 @@ anovaRMClass <- R6::R6Class(
 
             return(dataLong)
         },
-        .modelFormula=function() {
+        .modelFormula = function() {
+            bsTerms <- lapply(self$bsTerms, function(x) toB64(x))
+            rmTerms <- lapply(self$rmTerms, function(x) toB64(x))
 
-            if (is.null(self$options$rmTerms)) {
+            bsItems <- composeTerms(bsTerms)
+            bsTerm <- paste0('(', paste0(bsItems, collapse = ' + '), ')')
 
+            rmItems <- composeTerms(rmTerms)
+            rmTerm <- paste0('Error(', paste0(toB64('.SUBJECT'),'/(', rmItems, ')', collapse=' + '),')')
 
-
-            } else {
-
-                bsTerms <- lapply(self$options$bsTerms, function(x) toB64(x))
-                rmTerms <- lapply(self$options$rmTerms, function(x) toB64(x))
-
-                bsItems <- composeTerms(bsTerms)
-                bsTerm <- paste0('(', paste0(bsItems, collapse = ' + '), ')')
-
-                rmItems <- composeTerms(rmTerms)
-                rmTerm <- paste0('Error(', paste0(toB64('.SUBJECT'),'/(', rmItems, ')', collapse=' + '),')')
-
-                allTerms <- c(bsTerms, rmTerms)
-                for (term1 in rmTerms) {
-                    for (term2 in bsTerms) {
-                        allTerms[[length(allTerms) + 1]] <- unlist(c(term1, term2))
-                    }
+            allTerms <- c(bsTerms, rmTerms)
+            for (term1 in rmTerms) {
+                for (term2 in bsTerms) {
+                    allTerms[[length(allTerms) + 1]] <- unlist(c(term1, term2))
                 }
-
-                allItems <- composeTerms(allTerms)
-                mainTerm <- paste0('(', paste0(allItems, collapse = ' + '), ')')
-
-                if (length(self$options$bsTerms) == 0) {
-                    formula <- as.formula(paste(toB64('.DEPENDENT'), '~', paste(mainTerm, rmTerm, sep=' + ')))
-                } else {
-                    formula <- as.formula(paste(toB64('.DEPENDENT'), '~', paste(mainTerm, rmTerm, bsTerm, sep=' + ')))
-                }
-
-                return(formula)
-
             }
+
+            allItems <- composeTerms(allTerms)
+            mainTerm <- paste0('(', paste0(allItems, collapse = ' + '), ')')
+
+            if (length(self$options$bsTerms) == 0) {
+                formula <- as.formula(paste(toB64('.DEPENDENT'), '~', paste(mainTerm, rmTerm, sep=' + ')))
+            } else {
+                formula <- as.formula(paste(toB64('.DEPENDENT'), '~', paste(mainTerm, rmTerm, bsTerm, sep=' + ')))
+            }
+
+            return(formula)
         },
         .emmPlotSize = function(emm) {
-
             data <- self$data
             bsFactors <- self$options$bs
             rmFactors <- self$options$rm
@@ -1188,9 +1158,8 @@ anovaRMClass <- R6::R6Class(
             return(c(width, height))
         },
         .getSSt=function (model) {
-
-            rmTerms <- lapply(self$options$rmTerms, jmvcore::toB64)
-            bsTerms <- lapply(self$options$bsTerms, jmvcore::toB64)
+            rmTerms <- lapply(self$rmTerms, jmvcore::toB64)
+            bsTerms <- lapply(self$bsTerms, jmvcore::toB64)
 
             if (length(bsTerms) == 0)
                 bsTerms <- list('(Intercept)')
@@ -1216,7 +1185,6 @@ anovaRMClass <- R6::R6Class(
             return(SSt)
         },
         .sourcifyOption = function(option) {
-
             name <- option$name
             value <- option$value
 
