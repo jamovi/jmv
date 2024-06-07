@@ -1,4 +1,3 @@
-
 #' @importFrom jmvcore .
 linRegClass <- R6::R6Class(
     "linRegClass",
@@ -58,6 +57,12 @@ linRegClass <- R6::R6Class(
                 private$.cooks <- private$.computeCooks()
 
             return(private$.cooks)
+        },
+        mahalanobis = function() {
+            if (is.null(private$.mahalanobis))
+                private$.mahalanobis <- private$.computeMahalanobis()
+
+            return(private$.mahalanobis)
         },
         anovaModelComparison = function() {
             if (is.null(private$.anovaModelComparison))
@@ -127,6 +132,7 @@ linRegClass <- R6::R6Class(
         .fitted = NULL,
         .predicted = NULL,
         .cooks = NULL,
+        .mahalanobis = NULL,
         .anovaModelComparison = NULL,
         .anovaModelTerms = NULL,
         .AIC = NULL,
@@ -163,6 +169,7 @@ linRegClass <- R6::R6Class(
             private$.populateCoefTables()
 
             private$.populateCooksTable()
+            private$.populateMahalanobisTable()
             private$.populateDurbinWatsonTable()
             private$.populateCollinearityTable()
             private$.populateNormality()
@@ -270,6 +277,30 @@ linRegClass <- R6::R6Class(
             }
 
             return(cooksSummary)
+        },
+        .computeMahalanobis = function() {
+            mahalanobis <- list()
+            for (i in seq_along(self$models))
+                print(self$models[[i]])
+                mahalanobis[[i]] <- NA
+
+            return(mahalanobis)
+        },
+        .computeMahalanobisSummary = function() {
+            mahalanobisSummary <- list()
+            for (i in seq_along(self$mahalanobis)) {
+                mahalanobis <- self$mahalanobis[[i]]
+                mahalanobis <- sort(mahalanobis, decreasing = TRUE)
+                # determine number of dependent variables and the resulting threshold for chi squared
+                # self$options$mahalp
+                mahalanobisSummary[[i]] <- list(
+                    'row' = names(mahalanobis),
+                    'chisq' = mahalanobis,
+                    'p' = 
+                )
+            }
+
+            return(mahalanobisSummary)
         },
         .computeAIC = function() {
             AIC <- list()
@@ -821,6 +852,19 @@ linRegClass <- R6::R6Class(
                 table$setRow(rowNo=1, values=cooks[[i]])
             }
         },
+        .populateMahalanobisTable = function() {
+            if (! self$options$mahal)
+                return()
+
+            groups <- self$results$models
+            termsAll <- private$.getModelTerms()
+            cooks <- private$.computeCooksSummary()
+
+            for (i in seq_along(termsAll)) {
+                table <- groups$get(key=i)$dataSummary$mahal
+#               table$setRow(rowNo=1, values=cooks[[i]])
+            }
+        },
         .populateDurbinWatsonTable = function() {
             if (! self$options$durbin)
                 return()
@@ -990,6 +1034,12 @@ linRegClass <- R6::R6Class(
                 self$results$cooksOV$setRowNums(private$.getDataRowNums())
                 for (i in seq_along(self$cooks))
                     self$results$cooksOV$setValues(index=i, self$cooks[[i]])
+            }
+
+            if (self$options$mahalOV && self$results$mahalOV$isNotFilled()) {
+                self$results$mahalOV$setRowNums(private$.getDataRowNums())
+                for (i in seq_along(self$mahal))
+                    self$results$mahalOV$setValues(index=i, self$mahal[[i]]$p)
             }
         },
 

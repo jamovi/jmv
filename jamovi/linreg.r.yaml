@@ -270,6 +270,27 @@ items:
                       type: number
                       superTitle: Range
 
+                - name: mahal
+                  title: Mahalanobis Distance
+                  type: Table
+                  visible: (mahal)
+                  clearWith:
+                    - weights
+
+                  columns:
+                    - name: row
+                      title: Row
+                      type: number
+
+                    - name: chisq
+                      title: Statistics
+                      type: number
+
+                    - name: p
+                      title: p
+                      type: number
+                      format: zto,pvalue
+
             - name: assump
               title: Assumption Checks
               type: Group
@@ -455,9 +476,9 @@ items:
 
     - name: mahalOV
       type: Output
-      title: Mahalanobis Distance
-      varTitle: Mahalanobis distance
-      varDescription: Mahalanobis distance of the independent variables of linear regression
+      title: Mahalanobis Distance (p)
+      varTitle: Mahalanobis (p)
+      varDescription: Significance level (p) for the Mahalanobis distance of the independent variables
       measureType: continuous
       clearWith:
         - dep

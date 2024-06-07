@@ -33,6 +33,8 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             durbin = FALSE,
             collin = FALSE,
             cooks = FALSE,
+            mahal = FALSE,
+            mahalp = "0.01",
             emMeans = list(
                 list()),
             ciEmm = TRUE,
@@ -190,6 +192,18 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "cooks",
                 cooks,
                 default=FALSE)
+            private$..mahal <- jmvcore::OptionBool$new(
+                "mahal",
+                mahal,
+                default=FALSE)
+            private$..mahalp <- jmvcore::OptionList$new(
+                "mahalp",
+                mahalp,
+                options=list(
+                    "0.05",
+                    "0.01",
+                    "0.001"),
+                default="0.01")
             private$..emMeans <- jmvcore::OptionArray$new(
                 "emMeans",
                 emMeans,
@@ -226,6 +240,8 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "residsOV")
             private$..cooksOV <- jmvcore::OptionOutput$new(
                 "cooksOV")
+            private$..mahalOV <- jmvcore::OptionOutput$new(
+                "mahalOV")
 
             self$.addOption(private$..dep)
             self$.addOption(private$..covs)
@@ -253,6 +269,8 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..durbin)
             self$.addOption(private$..collin)
             self$.addOption(private$..cooks)
+            self$.addOption(private$..mahal)
+            self$.addOption(private$..mahalp)
             self$.addOption(private$..emMeans)
             self$.addOption(private$..ciEmm)
             self$.addOption(private$..ciWidthEmm)
@@ -262,6 +280,7 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..predictOV)
             self$.addOption(private$..residsOV)
             self$.addOption(private$..cooksOV)
+            self$.addOption(private$..mahalOV)
         }),
     active = list(
         dep = function() private$..dep$value,
@@ -290,6 +309,8 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         durbin = function() private$..durbin$value,
         collin = function() private$..collin$value,
         cooks = function() private$..cooks$value,
+        mahal = function() private$..mahal$value,
+        mahalp = function() private$..mahalp$value,
         emMeans = function() private$..emMeans$value,
         ciEmm = function() private$..ciEmm$value,
         ciWidthEmm = function() private$..ciWidthEmm$value,
@@ -298,7 +319,8 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         emmWeights = function() private$..emmWeights$value,
         predictOV = function() private$..predictOV$value,
         residsOV = function() private$..residsOV$value,
-        cooksOV = function() private$..cooksOV$value),
+        cooksOV = function() private$..cooksOV$value,
+        mahalOV = function() private$..mahalOV$value),
     private = list(
         ..dep = NA,
         ..covs = NA,
@@ -326,6 +348,8 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..durbin = NA,
         ..collin = NA,
         ..cooks = NA,
+        ..mahal = NA,
+        ..mahalp = NA,
         ..emMeans = NA,
         ..ciEmm = NA,
         ..ciWidthEmm = NA,
@@ -334,7 +358,8 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..emmWeights = NA,
         ..predictOV = NA,
         ..residsOV = NA,
-        ..cooksOV = NA)
+        ..cooksOV = NA,
+        ..mahalOV = NA)
 )
 
 linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -346,7 +371,8 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         models = function() private$.items[["models"]],
         predictOV = function() private$.items[["predictOV"]],
         residsOV = function() private$.items[["residsOV"]],
-        cooksOV = function() private$.items[["cooksOV"]]),
+        cooksOV = function() private$.items[["cooksOV"]],
+        mahalOV = function() private$.items[["mahalOV"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -593,7 +619,9 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                             self$add(R6::R6Class(
                                 inherit = jmvcore::Group,
                                 active = list(
-                                    cooks = function() private$.items[["cooks"]]),
+                                    cooks = function() private$.items[["cooks"]],
+                                    mahal = function() private$.items[["mahal"]],
+                                    mahal_filter = function() private$.items[["mahal_filter"]]),
                                 private = list(),
                                 public=list(
                                     initialize=function(options) {
@@ -633,7 +661,35 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                                     `name`="max", 
                                                     `title`="Max", 
                                                     `type`="number", 
-                                                    `superTitle`="Range"))))}))$new(options=options))
+                                                    `superTitle`="Range"))))
+                                        self$add(jmvcore::Table$new(
+                                            options=options,
+                                            name="mahal",
+                                            title="Mahalanobis Distance",
+                                            visible="(mahal)",
+                                            clearWith=list(
+                                                "weights"),
+                                            columns=list(
+                                                list(
+                                                    `name`="row", 
+                                                    `title`="Row", 
+                                                    `type`="number"),
+                                                list(
+                                                    `name`="chisq", 
+                                                    `title`="Statistics", 
+                                                    `type`="number"),
+                                                list(
+                                                    `name`="p", 
+                                                    `title`="p", 
+                                                    `type`="number", 
+                                                    `format`="zto,pvalue"))))
+                                        self$add(jmvcore::Preformatted$new(
+                                            options=options,
+                                            name="mahal_filter",
+                                            title=" ",
+                                            visible="(mahal)",
+                                            clearWith=list(
+                                                "weights")))}))$new(options=options))
                             self$add(R6::R6Class(
                                 inherit = jmvcore::Group,
                                 active = list(
@@ -830,6 +886,17 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 clearWith=list(
                     "dep",
                     "blocks",
+                    "weights")))
+            self$add(jmvcore::Output$new(
+                options=options,
+                name="mahalOV",
+                title="Mahalanobis Distance (p)",
+                varTitle="Mahalanobis (p)",
+                varDescription="Significance level (p) for the Mahalanobis distance of the independent variables",
+                measureType="continuous",
+                clearWith=list(
+                    "dep",
+                    "blocks",
                     "weights")))}))
 
 linRegBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -949,6 +1016,11 @@ linRegBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   tolerance collinearity statistics
 #' @param cooks \code{TRUE} or \code{FALSE} (default), provide summary
 #'   statistics for the Cook's distance
+#' @param mahal \code{TRUE} or \code{FALSE} (default), provide a summary table
+#'   reporting (significant) Mahalanobis distances
+#' @param mahalp \code{'0.05'}, \code{'0.01'} (default) or \code{'0.001'},
+#'   p-threshold to be used for selecting entries in the summary table that
+#'   reports Mahalanobis distances that are significant at that p-threshold
 #' @param emMeans a formula containing the terms to estimate marginal means
 #'   for, supports up to three variables per term
 #' @param ciEmm \code{TRUE} (default) or \code{FALSE}, provide a confidence
@@ -969,6 +1041,7 @@ linRegBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   \code{results$predictOV} \tab \tab \tab \tab \tab an output \cr
 #'   \code{results$residsOV} \tab \tab \tab \tab \tab an output \cr
 #'   \code{results$cooksOV} \tab \tab \tab \tab \tab an output \cr
+#'   \code{results$mahalOV} \tab \tab \tab \tab \tab an output \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -1007,6 +1080,8 @@ linReg <- function(
     durbin = FALSE,
     collin = FALSE,
     cooks = FALSE,
+    mahal = FALSE,
+    mahalp = "0.01",
     emMeans = list(
                 list()),
     ciEmm = TRUE,
@@ -1060,6 +1135,8 @@ linReg <- function(
         durbin = durbin,
         collin = collin,
         cooks = cooks,
+        mahal = mahal,
+        mahalp = mahalp,
         emMeans = emMeans,
         ciEmm = ciEmm,
         ciWidthEmm = ciWidthEmm,

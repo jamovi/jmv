@@ -314,6 +314,29 @@ options:
             `TRUE` or `FALSE` (default), provide summary statistics for
             the Cook's distance
 
+    - name: mahal
+      title: Mahalanobis distance
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a summary table reporting
+            (significant) Mahalanobis distances
+
+    - name: mahalp
+      title: ""
+      type: List
+      options:
+        - "0.05"
+        - "0.01"
+        - "0.001"
+      default: "0.01"
+      description:
+          R: >
+            `'0.05'`, `'0.01'` (default) or `'0.001'`, p-threshold to be used
+            for selecting entries in the summary table that reports Mahalanobis
+            distances that are significant at that p-threshold
+
     - name: emMeans
       title: Marginal Means
       type: Array
@@ -383,6 +406,7 @@ options:
       type: Output
 
     - name: mahalOV
-      title: Mahalanobis distance
-      type: Output   
+      title: Mahalanobis distance (p)
+      type: Output
+      
 ...
