@@ -51,6 +51,11 @@ build*/
 # i18n
 inst/i18n
 
+# renv related stuff
+.Rprofile
+renv/
+renv.lock
+
 # other files / folders
 temp/
 man/
