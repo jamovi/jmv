@@ -89,7 +89,7 @@ cfaErrors = list(
         class = exceptions$modelError
     ),
     list(
-        originalMessage = 'lavaan ERROR: fit measures not available if model did not converge',
+        originalMessage = 'fit measures not available if model did not converge',
         message = "Model dit not converge",
         class = exceptions$modelError
     )
