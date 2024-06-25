@@ -666,3 +666,33 @@ testthat::test_that('Model fit table contains sample size footnote', {
     testthat::expect_match(r$modelFit$notes$n$note, "N=13")
 })
 
+
+params <- list(
+    list(refLevels = list(list(var="factor", ref="C")), info = "Non-existing reference level"),
+    list(refLevels = NULL, info = "No reference levels"),
+    list(refLevels = list(list(var="wrong_factor", ref="A")), info = "Wrong variable name")
+)
+testthat::test_that('Reference level defaults to first level for faulty reference levels', {
+    for (param in params) {
+        # GIVEN a dataset with a factor with two levels
+        df <- data.frame(
+            dep = 1:10,
+            factor = rep(LETTERS[1:2], length.out=10),
+            stringsAsFactors = TRUE
+        )
+
+        # WHEN a linear regression is fitted with reference level set to a non-existing level
+        r <- jmv::linReg(
+            df,
+            dep = "dep",
+            factors = "factor",
+            blocks = list(list("factor")),
+            refLevels = param$refLevels
+        )
+
+        # THEN the reference level should default to the first level
+        testthat::expect_match(r$models[[1]]$coef$asDF$term[3], "B – A", info=param$info)
+        # AND a warning is added informing the user that the user defined reference level does not
+        #   exist and therefore was changed to the first level
+    }
+})
