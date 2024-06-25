@@ -112,6 +112,12 @@ linRegClass <- R6::R6Class(
                 private$.emMeans <- private$.computeEmMeans()
 
             return(private$.emMeans)
+        },
+        refLevels = function() {
+            if (is.null(private$.refLevels))
+                private$.refLevels <- private$.getRefLevels()
+
+            return(private$.refLevels)
         }
     ),
     private = list(
@@ -139,6 +145,7 @@ linRegClass <- R6::R6Class(
         .rowNamesModel = NULL,
         .emMeans = NULL,
         .emMeansForPlot = NULL,
+        .refLevels = NULL,
 
         #### Init + run functions ----
         .init = function() {
@@ -1206,6 +1213,33 @@ linRegClass <- R6::R6Class(
 
             return(private$.modelTerms)
         },
+        .getRefLevels = function() {
+            factors <- self$options$factors
+            refLevels <- self$options$refLevels
+
+            updatedRefLevels <- list()
+
+            # Create a named list from the refLevels input for easier access
+            refLevelsList <- setNames(
+                lapply(refLevels, function(ref) ref$ref),
+                sapply(refLevels, function(ref) ref$var)
+            )
+
+            for (varName in factors) {
+                factorLevels <- levels(self$data[[varName]])
+                refLevel <- refLevelsList[[varName]]
+
+                # If no refLevel is provided or the provided level is invalid, use the first level
+                if (is.null(refLevel) || ! (refLevel %in% factorLevels))
+                    refLevel <- factorLevels[1]
+
+                updatedRefLevels[[length(updatedRefLevels) + 1]] <- list(
+                    var = varName, ref = refLevel
+                )
+            }
+
+            return(updatedRefLevels)
+        },
         .getRowNamesModel = function() {
             if (is.null(private$.rowNamesModel)) {
                 factors <- self$options$factors
@@ -1284,7 +1318,7 @@ linRegClass <- R6::R6Class(
             #' displayed in the coef table
 
             factors <- self$options$factors
-            refLevels <- self$options$refLevels
+            refLevels <- self$refLevels
             refVars <- sapply(refLevels, function(x) x$var)
 
             levels <- list()
@@ -1333,7 +1367,7 @@ linRegClass <- R6::R6Class(
             covs <- self$options$covs
             factors <- self$options$factors
             weights <- self$options$weights
-            refLevels <- self$options$refLevels
+            refLevels <- self$refLevels
 
             dataRaw <- self$data
 
