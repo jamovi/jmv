@@ -41,7 +41,12 @@ Imports:
     MASS,
     ggrepel,
     dplyr,
-    magrittr
+    magrittr,
+    reshape2,
+    lme4,
+    lmerTest,
+    estimability,
+    mvtnorm
 Suggests:
     exact2x2,
     testthat  (>= 3.1.5),
