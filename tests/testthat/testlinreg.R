@@ -694,5 +694,6 @@ testthat::test_that('Reference level defaults to first level for faulty referenc
         testthat::expect_match(r$models[[1]]$coef$asDF$term[3], "B – A", info=param$info)
         # AND a warning is added informing the user that the user defined reference level does not
         #   exist and therefore was changed to the first level
+        testthat::expect_match(r[[1]]$content, "reference level was not found")
     }
 })
