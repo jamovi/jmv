@@ -114,8 +114,21 @@ linRegClass <- R6::R6Class(
             return(private$.emMeans)
         },
         refLevels = function() {
-            if (is.null(private$.refLevels))
-                private$.refLevels <- private$.getRefLevels()
+            if (is.null(private$.refLevels)) {
+                refLevels <- getReferenceLevels(
+                    self$data, self$options$factors, self$options$refLevels
+                )
+                private$.refLevels <- refLevels$refLevels
+
+                if (length(refLevels$changedVars) > 0) {
+                    private$.setWarningMessage(
+                        jmvcore::format(
+                            .("The specified reference level was not found for the following variable(s): {vars}. Defaulting to the first available level. To use a custom reference level, ensure the defined reference level is available in the data."),
+                            vars=listItems(self, refLevels$changedVars)
+                        )
+                    )
+                }
+            }
 
             return(private$.refLevels)
         }
@@ -1213,33 +1226,6 @@ linRegClass <- R6::R6Class(
 
             return(private$.modelTerms)
         },
-        .getRefLevels = function() {
-            factors <- self$options$factors
-            refLevels <- self$options$refLevels
-
-            updatedRefLevels <- list()
-
-            # Create a named list from the refLevels input for easier access
-            refLevelsList <- setNames(
-                lapply(refLevels, function(ref) ref$ref),
-                sapply(refLevels, function(ref) ref$var)
-            )
-
-            for (varName in factors) {
-                factorLevels <- levels(self$data[[varName]])
-                refLevel <- refLevelsList[[varName]]
-
-                # If no refLevel is provided or the provided level is invalid, use the first level
-                if (is.null(refLevel) || ! (refLevel %in% factorLevels))
-                    refLevel <- factorLevels[1]
-
-                updatedRefLevels[[length(updatedRefLevels) + 1]] <- list(
-                    var = varName, ref = refLevel
-                )
-            }
-
-            return(updatedRefLevels)
-        },
         .getRowNamesModel = function() {
             if (is.null(private$.rowNamesModel)) {
                 factors <- self$options$factors
@@ -1286,6 +1272,15 @@ linRegClass <- R6::R6Class(
             }
 
             return(private$.isAliased)
+        },
+        .setWarningMessage = function(message) {
+            notice <- jmvcore::Notice$new(
+                options = self$options,
+                name = 'warningMessage',
+                type = jmvcore::NoticeType$STRONG_WARNING
+            )
+            notice$setContent(message)
+            self$results$insert(1, notice)
         },
         .contrastModel = function(terms) {
             #' Returns the names of the factor contrasts as they are
