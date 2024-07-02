@@ -125,14 +125,8 @@ linRegClass <- R6::R6Class(
                 )
                 private$.refLevels <- refLevels$refLevels
 
-                if (length(refLevels$changedVars) > 0) {
-                    private$.setWarningMessage(
-                        jmvcore::format(
-                            .("The specified reference level was not found for the following variable(s): {vars}. Defaulting to the first available level. To use a custom reference level, ensure the defined reference level is available in the data."),
-                            vars=listItems(self, refLevels$changedVars)
-                        )
-                    )
-                }
+                if (length(refLevels$changedVars) > 0)
+                    setRefLevelWarning(self, refLevels$changedVars)
             }
 
             return(private$.refLevels)
@@ -1323,8 +1317,6 @@ linRegClass <- R6::R6Class(
 
             return(private$.isAliased)
         },
-        # Returns the names of the factor contrasts as they are
-        # defined by the lm function
         .contrastModel = function(terms) {
 
             factors <- self$options$factors

@@ -98,6 +98,20 @@ logRegMultiClass <- R6::R6Class(
                 private$.CICoefEstOR <- private$.computeCICoefEst(type="OR")
 
             return(private$.CICoefEstOR)
+        },
+        refLevels = function() {
+            if (is.null(private$.refLevels)) {
+                factors <- c(self$options$dep, self$options$factors)
+                refLevels <- getReferenceLevels(
+                    self$data, factors, self$options$refLevels
+                )
+                private$.refLevels <- refLevels$refLevels
+
+                if (length(refLevels$changedVars) > 0)
+                    setRefLevelWarning(self, refLevels$changedVars)
+            }
+
+            return(private$.refLevels)
         }
     ),
     private = list(
@@ -117,6 +131,7 @@ logRegMultiClass <- R6::R6Class(
         .modelTest = NULL,
         .CICoefEst = NULL,
         .CICoefEstOR = NULL,
+        .refLevels = NULL,
         terms = NULL,
         coefTerms = list(),
         emMeans = list(),
@@ -335,7 +350,7 @@ logRegMultiClass <- R6::R6Class(
             dep <- self$options$dep
 
             if ( ! is.null(dep) ) {
-                refLevels <- self$options$refLevels
+                refLevels <- self$refLevels
                 refVars <- sapply(refLevels, function(x) x$var)
                 depLevels <- levels(self$data[[dep]])
                 depRefLevel <- refLevels[[which(dep == refVars)]][['ref']]
@@ -728,7 +743,7 @@ logRegMultiClass <- R6::R6Class(
             factors <- self$options$factors
             dep <- self$options$dep
 
-            refLevels <- self$options$refLevels
+            refLevels <- self$refLevels
 
             groups <- self$results$models
             termsAll <- private$terms
@@ -923,7 +938,7 @@ logRegMultiClass <- R6::R6Class(
         .coefTerms = function(terms) {
             covs <- self$options$covs
             factors <- self$options$factors
-            refLevels <- self$options$refLevels
+            refLevels <- self$refLevels
 
             refVars <- sapply(refLevels, function(x) x$var)
 
@@ -1009,7 +1024,7 @@ logRegMultiClass <- R6::R6Class(
             dep <- self$options$dep
             covs <- self$options$covs
             factors <- self$options$factors
-            refLevels <- self$options$refLevels
+            refLevels <- self$refLevels
 
             dataRaw <- self$data
 
