@@ -33,3 +33,20 @@ getReferenceLevels = function(data, vars, refLevels) {
 
     return(list(refLevels=updatedRefLevels, changedVars=changedVars))
 }
+
+
+#' Set a warning notice for reference level changes
+#'
+#' @param self The analysis object
+#' @param changedVars The variables that had their reference levels changed
+#' @keywords internal
+setRefLevelWarning = function(self, changedVars) {
+    message <- jmvcore::format(
+        .("The specified reference level was not found for the following variable(s): {vars}. Defaulting to the first available level. To use a custom reference level, ensure the defined reference level is available in the data."),
+        vars=listItems(self, changedVars)
+    )
+
+    setAnalysisNotice(
+        self, message, name="refLevelWarning", type=jmvcore::NoticeType$STRONG_WARNING
+    )
+}
