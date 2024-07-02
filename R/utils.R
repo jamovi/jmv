@@ -152,3 +152,20 @@ listItems <- function(self, items, quote = '\'') {
 
     return(l)
 }
+
+#' Set a global analysis notice
+#'
+#' @param self The analysis object
+#' @param message The message to set
+#' @param name The name of the notice
+#' @param type The type of the notice
+#' @keywords internal
+setAnalysisNotice = function(self, message, name, type) {
+    notice <- jmvcore::Notice$new(
+        options = self$options,
+        name = 'warningMessage',
+        type = jmvcore::NoticeType$STRONG_WARNING
+    )
+    notice$setContent(message)
+    self$results$insert(1, notice)
+}
