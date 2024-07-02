@@ -112,6 +112,19 @@ linRegClass <- R6::R6Class(
                 private$.emMeans <- private$.computeEmMeans()
 
             return(private$.emMeans)
+        },
+        refLevels = function() {
+            if (is.null(private$.refLevels)) {
+                refLevels <- getReferenceLevels(
+                    self$data, self$options$factors, self$options$refLevels
+                )
+                private$.refLevels <- refLevels$refLevels
+
+                if (length(refLevels$changedVars) > 0)
+                    setRefLevelWarning(self, refLevels$changedVars)
+            }
+
+            return(private$.refLevels)
         }
     ),
     private = list(
@@ -139,6 +152,7 @@ linRegClass <- R6::R6Class(
         .rowNamesModel = NULL,
         .emMeans = NULL,
         .emMeansForPlot = NULL,
+        .refLevels = NULL,
 
         #### Init + run functions ----
         .init = function() {
@@ -1284,7 +1298,7 @@ linRegClass <- R6::R6Class(
             #' displayed in the coef table
 
             factors <- self$options$factors
-            refLevels <- self$options$refLevels
+            refLevels <- self$refLevels
             refVars <- sapply(refLevels, function(x) x$var)
 
             levels <- list()
@@ -1333,7 +1347,7 @@ linRegClass <- R6::R6Class(
             covs <- self$options$covs
             factors <- self$options$factors
             weights <- self$options$weights
-            refLevels <- self$options$refLevels
+            refLevels <- self$refLevels
 
             dataRaw <- self$data
 

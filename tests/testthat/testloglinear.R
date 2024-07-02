@@ -189,3 +189,35 @@ testthat::test_that('Provide error message when data contains only missing value
         "The dataset contains 0 rows"
     )
 })
+
+params <- list(
+    list(refLevels = list(list(var="factor_1", ref="x"), list(var="factor_2", ref="X")), info = "Non-existing reference levels"),
+    list(refLevels = NULL, info = "No reference levels"),
+    list(refLevels = list(list(var="wrong_factor", ref="A")), info = "Wrong variable name")
+)
+testthat::test_that('Reference level defaults to first level for faulty reference levels', {
+    for (param in params) {
+        # GIVEN a dataset with a factor with two levels
+        df <- data.frame(
+            factor_1 = rep(letters[1:3], length.out=10),
+            factor_2 = rep(LETTERS[1:2], length.out=10),
+            stringsAsFactors = TRUE
+        )
+
+        # WHEN a log-linear regression is fitted with reference level set to a non-existing level
+        r <- jmv::logLinear(
+            df,
+            factors = c("factor_1", "factor_2"),
+            blocks = list(list("factor_1", "factor_2", c("factor_1", "factor_2"))),
+            refLevels = param$refLevels
+        )
+
+        # THEN the reference level should default to the first level for factor 1
+        testthat::expect_match(r$models[[1]]$coef$asDF$term[3], "b – a", info=param$info)
+        # THEN the reference level should default to the first level for factor 2
+        testthat::expect_match(r$models[[1]]$coef$asDF$term[6], "B – A", info=param$info)
+        # AND a warning is added informing the user that the user defined reference level does not
+        #   exist and therefore was changed to the first level
+        testthat::expect_match(r[[1]]$content, "reference level was not found", info=param$info)
+    }
+})

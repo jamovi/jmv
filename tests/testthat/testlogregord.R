@@ -134,4 +134,33 @@ testthat::test_that('Model fit table contains sample size footnote', {
     testthat::expect_match(r$modelFit$notes$n$note, "N=15")
 })
 
+params <- list(
+    list(refLevels = list(list(var="factor", ref="X")), info = "Non-existing reference levels"),
+    list(refLevels = NULL, info = "No reference levels"),
+    list(refLevels = list(list(var="wrong_factor", ref="A")), info = "Wrong variable name")
+)
+testthat::test_that('Reference level defaults to first level for faulty reference levels', {
+    for (param in params) {
+        # GIVEN a dataset with a factor with two levels
+        df <- data.frame(
+            dep = rep(letters[1:3], length.out=10),
+            factor = rep(LETTERS[1:2], length.out=10),
+            stringsAsFactors = TRUE
+        )
 
+        # WHEN a ordinal logistic regression is fitted with reference level set to a non-existing level
+        r <- jmv::logRegOrd(
+            df,
+            dep = "dep",
+            factors = "factor",
+            blocks = list(list("factor")),
+            refLevels = param$refLevels
+        )
+
+        # THEN the reference level should default to the first level
+        testthat::expect_match(r$models[[1]]$coef$asDF$term[2], "B – A", info=param$info)
+        # AND a warning is added informing the user that the user defined reference level does not
+        #   exist and therefore was changed to the first level
+        testthat::expect_match(r[[1]]$content, "reference level was not found", info=param$info)
+    }
+})

@@ -361,7 +361,6 @@ testthat::test_that("Analysis works with global weights", {
     testthat::expect_equal(c(0.156, 0.003, NA, 0.023, 0.899), coefTable[['p']], tolerance = 1e-3)
 })
 
-
 testthat::test_that("Analysis adds note when design matrix is singular", {
     # GIVEN a singular data set
     suppressWarnings(RNGversion("3.5.0"))
@@ -389,7 +388,6 @@ testthat::test_that("Analysis adds note when design matrix is singular", {
     testthat::expect_true("singular" %in% names(notes))
 })
 
-
 testthat::test_that('Model fit table contains sample size footnote', {
     df <- data.frame(
         y = sample(0:1, 11, replace = TRUE),
@@ -406,3 +404,37 @@ testthat::test_that('Model fit table contains sample size footnote', {
 
     testthat::expect_match(r$modelFit$notes$n$note, "N=11")
 })
+
+params <- list(
+    list(refLevels = list(list(var="dep", ref="c"), list(var="factor", ref="C")), info = "Non-existing reference levels"),
+    list(refLevels = NULL, info = "No reference levels"),
+    list(refLevels = list(list(var="wrong_factor", ref="A")), info = "Wrong variable name")
+)
+testthat::test_that('Reference level defaults to first level for faulty reference levels', {
+    for (param in params) {
+        # GIVEN a dataset with a factor with two levels
+        df <- data.frame(
+            dep = rep(letters[1:2], length.out=10),
+            factor = rep(LETTERS[1:2], length.out=10),
+            stringsAsFactors = TRUE
+        )
+
+        # WHEN a binomial logtistic regression is fitted with reference level set to a non-existing level
+        r <- jmv::logRegBin(
+            df,
+            dep = "dep",
+            factors = "factor",
+            blocks = list(list("factor")),
+            refLevels = param$refLevels
+        )
+
+        # THEN the reference level should default to the first level for the dep variable
+        testthat::expect_match(r$models[[1]]$coef$notes$est$note, '"dep = b" vs. "dep = a"', info=param$info)
+        # THEN the reference level should default to the first level for the factor
+        testthat::expect_match(r$models[[1]]$coef$asDF$term[3], "B – A", info=param$info)
+        # AND a warning is added informing the user that the user defined reference level does not
+        #   exist and therefore was changed to the first level
+        testthat::expect_match(r[[1]]$content, "reference level was not found", info=param$info)
+    }
+})
+
