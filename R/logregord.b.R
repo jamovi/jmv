@@ -98,6 +98,19 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 private$.CICoefEstOR <- private$.computeCICoefEst(type="OR")
 
             return(private$.CICoefEstOR)
+        },
+        refLevels = function() {
+            if (is.null(private$.refLevels)) {
+                refLevels <- getReferenceLevels(
+                    self$data, self$options$factors, self$options$refLevels
+                )
+                private$.refLevels <- refLevels$refLevels
+
+                if (length(refLevels$changedVars) > 0)
+                    setRefLevelWarning(self, refLevels$changedVars)
+            }
+
+            return(private$.refLevels)
         }
     ),
     private = list(
@@ -117,6 +130,7 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         .modelTest = NULL,
         .CICoefEst = NULL,
         .CICoefEstOR = NULL,
+        .refLevels = NULL,
         terms = NULL,
         coefTerms = list(),
         thresTerms = list(),
@@ -605,7 +619,7 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         .coefTerms = function(terms) {
             covs <- self$options$covs
             factors <- self$options$factors
-            refLevels <- self$options$refLevels
+            refLevels <- self$refLevels
 
             refVars <- sapply(refLevels, function(x) x$var)
 
@@ -689,7 +703,7 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             dep <- self$options$dep
             covs <- self$options$covs
             factors <- self$options$factors
-            refLevels <- self$options$refLevels
+            refLevels <- self$refLevels
 
             dataRaw <- self$data
 

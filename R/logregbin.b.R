@@ -136,6 +136,20 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 private$.emMeans <- private$.computeEmMeans()
 
             return(private$.emMeans)
+        },
+        refLevels = function() {
+            if (is.null(private$.refLevels)) {
+                factors <- c(self$options$dep, self$options$factors)
+                refLevels <- getReferenceLevels(
+                    self$data, factors, self$options$refLevels
+                )
+                private$.refLevels <- refLevels$refLevels
+
+                if (length(refLevels$changedVars) > 0)
+                    setRefLevelWarning(self, refLevels$changedVars)
+            }
+
+            return(private$.refLevels)
         }
     ),
     private = list(
@@ -167,6 +181,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         .levelsDep = NULL,
         .emMeans = NULL,
         .emMeansForPlot = NULL,
+        .refLevels = NULL,
 
         #### Init + run functions ----
         .init = function() {
@@ -653,7 +668,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             groups <- self$results$models
             dep <- self$options$dep
             cutOff <- self$options$cutOff
-            refLevels <- self$options$refLevels
+            refLevels <- self$refLevels
 
             data <- self$data
 
@@ -1295,7 +1310,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         },
         .getLevels = function(var) {
             levels <- levels(self$data[[var]])
-            refLevels <- self$options$refLevels
+            refLevels <- self$refLevels
             refVars <- sapply(refLevels, function(x) x$var)
             ref <- refLevels[[which(var == refVars)]][['ref']]
             # workaround ... client currently initially sends null
@@ -1350,7 +1365,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             dep <- self$options$dep
             covs <- self$options$covs
             factors <- self$options$factors
-            refLevels <- self$options$refLevels
+            refLevels <- self$refLevels
 
             dataRaw <- self$data
 
@@ -1423,7 +1438,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             #' displayed in the jmv coef table
 
             factors <- self$options$factors
-            refLevels <- self$options$refLevels
+            refLevels <- self$refLevels
             refVars <- sapply(refLevels, function(x) x$var)
 
             levels <- list()

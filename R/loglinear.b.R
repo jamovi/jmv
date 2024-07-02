@@ -3,8 +3,25 @@
 logLinearClass <- R6::R6Class(
     "logLinearClass",
     inherit = logLinearBase,
+    #### Active bindings ----
+    active = list(
+        refLevels = function() {
+            if (is.null(private$.refLevels)) {
+                refLevels <- getReferenceLevels(
+                    self$data, self$options$factors, self$options$refLevels
+                )
+                private$.refLevels <- refLevels$refLevels
+
+                if (length(refLevels$changedVars) > 0)
+                    setRefLevelWarning(self, refLevels$changedVars)
+            }
+
+            return(private$.refLevels)
+        }
+    ),
     private = list(
         #### Member variables ----
+        .refLevels = NULL,
         terms = NULL,
         coefTerms = list(),
         emMeans = list(),
@@ -553,7 +570,7 @@ logLinearClass <- R6::R6Class(
         .coefTerms = function(terms) {
 
             factors <- self$options$factors
-            refLevels <- self$options$refLevels
+            refLevels <- self$refLevels
 
             refVars <- sapply(refLevels, function(x) x$var)
 
@@ -622,7 +639,7 @@ logLinearClass <- R6::R6Class(
         .cleanData = function() {
             counts <- self$options$counts
             factors <- self$options$factors
-            refLevels <- self$options$refLevels
+            refLevels <- self$refLevels
 
             dataRaw <- self$data
 
