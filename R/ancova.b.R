@@ -1059,7 +1059,7 @@ ancovaClass <- R6::R6Class(
                     jmvcore::reject(
                         .("Factor '{factorName}' contains unused levels (after removing rows with missing values)"),
                         code=exceptions$dataError,
-                        name=name
+                        factorName=factorName
                     )
                 }
             }
