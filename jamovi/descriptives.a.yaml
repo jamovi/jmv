@@ -4,6 +4,7 @@ title: Descriptives
 menuGroup: Exploration
 version: '1.0.0'
 jas: '1.2'
+weightsSupport: 'full'
 
 description:
     main: >

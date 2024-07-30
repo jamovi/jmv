@@ -4,15 +4,50 @@
 descriptivesClass <- R6::R6Class(
     "descriptivesClass",
     inherit=descriptivesBase,
+    #### Active bindings ----
+    active = list(
+        weights = function() {
+            if (is.null(private$.weights))
+                private$.weights <- private$.computeWeights()
+
+            return(private$.weights)
+        },
+        isWeighted = function() {
+            if (is.null(private$.isWeighted))
+                private$.isWeighted <- ! is.null(attr(self$data, "jmv-weights-name"))
+
+            return(private$.isWeighted)
+        },
+        anyPlots = function() {
+            if (is.null(private$.anyPlots)) {
+                private$.anyPlots <- self$options$hist || self$options$dens || self$options$box ||
+                    self$options$violin || self$options$dot || self$options$qq || self$options$bar
+            }
+
+            return(private$.anyPlots)
+        },
+        anyNonWeightSupportedStats = function() {
+            if (is.null(private$.anyNonWeightSupportedStats)) {
+                private$.anyNonWeightSupportedStats <- self$options$se || self$options$ci ||
+                    self$options$mode || self$options$skew || self$options$kurt || self$options$sw ||
+                    self$options$pc || self$options$pcEqGr || self$options$iqr
+            }
+
+            return(private$.anyNonWeightSupportedStats)
+        }
+    ),
     private=list(
         #### Member variables ----
         colArgs = NA,
+        .weights = NULL,
+        .isWeighted = NULL,
+        .anyPlots = NULL,
+        .anyNonWeightSupportedStats = NULL,
         .levels = NULL,
         .splitByGrid = NULL,
 
         #### Init + run functions ----
         .init = function() {
-
             private$colArgs <- list(
                 name = c(
                     "n", "missing", "mean", "se", "ciLower", "ciUpper", "median",
@@ -35,7 +70,7 @@ descriptivesClass <- R6::R6Class(
                     rep("", 4), rep("ci", 2), rep("", 9), rep(.("Skewness"), 2),
                     rep(.("Kurtosis"), 2), rep(.("Shapiro-Wilk"), 2)
                 ),
-                type = c(rep("integer", 2), rep("number", 19)),
+                type = rep("number", 21),
                 format = c(rep("", 20), "zto,pvalue"),
                 visible = c(
                     "(n)", "(missing)", "(mean)", "(se)", "(ci)", "(ci)",
@@ -84,25 +119,270 @@ descriptivesClass <- R6::R6Class(
             extreme <- list()
             for (var in vars) {
                 column <- data[[var]]
-                if (is.factor(column))
-                    freq[[var]] <- table(jmvcore::select(self$data, c(var, splitBy)))
+                if (is.factor(column)) {
+                    freq[[var]] <- private$.computeFreq(var, splitBy, self$weights)
+                }
 
                 extreme[[var]] <- private$.computeExtreme(
                     data.frame(rows=rownames(self$data), values=column)
                 )
 
                 column <- jmvcore::toNumeric(column)
+
                 if (length(splitBy) > 0) {
-                    groups <- data[splitBy]
-                    desc[[var]] <- tapply(
-                        column, groups, private$.computeDesc, drop = FALSE
+                    df <- data.frame(column=column)
+                    if (! is.null(self$weights))
+                        df$weights <- self$weights
+
+                    desc[[var]] <- lapply(
+                        split(df,  data[splitBy], drop = FALSE),
+                        function(subset) {
+                            private$.computeDesc(
+                                column=subset$column, weights=subset$weights
+                            )
+                        }
                     )
                 } else {
-                    desc[[var]] <- private$.computeDesc(column)
+                    desc[[var]] <- private$.computeDesc(column=column, weights=self$weights)
                 }
             }
 
             return(list(desc=desc, freq=freq, extreme=extreme))
+        },
+        .computeDesc = function(column, weights=NULL) {
+            if (! is.null(weights))
+                return(private$.computeDescWeighted(column, weights))
+
+            return(private$.computeDescUnweighted(column))
+        },
+        .computeDescUnweighted = function(column) {
+            stats <- list()
+
+            total <- length(column)
+            column <- jmvcore::naOmit(column)
+            n <- length(column)
+            stats[['n']] <- n
+            stats[['missing']] <- total - n
+
+            if (jmvcore::canBeNumeric(column) && n > 0) {
+                stats[['mean']] <- mean(column)
+                stats[['median']] <- median(column)
+                stats[['mode']] <- as.numeric(
+                    names(table(column)[ table(column) == max(table(column)) ])
+                )
+                stats[['sum']] <- sum(column)
+                stats[['sd']] <- sd(column)
+                stats[['variance']] <- var(column)
+                stats[['range']] <- max(column)-min(column)
+                stats[['min']] <- min(column)
+                stats[['max']] <- max(column)
+                stats[['se']] <- sqrt(var(column) / length(column))
+
+                # Calculate CI of the mean based on a t distribution
+                tCriticalValue <- 1 - ((1 - self$options$ciWidth/100) / 2)
+                ciDiff <- qt(tCriticalValue, df=stats[['n']] - 1) * stats[['se']]
+                stats[['ciLower']] <- stats[['mean']] - ciDiff
+                stats[['ciUpper']] <- stats[['mean']] + ciDiff
+
+                stats[['iqr']] <- diff(as.numeric(quantile(column, c(.25,.75))))
+
+                skew <- private$.skewness(column)
+                kurt <- private$.kurtosis(column)
+                norm <- jmvcore::tryNaN(shapiro.test(column)$p.value)
+                normw <- jmvcore::tryNaN(shapiro.test(column)$statistic)
+                stats[['skew']] <- skew$skew
+                stats[['seSkew']] <- skew$seSkew
+                stats[['kurt']] <- kurt$kurt
+                stats[['seKurt']] <- kurt$seKurt
+                stats[['sww']] <- normw
+                stats[['sw']] <- norm
+
+                if ( self$options$pcEqGr ) {
+                    pcNEqGr <- self$options$pcNEqGr
+
+                    pcEq <- (1:pcNEqGr / pcNEqGr)[-pcNEqGr]
+                    quants <- as.numeric(quantile(column, pcEq))
+
+                    for (i in 1:(pcNEqGr-1))
+                        stats[[paste0('quant', i)]] <- quants[i]
+                }
+
+                if ( self$options$pc ) {
+                    pcValues <- private$.getPcValues()
+                    npcValues <- length(pcValues)
+
+                    if ( npcValues > 0 ) {
+                        quants <- as.numeric(quantile(column, pcValues))
+                        for (i in 1:npcValues)
+                            stats[[paste0('perc', i)]] <- quants[i]
+                    }
+                }
+            } else {
+                # Because these descriptives can only be calculated for numeric
+                # values, the values are set to an empty string for non-numeric
+                # columns. If the column is numeric, but has no values, the
+                # values are set to NaN to indicate that the value could not
+                # be calculated.
+                val <- ifelse(jmvcore::canBeNumeric(column), NaN, "")
+
+                l <- list(
+                    mean=val, median=val, mode=val, sum=val, sd=val,
+                    variance=val, range=val, min=val, max=val, se=val,
+                    ciLower=val, ciUpper=val, skew=val, seSkew=val, kurt=val,
+                    seKurt=val, sww=val, sw=val, iqr=val
+                )
+
+                if ( self$options$pcEqGr ) {
+                    pcNEqGr <- self$options$pcNEqGr
+                    for (i in 1:(pcNEqGr-1))
+                        l[[paste0('quant', i)]] <- val
+                }
+
+                if ( self$options$pc ) {
+                    pcValues <- private$.getPcValues()
+                    npcValues <- length(pcValues)
+                    if ( npcValues > 0 ) {
+                        for (i in 1:npcValues)
+                            l[[paste0('perc', i)]] <- val
+                    }
+                }
+
+                stats <- append(stats, l)
+            }
+
+            return(stats)
+        },
+        .computeDescWeighted = function(column, weights) {
+            stats <- list()
+
+            df <- data.frame(column=column, weights=weights)
+
+            total <- nrow(df)
+            df <- jmvcore::naOmit(df)
+            column <- df$column
+            weights <- df$weights
+
+            n <- sum(weights)
+            stats[['n']] <- n
+            stats[['missing']] <- total - nrow(df)
+
+            if (jmvcore::canBeNumeric(column) && n > 0) {
+                column <- jmvcore::toNumeric(column)
+
+                stats[['mean']] <- matrixStats::weightedMean(column, weights)
+                stats[['median']] <- matrixStats::weightedMedian(column, weights)
+                stats[['sum']] <- sum(column * weights)
+                stats[['sd']] <- matrixStats::weightedSd(column, weights)
+                stats[['variance']] <- matrixStats::weightedVar(column, weights)
+                stats[['range']] <- max(column) - min(column)
+                stats[['min']] <- min(column)
+                stats[['max']] <- max(column)
+
+                stats[['mode']] <- NA
+                stats[['se']] <- NA
+                stats[['ciLower']] <- NA
+                stats[['ciUpper']] <- NA
+
+                stats[['iqr']] <- NA
+                stats[['skew']] <- NA
+                stats[['seSkew']] <- NA
+                stats[['kurt']] <- NA
+                stats[['seKurt']] <- NA
+                stats[['sww']] <- NA
+                stats[['sw']] <- NA
+
+                if ( self$options$pcEqGr ) {
+                    pcNEqGr <- self$options$pcNEqGr
+                    for (i in 1:(pcNEqGr-1))
+                        stats[[paste0('quant', i)]] <- NA
+                }
+
+                if ( self$options$pc ) {
+                    pcValues <- private$.getPcValues()
+                    npcValues <- length(pcValues)
+                    if ( npcValues > 0 ) {
+                        for (i in 1:npcValues)
+                            stats[[paste0('perc', i)]] <- NA
+                    }
+                }
+            } else {
+                # Because these descriptives can only be calculated for numeric
+                # values, the values are set to an empty string for non-numeric
+                # columns. If the column is numeric, but has no values, the
+                # values are set to NaN to indicate that the value could not
+                # be calculated.
+                val <- ifelse(jmvcore::canBeNumeric(column), NaN, "")
+
+                l <- list(
+                    mean=val, median=val, mode=val, sum=val, sd=val,
+                    variance=val, range=val, min=val, max=val, se=val,
+                    ciLower=val, ciUpper=val, skew=val, seSkew=val, kurt=val,
+                    seKurt=val, sww=val, sw=val, iqr=val
+                )
+
+                if ( self$options$pcEqGr ) {
+                    pcNEqGr <- self$options$pcNEqGr
+                    for (i in 1:(pcNEqGr-1))
+                        l[[paste0('quant', i)]] <- val
+                }
+
+                if ( self$options$pc ) {
+                    pcValues <- private$.getPcValues()
+                    npcValues <- length(pcValues)
+                    if ( npcValues > 0 ) {
+                        for (i in 1:npcValues)
+                            l[[paste0('perc', i)]] <- val
+                    }
+                }
+
+                stats <- append(stats, l)
+            }
+
+            return(stats)
+        },
+        .computeFreq = function(var, splitBy, weights=NULL) {
+            df <- jmvcore::select(self$data, c(var, splitBy))
+
+            if (!is.null(weights)) {
+                # Check for and exclude missing weights
+                complete_cases <- complete.cases(weights)
+                if (any( ! complete_cases)) {
+                    weights <- weights[complete_cases]
+                    df <- df[complete_cases, ]
+                }
+
+                return(tapply(weights, df, sum, default = 0))
+            }
+
+            return(table(df))
+        },
+        .computeExtreme = function(df) {
+            extremeN = self$options$extremeN
+
+            if (! jmvcore::canBeNumeric(df$values))
+                return(NULL)
+
+            df$values = jmvcore::toNumeric(df$values)
+
+            lowest = head(df[order(df$values),], extremeN)
+            highest <- head(df[order(-df$values),], extremeN)
+
+            return(list(highest=highest, lowest=lowest))
+        },
+        .computeWeights = function() {
+            weights <- attr(self$data, "jmv-weights")
+
+            if (is.null(weights))
+                return()
+
+            if (any(na.omit(weights) < 0)) {
+                jmvcore::reject(
+                    .("'{var}' contains negative values. Negative weights are not permitted."),
+                    var=weights
+                )
+            }
+
+            return(weights)
         },
 
         #### Init tables/plots functions ----
@@ -210,6 +490,13 @@ descriptivesClass <- R6::R6Class(
                         .("The CI of the mean assumes sample means follow a t-distribution with N - 1 degrees of freedom")
                     )
                 }
+
+                if (self$isWeighted && self$anyNonWeightSupportedStats) {
+                    table$setNote(
+                        "weighted",
+                        .("Not all statistics are supported yet for weighted data.")
+                    )
+                }
             }
         },
         .initDescriptivesTTable = function() {
@@ -267,6 +554,13 @@ descriptivesClass <- R6::R6Class(
                 )
             }
 
+            if (self$isWeighted && self$anyNonWeightSupportedStats) {
+                table$setNote(
+                    "weighted",
+                    .("Not all statistics are supported yet for weighted data.")
+                )
+            }
+
             vars <- self$options$vars
             grid <- private$.getSplitByGrid()
 
@@ -312,7 +606,7 @@ descriptivesClass <- R6::R6Class(
 
                 for (var in tableVars)
                     table$addColumn(name=var, title=var, type="text", combineBelow=TRUE)
-                table$addColumn(name='counts', title=.('Counts'), type='integer')
+                table$addColumn(name='counts', title=.('Counts'), type='number')
                 table$addColumn(name='pc', title=.('% of Total'), type='number', format='pc')
                 table$addColumn(name='cumpc', title=.('Cumulative %'), type='number', format='pc')
 
@@ -358,6 +652,21 @@ descriptivesClass <- R6::R6Class(
         .initPlots = function() {
             plots <- self$results$plots
 
+            if (self$anyPlots && self$isWeighted) {
+                notice <- jmvcore::Notice$new(
+                    options = self$options,
+                    name = 'warningMessage',
+                    type = jmvcore::NoticeType$WARNING
+                )
+
+                warningMessage <- .("Plots are not yet supported for weighted descriptives.")
+
+                notice$setContent(warningMessage)
+                plots$setHeader(notice)
+
+                return()
+            }
+
             data <- self$data
             vars <- self$options$vars
             splitBy <- self$options$splitBy
@@ -395,7 +704,6 @@ descriptivesClass <- R6::R6Class(
             }
 
             for (var in vars) {
-                # group <- jmvcore::Group$new(options = self$options, name = var, title = var)
                 group <- plots$get(var)
                 column <- data[[var]]
 
@@ -476,8 +784,6 @@ descriptivesClass <- R6::R6Class(
                         group$add(image)
                     }
                 }
-
-                # plots$add(group)
             }
         },
 
@@ -550,7 +856,7 @@ descriptivesClass <- R6::R6Class(
                 if (length(splitBy) > 0) {
                     for (j in seq_len(nrow(grid))) {
                         indices <- grid[j,]
-                        stats <- do.call("[", c(list(r), indices))[[1]]
+                        stats <- do.call("[", c(list(r), paste0(indices, collapse = ".")))[[1]]
 
                         for (k in seq_along(colNames)) {
                             if (private$.skipOption(private$colArgs$visible[k]))
@@ -612,7 +918,7 @@ descriptivesClass <- R6::R6Class(
                 r <- desc[[vars[i]]]
                 if (length(splitBy) > 0) {
                     for (j in seq_len(nrow(grid))) {
-                        stats <- do.call("[", c(list(r), grid[j,]))[[1]]
+                        stats <- do.call("[", c(list(r), paste0(grid[j,], collapse = ".")))[[1]]
                         values <- list()
                         for (k in seq_along(colNames)) {
                             if (private$.skipOption(private$colArgs$visible[k]))
@@ -733,6 +1039,9 @@ descriptivesClass <- R6::R6Class(
 
         #### Plot functions ----
         .preparePlots = function() {
+            if (self$anyPlots && self$isWeighted)
+                return()
+
             data <- self$data
             plots <- self$results$plots
             vars <- self$options$vars
@@ -747,7 +1056,7 @@ descriptivesClass <- R6::R6Class(
                     levels <- base::levels(column)
                     bar  <- group$get('bar')
 
-                    if ( ! is.factor(column)) {
+                    if ( ! is.factor(column) && ! self$isWeighted) {
                         values <- data[[var]]
 
                         nSplits <- length(splitBy)
@@ -1441,131 +1750,6 @@ descriptivesClass <- R6::R6Class(
         },
         .skipOption = function(visible) {
             return(! self$options[[ gsub("[()]", "", visible) ]])
-        },
-        .computeDesc = function(column) {
-            stats <- list()
-
-            total <- length(column)
-            column <- jmvcore::naOmit(column)
-            n <- length(column)
-            stats[['n']] <- n
-            stats[['missing']] <- total - n
-
-            if (jmvcore::canBeNumeric(column) && n > 0) {
-                stats[['mean']] <- mean(column)
-                stats[['median']] <- median(column)
-                stats[['mode']] <- as.numeric(
-                    names(table(column)[ table(column) == max(table(column)) ])
-                )
-                stats[['sum']] <- sum(column)
-                stats[['sd']] <- sd(column)
-                stats[['variance']] <- var(column)
-                stats[['range']] <- max(column)-min(column)
-                stats[['min']] <- min(column)
-                stats[['max']] <- max(column)
-                stats[['se']] <- sqrt(var(column)/length(column))
-
-                # Calculate CI of the mean based on a t distribution
-                tCriticalValue <- 1 - ((1 - self$options$ciWidth/100) / 2)
-                ciDiff <- qt(tCriticalValue, df=stats[['n']] - 1) * stats[['se']]
-                stats[['ciLower']] <- stats[['mean']] - ciDiff
-                stats[['ciUpper']] <- stats[['mean']] + ciDiff
-
-                stats[['iqr']] <- diff(as.numeric(quantile(column, c(.25,.75))))
-
-                deviation <- column-mean(column)
-                skew <- private$.skewness(column)
-                kurt <- private$.kurtosis(column)
-                norm <- jmvcore::tryNaN(shapiro.test(column)$p.value)
-                normw <- jmvcore::tryNaN(shapiro.test(column)$statistic)
-                stats[['skew']] <- skew$skew
-                stats[['seSkew']] <- skew$seSkew
-                stats[['kurt']] <- kurt$kurt
-                stats[['seKurt']] <- kurt$seKurt
-                stats[['sww']] <- normw
-                stats[['sw']] <- norm
-
-                if ( self$options$pcEqGr ) {
-                    pcNEqGr <- self$options$pcNEqGr
-
-                    pcEq <- (1:pcNEqGr / pcNEqGr)[-pcNEqGr]
-                    quants <- as.numeric(quantile(column, pcEq))
-
-                    for (i in 1:(pcNEqGr-1))
-                        stats[[paste0('quant', i)]] <- quants[i]
-                }
-
-                if ( self$options$pc ) {
-                    pcValues <- private$.getPcValues()
-                    npcValues <- length(pcValues)
-
-                    if ( npcValues > 0 ) {
-                        quants <- as.numeric(quantile(column, pcValues))
-                        for (i in 1:npcValues)
-                            stats[[paste0('perc', i)]] <- quants[i]
-                    }
-                }
-            } else if (jmvcore::canBeNumeric(column)) {
-                l <- list(
-                    mean=NaN, median=NaN, mode=NaN, sum=NaN, sd=NaN,
-                    variance=NaN, range=NaN, min=NaN, max=NaN, se=NaN,
-                    ciLower=NaN, ciUpper=NaN, skew=NaN, seSkew=NaN, kurt=NaN,
-                    seKurt=NaN, sww=NaN, sw=NaN
-                )
-
-                if ( self$options$pcEqGr ) {
-                    pcNEqGr <- self$options$pcNEqGr
-                    for (i in 1:(pcNEqGr-1))
-                        l[[paste0('quant', i)]] <- NaN
-                }
-
-                if ( self$options$pc ) {
-                    pcValues <- private$.getPcValues()
-                    npcValues <- length(pcValues)
-                    if ( npcValues > 0 ) {
-                        for (i in 1:npcValues)
-                            l[[paste0('perc', i)]] <- NaN
-                    }
-                }
-
-                stats <- append(stats, l)
-            } else {
-                l <- list(
-                    mean='', median='', mode='', sum='', sd='', variance='',
-                    range='', min='', max='', se='', ciLower='', ciUpper='',
-                    skew='', seSkew='', kurt='', seKurt='', sww='', sw=''
-                )
-
-                if ( self$options$pcEqGr ) {
-                    pcNEqGr <- self$options$pcNEqGr
-                    for (i in 1:(pcNEqGr-1))
-                        l[[paste0('quant', i)]] <- ''
-                }
-
-                if ( self$options$pc ) {
-                    pcValues <- private$.getPcValues()
-                    npcValues <- length(pcValues)
-                    if ( npcValues > 0 ) {
-                        for (i in 1:npcValues)
-                            l[[paste0('perc', i)]] <- ''
-                    }
-                }
-                stats <- append(stats, l)
-            }
-            return(stats)
-        },
-        .computeExtreme = function(df) {
-            extremeN = self$options$extremeN
-
-            if (! jmvcore::canBeNumeric(df$values))
-                return(NULL)
-
-            df$values = jmvcore::toNumeric(df$values)
-
-            lowest = head(df[order(df$values),], extremeN)
-            highest <- head(df[order(-df$values),], extremeN)
-
-            return(list(highest=highest, lowest=lowest))
         },
         .plotSize = function(levels, plot) {
             nLevels <- as.numeric(sapply(levels, length))
