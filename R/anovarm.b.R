@@ -16,13 +16,34 @@ anovaRMClass <- R6::R6Class(
                 private$.bsTerms <- private$.getBsTerms()
 
             return(private$.bsTerms)
+        },
+        dataProcessed = function() {
+            if (is.null(private$.dataProcessed))
+                private$.dataProcessed <- private$.wideToLong()
+
+            return(private$.dataProcessed)
+        },
+        model = function() {
+            if (is.null(private$.model))
+                private$.model <- private$.computeModel()
+
+            return(private$.model)
+        },
+        modelSummary = function() {
+            if (is.null(private$.modelSummary)) {
+                private$.modelSummary <- summarizeAnovaModel(self$model$Anova, self$model$anova_table)
+            }
+
+            return(private$.modelSummary)
         }
     ),
     private = list(
         #### Member variables ----
         .rmTerms = NULL,
         .bsTerms = NULL,
+        .dataProcessed = NULL,
         .model = NULL,
+        .modelSummary = NULL,
         .postHocRows = NULL,
         emMeans = list(),
 
@@ -48,40 +69,48 @@ anovaRMClass <- R6::R6Class(
 
             ready <- sum(dataSelected) == length(self$options$rmCells) && length(self$rmTerms) > 0
 
-            if (ready) {
+            if (! ready)
+                return()
 
-                private$.dataCheck()
-                data <- private$.wideToLong()
-                modelFormula <- private$.modelFormula()
+            private$.dataCheck()
 
-                suppressMessages({
-                    suppressWarnings({
-                        result <- try(
-                            afex::aov_car(
-                                modelFormula,
-                                data,
-                                type=self$options$ss,
-                                factorize = FALSE
-                            ),
-                            silent=TRUE
-                        )
-                    }) # suppressWarnings
-                }) # suppressMessages
+            if ( any(self$modelSummary$singular) )
+                setSingularityWarning(self)
 
-                if (isError(result))
-                    jmvcore::reject(extractErrorMessage(result), code='error')
+            private$.populateEffectsTables()
+            private$.populateSpericityTable()
+            private$.populateLeveneTable()
+            private$.prepareQQPlot()
 
-                private$.populateEffectsTables(result)
-                private$.populateSpericityTable(result)
-                private$.populateLeveneTable()
-                private$.prepareQQPlot(result)
+            private$.populatePostHocTables()
 
-                private$.populatePostHocTables(result)
+            private$.prepareEmmPlots()
+            private$.populateEmmTables()
+            private$.populateGroupSummaryTable()
+        },
 
-                private$.prepareEmmPlots(result, data)
-                private$.populateEmmTables()
-                private$.populateGroupSummaryTable()
-            }
+        #### Compute results ----
+        .computeModel = function() {
+            modelFormula <- private$.modelFormula()
+
+            suppressMessages({
+                suppressWarnings({
+                    model <- try(
+                        afex::aov_car(
+                            modelFormula,
+                            self$dataProcessed,
+                            type=self$options$ss,
+                            factorize = FALSE
+                        ),
+                        silent=TRUE
+                    )
+                }) # suppressWarnings
+            }) # suppressMessages
+
+            if (isError(model))
+                jmvcore::reject(extractErrorMessage(model), code='error')
+
+            return(model)
         },
 
         #### Init tables/plots functions ----
@@ -176,7 +205,6 @@ anovaRMClass <- R6::R6Class(
                 leveneTable$addRow(rowKey=var, list(name=var))
         },
         .initPostHocTables=function() {
-
             bs <- self$options$bs
             rm <- self$options$rm
             phTerms <- self$options$postHoc
@@ -197,7 +225,6 @@ anovaRMClass <- R6::R6Class(
             postHocTableTitle <- .('Post Hoc Comparisons - {term}')
 
             for (ph in phTerms) {
-
                 table <- tables$get(key=ph)
 
                 table$setTitle(jmvcore::format(postHocTableTitle, term=stringifyTerm(ph)))
@@ -260,12 +287,10 @@ anovaRMClass <- R6::R6Class(
             private$.postHocRows <- postHocRows
         },
         .initEmm = function() {
-
             emMeans <- self$options$emMeans
             group <- self$results$emm
 
             for (j in seq_along(emMeans)) {
-
                 emm <- emMeans[[j]]
 
                 if ( ! is.null(emm)) {
@@ -330,7 +355,6 @@ anovaRMClass <- R6::R6Class(
         },
 
         .initGroupSummary = function() {
-
             table <- self$results$groupSummary
             bs <- self$options$bs
 
@@ -365,88 +389,78 @@ anovaRMClass <- R6::R6Class(
         },
 
         #### Populate tables functions ----
-        .populateEffectsTables=function(result) {
+        .populateEffectsTables=function() {
+            rmTable <- self$results$rmTable
+            bsTable <- self$results$bsTable
 
-            rmTable <- self$results$get('rmTable')
-            bsTable <- self$results$get('bsTable')
-
-            suppressWarnings({
-                summaryResult <- summary(result)
-            })
-            model <- summaryResult$univariate.tests
-            epsilon <- summaryResult$pval.adjustments
-            ges <- result$anova_table
+            model <- self$modelSummary
 
             rmRows <- rmTable$rowKeys
             bsRows <- bsTable$rowKeys
-            modelRows <- jmvcore::decomposeTerms(as.list(rownames(model)))
-            epsilonRows <- jmvcore::decomposeTerms(as.list(rownames(epsilon)))
-            gesRows <- jmvcore::decomposeTerms(as.list(rownames(ges)))
+            modelRows <- jmvcore::decomposeTerms(as.list(model$term))
 
             SSt <- private$.getSSt(model)
 
             # Populate RM table
             for (i in seq_along(rmRows)) {
+                index <- NULL
 
                 if (! '.RES' %in% rmRows[[i]]) { # if the row is not a residual
-
-                    index <- which(sapply(modelRows, function(x) setequal(toB64(rmRows[[i]]), x)))
+                    index <- private$.findModelRowIndex(rmRows[[i]], modelRows)
 
                     row <- list()
-                    row[['ss[none]']] <- row[['ss[GG]']] <- row[['ss[HF]']] <- model[index,'Sum Sq']
-                    row[['F[none]']] <- row[['F[GG]']] <- row[['F[HF]']] <- model[index,'F value']
+                    row[['ss[none]']] <- model[index,'ss']
+                    row[['F[none]']] <- model[index,'f']
 
-                    row[['df[none]']] <- model[index,'num Df']
+                    row[['df[none]']] <- model[index,'df']
                     row[['ms[none]']] <- row[['ss[none]']] / row[['df[none]']]
-                    row[['p[none]']] <- model[index,'Pr(>F)']
+                    row[['p[none]']] <- model[index,'p']
 
-                    # Add sphericity corrected values
-                    indexEps <- which(sapply(epsilonRows, function(x) setequal(toB64(rmRows[[i]]), x)))
-                    dfRes <- model[index,'den Df']
-
-                    if (length(indexEps) == 0) {
-                        GG <- 1
-                        HF <- 1
-                    } else {
-                        GG <- if (is.na(epsilon[indexEps,'GG eps'])) 1 else epsilon[indexEps,'GG eps']
-                        HF <- if (is.na(epsilon[indexEps,'HF eps']) || epsilon[indexEps,'HF eps'] > 1) 1 else epsilon[indexEps,'HF eps']
-                    }
-
-                    row[['df[GG]']] <- row[['df[none]']] * GG
-                    row[['ms[GG]']] <- row[['ss[GG]']] / row[['df[GG]']]
-                    dfResGG <- dfRes * GG
-                    row[['p[GG]']] <- pf(row[['F[GG]']], row[['df[GG]']], dfResGG, lower.tail=FALSE)
-
-                    row[['df[HF]']] <- row[['df[none]']] * HF
-                    row[['ms[HF]']] <- row[['ss[HF]']] / row[['df[HF]']]
-                    dfResHF <- dfRes * HF
-                    row[['p[HF]']] <- pf(row[['F[HF]']], row[['df[HF]']], dfResHF, lower.tail=FALSE)
-
-                    gesIndex <- which(sapply(gesRows, function(x) setequal(toB64(rmRows[[i]]), x)))
-                    gesValue <- ges[gesIndex, 'ges']
-
-                    # Add effect sizes
-                    SSr <- model[index,'Error SS']
+                    dfRes <- model[index,'df_error']
+                    SSr <- model[index,'ss_error']
                     MSr <- SSr/dfRes
 
-                    row[['eta[none]']] <- row[['eta[GG]']] <- row[['eta[HF]']] <- row[['ss[none]']] / SSt
-                    row[['ges[none]']] <- row[['ges[GG]']] <- row[['ges[HF]']] <- gesValue
-                    row[['partEta[none]']] <- row[['partEta[GG]']] <- row[['partEta[HF]']] <- row[['ss[none]']] / (row[['ss[none]']] + SSr)
+                    row[['ges[none]']] <- model[index,'ges']
+                    row[['eta[none]']] <- row[['ss[none]']] / SSt
+                    row[['partEta[none]']] <- row[['ss[none]']] / (row[['ss[none]']] + SSr)
 
-                    omega <- (row[['ss[none]']] - (row[['df[none]']] * MSr)) / (SSt + MSr)
+                    if (! model$singular[index] ) {
+                        row[['ss[GG]']] <- row[['ss[HF]']] <- row[['ss[none]']]
+                        row[['F[GG]']] <- row[['F[HF]']] <- row[['F[none]']]
 
-                    row[['omega[none]']] <- row[['omega[GG]']] <- row[['omega[HF]']] <- if ( ! is.na(omega) && omega < 0) 0 else omega
+                        row[['df[GG]']] <- row[['df[none]']] * model[index,'gg']
+                        row[['ms[GG]']] <- row[['ss[GG]']] / row[['df[GG]']]
+                        dfResGG <- dfRes * model[index,'gg']
+                        row[['p[GG]']] <- pf(row[['F[GG]']], row[['df[GG]']], dfResGG, lower.tail=FALSE)
+
+                        row[['df[HF]']] <- row[['df[none]']] * model[index,'hf']
+                        row[['ms[HF]']] <- row[['ss[HF]']] / row[['df[HF]']]
+                        dfResHF <- dfRes * model[index,'hf']
+                        row[['p[HF]']] <- pf(row[['F[HF]']], row[['df[HF]']], dfResHF, lower.tail=FALSE)
+
+                        row[['ges[GG]']] <- row[['ges[HF]']] <- row[['ges[none]']]
+                        row[['eta[GG]']] <- row[['eta[HF]']] <- row[['eta[none]']]
+                        row[['partEta[GG]']] <- row[['partEta[HF]']] <- row[['partEta[none]']]
+                    } else {
+                        row[['ss[GG]']] <- row[['ss[HF]']] <- NaN
+                        row[['df[GG]']] <- row[['df[HF]']] <- NaN
+                        row[['ms[GG]']] <- row[['ms[HF]']] <- NaN
+                        row[['F[GG]']] <- row[['F[HF]']] <- NaN
+                        row[['p[GG]']] <- row[['p[HF]']] <- NaN
+                        row[['ges[GG]']] <- row[['ges[HF]']] <- NaN
+                        row[['eta[GG]']] <- row[['eta[HF]']] <- NaN
+                        row[['partEta[GG]']] <- row[['partEta[HF]']] <- NaN
+                    }
 
                     rmTable$setRow(rowNo=i, values=row)
 
                 } else { # if the row is a residual
-
                     term <- rmRows[[i]][-length(rmRows[[i]])]
-                    index <- which(sapply(modelRows, function(x) setequal(toB64(term), x)))
+                    index <- private$.findModelRowIndex(term, modelRows)
 
                     row <- list()
-                    row[['ss[none]']] <- row[['ss[GG]']] <- row[['ss[HF]']] <- model[index,'Error SS']
-                    row[['df[none]']] <- model[index,'den Df']
+                    row[['ss[none]']] <- model[index,'ss_error']
+                    row[['df[none]']] <- model[index,'df_error']
                     row[['ms[none]']] <- row[['ss[none]']] / row[['df[none]']]
                     row[['F[none]']] <- row[['F[GG]']]  <- row[['F[HF]']] <- ''
                     row[['p[none]']] <- row[['p[GG]']] <- row[['p[HF]']] <- ''
@@ -455,52 +469,48 @@ anovaRMClass <- R6::R6Class(
                     row[['partEta[none]']] <- row[['partEta[GG]']] <- row[['partEta[HF]']] <- ''
                     row[['omega[none]']] <- row[['omega[GG]']] <- row[['omega[HF]']] <- ''
 
-                    # Add sphericity corrected values
-                    indexEps <- which(sapply(epsilonRows, function(x) setequal(toB64(term), x)))
-                    dfRes <- model[index,'den Df']
-
-                    if (length(indexEps) == 0) {
-                        GG <- 1
-                        HF <- 1
+                    if (! model$singular[index] ) {
+                        row[['ss[GG]']] <- row[['ss[HF]']] <- row[['ss[none]']]
+                        row[['F[GG]']] <- row[['F[HF]']] <- row[['F[none]']]
+                        row[['df[GG]']] <- row[['df[none]']] * model[index,'gg']
+                        row[['ms[GG]']] <- row[['ss[GG]']] / row[['df[GG]']]
+                        row[['df[HF]']] <- row[['df[none]']] * model[index,'hf']
+                        row[['ms[HF]']] <- row[['ss[HF]']] / row[['df[HF]']]
                     } else {
-                        GG <- if (is.na(epsilon[indexEps,'GG eps'])) 1 else epsilon[indexEps,'GG eps']
-                        HF <- if (is.na(epsilon[indexEps,'HF eps']) || epsilon[indexEps,'HF eps'] > 1) 1 else epsilon[indexEps,'HF eps']
+                        row[['ss[GG]']] <- row[['ss[HF]']] <- NaN
+                        row[['df[GG]']] <- row[['df[HF]']] <- NaN
+                        row[['ms[GG]']] <- row[['ms[HF]']] <- NaN
                     }
 
-                    row[['df[GG]']] <- row[['df[none]']] * GG
-                    row[['ms[GG]']] <- row[['ss[GG]']] / row[['df[GG]']]
-                    row[['df[HF]']] <- row[['df[none]']] * HF
-                    row[['ms[HF]']] <- row[['ss[HF]']] / row[['df[HF]']]
-
                     rmTable$setRow(rowNo=i, values=row)
+                }
+
+                if (model$singular[index]) {
+                    rmTable$addFootnote(
+                        rowNo=i, 'correction[GG]', .('Singularity error. Sphericity corrections are not available')
+                    )
+                    rmTable$addFootnote(
+                        rowNo=i, 'correction[HF]', .('Singularity error. Sphericity corrections are not available')
+                    )
                 }
             }
 
             # Populate BS table
-
-            bsTerms <- lapply(bsRows[which( ! sapply(bsRows, function(x) x[1] == 'Residual'))], toB64)
-
-            if (length(bsTerms) > 0)
-                bsIndices <- sapply(bsTerms, function(x) which(sapply(modelRows, function(y) setequal(x,y))))
-
             for (i in seq_along(bsRows)) {
-
                 if (! bsRows[[i]][1] == 'Residual') { # if the row is not a residual
-
-                    index <- which(sapply(modelRows, function(x) setequal(toB64(bsRows[[i]]), x)))
-                    gesIndex <- which(sapply(gesRows, function(x) setequal(toB64(bsRows[[i]]), x)))
+                    index <- private$.findModelRowIndex(bsRows[[i]], modelRows)
 
                     row <- list()
-                    row[['ss']] <- model[index,'Sum Sq']
-                    row[['df']] <- model[index,'num Df']
+                    row[['ss']] <- model[index,'ss']
+                    row[['df']] <- model[index,'df']
                     row[['ms']] <- row[['ss']] / row[['df']]
-                    row[['F']] <- model[index,'F value']
-                    row[['p']] <- model[index,'Pr(>F)']
+                    row[['F']] <- model[index,'f']
+                    row[['p']] <- model[index,'p']
 
                     # Add effect sizes
-                    SSr <- model[index,'Error SS']
-                    MSr <- SSr/model[index,'den Df']
-                    row[['ges']] <- ges[gesIndex, 'ges']
+                    SSr <- model[index,'ss_error']
+                    MSr <- SSr/model[index,'df_error']
+                    row[['ges']] <- model[index, 'ges']
                     row[['eta']] <- row[['ss']] / SSt
                     row[['partEta']] <- row[['ss']] / (row[['ss']] + SSr)
                     omega <- (row[['ss']] - (row[['df']] * MSr)) / (SSt + MSr)
@@ -509,10 +519,11 @@ anovaRMClass <- R6::R6Class(
                     bsTable$setRow(rowNo=i, values=row)
 
                 } else { # if the row is a residual
+                    index <- which(model$term == "(Intercept)")
 
                     row <- list()
-                    row[['ss']] <- model['(Intercept)','Error SS']
-                    row[['df']] <- model['(Intercept)','den Df']
+                    row[['ss']] <- model[index,'ss_error']
+                    row[['df']] <- model[index,'df_error']
                     row[['ms']] <- row[['ss']] / row[['df']]
                     row[['F']] <- row[['p']] <- row[['ges']] <- row[['eta']] <- row[['partEta']] <- row[['omega']] <-''
 
@@ -520,54 +531,27 @@ anovaRMClass <- R6::R6Class(
                 }
             }
         },
-        .populateSpericityTable=function(result) {
-
+        .populateSpericityTable = function() {
             spherTable <- self$results$assump$spherTable
 
-            summaryResult <- suppressWarnings({summary(result)})
-            epsilon <- summaryResult$pval.adjustments
-            mauchly <- summaryResult$sphericity.tests
+            model <- self$modelSummary
+            modelRows <- jmvcore::decomposeTerms(as.list(model$term))
 
-            nLevels <- sapply(self$options$rm, function(x) return(length(x$levels)))
-            resultRows <- decomposeTerms(rownames(mauchly))
+            for (term in self$rmTerms) {
+                index <- private$.findModelRowIndex(term, modelRows)
 
-            if (any(nLevels > 2) && length(resultRows) > 0) {
+                row <- list()
+                row[['mauch']] <- model[index,'mauchly']
+                row[['p']] <- model[index,'p_mauchly']
+                row[['gg']] <- model[index, 'gg']
+                row[['hf']] <- model[index, 'hf']
 
-                for (term in self$rmTerms) {
+                spherTable$setRow(rowKey=term, values=row)
 
-                    index <- which(sapply(as.list(resultRows), function(x) setequal(x, toB64(term))))
-
-                    if (length(index) == 0) {
-
-                        spherTable$setRow(rowKey=term, values=list('mauch'=1, 'p'=NaN, 'gg'=1, 'hf'=1))
-                        if (length(spherTable$getRow(rowKey=term)$name$footnotes) == 0)
-                            spherTable$addFootnote(rowKey=term, 'p', .('The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels.'))
-
-                    } else {
-
-                        row <- list()
-                        row[['mauch']] <- mauchly[index,'Test statistic']
-                        row[['p']] <- mauchly[index,'p-value']
-                        row[['gg']] <- epsilon[index, 'GG eps']
-                        row[['hf']] <- if (epsilon[index, 'HF eps'] > 1) 1 else epsilon[index, 'HF eps']
-
-                        spherTable$setRow(rowKey=term, values=row)
-                    }
-                }
-            } else {
-
-                for (term in self$rmTerms) {
-
-                    if (any(nLevels > 2)) {
-                        spherTable$setRow(rowKey=term, values=list('mauch'=NaN, 'p'=NaN, 'gg'=NaN, 'hf'=NaN))
-                        if (length(spherTable$getRow(rowKey=term)$name$footnotes) == 0)
-                            spherTable$addFootnote(rowKey=term, 'name', .('Singularity error. Sphericity tests are not available'))
-
-                    } else {
-                        spherTable$setRow(rowKey=term, values=list('mauch'=1, 'p'=NaN, 'gg'=1, 'hf'=1))
-                        if (length(spherTable$getRow(rowKey=term)$name$footnotes) == 0)
-                            spherTable$addFootnote(rowKey=term, 'p', .('The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels'))
-                    }
+                if (model$singular[index]) {
+                    spherTable$addFootnote(rowKey=term, 'name', .('Singularity error. Sphericity tests are not available'))
+                } else if (model$twoLevels[index]) {
+                    spherTable$addFootnote(rowKey=term, 'name', .('The repeated measures has only two levels. The assumption of sphericity is always met when the repeated measures has only two levels.'))
                 }
             }
         },
@@ -576,7 +560,7 @@ anovaRMClass <- R6::R6Class(
             if (length(self$options$rmCells) == 0)
                 return()
 
-            leveneTable <- self$results$get('assump')$get('leveneTable')
+            leveneTable <- self$results$assump$leveneTable
 
             rmVars <- sapply(self$options$rmCells, function(x) return(x$measure))
             covVars <- self$options$cov
@@ -605,7 +589,6 @@ anovaRMClass <- R6::R6Class(
             data <- cbind(data, .GROUP=group)
 
             for (var in rmVars) {
-
                 if (length(covVars) > 0)
                     formula <- as.formula(paste0(composeTerm(var),'~ .GROUP +', paste0(composeTerm(covVars), collapse='+')))
                 else
@@ -618,8 +601,7 @@ anovaRMClass <- R6::R6Class(
                 leveneTable$setRow(rowKey=var, values=row)
             }
         },
-        .populatePostHocTables=function (result) {
-
+        .populatePostHocTables = function() {
             terms <- self$options$postHoc
 
             if (length(terms) == 0)
@@ -643,7 +625,7 @@ anovaRMClass <- R6::R6Class(
                     table$setStatus('running')
 
                     emmeans::emm_options(sep = ",", parens = "a^")
-                    referenceGrid <- emmeans::emmeans(result, formula, model="multivariate")
+                    referenceGrid <- emmeans::emmeans(self$model, formula, model="multivariate")
                     none <- summary(pairs(referenceGrid, adjust='none'))
                     tukey <- summary(pairs(referenceGrid, adjust='tukey'))
                     scheffe <- summary(pairs(referenceGrid, adjust='scheffe'))
@@ -693,7 +675,6 @@ anovaRMClass <- R6::R6Class(
             }
         },
         .populateEmmTables = function() {
-
             emMeans <- self$options$emMeans
             emmTables <- private$emMeans
 
@@ -731,7 +712,6 @@ anovaRMClass <- R6::R6Class(
         },
 
         .populateGroupSummaryTable = function() {
-
             table <- self$results$groupSummary
             data <- self$data
             bs <- self$options$bs
@@ -753,12 +733,12 @@ anovaRMClass <- R6::R6Class(
         },
 
         #### Plot functions ----
-        .prepareQQPlot = function(model) {
+        .prepareQQPlot = function() {
             image <- self$results$assump$qq
 
             suppressMessages({
                 suppressWarnings({
-                    residuals <- scale(residuals(model))
+                    residuals <- scale(residuals(self$model))
                 })
             })
 
@@ -780,8 +760,7 @@ anovaRMClass <- R6::R6Class(
 
             return(p)
         },
-        .prepareEmmPlots = function(model, data) {
-
+        .prepareEmmPlots = function() {
             emMeans <- self$options$emMeans
 
             group <- self$results$emm
@@ -807,7 +786,7 @@ anovaRMClass <- R6::R6Class(
                         emmeans::emm_options(sep = ",", parens = "a^")
 
                         mm <- try(
-                            emmeans::emmeans(model, formula, options=list(level=self$options$ciWidthEmm / 100),
+                            emmeans::emmeans(self$model, formula, options=list(level=self$options$ciWidthEmm / 100),
                                              weights = weights, model = "multivariate"),
                             silent = TRUE
                         )
@@ -829,7 +808,7 @@ anovaRMClass <- R6::R6Class(
                     labels <- list('x'=term[1], 'y'=self$options$depLabel, 'lines'=term[2], 'plots'=term[3])
                     labels <- lapply(labels, function(x) if (is.na(x)) NULL else x)
 
-                    dataNew <- lapply(data, function(x) {
+                    dataNew <- lapply(self$dataProcessed, function(x) {
                         if (is.factor(x))
                             levels(x) <- jmvcore::fromB64(levels(x))
                         return(x)
@@ -914,7 +893,7 @@ anovaRMClass <- R6::R6Class(
             return(p)
         },
 
-        #### Helper functions ----
+        #### Helper methods ----
         .dataCheck=function() {
             data <- self$data
 
@@ -1113,7 +1092,7 @@ anovaRMClass <- R6::R6Class(
             allItems <- composeTerms(allTerms)
             mainTerm <- paste0('(', paste0(allItems, collapse = ' + '), ')')
 
-            if (length(self$options$bsTerms) == 0) {
+            if (length(self$bsTerms) == 0) {
                 formula <- as.formula(paste(toB64('.DEPENDENT'), '~', paste(mainTerm, rmTerm, sep=' + ')))
             } else {
                 formula <- as.formula(paste(toB64('.DEPENDENT'), '~', paste(mainTerm, rmTerm, bsTerm, sep=' + ')))
@@ -1166,15 +1145,15 @@ anovaRMClass <- R6::R6Class(
 
             terms <- c(rmTerms, bsTerms)
 
-            modelRows <- jmvcore::decomposeTerms(as.list(rownames(model)))
+            modelRows <- jmvcore::decomposeTerms(as.list(model$term))
 
-            termSSt <- sum(model[-1, 'Sum Sq'])
+            termSSt <- sum(model[-1, 'ss'])
 
             errorSSt <- 0
             for (i in seq_along(terms)) {
                 for (j in seq_along(modelRows)) {
                     if (all(terms[[i]] %in% modelRows[[j]]) && length(terms[[i]]) == length(modelRows[[j]])) {
-                        errorSSt <- errorSSt + model[j, 'Error SS']
+                        errorSSt <- errorSSt + model[j, 'ss_error']
                         break
                     }
                 }
@@ -1183,6 +1162,9 @@ anovaRMClass <- R6::R6Class(
             SSt <- termSSt + errorSSt
 
             return(SSt)
+        },
+        .findModelRowIndex = function(row, modelRows) {
+            return(which(sapply(modelRows, function(x) setequal(toB64(row), x))))
         },
         .sourcifyOption = function(option) {
             name <- option$name
@@ -1196,3 +1178,206 @@ anovaRMClass <- R6::R6Class(
             super$.sourcifyOption(option)
         })
 )
+
+
+#### Helper functions ----
+
+#' Calculate the Greenhouse-Geisser correction for repeated measures ANOVA
+#'
+#' @param SSPE A matrix representing the sum of squares for the pure error
+#' @param P The design matrix for the effect
+#' @return A numeric value representing the Greenhouse-Geisser correction factor
+#' @keywords internal
+calcGG <- function(SSPE, P) {
+    # Number of levels in the within-subjects factor
+    p <- nrow(SSPE)
+
+    # If there's only one level, no correction is needed; return 1
+    if (p < 2)
+        return(1)
+
+    # Calculate the eigenvalues of the product of SSPE and the inverse of P'P
+    lambda <- eigen(SSPE %*% solve(t(P) %*% P))$values
+
+    # Consider only positive eigenvalues
+    lambda <- lambda[lambda > 0]
+
+    # Calculate the Greenhouse-Geisser correction factor
+    GG_correction <- ((sum(lambda) / p)^2) / (sum(lambda^2) / p)
+
+    return(GG_correction)
+}
+
+
+#' Calculate the Huynh-Feldt correction for repeated measures ANOVA
+#'
+#' @param gg The Greenhouse-Geisser correction
+#' @param error.df The degrees of freedom for the error term
+#' @param p The number of levels in the repeated measures factor
+#' @return A numeric value representing the Huynh-Feldt correction
+#' @keywords internal
+calcHF <- function(gg, error.df, p) { # Huynh-Feldt correction
+    HF_correction <- ((error.df + 1) * p * gg - 2)/(p * (error.df - p * gg))
+
+    if (HF_correction > 1)
+        return(1)
+
+    return(HF_correction)
+}
+
+#' Perform Mauchly's Test of Sphericity
+#'
+#' @param SSD A matrix representing the Sum of Squares and Cross-Products for the Differences
+#' @param P The design matrix for the effect
+#' @param df Numeric value representing the degrees of freedom for error
+#' @return A named numeric vector with the Mauchly's test statistic (W) and the p-value
+#' @keywords internal
+calcMauchlyTest <- function(SSD, P, df) {
+    if (nrow(SSD) < 2)
+        return(list(statistic = 1, p = NaN))
+
+    Tr <- function(X) sum(diag(X))
+    p <- nrow(P)
+    I <- diag(p)
+    Psi <- t(P) %*% I %*% P
+    B <- SSD
+    pp <- nrow(SSD)
+    U <- solve(Psi, B)
+    n <- df
+    logW <- log(det(U)) - pp * log(Tr(U/pp))
+    rho <- 1 - (2 * pp^2 + pp + 2)/(6 * pp * n)
+    w2 <- (pp + 2) * (pp - 1) * (pp - 2) * (2 * pp^3 + 6 *
+                                                pp^2 + 3 * p + 2)/(288 * (n * pp * rho)^2)
+    z <- -n * rho * logW
+    f <- pp * (pp + 1)/2 - 1
+    Pr1 <- stats::pchisq(z, f, lower.tail = FALSE)
+    Pr2 <- stats::pchisq(z, f + 4, lower.tail = FALSE)
+    pval <- Pr1 + w2 * (Pr2 - Pr1)
+
+    # Return the test statistic and p-value
+    list(statistic = exp(logW), p = pval)
+}
+
+#' Calculate Univariate Tests for ANOVA
+#'
+#' @param SSP Sum of Squares and Products matrix for the term
+#' @param SSPE Sum of Squares and Products Error matrix
+#' @param P Design matrix for the term
+#' @param df Degrees of freedom for the term
+#' @param error_df Degrees of freedom for the error
+#' @return A named list containing univariate test results
+#' @keywords internal
+calcUnivariateTests <- function(SSP, SSPE, P, df, error_df) {
+    p <- ncol(P)
+    PtPinv <- solve(t(P) %*% P)
+
+    sum_sq <- sum(diag(SSP %*% PtPinv))
+    error_ss <- sum(diag(SSPE %*% PtPinv))
+    num_df <- df * p
+    den_df <- error_df * p
+
+    f_value <- (sum_sq / num_df) / (error_ss / den_df)
+    p_value <- stats::pf(f_value, num_df, den_df, lower.tail = FALSE)
+
+    list(
+        sum_sq = unname(sum_sq),
+        num_df = unname(num_df),
+        error_ss = unname(error_ss),
+        den_df = unname(den_df),
+        f_value = unname(f_value),
+        p_value = unname(p_value)
+    )
+}
+
+#' Summarize an Anova object from a repeated measures model into a single table
+#'
+#' @param object An Anova object from a repeated measures model
+#' @param aov_table The ANOVA table from the model containing the generalized eta squared
+#' @return A data frame containing all the relevant ANOVA statistics
+summarizeAnovaModel <- function(object, aov_table) {
+
+    terms <- object$terms
+    nTerms <- length(terms)
+
+    # Initialize a data frame to hold all the results
+    results <- data.frame(
+        term = character(nTerms),
+        ss = numeric(nTerms),
+        df = numeric(nTerms),
+        ss_error = numeric(nTerms),
+        df_error = numeric(nTerms),
+        f = numeric(nTerms),
+        p = numeric(nTerms),
+        ges = numeric(nTerms),
+        gg = numeric(nTerms),
+        hf = numeric(nTerms),
+        mauchly = numeric(nTerms),
+        p_mauchly = numeric(nTerms),
+        singular = logical(nTerms),
+        twoLevels = logical(nTerms),
+        stringsAsFactors = FALSE
+    )
+
+    for (i in seq_len(nTerms)) {
+        SSP <- object$SSP[[i]]
+        SSPE <- object$SSPE[[i]]
+        P <- object$P[[i]]
+        sing <- unname(object$singular[i])
+        error_df <- object$error.df
+        term <- terms[i]
+
+        # Calculate univariate test statistics
+        univ_test <- calcUnivariateTests(SSP, SSPE, P, object$df[i], error_df)
+
+        # Extract generalized eta squared
+        index <- which(rownames(aov_table) == term)
+        ges <- ifelse(length(index) > 0, aov_table[index, 'ges'], NA)
+
+        if (! sing) {
+            # Calculate Greenhouse-Geisser and Huynh-Feldt corrections
+            GG <- calcGG(SSPE, P)
+            HF <- calcHF(GG, error_df, ncol(P))
+            mauchly <- calcMauchlyTest(SSPE, P, error_df)
+
+            # Populate the results data frame
+            results[i, ] <- list(
+                term,
+                univ_test$sum_sq,
+                univ_test$num_df,
+                univ_test$error_ss,
+                univ_test$den_df,
+                univ_test$f_value,
+                univ_test$p_value,
+                ges,
+                GG,
+                HF,
+                mauchly$statistic,
+                mauchly$p,
+                sing,
+                nrow(SSPE) == 1
+            )
+        } else {
+            # If singular, populate with NA and mark Singular Fit as TRUE
+            results[i, ] <- list(
+                term,
+                univ_test$sum_sq,
+                univ_test$num_df,
+                univ_test$error_ss,
+                univ_test$den_df,
+                univ_test$f_value,
+                univ_test$p_value,
+                ges,
+                NaN,
+                NaN,
+                NaN,
+                NaN,
+                TRUE,
+                nrow(SSPE) == 1
+            )
+        }
+    }
+
+    return(results)
+}
+
+
