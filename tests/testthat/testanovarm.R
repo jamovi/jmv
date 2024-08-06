@@ -259,7 +259,8 @@ testthat::test_that('All options in the anovaRM work (sunny)', {
     testthat::expect_equal(c(0, 0, 0), groupSummaryTable[['ex']])
 })
 
-testthat::test_that("Test sphericity footnote when there's a singularity error", {
+testthat::test_that("No sphericity stats are given if singularity error", {
+    # GIVEN data with highly correlated variables
     data <- data.frame(
         'id' = 1:15,
         'x1' = c(4, 13, 15, 12, 12, 2, 19, 10, 22, 13, 10, 22, 10, 14, 22),
@@ -267,6 +268,7 @@ testthat::test_that("Test sphericity footnote when there's a singularity error",
         'x3' = c(51, 36, 22, 2, 16, 33, 33, 8, 41, 25, 24, 0, 22, 35, 26)
     )
 
+    # WHEN the analysis is run
     r <- jmv::anovaRM(
         data = data,
         rm = list(
@@ -284,10 +286,129 @@ testthat::test_that("Test sphericity footnote when there's a singularity error",
                 measure="x3",
                 cell="x3")),
         rmTerms = ~ var,
-        spherTests = TRUE)
+        spherCorr = c("none", "GG", "HF"),
+        spherTests = TRUE
+    )
 
-    spher <- r$assump$spherTable$asDF
-    testthat::expect_equal(spher$mauch, NaN)
+    # THEN the sphericity table should have a footnote about the singularity
+    spher <- r$assump$spherTable
+    testthat::expect_match(spher$footnotes, "singularity", ignore.case = TRUE)
+    # AND the statistics should all be NaN
+    testthat::expect_equal(NaN, spher$asDF[['mauch']])
+    testthat::expect_equal(NaN, spher$asDF[['p']])
+    testthat::expect_equal(NaN, spher$asDF[['gg']])
+    testthat::expect_equal(NaN, spher$asDF[['hf']])
+    # AND the sphericity corrections should be NaN in the main table
+    rmTable <- r$rmTable$asDF
+    testthat::expect_equal(NaN, rmTable[["df[GG]"]][1])
+    testthat::expect_equal(NaN, rmTable[["df[HF]"]][1])
+})
+
+testthat::test_that("Sphericity corrections are set to 1 for rm with only two levels", {
+    # GIVEN data with only two levels
+    data <- data.frame(
+        'id' = 1:15,
+        'x1' = c(4, 13, 15, 12, 12, 2, 19, 10, 22, 13, 10, 22, 10, 14, 22),
+        'x2' = c(55, 40, 26, 6, 20, 37, 37, 12, 45, 29, 28, 4, 26, 39, 30)
+    )
+
+    # WHEN the analysis is run
+    r <- jmv::anovaRM(
+        data = data,
+        rm = list(
+            list(
+                label="var",
+                levels=c("x1", "x2"))),
+        rmCells = list(
+            list(
+                measure="x1",
+                cell="x1"),
+            list(
+                measure="x2",
+                cell="x2")),
+        rmTerms = ~ var,
+        spherCorr = c("none", "GG", "HF"),
+        spherTests = TRUE
+    )
+
+    # THEN the sphericity table should have a footnote about that sphericty is always met
+    spher <- r$assump$spherTable
+    testthat::expect_match(spher$footnotes, "assumption of sphericity is always met", ignore.case = TRUE)
+    # AND the statistics should be 1
+    testthat::expect_equal(1, spher$asDF[['mauch']])
+    testthat::expect_equal(NaN, spher$asDF[['p']])
+    testthat::expect_equal(1, spher$asDF[['gg']])
+    testthat::expect_equal(1, spher$asDF[['hf']])
+})
+
+testthat::test_that("rm anova works for multiple rm vars", {
+    set.seed(1337)
+    N <- 100
+    data <- data.frame(
+        a_A = rnorm(N, 0, 1),
+        a_B = rnorm(N, 0, 1),
+        a_C = rnorm(N, 0, 1),
+        b_A = rnorm(N, 1, 1),
+        b_B = rnorm(N, 1, 1),
+        b_C = rnorm(N, 1, 1)
+    )
+
+    rm = list(
+        list(
+            label="rmVar1",
+            levels=c("a", "b")
+        ),
+        list(
+            label="rmVar2",
+            levels=c("A", "B", "C")
+        )
+    )
+
+    rmCells = list(
+        list(
+            measure="a_A",
+            cell=c("a", "A")
+        ),
+        list(
+            measure="a_B",
+            cell=c("a", "B")
+        ),
+        list(
+            measure="a_C",
+            cell=c("a", "C")
+        ),
+        list(
+            measure="b_A",
+            cell=c("b", "A")
+        ),
+        list(
+            measure="b_B",
+            cell=c("b", "B")
+        ),
+        list(
+            measure="b_C",
+            cell=c("b", "C")
+        )
+    )
+
+    r <- jmv::anovaRM(
+        data=data,
+        rm=rm,
+        rmCells=rmCells,
+        spherCorr = c("none", "GG", "HF"),
+        spherTests = TRUE
+    )
+
+    # Test rm table
+    rmTable <- r$rmTable$asDF
+    testthat::expect_equal(rmTable[5, "ms[none]"], 3.8364, tolerance = 1e-4)
+
+    # Test sphericity table
+    spherTable <- r$assump$spherTable$asDF
+    testthat::expect_equal(spherTable[3, "mauch"], 0.9790, tolerance = 1e-4)
+    testthat::expect_equal(spherTable[3, "p"], 0.3536, tolerance = 1e-4)
+    testthat::expect_equal(spherTable[3, "gg"], 0.9794, tolerance = 1e-4)
+    testthat::expect_equal(spherTable[3, "hf"], 0.9990, tolerance = 1e-4)
 })
 
 testthat::test_that('emmeans work for unbalanced data', {
