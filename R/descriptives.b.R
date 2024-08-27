@@ -435,6 +435,7 @@ descriptivesClass <- R6::R6Class(
                             options = self$options,
                             name = "hist",
                             renderFun = ".histogram",
+                            requiresData = TRUE,
                             width = size[1],
                             height = size[2],
                             clearWith = list("splitBy", "hist", "dens")
@@ -450,6 +451,7 @@ descriptivesClass <- R6::R6Class(
                             options = self$options,
                             name = "box",
                             renderFun = ".boxPlot",
+                            requiresData = TRUE,
                             width = size[1],
                             height = size[2],
                             clearWith = list("splitBy", "box", "violin", "dot", "dotType", "boxMean", "boxLabelOutliers")
@@ -824,11 +826,9 @@ descriptivesClass <- R6::R6Class(
                     type <- `if`(is.factor(column), 'categorical', 'continuous')
 
                     bar$setState(list(data=plotData, names=names, labels=labels, type=type))
-
                 }
 
                 if (jmvcore::canBeNumeric(column)) {
-
                     hist  <- group$get('hist')
                     box   <- group$get('box')
                     qq    <- group$get('qq')
@@ -843,12 +843,7 @@ descriptivesClass <- R6::R6Class(
                         self$options$violin ||
                         self$options$dot
                     ) {
-
                         if (length(na.omit(column)) > 0) {
-                            columns <- na.omit(c(var, splitBy[1:3]))
-                            plotData <- naOmit(data[columns])
-                            plotData[[var]] <- jmvcore::toNumeric(plotData[[var]])
-
                             if (length(splitBy) >= 3) {
                                 names <- list("x"="x", "s1"="s1", "s2"="s2", "s3"="s3")
                                 labels <- list("x"=var, "s1"=splitBy[1], "s2"=splitBy[2], "s3"=splitBy[3])
@@ -864,18 +859,15 @@ descriptivesClass <- R6::R6Class(
                             }
 
                         } else {
-                            plotData <- data.frame(x=numeric())
                             names <- list("x"="x", "s1"=NULL, "s2"=NULL, "s3"=NULL)
                             labels <- list("x"=var, "s1"=NULL, "s2"=NULL, "s3"=NULL)
                         }
 
-                        colnames(plotData) <- as.character(unlist(names))
-
                         if (self$options$hist || self$options$dens)
-                            hist$setState(list(data=plotData, names=names, labels=labels))
+                            hist$setState(list(var=var, names=names, labels=labels))
 
                         if (self$options$box || self$options$violin || self$options$dot)
-                            box$setState(list(data=plotData, names=names, labels=labels))
+                            box$setState(list(var=var, names=names, labels=labels))
                     }
                 }
             }
@@ -942,10 +934,21 @@ descriptivesClass <- R6::R6Class(
             if (is.null(image$state))
                 return(FALSE)
 
-            data <- image$state$data
             names <- image$state$names
             labels <- image$state$labels
             splitBy <- self$options$splitBy
+            var <- image$state$var
+
+            data <- self$data
+            column <- data[[var]]
+            if (length(na.omit(column)) > 0) {
+                columns <- na.omit(c(var, splitBy[1:3]))
+                data <- naOmit(data[columns])
+                data[[var]] <- jmvcore::toNumeric(data[[var]])
+            } else {
+                data <- data.frame(x=numeric())
+            }
+            colnames(data) <- as.character(unlist(names))
 
             if (self$options$hist && self$options$dens)
                 alpha <- 0.4
@@ -1131,11 +1134,22 @@ descriptivesClass <- R6::R6Class(
             if (is.null(image$state))
                 return(FALSE)
 
-            data <- image$state$data
             type <- image$state$type
             names <- image$state$names
             labels <- image$state$labels
             splitBy <- self$options$splitBy
+            var <- image$state$var
+
+            data <- self$data
+            column <- data[[var]]
+            if (length(na.omit(column)) > 0) {
+                columns <- na.omit(c(var, splitBy[1:3]))
+                data <- naOmit(data[columns])
+                data[[var]] <- jmvcore::toNumeric(data[[var]])
+            } else {
+                data <- data.frame(x=numeric())
+            }
+            colnames(data) <- as.character(unlist(names))
 
             fill <- theme$fill[2]
             color <- theme$color[2]
