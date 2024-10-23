@@ -59,6 +59,12 @@ linRegClass <- R6::R6Class(
 
             return(private$.cooks)
         },
+        mahal = function() {
+            if (is.null(private$.mahal))
+                private$.mahal <- private$.computeMahal()
+
+            return(private$.mahal)
+        },
         anovaModelComparison = function() {
             if (is.null(private$.anovaModelComparison))
                 private$.anovaModelComparison <- do.call(stats::anova, self$models)
@@ -140,6 +146,7 @@ linRegClass <- R6::R6Class(
         .fitted = NULL,
         .predicted = NULL,
         .cooks = NULL,
+        .mahal = NULL,
         .anovaModelComparison = NULL,
         .anovaModelTerms = NULL,
         .AIC = NULL,
@@ -177,6 +184,7 @@ linRegClass <- R6::R6Class(
             private$.populateCoefTables()
 
             private$.populateCooksTable()
+            private$.populateMahalTable()
             private$.populateDurbinWatsonTable()
             private$.populateCollinearityTable()
             private$.populateNormality()
@@ -284,6 +292,27 @@ linRegClass <- R6::R6Class(
             }
 
             return(cooksSummary)
+        },
+        .computeMahal = function() {
+            mahal2List <- function(data = NULL, dep = c()) {
+                ndep <- length(dep)
+                # skip if number of variables less than 2
+                if (ndep >= 2) {
+                    mahalChiSq <- stats::mahalanobis(data[, dep], colMeans(data[, dep]), cov(data[, dep]))
+                    return(data.frame(row = row.names(data), chisq = mahalChiSq, p = pchisq(mahalChiSq, ndep, lower.tail = FALSE)))
+                } else {
+                    return(NULL)
+                }
+            }
+
+            mahal <- list()
+            data <- private$.cleanData(naSkip=jmvcore::toB64(self$options$dep))
+            for (i in seq_along(self$models))
+                mahal[[i]] <- mahal2List(data, attr(self$models[[i]]$terms, "term.labels"))
+            
+            mahal[[i + 1]] <- mahal2List(data, names(data))
+
+            return(mahal)
         },
         .computeAIC = function() {
             AIC <- list()
@@ -654,6 +683,13 @@ linRegClass <- R6::R6Class(
                 descriptions <- vapply(keys, function(key) description(.("Cook's distance"), key), '')
                 self$results$cooksOV$set(keys, titles, descriptions, measureTypes)
             }
+
+            titles <- vapply(c("ChiSq", "p"), function(name) title(.("Mahalanobis"), name), '')
+            descriptions <- vapply(c("Chi Sq.", "p"), function(s)
+                                   jmvcore::format(.("Mahalanobis distance ({stat}) for the variables in “Covariates”"), stat = s),
+                                   ''
+                                  )
+            self$results$mahalOV$set(seq(2), titles, descriptions, rep('continuous', 2))
         },
 
         #### Populate tables functions ----
@@ -850,6 +886,37 @@ linRegClass <- R6::R6Class(
                 table$setRow(rowNo=1, values=cooks[[i]])
             }
         },
+        .populateMahalTable = function() {
+            if (!self$options$mahal)
+                return()
+
+            mahal <- self$mahal
+            mahalp <- as.numeric(self$options$mahalp)
+            groups <- self$results$models
+            termsAll <- private$.getModelTerms()
+
+            for (i in seq_along(termsAll)) {
+                table <- groups$get(key=i)$dataSummary$mahal
+                if (is.null(mahal[[i]])) {
+                    table$setNote("row", .("Mahalanobis distance can only be calculated for models with two or more dependent variables."))
+                } else if (all(mahal[[i]]$p <= mahalp)) {
+                    table$setNote(
+                        "row", 
+                        jmvcore::format(.("There were no Mahalanobis distances with a threshold below p < {p}."), mahalp)
+                    )
+                } else {
+                    # select values below p-threshold (outliers)
+                    selRow <- which(mahal[[i]]$p <= mahalp)
+                    for (j in selRow)
+                        table$addRow(rowKey = j, values = mahal[[i]][j, ])
+                    table$setNote(
+                        "row",
+                        jmvcore::format(.("Filter syntax: {filter}"),
+                            filter = paste(paste0("ROW() != ", mahal[[i]][selRow, "row"]), collapse = " and "))
+                    )
+                }
+            }
+        },
         .populateDurbinWatsonTable = function() {
             if (! self$options$durbin)
                 return()
@@ -1019,6 +1086,13 @@ linRegClass <- R6::R6Class(
                 self$results$cooksOV$setRowNums(private$.getDataRowNums())
                 for (i in seq_along(self$cooks))
                     self$results$cooksOV$setValues(index=i, self$cooks[[i]])
+            }
+
+            if (self$options$mahalOV && self$results$mahalOV$isNotFilled()) {
+                mahal <- self$mahal[[length(self$mahal)]]
+                self$results$mahalOV$setRowNums(mahal$row)
+                self$results$mahalOV$setValues(index=1, mahal$chisq)
+                self$results$mahalOV$setValues(index=2, mahal$p)
             }
         },
 

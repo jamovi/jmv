@@ -270,6 +270,29 @@ items:
                       type: number
                       superTitle: Range
 
+                - name: mahal
+                  title: Mahalanobis Distance
+                  type: Table
+                  visible: (mahal)
+                  clearWith:
+                    - dep
+                    - blocks
+                    - weights
+
+                  columns:
+                    - name: row
+                      title: Row
+                      type: number
+
+                    - name: chisq
+                      title: Statistics
+                      type: number
+
+                    - name: p
+                      title: p
+                      type: number
+                      format: zto,pvalue
+
             - name: assump
               title: Assumption Checks
               type: Group
@@ -447,6 +470,17 @@ items:
       title: Cook's Distance
       varTitle: Cook's distance
       varDescription: Cook's distance of linear regression
+      measureType: continuous
+      clearWith:
+        - dep
+        - blocks
+        - weights
+
+    - name: mahalOV
+      type: Output
+      title: Mahalanobis Distance
+      varTitle: Mahalanobis
+      varDescription: Mahalanobis distance (statistic and p-value) of the independent variables
       measureType: continuous
       clearWith:
         - dep

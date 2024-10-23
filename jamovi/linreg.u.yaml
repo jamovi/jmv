@@ -166,6 +166,14 @@ children:
                 children:
                   - type: CheckBox
                     name: cooks
+                  - type: CheckBox
+                    name: mahal
+                    children:
+                      - type: ComboBox
+                        name: mahalp
+                        label: "p < "
+                        enable: (mahal)
+                
   - type: CollapseBox
     label: Model Fit
     collapsed: true
