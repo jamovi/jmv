@@ -4,7 +4,7 @@ jus: '2.0'
 stage: 0
 compilerMode: tame
 events:
-  update: './linreg.events::update'
+  update: ./linreg.events::update
 children:
   - type: VariableSupplier
     stretchFactor: 1
@@ -16,7 +16,7 @@ children:
             isTarget: true
             maxItemCount: 1
             events:
-              change: './linreg.events::onChange_dep'
+              change: ./linreg.events::onChange_dep
       - type: TargetLayoutBox
         label: Covariates
         children:
@@ -24,7 +24,7 @@ children:
             name: covs
             isTarget: true
             events:
-              change: './linreg.events::onChange_covs'
+              change: ./linreg.events::onChange_covs
       - type: TargetLayoutBox
         label: Factors
         children:
@@ -32,7 +32,7 @@ children:
             name: factors
             isTarget: true
             events:
-              change: './linreg.events::onChange_factors'
+              change: ./linreg.events::onChange_factors
       - type: TargetLayoutBox
         children:
           - type: VariablesListBox
@@ -51,7 +51,7 @@ children:
         stretchFactor: 1
         format: term
         events:
-          update: './linreg.events::onUpdate_modelSupplier'
+          update: ./linreg.events::onUpdate_modelSupplier
         children:
           - type: TargetLayoutBox
             transferAction: interactions
@@ -61,9 +61,9 @@ children:
                 height: normal
                 addButton: Add New Block
                 events:
-                  change: './linreg.events::onChange_blocks'
-                  listItemAdded: './linreg.events::onEvent_test_listItemsChanged'
-                  listItemRemoved: './linreg.events::onEvent_test_listItemsChanged'
+                  change: ./linreg.events::onChange_blocks
+                  listItemAdded: ./linreg.events::onEvent_test_listItemsChanged
+                  listItemRemoved: ./linreg.events::onEvent_test_listItemsChanged
                 selectable: true
                 templateName: linreg-block-template
                 template:
@@ -83,7 +83,7 @@ children:
                       height: auto
                       ghostText: drag variables here
                       events:
-                        change: './linreg.events::onChange_block'
+                        change: ./linreg.events::onChange_block
                       template:
                         type: TermLabel
   - type: CollapseBox
@@ -98,7 +98,7 @@ children:
         stretchFactor: 1
         height: large
         events:
-          change: './linreg.events::onChange_refLevels'
+          change: ./linreg.events::onChange_refLevels
         columns:
           - name: var
             label: Variable
@@ -166,6 +166,13 @@ children:
                 children:
                   - type: CheckBox
                     name: cooks
+                  - type: CheckBox
+                    name: mahal
+                    children:
+                      - type: ComboBox
+                        name: mahalp
+                        label: 'p < '
+                        enable: (mahal)
   - type: CollapseBox
     label: Model Fit
     collapsed: true
@@ -275,8 +282,8 @@ children:
             persistentItems: true
             stretchFactor: 1
             events:
-              change: './linreg.events::onChange_emMeansSupplier'
-              update: './linreg.events::onUpdate_emMeansSupplier'
+              change: ./linreg.events::onChange_emMeansSupplier
+              update: ./linreg.events::onUpdate_emMeansSupplier
             children:
               - type: TargetLayoutBox
                 children:
@@ -285,8 +292,8 @@ children:
                     height: large
                     addButton: Add New Term
                     events:
-                      listItemAdded: './linreg.events::onEvent_emMeans_listItemsChanged'
-                      listItemRemoved: './linreg.events::onEvent_emMeans_listItemsChanged'
+                      listItemAdded: ./linreg.events::onEvent_emMeans_listItemsChanged
+                      listItemRemoved: ./linreg.events::onEvent_emMeans_listItemsChanged
                     selectable: true
                     templateName: linreg-block-template
                     template:
@@ -358,3 +365,5 @@ children:
             name: residsOV
           - type: Output
             name: cooksOV
+          - type: Output
+            name: mahalOV

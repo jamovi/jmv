@@ -38,6 +38,7 @@ testthat::test_that('All options in the linreg work (sunny)', {
         durbin = TRUE,
         collin = TRUE,
         cooks = TRUE,
+        mahal = TRUE,
         emMeans = ~ `cov 1` + `cov 2` + `facto r`,
         emmPlots = FALSE,
         emmTables = TRUE
@@ -106,6 +107,15 @@ testthat::test_that('All options in the linreg work (sunny)', {
     testthat::expect_equal(0.014, cooksTable[['sd']], tolerance = 1e-3)
     testthat::expect_equal(0, cooksTable[['min']], tolerance = 1e-3)
     testthat::expect_equal(0.107, cooksTable[['max']], tolerance = 1e-3)
+
+    # Test Mahalanobis distance summary table
+    mahalTable <- r$models[[1]]$dataSummary$mahal$asDF
+    testthat::expect_equal(1.98,  mahalTable[['mean']], tolerance = 1e-3)
+    testthat::expect_equal(1.269, mahalTable[['median']], tolerance = 1e-3)
+    testthat::expect_equal(2.329, mahalTable[['sd']], tolerance = 1e-3)
+    testthat::expect_equal(0.019, mahalTable[['min']], tolerance = 1e-3)
+    testthat::expect_equal(13.349, mahalTable[['max']], tolerance = 1e-3)
+    testthat::expect_equal(NA, mahalTable[['excRow']])
 
     # Test Durbin-Watson autocorrelation test table
     durbinTable <- r$models[[1]]$assump$durbin$asDF
@@ -306,6 +316,47 @@ testthat::test_that('Cooks summary in linreg works', {
     testthat::expect_equal(0.0188, cooksTable$sd, tolerance = 1e-4)
     testthat::expect_equal(0.0000, cooksTable$min, tolerance = 1e-4)
     testthat::expect_equal(0.0966, cooksTable$max, tolerance = 1e-4)
+})
+
+testthat::test_that('Mahalanobis summary in linreg works', {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(100)
+    intercept <- rnorm(100) + 1
+    a <- rcauchy(100) * 2.5
+    b <- rcauchy(100) * .5
+    c <- rcauchy(100) * .1
+
+    y <- intercept + a + b + c
+
+    data <- list()
+    data[["dep"]] <- y
+    data[["var1"]] <- a
+    data[["var 2"]] <- b
+    data[["var3"]] <- c
+
+    attr(data, 'row.names') <- seq_len(length(data[[1]]))
+    attr(data, 'class') <- 'data.frame'
+
+    dep <- "dep"
+    covs <- c("var1", "var 2", "var3")
+    blocks = list(list("var1", "var 2", "var3"))
+
+    linreg <- jmv::linReg(
+        data,
+        dep=!!dep,
+        covs=!!covs,
+        blocks=blocks,
+        mahal=TRUE
+    )
+
+    mahalTable <- linreg$models[[1]]$dataSummary$mahal$asDF
+
+    testthat::expect_equal(2.97, mahalTable$mean, tolerance = 1e-4)
+    testthat::expect_equal(0.2979, mahalTable$median, tolerance = 1e-4)
+    testthat::expect_equal(9.0241, mahalTable$sd, tolerance = 1e-4)
+    testthat::expect_equal(0.0021, mahalTable$min, tolerance = 1e-4)
+    testthat::expect_equal(55.1080, mahalTable$max, tolerance = 1e-4)
+    testthat::expect_equal("14, 26, 29, 77", mahalTable$excRow)
 })
 
 testthat::test_that('emmeans table in linreg works with covariate with only two unique values', {
