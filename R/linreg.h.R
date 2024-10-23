@@ -33,6 +33,8 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             durbin = FALSE,
             collin = FALSE,
             cooks = FALSE,
+            mahal = FALSE,
+            mahalp = "0.001",
             emMeans = list(
                 list()),
             ciEmm = TRUE,
@@ -190,6 +192,18 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "cooks",
                 cooks,
                 default=FALSE)
+            private$..mahal <- jmvcore::OptionBool$new(
+                "mahal",
+                mahal,
+                default=FALSE)
+            private$..mahalp <- jmvcore::OptionList$new(
+                "mahalp",
+                mahalp,
+                options=list(
+                    "0.05",
+                    "0.01",
+                    "0.001"),
+                default="0.001")
             private$..emMeans <- jmvcore::OptionArray$new(
                 "emMeans",
                 emMeans,
@@ -593,7 +607,8 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                             self$add(R6::R6Class(
                                 inherit = jmvcore::Group,
                                 active = list(
-                                    cooks = function() private$.items[["cooks"]]),
+                                    cooks = function() private$.items[["cooks"]],
+                                    mahal = function() private$.items[["mahal"]]),
                                 private = list(),
                                 public=list(
                                     initialize=function(options) {
@@ -634,6 +649,29 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                                     `title`="Max", 
                                                     `type`="number", 
                                                     `superTitle`="Range"))))}))$new(options=options))
+                                        self$add(jmvcore::Table$new(
+                                            options=options,
+                                            name="mahal",
+                                            title="Mahalanobis Distance",
+                                            visible="(mahal)",
+                                            clearWith=list(
+                                                "dep",
+                                                "blocks",
+                                                "weights"),
+                                            columns=list(
+                                                list(
+                                                    `name`="row", 
+                                                    `title`="Row", 
+                                                    `type`="number"),
+                                                list(
+                                                    `name`="chisq", 
+                                                    `title`="Statistics", 
+                                                    `type`="number"),
+                                                list(
+                                                    `name`="p", 
+                                                    `title`="p", 
+                                                    `type`="number", 
+                                                    `format`="zto,pvalue"))))}))$new(options=options))
                             self$add(R6::R6Class(
                                 inherit = jmvcore::Group,
                                 active = list(
@@ -830,6 +868,16 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 clearWith=list(
                     "dep",
                     "blocks",
+                    "weights")))
+            self$add(jmvcore::Output$new(
+                options=options,
+                name="mahalOV",
+                title="Mahalanobis Distance",
+                varTitle="Mahalanobis",
+                varDescription="Mahalanobis distance (statistic and p-value) of the independent variables",
+                measureType="continuous",
+                clearWith=list(
+                    "dep",
                     "weights")))}))
 
 linRegBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -949,6 +997,11 @@ linRegBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   tolerence collinearity statistics
 #' @param cooks \code{TRUE} or \code{FALSE} (default), provide summary
 #'   statistics for the Cook's distance
+#' @param mahal \code{TRUE} or \code{FALSE} (default), provide a summary table
+#'   reporting (significant) Mahalanobis distances
+#' @param mahalp \code{'0.05'}, \code{'0.01'} or \code{'0.001'} (default),
+#'   p-threshold to be used for selecting entries in the summary table that
+#'   reports Mahalanobis distances that are significant at that p-threshold
 #' @param emMeans a formula containing the terms to estimate marginal means
 #'   for, supports up to three variables per term
 #' @param ciEmm \code{TRUE} (default) or \code{FALSE}, provide a confidence
@@ -1007,6 +1060,8 @@ linReg <- function(
     durbin = FALSE,
     collin = FALSE,
     cooks = FALSE,
+    mahal = FALSE,
+    mahalp = "0.001",
     emMeans = list(
                 list()),
     ciEmm = TRUE,
@@ -1075,4 +1130,3 @@ linReg <- function(
 
     analysis$results
 }
-
