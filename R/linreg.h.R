@@ -240,6 +240,8 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "residsOV")
             private$..cooksOV <- jmvcore::OptionOutput$new(
                 "cooksOV")
+            private$..mahalOV <- jmvcore::OptionOutput$new(
+                "mahalOV")
 
             self$.addOption(private$..dep)
             self$.addOption(private$..covs)
@@ -267,6 +269,8 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..durbin)
             self$.addOption(private$..collin)
             self$.addOption(private$..cooks)
+            self$.addOption(private$..mahal)
+            self$.addOption(private$..mahalp)
             self$.addOption(private$..emMeans)
             self$.addOption(private$..ciEmm)
             self$.addOption(private$..ciWidthEmm)
@@ -276,6 +280,7 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..predictOV)
             self$.addOption(private$..residsOV)
             self$.addOption(private$..cooksOV)
+            self$.addOption(private$..mahalOV)
         }),
     active = list(
         dep = function() private$..dep$value,
@@ -304,6 +309,8 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         durbin = function() private$..durbin$value,
         collin = function() private$..collin$value,
         cooks = function() private$..cooks$value,
+        mahal = function() private$..mahal$value,
+        mahalp = function() private$..mahalp$value,
         emMeans = function() private$..emMeans$value,
         ciEmm = function() private$..ciEmm$value,
         ciWidthEmm = function() private$..ciWidthEmm$value,
@@ -312,7 +319,8 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         emmWeights = function() private$..emmWeights$value,
         predictOV = function() private$..predictOV$value,
         residsOV = function() private$..residsOV$value,
-        cooksOV = function() private$..cooksOV$value),
+        cooksOV = function() private$..cooksOV$value,
+        mahalOV = function() private$..mahalOV$value),
     private = list(
         ..dep = NA,
         ..covs = NA,
@@ -340,6 +348,8 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..durbin = NA,
         ..collin = NA,
         ..cooks = NA,
+        ..mahal = NA,
+        ..mahalp = NA,
         ..emMeans = NA,
         ..ciEmm = NA,
         ..ciWidthEmm = NA,
@@ -348,7 +358,8 @@ linRegOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..emmWeights = NA,
         ..predictOV = NA,
         ..residsOV = NA,
-        ..cooksOV = NA)
+        ..cooksOV = NA,
+        ..mahalOV = NA)
 )
 
 linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -360,7 +371,8 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         models = function() private$.items[["models"]],
         predictOV = function() private$.items[["predictOV"]],
         residsOV = function() private$.items[["residsOV"]],
-        cooksOV = function() private$.items[["cooksOV"]]),
+        cooksOV = function() private$.items[["cooksOV"]],
+        mahalOV = function() private$.items[["mahalOV"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -648,7 +660,7 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                                     `name`="max", 
                                                     `title`="Max", 
                                                     `type`="number", 
-                                                    `superTitle`="Range"))))}))$new(options=options))
+                                                    `superTitle`="Range"))))
                                         self$add(jmvcore::Table$new(
                                             options=options,
                                             name="mahal",
@@ -878,6 +890,7 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 measureType="continuous",
                 clearWith=list(
                     "dep",
+                    "blocks",
                     "weights")))}))
 
 linRegBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -1022,6 +1035,7 @@ linRegBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   \code{results$predictOV} \tab \tab \tab \tab \tab an output \cr
 #'   \code{results$residsOV} \tab \tab \tab \tab \tab an output \cr
 #'   \code{results$cooksOV} \tab \tab \tab \tab \tab an output \cr
+#'   \code{results$mahalOV} \tab \tab \tab \tab \tab an output \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -1115,6 +1129,8 @@ linReg <- function(
         durbin = durbin,
         collin = collin,
         cooks = cooks,
+        mahal = mahal,
+        mahalp = mahalp,
         emMeans = emMeans,
         ciEmm = ciEmm,
         ciWidthEmm = ciWidthEmm,
@@ -1130,3 +1146,4 @@ linReg <- function(
 
     analysis$results
 }
+
