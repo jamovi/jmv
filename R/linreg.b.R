@@ -310,7 +310,7 @@ linRegClass <- R6::R6Class(
             for (i in seq_along(self$models))
                 mahal[[i]] <- mahal2List(data, attr(self$models[[i]]$terms, "term.labels"))
             
-            mahal[[i + 1]] <- mahal2List(data, names(data))
+            mahal[[i + 1]] <- mahal2List(data, jmvcore::toB64(self$options$dep))
 
             return(mahal)
         },
