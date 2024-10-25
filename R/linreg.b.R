@@ -686,7 +686,7 @@ linRegClass <- R6::R6Class(
 
             titles <- vapply(c("ChiSq", "p"), function(name) title(.("Mahalanobis"), name), '')
             descriptions <- vapply(c("Chi Sq.", "p"), function(s)
-                                   jmvcore::format(.("Mahalanobis distance ({stat}) for the variables in “Covariates”"), stat = s),
+                                   jmvcore::format(.("Mahalanobis distance ({stat}) for the variables in \"Covariates\""), stat = s),
                                    ''
                                   )
             self$results$mahalOV$set(seq(2), titles, descriptions, rep('continuous', 2))
