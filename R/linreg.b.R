@@ -294,23 +294,16 @@ linRegClass <- R6::R6Class(
             return(cooksSummary)
         },
         .computeMahal = function() {
-            mahal2List <- function(data = NULL, dep = c()) {
-                ndep <- length(dep)
-                # skip if number of variables less than 2
-                if (ndep >= 2) {
-                    mahalChiSq <- stats::mahalanobis(data[, dep], colMeans(data[, dep]), cov(data[, dep]))
-                    return(data.frame(row = row.names(data), chisq = mahalChiSq, p = pchisq(mahalChiSq, ndep, lower.tail = FALSE)))
-                } else {
-                    return(NULL)
-                }
-            }
-
             mahal <- list()
             data <- private$.cleanData(naSkip=jmvcore::toB64(self$options$dep))
-            for (i in seq_along(self$models))
-                mahal[[i]] <- mahal2List(data, attr(self$models[[i]]$terms, "term.labels"))
-            
-            mahal[[i + 1]] <- mahal2List(data, jmvcore::toB64(self$options$dep))
+            for (i in seq_along(self$models)) {
+                cov <- attr(self$models[[i]]$terms, "term.labels")
+                # skip if number of variables less than 2
+                if (length(cov) >= 2) {
+                    mahalChiSq <- stats::mahalanobis(data[, cov], colMeans(data[, cov]), cov(data[, cov]))
+                    mahal[[i]] <- data.frame(row = row.names(data), chisq = mahalChiSq, p = pchisq(mahalChiSq, length(cov), lower.tail = FALSE))
+                }
+            }
 
             return(mahal)
         },
@@ -682,14 +675,18 @@ linRegClass <- R6::R6Class(
                 titles <- vapply(keys, function(key) title(.("Cook's distance"), key), '')
                 descriptions <- vapply(keys, function(key) description(.("Cook's distance"), key), '')
                 self$results$cooksOV$set(keys, titles, descriptions, measureTypes)
-            }
 
-            titles <- vapply(c("ChiSq", "p"), function(name) title(.("Mahalanobis"), name), '')
-            descriptions <- vapply(c("Chi Sq.", "p"), function(s)
-                                   jmvcore::format(.("Mahalanobis distance ({stat}) for the variables in \"Covariates\""), stat = s),
-                                   ''
-                                  )
-            self$results$mahalOV$set(seq(2), titles, descriptions, rep('continuous', 2))
+                titles <- c(vapply(keys, function(key) title(.("Mahalanobis ChiSq"), key), ''),
+                            vapply(keys, function(key) title(.("Mahalanobis p"),     key), ''))
+                descriptions <- c(vapply(keys, function(key) description(.("Mahalanobis distance (Chi sq.)"), key), ''),
+                                  vapply(keys, function(key) description(.("Mahalanobis distance (p)"),       key), ''))
+                order <- as.vector(vapply(seq(self$nModels), function(p) c(p, p + self$nModels), numeric(2)))
+                self$results$mahalOV$set(seq(2 * self$nModels), titles[order], descriptions[order], rep(measureTypes, 2))
+            } else {
+                titles <- c(title(.("Mahalanobis ChiSq")), title(.("Mahalanobis p")))
+                descriptions <- c(description(.("Mahalanobis distance (Chi sq.)")), description(.("Mahalanobis distance (p)")))
+                self$results$mahalOV$set(seq(2), titles, descriptions, rep('continuous', 2))
+            }
         },
 
         #### Populate tables functions ----
@@ -894,15 +891,18 @@ linRegClass <- R6::R6Class(
             mahalp <- as.numeric(self$options$mahalp)
             groups <- self$results$models
             termsAll <- private$.getModelTerms()
+print(termsAll)
+print(mahal)
 
             for (i in seq_along(termsAll)) {
                 table <- groups$get(key=i)$dataSummary$mahal
                 if (is.null(mahal[[i]])) {
-                    table$setNote("row", .("Mahalanobis distance can only be calculated for models with two or more dependent variables."))
+                    table$setNote("row", .("Mahalanobis distance can only be calculated for models with two or more independent variables."))
+#                   setAnalysisNotice(self, .("Mahalanobis distance can only be calculated for models with two or more independent variables."))
                 } else if (all(mahal[[i]]$p <= mahalp)) {
                     table$setNote(
-                        "row", 
-                        jmvcore::format(.("There were no Mahalanobis distances with a threshold below p < {p}."), mahalp)
+                        "row",
+                        jmvcore::format(.("There were no Mahalanobis distances with a threshold below p < {p}."), p = mahalp)
                     )
                 } else {
                     # select values below p-threshold (outliers)
@@ -1089,10 +1089,12 @@ linRegClass <- R6::R6Class(
             }
 
             if (self$options$mahalOV && self$results$mahalOV$isNotFilled()) {
-                mahal <- self$mahal[[length(self$mahal)]]
-                self$results$mahalOV$setRowNums(mahal$row)
-                self$results$mahalOV$setValues(index=1, mahal$chisq)
-                self$results$mahalOV$setValues(index=2, mahal$p)
+                self$results$mahalOV$setRowNums(private$.getDataRowNums())
+                for (i in seq_along(self$mahal)) {
+                    if (is.null(self$mahal[[i]])) next
+                    self$results$mahalOV$setValues(index=(i * 2 - 1), self$mahal[[i]]$chisq)
+                    self$results$mahalOV$setValues(index=(i * 2 - 0), self$mahal[[i]]$p)
+                }
             }
         },
 
