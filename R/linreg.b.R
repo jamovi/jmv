@@ -891,29 +891,22 @@ linRegClass <- R6::R6Class(
             mahalp <- as.numeric(self$options$mahalp)
             groups <- self$results$models
             termsAll <- private$.getModelTerms()
-print(termsAll)
-print(mahal)
 
             for (i in seq_along(termsAll)) {
                 table <- groups$get(key=i)$dataSummary$mahal
                 if (is.null(mahal[[i]])) {
                     table$setNote("row", .("Mahalanobis distance can only be calculated for models with two or more independent variables."))
 #                   setAnalysisNotice(self, .("Mahalanobis distance can only be calculated for models with two or more independent variables."))
-                } else if (all(mahal[[i]]$p <= mahalp)) {
-                    table$setNote(
-                        "row",
-                        jmvcore::format(.("There were no Mahalanobis distances with a threshold below p < {p}."), p = mahalp)
-                    )
                 } else {
-                    # select values below p-threshold (outliers)
-                    selRow <- which(mahal[[i]]$p <= mahalp)
-                    for (j in selRow)
-                        table$addRow(rowKey = j, values = mahal[[i]][j, ])
-                    table$setNote(
-                        "row",
-                        jmvcore::format(.("Filter syntax: {filter}"),
-                            filter = paste(paste0("ROW() != ", mahal[[i]][selRow, "row"]), collapse = " and "))
-                    )
+                    # select which rows contain values below p-threshold (outliers)
+                    mahalRow <- mahal[[i]][mahal[[i]]$p <= mahalp, "row"]
+                    mahalVal = list(mean = mean(mahal[[i]]$chisq), median = median(mahal[[i]]$chisq), sd = sd(mahal[[i]]$chisq),
+                                    min = min(mahal[[i]]$chisq), max = max(mahal[[i]]$chisq), excRow = paste(mahalRow, collapse = ", "))
+                    table$setRow(rowNo = 1, values = mahalVal)
+                    table$setNote("excRow",
+                                  ifelse(length(mahalRow) == 0,
+                                      jmvcore::format(.("There were no Mahalanobis distances with a threshold below p < {p}."), p = mahalp),
+                                      jmvcore::format(.("Filter syntax: {filter}"), filter = paste(paste0("ROW() != ", mahalRow), collapse = " and "))))
                 }
             }
         },

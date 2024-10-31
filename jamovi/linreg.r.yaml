@@ -273,6 +273,7 @@ items:
                 - name: mahal
                   title: Mahalanobis Distance
                   type: Table
+                  rows: 1
                   visible: (mahal)
                   clearWith:
                     - dep
@@ -280,18 +281,31 @@ items:
                     - weights
 
                   columns:
-                    - name: row
-                      title: Row
+                    - name: mean
+                      title: Mean
                       type: number
 
-                    - name: chisq
-                      title: Statistics
+                    - name: median
+                      title: Median
                       type: number
 
-                    - name: p
-                      title: p
+                    - name: sd
+                      title: SD
                       type: number
-                      format: zto,pvalue
+
+                    - name: min
+                      title: Min
+                      type: number
+                      superTitle: Range
+
+                    - name: max
+                      title: Max
+                      type: number
+                      superTitle: Range
+
+                    - name: excRow
+                      title: Participants (rows) below p-threshold
+                      type: text
 
             - name: assump
               title: Assumption Checks

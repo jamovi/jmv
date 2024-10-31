@@ -665,6 +665,7 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                             options=options,
                                             name="mahal",
                                             title="Mahalanobis Distance",
+                                            rows=1,
                                             visible="(mahal)",
                                             clearWith=list(
                                                 "dep",
@@ -672,18 +673,31 @@ linRegResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                                 "weights"),
                                             columns=list(
                                                 list(
-                                                    `name`="row", 
-                                                    `title`="Row", 
+                                                    `name`="mean", 
+                                                    `title`="Mean", 
                                                     `type`="number"),
                                                 list(
-                                                    `name`="chisq", 
-                                                    `title`="Statistics", 
+                                                    `name`="median", 
+                                                    `title`="Median", 
                                                     `type`="number"),
                                                 list(
-                                                    `name`="p", 
-                                                    `title`="p", 
+                                                    `name`="sd", 
+                                                    `title`="SD", 
+                                                    `type`="number"),
+                                                list(
+                                                    `name`="min", 
+                                                    `title`="Min", 
                                                     `type`="number", 
-                                                    `format`="zto,pvalue"))))}))$new(options=options))
+                                                    `superTitle`="Range"),
+                                                list(
+                                                    `name`="max", 
+                                                    `title`="Max", 
+                                                    `type`="number", 
+                                                    `superTitle`="Range"),
+                                                list(
+                                                    `name`="excRow", 
+                                                    `title`="Participants (rows) below p-threshold", 
+                                                    `type`="text"))))}))$new(options=options))
                             self$add(R6::R6Class(
                                 inherit = jmvcore::Group,
                                 active = list(
