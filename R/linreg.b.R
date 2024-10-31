@@ -294,7 +294,7 @@ linRegClass <- R6::R6Class(
             return(cooksSummary)
         },
         .computeMahal = function() {
-            mahal <- list()
+            mahal <- vector(mode = "list", length(self$nModels))
             data <- private$.cleanData(naSkip=jmvcore::toB64(self$options$dep))
             for (i in seq_along(self$models)) {
                 cov <- attr(self$models[[i]]$terms, "term.labels")
@@ -302,7 +302,7 @@ linRegClass <- R6::R6Class(
                 if (length(cov) >= 2) {
                     mahalChiSq <- stats::mahalanobis(data[, cov], colMeans(data[, cov]), cov(data[, cov]))
                     mahal[[i]] <- data.frame(row = row.names(data), chisq = mahalChiSq, p = pchisq(mahalChiSq, length(cov), lower.tail = FALSE))
-                }
+                }               
             }
 
             return(mahal)
@@ -683,7 +683,7 @@ linRegClass <- R6::R6Class(
                 order <- as.vector(vapply(seq(self$nModels), function(p) c(p, p + self$nModels), numeric(2)))
                 self$results$mahalOV$set(seq(2 * self$nModels), titles[order], descriptions[order], rep(measureTypes, 2))
             } else {
-                titles <- c(title(.("Mahalanobis ChiSq")), title(.("Mahalanobis p")))
+                titles <- c(.("Mahalanobis ChiSq"), .("Mahalanobis p"))
                 descriptions <- c(description(.("Mahalanobis distance (Chi sq.)")), description(.("Mahalanobis distance (p)")))
                 self$results$mahalOV$set(seq(2), titles, descriptions, rep('continuous', 2))
             }
@@ -894,7 +894,7 @@ linRegClass <- R6::R6Class(
 
             for (i in seq_along(termsAll)) {
                 table <- groups$get(key=i)$dataSummary$mahal
-                if (is.null(mahal[[i]])) {
+                if (i > length(mahal) || is.null(mahal[[i]])) {
                     table$setNote("row", .("Mahalanobis distance can only be calculated for models with two or more independent variables."))
 #                   setAnalysisNotice(self, .("Mahalanobis distance can only be calculated for models with two or more independent variables."))
                 } else {
