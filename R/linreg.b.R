@@ -298,6 +298,7 @@ linRegClass <- R6::R6Class(
             data <- private$.cleanData(naSkip=jmvcore::toB64(self$options$dep))
             for (i in seq_along(self$models)) {
                 cov <- attr(self$models[[i]]$terms, "term.labels")
+                cov <- intersect(cov, jmvcore::toB64(self$options$covs))
                 # skip if number of variables less than 2
                 if (length(cov) >= 2) {
                     mahalChiSq <- stats::mahalanobis(data[, cov], colMeans(data[, cov]), cov(data[, cov]))
