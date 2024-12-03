@@ -366,3 +366,20 @@ items:
         - yaxisPc
         - xaxis
         - bartype
+
+    - name: phoc
+      title: Post-hoc (residuals)
+      type: Table
+      visible: (resU || resP || resS || resA)
+      description: a table of residuals
+      columns: [ ]
+
+      clearWith:
+        - rows
+        - cols
+        - counts
+        - layers
+        - resU
+        - resP
+        - resS
+        - resA

@@ -37,7 +37,11 @@ contTablesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             yaxis = "ycounts",
             yaxisPc = "total_pc",
             xaxis = "xrows",
-            bartype = "dodge", ...) {
+            bartype = "dodge",
+            resU = FALSE,
+            resP = FALSE,
+            resS = FALSE,
+            resA = FALSE, ...) {
 
             super$initialize(
                 package="jmv",
@@ -209,6 +213,22 @@ contTablesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "dodge",
                     "stack"),
                 default="dodge")
+            private$..resU <- jmvcore::OptionBool$new(
+                "resU",
+                resU,
+                default=FALSE)
+            private$..resP <- jmvcore::OptionBool$new(
+                "resP",
+                resP,
+                default=FALSE)
+            private$..resS <- jmvcore::OptionBool$new(
+                "resS",
+                resS,
+                default=FALSE)
+            private$..resA <- jmvcore::OptionBool$new(
+                "resA",
+                resA,
+                default=FALSE)
 
             self$.addOption(private$..rows)
             self$.addOption(private$..cols)
@@ -242,6 +262,10 @@ contTablesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..yaxisPc)
             self$.addOption(private$..xaxis)
             self$.addOption(private$..bartype)
+            self$.addOption(private$..resU)
+            self$.addOption(private$..resP)
+            self$.addOption(private$..resS)
+            self$.addOption(private$..resA)
         }),
     active = list(
         rows = function() private$..rows$value,
@@ -275,7 +299,11 @@ contTablesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         yaxis = function() private$..yaxis$value,
         yaxisPc = function() private$..yaxisPc$value,
         xaxis = function() private$..xaxis$value,
-        bartype = function() private$..bartype$value),
+        bartype = function() private$..bartype$value,
+        resU = function() private$..resU$value,
+        resP = function() private$..resP$value,
+        resS = function() private$..resS$value,
+        resA = function() private$..resA$value),
     private = list(
         ..rows = NA,
         ..cols = NA,
@@ -308,7 +336,11 @@ contTablesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..yaxis = NA,
         ..yaxisPc = NA,
         ..xaxis = NA,
-        ..bartype = NA)
+        ..bartype = NA,
+        ..resU = NA,
+        ..resP = NA,
+        ..resS = NA,
+        ..resA = NA)
 )
 
 contTablesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -322,7 +354,8 @@ contTablesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         gamma = function() private$.items[["gamma"]],
         taub = function() private$.items[["taub"]],
         mh = function() private$.items[["mh"]],
-        barplot = function() private$.items[["barplot"]]),
+        barplot = function() private$.items[["barplot"]],
+        phoc = function() private$.items[["phoc"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -679,7 +712,22 @@ contTablesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "yaxis",
                     "yaxisPc",
                     "xaxis",
-                    "bartype")))}))
+                    "bartype")))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="phoc",
+                title="Post-hoc (residuals)",
+                visible="(resU || resP || resS || resA)",
+                columns=list(),
+                clearWith=list(
+                    "rows",
+                    "cols",
+                    "counts",
+                    "layers",
+                    "resU",
+                    "resP",
+                    "resS",
+                    "resA")))}))
 
 contTablesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "contTablesBase",
@@ -806,6 +854,14 @@ contTablesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   for the bar plot y-axis.
 #' @param xaxis rows (default), or columns in bar plot X axis
 #' @param bartype stack or side by side (default), barplot type
+#' @param resU \code{TRUE} or \code{FALSE} (default), provide Unstandardized
+#'   residuals
+#' @param resP \code{TRUE} or \code{FALSE} (default), provide Pearson
+#'   residuals
+#' @param resS \code{TRUE} or \code{FALSE} (default), provide Standardized
+#'   residuals
+#' @param resA \code{TRUE} or \code{FALSE} (default), provide Adjusted
+#'   residuals
 #' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{
@@ -817,6 +873,7 @@ contTablesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   \code{results$taub} \tab \tab \tab \tab \tab a table of the Kendall's tau-b test results \cr
 #'   \code{results$mh} \tab \tab \tab \tab \tab a table of the Mantel-Haenszel test for trend \cr
 #'   \code{results$barplot} \tab \tab \tab \tab \tab an image \cr
+#'   \code{results$phoc} \tab \tab \tab \tab \tab a table of residuals \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -860,6 +917,10 @@ contTables <- function(
     yaxisPc = "total_pc",
     xaxis = "xrows",
     bartype = "dodge",
+    resU = FALSE,
+    resP = FALSE,
+    resS = FALSE,
+    resA = FALSE,
     formula) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
@@ -944,7 +1005,11 @@ contTables <- function(
         yaxis = yaxis,
         yaxisPc = yaxisPc,
         xaxis = xaxis,
-        bartype = bartype)
+        bartype = bartype,
+        resU = resU,
+        resP = resP,
+        resS = resS,
+        resA = resA)
 
     analysis <- contTablesClass$new(
         options = options,

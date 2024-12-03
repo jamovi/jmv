@@ -405,4 +405,36 @@ options:
       description:
           R: >
             stack or side by side (default), barplot type
+
+    - name: resU
+      title: Unstandardized residuals
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Unstandardized residuals
+
+    - name: resP
+      title: Pearson residuals
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Pearson residuals
+
+    - name: resS
+      title: Standardized residuals
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Standardized residuals
+
+    - name: resA
+      title: Adjusted residuals
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Adjusted residuals
 ...

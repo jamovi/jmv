@@ -194,6 +194,27 @@ children:
                         name: pcCol
                       - type: CheckBox
                         name: pcTot
+              - type: LayoutBox
+                cell:
+                  column: 2
+                  row: 0
+                stretchFactor: 1
+                children:
+                  - type: Label
+                    label: Post-hoc
+                    fitToGrid: true
+                    cell:
+                      column: 2
+                      row: 0
+                    children:
+                      - type: CheckBox
+                        name: resU
+                      - type: CheckBox
+                        name: resP
+                      - type: CheckBox
+                        name: resS
+                      - type: CheckBox
+                        name: resA
       - type: CollapseBox
         label: Plots
         stretchFactor: 1
