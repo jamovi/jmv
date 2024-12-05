@@ -898,8 +898,7 @@ linRegClass <- R6::R6Class(
                 if (i > length(mahal) || is.null(mahal[[i]])) {
                     mahalNote <- jmvcore::Notice$new(options = self$options, name = 'warningMessage', type = jmvcore::NoticeType$WARNING)
                     mahalNote$setContent(.("Mahalanobis distance can only be calculated for models with two or more independent variables."))
-                    table$setHeader(mahalNote)
-#                   table$setNote("row", .("Mahalanobis distance can only be calculated for models with two or more independent variables."))
+                    groups$get(key=i)$dataSummary$insert(1, mahalNote)
                 } else {
                     # select which rows contain values below p-threshold (outliers)
                     mahalRow <- mahal[[i]][mahal[[i]]$p <= mahalp, "row"]
