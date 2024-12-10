@@ -178,6 +178,9 @@ linRegClass <- R6::R6Class(
             if (is.null(self$options$dep) || self$nModels < 1 || length(self$options$blocks[[1]]) == 0)
                 return()
 
+            if (any(private$.getIsAliased()))
+                setSingularityWarning(self)
+
             private$.populateModelFitTable()
             private$.populateModelCompTable()
             private$.populateAnovaTables()
@@ -339,10 +342,11 @@ linRegClass <- R6::R6Class(
 
             VIF <- list()
             for (i in seq_along(self$models)) {
-                if ( ! private$.getIsAliased()[[i]] && length(modelTerms[[i]]) > 1 )
+                if ( ! private$.getIsAliased()[[i]] && length(modelTerms[[i]]) > 1 ) {
                     VIF[[i]] <- car::vif(self$models[[i]])
-                else
-                    VIF[[i]] <- NULL
+                } else {
+                    VIF[[i]] <- c(VIF, list(NULL))
+                }
             }
 
             return(VIF)
