@@ -295,7 +295,7 @@ linRegClass <- R6::R6Class(
         },
         .computeMahal = function() {
             mahal <- vector(mode = "list", length(self$nModels))
-            data <- private$.cleanData(naSkip=jmvcore::toB64(self$options$dep))
+            data <- self$dataProcessed
             for (i in seq_along(self$models)) {
                 cov <- attr(self$models[[i]]$terms, "term.labels")
                 cov <- intersect(cov, jmvcore::toB64(self$options$covs))
