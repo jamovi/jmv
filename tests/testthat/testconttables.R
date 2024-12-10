@@ -31,7 +31,11 @@ testthat::test_that('All options in the contTables work (sunny)', {
         exp = TRUE,
         pcRow = TRUE,
         pcCol = TRUE,
-        pcTot = TRUE
+        pcTot = TRUE,
+        resU = TRUE,
+        resP = TRUE,
+        resS = TRUE,
+        resA = TRUE
     )
 
     # Test main contingency tables
@@ -61,6 +65,21 @@ testthat::test_that('All options in the contTables work (sunny)', {
     testthat::expect_equal(c(1, 1, 1), mainTable[['.total[pcRow]']], tolerance = 1e-3)
     testthat::expect_equal(c(0.45, 0.55, 1), mainTable[['.total[pcCol]']], tolerance = 1e-3)
     testthat::expect_equal(c(0.45, 0.55, 1), mainTable[['.total[pcTot]']], tolerance = 1e-3)
+
+    # Test residuals phoc tables
+    upsaPhTab <- r$phoc$asDF
+    testthat::expect_equal(c('Unstandardized', 'Unstandardized'), upsaPhTab[['type[resU]']])
+    testthat::expect_equal(c('Pearson', 'Pearson'), upsaPhTab[['type[resP]']])
+    testthat::expect_equal(c('Standardized', 'Standardized'), upsaPhTab[['type[resS]']])
+    testthat::expect_equal(c('Adjusted', 'Adjusted'), upsaPhTab[['type[resA]']])
+    testthat::expect_equal(c(0.0500, -0.0500), upsaPhTab[['1[resU]']], tolerance = 1e-3)
+    testthat::expect_equal(c(-0.0500, 0.0500), upsaPhTab[['2[resU]']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.0104, -0.0094), upsaPhTab[['1[resP]']], tolerance = 1e-3)
+    testthat::expect_equal(c(-0.0106, 0.0096), upsaPhTab[['2[resP]']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.0201, -0.0201), upsaPhTab[['1[resS]']], tolerance = 1e-3)
+    testthat::expect_equal(c(-0.0201, 0.0201), upsaPhTab[['2[resS]']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.0104, -0.0094), upsaPhTab[['1[resA]']], tolerance = 1e-3)
+    testthat::expect_equal(c(-0.0107, 0.0096), upsaPhTab[['2[resA]']], tolerance = 1e-3)
 
     # Test chi squared tests table
     chiSqTable <- r$chiSq$asDF
