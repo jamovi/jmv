@@ -348,6 +348,13 @@ items:
           type: number
           format: zto,pvalue
 
+    - name: postHoc
+      title: Post Hoc Tests
+      type: Table
+      visible: (resU || resP || resS || resA)
+      description: a table of post-hoc residuals
+      columns: [ ]
+
     - name: barplot
       title: Plots
       type: Image

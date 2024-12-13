@@ -195,6 +195,52 @@ children:
                       - type: CheckBox
                         name: pcTot
       - type: CollapseBox
+        label: Post Hoc Tests
+        stretchFactor: 1
+        collapsed: true
+        children:
+          - type: LayoutBox
+            margin: large
+            stretchFactor: 1
+            children:
+              - type: LayoutBox
+                cell:
+                  column: 0
+                  row: 0
+                stretchFactor: 1
+                children:
+                  - type: Label
+                    label: Post Hoc Tests
+                    fitToGrid: true
+                    cell:
+                      column: 0
+                      row: 0
+                    children:
+                      - type: CheckBox
+                        name: resU
+                        children: []
+                      - type: CheckBox
+                        name: resP
+                        children:
+                          - type: TextBox
+                            name: hlresP
+                            format: number
+                            enable: (resP)
+                      - type: CheckBox
+                        name: resS
+                        children:
+                          - type: TextBox
+                            name: hlresS
+                            format: number
+                            enable: (resS)
+                      - type: CheckBox
+                        name: resA
+                        children:
+                          - type: TextBox
+                            name: hlresA
+                            format: number
+                            enable: (resA)
+      - type: CollapseBox
         label: Plots
         stretchFactor: 1
         collapsed: true
