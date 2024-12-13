@@ -201,7 +201,7 @@ testthat::test_that("conttables works with counts", {
 
     data <- data.frame(rows = rows, cols = cols, layer = layer, counts = counts)
 
-    table <- jmv::contTables(data=data, rows="rows", cols="cols", layers="layer", counts="counts")
+    table <- jmv::contTables(data=data, rows="rows", cols="cols", layers="layer", counts="counts", resU=TRUE, resP=TRUE, resS=TRUE, resA=TRUE)
 
     freqs <- as.data.frame(table$freqs)
 
