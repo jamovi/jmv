@@ -245,9 +245,8 @@ contTablesClass <- R6::R6Class(
             gamma$getColumn('cil')$setSuperTitle(ciText)
             gamma$getColumn('ciu')$setSuperTitle(ciText)
 
+            private$.initPostHocTable(data=data)
             private$.initBarPlot()
-
-            private$.initPhocTab(data=data)
         },
         .run=function() {
 
@@ -592,125 +591,149 @@ contTablesClass <- R6::R6Class(
 
                 othRowNo <- othRowNo + 1
             }
-            private$.runPhocTab(data=data)
+            private$.populatePostHocTable(data=data)
         },
-        .initPhocTab=function(data=data) {
+
+        #### PostHoc Table functions
+        .initPostHocTable = function(data=data) {
             rowVarName <- self$options$rows
             colVarName <- self$options$cols
             layerNames <- self$options$layers
-            phoc       <- self$results$phoc
+            postHoc    <- self$results$postHoc
 
-            subNamesPh  <- c('[resU]', '[resP]', '[resS]', '[resA]')
-            subTitlesPh <- c(.('Unstandardized'), .('Pearson'), .('Standardized'), .('Adjusted'))
-            visiblePh   <- c('(resU)', '(resP)', '(resS)', '(resA)')
-            typesPh     <- c('number', 'number', 'number', 'number')
-            formatsPh   <- c('', '', '', '')
+            subNamesPh    <- c('[resU]', '[resP]', '[resS]', '[resA]')
+            subTitlesPh   <- c(.('Unstandardized'), .('Pearson'), .('Standardized'), .('Adjusted'))
+            visiblePh     <- c('(resU)', '(resP)', '(resS)', '(resA)')
+            typesPh       <- c('number', 'number', 'number', 'number')
+            formatsPh     <- c('', '', '', '')
 
+            # Add layer columns on top (if any)
             reversed <- rev(layerNames)
-            for (i in seq_along(reversed)) {
-                layer <- reversed[[i]]
-                phoc$addColumn(name=layer, type='text', combineBelow=TRUE)
+            for (layer in reversed) {
+                postHoc$addColumn(name=layer, type='text', combineBelow=TRUE)
             }
 
-            # add the row column, containing the row variable
-            # fill in dots, if no row variable specified
+            # Add the row variable column or a placeholder if absent
+            rowTitle <- if (!is.null(rowVarName)) rowVarName else '.'
+            postHoc$addColumn(name=rowTitle, title=rowTitle, type='text')
 
-            if ( ! is.null(rowVarName))
-                title <- rowVarName
-            else
-                title <- '.'
-
-            phoc$addColumn(
-                name=title,
-                title=title,
-                type='text')
-
-            # add the column columns (from the column variable)
-            # fill in dots, if no column variable specified
-
-            if ( ! is.null(colVarName)) {
+            # Determine the column variable levels or use placeholders
+            if (!is.null(colVarName)) {
                 superTitle <- colVarName
-                levels <- base::levels(data[[colVarName]])
-            }
-            else {
+                levels     <- levels(data[[colVarName]])
+            } else {
                 superTitle <- '.'
-                levels <- c('.', '.')
+                levels     <- c('.', '.')
             }
 
-            # iterate over the sub rows
+            # Determine how many residuals are selected
+            residualSelections <- c(
+                isTRUE(self$options$resU),
+                isTRUE(self$options$resP),
+                isTRUE(self$options$resS),
+                isTRUE(self$options$resA)
+            )
+            numResSelected <- sum(residualSelections)
+
+            # Improve clarity with descriptive variables
+            oneResidualSelected <- (numResSelected == 1)
+            multipleResidualsSelected <- (numResSelected > 1)
+
+            # Set the table title and determine if the Residuals column should be shown
+            if (oneResidualSelected) {
+                selectedIndex   <- which(residualSelections)
+                singleResTitle  <- subTitlesPh[selectedIndex]
+                postHoc$setTitle(jmvcore::format("Post Hoc Test ({title} Residuals)", title=singleResTitle))
+                showResidualsCol <- FALSE
+            } else {
+                postHoc$setTitle(.('Post Hoc Test'))
+                showResidualsCol <- multipleResidualsSelected
+            }
+
+            # Add the "Residuals" columns
             for (j in seq_along(subNamesPh)) {
-                subName <- subNamesPh[[j]]
-                if (subName == '[resU]')
-                    vPh <- '(resU && (resP || resS || resA))'
-                else
-                    vPh <- visiblePh[j]
+                subName <- subNamesPh[j]
 
-                # Post-hoc residuals table
-                phoc$addColumn(
-                    name=paste0('type', subName),
-                    title='Residuals',
-                    type='text',
-                    visible=vPh)
+                # Determine visibility for this residual type column
+                if (showResidualsCol) {
+                    if (subName == '[resU]') {
+                        # Visible only if resU and at least one other residual is present
+                        vPh <- '(resU && (resP || resS || resA))'
+                    } else {
+                        vPh <- visiblePh[j]
+                    }
+                } else {
+                    # Only one residual selected: Residuals column hidden
+                    vPh <- 'FALSE'
+                }
+
+                postHoc$addColumn(
+                    name  = paste0('type', subName),
+                    title = 'Residuals',
+                    type  = 'text',
+                    visible = vPh
+                )
             }
 
+            # Add columns for the factor levels of the column variable
             for (i in seq_along(levels)) {
-                level <- levels[[i]]
-
+                level <- levels[i]
                 for (j in seq_along(subNamesPh)) {
-                    subName <- subNamesPh[[j]]
-                    phoc$addColumn(
-                        name=paste0(i, subName),
-                        title=level,
-                        superTitle=superTitle,
-                        type=typesPh[j],
-                        format=formatsPh[j],
-                        visible=visiblePh[j])
+                    subName <- subNamesPh[j]
+                    postHoc$addColumn(
+                        name       = paste0(i, subName),
+                        title      = level,
+                        superTitle = superTitle,
+                        type       = typesPh[j],
+                        format     = formatsPh[j],
+                        visible    = visiblePh[j]
+                    )
                 }
             }
 
-            # populate the first column with levels of the row variable
-
-            values <- list()
-            for (i in seq_along(subNamesPh))
-                values[[paste0('type', subNamesPh[i])]] <- subTitlesPh[i]
-
+            # Prepare row expansion (for row variable and layers)
             expand <- list()
             if (is.null(rowVarName))
                 expand[['.']] <- '.'
             else
-                expand[[rowVarName]] <- c(base::levels(data[[rowVarName]]))
+                expand[[rowVarName]] <- levels(data[[rowVarName]])
 
             for (layerName in layerNames)
-                expand[[layerName]] <- base::levels(data[[layerName]])
+                expand[[layerName]] <- levels(data[[layerName]])
 
             rows <- rev(expand.grid(expand))
 
+            # Prepare values for the "type[subName]" columns
+            values <- list()
+            for (i in seq_along(subNamesPh)) {
+                colName <- paste0('type', subNamesPh[i])
+                values[[colName]] <- subTitlesPh[i]
+            }
+
+            # Add rows to the table
             nextIsNewGroup <- TRUE
-
             for (i in seq_len(nrow(rows))) {
-
-                for (name in colnames(rows)) {
-                    value <- as.character(rows[i, name])
-                    values[[name]] <- value
+                for (colName in colnames(rows)) {
+                    values[[colName]] <- as.character(rows[i, colName])
                 }
 
-                key <- paste0(rows[i,], collapse='`')
-                phoc$addRow(rowKey=key, values=values)
+                key <- paste0(rows[i, ], collapse='`')
+                postHoc$addRow(rowKey=key, values=values)
 
                 if (nextIsNewGroup) {
-                    phoc$addFormat(rowNo=i, 1, Cell.BEGIN_GROUP)
+                    postHoc$addFormat(rowNo=i, 1, Cell.BEGIN_GROUP)
                     nextIsNewGroup <- FALSE
                 }
             }
         },
-        .runPhocTab=function(data=data) {
+        .populatePostHocTable = function(data=data) {
 
             rowVarName <- self$options$rows
             colVarName <- self$options$cols
             layerNames <- self$options$layers
-            phoc       <- self$results$phoc
+            postHoc    <- self$results$postHoc
 
-            matsPh <- list()
+            # Build the frequency tables (same logic as before)
             if (length(layerNames) == 0) {
                 matsPh <- list(ftable(xtabs(.COUNTS ~ ., data=data)))
             } else {
@@ -724,26 +747,21 @@ contTablesClass <- R6::R6Class(
 
                 expand <- list()
                 for (layerName in layerNames)
-                    expand[[layerName]] <- base::levels(data[[layerName]])
-
+                    expand[[layerName]] <- levels(data[[layerName]])
                 rows <- rev(expand.grid(expand))
 
                 expand <- list()
                 for (layerName in layerNames)
-                    expand[[layerName]] <- base::levels(data[[layerName]])
-
+                    expand[[layerName]] <- levels(data[[layerName]])
                 tableNames <- rev(expand.grid(expand))
 
                 matsPh <- list()
                 for (i in seq_along(rows[,1])) {
-
+                    rowLevels <- as.character(unlist(rows[i,]))
                     indices <- c()
                     for (j in seq_along(tableNames[,1])) {
-
-                        row <- as.character(unlist((rows[i,])))
-                        tableName <- as.character(unlist(tableNames[j,]))
-
-                        if (all(row == tableName | row == '.total'))
+                        tableNameLevels <- as.character(unlist(tableNames[j,]))
+                        if (all(rowLevels == tableNameLevels | rowLevels == '.total'))
                             indices <- c(indices, j)
                     }
                     matsPh[[i]] <- Reduce(`+`, tables[indices])
@@ -754,126 +772,104 @@ contTablesClass <- R6::R6Class(
             nCols <- base::nlevels(data[[colVarName]])
 
             freqRowNo <- 1
-            for (mat in matsPh) {
 
+            # Determine highlight thresholds
+            hlValueP <- if (self$options$resP || self$options$hlresP) jmvcore::toNumeric(self$options$hlresP) else NA
+            hlValueS <- if (self$options$resS || self$options$hlresS) jmvcore::toNumeric(self$options$hlresS) else NA
+            hlValueA <- if (self$options$resA || self$options$hlresA) jmvcore::toNumeric(self$options$hlresA) else NA
+
+            # Recalculate residuals every time (simple approach, as in CFA code)
+            for (mat in matsPh) {
                 suppressWarnings({
                     test <- try(chisq.test(mat, correct=FALSE))
+                    exp <- if (inherits(test, 'try-error')) mat else test$expected
+                })
 
-                    if (inherits(test, 'try-error')) {
-                        exp <- mat
-                    } else {
-                        exp <- test$expected
-                    }
-                }) # suppressWarnings
-
-                # Calculate residues, if required
+                residualsU <- residualsP <- residualsS <- residualsA <- NULL
                 if (self$options$resU || self$options$resP || self$options$resS || self$options$resA) {
+                    # Compute residuals straightforwardly
                     if (inherits(test, 'try-error')) {
                         residualsU <- matrix(NA, nrow=nrow(mat), ncol=ncol(mat))
                         residualsP <- matrix(NA, nrow=nrow(mat), ncol=ncol(mat))
                         residualsS <- matrix(NA, nrow=nrow(mat), ncol=ncol(mat))
                     } else {
-                        residualsU <- (mat - exp)
+                        residualsU <- mat - exp
                         residualsP <- test$residuals
                         residualsS <- test$stdres
                     }
-                    # Adjusted Residuals: Standardized residuals from a GLM
+
                     df <- as.data.frame(as.table(mat))
                     names(df) <- c("Row", "Col", "Count")
                     model <- try(glm(Count ~ Row + Col, data=df, family=poisson()), silent=TRUE)
                     if (!inherits(model, 'try-error')) {
                         resAvector <- residuals(model, type="deviance")
-                        residualsA <- matrix(resAvector,
-                                             nrow=nrow(mat),
-                                             ncol=ncol(mat),
-                                             byrow=FALSE,
-                                             dimnames=dimnames(mat))
+                        residualsA <- matrix(
+                            resAvector,
+                            nrow=nrow(mat),
+                            ncol=ncol(mat),
+                            byrow=FALSE,
+                            dimnames=dimnames(mat)
+                        )
                     } else {
                         residualsA <- matrix(NA, nrow=nrow(mat), ncol=ncol(mat))
                     }
                 }
 
+                # Internal helper
+                getValues <- function(active, residuals, suffix) {
+                    if (!active || is.null(residuals))
+                        return(list())
+                    vals <- as.list(residuals[rowNo, ])
+                    names(vals) <- paste0(seq_len(nCols), suffix)
+                    vals
+                }
+
+                # Now populate rows and highlight
                 for (rowNo in seq_len(nRows)) {
 
-                    if (self$options$resU) {
-                        resUValues <- residualsU[rowNo, ]
-                        resUValues <- as.list(resUValues)
-                        names(resUValues) <- paste0(1:nCols, '[resU]')
-                    } else {
-                        resUValues <- list()
-                    }
+                    rowValues <- c(
+                        getValues(self$options$resU, residualsU, "[resU]"),
+                        getValues(self$options$resP, residualsP, "[resP]"),
+                        getValues(self$options$resS, residualsS, "[resS]"),
+                        getValues(self$options$resA, residualsA, "[resA]")
+                    )
 
-                    if (self$options$resP) {
-                        resPValues <- residualsP[rowNo, ]
-                        resPValues <- as.list(resPValues)
-                        names(resPValues) <- paste0(1:nCols, '[resP]')
-                    } else {
-                        resPValues <- list()
-                    }
+                    # Set values for this row
+                    postHoc$setRow(rowNo=freqRowNo, values=rowValues)
 
-                    if (self$options$resS) {
-                        resSValues <- residualsS[rowNo, ]
-                        resSValues <- as.list(resSValues)
-                        names(resSValues) <- paste0(1:nCols, '[resS]')
-                    } else {
-                        resSValues <- list()
-                    }
+                    # Apply highlighting just like in the CFA code:
+                    # Check each cell and if it exceeds the threshold, add format
+                    for (colIndex in seq_len(nCols)) {
 
-                    if (self$options$resA) {
-                        resAValues <- residualsA[rowNo, ]
-                        resAValues <- as.list(resAValues)
-                        names(resAValues) <- paste0(1:nCols, '[resA]')
-                    } else {
-                        resAValues <- list()
-                    }
+                        # Pearson
+                        if (!is.na(hlValueP) && self$options$resP) {
+                            resValueP <- residualsP[rowNo, colIndex]
+                            if (!is.na(resValueP) && abs(resValueP) > hlValueP)
+                                postHoc$addFormat(rowNo=freqRowNo, col=paste0(colIndex, "[resP]"), Cell.NEGATIVE)
+                        }
 
-                    values <- c(resUValues, resPValues, resSValues, resAValues)
+                        # Standardized
+                        if (!is.na(hlValueS) && self$options$resS) {
+                            resValueS <- residualsS[rowNo, colIndex]
+                            if (!is.na(resValueS) && abs(resValueS) > hlValueS) {
+                                postHoc$addFormat(rowNo=freqRowNo, col=paste0(colIndex, "[resS]"), Cell.NEGATIVE)
+                            }
+                        }
 
-                    phoc$setRow(rowNo=freqRowNo, values=values)
-
-                    # Formatting for significant residues
-                    if (self$options$resP) {
-                        for (colIndex in seq_len(nCols)) {
-                            colName <- paste0(colIndex, '[resP]')
-                            resValue <- residualsP[rowNo, colIndex]
-                            if (!is.na(resValue) && abs(resValue) > 2) {
-                                phoc$addFormat(rowNo=freqRowNo, col=colName, Cell.NEGATIVE)
-                                phoc$addFootnote(rowNo=freqRowNo,
-                                                 col=colName,
-                                                 .('Pearson Residuals: (Observed - Expected) / sqrt(Expected).'))
+                        # Adjusted
+                        if (!is.na(hlValueA) && self$options$resA) {
+                            resValueA <- residualsA[rowNo, colIndex]
+                            if (!is.na(resValueA) && abs(resValueA) > hlValueA) {
+                                postHoc$addFormat(rowNo=freqRowNo, col=paste0(colIndex, "[resA]"), Cell.NEGATIVE)
                             }
                         }
                     }
 
-                    if (self$options$resS) {
-                        for (colIndex in seq_len(nCols)) {
-                            colName <- paste0(colIndex, '[resS]')
-                            resValue <- residualsS[rowNo, colIndex]
-                            if (!is.na(resValue) && abs(resValue) > 2) {
-                                phoc$addFormat(rowNo=freqRowNo, col=colName, Cell.NEGATIVE)
-                                phoc$addFootnote(rowNo=freqRowNo,
-                                                 col=colName,
-                                                 .('Standardized Residuals: (Adjusted Pearson) scaled for row and column proportions.'))
-                            }
-                        }
-                    }
-
-                    if (self$options$resA) {
-                        for (colIndex in seq_len(nCols)) {
-                            colName <- paste0(colIndex, '[resA]')
-                            resValue <- residualsA[rowNo, colIndex]
-                            if (!is.na(resValue) && abs(resValue) > 2) {
-                                phoc$addFormat(rowNo=freqRowNo, col=colName, Cell.NEGATIVE)
-                                phoc$addFootnote(rowNo=freqRowNo,
-                                                 col=colName,
-                                                 .('Adjusted Residuals: Standardized from a GLM accounting for row and column effects.'))
-                            }
-                        }
-                    }
                     freqRowNo <- freqRowNo + 1
                 }
             }
         },
+
         #### Plot functions ----
         .initBarPlot = function() {
             image <- self$results$get('barplot')
@@ -1030,7 +1026,7 @@ contTablesClass <- R6::R6Class(
 
             columns
         },
-        .matrices=function(data) {
+        .matrices = function(data) {
 
             matrices <- list()
 
@@ -1083,7 +1079,7 @@ contTablesClass <- R6::R6Class(
 
             matrices
         },
-        .grid=function(data, incRows=FALSE) {
+        .grid = function(data, incRows=FALSE) {
 
             rowVarName <- self$options$rows
             layerNames <- self$options$layers
@@ -1173,7 +1169,7 @@ contTablesClass <- R6::R6Class(
                 return('')
             super$.sourcifyOption(option)
         },
-        .formula=function() {
+        .formula = function() {
             rhs <- list()
             if ( ! is.null(self$options$rows)) {
                 rhs[[1]] <- self$options$rows
