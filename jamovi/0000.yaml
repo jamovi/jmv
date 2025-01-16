@@ -9,6 +9,7 @@ authors:
   - Ravi Selker
   - Victor Moreno
   - Maurizio Agosti
+  - Sebastian Jentschke
 maintainer: Jonathon Love <jon@thon.cc>
 description: >
   This module represents the analyses included with jamovi. It contains many
