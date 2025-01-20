@@ -339,7 +339,7 @@ options:
       default: false
       description:
           R: >
-            `TRUE` or `FALSE` (default), provide the rea under the
+            `TRUE` or `FALSE` (default), provide the area under the
             ROC curve (AUC)
 
     - name: rocPlot
