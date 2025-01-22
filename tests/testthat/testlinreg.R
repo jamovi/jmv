@@ -359,6 +359,35 @@ testthat::test_that('Mahalanobis summary in linreg works', {
     testthat::expect_equal("14, 26, 29, 77", mahalTable$excRow)
 })
 
+testthat::test_that('Mahalanobis summary gives warning for <2 covs', {
+    # GIVEN a dataset with two covariates
+    df <- data.frame(
+        dep = c(5, 2, 7, 3, 9, 1, 4, 6, 8, 10),
+        cov1 = c(4, 2, 7, 5, 9, 1, 3, 6, 8, 10),
+        cov2 = c(8, 5, 2, 7, 3, 9, 6, 1, 4, 10)
+    )
+
+    # WHEN running a linear regression with Mahalanobis distance
+    linreg <- jmv::linReg(
+        df,
+        dep = "dep",
+        covs = c("cov1", "cov2"),
+        blocks = list(list("cov1"), list("cov2")),
+        mahal = TRUE
+    )
+
+    # THEN the block with one covariate should give a warning note
+    model_1 <- linreg$models[[1]]$dataSummary
+    testthat::expect_equal(model_1[[1]]$name, "warningMessage")
+    # BUT not results
+    testthat::expect_false(model_1$mahal$visible)
+    # AND the block with two covariates should show results
+    model_2 <- linreg$models[[2]]$dataSummary
+    testthat::expect_true(model_2$mahal$visible)
+    # BUT no warning message
+    testthat::expect_no_match(model_2[[1]]$name, "warningMessage")
+})
+
 testthat::test_that('emmeans table in linreg works with covariate with only two unique values', {
     suppressWarnings(RNGversion("3.5.0"))
     set.seed(100)
