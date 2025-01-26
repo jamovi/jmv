@@ -405,4 +405,63 @@ options:
       description:
           R: >
             stack or side by side (default), barplot type
+
+    - name: resU
+      title: Unstandardized residuals
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Unstandardized residuals
+
+    - name: resP
+      title: Pearson residuals
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Pearson residuals
+
+    - name: hlresP
+      title: Highlight values above
+      type: Number
+      default: 2.0
+      description:
+          R: >
+            a number (default: 2.0), highlight values in the `'postHoc'` table
+            above this value
+
+    - name: resS
+      title: Standardized residuals
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Standardized residuals
+
+    - name: hlresS
+      title: Highlight values above
+      type: Number
+      default: 2.0
+      description:
+          R: >
+            a number (default: 2.0), highlight values in the `'postHoc'` table
+            above this value
+
+    - name: resA
+      title: Adjusted residuals
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide Adjusted residuals
+
+    - name: hlresA
+      title: Highlight values above
+      type: Number
+      default: 2.0
+      description:
+          R: >
+            a number (default: 2.0), highlight values in the `'postHoc'` table
+            above this value
 ...
