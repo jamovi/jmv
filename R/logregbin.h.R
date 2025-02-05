@@ -755,6 +755,7 @@ logRegBinResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                             height=430,
                                             renderFun=".cutOffPlot",
                                             visible="(cutOffPlot)",
+                                            requiresData=TRUE,
                                             clearWith=list(
                                                 "dep",
                                                 "blocks",
@@ -813,6 +814,7 @@ logRegBinResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                             renderFun=".rocPlot",
                                             visible="(rocPlot)",
                                             refs="ROCR",
+                                            requiresData=TRUE,
                                             clearWith=list(
                                                 "dep",
                                                 "blocks",
@@ -966,8 +968,8 @@ logRegBinBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   specificity of outcomes grouped by the cut-off value
 #' @param sens \code{TRUE} or \code{FALSE} (default), provide the predicted
 #'   sensitivity of outcomes grouped by the cut-off value
-#' @param auc \code{TRUE} or \code{FALSE} (default), provide the rea under the
-#'   ROC curve (AUC)
+#' @param auc \code{TRUE} or \code{FALSE} (default), provide the area under
+#'   the ROC curve (AUC)
 #' @param rocPlot \code{TRUE} or \code{FALSE} (default), provide a ROC curve
 #'   plot
 #' @param cutOff \code{TRUE} or \code{FALSE} (default), set a cut-off used for
