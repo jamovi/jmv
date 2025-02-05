@@ -358,6 +358,7 @@ items:
                 height: 430
                 renderFun: .cutOffPlot
                 visible: (cutOffPlot)
+                requiresData: true
                 clearWith:
                   - dep
                   - blocks
@@ -417,6 +418,7 @@ items:
                 renderFun: .rocPlot
                 visible: (rocPlot)
                 refs: ROCR
+                requiresData: true
                 clearWith:
                   - dep
                   - blocks
