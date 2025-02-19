@@ -77,6 +77,10 @@ descriptivesClass <- R6::R6Class(
                     "(median)", "(mode)", "(sum)", "(sd)", "(variance)", "(iqr)",
                     "(range)", "(min)", "(max)", "(skew)", "(skew)", "(kurt)",
                     "(kurt)", "(sw)", "(sw)"
+                ),
+                supportsWeights = c(
+                    rep(TRUE, 3), rep(FALSE, 3), TRUE, FALSE, rep(TRUE, 3), FALSE, rep(TRUE, 3),
+                    rep(FALSE, 6)
                 )
             )
 
@@ -278,23 +282,23 @@ descriptivesClass <- R6::R6Class(
                 stats[['min']] <- min(column)
                 stats[['max']] <- max(column)
 
-                stats[['mode']] <- NA
-                stats[['se']] <- NA
-                stats[['ciLower']] <- NA
-                stats[['ciUpper']] <- NA
+                stats[['mode']] <- NaN
+                stats[['se']] <- NaN
+                stats[['ciLower']] <- NaN
+                stats[['ciUpper']] <- NaN
 
-                stats[['iqr']] <- NA
-                stats[['skew']] <- NA
-                stats[['seSkew']] <- NA
-                stats[['kurt']] <- NA
-                stats[['seKurt']] <- NA
-                stats[['sww']] <- NA
-                stats[['sw']] <- NA
+                stats[['iqr']] <- NaN
+                stats[['skew']] <- NaN
+                stats[['seSkew']] <- NaN
+                stats[['kurt']] <- NaN
+                stats[['seKurt']] <- NaN
+                stats[['sww']] <- NaN
+                stats[['sw']] <- NaN
 
                 if ( self$options$pcEqGr ) {
                     pcNEqGr <- self$options$pcNEqGr
                     for (i in 1:(pcNEqGr-1))
-                        stats[[paste0('quant', i)]] <- NA
+                        stats[[paste0('quant', i)]] <- NaN
                 }
 
                 if ( self$options$pc ) {
@@ -302,7 +306,7 @@ descriptivesClass <- R6::R6Class(
                     npcValues <- length(pcValues)
                     if ( npcValues > 0 ) {
                         for (i in 1:npcValues)
-                            stats[[paste0('perc', i)]] <- NA
+                            stats[[paste0('perc', i)]] <- NaN
                     }
                 }
             } else {
@@ -411,6 +415,7 @@ descriptivesClass <- R6::R6Class(
                 format <- colArgs$format[i]
                 type <- colArgs$type[i]
                 visible <- colArgs$visible[i]
+                supportsWeights <- colArgs$supportsWeights[i]
 
                 if (name == "ciLower" || name == "ciUpper") {
                     title <- jmvcore::format(
@@ -436,6 +441,15 @@ descriptivesClass <- R6::R6Class(
                         if (j == 1) {
                             table$addFormat(
                                 rowNo=1, col=paste0("stat", post), Cell.BEGIN_GROUP
+                            )
+                        }
+
+                        # Add weights not supported footnote for unsupported stats
+                        if (self$isWeighted && ! supportsWeights) {
+                            table$addFootnote(
+                                paste0("stat", post),
+                                .("Does not support weighted data yet."),
+                                1
                             )
                         }
 
@@ -472,6 +486,15 @@ descriptivesClass <- R6::R6Class(
                         combineBelow=TRUE
                     )
 
+                    # Add weights not supported footnote for unsupported stats
+                    if (self$isWeighted && ! supportsWeights) {
+                        table$addFootnote(
+                            paste0("stat", post),
+                            .("Does not support weighted data yet."),
+                            1
+                        )
+                    }
+
                     for (k in seq_along(vars)) {
                         subName <- paste0(vars[k], post)
                         table$addColumn(
@@ -488,13 +511,6 @@ descriptivesClass <- R6::R6Class(
                     table$setNote(
                         "ci",
                         .("The CI of the mean assumes sample means follow a t-distribution with N - 1 degrees of freedom")
-                    )
-                }
-
-                if (self$isWeighted && self$anyNonWeightSupportedStats) {
-                    table$setNote(
-                        "weighted",
-                        .("Not all statistics are supported yet for weighted data.")
                     )
                 }
             }
@@ -557,7 +573,7 @@ descriptivesClass <- R6::R6Class(
             if (self$isWeighted && self$anyNonWeightSupportedStats) {
                 table$setNote(
                     "weighted",
-                    .("Not all statistics are supported yet for weighted data.")
+                    .("Not all statistics support weighted data yet.")
                 )
             }
 
