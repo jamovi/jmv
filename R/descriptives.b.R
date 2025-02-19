@@ -1009,7 +1009,7 @@ descriptivesClass <- R6::R6Class(
                 data$fillrev <- factor(data[[fill]], rev(levels(data[[fill]])))
 
 
-                plot <- ggplot(data=data, aes_string(x='x', y='fillrev', fill=fill)) +
+                plot <- ggplot(data=data, aes(x=x, y=fillrev, fill=!!sym(fill), height=after_stat(density))) +
                     labs(x=labels$x, y=labels[[fill]]) +
                     scale_y_discrete(expand = c(0.05, 0)) +
                     scale_x_continuous(expand = c(0.01, 0))
@@ -1018,7 +1018,7 @@ descriptivesClass <- R6::R6Class(
                     plot <- plot + ggridges::geom_density_ridges(stat="binline", bins=nBins, scale=0.9)
 
                 if (self$options$dens)
-                    plot <- plot + ggridges::geom_density_ridges(scale=0.9, alpha=alpha)
+                    plot <- plot + ggridges::geom_density_ridges(stat="density", scale=0.9, alpha=alpha)
 
                 if (nSplits == 2) {
                     plot <- plot + facet_grid(cols=vars(s1))
