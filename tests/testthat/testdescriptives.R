@@ -163,6 +163,40 @@ testthat::test_that("Grouped frequency table is displayed correctly", {
     testthat::expect_equal(c(0.13, 0.23, 0.33, 0.4, 0.55, 0.61, 0.74, 0.84, 1), freq$cumpc)
 })
 
+
+params <- list(
+    list(
+        weights = NULL,
+        expected_counts = c(1, 1, 1, 1, 1),
+        info = "No weights"
+    ),
+    list(
+        weights = c(1, 2, 3, 4, 5),
+        expected_counts = c(1, 2, 3, 4, 5),
+        info = "Integer weights"
+    ),
+    list(
+        weights = c(0.5, 1, 1.5, 2, 2.5),
+        expected_counts = c(0.5, 1, 1.5, 2, 2.5),
+        info = "Non-integer weights"
+    )
+)
+testthat::test_that("Weighted grouped frequency table is displayed correctly", {
+    for (param in params) {
+        # GIVEN a data frame with a factor
+        df <- data.frame(var = rep(LETTERS[1:5]), stringsAsFactors = TRUE)
+        # AND weights associated with these values
+        attr(df, "jmv-weights") <- param$weights
+
+        # WHEN the frequency tables are calculated
+        desc <- jmv::descriptives(data = df, vars = c("var"), freq = TRUE)
+
+        # THEN the counts in the frequency table are correct
+        r <- desc$frequencies[[1]]$asDF
+        testthat::expect_equal(r$counts, param$expected_counts, info = param$info)
+    }
+})
+
 testthat::test_that('Descriptives works old scenario', {
     w <- as.factor(rep(c("1", "2","3"), each=4))
     x <- as.factor(rep(c("a", "b","c"), 4))
@@ -279,3 +313,135 @@ testthat::test_that('Extreme values provides note if number of cases is lower th
     testthat::expect_equal(eDf$value, c(3.1, 2.3, 1.1, NA, NA, 1.1, 2.3, 3.1, NA, NA))
 })
 
+
+params <- list(
+    list(
+        weights = NULL,
+        expected = list(
+            n=10, mean=3, median=3, sum=30, sd=1.491, variance=2.222, min=1, max=5, range=4
+        ),
+        info = "No weights"
+    ),
+    list(
+        weights = rep(1:2, 5),
+        expected = list(
+            n=15, mean=3, median=3, sum=45, sd=1.464, variance=2.143, min=1, max=5, range=4
+        ),
+        info = "Integer weights"
+    ),
+    list(
+        weights = c(0.3, 0.5, 0.6, 0.9, 1, 1.2, 1.4, 1.6, 1.8, 2),
+        expected = list(
+            n=11.3, mean=3.664, median=4, sum=41.4, sd=1.32, variance=1.74, min=1, max=5, range=4
+        ),
+        info = "Non-integer weights"
+    )
+)
+testthat::test_that("Weighted descriptives with no grouping variable works", {
+    for (param in params) {
+        # GIVEN a data frame with a numeric variable
+        df <- data.frame(x = rep(1:5, each=2))
+        # AND weights added to the data frame
+        attr(df, "jmv-weights") <- param$weights
+
+        # WHEN the descriptives are calculated
+        desc <- jmv::descriptives(
+            data = df, vars = "x", desc="rows", sum = TRUE, variance = TRUE, range = TRUE
+        )
+
+        # THEN the statistics are calculated correctly
+        r <- desc$descriptivesT$asDF
+        testthat::expect_equal(r$n, param$expected$n, info = param$info)
+        testthat::expect_equal(r$mean, param$expected$mean, tolerance = 1e-3, info = param$info)
+        testthat::expect_equal(r$median, param$expected$median, info = param$info)
+        testthat::expect_equal(r$sum, param$expected$sum, info = param$info)
+        testthat::expect_equal(r$sd, param$expected$sd, tolerance = 1e-3, info = param$info)
+        testthat::expect_equal(r$variance, param$expected$variance, tolerance = 1e-3, info = param$info)
+        testthat::expect_equal(r$min, param$expected$min, info = param$info)
+        testthat::expect_equal(r$max, param$expected$max, info = param$info)
+        testthat::expect_equal(r$range, param$expected$range, info = param$info)
+    }
+})
+
+testthat::test_that("Weighted descriptives with grouping variable works", {
+    # GIVEN a data frame with a numeric variable and a grouping variable
+    df <- data.frame(group = rep(LETTERS[1:2], length.out=10), x = rep(1:5, each=2))
+    # AND weights added to the data frame
+    attr(df, "jmv-weights") <- rep(1:2, 5)
+
+    # WHEN the descriptives are calculated
+    desc <- jmv::descriptives(
+        data = df,
+        vars = "x",
+        splitBy="group",
+        desc="rows",
+        sum = TRUE,
+        variance = TRUE,
+        range = TRUE
+    )
+
+    # THEN the statistics are calculated correctly
+    r <- desc$descriptivesT$asDF
+    testthat::expect_equal(r$n, c(5, 10), info = param$info)
+    testthat::expect_equal(r$mean, c(3, 3), info = param$info)
+    testthat::expect_equal(r$median, c(3, 3), info = param$info)
+    testthat::expect_equal(r$sum, c(15, 30), info = param$info)
+    testthat::expect_equal(r$sd, c(1.581, 1.491), tolerance = 1e-3, info = param$info)
+    testthat::expect_equal(r$variance, c(2.500, 2.222), tolerance = 1e-3, info = param$info)
+    testthat::expect_equal(r$min, c(1, 1), info = param$info)
+    testthat::expect_equal(r$max, c(5, 5), info = param$info)
+    testthat::expect_equal(r$range, c(4, 4), info = param$info)
+})
+
+testthat::test_that("Splitting by multiple variables works for normal table", {
+    # GIVEN a data frame with a numeric variable and two grouping variables
+    data <- ToothGrowth
+
+    # WHEN the descriptives split by multiple groups are calculated
+    desc <- descriptives(
+        formula = len ~ supp:dose,
+        data,
+        median=FALSE,
+        min=FALSE,
+        max=FALSE,
+        missing=FALSE,
+        sd=FALSE,
+    )
+
+    # THEN the descriptives are calculated correctly
+    r <- desc$descriptives$asDF
+    testthat::expect_equal(r$`len[nOJ0.5]`, 10)
+    testthat::expect_equal(r$`len[nOJ1]`, 10)
+    testthat::expect_equal(r$`len[nOJ2]`, 10)
+    testthat::expect_equal(r$`len[nVC0.5]`, 10)
+    testthat::expect_equal(r$`len[nVC1]`, 10)
+    testthat::expect_equal(r$`len[nVC2]`, 10)
+    testthat::expect_equal(r$`len[meanOJ0.5]`, 13.23)
+    testthat::expect_equal(r$`len[meanOJ1]`, 22.70)
+    testthat::expect_equal(r$`len[meanOJ2]`, 26.06)
+    testthat::expect_equal(r$`len[meanVC0.5]`, 7.98)
+    testthat::expect_equal(r$`len[meanVC1]`, 16.77)
+    testthat::expect_equal(r$`len[meanVC2]`, 26.14)
+})
+
+testthat::test_that("Splitting by multiple variables works for transposed table", {
+    # GIVEN a data frame with a numeric variable and two grouping variables
+    data <- ToothGrowth
+
+    # WHEN the transosed descriptives split by multiple groups are calculated
+    desc <- descriptives(
+        formula = len ~ supp:dose,
+        data,
+        median=FALSE,
+        min=FALSE,
+        max=FALSE,
+        missing=FALSE,
+        sd=FALSE,
+        desc="rows"
+    )
+
+    # THEN the descriptives are calculated correctly
+    r <- desc$descriptivesT$asDF
+    testthat::expect_equal(r$n, c(10, 10, 10, 10, 10, 10))
+    testthat::expect_equal(r$mean, c(13.23, 22.70, 26.06, 7.98, 16.77, 26.14))
+})
