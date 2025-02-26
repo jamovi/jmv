@@ -558,13 +558,13 @@ logRegMultiClass <- R6::R6Class(
             )
         },
         .populateModelCompTable = function() {
-            if (length(self$nModels) <= 1)
+            if (self$nModels <= 1)
                 return()
 
             table <- self$results$modelComp
             r <- self$lrtModelComparison[-1,]
 
-            for (i in seq_len(self$nModel - 1)) {
+            for (i in seq_len(self$nModels - 1)) {
                 row <- list()
                 row[["chi"]] <- r[['LR stat.']][i]
                 row[["df"]] <- r[['   Df']][i]

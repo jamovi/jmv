@@ -201,6 +201,31 @@ testthat::test_that('All options in the logRegMulti work (sunny)', {
     )
 })
 
+testthat::test_that("Model comparison works", {
+    # GIVEN a dataset with a dependent variable and two covariates
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+    df <- data.frame(
+        dep = sample(letters[1:3], 100, replace = TRUE),
+        cov1 = rnorm(100),
+        cov2 = rnorm(100),
+        stringsAsFactors = TRUE
+    )
+
+    # WHEN a multinomial regression model is fitted in two blocks
+    r <- jmv::logRegMulti(
+        data = df,
+        dep = "dep",
+        covs = c("cov1", "cov2"),
+        blocks = list(list("cov1"), list("cov2"))
+    )
+
+    # THEN the model comparison table contains the model fit statistics
+    modelCompTable <- r$modelComp$asDF
+    testthat::expect_equal(0.0359, modelCompTable$chi, tolerance = 1e-3)
+    testthat::expect_equal(2, modelCompTable$df)
+    testthat::expect_equal(0.982, modelCompTable$p, tolerance = 1e-3)
+})
 
 testthat::test_that("Analysis works with global weights", {
     suppressWarnings(RNGversion("3.5.0"))

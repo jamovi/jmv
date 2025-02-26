@@ -75,6 +75,32 @@ testthat::test_that('All options in the logRegOrd work (sunny)', {
     testthat::expect_equal(c(0.401, 1.291), thresTable[['odds']], tolerance = 1e-3)
 })
 
+testthat::test_that("Model comparison works", {
+    # GIVEN a dataset with a dependent variable and two covariates
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+    df <- data.frame(
+        dep = sample(letters[1:3], 100, replace = TRUE),
+        cov1 = rnorm(100),
+        cov2 = rnorm(100),
+        stringsAsFactors = TRUE
+    )
+
+    # WHEN an ordinal regression model is fitted in two blocks
+    r <- jmv::logRegOrd(
+        data = df,
+        dep = "dep",
+        covs = c("cov1", "cov2"),
+        blocks = list(list("cov1"), list("cov2"))
+    )
+
+    # THEN the model comparison table contains the model fit statistics
+    modelCompTable <- r$modelComp$asDF
+    testthat::expect_equal(0.0369, modelCompTable$chi, tolerance = 1e-3)
+    testthat::expect_equal(1, modelCompTable$df)
+    testthat::expect_equal(0.848, modelCompTable$p, tolerance = 1e-3)
+})
+
 testthat::test_that("Analysis works with global weights", {
     suppressWarnings(RNGversion("3.5.0"))
     set.seed(1337)
