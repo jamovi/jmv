@@ -1746,6 +1746,7 @@ descriptivesClass <- R6::R6Class(
                 private$colArgs$superTitle <- c(colArgs$superTitle, rep(.("Percentiles"), pcNEqGr-1))
                 private$colArgs$type <- c(colArgs$type, rep('number', pcNEqGr - 1))
                 private$colArgs$visible <- c(colArgs$visible, rep("(pcEqGr)", pcNEqGr - 1))
+                private$colArgs$supportsWeights <- c(colArgs$supportsWeights, rep(FALSE, pcNEqGr - 1))
             }
 
             if ( self$options$pc ){
@@ -1761,6 +1762,7 @@ descriptivesClass <- R6::R6Class(
                     private$colArgs$superTitle <- c(colArgs$superTitle, rep(.("Percentiles"), npcValues))
                     private$colArgs$type <- c(colArgs$type, rep('number', npcValues))
                     private$colArgs$visible <- c(colArgs$visible, rep("(pc)", npcValues))
+                    private$colArgs$supportsWeights <- c(colArgs$supportsWeights, rep(FALSE, npcValues))
                 }
             }
         },
