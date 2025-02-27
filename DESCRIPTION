@@ -42,7 +42,8 @@ Imports:
     MASS,
     ggrepel,
     dplyr,
-    magrittr
+    magrittr,
+    matrixStats
 Suggests:
     exact2x2,
     testthat  (>= 3.1.5),
