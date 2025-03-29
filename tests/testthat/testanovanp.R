@@ -21,6 +21,6 @@ testthat::test_that('All options in the anovaNP work (sunny)', {
     testthat::expect_equal(c(0.986, 0.915, 0.969), comp$p, tolerance = 1e-3)
     # Dunn's Test comparisons table
     testthat::expect_equal(c(-0.163, -0.406, -0.244), comp$z, tolerance = 1e-3)
-    testthat::expect_equal(c(0.871, 0.684, 0.807), comp$p.unadj, tolerance = 1e-3)
-    testthat::expect_equal(c(1.000, 1.000, 1.000), comp$p.adj, tolerance = 1e-3)
+    testthat::expect_equal(c(0.871, 0.684, 0.807), comp$pUnadj, tolerance = 1e-3)
+    testthat::expect_equal(c(1.000, 1.000, 1.000), comp$pAdj, tolerance = 1e-3)
 })
