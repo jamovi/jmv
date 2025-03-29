@@ -76,19 +76,32 @@ options:
       description:
           R: a string naming the grouping or independent variable in `data`
 
-    - name: es
-      title: Effect size
-      type: Bool
-      default: false
+    - name: kwES
+      title: Effect Size
+      type: NMXList
+      options:
+          - name: epsilonsq
+            title: ε²
+      default: [ ]
       description:
+          ui: >
+            provide a ε² measure of effect size for the Kruskal-Wallis tests.
           R: >
-            `TRUE` or `FALSE` (default), provide effect-sizes
+            this is epsilon squared, a type of effect size for the Kruskal-Wallis test
 
-    - name: pairs
-      title: DSCF pairwise comparisons
-      type: Bool
-      default: false
+    - name: kwPH
+      title: Post Hoc Tests
+      type: NMXList
+      options:
+          - name: dscf
+            title: DSCF pairwise comparisons
+          - name: dunn
+            title: Dunn's pairwise comparisons
+      default: [ ]
       description:
+          ui: >
+            perform DSCF and/or Dunn's tests pairwise comparisons.
           R: >
-            `TRUE` or `FALSE` (default), perform pairwise comparisons
+            perform DSCF and/or Dunn's tests pairwise comparisons
+
 ...

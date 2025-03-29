@@ -6,7 +6,7 @@ testthat::test_that('All options in the anovaNP work (sunny)', {
 
     data <- data.frame(f = factor, dep = dep)
 
-    r <- jmv::anovaNP(data, deps='dep', group='f', es=TRUE, pairs=TRUE)
+    r <- jmv::anovaNP(data, deps='dep', group='f', kwES="epsilonsq", kwPH=c("dscf","dunn"))
 
     # Test anova table
     main <- r$table$asDF
@@ -15,8 +15,12 @@ testthat::test_that('All options in the anovaNP work (sunny)', {
     testthat::expect_equal(0.920, main$p, tolerance = 1e-3)
     testthat::expect_equal(0.0098, main$es, tolerance = 1e-4)
 
-    # Test comparisons table
     comp <- r$comparisons[[1]]$asDF
+    # DSCF Test comparisons table
     testthat::expect_equal(c(0.227, 0.567, 0.340), comp$W, tolerance = 1e-3)
     testthat::expect_equal(c(0.986, 0.915, 0.969), comp$p, tolerance = 1e-3)
+    # Dunn's Test comparisons table
+    testthat::expect_equal(c(-0.163, -0.406, -0.244), comp$z, tolerance = 1e-3)
+    testthat::expect_equal(c(0.871, 0.684, 0.807), comp$p.unadj, tolerance = 1e-3)
+    testthat::expect_equal(c(1.000, 1.000, 1.000), comp$p.adj, tolerance = 1e-3)
 })

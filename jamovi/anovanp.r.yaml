@@ -34,19 +34,19 @@ items:
         - name: es
           title: ε²
           type: number
-          visible: (es)
+          visible: (kwES:epsilonsq)
 
     - name: comparisons
-      title: Dwass-Steel-Critchlow-Fligner pairwise comparisons
+      title: Post Hoc Test
       type: Array
       description: an array of pairwise comparison tables
       items: (deps)
-      visible: (pairs)
+      visible: (kwPH:dscf || kwPH:dunn)
       clearWith:
         - group
 
       template:
-        title: Pairwise comparisons - $key
+        title: Post Hoc Comparisons - $key
         type: Table
         rows: 0
         clearWith:
@@ -63,9 +63,33 @@ items:
             type: text
 
           - name: W
-            type: number
+            title: W
+            superTitle: DSCF
+            visible: (kwPH:dscf)
 
           - name: p
             title: p
+            superTitle: DSCF
             type: number
             format: zto,pvalue
+            visible: (kwPH:dscf)
+
+          - name: z
+            title: z
+            superTitle: Dunn's
+            type: number
+            visible: (kwPH:dunn)
+
+          - name: pUnadj
+            title: p<sub>(unadj)</sub>
+            superTitle: Dunn's
+            type: number
+            format: zto,pvalue
+            visible: (kwPH:dunn)
+
+          - name: pAdj
+            title: p<sub>(Bonferroni)</sub>
+            superTitle: Dunn's
+            type: number
+            format: zto,pvalue
+            visible: (kwPH:dunn)   

@@ -20,6 +20,7 @@ anovaNPClass <- R6::R6Class(
                 subset <- na.omit(subset)
                 n <- nrow(subset)
                 result <- kruskal.test(y ~ x, subset)
+                # Calculate epsilon squared effect size
                 es <- result$statistic * (n+1) / (n^2-1)
                 table$setRow(rowKey=depName, values=list(
                     chiSq=result$statistic,
@@ -29,35 +30,46 @@ anovaNPClass <- R6::R6Class(
                 ))
             }
 
-            if (self$options$get("pairs")) {
-
+            if (length(self$options$get('kwPH')) > 0) {
                 nGroups = nlevels(groupColumn)
                 pairs <- private$.genPairs(groupColumn)
 
                 for (depName in deps) {
-
                     depColumn <- data[[depName]]
                     table <- self$results$get('comparisons')$get(depName)
-
                     sdata <- base::split(depColumn, groupColumn)
 
-                    for (pair in pairs) {
-                        if (table$getCell(rowKey=pair, 'W')$isEmpty) {
+                    # DSCF tests
+                    if ("dscf" %in% self$options$get('kwPH')) {
+                        for (pair in pairs) {
+                            if (table$getCell(rowKey=pair, 'W')$isEmpty) {
+                                table$setStatus('running')
+                                private$.checkpoint()
 
-                            table$setStatus('running')
-                            private$.checkpoint()
+                                pairData <- list(sdata[[pair[1]]], sdata[[pair[2]]])
+                                result <- pSDCFlig(pairData, method="Asymptotic", n.g=nGroups)
 
-                            pairData <- list(sdata[[pair[1]]], sdata[[pair[2]]])
-                            result <- pSDCFlig(pairData, method="Asymptotic", n.g=nGroups)
+                                table$setRow(rowKey=pair, list(
+                                    W=result$obs.stat,
+                                    p=result$p.val
+                                ))
 
+                                table$setStatus('complete')
+                            }
+                        }
+                    }
+
+                    # Dunn's tests
+                    if ("dunn" %in% self$options$get('kwPH')) {
+                        dunnResults <- private$.dunnTest(depColumn, groupColumn)
+
+                        for (i in 1:nrow(dunnResults)) {
+                            pair <- c(dunnResults$group1[i], dunnResults$group2[i])
                             table$setRow(rowKey=pair, list(
-                                p1=pair[1],
-                                p2=pair[2],
-                                W=result$obs.stat,
-                                p=result$p.val
+                                z=dunnResults$z[i],
+                                pUnadj=dunnResults$p.unadj[i],
+                                pAdj=dunnResults$p.adj[i]
                             ))
-
-                            table$setStatus('complete')
                         }
                     }
                 }
@@ -85,6 +97,15 @@ anovaNPClass <- R6::R6Class(
                         p1=pair[1],
                         p2=pair[2]))
                 }
+
+                # For post-hoc tests
+                if ("dscf" %in% self$options$get('kwPH')) {
+                    depTable$setNote('dscf_note', .('DSCF results are based on the Dwass-Steel-Critchlow-Flinger test.'), init=TRUE)
+                }
+
+                if ("dunn" %in% self$options$get('kwPH')) {
+                    depTable$setNote('dunn_note', .("Dunn's test results are presented, with p-values adjusted using Bonferroni correction."), init=TRUE)
+                }
             }
         },
         .genPairs=function(groupColumn) {
@@ -107,7 +128,95 @@ anovaNPClass <- R6::R6Class(
         },
         .formula=function() {
             jmvcore:::composeFormula(self$options$deps, self$options$group)
-        })
+        },
+        # Implementation of Dunn's test
+        .dunnTest = function(x, g) {
+            # Ensure g is a factor
+            g <- as.factor(g)
+
+            # Calculate ranks
+            N <- length(x)
+            ranks <- rank(x)
+
+            # Calculate mean rank for each group
+            groups <- levels(g)
+            k <- length(groups)
+
+            # Initialize results
+            results <- data.frame(
+                group1 = character(),
+                group2 = character(),
+                meanRank1 = numeric(),
+                meanRank2 = numeric(),
+                diff = numeric(),
+                se = numeric(),
+                z = numeric(),
+                p.unadj = numeric(),
+                p.adj = numeric(),
+                stringsAsFactors = FALSE
+            )
+
+            # Calculate sum of ranks and size for each group
+            group_sizes <- numeric(k)
+            group_ranks <- numeric(k)
+
+            for (i in 1:k) {
+                group_i <- (g == groups[i])
+                group_sizes[i] <- sum(group_i)
+                group_ranks[i] <- sum(ranks[group_i])
+            }
+
+            # Calculate mean ranks
+            mean_ranks <- group_ranks / group_sizes
+
+            # Calculate rank variance
+            # Handle ties
+            ties <- table(ranks)
+            tie_correction <- 1
+            if (any(ties > 1)) {
+                tie_correction <- 1 - sum((ties^3 - ties)) / (N^3 - N)
+            }
+
+            # Pairwise comparisons
+            comparisons <- 0
+
+            for (i in 1:(k-1)) {
+                for (j in (i+1):k) {
+                    comparisons <- comparisons + 1
+
+                    # Mean rank difference
+                    diff <- mean_ranks[i] - mean_ranks[j]
+
+                    # Standard error
+                    se <- sqrt((N * (N + 1) / 12) * (1/group_sizes[i] + 1/group_sizes[j]) * tie_correction)
+
+                    # Z statistic
+                    z <- diff / se
+
+                    # P-value (unadjusted)
+                    p.unadj <- 2 * pnorm(-abs(z))
+
+                    # Add to results table
+                    results[comparisons, ] <- list(
+                        groups[i],
+                        groups[j],
+                        mean_ranks[i],
+                        mean_ranks[j],
+                        diff,
+                        se,
+                        z,
+                        p.unadj,
+                        NA  # Adjusted p-value will be calculated later
+                    )
+                }
+            }
+
+            # Adjust p-values for multiple tests (Bonferroni)
+            results$p.adj <- p.adjust(results$p.unadj, method = "bonferroni")
+
+            return(results)
+        }
+    )
 )
 
 # the following is borrowed from NSM3
