@@ -602,10 +602,14 @@ contTablesClass <- R6::R6Class(
             postHoc    <- self$results$postHoc
 
             subNamesPh    <- c('[resU]', '[resP]', '[resS]', '[resA]')
-            subTitlesPh   <- c(.('Unstandardized'), .('Pearson'), .('Standardized'), .('Adjusted'))
+            subTitlesPh   <- c(.('Unstandardized Residuals'), .('Pearson Residuals'), .('Standardized Residuals'), .('Deviance Residuals'))
             visiblePh     <- c('(resU)', '(resP)', '(resS)', '(resA)')
             typesPh       <- c('number', 'number', 'number', 'number')
             formatsPh     <- c('', '', '', '')
+
+            # For post-hoc tests
+            if (self$options$get('resA'))
+                postHoc$setNote('notetodeviance', .('Deviance Residuals are adjusted residuals from a Poisson GLM.'), init=TRUE)
 
             # Add layer columns on top (if any)
             reversed <- rev(layerNames)
@@ -643,7 +647,8 @@ contTablesClass <- R6::R6Class(
             if (oneResidualSelected) {
                 selectedIndex   <- which(residualSelections)
                 singleResTitle  <- subTitlesPh[selectedIndex]
-                postHoc$setTitle(jmvcore::format("Post Hoc Test ({title} Residuals)", title=singleResTitle))
+                phTitle <- jmvcore::format('Post Hoc Test (Type: {title})', title=singleResTitle)
+                postHoc$setTitle(.(phTitle))
                 showResidualsCol <- FALSE
             } else {
                 postHoc$setTitle(.('Post Hoc Test'))
@@ -669,7 +674,7 @@ contTablesClass <- R6::R6Class(
 
                 postHoc$addColumn(
                     name  = paste0('type', subName),
-                    title = 'Residuals',
+                    title = 'Type',
                     type  = 'text',
                     visible = vPh
                 )
@@ -841,14 +846,14 @@ contTablesClass <- R6::R6Class(
                     # Check each cell and if it exceeds the threshold, add format
                     for (colIndex in seq_len(nCols)) {
 
-                        # Pearson
+                        # Pearson Residuals
                         if (!is.na(hlValueP) && self$options$resP) {
                             resValueP <- residualsP[rowNo, colIndex]
                             if (!is.na(resValueP) && abs(resValueP) > hlValueP)
                                 postHoc$addFormat(rowNo=freqRowNo, col=paste0(colIndex, "[resP]"), Cell.NEGATIVE)
                         }
 
-                        # Standardized
+                        # Standardized Residuals (adjusted Pearson)
                         if (!is.na(hlValueS) && self$options$resS) {
                             resValueS <- residualsS[rowNo, colIndex]
                             if (!is.na(resValueS) && abs(resValueS) > hlValueS) {
@@ -856,7 +861,7 @@ contTablesClass <- R6::R6Class(
                             }
                         }
 
-                        # Adjusted
+                        # Deviance Residuals
                         if (!is.na(hlValueA) && self$options$resA) {
                             resValueA <- residualsA[rowNo, colIndex]
                             if (!is.na(resValueA) && abs(resValueA) > hlValueA) {

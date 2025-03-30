@@ -68,10 +68,10 @@ testthat::test_that('All options in the contTables work (sunny)', {
 
     # Test residuals postHoc tables
     postHoc <- r$postHoc$asDF
-    testthat::expect_equal(c('Unstandardized', 'Unstandardized'), postHoc[['type[resU]']])
-    testthat::expect_equal(c('Pearson', 'Pearson'), postHoc[['type[resP]']])
-    testthat::expect_equal(c('Standardized', 'Standardized'), postHoc[['type[resS]']])
-    testthat::expect_equal(c('Adjusted', 'Adjusted'), postHoc[['type[resA]']])
+    testthat::expect_equal(c('Unstandardized Residuals', 'Unstandardized Residuals'), postHoc[['type[resU]']])
+    testthat::expect_equal(c('Pearson Residuals', 'Pearson Residuals'), postHoc[['type[resP]']])
+    testthat::expect_equal(c('Standardized Residuals', 'Standardized Residuals'), postHoc[['type[resS]']])
+    testthat::expect_equal(c('Deviance Residuals', 'Deviance Residuals'), postHoc[['type[resA]']])
     testthat::expect_equal(c(0.0500, -0.0500), postHoc[['1[resU]']], tolerance = 1e-3)
     testthat::expect_equal(c(-0.0500, 0.0500), postHoc[['2[resU]']], tolerance = 1e-3)
     testthat::expect_equal(c(0.0104, -0.0094), postHoc[['1[resP]']], tolerance = 1e-3)
@@ -215,10 +215,10 @@ testthat::test_that("conttables works with counts", {
     # Test residuals postHoc tables
     postHoc <- as.data.frame(table$postHoc)
 
-    testthat::expect_equal('Unstandardized', postHoc[4, 'type[resU]'])
-    testthat::expect_equal('Pearson', postHoc[6, 'type[resP]'])
-    testthat::expect_equal('Standardized', postHoc[1, 'type[resS]'])
-    testthat::expect_equal('Adjusted', postHoc[2, 'type[resA]'])
+    testthat::expect_equal('Unstandardized Residuals', postHoc[4, 'type[resU]'])
+    testthat::expect_equal('Pearson Residuals', postHoc[6, 'type[resP]'])
+    testthat::expect_equal('Standardized Residuals', postHoc[1, 'type[resS]'])
+    testthat::expect_equal('Deviance Residuals', postHoc[2, 'type[resA]'])
     testthat::expect_equal(2.111, postHoc[4, '1[resU]'], tolerance = 1e-3)
     testthat::expect_equal(1.113, postHoc[6, '2[resP]'], tolerance = 1e-3)
     testthat::expect_equal(-2.422, postHoc[1, '1[resS]'], tolerance = 1e-3)
