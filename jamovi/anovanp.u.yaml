@@ -20,32 +20,12 @@ children:
             maxItemCount: 1
             isTarget: true
   - type: LayoutBox
-    margin: large
     stretchFactor: 1
+    margin: large
     children:
-      - type: Label
-        label: Effect Size
-        stretchFactor: 1
-        cell:
-          column: 0
-          row: 0
-        children:
-          - name: kwES_epsilonsq
-            type: CheckBox
-            optionPart: epsilonsq
-            optionName: kwES
-      - type: Label
-        label: Post Hoc Test
-        stretchFactor: 1
-        cell:
-          column: 1
-          row: 0
-        children:
-          - name: kwPH_dscf
-            type: CheckBox
-            optionPart: dscf
-            optionName: kwPH
-          - name: kwPH_dunn
-            type: CheckBox
-            optionPart: dunn
-            optionName: kwPH
+      - type: CheckBox
+        name: es
+      - type: CheckBox
+        name: pairs
+      - type: CheckBox
+        name: pairsDunn

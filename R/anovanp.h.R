@@ -8,11 +8,12 @@ anovaNPOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         initialize = function(
             deps = NULL,
             group = NULL,
-            kwES = list(),
-            kwPH = list(), ...) {
+            es = FALSE,
+            pairs = FALSE,
+            pairsDunn = FALSE, ...) {
 
             super$initialize(
-                package="mzanovanp",
+                package="jmv",
                 name="anovaNP",
                 requiresData=TRUE,
                 ...)
@@ -34,35 +35,37 @@ anovaNPOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "ordinal"),
                 permitted=list(
                     "factor"))
-            private$..kwES <- jmvcore::OptionNMXList$new(
-                "kwES",
-                kwES,
-                options=list(
-                    "epsilonsq"),
-                default=list())
-            private$..kwPH <- jmvcore::OptionNMXList$new(
-                "kwPH",
-                kwPH,
-                options=list(
-                    "dscf",
-                    "dunn"),
-                default=list())
+            private$..es <- jmvcore::OptionBool$new(
+                "es",
+                es,
+                default=FALSE)
+            private$..pairs <- jmvcore::OptionBool$new(
+                "pairs",
+                pairs,
+                default=FALSE)
+            private$..pairsDunn <- jmvcore::OptionBool$new(
+                "pairsDunn",
+                pairsDunn,
+                default=FALSE)
 
             self$.addOption(private$..deps)
             self$.addOption(private$..group)
-            self$.addOption(private$..kwES)
-            self$.addOption(private$..kwPH)
+            self$.addOption(private$..es)
+            self$.addOption(private$..pairs)
+            self$.addOption(private$..pairsDunn)
         }),
     active = list(
         deps = function() private$..deps$value,
         group = function() private$..group$value,
-        kwES = function() private$..kwES$value,
-        kwPH = function() private$..kwPH$value),
+        es = function() private$..es$value,
+        pairs = function() private$..pairs$value,
+        pairsDunn = function() private$..pairsDunn$value),
     private = list(
         ..deps = NA,
         ..group = NA,
-        ..kwES = NA,
-        ..kwPH = NA)
+        ..es = NA,
+        ..pairs = NA,
+        ..pairsDunn = NA)
 )
 
 anovaNPResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -70,7 +73,8 @@ anovaNPResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     inherit = jmvcore::Group,
     active = list(
         table = function() private$.items[["table"]],
-        comparisons = function() private$.items[["comparisons"]]),
+        comparisons = function() private$.items[["comparisons"]],
+        comparisonsDunn = function() private$.items[["comparisonsDunn"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -108,18 +112,18 @@ anovaNPResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                         `name`="es", 
                         `title`="\u03B5\u00B2", 
                         `type`="number", 
-                        `visible`="(kwES:epsilonsq)"))))
+                        `visible`="(es)"))))
             self$add(jmvcore::Array$new(
                 options=options,
                 name="comparisons",
-                title="Post Hoc Test",
+                title="Dwass-Steel-Critchlow-Fligner pairwise comparisons",
                 items="(deps)",
-                visible="(kwPH:dscf || kwPH:dunn)",
+                visible="(pairs)",
                 clearWith=list(
                     "group"),
                 template=jmvcore::Table$new(
                     options=options,
-                    title="Post Hoc Comparisons - $key",
+                    title="Pairwise comparisons - $key",
                     rows=0,
                     clearWith=NULL,
                     columns=list(
@@ -135,36 +139,49 @@ anovaNPResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                             `type`="text"),
                         list(
                             `name`="W", 
-                            `title`="W", 
-                            `superTitle`="DSCF", 
-                            `visible`="(kwPH:dscf)"),
+                            `type`="number"),
                         list(
                             `name`="p", 
                             `title`="p", 
-                            `superTitle`="DSCF", 
                             `type`="number", 
-                            `format`="zto,pvalue", 
-                            `visible`="(kwPH:dscf)"),
+                            `format`="zto,pvalue")))))
+            self$add(jmvcore::Array$new(
+                options=options,
+                name="comparisonsDunn",
+                title="Dunn's pairwise comparisons",
+                items="(deps)",
+                visible="(pairsDunn)",
+                clearWith=list(
+                    "group"),
+                template=jmvcore::Table$new(
+                    options=options,
+                    title="Pairwise comparisons - $key",
+                    rows=0,
+                    clearWith=NULL,
+                    columns=list(
+                        list(
+                            `name`="p1", 
+                            `title`="", 
+                            `content`=".", 
+                            `type`="text"),
+                        list(
+                            `name`="p2", 
+                            `title`="", 
+                            `content`=".", 
+                            `type`="text"),
                         list(
                             `name`="z", 
-                            `title`="z", 
-                            `superTitle`="Dunn's", 
-                            `type`="number", 
-                            `visible`="(kwPH:dunn)"),
+                            `type`="number"),
                         list(
-                            `name`="pUnadj", 
+                            `name`="p", 
                             `title`="p<sub>(unadj)</sub>", 
-                            `superTitle`="Dunn's", 
                             `type`="number", 
-                            `format`="zto,pvalue", 
-                            `visible`="(kwPH:dunn)"),
+                            `format`="zto,pvalue"),
                         list(
-                            `name`="pAdj", 
+                            `name`="padj", 
                             `title`="p<sub>(Bonferroni)</sub>", 
-                            `superTitle`="Dunn's", 
                             `type`="number", 
-                            `format`="zto,pvalue", 
-                            `visible`="(kwPH:dunn)")))))}))
+                            `format`="zto,pvalue")))))}))
 
 anovaNPBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "anovaNPBase",
@@ -172,7 +189,7 @@ anovaNPBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
-                package = "mzanovanp",
+                package = "jmv",
                 name = "anovaNP",
                 version = c(1,0,0),
                 options = options,
@@ -216,14 +233,17 @@ anovaNPBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param deps a string naming the dependent variable in \code{data}
 #' @param group a string naming the grouping or independent variable in
 #'   \code{data}
-#' @param kwES this is epsilon squared, a type of effect size for the
-#'   Kruskal-Wallis test
-#' @param kwPH perform DSCF and/or Dunn's tests pairwise comparisons
+#' @param es \code{TRUE} or \code{FALSE} (default), provide effect-sizes
+#' @param pairs \code{TRUE} or \code{FALSE} (default), perform pairwise
+#'   comparisons
+#' @param pairsDunn \code{TRUE} or \code{FALSE} (default), perform pairwise
+#'   comparisons
 #' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$table} \tab \tab \tab \tab \tab a table of the test results \cr
 #'   \code{results$comparisons} \tab \tab \tab \tab \tab an array of pairwise comparison tables \cr
+#'   \code{results$comparisonsDunn} \tab \tab \tab \tab \tab an array of pairwise comparison tables \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -237,8 +257,9 @@ anovaNP <- function(
     data,
     deps,
     group,
-    kwES = list(),
-    kwPH = list(),
+    es = FALSE,
+    pairs = FALSE,
+    pairsDunn = FALSE,
     formula) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
@@ -272,8 +293,9 @@ anovaNP <- function(
     options <- anovaNPOptions$new(
         deps = deps,
         group = group,
-        kwES = kwES,
-        kwPH = kwPH)
+        es = es,
+        pairs = pairs,
+        pairsDunn = pairsDunn)
 
     analysis <- anovaNPClass$new(
         options = options,
