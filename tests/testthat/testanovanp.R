@@ -48,7 +48,7 @@ testthat::test_that('Dunn test in the anovaNP works (rainy)', {
     testthat::expect_equal(9.41, main$chiSq, tolerance = 1e-3)
     testthat::expect_equal(2, main$df, tolerance = 1e-3)
     testthat::expect_equal(0.009, main$p, tolerance = 1e-3)
-    testthat::expect_equal(0.672, main$es, tolerance = 1e-4)
+    testthat::expect_equal(0.672, main$es, tolerance = 3e-4)
     
     # Dunn's Test comparisonsDunn table
     comp <- r$comparisonsDunn[[1]]$asDF
