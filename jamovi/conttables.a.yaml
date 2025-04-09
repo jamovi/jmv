@@ -452,7 +452,7 @@ options:
       default: false
       description:
         R: >
-          `TRUE` or `FALSE` (default), display deviance residuals from a Poisson GLM in the Post Hoc Tests table.
+          `TRUE` or `FALSE` (default), display deviance residuals from a Poisson GLM in the post hoc tests table.
 
     - name: hlresA
       title: Highlight Deviance Residuals Above
