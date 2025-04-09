@@ -420,7 +420,7 @@ options:
       default: false
       description:
         R: >
-          `TRUE` or `FALSE` (default), display Pearson residuals in the Post Hoc Tests table.
+          `TRUE` or `FALSE` (default), display Pearson residuals in the post hoc tests table.
 
     - name: hlresP
       title: Highlight values above
