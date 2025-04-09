@@ -647,8 +647,8 @@ contTablesClass <- R6::R6Class(
             if (oneResidualSelected) {
                 selectedIndex   <- which(residualSelections)
                 singleResTitle  <- subTitlesPh[selectedIndex]
-                phTitle <- jmvcore::format('Post Hoc Test (Type: {title})', title=singleResTitle)
-                postHoc$setTitle(.(phTitle))
+                phTitle <- jmvcore::format(.('Post Hoc Test ({title})'), title=singleResTitle)
+                postHoc$setTitle(phTitle)
                 showResidualsCol <- FALSE
             } else {
                 postHoc$setTitle(.('Post Hoc Test'))
