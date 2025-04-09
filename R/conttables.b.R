@@ -602,14 +602,14 @@ contTablesClass <- R6::R6Class(
             postHoc    <- self$results$postHoc
 
             subNamesPh    <- c('[resU]', '[resP]', '[resS]', '[resA]')
-            subTitlesPh   <- c(.('Unstandardized Residuals'), .('Pearson Residuals'), .('Standardized Residuals'), .('Deviance Residuals'))
+            subTitlesPh   <- c(.('Unstandardized residuals'), .('Pearson residuals'), .('Standardized residuals'), .('Deviance residuals'))
             visiblePh     <- c('(resU)', '(resP)', '(resS)', '(resA)')
             typesPh       <- c('number', 'number', 'number', 'number')
             formatsPh     <- c('', '', '', '')
 
             # For post-hoc tests
             if (self$options$get('resA'))
-                postHoc$setNote('notetodeviance', .('Deviance residuals are adjusted residuals from a Poisson GLM.'), init=TRUE)
+                postHoc$setNote('notetodeviance', .('Deviance residuals are adjusted residuals from a Poisson GLM.'), init=FALSE)
 
             # Add layer columns on top (if any)
             reversed <- rev(layerNames)
