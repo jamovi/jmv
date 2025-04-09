@@ -77,7 +77,7 @@ options:
           R: a string naming the grouping or independent variable in `data`
 
     - name: es
-      title: Effect size
+      title: ε²
       type: Bool
       default: false
       description:
