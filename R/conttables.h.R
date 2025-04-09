@@ -869,20 +869,20 @@ contTablesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   for the bar plot y-axis.
 #' @param xaxis rows (default), or columns in bar plot X axis
 #' @param bartype stack or side by side (default), barplot type
-#' @param resU \code{TRUE} or \code{FALSE} (default), provide Unstandardized
-#'   residuals
-#' @param resP \code{TRUE} or \code{FALSE} (default), provide Pearson
-#'   residuals
-#' @param hlresP a number (default: 2.0), highlight values in the
-#'   \code{'postHoc'} table above this value
-#' @param resS \code{TRUE} or \code{FALSE} (default), provide Standardized
-#'   residuals
-#' @param hlresS a number (default: 2.0), highlight values in the
-#'   \code{'postHoc'} table above this value
-#' @param resA \code{TRUE} or \code{FALSE} (default), provide Adjusted
-#'   residuals
-#' @param hlresA a number (default: 2.0), highlight values in the
-#'   \code{'postHoc'} table above this value
+#' @param resU \code{TRUE} or \code{FALSE} (default), display unstandardized
+#'   residuals in the Post Hoc Tests table.
+#' @param resP \code{TRUE} or \code{FALSE} (default), display Pearson
+#'   residuals in the Post Hoc Tests table.
+#' @param hlresP A numeric value (default: 2.0), highlight Pearson residuals
+#'   above this threshold in the Post Hoc Tests table.
+#' @param resS \code{TRUE} or \code{FALSE} (default), display standardized
+#'   residuals (adjusted Pearson) in the Post Hoc Tests table.
+#' @param hlresS A numeric value (default: 2.0), highlight standardized
+#'   residuals above this threshold in the Post Hoc Tests table.
+#' @param resA \code{TRUE} or \code{FALSE} (default), display deviance
+#'   residuals from a Poisson GLM in the Post Hoc Tests table.
+#' @param hlresA A numeric value (default: 2.0), highlight deviance residuals
+#'   above this threshold in the Post Hoc Tests table.
 #' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{
