@@ -412,7 +412,7 @@ options:
       default: false
       description:
         R: >
-          `TRUE` or `FALSE` (default), display unstandardized residuals in the Post Hoc Tests table.
+          `TRUE` or `FALSE` (default), display unstandardized residuals in the post hoc tests table.
 
     - name: resP
       title: Pearson residuals
