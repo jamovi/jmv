@@ -20,12 +20,26 @@ children:
             maxItemCount: 1
             isTarget: true
   - type: LayoutBox
-    stretchFactor: 1
     margin: large
+    stretchFactor: 1
     children:
-      - type: CheckBox
-        name: es
-      - type: CheckBox
-        name: pairs
-      - type: CheckBox
-        name: pairsDunn
+      - type: Label
+        label: Effect Size
+        cell:
+          row: 0
+          column: 0
+        stretchFactor: 1
+        children:
+          - name: es
+            type: CheckBox
+      - type: Label
+        label: Post Hoc Tests
+        cell:
+          row: 0
+          column: 1
+        stretchFactor: 1
+        children:
+          - name: pairs
+            type: CheckBox
+          - name: pairsDunn
+            type: CheckBox
