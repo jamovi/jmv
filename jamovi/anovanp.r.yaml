@@ -69,3 +69,42 @@ items:
             title: p
             type: number
             format: zto,pvalue
+
+    - name: comparisonsDunn
+      title: Dunn's pairwise comparisons
+      type: Array
+      description: an array of pairwise comparison tables
+      items: (deps)
+      visible: (pairsDunn)
+      clearWith:
+        - group
+
+      template:
+        title: Pairwise comparisons - $key
+        type: Table
+        rows: 0
+        clearWith:
+
+        columns:
+          - name: p1
+            title: ""
+            content: .
+            type: text
+
+          - name: p2
+            title: ""
+            content: .
+            type: text
+
+          - name: z
+            type: number
+
+          - name: p
+            title: p<sub>(unadj)</sub>
+            type: number
+            format: zto,pvalue
+
+          - name: padj
+            title: p<sub>(Bonferroni)</sub>
+            type: number
+            format: zto,pvalue

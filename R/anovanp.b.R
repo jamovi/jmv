@@ -14,13 +14,17 @@ anovaNPClass <- R6::R6Class(
             table <- self$results$get('table')
             groupColumn  <- as.factor(data[[group]])
 
-            for (depName in self$options$get('deps')) {
+            # Perform Kruskal-Wallis test for each dependent variable
+            for (depName in deps) {
                 depColumn <- jmvcore::toNumeric(data[[depName]])
                 subset <- data.frame(y=depColumn, x=groupColumn)
                 subset <- na.omit(subset)
                 n <- nrow(subset)
                 result <- kruskal.test(y ~ x, subset)
+
+                # Calculate effect size epsilon squared
                 es <- result$statistic * (n+1) / (n^2-1)
+
                 table$setRow(rowKey=depName, values=list(
                     chiSq=result$statistic,
                     df=result$parameter,
@@ -29,42 +33,55 @@ anovaNPClass <- R6::R6Class(
                 ))
             }
 
-            if (self$options$get("pairs")) {
-
-                nGroups = nlevels(groupColumn)
+            # Perform pairwise comparisons if requested
+            if (self$options$get('pairs') || self$options$get('pairsDunn')) {
+                nGroups <- nlevels(groupColumn)
                 pairs <- private$.genPairs(groupColumn)
 
                 for (depName in deps) {
-
                     depColumn <- data[[depName]]
-                    table <- self$results$get('comparisons')$get(depName)
 
-                    sdata <- base::split(depColumn, groupColumn)
+                    # DSCF tests (Dwass-Steel-Critchlow-Fligner)
+                    if (self$options$get('pairs')) {
+                        table <- self$results$get('comparisons')$get(depName)
+                        sdata <- base::split(depColumn, groupColumn)
 
-                    for (pair in pairs) {
-                        if (table$getCell(rowKey=pair, 'W')$isEmpty) {
+                        for (pair in pairs) {
+                            if (table$getCell(rowKey=pair, 'W')$isEmpty) {
+                                table$setStatus('running')
+                                private$.checkpoint()
 
-                            table$setStatus('running')
-                            private$.checkpoint()
+                                pairData <- list(sdata[[pair[1]]], sdata[[pair[2]]])
+                                result <- pSDCFlig(pairData, method="Asymptotic", n.g=nGroups)
 
-                            pairData <- list(sdata[[pair[1]]], sdata[[pair[2]]])
-                            result <- pSDCFlig(pairData, method="Asymptotic", n.g=nGroups)
+                                table$setRow(rowKey=pair, list(
+                                    W=result$obs.stat,
+                                    p=result$p.val
+                                ))
 
-                            table$setRow(rowKey=pair, list(
-                                p1=pair[1],
-                                p2=pair[2],
-                                W=result$obs.stat,
-                                p=result$p.val
+                                table$setStatus('complete')
+                            }
+                        }
+                    }
+
+                    # Dunn's tests
+                    if (self$options$get('pairsDunn')) {
+                        tableDunn <- self$results$get('comparisonsDunn')$get(depName)
+                        resultDunn <- private$.dunnTest(depColumn, groupColumn)
+
+                        for (i in 1:nrow(resultDunn)) {
+                            pair <- c(resultDunn$group1[i], resultDunn$group2[i])
+                            tableDunn$setRow(rowKey=pair, list(
+                                z=resultDunn$z[i],
+                                p=resultDunn$p[i],
+                                padj=resultDunn$padj[i]
                             ))
-
-                            table$setStatus('complete')
                         }
                     }
                 }
             }
         },
         .init=function() {
-
             data <- self$data
             deps <- self$options$get('deps')
             group <- self$options$get('group')
@@ -73,23 +90,29 @@ anovaNPClass <- R6::R6Class(
                 return()
 
             compTables <- self$results$get('comparisons')
+            compTablesDunn <- self$results$get('comparisonsDunn')
 
-            groupColumn <- data[[group]]
+            # Initialize tables for each pair of groups
+            groupColumn <- as.factor(data[[group]])
             pairs <- private$.genPairs(groupColumn)
 
             for (depName in deps) {
-                depColumn <- data[[depName]]
                 depTable <- compTables$get(depName)
+                depTableDunn <- compTablesDunn$get(depName)
+
                 for (pair in pairs) {
                     depTable$addRow(rowKey=pair, values=list(
+                        p1=pair[1],
+                        p2=pair[2]))
+                    depTableDunn$addRow(rowKey=pair, values=list(
                         p1=pair[1],
                         p2=pair[2]))
                 }
             }
         },
         .genPairs=function(groupColumn) {
+            # Generate all pairwise combinations of group levels
             groupLevels <- base::levels(groupColumn)
-
             pairsList <- list()
 
             if (length(groupLevels) > 0) {
@@ -98,7 +121,7 @@ anovaNPClass <- R6::R6Class(
                     pairsList[[i]] <- pairsMatrix[,i]
             }
 
-            pairsList
+            return(pairsList)
         },
         .sourcifyOption = function(option) {
             if (option$name %in% c('deps', 'group'))
@@ -107,7 +130,94 @@ anovaNPClass <- R6::R6Class(
         },
         .formula=function() {
             jmvcore:::composeFormula(self$options$deps, self$options$group)
-        })
+        },
+        # Implementation of Dunn's test
+        .dunnTest = function(x, g) {
+            # Ensure g is a factor
+            g <- as.factor(g)
+
+            # Calculate ranks
+            N <- length(x)
+            ranks <- rank(x)
+
+            # Get groups
+            groups <- levels(g)
+            k <- length(groups)
+
+            # Initialize results dataframe
+            results <- data.frame(
+                group1=character(),
+                group2=character(),
+                meanRank1=numeric(),
+                meanRank2=numeric(),
+                diff=numeric(),
+                se=numeric(),
+                z=numeric(),
+                p=numeric(),
+                padj=numeric(),
+                stringsAsFactors = FALSE
+            )
+
+            # Calculate sum of ranks and size for each group
+            group_sizes <- numeric(k)
+            group_ranks <- numeric(k)
+
+            for (i in 1:k) {
+                group_i <- (g == groups[i])
+                group_sizes[i] <- sum(group_i)
+                group_ranks[i] <- sum(ranks[group_i])
+            }
+
+            # Calculate mean ranks
+            mean_ranks <- group_ranks / group_sizes
+
+            # Calculate tie correction factor
+            ties <- table(ranks)
+            tie_correction <- 1
+            if (any(ties > 1)) {
+                tie_correction <- 1 - sum((ties^3 - ties)) / (N^3 - N)
+            }
+
+            # Perform pairwise comparisons
+            comparisons <- 0
+
+            for (i in 1:(k-1)) {
+                for (j in (i+1):k) {
+                    comparisons <- comparisons + 1
+
+                    # Mean rank difference
+                    diff <- mean_ranks[i] - mean_ranks[j]
+
+                    # Standard error
+                    se <- sqrt((N * (N + 1) / 12) * (1/group_sizes[i] + 1/group_sizes[j]) * tie_correction)
+
+                    # Z statistic
+                    z <- diff / se
+
+                    # P-value (unadjusted)
+                    p <- 2 * pnorm(-abs(z))
+
+                    # Add to results table
+                    results[comparisons, ] <- list(
+                        groups[i],
+                        groups[j],
+                        mean_ranks[i],
+                        mean_ranks[j],
+                        diff,
+                        se,
+                        z,
+                        p,
+                        NA  # Adjusted p-value will be calculated later
+                    )
+                }
+            }
+
+            # Adjust p-values for multiple tests (Bonferroni)
+            results$padj <- p.adjust(results$p, method = "bonferroni")
+
+            return(results)
+        }
+    )
 )
 
 # the following is borrowed from NSM3
