@@ -460,5 +460,5 @@ options:
       default: 2.0
       description:
         R: >
-          A numeric value (default: 2.0), highlight deviance residuals above this threshold in the Post Hoc Tests table.
+          A numeric value (default: 2.0), highlight deviance residuals above this threshold in the post hoc tests table.
 ...
