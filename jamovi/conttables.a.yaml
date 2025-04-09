@@ -436,7 +436,7 @@ options:
       default: false
       description:
         R: >
-          `TRUE` or `FALSE` (default), display standardized residuals (adjusted Pearson) in the Post Hoc Tests table.
+          `TRUE` or `FALSE` (default), display standardized residuals (adjusted Pearson) in the post hoc tests table.
 
     - name: hlresS
       title: Highlight Standardized Residuals Above
