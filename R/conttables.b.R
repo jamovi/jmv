@@ -609,7 +609,7 @@ contTablesClass <- R6::R6Class(
 
             # For post-hoc tests
             if (self$options$get('resA'))
-                postHoc$setNote('notetodeviance', .('Deviance Residuals are adjusted residuals from a Poisson GLM.'), init=TRUE)
+                postHoc$setNote('notetodeviance', .('Deviance residuals are adjusted residuals from a Poisson GLM.'), init=TRUE)
 
             # Add layer columns on top (if any)
             reversed <- rev(layerNames)
