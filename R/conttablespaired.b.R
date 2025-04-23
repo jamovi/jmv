@@ -280,6 +280,9 @@ contTablesPairedClass <- R6::R6Class(
             test <- self$results$get('test')
             test$addRow(rowKey=1, values=list())
 
+            note <- private$.getPairsNote(data, rowVarName, colVarName)
+            if ( ! is.null(note))
+                test$setNote('pairs', note)
         },
         .grid=function(data, incRows=FALSE) {
 
@@ -307,5 +310,28 @@ contTablesPairedClass <- R6::R6Class(
             if (is.null(self$options$rows) || is.null(self$options$cols))
                 return('~')
             jmvcore:::composeFormula(self$options$counts, list(list(self$options$rows, self$options$cols)))
-        })
+        },
+        .getPairsNote = function(data, rowVarName, colVarName) {
+            if (is.null(rowVarName) || is.null(colVarName))
+                return()
+
+            rowLevels <- levels(data[[rowVarName]])
+            colLevels <- levels(data[[colVarName]])
+
+            if (length(rowLevels) != 2 || length(colLevels) != 2)
+                return()
+
+            note <- jmvcore::format(
+                .("McNemar's test compares pairs changing from {rowVarName} '{rowLevel1}' \u2192 {colVarName} '{colLevel1}' vs. {rowVarName} '{rowLevel2}' \u2192 {colVarName} '{colLevel2}'."),
+                rowVarName=rowVarName,
+                colVarName=colVarName,
+                rowLevel1=rowLevels[1],
+                colLevel1=colLevels[1],
+                rowLevel2=rowLevels[2],
+                colLevel2=colLevels[2]
+            )
+
+            return(note)
+        }
+    )
 )

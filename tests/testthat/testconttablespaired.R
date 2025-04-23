@@ -50,3 +50,22 @@ testthat::test_that('All options in the contTablesPaired work (sunny)', {
     testthat::expect_equal(0, testTable[['p[exa]']], tolerance = 1e-3)
     testthat::expect_equal(1600, testTable[['value[n]']])
 })
+
+testthat::test_that('Test table contains footnote with info on the pairs that are userd', {
+    # GIVEN a data set with paired counts data
+    df <- data.frame(
+        session_1 = c("condition_1", "condition_1", "condition_2", "condition_2"),
+        session_2 = c("condition_1", "condition_2", "condition_1", "condition_2"),
+        counts = c(5, 5, 5, 5)
+    )
+
+    # WHEN I run a paired contingency table
+    r <- jmv::contTablesPaired(df, rows = 'session_1', cols = 'session_2', counts = 'counts')
+
+    # THEN the test table should contain the correct message
+    note <- r$test$notes$pairs$note
+    testthat::expect_equal(
+        note,
+        "McNemar's test compares pairs changing from session_1 'condition_1' \u2192 session_2 'condition_1' vs. session_1 'condition_2' \u2192 session_2 'condition_2'."
+    )
+})
