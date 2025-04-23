@@ -411,57 +411,54 @@ options:
       type: Bool
       default: false
       description:
-          R: >
-            `TRUE` or `FALSE` (default), provide Unstandardized residuals
+        R: >
+          `TRUE` or `FALSE` (default), display unstandardized residuals in the post hoc tests table.
 
     - name: resP
       title: Pearson residuals
       type: Bool
       default: false
       description:
-          R: >
-            `TRUE` or `FALSE` (default), provide Pearson residuals
+        R: >
+          `TRUE` or `FALSE` (default), display Pearson residuals in the post hoc tests table.
 
     - name: hlresP
       title: Highlight values above
       type: Number
       default: 2.0
       description:
-          R: >
-            a number (default: 2.0), highlight values in the `'postHoc'` table
-            above this value
+        R: >
+          A numeric value (default: 2.0), highlight Pearson residuals above this threshold in the post hoc tests table.
 
     - name: resS
-      title: Standardized residuals
+      title: Standardized residuals (adjusted Pearson)
       type: Bool
       default: false
       description:
-          R: >
-            `TRUE` or `FALSE` (default), provide Standardized residuals
+        R: >
+          `TRUE` or `FALSE` (default), display standardized residuals (adjusted Pearson) in the post hoc tests table.
 
     - name: hlresS
       title: Highlight values above
       type: Number
       default: 2.0
       description:
-          R: >
-            a number (default: 2.0), highlight values in the `'postHoc'` table
-            above this value
+        R: >
+          A numeric value (default: 2.0), highlight standardized residuals above this threshold in the post hoc tests table.
 
     - name: resA
-      title: Adjusted residuals
+      title: Deviance residuals (Poisson GLM)
       type: Bool
       default: false
       description:
-          R: >
-            `TRUE` or `FALSE` (default), provide Adjusted residuals
+        R: >
+          `TRUE` or `FALSE` (default), display deviance residuals from a Poisson GLM in the post hoc tests table.
 
     - name: hlresA
       title: Highlight values above
       type: Number
       default: 2.0
       description:
-          R: >
-            a number (default: 2.0), highlight values in the `'postHoc'` table
-            above this value
+        R: >
+          A numeric value (default: 2.0), highlight deviance residuals above this threshold in the post hoc tests table.
 ...
