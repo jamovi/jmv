@@ -3,7 +3,7 @@ refs:
     emmeans:
         type: 'software'
         author: Lenth, R.
-        year: 2023
+        year: 2025
         title: 'emmeans: Estimated Marginal Means, aka Least-Squares Means'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=emmeans'
         url: https://cran.r-project.org/package=emmeans
@@ -11,7 +11,7 @@ refs:
     afex:
         type: 'software'
         author: Singmann, H.
-        year: 2023
+        year: 2024
         title: 'afex: Analysis of Factorial Experiments'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=afex'
         url: https://cran.r-project.org/package=afex
@@ -19,15 +19,15 @@ refs:
     R:
         type: 'software'
         author: R Core Team
-        year: 2023
+        year: 2025
         title: 'A Language and Envionment for Statistical Computing'
-        publisher: '(Version 4.3) [Computer software]. Retrieved from https://cran.r-project.org/'
+        publisher: '(Version 4.5) [Computer software]. Retrieved from https://cran.r-project.org/'
         url: https://cran.r-project.org/
 
     BF:
         type: 'software'
         author: Morey, R. D., Rouder, J. N., Jamil T., Urbanek, S., Forner, K., & Ly, A.
-        year: 2023
+        year: 2024
         title: 'BayesFactor: Computation of Bayes Factors for Common Designs'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=BayesFactor'
         url: https://cran.r-project.org/package=BayesFactor
@@ -44,15 +44,15 @@ refs:
     car:
         type: 'software'
         author: Fox, J., & Weisberg, S.
-        year: 2023
+        year: 2024
         title: 'car: Companion to Applied Regression'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=car'
         url: https://cran.r-project.org/package=car
 
     ggplot2:
         type: 'software'
-        author: Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K., Wilke, C., Yutani, H., Dunnington, D., & Posit, PBC
-        year: 2023
+        author: Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K., Wilke, C., Woo, K., Yutani, H., Dunnington, D., van den Brand, T., & Posit, PBC
+        year: 2025
         title: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=ggplot2'
         url: https://cran.r-project.org/package=ggplot2
@@ -60,7 +60,7 @@ refs:
     ggridges:
         type: 'software'
         author: Wilke, C.
-        year: 2023
+        year: 2024
         title: 'ggridges: Ridgeline Plots in ggplot2'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=ggridges'
         url: https://cran.r-project.org/package=ggridges
@@ -68,7 +68,7 @@ refs:
     mvnormtest:
         type: 'software'
         author: Jarek, S.
-        year: 2009
+        year: 2024
         title: 'mvnormtest: Normality test for multivariate variables'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=mvnormtest'
         url: https://cran.r-project.org/package=mvnormtest
@@ -92,7 +92,7 @@ refs:
     nnet:
         type: 'software'
         author: Ripley, B., Venables, W.
-        year: 2023
+        year: 2025
         title: 'nnet: Feed-Forward Neural Networks and Multinomial Log-Linear Models'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=nnet'
         url: https://cran.r-project.org/package=nnet
@@ -100,7 +100,7 @@ refs:
     MASS:
         type: 'software'
         author: Ripley, B., Venables, W., Bates, D. M., Hornik, K., Gebhardt, A., & Firth, D.
-        year: 2023
+        year: 2025
         title: "MASS: Support Functions and Datasets for Venables and Ripley's MASS"
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=MASS'
         url: https://cran.r-project.org/package=MASS
@@ -108,7 +108,7 @@ refs:
     vcd:
         type: 'software'
         author: Meyer, D., Zeileis, A., Hornik, K., Gerber, F., & Friendly, M.
-        year: 2023
+        year: 2024
         title: "vcd: Visualizing Categorical Data"
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=vcd'
         url: https://cran.r-project.org/package=vcd
@@ -124,7 +124,7 @@ refs:
     exact2x2:
         type: 'software'
         author: Fay, M. P., Hunsberger, S. A., Nason, M., Gabriel, E., & Lumbard, K.
-        year: 2023
+        year: 2024
         title: "exact2x2: Exact Tests and Confidence Intervals for 2x2 Tables"
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=exact2x2'
         url: https://cran.r-project.org/package=exact2x2
@@ -132,7 +132,7 @@ refs:
     psych:
         type: 'software'
         author: Revelle, W.
-        year: 2023
+        year: 2025
         title: "psych: Procedures for Psychological, Psychometric, and Personality Research"
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=psych'
         url: https://cran.r-project.org/package=psych
@@ -140,7 +140,7 @@ refs:
     lavaan:
         type: 'software'
         author: Rosseel, Y., et al.
-        year: 2023
+        year: 2024
         title: "lavaan: Latent Variable Analysis"
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=lavaan'
         url: https://cran.r-project.org/package=lavaan
