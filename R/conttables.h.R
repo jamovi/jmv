@@ -870,19 +870,19 @@ contTablesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param xaxis rows (default), or columns in bar plot X axis
 #' @param bartype stack or side by side (default), barplot type
 #' @param resU \code{TRUE} or \code{FALSE} (default), display unstandardized
-#'   residuals in the Post Hoc Tests table.
+#'   residuals in the post hoc tests table.
 #' @param resP \code{TRUE} or \code{FALSE} (default), display Pearson
-#'   residuals in the Post Hoc Tests table.
+#'   residuals in the post hoc tests table.
 #' @param hlresP A numeric value (default: 2.0), highlight Pearson residuals
-#'   above this threshold in the Post Hoc Tests table.
+#'   above this threshold in the post hoc tests table.
 #' @param resS \code{TRUE} or \code{FALSE} (default), display standardized
-#'   residuals (adjusted Pearson) in the Post Hoc Tests table.
+#'   residuals (adjusted Pearson) in the post hoc tests table.
 #' @param hlresS A numeric value (default: 2.0), highlight standardized
-#'   residuals above this threshold in the Post Hoc Tests table.
+#'   residuals above this threshold in the post hoc tests table.
 #' @param resA \code{TRUE} or \code{FALSE} (default), display deviance
-#'   residuals from a Poisson GLM in the Post Hoc Tests table.
+#'   residuals from a Poisson GLM in the post hoc tests table.
 #' @param hlresA A numeric value (default: 2.0), highlight deviance residuals
-#'   above this threshold in the Post Hoc Tests table.
+#'   above this threshold in the post hoc tests table.
 #' @param formula (optional) the formula to use, see the examples
 #' @return A results object containing:
 #' \tabular{llllll}{

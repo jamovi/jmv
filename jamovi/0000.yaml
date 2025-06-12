@@ -26,6 +26,7 @@ analyses:
       visualizations which allow exploring the shape and distribution of data.
       It is good practice to explore your data with descriptives before
       proceeding to more formal tests.
+    category: analyses
   - title: Independent Samples T-Test
     name: ttestIS
     ns: jmv
@@ -36,6 +37,7 @@ analyses:
       t-test) is used to test the null hypothesis that two groups have the
       same mean. A low p-value suggests that the null hypothesis is not true,
       and therefore the group means are different.
+    category: analyses
   - title: Paired Samples T-Test
     name: ttestPS
     ns: jmv
@@ -47,6 +49,7 @@ analyses:
       difference between pairs of measurements is equal to zero. A low p-value
       suggests that the null hypothesis is not true, and that the
       difference between the measurement pairs is not zero.
+    category: analyses
   - title: One Sample T-Test
     name: ttestOneS
     ns: jmv
@@ -57,6 +60,7 @@ analyses:
       the true mean is equal to a particular value (typically zero). A low
       p-value suggests that the null hypothesis is not true, and therefore
       the true mean must be different from the test value.
+    category: analyses
   - title: One-Way ANOVA
     name: anovaOneW
     ns: jmv
@@ -69,6 +73,7 @@ analyses:
       the 'normal' ANOVA, allowing only a single explanatory factor, however
       also providing a Welch's ANOVA. The Welch's ANOVA has the advantage that
       it need not assume that the variances of all groups are equal.
+    category: analyses
   - title: ANOVA
     name: anova
     ns: jmv
@@ -78,6 +83,7 @@ analyses:
       The Analysis of Variance (ANOVA) is used to explore the relationship
       between a continuous dependent variable, and one or more categorical
       explanatory variables.
+    category: analyses
   - title: Repeated Measures ANOVA
     name: anovaRM
     ns: jmv
@@ -90,6 +96,7 @@ analyses:
       are 'within subjects' (where multiple measurements are from the same
       subject). Additionally, this analysis allows the inclusion of
       covariates, allowing for repeated measures ANCOVAs as well.
+    category: analyses
   - title: ANCOVA
     name: ancova
     ns: jmv
@@ -101,6 +108,7 @@ analyses:
       explanatory variables, and one or more continuous explanatory variables
       (or covariates). It is essentially the same analysis as ANOVA, but
       with the addition of covariates.
+    category: analyses
   - title: MANCOVA
     name: mancova
     ns: jmv
@@ -110,6 +118,7 @@ analyses:
       Multivariate Analysis of (Co)Variance (MANCOVA) is used to explore the
       relationship between multiple dependent variables, and one or more
       categorical and/or continuous explanatory variables.
+    category: analyses
   - title: One-Way ANOVA (Non-parametric)
     name: anovaNP
     ns: jmv
@@ -123,6 +132,7 @@ analyses:
       is analagous to ANOVA, but with the advantage of being non-parametric and
       having fewer assumptions. However, it has the limitation that it can only
       test a single explanatory variable at a time.
+    category: analyses
   - title: Repeated Measures ANOVA (Non-parametric)
     name: anovaRMNP
     ns: jmv
@@ -138,6 +148,7 @@ analyses:
       with the advantage of being non-parametric, and not requiring the
       assumptions of normality or homogeneity of variances. However, it has the
       limitation that it can only test a single explanatory variable at a time.
+    category: analyses
   - title: Correlation Matrix
     name: corrMatrix
     menuGroup: Regression
@@ -146,6 +157,7 @@ analyses:
     description: |-
       Correlation matrices are a way to examine linear relationships between
       two or more continuous variables.
+    category: analyses
   - title: Partial Correlation
     name: corrPart
     ns: jmv
@@ -155,6 +167,7 @@ analyses:
       Partial correlation matrices are a way to examine linear relationships
       between two or more continuous variables while controlling for other
       variables
+    category: analyses
   - title: Linear Regression
     name: linReg
     ns: jmv
@@ -165,6 +178,7 @@ analyses:
       dependent variable, and one or more continuous and/or categorical
       explanatory variables. Other statistical methods, such as ANOVA and
       ANCOVA, are in reality just forms of linear regression.
+    category: analyses
   - title: Binomial Logistic Regression
     name: logRegBin
     ns: jmv
@@ -173,6 +187,7 @@ analyses:
     menuTitle: 2 Outcomes
     menuSubtitle: Binomial
     description: Binomial Logistic Regression
+    category: analyses
   - title: Multinomial Logistic Regression
     name: logRegMulti
     ns: jmv
@@ -181,6 +196,7 @@ analyses:
     menuTitle: N Outcomes
     menuSubtitle: Multinomial
     description: Multinomial Logistic Regression
+    category: analyses
   - title: Ordinal Logistic Regression
     name: logRegOrd
     ns: jmv
@@ -188,6 +204,7 @@ analyses:
     menuSubgroup: Logistic Regression
     menuTitle: Ordinal Outcomes
     description: Ordinal Logistic Regression
+    category: analyses
   - title: Proportion Test (2 Outcomes)
     name: propTest2
     ns: jmv
@@ -200,6 +217,7 @@ analyses:
       of observations match some expected value. If the p-value is low, this
       suggests that the Null hypothesis is false, and that the true proportion
       must be some other value.
+    category: analyses
   - title: Proportion Test (N Outcomes)
     name: propTestN
     ns: jmv
@@ -213,6 +231,7 @@ analyses:
       observations match some expected proportions. If the p-value is low, this
       suggests that the Null hypothesis is false, and that the true proportions
       are different to those tested.
+    category: analyses
   - title: Contingency Tables
     name: contTables
     ns: jmv
@@ -225,6 +244,7 @@ analyses:
       fit) is used to test whether two categorical variables are independent or
       associated. If the p-value is low, it suggests the variables are not
       independent, and that there is a relationship between the two variables.
+    category: analyses
   - title: Paired Samples Contingency Tables
     name: contTablesPaired
     ns: jmv
@@ -233,6 +253,7 @@ analyses:
     menuTitle: Paired Samples
     menuSubtitle: McNemar test
     description: McNemar test
+    category: analyses
   - title: Log-Linear Regression
     name: logLinear
     ns: jmv
@@ -240,6 +261,7 @@ analyses:
     menuTitle: Log-Linear Regression
     description: Log-Linear Regression
     menuSubgroup: ''
+    category: analyses
   - title: Reliability Analysis
     name: reliability
     ns: jmv
@@ -247,6 +269,7 @@ analyses:
     menuSubgroup: Scale Analysis
     menuTitle: Reliability Analysis
     description: Reliability Analysis
+    category: analyses
   - title: Principal Component Analysis
     name: pca
     ns: jmv
@@ -254,6 +277,7 @@ analyses:
     menuSubgroup: Data Reduction
     menuTitle: Principal Component Analysis
     description: Principal Component Analysis
+    category: analyses
   - title: Exploratory Factor Analysis
     name: efa
     ns: jmv
@@ -261,6 +285,7 @@ analyses:
     menuSubgroup: Data Reduction
     menuTitle: Exploratory Factor Analysis
     description: Exploratory Factor Analysis
+    category: analyses
   - title: Confirmatory Factor Analysis
     name: cfa
     ns: jmv
@@ -268,18 +293,21 @@ analyses:
     menuSubgroup: Data Reduction
     menuTitle: Confirmatory Factor Analysis
     description: Confirmatory Factor Analysis
+    category: analyses
   - title: Results
     name: empty
     ns: jmv
     menuGroup: hidden
     menuTitle: Results
     hidden: true
+    category: analyses
   - title: Weights
     name: weights
     ns: jmv
     menuGroup: hidden
     menuTitle: Weights
     hidden: true
+    category: analyses
 datasets:
   - name: Big 5 (Dolan, Oort, Stoel & Wicherts, 2009)
     path: Big5.csv
