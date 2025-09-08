@@ -11,14 +11,16 @@ pcaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             nFactors = 1,
             minEigen = 1,
             rotation = "varimax",
+            minCorrThr = 0.3,
+            maxCorrThr = 0.9,
+            kmo = FALSE,
+            bartlett = FALSE,
             hideLoadings = 0.3,
             sortLoadings = FALSE,
             screePlot = FALSE,
             eigen = FALSE,
             factorCor = FALSE,
-            factorSummary = FALSE,
-            kmo = FALSE,
-            bartlett = FALSE, ...) {
+            factorSummary = FALSE, ...) {
 
             super$initialize(
                 package="jmv",
@@ -64,6 +66,26 @@ pcaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "oblimin",
                     "simplimax"),
                 default="varimax")
+            private$..minCorrThr <- jmvcore::OptionNumber$new(
+                "minCorrThr",
+                minCorrThr,
+                min=0,
+                max=1,
+                default=0.3)
+            private$..maxCorrThr <- jmvcore::OptionNumber$new(
+                "maxCorrThr",
+                maxCorrThr,
+                min=0,
+                max=1,
+                default=0.9)
+            private$..kmo <- jmvcore::OptionBool$new(
+                "kmo",
+                kmo,
+                default=FALSE)
+            private$..bartlett <- jmvcore::OptionBool$new(
+                "bartlett",
+                bartlett,
+                default=FALSE)
             private$..hideLoadings <- jmvcore::OptionNumber$new(
                 "hideLoadings",
                 hideLoadings,
@@ -88,14 +110,6 @@ pcaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "factorSummary",
                 factorSummary,
                 default=FALSE)
-            private$..kmo <- jmvcore::OptionBool$new(
-                "kmo",
-                kmo,
-                default=FALSE)
-            private$..bartlett <- jmvcore::OptionBool$new(
-                "bartlett",
-                bartlett,
-                default=FALSE)
             private$..factorScoresOV <- jmvcore::OptionOutput$new(
                 "factorScoresOV")
 
@@ -104,14 +118,16 @@ pcaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..nFactors)
             self$.addOption(private$..minEigen)
             self$.addOption(private$..rotation)
+            self$.addOption(private$..minCorrThr)
+            self$.addOption(private$..maxCorrThr)
+            self$.addOption(private$..kmo)
+            self$.addOption(private$..bartlett)
             self$.addOption(private$..hideLoadings)
             self$.addOption(private$..sortLoadings)
             self$.addOption(private$..screePlot)
             self$.addOption(private$..eigen)
             self$.addOption(private$..factorCor)
             self$.addOption(private$..factorSummary)
-            self$.addOption(private$..kmo)
-            self$.addOption(private$..bartlett)
             self$.addOption(private$..factorScoresOV)
         }),
     active = list(
@@ -120,14 +136,16 @@ pcaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         nFactors = function() private$..nFactors$value,
         minEigen = function() private$..minEigen$value,
         rotation = function() private$..rotation$value,
+        minCorrThr = function() private$..minCorrThr$value,
+        maxCorrThr = function() private$..maxCorrThr$value,
+        kmo = function() private$..kmo$value,
+        bartlett = function() private$..bartlett$value,
         hideLoadings = function() private$..hideLoadings$value,
         sortLoadings = function() private$..sortLoadings$value,
         screePlot = function() private$..screePlot$value,
         eigen = function() private$..eigen$value,
         factorCor = function() private$..factorCor$value,
         factorSummary = function() private$..factorSummary$value,
-        kmo = function() private$..kmo$value,
-        bartlett = function() private$..bartlett$value,
         factorScoresOV = function() private$..factorScoresOV$value),
     private = list(
         ..vars = NA,
@@ -135,14 +153,16 @@ pcaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..nFactors = NA,
         ..minEigen = NA,
         ..rotation = NA,
+        ..minCorrThr = NA,
+        ..maxCorrThr = NA,
+        ..kmo = NA,
+        ..bartlett = NA,
         ..hideLoadings = NA,
         ..sortLoadings = NA,
         ..screePlot = NA,
         ..eigen = NA,
         ..factorCor = NA,
         ..factorSummary = NA,
-        ..kmo = NA,
-        ..bartlett = NA,
         ..factorScoresOV = NA)
 )
 
@@ -480,6 +500,14 @@ pcaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param rotation \code{'none'}, \code{'varimax'} (default),
 #'   \code{'quartimax'}, \code{'promax'}, \code{'oblimin'}, or
 #'   \code{'simplimax'}, the rotation to use in estimation
+#' @param minCorrThr a number (default: 0.3), count correlations between
+#'   variables that are above this threshold
+#' @param maxCorrThr a number (default: 0.9), count correlations between
+#'   variables that are above this threshold
+#' @param kmo \code{TRUE} or \code{FALSE} (default), show Kaiser-Meyer-Olkin
+#'   (KMO) measure of sampling adequacy (MSA) results
+#' @param bartlett \code{TRUE} or \code{FALSE} (default), show Bartlett's test
+#'   of sphericity results
 #' @param hideLoadings a number (default: 0.3), hide loadings below this value
 #' @param sortLoadings \code{TRUE} or \code{FALSE} (default), sort the factor
 #'   loadings by size
@@ -489,10 +517,6 @@ pcaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   correlations
 #' @param factorSummary \code{TRUE} or \code{FALSE} (default), show factor
 #'   summary
-#' @param kmo \code{TRUE} or \code{FALSE} (default), show Kaiser-Meyer-Olkin
-#'   (KMO) measure of sampling adequacy (MSA) results
-#' @param bartlett \code{TRUE} or \code{FALSE} (default), show Bartlett's test
-#'   of sphericity results
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$loadings} \tab \tab \tab \tab \tab a table \cr
@@ -520,14 +544,16 @@ pca <- function(
     nFactors = 1,
     minEigen = 1,
     rotation = "varimax",
+    minCorrThr = 0.3,
+    maxCorrThr = 0.9,
+    kmo = FALSE,
+    bartlett = FALSE,
     hideLoadings = 0.3,
     sortLoadings = FALSE,
     screePlot = FALSE,
     eigen = FALSE,
     factorCor = FALSE,
-    factorSummary = FALSE,
-    kmo = FALSE,
-    bartlett = FALSE) {
+    factorSummary = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("pca requires jmvcore to be installed (restart may be required)")
@@ -546,14 +572,16 @@ pca <- function(
         nFactors = nFactors,
         minEigen = minEigen,
         rotation = rotation,
+        minCorrThr = minCorrThr,
+        maxCorrThr = maxCorrThr,
+        kmo = kmo,
+        bartlett = bartlett,
         hideLoadings = hideLoadings,
         sortLoadings = sortLoadings,
         screePlot = screePlot,
         eigen = eigen,
         factorCor = factorCor,
-        factorSummary = factorSummary,
-        kmo = kmo,
-        bartlett = bartlett)
+        factorSummary = factorSummary)
 
     analysis <- pcaClass$new(
         options = options,

@@ -65,6 +65,15 @@ children:
                     suffix: component(s)
                     format: number
                     enable: (nFactorMethod_fixed)
+          - type: Label
+            label: Data Summary
+            children:
+              - name: minCorrThr
+                type: TextBox
+                format: number
+              - name: maxCorrThr
+                type: TextBox
+                format: number
       - type: LayoutBox
         margin: large
         cell:
