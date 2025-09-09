@@ -12,8 +12,8 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             minEigen = 0,
             extraction = "minres",
             rotation = "oblimin",
-            countCorrMin = 0,
-            countCorrMax = 0,
+            countCorrMin = "",
+            countCorrMax = "",
             kmo = FALSE,
             bartlett = FALSE,
             hideLoadings = 0.3,
@@ -77,18 +77,14 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "oblimin",
                     "simplimax"),
                 default="oblimin")
-            private$..countCorrMin <- jmvcore::OptionNumber$new(
+            private$..countCorrMin <- jmvcore::OptionString$new(
                 "countCorrMin",
                 countCorrMin,
-                min=0,
-                max=1,
-                default=0)
-            private$..countCorrMax <- jmvcore::OptionNumber$new(
+                default="")
+            private$..countCorrMax <- jmvcore::OptionString$new(
                 "countCorrMax",
                 countCorrMax,
-                min=0,
-                max=1,
-                default=0)
+                default="")
             private$..kmo <- jmvcore::OptionBool$new(
                 "kmo",
                 kmo,
@@ -283,11 +279,11 @@ efaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param rotation \code{'none'}, \code{'varimax'}, \code{'quartimax'},
 #'   \code{'promax'}, \code{'oblimin'} (default), or \code{'simplimax'}, the
 #'   rotation to use in estimation
-#' @param countCorrMin a number (default: 0), returns the number of
-#'   correlations between variables above this minimum (if 0, no output is
+#' @param countCorrMin a number (default: NA), returns the number of
+#'   correlations between variables above this minimum (if NA, no output is
 #'   produced)
-#' @param countCorrMax a number (default: 0), returns the number of
-#'   correlations between variables above this maxmimum (if 0, no output is
+#' @param countCorrMax a number (default: NA), returns the number of
+#'   correlations between variables above this maxmimum (if NA, no output is
 #'   produced)
 #' @param kmo \code{TRUE} or \code{FALSE} (default), show Kaiser-Meyer-Olkin
 #'   (KMO) measure of sampling adequacy (MSA) results
@@ -323,8 +319,8 @@ efa <- function(
     minEigen = 0,
     extraction = "minres",
     rotation = "oblimin",
-    countCorrMin = 0,
-    countCorrMax = 0,
+    countCorrMin = "",
+    countCorrMax = "",
     kmo = FALSE,
     bartlett = FALSE,
     hideLoadings = 0.3,

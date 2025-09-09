@@ -263,7 +263,7 @@ pcaClass <- R6::R6Class(
                                          self$options[[paste0("countCorr", t)]])
                 table$setTitle(title)
                 for (i in seq_along(vars)) {
-                    table$addColumn(name = sprintf("c%d", i), title = ".", type = 'integer')
+                    table$addColumn(name = sprintf("c%d", i), title = "", type = 'integer')
                 }
             }
         },
@@ -438,15 +438,16 @@ pcaClass <- R6::R6Class(
                 diag(corrMatrix) <- NA
 
                 for (t in c("Min", "Max")) {
-                    thresh <- self$options[[paste0("countCorr", t)]]
-                    if (thresh > 0) {
-                        table  <- group[[paste0("corrAbove", t)]]
-                        counts <- sort(colSums(corrMatrix > thresh, na.rm = TRUE))
-                        cnames <- names(counts)
-                        table$setRow(rowNo = 1, setNames(as.list(counts), sprintf("c%d", seq_along(vars))))
-                        for (i in seq_along(cnames)) {
-                            table$columns[[i + 1]]$setTitle(cnames[i])
-                        }
+                    thresh <- as.numeric(self$options[[paste0("countCorr", t)]])
+                    if (is.na(thresh)) next
+                    if (thresh <= 0 || thresh >= 1)
+                        jmvcore::reject(.("Values for the Correlation Min. / Max. need to be Numeric and Between 0 and 1"))
+                    table  <- group[[paste0("corrAbove", t)]]
+                    counts <- sort(colSums(corrMatrix > thresh, na.rm = TRUE))
+                    cnames <- names(counts)
+                    table$setRow(rowNo = 1, setNames(as.list(counts), sprintf("c%d", seq_along(vars))))
+                    for (i in seq_along(cnames)) {
+                         table$columns[[i + 1]]$setTitle(cnames[i])
                     }
                 }
             }

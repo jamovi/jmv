@@ -130,7 +130,7 @@ items:
         - name: corrAboveMin
           title: ""
           type: Table
-          visible: (countCorrMin > 0)
+          visible: (countCorrMin != "")
           rows: 1
           clearWith:
             - vars
@@ -143,7 +143,7 @@ items:
         - name: corrAboveMax
           title: ""
           type: Table
-          visible: (countCorrMax > 0)
+          visible: (countCorrMax != "")
           rows: 1
           clearWith:
             - vars

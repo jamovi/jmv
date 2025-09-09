@@ -11,8 +11,8 @@ pcaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             nFactors = 1,
             minEigen = 1,
             rotation = "varimax",
-            countCorrMin = 0,
-            countCorrMax = 0,
+            countCorrMin = "",
+            countCorrMax = "",
             kmo = FALSE,
             bartlett = FALSE,
             hideLoadings = 0.3,
@@ -66,18 +66,14 @@ pcaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "oblimin",
                     "simplimax"),
                 default="varimax")
-            private$..countCorrMin <- jmvcore::OptionNumber$new(
+            private$..countCorrMin <- jmvcore::OptionString$new(
                 "countCorrMin",
                 countCorrMin,
-                min=0,
-                max=1,
-                default=0)
-            private$..countCorrMax <- jmvcore::OptionNumber$new(
+                default="")
+            private$..countCorrMax <- jmvcore::OptionString$new(
                 "countCorrMax",
                 countCorrMax,
-                min=0,
-                max=1,
-                default=0)
+                default="")
             private$..kmo <- jmvcore::OptionBool$new(
                 "kmo",
                 kmo,
@@ -348,7 +344,7 @@ pcaResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                             options=options,
                             name="corrAboveMin",
                             title="",
-                            visible="(countCorrMin > 0)",
+                            visible="(countCorrMin != \"\")",
                             rows=1,
                             clearWith=list(
                                 "vars",
@@ -363,7 +359,7 @@ pcaResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                             options=options,
                             name="corrAboveMax",
                             title="",
-                            visible="(countCorrMax > 0)",
+                            visible="(countCorrMax != \"\")",
                             rows=1,
                             clearWith=list(
                                 "vars",
@@ -543,11 +539,11 @@ pcaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param rotation \code{'none'}, \code{'varimax'} (default),
 #'   \code{'quartimax'}, \code{'promax'}, \code{'oblimin'}, or
 #'   \code{'simplimax'}, the rotation to use in estimation
-#' @param countCorrMin a number (default: 0), returns the number of
-#'   correlations between variables above this minimum (if 0, no output is
+#' @param countCorrMin a number (default: NA), returns the number of
+#'   correlations between variables above this minimum (if NA, no output is
 #'   produced)
-#' @param countCorrMax a number (default: 0), returns the number of
-#'   correlations between variables above this maxmimum (if 0, no output is
+#' @param countCorrMax a number (default: NA), returns the number of
+#'   correlations between variables above this maxmimum (if NA, no output is
 #'   produced)
 #' @param kmo \code{TRUE} or \code{FALSE} (default), show Kaiser-Meyer-Olkin
 #'   (KMO) measure of sampling adequacy (MSA) results
@@ -591,8 +587,8 @@ pca <- function(
     nFactors = 1,
     minEigen = 1,
     rotation = "varimax",
-    countCorrMin = 0,
-    countCorrMax = 0,
+    countCorrMin = "",
+    countCorrMax = "",
     kmo = FALSE,
     bartlett = FALSE,
     hideLoadings = 0.3,

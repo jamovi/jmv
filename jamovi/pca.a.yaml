@@ -103,25 +103,21 @@ options:
 
     - name: countCorrMin
       title: ""
-      type: Number
-      min: 0
-      max: 1
-      default: 0
+      type: String
+      default: ""
       description:
           R: >
-            a number (default: 0), returns the number of correlations between
-            variables above this minimum (if 0, no output is produced)
+            a number (default: NA), returns the number of correlations between
+            variables above this minimum (if NA, no output is produced)
 
     - name: countCorrMax
       title: ""
-      type: Number
-      min: 0
-      max: 1
-      default: 0
+      type: String
+      default: ""
       description:
           R: >
-            a number (default: 0), returns the number of correlations between
-            variables above this maxmimum (if 0, no output is produced)
+            a number (default: NA), returns the number of correlations between
+            variables above this maxmimum (if NA, no output is produced)
 
     - name: kmo
       title: KMO measure of sampling adequacy

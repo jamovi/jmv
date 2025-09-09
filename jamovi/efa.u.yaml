@@ -79,7 +79,7 @@ children:
                 children:
                   - name: countCorrMin
                     type: TextBox
-                    format: number
+                    format: string
               - type: Label
                 label: And Above Max.
                 horizontalAlignment: right
@@ -93,7 +93,7 @@ children:
                 children:
                   - name: countCorrMax
                     type: TextBox
-                    format: number
+                    format: string
       - type: LayoutBox
         margin: large
         cell:
