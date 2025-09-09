@@ -121,27 +121,25 @@ options:
             `'oblimin'` (default), or `'simplimax'`, the rotation to use
             in estimation
 
-    - name: minCorrThr
-      title: ''
+    - name: countCorrMin
       type: Number
       min: 0
       max: 1
       default: 0
       description:
           R: >
-            a number (default: 0), count correlations between variables that
-            are above this threshold (if 0, no output is produced)
+            a number (default: 0), returns the number of correlations between
+            variables above this minimum (if 0, no output is produced)
 
-    - name: maxCorrThr
-      title: ''
+    - name: countCorrMax
       type: Number
       min: 0
       max: 1
       default: 0
       description:
           R: >
-            a number (default: 0), count correlations between variables that
-            are above this threshold (if 0, no output is produced)
+            a number (default: 0), returns the number of correlations between
+            variables above this maxmimum (if 0, no output is produced)
 
     - name: kmo
       title: KMO measure of sampling adequacy

@@ -12,8 +12,8 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             minEigen = 0,
             extraction = "minres",
             rotation = "oblimin",
-            minCorrThr = 0,
-            maxCorrThr = 0,
+            countCorrMin = 0,
+            countCorrMax = 0,
             kmo = FALSE,
             bartlett = FALSE,
             hideLoadings = 0.3,
@@ -77,15 +77,15 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "oblimin",
                     "simplimax"),
                 default="oblimin")
-            private$..minCorrThr <- jmvcore::OptionNumber$new(
-                "minCorrThr",
-                minCorrThr,
+            private$..countCorrMin <- jmvcore::OptionNumber$new(
+                "countCorrMin",
+                countCorrMin,
                 min=0,
                 max=1,
                 default=0)
-            private$..maxCorrThr <- jmvcore::OptionNumber$new(
-                "maxCorrThr",
-                maxCorrThr,
+            private$..countCorrMax <- jmvcore::OptionNumber$new(
+                "countCorrMax",
+                countCorrMax,
                 min=0,
                 max=1,
                 default=0)
@@ -144,8 +144,8 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..minEigen)
             self$.addOption(private$..extraction)
             self$.addOption(private$..rotation)
-            self$.addOption(private$..minCorrThr)
-            self$.addOption(private$..maxCorrThr)
+            self$.addOption(private$..countCorrMin)
+            self$.addOption(private$..countCorrMax)
             self$.addOption(private$..kmo)
             self$.addOption(private$..bartlett)
             self$.addOption(private$..hideLoadings)
@@ -165,8 +165,8 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         minEigen = function() private$..minEigen$value,
         extraction = function() private$..extraction$value,
         rotation = function() private$..rotation$value,
-        minCorrThr = function() private$..minCorrThr$value,
-        maxCorrThr = function() private$..maxCorrThr$value,
+        countCorrMin = function() private$..countCorrMin$value,
+        countCorrMax = function() private$..countCorrMax$value,
         kmo = function() private$..kmo$value,
         bartlett = function() private$..bartlett$value,
         hideLoadings = function() private$..hideLoadings$value,
@@ -185,8 +185,8 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..minEigen = NA,
         ..extraction = NA,
         ..rotation = NA,
-        ..minCorrThr = NA,
-        ..maxCorrThr = NA,
+        ..countCorrMin = NA,
+        ..countCorrMax = NA,
         ..kmo = NA,
         ..bartlett = NA,
         ..hideLoadings = NA,
@@ -283,10 +283,12 @@ efaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param rotation \code{'none'}, \code{'varimax'}, \code{'quartimax'},
 #'   \code{'promax'}, \code{'oblimin'} (default), or \code{'simplimax'}, the
 #'   rotation to use in estimation
-#' @param minCorrThr a number (default: 0), count correlations between
-#'   variables that are above this threshold (if 0, no output is produced)
-#' @param maxCorrThr a number (default: 0), count correlations between
-#'   variables that are above this threshold (if 0, no output is produced)
+#' @param countCorrMin a number (default: 0), returns the number of
+#'   correlations between variables above this minimum (if 0, no output is
+#'   produced)
+#' @param countCorrMax a number (default: 0), returns the number of
+#'   correlations between variables above this maxmimum (if 0, no output is
+#'   produced)
 #' @param kmo \code{TRUE} or \code{FALSE} (default), show Kaiser-Meyer-Olkin
 #'   (KMO) measure of sampling adequacy (MSA) results
 #' @param bartlett \code{TRUE} or \code{FALSE} (default), show Bartlett's test
@@ -321,8 +323,8 @@ efa <- function(
     minEigen = 0,
     extraction = "minres",
     rotation = "oblimin",
-    minCorrThr = 0,
-    maxCorrThr = 0,
+    countCorrMin = 0,
+    countCorrMax = 0,
     kmo = FALSE,
     bartlett = FALSE,
     hideLoadings = 0.3,
@@ -352,8 +354,8 @@ efa <- function(
         minEigen = minEigen,
         extraction = extraction,
         rotation = rotation,
-        minCorrThr = minCorrThr,
-        maxCorrThr = maxCorrThr,
+        countCorrMin = countCorrMin,
+        countCorrMax = countCorrMax,
         kmo = kmo,
         bartlett = bartlett,
         hideLoadings = hideLoadings,

@@ -11,8 +11,8 @@ pcaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             nFactors = 1,
             minEigen = 1,
             rotation = "varimax",
-            minCorrThr = 0.3,
-            maxCorrThr = 0.9,
+            countCorrMin = 0,
+            countCorrMax = 0,
             kmo = FALSE,
             bartlett = FALSE,
             hideLoadings = 0.3,
@@ -66,18 +66,18 @@ pcaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "oblimin",
                     "simplimax"),
                 default="varimax")
-            private$..minCorrThr <- jmvcore::OptionNumber$new(
-                "minCorrThr",
-                minCorrThr,
+            private$..countCorrMin <- jmvcore::OptionNumber$new(
+                "countCorrMin",
+                countCorrMin,
                 min=0,
                 max=1,
-                default=0.3)
-            private$..maxCorrThr <- jmvcore::OptionNumber$new(
-                "maxCorrThr",
-                maxCorrThr,
+                default=0)
+            private$..countCorrMax <- jmvcore::OptionNumber$new(
+                "countCorrMax",
+                countCorrMax,
                 min=0,
                 max=1,
-                default=0.9)
+                default=0)
             private$..kmo <- jmvcore::OptionBool$new(
                 "kmo",
                 kmo,
@@ -118,8 +118,8 @@ pcaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..nFactors)
             self$.addOption(private$..minEigen)
             self$.addOption(private$..rotation)
-            self$.addOption(private$..minCorrThr)
-            self$.addOption(private$..maxCorrThr)
+            self$.addOption(private$..countCorrMin)
+            self$.addOption(private$..countCorrMax)
             self$.addOption(private$..kmo)
             self$.addOption(private$..bartlett)
             self$.addOption(private$..hideLoadings)
@@ -136,8 +136,8 @@ pcaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         nFactors = function() private$..nFactors$value,
         minEigen = function() private$..minEigen$value,
         rotation = function() private$..rotation$value,
-        minCorrThr = function() private$..minCorrThr$value,
-        maxCorrThr = function() private$..maxCorrThr$value,
+        countCorrMin = function() private$..countCorrMin$value,
+        countCorrMax = function() private$..countCorrMax$value,
         kmo = function() private$..kmo$value,
         bartlett = function() private$..bartlett$value,
         hideLoadings = function() private$..hideLoadings$value,
@@ -153,8 +153,8 @@ pcaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..nFactors = NA,
         ..minEigen = NA,
         ..rotation = NA,
-        ..minCorrThr = NA,
-        ..maxCorrThr = NA,
+        ..countCorrMin = NA,
+        ..countCorrMax = NA,
         ..kmo = NA,
         ..bartlett = NA,
         ..hideLoadings = NA,
@@ -347,29 +347,33 @@ pcaResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                         self$add(jmvcore::Table$new(
                             options=options,
                             name="corrAboveMin",
-                            title="Correlations Above Minimum Threshold",
-                            visible="(minCorrThr > 0)",
+                            title="",
+                            visible="(countCorrMin > 0)",
                             rows=1,
                             clearWith=list(
-                                "vars"),
+                                "vars",
+                                "countCorrMin"),
                             columns=list(
                                 list(
                                     `name`="header", 
                                     `title`="", 
-                                    `type`="text"))))
+                                    `type`="text", 
+                                    `content`="N"))))
                         self$add(jmvcore::Table$new(
                             options=options,
                             name="corrAboveMax",
-                            title="Correlations Above Maximum Threshold",
-                            visible="(maxCorrThr > 0)",
+                            title="",
+                            visible="(countCorrMax > 0)",
                             rows=1,
                             clearWith=list(
-                                "vars"),
+                                "vars",
+                                "countCorrMax"),
                             columns=list(
                                 list(
                                     `name`="header", 
                                     `title`="", 
-                                    `type`="text"))))}))$new(options=options))
+                                    `type`="text", 
+                                    `content`="N"))))}))$new(options=options))
             self$add(R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
@@ -539,10 +543,12 @@ pcaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param rotation \code{'none'}, \code{'varimax'} (default),
 #'   \code{'quartimax'}, \code{'promax'}, \code{'oblimin'}, or
 #'   \code{'simplimax'}, the rotation to use in estimation
-#' @param minCorrThr a number (default: 0.3), count correlations between
-#'   variables that are above this threshold
-#' @param maxCorrThr a number (default: 0.9), count correlations between
-#'   variables that are above this threshold
+#' @param countCorrMin a number (default: 0), returns the number of
+#'   correlations between variables above this minimum (if 0, no output is
+#'   produced)
+#' @param countCorrMax a number (default: 0), returns the number of
+#'   correlations between variables above this maxmimum (if 0, no output is
+#'   produced)
 #' @param kmo \code{TRUE} or \code{FALSE} (default), show Kaiser-Meyer-Olkin
 #'   (KMO) measure of sampling adequacy (MSA) results
 #' @param bartlett \code{TRUE} or \code{FALSE} (default), show Bartlett's test
@@ -585,8 +591,8 @@ pca <- function(
     nFactors = 1,
     minEigen = 1,
     rotation = "varimax",
-    minCorrThr = 0.3,
-    maxCorrThr = 0.9,
+    countCorrMin = 0,
+    countCorrMax = 0,
     kmo = FALSE,
     bartlett = FALSE,
     hideLoadings = 0.3,
@@ -613,8 +619,8 @@ pca <- function(
         nFactors = nFactors,
         minEigen = minEigen,
         rotation = rotation,
-        minCorrThr = minCorrThr,
-        maxCorrThr = maxCorrThr,
+        countCorrMin = countCorrMin,
+        countCorrMax = countCorrMax,
         kmo = kmo,
         bartlett = bartlett,
         hideLoadings = hideLoadings,
