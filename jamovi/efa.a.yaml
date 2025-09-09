@@ -126,22 +126,22 @@ options:
       type: Number
       min: 0
       max: 1
-      default: 0.3
+      default: 0
       description:
           R: >
-            a number (default: 0.3), count correlations between variables that
-            are above this threshold
+            a number (default: 0), count correlations between variables that
+            are above this threshold (if 0, no output is produced)
 
     - name: maxCorrThr
       title: ''
       type: Number
       min: 0
       max: 1
-      default: 0.9
+      default: 0
       description:
           R: >
-            a number (default: 0.9), count correlations between variables that
-            are above this threshold
+            a number (default: 0), count correlations between variables that
+            are above this threshold (if 0, no output is produced)
 
     - name: kmo
       title: KMO measure of sampling adequacy

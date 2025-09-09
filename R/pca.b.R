@@ -116,6 +116,8 @@ pcaClass <- R6::R6Class(
         .run = function() {
             if (is.null(self$options$vars) || length(self$options$vars) < 2)
                 return()
+print(self$options$minCorrThr)
+print(self$options$maxCorrThr)
 
             private$.errorCheck()
 

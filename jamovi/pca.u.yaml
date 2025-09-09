@@ -67,6 +67,7 @@ children:
                     enable: (nFactorMethod_fixed)
           - type: Label
             label: Data Summary
+            style: inline
             children:
               - name: minCorrThr
                 type: TextBox

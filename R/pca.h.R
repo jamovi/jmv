@@ -173,6 +173,7 @@ pcaResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         loadings = function() private$.items[["loadings"]],
         factorStats = function() private$.items[["factorStats"]],
         modelFit = function() private$.items[["modelFit"]],
+        dataSummary = function() private$.items[["dataSummary"]],
         assump = function() private$.items[["assump"]],
         eigen = function() private$.items[["eigen"]],
         factorScoresOV = function() private$.items[["factorScoresOV"]]),
@@ -331,6 +332,44 @@ pcaResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                     `type`="number", 
                                     `format`="zto,pvalue", 
                                     `superTitle`="Model Test"))))}))$new(options=options))
+            self$add(R6::R6Class(
+                inherit = jmvcore::Group,
+                active = list(
+                    corrAboveMin = function() private$.items[["corrAboveMin"]],
+                    corrAboveMax = function() private$.items[["corrAboveMax"]]),
+                private = list(),
+                public=list(
+                    initialize=function(options) {
+                        super$initialize(
+                            options=options,
+                            name="dataSummary",
+                            title="Data Summary")
+                        self$add(jmvcore::Table$new(
+                            options=options,
+                            name="corrAboveMin",
+                            title="Correlations Above Minimum Threshold",
+                            visible="(minCorrThr > 0)",
+                            rows=1,
+                            clearWith=list(
+                                "vars"),
+                            columns=list(
+                                list(
+                                    `name`="header", 
+                                    `title`="", 
+                                    `type`="text"))))
+                        self$add(jmvcore::Table$new(
+                            options=options,
+                            name="corrAboveMax",
+                            title="Correlations Above Maximum Threshold",
+                            visible="(maxCorrThr > 0)",
+                            rows=1,
+                            clearWith=list(
+                                "vars"),
+                            columns=list(
+                                list(
+                                    `name`="header", 
+                                    `title`="", 
+                                    `type`="text"))))}))$new(options=options))
             self$add(R6::R6Class(
                 inherit = jmvcore::Group,
                 active = list(
@@ -523,6 +562,8 @@ pcaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   \code{results$factorStats$factorSummary} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$factorStats$factorCor} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$modelFit$fit} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$dataSummary$corrAboveMin} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$dataSummary$corrAboveMax} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$assump$bartlett} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$assump$kmo} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$eigen$initEigen} \tab \tab \tab \tab \tab a table \cr

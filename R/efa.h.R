@@ -12,8 +12,8 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             minEigen = 0,
             extraction = "minres",
             rotation = "oblimin",
-            minCorrThr = 0.3,
-            maxCorrThr = 0.9,
+            minCorrThr = 0,
+            maxCorrThr = 0,
             kmo = FALSE,
             bartlett = FALSE,
             hideLoadings = 0.3,
@@ -82,13 +82,13 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 minCorrThr,
                 min=0,
                 max=1,
-                default=0.3)
+                default=0)
             private$..maxCorrThr <- jmvcore::OptionNumber$new(
                 "maxCorrThr",
                 maxCorrThr,
                 min=0,
                 max=1,
-                default=0.9)
+                default=0)
             private$..kmo <- jmvcore::OptionBool$new(
                 "kmo",
                 kmo,
@@ -283,10 +283,10 @@ efaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param rotation \code{'none'}, \code{'varimax'}, \code{'quartimax'},
 #'   \code{'promax'}, \code{'oblimin'} (default), or \code{'simplimax'}, the
 #'   rotation to use in estimation
-#' @param minCorrThr a number (default: 0.3), count correlations between
-#'   variables that are above this threshold
-#' @param maxCorrThr a number (default: 0.9), count correlations between
-#'   variables that are above this threshold
+#' @param minCorrThr a number (default: 0), count correlations between
+#'   variables that are above this threshold (if 0, no output is produced)
+#' @param maxCorrThr a number (default: 0), count correlations between
+#'   variables that are above this threshold (if 0, no output is produced)
 #' @param kmo \code{TRUE} or \code{FALSE} (default), show Kaiser-Meyer-Olkin
 #'   (KMO) measure of sampling adequacy (MSA) results
 #' @param bartlett \code{TRUE} or \code{FALSE} (default), show Bartlett's test
@@ -321,8 +321,8 @@ efa <- function(
     minEigen = 0,
     extraction = "minres",
     rotation = "oblimin",
-    minCorrThr = 0.3,
-    maxCorrThr = 0.9,
+    minCorrThr = 0,
+    maxCorrThr = 0,
     kmo = FALSE,
     bartlett = FALSE,
     hideLoadings = 0.3,
