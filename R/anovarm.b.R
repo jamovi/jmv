@@ -53,6 +53,7 @@ anovaRMClass <- R6::R6Class(
             private$.initBSTable()
             private$.initSpericityTable()
             private$.initLeveneTable()
+            private$.initContrastTables()
             private$.initPostHocTables()
             private$.initEmm()
             private$.initEmmTable()
@@ -82,6 +83,7 @@ anovaRMClass <- R6::R6Class(
             private$.populateLeveneTable()
             private$.prepareQQPlot()
 
+            private$.populateContrastTables()
             private$.populatePostHocTables()
 
             private$.prepareEmmPlots()
@@ -204,6 +206,24 @@ anovaRMClass <- R6::R6Class(
             for (var in rmVars)
                 leveneTable$addRow(rowKey=var, list(name=var))
         },
+        .initContrastTables = function() {
+            tables <- self$results$contrasts
+
+            for (contrast in self$options$contrasts) {
+                if (contrast$type == 'none')
+                    next()
+                
+                levels <- private$.contrastLevels(contrast$var)
+                if (is.null(levels))
+                    next()
+
+                table <- tables$addItem(contrast)
+                
+                labels <- private$.contrastLabels(levels, contrast$type)
+                for (label in labels)
+                    table$addRow(rowKey=label, list(contrast=label))
+            }
+        },        
         .initPostHocTables=function() {
             bs <- self$options$bs
             rm <- self$options$rm
@@ -601,6 +621,33 @@ anovaRMClass <- R6::R6Class(
                 leveneTable$setRow(rowKey=var, values=row)
             }
         },
+        .populateContrastTables = function() {
+            model <- self$model
+            tables <- self$results$contrasts
+
+            for (contrast in self$options$contrasts) {
+                if (contrast$type == 'none')
+                    next()
+
+                levels <- private$.contrastLevels(contrast$var)
+                if (is.null(levels))
+                    next()
+
+                table <- tables$get(key = contrast)
+
+                contrastMeans <- emmeans::lsmeans(model, specs = as.formula(paste("~", jmvcore::toB64(contrast$var))))
+                contrastSummary <- summary(emmeans::contrast(contrastMeans, method = defineContrasts(contrast$type), adjust = "none"))
+                contrastNamesB64 <- private$.contrastLabels(jmvcore::toB64(levels), contrast$type)
+
+                if (nrow(contrastSummary) == table$rowCount) {
+                    for (i in seq(table$rowCount)) {
+                        if (contrastSummary[i, 1] == contrastNamesB64[[i]])
+                            table$setRow(rowNo = i, values = setNames(contrastSummary[i, c("estimate", "SE", "t.ratio", "p.value")],
+                                                                                         c("est",      "se", "t",       "p")))
+                    }
+                }
+            }
+        },
         .populatePostHocTables = function() {
             terms <- self$options$postHoc
 
@@ -894,6 +941,79 @@ anovaRMClass <- R6::R6Class(
         },
 
         #### Helper methods ----
+        .contrastLabels=function(levels, type) {
+
+            nLevels <- length(levels)
+            labels <- list()
+
+            if (length(levels) <= 1) {
+
+                # do nothing
+
+            } else if (type %in% c('simple_1', 'simple')) {
+
+                for (i in seq_len(nLevels-1))
+                    labels[[i]] <- paste(levels[i+1], '-', levels[1])
+
+            } else if (type == 'simple_k') {
+
+                for (i in seq_len(nLevels-1))
+                    labels[[i]] <- paste(levels[i], '-', levels[nLevels])
+
+            } else if (type == 'deviation') {
+
+                all <- paste(levels, collapse=', ')
+                for (i in seq_len(nLevels-1))
+                    labels[[i]] <- paste(levels[i+1], '-', all)
+
+            } else if (type == 'difference') {
+
+                for (i in seq_len(nLevels-1)) {
+                    rhs <- paste0(levels[1:i], collapse=', ')
+                    labels[[i]] <- paste(levels[i + 1], '-', rhs)
+                }
+
+            } else if (type == 'helmert') {
+
+                for (i in seq_len(nLevels-1)) {
+                    rhs <- paste(levels[(i+1):nLevels], collapse=', ')
+                    labels[[i]] <- paste(levels[i], '-', rhs)
+                }
+
+            } else if (type == 'repeated') {
+
+                for (i in seq_len(nLevels-1))
+                    labels[[i]] <- paste(levels[i], '-', levels[i+1])
+
+            } else if (type == 'polynomial') {
+
+                # adapted / shortened to match poly.emmc
+                names <- c(.("linear"), .("quadratic"), .("cubic"), .("quartic"))
+                
+                for (i in seq_len(nLevels-1)) {
+                    if (i <= length(names)) {
+                        labels[[i]] <- names[i]
+                    } else {
+                        labels[[i]] <- paste(.("degree"), i)
+                    }
+                }
+            }
+
+            labels
+        },
+        .contrastLevels=function(var) {
+            bs <- self$options$bs
+            rm <- self$options$rm
+
+            levels <- NULL
+            if        (var %in% bs) {
+                levels <- levels(self$data[[var]])
+            } else if (var %in% sapply(rm, "[[", "label")) {
+                levels <- rm[[which(sapply(rm, "[[", "label") == var)]][["levels"]]
+            }
+
+            levels
+        },
         .dataCheck=function() {
             data <- self$data
 
@@ -1289,6 +1409,64 @@ calcUnivariateTests <- function(SSP, SSPE, P, df, error_df) {
     )
 }
 
+#' Define contrasts
+#' Some contrast are already defined in `emmeans` (simple_1) and just "linked", 
+#' for others (e.g., deviation) the respective function needs to be defined
+#' (cf. https://rdrr.io/cran/emmeans/src/R/emm-contr.R)
+#'
+#' @param type Name / type of contrast (e.g., "simple_1")
+#' @return A function, used as input parameter `method` in emmeans::contrast
+#' @keywords internal
+defineContrasts <- function(type) {
+    if        (type == "deviation") {
+        emmc <- function(levs, ref = 1, ...) {
+            ref = emmeans::.num.key(levs, ref)
+            k <- length(levs)
+            if (length(ref) == 0 || (min(ref) < 1) || (max(ref) > k))
+                stop("In deviation.emmc(), 'ref' levels are out of range", call. = FALSE)
+            M <- as.data.frame(contr.treatment(k, base = ref) - matrix(rep(1 / k, k * (k - 1)), ncol = (k - 1)))
+            names(M) <- sprintf("%s - %s", levs[-ref], rep(paste(levs, collapse = ", "), k - 1))
+            attr(M, "desc") <- "Deviation contrasts"
+            M
+        }
+    } else if (type %in% c("simple_1", "simple")) {
+        emmc <- emmeans:::trt.vs.ctrl1.emmc
+    } else if (type == "simple_k") {
+        emmc <- emmeans:::trt.vs.ctrlk.emmc
+    } else if (type == "difference") {
+        emmc <- function(levs, ref = length(levs), ...) {
+            ref = emmeans::.num.key(levs, ref)
+            k <- length(levs)
+            if (length(ref) == 0 || (ref != 1 && ref != k))
+                stop("In difference.emmc(), 'ref' levels are out of range", call. = FALSE)
+            M <- as.data.frame(contr.helmert(k))
+            names(M) <- sprintf("%s - %s", levs[seq(2, k - 0)], vapply(seq(k - 1), function(n) paste(levs[seq(1, n)], collapse = ", "), character(1)))
+            attr(M, "desc") <- "Difference contrasts"
+            M
+        }
+    } else if (type == "helmert") {
+        emmc <- function(levs, ref = 1, ...) {
+            ref = emmeans::.num.key(levs, ref)
+            k <- length(levs)
+            if (length(ref) == 0 || (ref != 1 && ref != k))
+                stop("In helmert.emmc(), 'ref' levels are out of range", call. = FALSE)
+            M <- as.data.frame(contr.helmert(k))
+            M <- M[seq(k, 1), seq(k - 1, 1), drop = FALSE]
+            names(M) <- sprintf("%s - %s", levs[seq(k - 1)], vapply(seq(k - 1), function(n) paste(levs[-seq(1, n)], collapse = ", "), character(1)))
+            attr(M, "desc") <- "Helmert contrasts"
+            M
+        }
+    } else if (type == "repeated") {
+        emmc <- function(levs, ref = 1, ...) emmeans:::consec.emmc(levs, ref = ref, reverse = TRUE, ...)
+    } else if (type == "polynomial") {
+        emmc <- emmeans:::poly.emmc
+    } else {
+        stop(sprintf("Unknown contrast type: %s", type), call. = FALSE)
+    }
+
+    return(emmc)
+}
+
 #' Summarize an Anova object from a repeated measures model into a single table
 #'
 #' @param object An Anova object from a repeated measures model
@@ -1379,5 +1557,3 @@ summarizeAnovaModel <- function(object, aov_table) {
 
     return(results)
 }
-
-
