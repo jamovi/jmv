@@ -79,8 +79,7 @@ descriptivesClass <- R6::R6Class(
                     "(kurt)", "(sw)", "(sw)"
                 ),
                 supportsWeights = c(
-                    rep(TRUE, 3), rep(FALSE, 3), TRUE, FALSE, rep(TRUE, 3), FALSE, rep(TRUE, 3),
-                    rep(FALSE, 6)
+                    rep(TRUE, 3), rep(FALSE, 3), TRUE, FALSE, rep(TRUE, 7), rep(FALSE, 6)
                 )
             )
 
@@ -287,7 +286,7 @@ descriptivesClass <- R6::R6Class(
                 stats[['ciLower']] <- NaN
                 stats[['ciUpper']] <- NaN
 
-                stats[['iqr']] <- NaN
+                stats[['iqr']] <- diff(as.numeric(Hmisc::wtd.quantile(column, weights=weights, probs=c(.25,.75))))
                 stats[['skew']] <- NaN
                 stats[['seSkew']] <- NaN
                 stats[['kurt']] <- NaN
