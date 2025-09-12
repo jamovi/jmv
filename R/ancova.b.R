@@ -796,10 +796,15 @@ ancovaClass <- R6::R6Class(
 
                 # do nothing
 
-            } else if (type == 'simple') {
+            } else if (type %in% c('simple_1', 'simple')) {
 
                 for (i in seq_len(nLevels-1))
                     labels[[i]] <- paste(levels[i+1], '-', levels[1])
+
+            } else if (type == 'simple_k') {
+
+                for (i in seq_len(nLevels-1))
+                    labels[[i]] <- paste(levels[i], '-', levels[nLevels])
 
             } else if (type == 'deviation') {
 
@@ -848,9 +853,16 @@ ancovaClass <- R6::R6Class(
 
             nLevels <- length(levels)
 
-            if (type == 'simple') {
+            if (type %in% c('simple_1', 'simple')) {
 
-                dummy <- contr.treatment(levels)
+                dummy <- contr.treatment(levels, base = 1)
+                dimnames(dummy) <- NULL
+                coding <- matrix(rep(1/nLevels, prod(dim(dummy))), ncol=nLevels-1)
+                contrast <- (dummy - coding)
+
+            } else if (type == 'simple_k') {
+
+                dummy <- contr.treatment(levels, base = nLevels)
                 dimnames(dummy) <- NULL
                 coding <- matrix(rep(1/nLevels, prod(dim(dummy))), ncol=nLevels-1)
                 contrast <- (dummy - coding)

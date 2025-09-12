@@ -150,8 +150,7 @@ anovaRMOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             private$..contrasts <- jmvcore::OptionArray$new(
                 "contrasts",
                 contrasts,
-                hidden=TRUE,
-                items="(bs)",
+                items="(rm)",
                 default=NULL,
                 template=jmvcore::OptionGroup$new(
                     "contrasts",
@@ -168,6 +167,7 @@ anovaRMOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                 "none",
                                 "deviation",
                                 "simple",
+                                "simple_k",
                                 "difference",
                                 "helmert",
                                 "repeated",
@@ -941,7 +941,10 @@ anovaRMBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   homogeneity of variances (i.e., Levene's test)
 #' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
 #'   residuals
-#' @param contrasts in development
+#' @param contrasts a list of lists specifying the factor and type of contrast
+#'   to use, one of \code{'deviation'}, \code{'simple'} (or \code{'simple_1'}),
+#'   \code{'simple_k'}, \code{'difference'}, \code{'helmert'}, \code{'repeated'}
+#'   or \code{'polynomial'}
 #' @param postHoc a list of character vectors describing the post-hoc tests
 #'   that need to be computed
 #' @param postHocCorr one or more of \code{'none'}, \code{'tukey'} (default),

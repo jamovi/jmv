@@ -26,6 +26,11 @@ testthat::test_that('All options in the anovaRM work (sunny)', {
         list(measure="fri", cell="fri")
     )
 
+    contrasts <- list(
+        list(var = "intake", type = "simple_1"),
+        list(var = "between", type = "simple_k")
+    )
+    
     postHoc <- list(
         "intake",
         "between",
@@ -43,6 +48,7 @@ testthat::test_that('All options in the anovaRM work (sunny)', {
         spherTests = TRUE,
         spherCorr = c("none", "GG", "HF"),
         leveneTest = TRUE,
+        contrasts = contrasts,
         postHoc = postHoc,
         postHocCorr = c("tukey", "none", "scheffe", "bonf", "holm"),
         emMeans = ~intake + between + intake:between,
@@ -89,7 +95,6 @@ testthat::test_that('All options in the anovaRM work (sunny)', {
     testthat::expect_equal(c(0.002, NA), bsTable[['eta']], tolerance = 1e-3)
     testthat::expect_equal(c(0.006, NA), bsTable[['partEta']], tolerance = 1e-3)
 
-
     # Test sphericity table
     spherTable <- r$assump$spherTable$asDF
     testthat::expect_equal(0.985, spherTable[['mauch']], tolerance = 1e-3)
@@ -104,6 +109,23 @@ testthat::test_that('All options in the anovaRM work (sunny)', {
     testthat::expect_equal(c(2, 2, 2), levenesTable[['df1']])
     testthat::expect_equal(c(57, 57, 57), levenesTable[['df2']])
     testthat::expect_equal(c(0.291, 0.718, 0.233), levenesTable[['p']], tolerance = 1e-3)
+
+    # Test contrast tables
+    contrastTable1 <- r$contrasts[[1]]$asDF
+    testthat::expect_equal(c("\"tue - m o n\"", "\"fri - m o n\""), row.names(contrastTable1))
+    testthat::expect_equal(c("tue - m o n", "fri - m o n"), contrastTable1[['contrast']])
+    testthat::expect_equal(c(0.139, 0.065), contrastTable1[['est']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.191, 0.178), contrastTable1[['se']],  tolerance = 1e-3)
+    testthat::expect_equal(c(0.727, 0.366), contrastTable1[['t']],   tolerance = 1e-3)
+    testthat::expect_equal(c(0.470, 0.716), contrastTable1[['p']],   tolerance = 1e-3)
+    
+    contrastTable2 <- r$contrasts[[2]]$asDF
+    testthat::expect_equal(c("\"A - C\"", "\"B - C\""), row.names(contrastTable2))
+    testthat::expect_equal(c("A - C", "B - C"), contrastTable2[['contrast']])
+    testthat::expect_equal(c(-0.117, -0.090), contrastTable2[['est']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.203, 0.215),   contrastTable2[['se']],  tolerance = 1e-3)
+    testthat::expect_equal(c(-0.578, -0.416), contrastTable2[['t']],   tolerance = 1e-3)
+    testthat::expect_equal(c(0.566, 0.679),   contrastTable2[['p']],   tolerance = 1e-3)
 
     # Test post-hoc tables
     postHocTable1 <- r$postHoc[[1]]$asDF
