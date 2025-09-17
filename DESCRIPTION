@@ -1,8 +1,8 @@
 Package: jmv
 Type: Package
 Title: The 'jamovi' Analyses
-Version: 2.7.0
-Date: 2025-06-11
+Version: 2.7.7
+Date: 2025-09-18
 Authors@R: c(person("Ravi", "Selker", role=c("aut", "cph")),
     person("Jonathon", "Love", role=c("aut", "cre", "cph"), email="jon@thon.cc"),
     person("Damian", "Dropmann", role=c("aut", "cph")),
