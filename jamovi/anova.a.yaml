@@ -228,8 +228,8 @@ options:
             the contrasts to use.
           R: >
             a list of lists specifying the factor and type of contrast to use,
-            one of `'deviation'`, `'simple'` (or `'simple_1'`), `'simple_k'`,
-            `'difference'`, `'helmert'`, `'repeated'` or `'polynomial'`
+            one of `'deviation'`, `'simple'`, `'simple_k'`, `'difference'`,
+            `'helmert'`, `'repeated'` or `'polynomial'`
 
     - name: postHoc
       title: Post Hoc Tests

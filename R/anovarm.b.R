@@ -219,7 +219,7 @@ anovaRMClass <- R6::R6Class(
 
                 table <- tables$addItem(contrast)
                 
-                labels <- private$.contrastLabels(levels, contrast$type)
+                labels <- contrastLabels(levels, contrast$type) # defined in utilsanova.R
                 for (label in labels)
                     table$addRow(rowKey=label, list(contrast=label))
             }
@@ -636,8 +636,8 @@ anovaRMClass <- R6::R6Class(
                 table <- tables$get(key = contrast)
 
                 contrastMeans <- emmeans::lsmeans(model, specs = as.formula(paste("~", jmvcore::toB64(contrast$var))))
-                contrastSummary <- summary(emmeans::contrast(contrastMeans, method = defineContrasts(contrast$type), adjust = "none"))
-                contrastNamesB64 <- private$.contrastLabels(jmvcore::toB64(levels), contrast$type)
+                contrastSummary <- summary(emmeans::contrast(contrastMeans, method = getContrastFunction(contrast$type), adjust = "none"))
+                contrastNamesB64 <- contrastLabels(jmvcore::toB64(levels), contrast$type) # defined in utilsanova.R
 
                 if (nrow(contrastSummary) == table$rowCount) {
                     for (i in seq(table$rowCount)) {
@@ -941,66 +941,6 @@ anovaRMClass <- R6::R6Class(
         },
 
         #### Helper methods ----
-        .contrastLabels=function(levels, type) {
-
-            nLevels <- length(levels)
-            labels <- list()
-
-            if (length(levels) <= 1) {
-
-                # do nothing
-
-            } else if (type %in% c('simple_1', 'simple')) {
-
-                for (i in seq_len(nLevels-1))
-                    labels[[i]] <- paste(levels[i+1], '-', levels[1])
-
-            } else if (type == 'simple_k') {
-
-                for (i in seq_len(nLevels-1))
-                    labels[[i]] <- paste(levels[i], '-', levels[nLevels])
-
-            } else if (type == 'deviation') {
-
-                all <- paste(levels, collapse=', ')
-                for (i in seq_len(nLevels-1))
-                    labels[[i]] <- paste(levels[i+1], '-', all)
-
-            } else if (type == 'difference') {
-
-                for (i in seq_len(nLevels-1)) {
-                    rhs <- paste0(levels[1:i], collapse=', ')
-                    labels[[i]] <- paste(levels[i + 1], '-', rhs)
-                }
-
-            } else if (type == 'helmert') {
-
-                for (i in seq_len(nLevels-1)) {
-                    rhs <- paste(levels[(i+1):nLevels], collapse=', ')
-                    labels[[i]] <- paste(levels[i], '-', rhs)
-                }
-
-            } else if (type == 'repeated') {
-
-                for (i in seq_len(nLevels-1))
-                    labels[[i]] <- paste(levels[i], '-', levels[i+1])
-
-            } else if (type == 'polynomial') {
-
-                # adapted / shortened to match poly.emmc
-                names <- c(.("linear"), .("quadratic"), .("cubic"), .("quartic"))
-                
-                for (i in seq_len(nLevels-1)) {
-                    if (i <= length(names)) {
-                        labels[[i]] <- names[i]
-                    } else {
-                        labels[[i]] <- paste(.("degree"), i)
-                    }
-                }
-            }
-
-            labels
-        },
         .contrastLevels=function(var) {
             bs <- self$options$bs
             rm <- self$options$rm
@@ -1410,14 +1350,14 @@ calcUnivariateTests <- function(SSP, SSPE, P, df, error_df) {
 }
 
 #' Define contrasts
-#' Some contrast are already defined in `emmeans` (simple_1) and just "linked", 
+#' Some contrast are already defined in `emmeans` (simple) and just "linked", 
 #' for others (e.g., deviation) the respective function needs to be defined
 #' (cf. https://rdrr.io/cran/emmeans/src/R/emm-contr.R)
 #'
-#' @param type Name / type of contrast (e.g., "simple_1")
+#' @param type Name / type of contrast (e.g., "simple")
 #' @return A function, used as input parameter `method` in emmeans::contrast
 #' @keywords internal
-defineContrasts <- function(type) {
+getContrastFunction <- function(type) {
     if        (type == "deviation") {
         emmc <- function(levs, ref = 1, ...) {
             ref = emmeans::.num.key(levs, ref)
@@ -1429,7 +1369,7 @@ defineContrasts <- function(type) {
             attr(M, "desc") <- "Deviation contrasts"
             M
         }
-    } else if (type %in% c("simple_1", "simple")) {
+    } else if (type == "simple") {
         emmc <- emmeans:::trt.vs.ctrl1.emmc
     } else if (type == "simple_k") {
         emmc <- emmeans:::trt.vs.ctrlk.emmc
