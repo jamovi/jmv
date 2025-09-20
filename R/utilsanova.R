@@ -13,6 +13,11 @@ setSingularityWarning = function(self) {
     )
 }
 
+#' Set a warning notice for singularity in the design matrix
+#'
+#' @param levels character vector with the (names of the) factor levels
+#' @param type   the type of contrast
+#' @keywords internal
 contrastLabels = function(levels, type) {
     nLevels <- length(levels)
     labels <- list()
@@ -59,13 +64,15 @@ contrastLabels = function(levels, type) {
     } else if (type == 'polynomial') {
 
         # adapted / shortened to match poly.emmc
-        names <- c(.("linear"), .("quadratic"), .("cubic"), .("quartic"))
+#       names <- c(.("linear"), .("quadratic"), .("cubic"), .("quartic"))
+        names <- c("linear", "quadratic", "cubic", "quartic")
         
-        for (i in seq_len(nLevels-1)) {
+        for (i in seq_len(nLevels - 1)) {
             if (i <= length(names)) {
                 labels[[i]] <- names[i]
             } else {
-                labels[[i]] <- paste(.("degree"), i)
+#               labels[[i]] <- paste(.("degree"), i)
+                labels[[i]] <- paste("degree", i)
             }
         }
     }
