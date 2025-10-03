@@ -318,21 +318,51 @@ params <- list(
     list(
         weights = NULL,
         expected = list(
-            n=10, mean=3, median=3, sum=30, sd=1.491, variance=2.222, min=1, max=5, range=4
+            n=10, 
+            mean=3, 
+            median=3,
+            sum=30, 
+            sd=1.491, 
+            variance=2.222, 
+            min=1, 
+            max=5, 
+            range=4,
+            iqr=2, 
+            quants=c(2, 3, 4)
         ),
         info = "No weights"
     ),
     list(
         weights = rep(1:2, 5),
         expected = list(
-            n=15, mean=3, median=3, sum=45, sd=1.464, variance=2.143, min=1, max=5, range=4
+            n=15, 
+            mean=3, 
+            median=3, 
+            sum=45, 
+            sd=1.464, 
+            variance=2.143, 
+            min=1, 
+            max=5, 
+            range=4,
+            iqr=2, 
+            quants=c(2, 3, 4)
         ),
         info = "Integer weights"
     ),
     list(
         weights = c(0.3, 0.5, 0.6, 0.9, 1, 1.2, 1.4, 1.6, 1.8, 2),
         expected = list(
-            n=11.3, mean=3.664, median=4, sum=41.4, sd=1.32, variance=1.74, min=1, max=5, range=4
+            n=11.3, 
+            mean=3.664, 
+            median=4, 
+            sum=41.4, 
+            sd=1.32, 
+            variance=1.74, 
+            min=1, 
+            max=5, 
+            range=4,
+            iqr=2, 
+            quants=c(3, 4, 5)
         ),
         info = "Non-integer weights"
     )
@@ -346,7 +376,14 @@ testthat::test_that("Weighted descriptives with no grouping variable works", {
 
         # WHEN the descriptives are calculated
         desc <- jmv::descriptives(
-            data = df, vars = "x", desc="rows", sum = TRUE, variance = TRUE, range = TRUE
+            data = df, 
+            vars = "x", 
+            desc="rows", 
+            sum = TRUE, 
+            variance = TRUE, 
+            range = TRUE, 
+            iqr = TRUE,
+            pcEqGr = TRUE
         )
 
         # THEN the statistics are calculated correctly
@@ -360,12 +397,19 @@ testthat::test_that("Weighted descriptives with no grouping variable works", {
         testthat::expect_equal(r$min, param$expected$min, info = param$info)
         testthat::expect_equal(r$max, param$expected$max, info = param$info)
         testthat::expect_equal(r$range, param$expected$range, info = param$info)
+        testthat::expect_equal(r$iqr, param$expected$iqr, tolerance = 1e-3, info = param$info)
+        testthat::expect_equal(
+            as.numeric(r[grep("quant", names(r))]), 
+            param$expected$quants, 
+            tolerance = 1e-3, 
+            info = param$info
+        )
     }
 })
 
 testthat::test_that("Weighted descriptives with grouping variable works", {
     # GIVEN a data frame with a numeric variable and a grouping variable
-    df <- data.frame(group = rep(LETTERS[1:2], length.out=10), x = rep(1:5, each=2))
+    df <- data.frame(group = rep(LETTERS[1:2], length.out=10), x = rep(1:5, 2))
     # AND weights added to the data frame
     attr(df, "jmv-weights") <- rep(1:2, 5)
 
@@ -377,20 +421,26 @@ testthat::test_that("Weighted descriptives with grouping variable works", {
         desc="rows",
         sum = TRUE,
         variance = TRUE,
-        range = TRUE
+        range = TRUE,
+        iqr = TRUE,
+        pcEqGr = TRUE
     )
 
     # THEN the statistics are calculated correctly
     r <- desc$descriptivesT$asDF
-    testthat::expect_equal(r$n, c(5, 10), info = param$info)
-    testthat::expect_equal(r$mean, c(3, 3), info = param$info)
-    testthat::expect_equal(r$median, c(3, 3), info = param$info)
-    testthat::expect_equal(r$sum, c(15, 30), info = param$info)
-    testthat::expect_equal(r$sd, c(1.581, 1.491), tolerance = 1e-3, info = param$info)
-    testthat::expect_equal(r$variance, c(2.500, 2.222), tolerance = 1e-3, info = param$info)
-    testthat::expect_equal(r$min, c(1, 1), info = param$info)
-    testthat::expect_equal(r$max, c(5, 5), info = param$info)
-    testthat::expect_equal(r$range, c(4, 4), info = param$info)
+    testthat::expect_equal(r$n, c(5, 10))
+    testthat::expect_equal(r$mean, c(3, 3))
+    testthat::expect_equal(r$median, c(3, 3))
+    testthat::expect_equal(r$sum, c(15, 30))
+    testthat::expect_equal(r$sd, c(1.581, 1.491), tolerance = 1e-3)
+    testthat::expect_equal(r$variance, c(2.500, 2.222), tolerance = 1e-3)
+    testthat::expect_equal(r$min, c(1, 1))
+    testthat::expect_equal(r$max, c(5, 5))
+    testthat::expect_equal(r$range, c(4, 4))
+    testthat::expect_equal(r$iqr, c(2, 2))
+    testthat::expect_equal(r$quant1, c(2, 2))
+    testthat::expect_equal(r$quant2, c(3, 3))
+    testthat::expect_equal(r$quant3, c(4, 4))
 })
 
 testthat::test_that("Splitting by multiple variables works for normal table", {
