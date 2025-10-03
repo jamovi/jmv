@@ -43,7 +43,8 @@ Imports:
     ggrepel,
     dplyr,
     magrittr,
-    matrixStats
+    matrixStats,
+    Hmisc
 Suggests:
     exact2x2,
     testthat  (>= 3.1.5),
