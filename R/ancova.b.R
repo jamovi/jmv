@@ -188,7 +188,7 @@ ancovaClass <- R6::R6Class(
 
                 var <- data[[contrast$var]]
                 levels <- base::levels(var)
-                labels <- contrastLabels(levels, contrast$type) # defined in utilsanova.R
+                labels <- contrastLabels(levels, contrast$type, self) # defined in utilsanova.R
 
                 for (label in labels)
                     table$addRow(rowKey=label, list(contrast=label))
@@ -539,7 +539,7 @@ ancovaClass <- R6::R6Class(
                     next()
 
                 levels <- base::levels(data[[var]])
-                labels <- contrastLabels(fromB64(levels), type) # defined in utilsanova.R
+                labels <- contrastLabels(fromB64(levels), type, self) # defined in utilsanova.R
 
                 table <- self$results$get('contrasts')$get(contrast)
 

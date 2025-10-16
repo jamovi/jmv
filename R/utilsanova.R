@@ -17,8 +17,9 @@ setSingularityWarning = function(self) {
 #'
 #' @param levels character vector with the (names of the) factor levels
 #' @param type   the type of contrast
+#' @param self   the analysis object (for translation)
 #' @keywords internal
-contrastLabels = function(levels, type) {
+contrastLabels = function(levels, type, self) {
     nLevels <- length(levels)
     labels <- list()
 
@@ -64,15 +65,13 @@ contrastLabels = function(levels, type) {
     } else if (type == 'polynomial') {
 
         # adapted / shortened to match poly.emmc
-#       names <- c(.("linear"), .("quadratic"), .("cubic"), .("quartic"))
-        names <- c("linear", "quadratic", "cubic", "quartic")
+        names <- c(.("linear"), .("quadratic"), .("cubic"), .("quartic"))
         
         for (i in seq_len(nLevels - 1)) {
             if (i <= length(names)) {
                 labels[[i]] <- names[i]
             } else {
-#               labels[[i]] <- paste(.("degree"), i)
-                labels[[i]] <- paste("degree", i)
+                labels[[i]] <- paste(.("degree"), i)
             }
         }
     }

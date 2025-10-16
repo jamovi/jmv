@@ -219,7 +219,14 @@ anovaRMClass <- R6::R6Class(
 
                 table <- tables$addItem(contrast)
                 
-                labels <- contrastLabels(levels, contrast$type) # defined in utilsanova.R
+                labels <- contrastLabels(levels, contrast$type, self) # defined in utilsanova.R
+                # emmeans:::poly.emmc permits maximally 6 degrees, thus we need to limit the labels
+                if (contrast$type == 'polynomial') {
+                    if (length(labels) > 6) {
+                        labels <- labels[seq(6)]
+                        table$setNote('Note', .("Polynomials limited to degree 6"))
+                    }
+                }
                 for (label in labels)
                     table$addRow(rowKey=label, list(contrast=label))
             }
@@ -637,7 +644,7 @@ anovaRMClass <- R6::R6Class(
 
                 contrastMeans <- emmeans::lsmeans(model, specs = as.formula(paste("~", jmvcore::toB64(contrast$var))))
                 contrastSummary <- summary(emmeans::contrast(contrastMeans, method = getContrastFunction(contrast$type), adjust = "none"))
-                contrastNamesB64 <- contrastLabels(jmvcore::toB64(levels), contrast$type) # defined in utilsanova.R
+                contrastNamesB64 <- contrastLabels(jmvcore::toB64(levels), contrast$type, self) # defined in utilsanova.R
 
                 if (nrow(contrastSummary) == table$rowCount) {
                     for (i in seq(table$rowCount)) {
