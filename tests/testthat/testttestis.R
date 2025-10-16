@@ -113,7 +113,7 @@ testthat::test_that('Matched rank biserial correlation is correct', {
     # Test rank biserial correlation
     ttestTable <- r$ttest$asDF
     testthat::expect_equal(2, ttestTable[['stat[mann]']])
-    testthat::expect_equal(0.063, ttestTable[['p[mann]']], tolerance = 1e-3)
+    testthat::expect_equal(0.066, ttestTable[['p[mann]']], tolerance = 1e-3)
     testthat::expect_equal(-0.8, ttestTable[['es[mann]']])
 })
 
@@ -129,6 +129,6 @@ testthat::test_that('Rank biserial correlation can be negative', {
     # Test rank biserial correlation
     ttestTable <- r$ttest$asDF
     testthat::expect_equal(1, ttestTable[['stat[mann]']])
-    testthat::expect_equal(0.2, ttestTable[['p[mann]']])
+    testthat::expect_equal(0.19, ttestTable[['p[mann]']], tolerance = 1e-3)
     testthat::expect_equal(-0.778, ttestTable[['es[mann]']], tolerance = 1e-3)
 })

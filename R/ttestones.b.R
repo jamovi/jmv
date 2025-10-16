@@ -114,6 +114,7 @@ ttestOneSClass <- R6::R6Class(
                     else
                         res <- try(suppressWarnings(wilcox.test(column, mu=testValue,
                                                                 alternative=Ha,
+                                                                exact=FALSE,
                                                                 paired=FALSE,
                                                                 conf.int=TRUE,
                                                                 conf.level=cl)), silent=TRUE)
