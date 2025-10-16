@@ -13,7 +13,13 @@ setSingularityWarning = function(self) {
     )
 }
 
-contrastLabels = function(levels, type) {
+#' Create contrast labels (for AN(C)OVA and rmANOVA)
+#'
+#' @param levels character vector with the (names of the) factor levels
+#' @param type   the type of contrast
+#' @param self   the analysis object (for translation)
+#' @keywords internal
+contrastLabels = function(levels, type, self) {
     nLevels <- length(levels)
     labels <- list()
 
