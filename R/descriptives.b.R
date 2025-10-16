@@ -79,8 +79,7 @@ descriptivesClass <- R6::R6Class(
                     "(kurt)", "(sw)", "(sw)"
                 ),
                 supportsWeights = c(
-                    rep(TRUE, 3), rep(FALSE, 3), TRUE, FALSE, rep(TRUE, 3), FALSE, rep(TRUE, 3),
-                    rep(FALSE, 6)
+                    rep(TRUE, 3), rep(FALSE, 3), TRUE, FALSE, rep(TRUE, 7), rep(FALSE, 6)
                 )
             )
 
@@ -287,7 +286,7 @@ descriptivesClass <- R6::R6Class(
                 stats[['ciLower']] <- NaN
                 stats[['ciUpper']] <- NaN
 
-                stats[['iqr']] <- NaN
+                stats[['iqr']] <- diff(as.numeric(Hmisc::wtd.quantile(column, weights=weights, probs=c(.25,.75))))
                 stats[['skew']] <- NaN
                 stats[['seSkew']] <- NaN
                 stats[['kurt']] <- NaN
@@ -297,16 +296,22 @@ descriptivesClass <- R6::R6Class(
 
                 if ( self$options$pcEqGr ) {
                     pcNEqGr <- self$options$pcNEqGr
+
+                    pcEq <- (1:pcNEqGr / pcNEqGr)[-pcNEqGr]
+                    quants <- as.numeric(Hmisc::wtd.quantile(column, weights=weights, probs=pcEq))
+
                     for (i in 1:(pcNEqGr-1))
-                        stats[[paste0('quant', i)]] <- NaN
+                        stats[[paste0('quant', i)]] <- quants[i]
                 }
 
                 if ( self$options$pc ) {
                     pcValues <- private$.getPcValues()
                     npcValues <- length(pcValues)
+
                     if ( npcValues > 0 ) {
+                        quants <- as.numeric(Hmisc::wtd.quantile(column, weights=weights, probs=pcValues))
                         for (i in 1:npcValues)
-                            stats[[paste0('perc', i)]] <- NaN
+                            stats[[paste0('perc', i)]] <- quants[i]
                     }
                 }
             } else {
@@ -1746,7 +1751,7 @@ descriptivesClass <- R6::R6Class(
                 private$colArgs$superTitle <- c(colArgs$superTitle, rep(.("Percentiles"), pcNEqGr-1))
                 private$colArgs$type <- c(colArgs$type, rep('number', pcNEqGr - 1))
                 private$colArgs$visible <- c(colArgs$visible, rep("(pcEqGr)", pcNEqGr - 1))
-                private$colArgs$supportsWeights <- c(colArgs$supportsWeights, rep(FALSE, pcNEqGr - 1))
+                private$colArgs$supportsWeights <- c(colArgs$supportsWeights, rep(TRUE, pcNEqGr - 1))
             }
 
             if ( self$options$pc ){
@@ -1762,7 +1767,7 @@ descriptivesClass <- R6::R6Class(
                     private$colArgs$superTitle <- c(colArgs$superTitle, rep(.("Percentiles"), npcValues))
                     private$colArgs$type <- c(colArgs$type, rep('number', npcValues))
                     private$colArgs$visible <- c(colArgs$visible, rep("(pc)", npcValues))
-                    private$colArgs$supportsWeights <- c(colArgs$supportsWeights, rep(FALSE, npcValues))
+                    private$colArgs$supportsWeights <- c(colArgs$supportsWeights, rep(TRUE, npcValues))
                 }
             }
         },
