@@ -27,7 +27,7 @@ testthat::test_that('All options in the anovaRM work (sunny)', {
     )
 
     contrasts <- list(
-        list(var = "intake", type = "simple_1"),
+        list(var = "intake", type = "simple"),
         list(var = "between", type = "simple_k")
     )
     

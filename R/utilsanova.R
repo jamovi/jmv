@@ -27,7 +27,7 @@ contrastLabels = function(levels, type, self) {
 
         # do nothing
 
-    } else if (type %in% c('simple_1', 'simple')) {
+    } else if (type == 'simple') {
 
         for (i in seq_len(nLevels-1))
             labels[[i]] <- paste(levels[i+1], '-', levels[1])
