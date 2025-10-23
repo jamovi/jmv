@@ -607,9 +607,9 @@ ancovaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
 #'   residuals
 #' @param contrasts a list of lists specifying the factor and type of contrast
-#'   to use, one of \code{'deviation'}, \code{'simple'} (or \code{'simple_1'}),
-#'   \code{'simple_k'}, \code{'difference'}, \code{'helmert'}, \code{'repeated'}
-#'   or \code{'polynomial'}
+#'   to use, one of \code{'deviation'}, \code{'simple'}, \code{'simple_k'},
+#'   \code{'difference'}, \code{'helmert'}, \code{'repeated'} or
+#'   \code{'polynomial'}
 #' @param postHoc a formula containing the terms to perform post-hoc tests on
 #'   (see the examples)
 #' @param postHocCorr one or more of \code{'none'}, \code{'tukey'},

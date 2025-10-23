@@ -942,9 +942,9 @@ anovaRMBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param qq \code{TRUE} or \code{FALSE} (default), provide a Q-Q plot of
 #'   residuals
 #' @param contrasts a list of lists specifying the factor and type of contrast
-#'   to use, one of \code{'deviation'}, \code{'simple'} (or \code{'simple_1'}),
-#'   \code{'simple_k'}, \code{'difference'}, \code{'helmert'}, \code{'repeated'}
-#'   or \code{'polynomial'}
+#'   to use, one of \code{'deviation'}, \code{'simple'}, \code{'simple_k'},
+#'   \code{'difference'}, \code{'helmert'}, \code{'repeated'} or
+#'   \code{'polynomial'}
 #' @param postHoc a list of character vectors describing the post-hoc tests
 #'   that need to be computed
 #' @param postHocCorr one or more of \code{'none'}, \code{'tukey'} (default),
