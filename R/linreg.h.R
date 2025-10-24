@@ -991,7 +991,7 @@ linRegBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   measure \code{R-squared} for the models
 #' @param r2Adj \code{TRUE} or \code{FALSE} (default), provide the statistical
 #'   measure \code{adjusted R-squared} for the models
-#' @param aic \code{TRUE} or \code{FALSE} (default), provide Aikaike's
+#' @param aic \code{TRUE} or \code{FALSE} (default), provide Akaike's
 #'   Information Criterion (AIC) for the models
 #' @param bic \code{TRUE} or \code{FALSE} (default), provide Bayesian
 #'   Information Criterion (BIC) for the models
@@ -1021,7 +1021,7 @@ linRegBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param durbin \code{TRUE} or \code{FALSE} (default), provide results of the
 #'   Durbin- Watson test for autocorrelation
 #' @param collin \code{TRUE} or \code{FALSE} (default), provide VIF and
-#'   tolerence collinearity statistics
+#'   tolerance collinearity statistics
 #' @param cooks \code{TRUE} or \code{FALSE} (default), provide summary
 #'   statistics for the Cook's distance
 #' @param mahal \code{TRUE} or \code{FALSE} (default), provide a summary table

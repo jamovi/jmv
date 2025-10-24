@@ -320,7 +320,7 @@ corrPartBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   correlations
 #' @param n \code{TRUE} or \code{FALSE} (default), provide the number of cases
 #' @param hypothesis one of \code{'corr'} (default), \code{'pos'},
-#'   \code{'neg'} specifying the alernative hypothesis; correlated, correlated
+#'   \code{'neg'} specifying the alternative hypothesis; correlated, correlated
 #'   positively, correlated negatively respectively.
 #' @return A results object containing:
 #' \tabular{llllll}{

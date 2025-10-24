@@ -143,7 +143,7 @@ options:
             perform a Shapiro-Wilk test of normality. A low p-value suggests the
             data is not from a normal distribution.
           R: >
-            `TRUE` or `FALSE` (default), perform Shapiro-wilk tests of normality
+            `TRUE` or `FALSE` (default), perform Shapiro-Wilk tests of normality
 
     - name: qq
       title: Q-Q Plot

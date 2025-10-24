@@ -206,6 +206,6 @@ options:
             the alternative hypothesis. Allows for one-tailed tests.
         R: >
             one of `'corr'` (default), `'pos'`, `'neg'`
-            specifying the alernative hypothesis; correlated, correlated
+            specifying the alternative hypothesis; correlated, correlated
             positively, correlated negatively respectively.
 ...

@@ -613,7 +613,7 @@ ancovaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param postHocCorr one or more of \code{'none'}, \code{'tukey'},
 #'   \code{'scheffe'}, \code{'bonf'}, or \code{'holm'}; provide no, Tukey,
 #'   Scheffe, Bonferroni, and Holm Post Hoc corrections respectively
-#' @param postHocES a possible value of \code{'d'}; provide cohen's d measure
+#' @param postHocES a possible value of \code{'d'}; provide Cohen's d measure
 #'   of effect size for the post-hoc tests
 #' @param postHocEsCi \code{TRUE} or \code{FALSE} (default), provide
 #'   confidence intervals for the post-hoc effect sizes
