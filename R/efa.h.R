@@ -12,6 +12,10 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             minEigen = 0,
             extraction = "minres",
             rotation = "oblimin",
+            countCorrMin = "",
+            countCorrMax = "",
+            kmo = FALSE,
+            bartlett = FALSE,
             hideLoadings = 0.3,
             sortLoadings = FALSE,
             screePlot = FALSE,
@@ -19,8 +23,6 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             factorCor = FALSE,
             factorSummary = FALSE,
             modelFit = FALSE,
-            kmo = FALSE,
-            bartlett = FALSE,
             factorScoreMethod = "Thurstone", ...) {
 
             super$initialize(
@@ -75,6 +77,22 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "oblimin",
                     "simplimax"),
                 default="oblimin")
+            private$..countCorrMin <- jmvcore::OptionString$new(
+                "countCorrMin",
+                countCorrMin,
+                default="")
+            private$..countCorrMax <- jmvcore::OptionString$new(
+                "countCorrMax",
+                countCorrMax,
+                default="")
+            private$..kmo <- jmvcore::OptionBool$new(
+                "kmo",
+                kmo,
+                default=FALSE)
+            private$..bartlett <- jmvcore::OptionBool$new(
+                "bartlett",
+                bartlett,
+                default=FALSE)
             private$..hideLoadings <- jmvcore::OptionNumber$new(
                 "hideLoadings",
                 hideLoadings,
@@ -103,14 +121,6 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "modelFit",
                 modelFit,
                 default=FALSE)
-            private$..kmo <- jmvcore::OptionBool$new(
-                "kmo",
-                kmo,
-                default=FALSE)
-            private$..bartlett <- jmvcore::OptionBool$new(
-                "bartlett",
-                bartlett,
-                default=FALSE)
             private$..factorScoresOV <- jmvcore::OptionOutput$new(
                 "factorScoresOV")
             private$..factorScoreMethod <- jmvcore::OptionList$new(
@@ -130,6 +140,10 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..minEigen)
             self$.addOption(private$..extraction)
             self$.addOption(private$..rotation)
+            self$.addOption(private$..countCorrMin)
+            self$.addOption(private$..countCorrMax)
+            self$.addOption(private$..kmo)
+            self$.addOption(private$..bartlett)
             self$.addOption(private$..hideLoadings)
             self$.addOption(private$..sortLoadings)
             self$.addOption(private$..screePlot)
@@ -137,8 +151,6 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..factorCor)
             self$.addOption(private$..factorSummary)
             self$.addOption(private$..modelFit)
-            self$.addOption(private$..kmo)
-            self$.addOption(private$..bartlett)
             self$.addOption(private$..factorScoresOV)
             self$.addOption(private$..factorScoreMethod)
         }),
@@ -149,6 +161,10 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         minEigen = function() private$..minEigen$value,
         extraction = function() private$..extraction$value,
         rotation = function() private$..rotation$value,
+        countCorrMin = function() private$..countCorrMin$value,
+        countCorrMax = function() private$..countCorrMax$value,
+        kmo = function() private$..kmo$value,
+        bartlett = function() private$..bartlett$value,
         hideLoadings = function() private$..hideLoadings$value,
         sortLoadings = function() private$..sortLoadings$value,
         screePlot = function() private$..screePlot$value,
@@ -156,8 +172,6 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         factorCor = function() private$..factorCor$value,
         factorSummary = function() private$..factorSummary$value,
         modelFit = function() private$..modelFit$value,
-        kmo = function() private$..kmo$value,
-        bartlett = function() private$..bartlett$value,
         factorScoresOV = function() private$..factorScoresOV$value,
         factorScoreMethod = function() private$..factorScoreMethod$value),
     private = list(
@@ -167,6 +181,10 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..minEigen = NA,
         ..extraction = NA,
         ..rotation = NA,
+        ..countCorrMin = NA,
+        ..countCorrMax = NA,
+        ..kmo = NA,
+        ..bartlett = NA,
         ..hideLoadings = NA,
         ..sortLoadings = NA,
         ..screePlot = NA,
@@ -174,8 +192,6 @@ efaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..factorCor = NA,
         ..factorSummary = NA,
         ..modelFit = NA,
-        ..kmo = NA,
-        ..bartlett = NA,
         ..factorScoresOV = NA,
         ..factorScoreMethod = NA)
 )
@@ -263,6 +279,16 @@ efaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param rotation \code{'none'}, \code{'varimax'}, \code{'quartimax'},
 #'   \code{'promax'}, \code{'oblimin'} (default), or \code{'simplimax'}, the
 #'   rotation to use in estimation
+#' @param countCorrMin a number (default: NA), returns the number of
+#'   correlations between variables above this minimum (if NA, no output is
+#'   produced)
+#' @param countCorrMax a number (default: NA), returns the number of
+#'   correlations between variables above this maxmimum (if NA, no output is
+#'   produced)
+#' @param kmo \code{TRUE} or \code{FALSE} (default), show Kaiser-Meyer-Olkin
+#'   (KMO) measure of sampling adequacy (MSA) results
+#' @param bartlett \code{TRUE} or \code{FALSE} (default), show Bartlett's test
+#'   of sphericity results
 #' @param hideLoadings a number (default: 0.3), hide factor loadings below
 #'   this value
 #' @param sortLoadings \code{TRUE} or \code{FALSE} (default), sort the factor
@@ -275,10 +301,6 @@ efaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   summary
 #' @param modelFit \code{TRUE} or \code{FALSE} (default), show model fit
 #'   measures and test
-#' @param kmo \code{TRUE} or \code{FALSE} (default), show Kaiser-Meyer-Olkin
-#'   (KMO) measure of sampling adequacy (MSA) results
-#' @param bartlett \code{TRUE} or \code{FALSE} (default), show Bartlett's test
-#'   of sphericity results
 #' @param factorScoreMethod \code{'Thurstone'} (default), \code{'Bartlett'},
 #'   \code{'tenBerge'}, \code{'Anderson'}, or \code{'Harman'} use respectively
 #'   'Thurstone', 'Bartlett', 'ten Berge', 'Anderson & Rubin', or 'Harman'
@@ -297,6 +319,10 @@ efa <- function(
     minEigen = 0,
     extraction = "minres",
     rotation = "oblimin",
+    countCorrMin = "",
+    countCorrMax = "",
+    kmo = FALSE,
+    bartlett = FALSE,
     hideLoadings = 0.3,
     sortLoadings = FALSE,
     screePlot = FALSE,
@@ -304,8 +330,6 @@ efa <- function(
     factorCor = FALSE,
     factorSummary = FALSE,
     modelFit = FALSE,
-    kmo = FALSE,
-    bartlett = FALSE,
     factorScoreMethod = "Thurstone") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
@@ -326,6 +350,10 @@ efa <- function(
         minEigen = minEigen,
         extraction = extraction,
         rotation = rotation,
+        countCorrMin = countCorrMin,
+        countCorrMax = countCorrMax,
+        kmo = kmo,
+        bartlett = bartlett,
         hideLoadings = hideLoadings,
         sortLoadings = sortLoadings,
         screePlot = screePlot,
@@ -333,8 +361,6 @@ efa <- function(
         factorCor = factorCor,
         factorSummary = factorSummary,
         modelFit = modelFit,
-        kmo = kmo,
-        bartlett = bartlett,
         factorScoreMethod = factorScoreMethod)
 
     analysis <- efaClass$new(
