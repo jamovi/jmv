@@ -360,7 +360,7 @@ options:
       default: ycounts
       description:
           R: >
-            ycounts (default) or ypc. Use respectively `counts` or `percentages`
+            `ycounts` (default) or `ypc`. Use respectively `counts` or `percentages`
             for the bar plot y-axis
 
     - name: yaxisPc

@@ -862,8 +862,8 @@ contTablesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param pcTot \code{TRUE} or \code{FALSE} (default), provide total
 #'   percentages
 #' @param barplot \code{TRUE} or \code{FALSE} (default), show barplots
-#' @param yaxis ycounts (default) or ypc. Use respectively \code{counts} or
-#'   \code{percentages} for the bar plot y-axis
+#' @param yaxis \code{ycounts} (default) or \code{ypc}. Use respectively
+#'   \code{counts} or \code{percentages} for the bar plot y-axis
 #' @param yaxisPc total_pc (default), column_pc, or row_pc. Use respectively
 #'   percentages \code{of total}, \code{within columns}, or \code{within rows}
 #'   for the bar plot y-axis.

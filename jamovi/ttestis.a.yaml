@@ -235,7 +235,7 @@ options:
       default: false
       description:
           ui: >
-            provide effect-sizes (Cohen's D).
+            provide effect-sizes (Cohen's d).
           R: >
             `TRUE` or `FALSE` (default), provide effect sizes
 
