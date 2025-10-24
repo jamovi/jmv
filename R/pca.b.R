@@ -443,7 +443,9 @@ pcaClass <- R6::R6Class(
                     if (thresh <= 0 || thresh >= 1)
                         jmvcore::reject(.("Values for the Correlation Min. / Max. need to be Numeric and Between 0 and 1"))
                     table  <- group[[paste0("corrAbove", t)]]
-                    counts <- sort(colSums(corrMatrix > thresh, na.rm = TRUE))
+                    # sort the columns by the number of correlations above threshold (increasing for min: lower counts
+                    # on the left, decreasing for max: higher counts on the left)
+                    counts <- sort(colSums(corrMatrix > thresh, na.rm = TRUE), decreasing = (t == "Max"))
                     cnames <- names(counts)
                     table$setRow(rowNo = 1, setNames(as.list(counts), sprintf("c%d", seq_along(vars))))
                     for (i in seq_along(cnames)) {
