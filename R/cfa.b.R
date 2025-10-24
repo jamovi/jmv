@@ -1,4 +1,3 @@
-
 #' @importFrom jmvcore .
 cfaClass <- R6::R6Class(
     "cfaClass",
@@ -806,13 +805,13 @@ cfaClass <- R6::R6Class(
 
             return(model)
         },
-        #' Run an expression while catching the errors and warnings
-        #'
-        #' @param expr The expression to catch the errors from
-        #' @param handleErrors Perform error handling, if thrown. If `TRUE`, and an error is present,
-        #'   the analysis will throw an error and stop.
-        #'
-        #' @return A list containing the result of the expression, the errors, and the warnings
+        # Run an expression while catching the errors and warnings
+        #
+        # @param expr The expression to catch the errors from
+        # @param handleErrors Perform error handling, if thrown. If `TRUE`, and an error is present,
+        #   the analysis will throw an error and stop.
+        #
+        # @return A list containing the result of the expression, the errors, and the warnings
         .catchErrorsAndWarnings = function(expr, handleErrors=FALSE) {
             warnings <- list()
             errors <- list()
@@ -836,9 +835,9 @@ cfaClass <- R6::R6Class(
 
             return(list(result=result, errors=errors, warnings=warnings))
         },
-        #' Handle errors by throwing a new error
-        #'
-        #' @param errors Errors
+        # Handle errors by throwing a new error
+        #
+        # @param errors Errors
         .handleErrors = function(errors) {
             lapply(errors, private$.handleError)
         },
