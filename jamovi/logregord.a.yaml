@@ -146,7 +146,7 @@ options:
       default: true
       description:
           R: >
-            `TRUE` (default) or `FALSE`, provide Aikaike's Information Criterion (AIC)
+            `TRUE` (default) or `FALSE`, provide Akaike's Information Criterion (AIC)
             for the models
 
     - name: bic

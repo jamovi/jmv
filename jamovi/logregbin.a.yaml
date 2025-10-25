@@ -151,7 +151,7 @@ options:
       default: true
       description:
           R: >
-            `TRUE` (default) or `FALSE`, provide Aikaike's Information Criterion (AIC)
+            `TRUE` (default) or `FALSE`, provide Akaike's Information Criterion (AIC)
             for the models
 
     - name: bic
@@ -374,7 +374,7 @@ options:
       default: false
       description:
           R: >
-            `TRUE` or `FALSE` (default), provide VIF and tolerence
+            `TRUE` or `FALSE` (default), provide VIF and tolerance
             collinearity statistics
 
     - name: boxTidwell

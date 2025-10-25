@@ -117,7 +117,7 @@ options:
           ui: >
             the repeated measures measurements.
           R: >
-            a list of lists, where each list decribes a repeated measure (as a
+            a list of lists, where each list describes a repeated measure (as a
             string) from `data` defined as `measure` and the
             particular combination of levels from `rm` that it belongs to
             (as a vector of strings) defined as `cell`
@@ -251,7 +251,7 @@ options:
           R: >
             one or more of `'none'` (default), `'GG'`, or ``HF``;
             use no p-value correction, the Greenhouse-Geisser p-value
-            correction, and the Huynh-Feldt p-value correction for shericity,
+            correction, and the Huynh-Feldt p-value correction for sphericity,
             respectively
 
     - name: leveneTest
@@ -348,7 +348,7 @@ options:
           R: >
             one or more of `'none'`, `'tukey'` (default), `'scheffe'`,
             `'bonf'`, or `'holm'`; use no, Tukey, Scheffe, Bonferroni and
-            Holm posthoc corrections, respectively
+            Holm post-hoc corrections, respectively
 
     - name: emMeans
       title: Marginal Means

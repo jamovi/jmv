@@ -1,4 +1,3 @@
-
 #' @importFrom jmvcore .
 logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
     "logRegBinClass",
@@ -1405,8 +1404,8 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             return(data)
         },
         .contrastModel = function(terms) {
-            #' Returns the names of the factor contrasts as they are
-            #' defined by the glm function
+            # Returns the names of the factor contrasts as they are
+            # defined by the glm function
 
             factors <- self$options$factors
 
@@ -1434,8 +1433,8 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             return(contrastTerms)
         },
         .contrastsCoefTable = function(terms) {
-            #' Returns the names of the factor contrasts as they are
-            #' displayed in the jmv coef table
+            # Returns the names of the factor contrasts as they are
+            # displayed in the jmv coef table
 
             factors <- self$options$factors
             refLevels <- self$refLevels

@@ -258,7 +258,7 @@ efaBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param minEigen a number (default: 0), the minimal eigenvalue for a factor
 #'   to be included in the model
 #' @param extraction \code{'minres'} (default), \code{'ml'}, or \code{'pa'}
-#'   use respectively 'minimum residual', 'maximum likelihood', or 'prinicipal
+#'   use respectively 'minimum residual', 'maximum likelihood', or 'principal
 #'   axis' as the factor extraction method
 #' @param rotation \code{'none'}, \code{'varimax'}, \code{'quartimax'},
 #'   \code{'promax'}, \code{'oblimin'} (default), or \code{'simplimax'}, the

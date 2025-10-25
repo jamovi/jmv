@@ -399,7 +399,7 @@ options:
       default: "25,50,75"
       description:
           R: >
-            a comma-sepated list (default: 25,50,75) specifying the percentiles
+            a comma-separated list (default: 25,50,75) specifying the percentiles
 
     - name: extreme
       title: Extreme values

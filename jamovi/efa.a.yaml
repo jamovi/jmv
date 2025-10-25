@@ -96,7 +96,7 @@ options:
       description:
           R: >
             `'minres'` (default), `'ml'`, or `'pa'` use respectively 'minimum residual',
-            'maximum likelihood', or 'prinicipal axis' as the factor extraction method
+            'maximum likelihood', or 'principal axis' as the factor extraction method
 
     - name: rotation
       title: Rotation
