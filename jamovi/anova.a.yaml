@@ -212,7 +212,9 @@ options:
               - name: deviation
                 title: Deviation
               - name: simple
-                title: Simple
+                title: Simple (vs. First)
+              - name: simple_k
+                title: Simple (vs. Last)
               - name: difference
                 title: Difference
               - name: helmert
@@ -225,9 +227,9 @@ options:
           ui: >
             the contrasts to use.
           R: >
-            a list of lists specifying the factor and type of contrast to use, one
-            of `'deviation'`, `'simple'`, `'difference'`, `'helmert'`, `'repeated'`
-            or `'polynomial'`
+            a list of lists specifying the factor and type of contrast to use,
+            one of `'deviation'`, `'simple'`, `'simple_k'`, `'difference'`,
+            `'helmert'`, `'repeated'` or `'polynomial'`
 
     - name: postHoc
       title: Post Hoc Tests
