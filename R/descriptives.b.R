@@ -990,7 +990,11 @@ descriptivesClass <- R6::R6Class(
                     next()
 
                 table <- tables$get(var)
-                freq <- freqs[[var]]
+                if (hasName(freqs, var)) {
+                    freq <- freqs[[var]]
+                } else {
+                    freq <- freqs
+                }
 
                 tableVars <- c(var, splitBy)
                 allLevels <- lapply(jmvcore::select(self$data, tableVars), levels)
@@ -1000,7 +1004,7 @@ descriptivesClass <- R6::R6Class(
                 cumsum <- 0
 
                 for (row in seq_len(nrow(grid))) {
-                    counts <- do.call("[", c(list(freq), grid[row, ]))
+                    counts <- as.numeric(do.call("[", c(list(freq), grid[row, ])))
                     cumsum <- cumsum + counts
                     pc <- counts / n
                     cumpc <- cumsum / n
