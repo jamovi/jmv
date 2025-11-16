@@ -1005,7 +1005,7 @@ descriptivesClass <- R6::R6Class(
                 cumsum <- 0
 
                 for (row in seq_len(nrow(grid))) {
-                    counts <- do.call("[", c(list(freq), grid[row, ]))
+                    counts <- as.numeric(do.call("[", c(list(freq), grid[row, ])))
                     cumsum <- cumsum + counts
                     pc <- counts / n
                     cumpc <- cumsum / n
