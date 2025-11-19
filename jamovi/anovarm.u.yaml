@@ -172,6 +172,27 @@ children:
       - type: CheckBox
         name: qq
   - type: CollapseBox
+    label: Contrasts
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: ListBox
+        name: contrasts
+        stretchFactor: 1
+        columns:
+          - name: var
+            selectable: false
+            stretchFactor: 1
+            maxWidth: 300
+            template:
+              type: VariableLabel
+          - name: type
+            selectable: false
+            stretchFactor: 0.5
+            template:
+              type: ComboBox
+              label: ''
+  - type: CollapseBox
     label: Post Hoc Tests
     collapsed: true
     stretchFactor: 1
