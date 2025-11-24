@@ -188,7 +188,7 @@ ancovaClass <- R6::R6Class(
 
                 var <- data[[contrast$var]]
                 levels <- base::levels(var)
-                labels <- private$.contrastLabels(levels, contrast$type)
+                labels <- contrastLabels(levels, contrast$type, self) # defined in utilsanova.R
 
                 for (label in labels)
                     table$addRow(rowKey=label, list(contrast=label))
@@ -539,7 +539,7 @@ ancovaClass <- R6::R6Class(
                     next()
 
                 levels <- base::levels(data[[var]])
-                labels <- private$.contrastLabels(fromB64(levels), type)
+                labels <- contrastLabels(fromB64(levels), type, self) # defined in utilsanova.R
 
                 table <- self$results$get('contrasts')$get(contrast)
 
@@ -787,70 +787,20 @@ ancovaClass <- R6::R6Class(
         },
 
         #### Helper functions ----
-        .contrastLabels=function(levels, type) {
-
-            nLevels <- length(levels)
-            labels <- list()
-
-            if (length(levels) <= 1) {
-
-                # do nothing
-
-            } else if (type == 'simple') {
-
-                for (i in seq_len(nLevels-1))
-                    labels[[i]] <- paste(levels[i+1], '-', levels[1])
-
-            } else if (type == 'deviation') {
-
-                all <- paste(levels, collapse=', ')
-                for (i in seq_len(nLevels-1))
-                    labels[[i]] <- paste(levels[i+1], '-', all)
-
-            } else if (type == 'difference') {
-
-                for (i in seq_len(nLevels-1)) {
-                    rhs <- paste0(levels[1:i], collapse=', ')
-                    labels[[i]] <- paste(levels[i + 1], '-', rhs)
-                }
-
-            } else if (type == 'helmert') {
-
-                for (i in seq_len(nLevels-1)) {
-                    rhs <- paste(levels[(i+1):nLevels], collapse=', ')
-                    labels[[i]] <- paste(levels[i], '-', rhs)
-                }
-
-            } else if (type == 'repeated') {
-
-                for (i in seq_len(nLevels-1))
-                    labels[[i]] <- paste(levels[i], '-', levels[i+1])
-
-            } else if (type == 'polynomial') {
-
-                names <- c(
-                    .('linear'), .('quadratic'), .('cubic'), .('quartic'),
-                    .('quintic'), .('sextic'), .('septic'), .('octic')
-                )
-
-                for (i in seq_len(nLevels-1)) {
-                    if (i <= length(names)) {
-                        labels[[i]] <- names[i]
-                    } else {
-                        labels[[i]] <- paste('degree', i, 'polynomial')
-                    }
-                }
-            }
-
-            labels
-        },
         .createContrasts=function(levels, type) {
 
             nLevels <- length(levels)
 
             if (type == 'simple') {
 
-                dummy <- contr.treatment(levels)
+                dummy <- contr.treatment(levels, base = 1)
+                dimnames(dummy) <- NULL
+                coding <- matrix(rep(1/nLevels, prod(dim(dummy))), ncol=nLevels-1)
+                contrast <- (dummy - coding)
+
+            } else if (type == 'simple_k') {
+
+                dummy <- contr.treatment(levels, base = nLevels)
                 dimnames(dummy) <- NULL
                 coding <- matrix(rep(1/nLevels, prod(dim(dummy))), ncol=nLevels-1)
                 contrast <- (dummy - coding)
