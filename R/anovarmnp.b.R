@@ -31,16 +31,36 @@ anovaRMNPClass <- R6::R6Class(
         if (self$options$get('pairs')) {
 
             table  <- self$results$get('comp')
-            result <- PMCMR::posthoc.durbin.test(mat, p.adjust='none')
 
-            n <- length(measureNames)-1
+            # code adjusted from PMCMR::posthoc.durbin.test
+            # [1] calculate the rank of each condition (within each participant / unit of observation),
+            # [2] calculate the t-value for the rank sum per condition and [3] determine the p-value from that t-value 
+#           GRPNAME <- colnames(mat)
+            datf <- data.frame(y = as.vector(mat), b = factor(c(row(mat))), g = factor(c(col(mat))))[!is.na(as.vector(mat)), ]
+            datf <- datf[order(datf[, 2], datf[, 3]), ]
+
+            t <- nlevels(datf[, 3])
+            b <- nlevels(datf[, 2])
+            r <- unique(table(datf[, 3]))
+            k <- unique(table(datf[, 2]))
+            rij <- unlist(tapply(datf[, 1], datf[, 2], rank), use.names = FALSE)
+            Rj <- tapply(rij, datf[, 3], sum)
+            # taken from NIST
+            A <- sum(rij ^ 2) 
+            C <- (b * k * (k + 1) ^ 2) / 4
+            T1 <- (t - 1) / (A - C) * (sum(Rj ^ 2) - r * C)
+            denom <- sqrt(((A - C) * 2 * r) / (b * k - b - t + 1) * (1 - T1 / (b * (k -1))))
+
+            STAT <- pairwise.table(function(i, j) abs(Rj[i] - Rj[j]) / denom, levels(datf[, 3]), p.adjust.method = "none")
+            PVAL  <- matrix(2 * pt(q = as.vector(STAT), df = (b - 1) * (k - 1), lower.tail = FALSE), nrow = nrow(STAT))
+#           colnames(STAT) <- colnames(PVAL) <- GRPNAME[1:(t - 1)]
+#           rownames(STAT) <- rownames(PVAL) <- GRPNAME[2:t]
+
+            n <- length(measureNames) - 1
             rowNo <- 1
             for (j in 1:n) {
                 for (k in j:n) {
-                    table$setRow(rowNo=rowNo, list(
-                        stat=result$statistic[k,j],
-                        p=result$p.value[k,j]
-                    ))
+                    table$setRow(rowNo = rowNo, list(stat = STAT[k, j], p = PVAL[k, j]))
                     rowNo <- rowNo + 1
                 }
             }
