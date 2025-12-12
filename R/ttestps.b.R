@@ -74,7 +74,7 @@ ttestPSClass <- R6::R6Class(
                 }
                 else {
                     stud <- try(t.test(column1, column2, paired=TRUE, conf.level=confInt, alternative=Ha), silent=TRUE)
-                    wilc <- try(suppressWarnings(wilcox.test(column1, column2, alternative=Ha, exact=FALSE, paired=TRUE, conf.int=TRUE, conf.level=confInt)), silent=TRUE)
+                    wilc <- try(suppressWarnings(wilcox.test(column1, column2, alternative=Ha, paired=TRUE, conf.int=TRUE, conf.level=confInt)), silent=TRUE)
                 }
 
                 if ( ! isError(stud)) {

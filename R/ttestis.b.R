@@ -257,7 +257,6 @@ ttestISClass <- R6::R6Class(
                                 x=x,
                                 y=y,
                                 alternative=Ha1,
-                                exact=FALSE,
                                 paired=FALSE,
                                 conf.int=TRUE,
                                 conf.level=confInt)
@@ -268,7 +267,6 @@ ttestISClass <- R6::R6Class(
                                 x=y,
                                 y=x,
                                 alternative=Ha2,
-                                exact=FALSE,
                                 paired=FALSE,
                                 conf.int=TRUE,
                                 conf.level=confInt)
