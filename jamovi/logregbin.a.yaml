@@ -7,7 +7,7 @@ menuTitle: 2 Outcomes
 menuSubtitle: Binomial
 version: '1.0.0'
 jas: '1.2'
-weightsSupport: 'integerOnly'
+weightsSupport: 'full'
 
 description:
     main: Binomial Logistic Regression
