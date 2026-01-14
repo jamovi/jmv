@@ -76,6 +76,12 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             return(private$.deviance)
         },
+        logLik = function() {
+            if (is.null(private$.logLik))
+                private$.logLik <- private$.computeLogLik()
+
+            return(private$.logLik)
+        },
         AIC = function() {
             if (is.null(private$.AIC))
                 private$.AIC <- private$.computeAIC()
@@ -167,6 +173,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         .lrtModelComparison = NULL,
         .lrtModelTerms = NULL,
         .deviance = NULL,
+        .logLik = NULL,
         .AIC = NULL,
         .BIC = NULL,
         .pseudoR2 = NULL,
@@ -304,35 +311,83 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             return(dev)
         },
+        #' Calculate log-likelihood manually
+        #'
+        #' @description
+        #' Manually calculates the log-likelihood to correctly handle non-integer weights,
+        #' bypassing stats::glm behavior which rounds weights/counts for binomial family.
+        .computeLogLik = function() {
+            logLik <- list()
+            for (i in seq_along(self$models)) {
+                model <- self$models[[i]]
+                w <- model$prior.weights
+                y <- model$y
+                mu <- model$fitted.values
+                
+                # We can compute logLik as:
+                # y * log(mu) + (1-y) * log(1-mu)
+                # And multiply by weights
+
+                logLik[[i]] <- sum(w * (y * log(mu) + (1 - y) * log(1 - mu)))
+            }
+            return(logLik)
+        },
+        #' Calculate AIC manually
+        #'
+        #' @description
+        #' Uses the manually calculated log-likelihood to compute AIC, ensuring consistency
+        #' with weighted data where stats::AIC would fail due to rounding.
         .computeAIC = function() {
             AIC <- list()
-            for (i in seq_along(self$models))
-                AIC[[i]] <- stats::AIC(self$models[[i]])
+            for (i in seq_along(self$models)) {
+                k <- self$models[[i]]$rank
+                AIC[[i]] <- 2 * k - 2 * self$logLik[[i]]
+            }
 
             return(AIC)
         },
+        #' Calculate BIC manually
+        #'
+        #' @description
+        #' Uses the manually calculated log-likelihood and sum(weights) as sample size
+        #' to compute BIC, ensuring consistency with weighted data.
         .computeBIC = function() {
             BIC <- list()
-            for (i in seq_along(self$models))
-                BIC[[i]] <- stats::BIC(self$models[[i]])
+            for (i in seq_along(self$models)) {
+                 model <- self$models[[i]]
+                 k <- model$rank
+                 n <- sum(model$prior.weights)
+                 BIC[[i]] <- k * log(n) - 2 * self$logLik[[i]]
+            }
 
             return(BIC)
         },
         .computePseudoR2 = function() {
             pR2 <- list()
             for (i in seq_along(self$models)) {
-                dev <- self$deviance[[i]]
-                nullDev <- self$models[[i]]$null.deviance
-                n <- length(self$models[[i]]$fitted.values)
+                model <- self$models[[i]]
+                y <- model$y
+                mu <- model$fitted.values
+                w <- model$prior.weights
+                n <- sum(w)
 
-                r2mf <- 1 - dev/nullDev
+                ll <- self$logLik[[i]]
+
+                # Null model logLik
+                y_bar <- sum(w * y) / sum(w)
+                logLikNull <- sum(w * (y * log(y_bar) + (1 - y) * log(1 - y_bar)))
+
+                dev <- -2 * ll
+                nullDev <- -2 * logLikNull
+
+                r2mf <- 1 - dev / nullDev
                 r2cs <- 1 - exp(-(nullDev - dev) / n)
                 r2n <- r2cs / (1 - exp(-nullDev / n))
 
-                meanFittedProbs <- tapply(
-                    self$models[[i]]$fitted.values, self$models[[i]]$y, mean, na.rm=TRUE
-                )
-                r2t <- unname(diff(meanFittedProbs))
+                # For Tjur's R2, we need weighted means of fitted probs for y=0 and y=1
+                mu_y1 <- sum(mu[y == 1] * w[y == 1]) / sum(w[y == 1])
+                mu_y0 <- sum(mu[y == 0] * w[y == 0]) / sum(w[y == 0])
+                r2t <- mu_y1 - mu_y0
 
                 pR2[[i]] <- list(r2mf=r2mf, r2cs=r2cs, r2n=r2n, r2t=r2t)
             }
@@ -386,9 +441,13 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             class <- list()
             for (i in seq_along(self$models)) {
                 pred <- ifelse(self$fitted[[i]] > self$options$cutOff, 1, 0)
-                df <- data.frame(response=factor(self$models[[i]]$y, levels=c(0,1)),
-                                 predicted=factor(pred, levels=c(0,1)))
-                class[[i]] <- stats::xtabs(~ response + predicted, data=df)
+                w <- self$models[[i]]$prior.weights
+                df <- data.frame(
+                    response=factor(self$models[[i]]$y, levels=c(0,1)),
+                    predicted=factor(pred, levels=c(0,1)),
+                    weights=w
+                )
+                class[[i]] <- stats::xtabs(weights ~ response + predicted, data=df)
             }
             return(class)
         },
@@ -396,10 +455,38 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             AUC <- list()
             for (i in seq_along(self$models)) {
                 prob <- self$fitted[[i]]
-                pred <- ROCR::prediction(prob, self$models[[i]]$y)
-                perf <- ROCR::performance(pred, measure = "auc")
-
-                AUC[[i]] <- unlist(perf@y.values)
+                y <- self$models[[i]]$y
+                w <- self$models[[i]]$prior.weights
+                
+                # Order by predicted probability descending
+                o <- order(prob, decreasing = TRUE)
+                prob_o <- prob[o]
+                y_o <- y[o]
+                w_o <- w[o]
+                
+                # Cumulative sums of weights for positives (y=1) and negatives (y=0)
+                TP <- cumsum(w_o * y_o)
+                FP <- cumsum(w_o * (1 - y_o))
+                
+                # Total weighted positives and negatives
+                P_tot <- TP[length(TP)]
+                N_tot <- FP[length(FP)]
+                
+                # TPR and FPR
+                TPR <- TP / P_tot
+                FPR <- FP / N_tot
+                
+                # Area under curve using trapezoidal rule
+                # We need to prepend 0 to TPR and FPR to start from (0,0)
+                TPR <- c(0, TPR)
+                FPR <- c(0, FPR)
+                
+                # diff(FPR) gives the width of each trapezoid/rectangle
+                # (TPR[-1] + TPR[-length(TPR)]) / 2 gives average height
+                
+                auc <- sum(diff(FPR) * (TPR[-1] + TPR[-length(TPR)]) / 2)
+                
+                AUC[[i]] <- auc
             }
             return(AUC)
         },
