@@ -25,7 +25,7 @@
         `url`="https://cran.r-project.org/"), 
     `BF`=list(
         `type`="software", 
-        `author`="Morey, R. D., Rouder, J. N., Jamil T., Urbanek, S., Forner, K., & Ly, A.", 
+        `author`="Morey, R. D., Rouder, J. N., Jamil, T., Urbanek, S., Forner, K., & Ly, A.", 
         `year`=2024, 
         `title`="BayesFactor: Computation of Bayes Factors for Common Designs", 
         `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=BayesFactor", 
@@ -37,7 +37,8 @@
         `title`="Bayesian t tests for accepting and rejecting the null hypothesis", 
         `publisher`="Psychonomic Bulletin & Review", 
         `volume`=16, 
-        `pages`="225-237"), 
+        `pages`="225-237", 
+        `url`="https://doi.org/10.3758/PBR.16.2.225"), 
     `car`=list(
         `type`="software", 
         `author`="Fox, J., & Weisberg, S.", 
@@ -124,7 +125,7 @@
         `url`="https://cran.r-project.org/package=psych"), 
     `lavaan`=list(
         `type`="software", 
-        `author`="Rosseel, Y., et al.", 
+        `author`="Rosseel, Y., Jorgensen, T. D., De Wilde, L., Oberski, D., Byrnes,  J., Vanbrabant, L., Savalei, V., Merkle, E., Hallquist, M., Rhemtulla, M., Katsikatsou, M., Barendse, M., Rockwood,  N., Scharf, F., Du,  H., Jamil, H., Classe,  F.", 
         `year`=2024, 
         `title`="lavaan: Latent Variable Analysis", 
         `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=lavaan", 
@@ -143,7 +144,8 @@
         `title`="The simple difference formula: An approach to teaching nonparametric correlation", 
         `publisher`="Comprehensive Psychology", 
         `volume`=3, 
-        `pages`="2165\u20132228"), 
+        `pages`="2165\u20132228", 
+        `url`="https://doi.org/10.2466/11.IT.3.1"), 
     `ppcor`=list(
         `type`="software", 
         `author`="Kim, S.", 
