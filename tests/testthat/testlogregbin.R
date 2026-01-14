@@ -438,3 +438,112 @@ testthat::test_that('Reference level defaults to first level for faulty referenc
     }
 })
 
+testthat::test_that("Analysis works with non-integer weights", {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    N <- 100
+    cov1 <- rnorm(N)
+    cov2 <- rnorm(N)
+    z <- 1 + 2 * cov1 + 3 * cov2
+    pr <- 1 / ( 1 + exp(-z))
+    dep <- factor(rbinom(N, 1, pr))
+    df <- data.frame(dep=rep(dep, 2), cov1=rep(cov1, 2), cov2=rep(cov2, 2))
+  
+    weights <- rep(0.5, N * 2)
+    attr(df, "jmv-weights") <- weights
+
+    r <- jmv::logRegBin(
+        data = df,
+        bic = TRUE,
+        dep = "dep",
+        covs = c("cov1", "cov2"),
+        blocks = list(list("cov1", "cov2")),
+        modelTest = TRUE,
+        pseudoR2 = c("r2mf", "r2cs", "r2n", "r2t")
+    )
+
+    # Test model fit table
+    modelFitTable <- r$modelFit$asDF
+    testthat::expect_equal(1, modelFitTable[['model']])
+    testthat::expect_equal(39.039, modelFitTable[['dev']], tolerance = 1e-3)
+    testthat::expect_equal(45.039, modelFitTable[['aic']], tolerance = 1e-3)
+    testthat::expect_equal(52.854, modelFitTable[['bic']], tolerance = 1e-3)
+    testthat::expect_equal(0.701, modelFitTable[['r2mf']], tolerance = 1e-3)
+    testthat::expect_equal(0.600, modelFitTable[['r2cs']], tolerance = 1e-3)
+    testthat::expect_equal(0.823, modelFitTable[['r2n']], tolerance = 1e-3)
+    testthat::expect_equal(0.733, modelFitTable[['r2t']], tolerance = 1e-3)
+    testthat::expect_equal(91.645, modelFitTable[['chi']], tolerance = 1e-3)
+    testthat::expect_equal(2, modelFitTable[['df']])
+    testthat::expect_equal(0, modelFitTable[['p']], tolerance = 1e-3)
+
+    # Test model coefficients table
+    coefTable <- r$models[[1]]$coef$asDF
+    testthat::expect_equal(c('Intercept', 'cov1', 'cov2'), coefTable[['term']])
+    testthat::expect_equal(c(0.926, 3.042, 4.929), coefTable[['est']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.461, 0.815, 1.166), coefTable[['se']], tolerance = 1e-3)
+    testthat::expect_equal(c(2.008, 3.734, 4.226), coefTable[['z']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.045, 0, 0), coefTable[['p']], tolerance = 1e-3)
+})
+
+testthat::test_that("Analysis produces correct Class Table and AUC with weights", {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    # Weighted dataset: high weight on a "hard" error case to ensure visible difference if ignored
+    df_weighted <- data.frame(
+        y = c(1, 0, 0),
+        x = c(0.8, 0.9, 0.2), 
+        w = c(1, 10, 1) # Total N = 12
+    )
+    attr(df_weighted, "jmv-weights") <- df_weighted$w
+
+    # Expanded dataset (unweighted equivalent)
+    df_expanded <- df_weighted[rep(1:3, times=df_weighted$w), ]
+    attr(df_expanded, "jmv-weights") <- NULL
+
+    # Run Weighted Model
+    r_weighted <- jmv::logRegBin(
+        data = df_weighted,
+        dep = "y",
+        covs = "x",
+        blocks = list(list("x")),
+        class = TRUE,
+        auc = TRUE,
+        acc = TRUE
+    )
+
+    # Run Expanded Model
+    r_expanded <- jmv::logRegBin(
+        data = df_expanded,
+        dep = "y",
+        covs = "x",
+        blocks = list(list("x")),
+        class = TRUE,
+        auc = TRUE,
+        acc = TRUE
+    )
+
+    # Check AUC
+    auc_w <- r_weighted$models[[1]]$pred$measures$asDF[['auc']]
+    auc_e <- r_expanded$models[[1]]$pred$measures$asDF[['auc']]
+    testthat::expect_equal(auc_w, auc_e, tolerance = 1e-5)
+    
+    # Check Accuracy (derived from Class Table)
+    acc_w <- r_weighted$models[[1]]$pred$measures$asDF[['accuracy']]
+    acc_e <- r_expanded$models[[1]]$pred$measures$asDF[['accuracy']]
+    testthat::expect_equal(acc_w, acc_e, tolerance = 1e-5)
+
+    # Check Class Table Counts directly
+    ct_w <- r_weighted$models[[1]]$pred$class$asDF
+    ct_e <- r_expanded$models[[1]]$pred$class$asDF
+    
+    # 0 = Neg, 1 = Pos. 
+    # Columns: neg[0] (Obs 0, Pred 0), pos[0] (Obs 0, Pred 1), neg[1] (Obs 1, Pred 0), pos[1] (Obs 1, Pred 1)
+    # We compare the counts.
+    testthat::expect_equal(ct_w[['neg[0]']], ct_e[['neg[0]']])
+    testthat::expect_equal(ct_w[['pos[0]']], ct_e[['pos[0]']])
+    testthat::expect_equal(ct_w[['neg[1]']], ct_e[['neg[1]']])
+    testthat::expect_equal(ct_w[['pos[1]']], ct_e[['pos[1]']])
+})
+
