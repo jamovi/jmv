@@ -101,6 +101,41 @@ options:
             `'oblimin'`, or `'simplimax'`, the rotation to use
             in estimation
 
+    - name: countCorrMin
+      title: ""
+      type: String
+      default: ""
+      description:
+          R: >
+            a number (default: NA), returns the number of correlations between
+            variables above this minimum (if NA, no output is produced)
+
+    - name: countCorrMax
+      title: ""
+      type: String
+      default: ""
+      description:
+          R: >
+            a number (default: NA), returns the number of correlations between
+            variables above this maxmimum (if NA, no output is produced)
+
+    - name: kmo
+      title: KMO measure of sampling adequacy
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), show Kaiser-Meyer-Olkin (KMO) measure of
+            sampling adequacy (MSA) results
+
+    - name: bartlett
+      title: Bartlett's test of sphericity
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), show Bartlett's test of sphericity results
+
     - name: hideLoadings
       title: Hide loadings below
       type: Number
@@ -148,23 +183,6 @@ options:
       description:
           R: >
             `TRUE` or `FALSE` (default), show factor summary
-
-    - name: kmo
-      title: KMO measure of sampling adequacy
-      type: Bool
-      default: false
-      description:
-          R: >
-            `TRUE` or `FALSE` (default), show Kaiser-Meyer-Olkin (KMO) measure of
-            sampling adequacy (MSA) results
-
-    - name: bartlett
-      title: Bartlett's test of sphericity
-      type: Bool
-      default: false
-      description:
-          R: >
-            `TRUE` or `FALSE` (default), show Bartlett's test of sphericity results
 
     - name: factorScoresOV
       title: Component scores

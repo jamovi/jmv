@@ -65,6 +65,36 @@ children:
                     suffix: component(s)
                     format: number
                     enable: (nFactorMethod_fixed)
+          - type: Label
+            label: Data Summary
+            children:
+              - type: Label
+                label: Count Correlations Above Min.
+                cell:
+                  column: 0
+                  row: 0
+              - type: LayoutBox
+                cell:
+                  column: 1
+                  row: 0
+                children:
+                  - name: countCorrMin
+                    type: TextBox
+                    format: string
+              - type: Label
+                label: And Above Max.
+                horizontalAlignment: right
+                cell:
+                  column: 0
+                  row: 1
+              - type: LayoutBox
+                cell:
+                  column: 1
+                  row: 1
+                children:
+                  - name: countCorrMax
+                    type: TextBox
+                    format: string
       - type: LayoutBox
         margin: large
         cell:
