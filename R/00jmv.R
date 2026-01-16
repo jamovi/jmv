@@ -67,13 +67,6 @@
         `title`="mvnormtest: Normality test for multivariate variables", 
         `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=mvnormtest", 
         `url`="https://cran.r-project.org/package=mvnormtest"), 
-    `PMCMR`=list(
-        `type`="software", 
-        `author`="Pohlert, T.", 
-        `year`=2021, 
-        `title`="PMCMR: Calculate Pairwise Multiple Comparisons of Mean Rank Sums", 
-        `publisher`="[R package]. Retrieved from https://cran.r-project.org/package=PMCMR", 
-        `url`="https://cran.r-project.org/package=PMCMR"), 
     `ROCR`=list(
         `type`="software", 
         `author`="Sing, T., Sander, O., Beerenwinkel, N., & Lengauer, T., Unterthiner, T., & Ernst, F. G. M.", 

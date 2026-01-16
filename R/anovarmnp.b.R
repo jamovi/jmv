@@ -31,19 +31,16 @@ anovaRMNPClass <- R6::R6Class(
         if (self$options$get('pairs')) {
 
             table  <- self$results$get('comp')
-            result <- PMCMR::posthoc.durbin.test(mat, p.adjust='none')
 
-            n <- length(measureNames)-1
-            rowNo <- 1
-            for (j in 1:n) {
-                for (k in j:n) {
-                    table$setRow(rowNo=rowNo, list(
-                        stat=result$statistic[k,j],
-                        p=result$p.value[k,j]
-                    ))
-                    rowNo <- rowNo + 1
+            resDurbin <- calcDurbin(mat)
+            
+            for (i in seq_len(nrow(resDurbin))) {
+                if (table$getCell("i1", rowNo = i)$value == resDurbin[i, "i1"] &&
+                    table$getCell("i2", rowNo = i)$value == resDurbin[i, "i2"]) {
+                    table$setRow(rowNo = i, list(stat = resDurbin[i, "t"], p = resDurbin[i, "p"]))
                 }
             }
+
         }
 
         private$.preparePlot(data)
@@ -115,3 +112,33 @@ anovaRMNPClass <- R6::R6Class(
         return(p)
     })
 )
+
+calcDurbin=function(mat, adjustP = "none") {
+    adjustP <- match.arg(adjustP, p.adjust.methods)
+
+    # adapted from https://www.nist.gov/ -> search "Friedman Test" and
+    # https://en.wikipedia.org/wiki/Durbin_test
+    # NB: assumes that rows with NAs are omitted
+    # b denotes blocks (participant / unit of observation)
+    b <- nrow(mat)
+    # k denotes treatments (conditions / measures)
+    k <- ncol(mat)
+
+    # assign ranks per block and calculate the rank sum per treatment 
+    Rij <- apply(mat, 1, rank)
+    Rj  <- apply(Rij, 1, sum)
+
+    # use the formulas on the NIST web page to calculate the t-value
+    # for the rank sum, which is then used to determine the p-value
+    A1 <- sum(Rij ^ 2)
+    C1 <- (b * k * (k + 1) ^ 2) / 4
+    T1 <- (k - 1) / (A1 - C1) * (sum(Rj ^ 2) - b * C1)
+    DF <- (b - 1) * (k - 1)
+    DN <- sqrt(((2 *  (A1 - C1) * b) / DF) * (1 - T1 / (b * (k - 1))))
+
+    combPairs <- t(combn(colnames(mat), 2))
+    valT <- apply(combPairs, 1, function(c) abs(diff(Rj[c])) / DN)
+
+    data.frame(i1 = combPairs[, 1], i2 = combPairs[, 2],
+               t = valT, p = stats::p.adjust(2 * (1 - pt(valT, DF)), adjustP))
+}
