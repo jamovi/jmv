@@ -117,14 +117,12 @@ options:
     - name: refLevels
       title: Reference Levels
       type: Array
-      items: (factors)
       default:
       template:
           type: Group
           elements:
               - name: var
                 type: Variable
-                content: $key
               - name: ref
                 type: Level
       description:

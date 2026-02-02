@@ -196,14 +196,12 @@ options:
     - name: contrasts
       title: Contrasts
       type: Array
-      items: (factors)
       default: null
       template:
         type: Group
         elements:
           - name: var
             type: Variable
-            content: $key
           - name: type
             type: List
             options:

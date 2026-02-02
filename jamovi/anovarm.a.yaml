@@ -282,14 +282,12 @@ options:
     - name: contrasts
       title: Contrasts
       type: Array
-      items: (rm)
       default:
       template:
           type: Group
           elements:
               - name: var
                 type: String
-                content: $key
               - name: type
                 type: List
                 options:
