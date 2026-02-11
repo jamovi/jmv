@@ -105,7 +105,6 @@ anovaRMNPResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=options,
                 name="comp",
                 title="Pairwise Comparisons (Durbin-Conover)",
-                refs="PMCMR",
                 visible="(pairs)",
                 clearWith=list(
                     "measures"),
