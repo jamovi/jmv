@@ -865,7 +865,7 @@ logRegBinBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 pause = NULL,
                 completeWhenFilled = FALSE,
                 requiresMissings = FALSE,
-                weightsSupport = 'integerOnly')
+                weightsSupport = 'full')
         }))
 
 #' Binomial Logistic Regression
