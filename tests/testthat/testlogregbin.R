@@ -344,6 +344,9 @@ testthat::test_that("Analysis works with global weights", {
         factors="factor",
         blocks=list(list("cov", "factor")),
         refLevels=refLevels,
+        ci=TRUE,
+        OR=TRUE,
+        ciOR=TRUE
     )
 
     # Test model fit table
@@ -359,6 +362,11 @@ testthat::test_that("Analysis works with global weights", {
     testthat::expect_equal(c(0.14, 0.085, NA, 0.201, 0.21), coefTable[['se']], tolerance = 1e-3)
     testthat::expect_equal(c(-1.418, -2.949, NA, 2.276, 0.128), coefTable[['z']], tolerance = 1e-3)
     testthat::expect_equal(c(0.156, 0.003, NA, 0.023, 0.899), coefTable[['p']], tolerance = 1e-3)
+    testthat::expect_equal(c(-0.474, -0.417, NA, 0.064, -0.385), coefTable[['lower']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.076, -0.084, NA, 0.851, 0.438), coefTable[['upper']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.820, 0.778, NA, 1.58, 1.027), coefTable[['odds']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.622, 0.659, NA, 1.066, 0.681), coefTable[['oddsLower']], tolerance = 1e-3)
+    testthat::expect_equal(c(1.079, 0.919, NA, 2.343, 1.550), coefTable[['oddsUpper']], tolerance = 1e-3)
 })
 
 testthat::test_that("Analysis adds note when design matrix is singular", {
@@ -547,3 +555,62 @@ testthat::test_that("Analysis produces correct Class Table and AUC with weights"
     testthat::expect_equal(ct_w[['pos[1]']], ct_e[['pos[1]']])
 })
 
+testthat::test_that("SPSS Parity: Frequency weights produce correct BIC and Deviance", {
+    # GIVEN a dataset with integer frequency weights
+    csv_path <- testthat::test_path("data", "logRegBin_weightsData.csv")
+    df <- read.csv(csv_path)
+    attr(df, "jmv-weights") <- df$w_freq
+    
+    # WHEN the analysis is run with BIC and Model Test enabled
+    r <- jmv::logRegBin(
+        data = df,
+        dep = "y",
+        covs = "x",
+        blocks = list(list("x")),
+        modelTest = TRUE,
+        bic = TRUE
+    )
+
+    # THEN the Model Fit statistics should match SPSS exactly (N treated as sum of weights = 61)
+    modelFit <- r$modelFit$asDF
+    # Deviance: 74.076 (Matches SPSS -2 Log Likelihood)
+    testthat::expect_equal(74.076, modelFit[['dev']], tolerance = 1e-3)
+    # AIC: 78.076 (74.076 + 2*2)
+    testthat::expect_equal(78.076, modelFit[['aic']], tolerance = 1e-3)
+    # BIC: 82.298 (74.076 + 2 * ln(61))
+    # This confirms n=61 (sum of weights) was used for the penalty
+    testthat::expect_equal(82.298, modelFit[['bic']], tolerance = 1e-3) 
+    # Chi-square: 10.078
+    testthat::expect_equal(10.078, modelFit[['chi']], tolerance = 1e-3)
+    # AND the coefficients should match the SPSS weighted estimates
+    coef <- r$models[[1]]$coef$asDF
+    testthat::expect_equal(0.052, coef[['est']][1], tolerance = 1e-3) # Intercept
+    testthat::expect_equal(0.669, coef[['est']][2], tolerance = 1e-3) # x
+})
+
+testthat::test_that("SPSS Parity: Large weights handle numerical stability and scale correctly", {
+    # GIVEN a dataset with large non-integer weights
+    csv_path <- testthat::test_path("data", "logRegBin_weightsData.csv")
+    df <- read.csv(csv_path)
+    attr(df, "jmv-weights") <- df$w_large
+
+    # WHEN the analysis is run
+    r <- jmv::logRegBin(
+        data = df,
+        dep = "y",
+        covs = "x",
+        blocks = list(list("x")),
+        modelTest = TRUE,
+        bic = TRUE
+    )
+
+    # THEN the model statistics match SPSS's
+    modelFit <- r$modelFit$asDF
+    testthat::expect_equal(2568.675, modelFit[['dev']], tolerance = 1e-3)
+    testthat::expect_equal(2572.675, modelFit[['aic']], tolerance = 1e-3)
+    testthat::expect_equal(238.026, modelFit[['chi']], tolerance = 1e-3)
+    # AND the coefficients should be stable and match SPSS 
+    coef <- r$models[[1]]$coef$asDF
+    testthat::expect_equal(-0.030, coef[['est']][1], tolerance = 1e-3) # Intercept
+    testthat::expect_equal(0.514, coef[['est']][2], tolerance = 1e-3) # x
+})
