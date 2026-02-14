@@ -553,7 +553,7 @@ ttestOneSBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' distribution -- in the case that one is unwilling to assume this, the
 #' non-parametric Wilcoxon signed-rank can be used in it's place (However,
 #' note that the Wilcoxon signed-rank has a slightly different null
-#' hypothesis; that the *median* is equal to the test value).
+#' hypothesis; that the <i>median</i> is equal to the test value).
 #' 
 #'
 #' @examples

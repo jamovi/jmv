@@ -187,7 +187,7 @@ options:
       description:
           ui: >
             provide Q-Q plots of residuals -- a plot of the actual residuals against
-            what would be expected if the data were *perfectly* normally
+            what would be expected if the data were <i>perfectly</i> normally
             distributed. Large deviations from the diagonal line suggest the residuals
             are not normally distributed.
           R: >

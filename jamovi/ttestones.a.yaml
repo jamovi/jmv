@@ -16,7 +16,7 @@ description:
         distribution -- in the case that one is unwilling to assume this, the
         non-parametric Wilcoxon signed-rank can be used in it's place (However,
         note that the Wilcoxon signed-rank has a slightly different null
-        hypothesis; that the *median* is equal to the test value).
+        hypothesis; that the <i>median</i> is equal to the test value).
     R:
         dontrun: false
         usage: |
@@ -152,7 +152,7 @@ options:
       description:
           ui: >
             provide a Q-Q plot of residuals -- a plot of the actual residuals
-            against what would be expected if the data were *perfectly* normally
+            against what would be expected if the data were <i>perfectly</i> normally
             distributed. Large deviations from the diagonal line suggest the
             data is not from a normal distribution.
           R: >
