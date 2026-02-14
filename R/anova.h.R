@@ -95,7 +95,6 @@ anovaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             private$..contrasts <- jmvcore::OptionArray$new(
                 "contrasts",
                 contrasts,
-                items="(factors)",
                 default=NULL,
                 template=jmvcore::OptionGroup$new(
                     "contrasts",
@@ -103,8 +102,7 @@ anovaOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     elements=list(
                         jmvcore::OptionVariable$new(
                             "var",
-                            NULL,
-                            content="$key"),
+                            NULL),
                         jmvcore::OptionList$new(
                             "type",
                             NULL,

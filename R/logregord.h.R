@@ -66,7 +66,6 @@ logRegOrdOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             private$..refLevels <- jmvcore::OptionArray$new(
                 "refLevels",
                 refLevels,
-                items="(factors)",
                 default=NULL,
                 template=jmvcore::OptionGroup$new(
                     "refLevels",
@@ -74,8 +73,7 @@ logRegOrdOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     elements=list(
                         jmvcore::OptionVariable$new(
                             "var",
-                            NULL,
-                            content="$key"),
+                            NULL),
                         jmvcore::OptionLevel$new(
                             "ref",
                             NULL))))

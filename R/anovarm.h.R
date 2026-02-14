@@ -150,7 +150,6 @@ anovaRMOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             private$..contrasts <- jmvcore::OptionArray$new(
                 "contrasts",
                 contrasts,
-                items="(rm)",
                 default=NULL,
                 template=jmvcore::OptionGroup$new(
                     "contrasts",
@@ -158,8 +157,7 @@ anovaRMOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     elements=list(
                         jmvcore::OptionString$new(
                             "var",
-                            NULL,
-                            content="$key"),
+                            NULL),
                         jmvcore::OptionList$new(
                             "type",
                             NULL,
