@@ -990,11 +990,7 @@ descriptivesClass <- R6::R6Class(
                     next()
 
                 table <- tables$get(var)
-                if (hasName(freqs, var)) {
-                    freq <- freqs[[var]]
-                } else {
-                    freq <- freqs
-                }
+                freq <- freqs[[var]]
 
                 tableVars <- c(var, splitBy)
                 allLevels <- lapply(jmvcore::select(self$data, tableVars), levels)
