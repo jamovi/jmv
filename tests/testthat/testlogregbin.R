@@ -614,3 +614,49 @@ testthat::test_that("SPSS Parity: Large weights handle numerical stability and s
     testthat::expect_equal(-0.030, coef[['est']][1], tolerance = 1e-3) # Intercept
     testthat::expect_equal(0.514, coef[['est']][2], tolerance = 1e-3) # x
 })
+
+testthat::test_that("Analysis handles perfect separation gracefully (weighted)", {
+    # GIVEN a dataset with Perfect Separation
+    # All x < 0 are y=0, All x > 0 are y=1
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+    
+    x <- c(rnorm(20, mean = -5), rnorm(20, mean = 5))
+    y <- ifelse(x > 0, 1, 0)
+    
+    # Add random weights to ensure the weighted code path is active
+    w <- runif(40, 1, 10)
+    
+    df <- data.frame(y=y, x=x)
+    attr(df, "jmv-weights") <- w
+    
+    # WHEN the analysis is run
+    # We wrap it in expect_error(..., NA) to assert that it DOES NOT throw an error (crash)
+    testthat::expect_error(
+        r <- jmv::logRegBin(
+            data = df,
+            dep = "y",
+            covs = "x",
+            blocks = list(list("x")),
+            refLevels = list(list(var="y", ref="0")),
+            ci = TRUE
+        ),
+        NA # NA implies "We expect NO error"
+    )
+    
+    # THEN we expect the analysis to have completed and produced a table
+    coef <- r$models[[1]]$coef$asDF
+    
+    # 1. Estimates should exist (they will be huge, e.g., > 10, but finite)
+    testthat::expect_true(!is.null(coef[['est']]))
+    testthat::expect_true(all(is.finite(coef[['est']])))
+    
+    # 2. Standard Errors should be massive (classic sign of separation)
+    # In perfect separation, SEs often explode to > 1000
+    testthat::expect_true(all(coef[['se']] > 100))
+    
+    # 3. Model Fit statistics should still be calculated
+    modelFit <- r$modelFit$asDF
+    testthat::expect_true(is.numeric(modelFit[['dev']]))
+    testthat::expect_true(is.numeric(modelFit[['aic']]))
+})

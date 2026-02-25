@@ -321,12 +321,54 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         .computeLrtModelTerms = function() {
             lrtModelTerms <- list()
             for (i in seq_along(self$models)) {
-                lrtModelTerms[[i]] <- car::Anova(
-                    self$models[[i]],
+                # If weights are used, the model object has 'raw' weights in prior.weights (from .computeModels swap)
+                # But car::Anova uses the call/formula which has 'normalized' weights.
+                # This mismatch causes car::Anova to calculate incorrect stats.
+                # We interpret a local copy of the model with restored normalized weights.
+                
+                model <- self$models[[i]]
+                if (! is.null(model$weight_scale_ratio)) {
+                     model$prior.weights <- model$data$.NORM_WEIGHTS
+                }
+
+                lrt <- car::Anova(
+                    model,
                     test="LR",
                     type=3,
                     singular.ok=TRUE
                 )
+                
+                # Use a fresh model to avoid prior.weights swap issues and environment scope problems
+                modelOrig <- self$models[[i]]
+                formula <- self$formulas[[i]]
+                data <- modelOrig$data
+                
+                # Check if weights are used (if .NORM_WEIGHTS column exists)
+                weights <- NULL
+                if (".NORM_WEIGHTS" %in% names(data)) {
+                    weights <- as.name(".NORM_WEIGHTS")
+                }
+                
+                # Use do.call to avoid scope issues with 'weights' argument (avoiding stats::weights conflict)
+                args <- list(formula=formula, data=data, family=stats::binomial)
+                if ( ! is.null(weights))
+                    args$weights <- weights
+                    
+                model <- do.call(stats::glm, args)
+
+                lrt <- car::Anova(
+                    model,
+                    test="LR",
+                    type=3,
+                    singular.ok=TRUE
+                )
+                
+                if (! is.null(modelOrig$weight_scale_ratio)) {
+                    lrt[['LR Chisq']] <- lrt[['LR Chisq']] / modelOrig$weight_scale_ratio
+                    lrt[['Pr(>Chisq)']] <- stats::pchisq(lrt[['LR Chisq']], lrt[['Df']], lower.tail=FALSE)
+                }
+                
+                lrtModelTerms[[i]] <- lrt
             }
 
             return(lrtModelTerms)
@@ -583,7 +625,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     model,
                                     formula,
                                     cov.reduce=FUN,
-                                    type='response',
+                                    type='link',
                                     options=list(level=self$options$ciWidthEmm / 100),
                                     weights=weights,
                                     data=self$dataProcessed,
@@ -592,7 +634,24 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 silent = TRUE
                             )
 
-                            emmTable[[j]] <- try(as.data.frame(summary(mm)), silent = TRUE)
+                            df <- try(as.data.frame(summary(mm)), silent = TRUE)
+                            
+                            if ( ! isError(df) && ! is.null(model$weight_scale_ratio)) {
+                                df$SE <- df$SE * sqrt(model$weight_scale_ratio)
+                                z_crit <- stats::qnorm(1 - (1 - (self$options$ciWidthEmm / 100)) / 2)
+                                df$asymp.LCL <- df$emmean - z_crit * df$SE
+                                df$asymp.UCL <- df$emmean + z_crit * df$SE
+                            }
+                            
+                            # Transform to response scale
+                            if ( ! isError(df)) {
+                                df$prob <- stats::plogis(df$emmean)
+                                df$asymp.LCL <- stats::plogis(df$asymp.LCL)
+                                df$asymp.UCL <- stats::plogis(df$asymp.UCL)
+                                emmTable[[j]] <- df
+                            } else {
+                                emmTable[[j]] <- df
+                            }
                         })
                     }
                 }
