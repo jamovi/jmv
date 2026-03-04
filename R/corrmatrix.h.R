@@ -154,6 +154,7 @@ corrMatrixResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 title="Correlation Matrix",
                 rows="(vars)",
                 clearWith=list(
+                    "vars",
                     "ciWidth",
                     "hypothesis",
                     "flag"),

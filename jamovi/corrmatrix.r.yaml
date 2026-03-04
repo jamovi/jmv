@@ -10,6 +10,7 @@ items:
       description: a correlation matrix table
       rows: (vars)
       clearWith:
+          - vars
           - ciWidth
           - hypothesis
           - flag

@@ -135,6 +135,7 @@ corrPartResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 rows="(vars)",
                 refs="ppcor",
                 clearWith=list(
+                    "vars",
                     "controls",
                     "hypothesis",
                     "flag",

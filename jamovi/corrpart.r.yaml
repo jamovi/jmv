@@ -11,6 +11,7 @@ items:
       rows: (vars)
       refs: ppcor
       clearWith:
+          - vars
           - controls
           - hypothesis
           - flag
