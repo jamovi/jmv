@@ -660,12 +660,12 @@ descriptivesClass <- R6::R6Class(
 
                 iter <- 1
                 for (n in seq_len(extremeN)) {
-                    table$setRow(rowNo=iter, values=list(type="Highest", place=n))
+                    table$setRow(rowNo=iter, values=list(type=.("Highest"), place=n))
                     iter <- iter + 1
                 }
 
                 for (n in seq_len(extremeN)) {
-                    table$setRow(rowNo=iter, values=list(type="Lowest", place=n))
+                    table$setRow(rowNo=iter, values=list(type=.("Lowest"), place=n))
                     iter <- iter + 1
                 }
             }
