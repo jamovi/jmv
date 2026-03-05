@@ -33,6 +33,7 @@ const updateRatios = function(ui, context) {
     let promise = context.requestData("column", { columnName: columnName, properties: ["levels"] })
     promise.then(rData => {
         let data = [];
+        let levelsRemoved = 0;
         if (rData.columnFound) {
             let levels = rData.levels;
             
@@ -41,17 +42,24 @@ const updateRatios = function(ui, context) {
                 totalRatio += oldRatios[i].ratio - 1;
 
             for (let i = 0; i < levels.length; i++) {
+                const level = levels[i];
+                if (level.treatAsMissing || level.filtered) {
+                    levelsRemoved += 1;
+                    continue;
+                }
+
                 let ratio = 1;
                 if (i < oldRatios.length)
                     ratio = oldRatios[i].ratio;
 
                 let prop = parseFloat(Math.round((ratio / totalRatio) * 1000) / 1000).toFixed(3);
 
-                data.push({ level: levels[i].label, ratio: ratio, proportion: prop });
+                data.push({ level: level.label, ratio: ratio, proportion: prop });
             }
         }
 
         ui.ratio.setValue(data);
+        ui.ratio.setPropertyValue('infoText', levelsRemoved > 0 ? `Active filters have excluded ${levelsRemoved} levels` : null);
         context._updatingRatios -= 1;
     });
 };
