@@ -36,20 +36,24 @@ const updateRatios = function(ui, context) {
         let levelsRemoved = 0;
         if (rData.columnFound) {
             let levels = rData.levels;
-            
-            let totalRatio = levels.length;
+            let filteredLevels = levels.filter((level) => {
+                return ! (level.treatAsMissing || level.filtered);
+            });
+            levelsRemoved = levels.length - filteredLevels.length;
+
+            let totalRatio = filteredLevels.length;
             for (let i = 0; i < oldRatios.length; i++)
                 totalRatio += oldRatios[i].ratio - 1;
 
-            for (let i = 0; i < levels.length; i++) {
-                const level = levels[i];
+            for (let i = 0; i < filteredLevels.length; i++) {
+                const level = filteredLevels[i];
                 if (level.treatAsMissing || level.filtered) {
                     levelsRemoved += 1;
                     continue;
                 }
 
                 let ratio = 1;
-                if (i < oldRatios.length)
+                if (i < oldRatios.length - levelsRemoved)
                     ratio = oldRatios[i].ratio;
 
                 let prop = parseFloat(Math.round((ratio / totalRatio) * 1000) / 1000).toFixed(3);
@@ -59,7 +63,10 @@ const updateRatios = function(ui, context) {
         }
 
         ui.ratio.setValue(data);
-        ui.ratio.setPropertyValue('infoText', levelsRemoved > 0 ? `Active filters have excluded ${levelsRemoved} levels` : null);
+        let msg = null;
+        if (levelsRemoved > 0)
+            msg = n_('Active filters have excluded one level', `Active filters have excluded {n} levels`, levelsRemoved)
+        ui.ratio.setPropertyValue('infoText', msg);
         context._updatingRatios -= 1;
     });
 };
