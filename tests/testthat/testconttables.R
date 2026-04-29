@@ -258,3 +258,19 @@ testthat::test_that("bar plots work with spaces in variable name", {
 
     testthat::expect_true(table$barplot$.render())
 })
+
+testthat::test_that("conttables rejects NA counts with a clear error", {
+    # GIVEN a 2x2 contingency table where one count value is NA
+    rows   <- factor(c("A", "B", "A", "B"), c("A", "B"))
+    cols   <- factor(c("1", "1", "2", "2"), c("1", "2"))
+    counts <- c(72, 48, 45, NA)
+    data   <- data.frame(rows = rows, cols = cols, counts = counts)
+
+    # WHEN running contTables with a counts variable containing NA
+    # THEN the analysis is rejected with a clear error message
+    testthat::expect_error(
+        jmv::contTables(data=data, rows="rows", cols="cols", counts="counts"),
+        regexp='missing values',
+        ignore.case=TRUE
+    )
+})
