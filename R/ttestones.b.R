@@ -107,22 +107,51 @@ ttestOneSClass <- R6::R6Class(
 
                 if (self$options$wilcoxon || self$options$mann) {
 
-                    if (is.factor(column))
+                    if (is.factor(column)) {
                         res <- createError(.('Variable is not numeric'))
-                    else if (length(column) == 0)
+                    } else if (length(column) == 0) {
                         res <- createError(.('Variable does not contain enough observations'))
-                    else
-                        res <- try(suppressWarnings(wilcox.test(column, mu=testValue,
-                                                                alternative=Ha,
-                                                                paired=FALSE,
-                                                                conf.int=TRUE,
-                                                                conf.level=cl)), silent=TRUE)
+                    } else {
+                        # Determine method based on sample size to balance precision and performance.
+                        # R 4.6+ supports exact conditional inference (Pratt's method) for data with 
+                        # ties/zeros. For N >= 50, asymptotic approximation is used for efficiency.
+                        useExact <- (n < 50)
+                      
+                        res <- try(
+                            suppressWarnings(
+                                wilcox.test(
+                                    column, 
+                                    mu=testValue,
+                                    alternative=Ha,
+                                    paired=FALSE,
+                                    conf.int=TRUE,
+                                    conf.level=cl,
+                                    exact=useExact
+                                )
+                            ), 
+                            silent=TRUE
+                        )
+                    }
+
 
                     if ( ! isError(res)) {
-
-                        nTies <- sum(column == testValue)
-                        totalRankSum <- ((n-nTies) * ((n-nTies) + 1)) / 2
-                        biSerial <- (2 * (res$statistic / totalRankSum)) - 1
+                        # The Rank Biserial Correlation (effect size) denominator must align with the 
+                        # ranking method used by wilcox.test to ensure the value remains within [-1, 1].
+                        # Pratt's method (used when exact = TRUE) retains zero-differences in the rank pool.
+                        # The asymptotic method (used when exact = FALSE) traditionally excludes zeros.
+                        if (useExact) {
+                            denom_n <- n
+                        } else {
+                            nTies <- sum(column == testValue)
+                            denom_n <- n - nTies
+                        }
+                      
+                        totalRankSum <- (denom_n * (denom_n + 1)) / 2
+                      
+                        if (totalRankSum > 0)
+                            biSerial <- (2 * (res$statistic / totalRankSum)) - 1
+                        else
+                            biSerial <- NaN
 
                         ttest$setRow(rowNo=i, list(
                             "stat[wilc]"=res$statistic,
@@ -133,9 +162,7 @@ ttestOneSClass <- R6::R6Class(
                             "es[wilc]"=biSerial,
                             "ciles[wilc]"='',
                             "ciues[wilc]"=''))
-
                     } else {
-
                         ttest$setRow(rowNo=i, list(
                             "stat[wilc]"=NaN,
                             "p[wilc]"='',

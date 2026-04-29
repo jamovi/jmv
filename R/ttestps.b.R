@@ -74,7 +74,22 @@ ttestPSClass <- R6::R6Class(
                 }
                 else {
                     stud <- try(t.test(column1, column2, paired=TRUE, conf.level=confInt, alternative=Ha), silent=TRUE)
-                    wilc <- try(suppressWarnings(wilcox.test(column1, column2, alternative=Ha, paired=TRUE, conf.int=TRUE, conf.level=confInt)), silent=TRUE)
+
+                    # Determine method based on sample size to balance precision and performance.
+                    # R 4.6+ supports exact conditional inference (Pratt's method) for data with 
+                    # ties/zeros. For N >= 50, asymptotic approximation is used for efficiency.
+                    useExact <- (n < 50)
+                    wilc <- try(suppressWarnings(
+                        wilcox.test(
+                            column1, 
+                            column2, 
+                            alternative=Ha, 
+                            paired=TRUE, 
+                            conf.int=TRUE, 
+                            conf.level=confInt,
+                            exact=useExact
+                        )
+                    ), silent=TRUE)
                 }
 
                 if ( ! isError(stud)) {
@@ -115,8 +130,21 @@ ttestPSClass <- R6::R6Class(
 
                 if ( ! isError(wilc)) {
 
-                    totalRankSum <- ((n-nTies) * ((n-nTies) + 1)) / 2
-                    biSerial <- (2 * (wilc$statistic / totalRankSum)) - 1
+                    # The Rank Biserial Correlation (effect size) denominator must align with the 
+                    # ranking method used by wilcox.test to ensure the value remains within [-1, 1].
+                    # Pratt's method (used when exact = TRUE) retains zero-differences in the rank pool.
+                    # The asymptotic method (used when exact = FALSE) traditionally excludes zeros.
+                    if (useExact) {
+                        denom_n <- n
+                    } else {
+                        denom_n <- n - nTies
+                    }
+
+                    totalRankSum <- (denom_n * (denom_n + 1)) / 2
+                    if (totalRankSum > 0)
+                        biSerial <- (2 * (wilc$statistic / totalRankSum)) - 1
+                    else
+                        biSerial <- NaN
 
                     ttestTable$setRow(rowKey=pair, list(
                         'stat[wilc]'=wilc$statistic,
