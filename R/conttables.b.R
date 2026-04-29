@@ -269,6 +269,8 @@ contTablesClass <- R6::R6Class(
                     jmvcore::reject(.('Counts may not be negative'))
                 if (any(is.infinite(data$.COUNTS)))
                     jmvcore::reject(.('Counts may not be infinite'))
+                if (any(is.na(data$.COUNTS)))
+                    jmvcore::reject(.('Counts may not contain missing values'))
             }
 
             freqs <- self$results$freqs
@@ -363,7 +365,7 @@ contTablesClass <- R6::R6Class(
                     } else
                         MCpsimul <- FALSE
 
-                    if (all(dim(mat) == 2) && all(rowSums(mat) > 0) && all(colSums(mat) > 0)) {
+                    if (isTRUE(all(dim(mat) == 2) && all(rowSums(mat) > 0) && all(colSums(mat) > 0))) {
                         dp <- private$.diffProp(mat, Ha)
                         lor <- vcd::loddsratio(mat)
                         rr <- private$.relativeRisk(mat)
