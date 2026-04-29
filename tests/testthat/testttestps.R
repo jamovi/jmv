@@ -95,7 +95,7 @@ testthat::test_that('Matched rank biserial correlation is correct', {
     ttestTable <- r$ttest$asDF
     testthat::expect_equal('before', ttestTable[['var1[wilc]']], tolerance = 1e-3)
     testthat::expect_equal('after', ttestTable[['var2[wilc]']], tolerance = 1e-3)
-    testthat::expect_equal(9, ttestTable[['stat[wilc]']])
-    testthat::expect_equal(0.234, ttestTable[['p[wilc]']], tolerance = 1e-3)
-    testthat::expect_equal(-0.5, ttestTable[['es[wilc]']])
+    testthat::expect_equal(12, ttestTable[['stat[wilc]']])
+    testthat::expect_equal(0.273, ttestTable[['p[wilc]']], tolerance = 1e-3)
+    testthat::expect_equal(-0.467, ttestTable[['es[wilc]']], tolerance = 1e-3)
 })

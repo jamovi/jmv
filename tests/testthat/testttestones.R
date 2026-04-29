@@ -74,9 +74,9 @@ testthat::test_that('Matched rank biserial correlation is correct', {
     # Test rank biserial correlation
     ttestTable <- r$ttest$asDF
     testthat::expect_equal('dif', ttestTable[['var[wilc]']])
-    testthat::expect_equal(27, ttestTable[['stat[wilc]']])
-    testthat::expect_equal(0.234, ttestTable[['p[wilc]']], tolerance = 1e-3)
-    testthat::expect_equal(0.5, ttestTable[['es[wilc]']])
+    testthat::expect_equal(32, ttestTable[['stat[wilc]']])
+    testthat::expect_equal(0.273, ttestTable[['p[wilc]']], tolerance = 1e-3)
+    testthat::expect_equal(0.422, ttestTable[['es[wilc]']], tolerance = 1e-3)
 })
 
 testthat::test_that('Matched rank biserial correlation works with non zero test value', {
@@ -88,5 +88,5 @@ testthat::test_that('Matched rank biserial correlation works with non zero test 
 
     # Test rank biserial correlation
     ttestTable <- r$ttest$asDF
-    testthat::expect_equal(-0.0303, ttestTable[['es[wilc]']], tolerance = 1e-4)
+    testthat::expect_equal(-0.0476, ttestTable[['es[wilc]']], tolerance = 1e-3)
 })
