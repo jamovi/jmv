@@ -396,9 +396,9 @@ mancovaClass <- R6::R6Class(
             covs <- self$options$covs
 
             if (length(factors) > 1) {
-                formula <- as.formula(paste('~', paste(paste0('`', factors, '`'), collapse='*')))
+                formula <- as.formula(paste('~', paste(jmvcore::composeTerms(factors), collapse='*')))
                 terms   <- attr(stats::terms(formula), 'term.labels')
-                modelTerms <- sapply(terms, function(x) as.list(strsplit(x, ':')), USE.NAMES=FALSE)
+                modelTerms <- lapply(terms, jmvcore::decomposeTerm)
             } else {
                 modelTerms <- as.list(factors)
             }
@@ -406,13 +406,6 @@ mancovaClass <- R6::R6Class(
             if (! is.null(covs)) {
                 for (cov in covs)
                     modelTerms[[length(modelTerms) + 1]] <- cov
-            }
-
-            for (i in seq_along(modelTerms)) {
-                term <- modelTerms[[i]]
-                quoted <- grepl('^`.*`$', term)
-                term[quoted] <- substring(term[quoted], 2, nchar(term[quoted])-1)
-                modelTerms[[i]] <- term
             }
 
             if (B64) {

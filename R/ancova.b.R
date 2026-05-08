@@ -565,7 +565,7 @@ ancovaClass <- R6::R6Class(
             modelTerms <- private$.modelTerms()
             factors <- self$options$factors
 
-            rhs <- paste0('`', factors, '`', collapse=':')
+            rhs <- jmvcore::composeTerm(factors)
             formula <- as.formula(paste0('.RES ~', rhs))
 
             model <- stats::lm(formula, data)
@@ -865,18 +865,11 @@ ancovaClass <- R6::R6Class(
         .ff=function() {
             factors <- self$options$factors
             if (length(factors) > 1) {
-                formula <- as.formula(paste('~', paste(paste0('`', factors, '`'), collapse='*')))
+                formula <- as.formula(paste('~', paste(jmvcore::composeTerms(factors), collapse='*')))
                 terms   <- attr(stats::terms(formula), 'term.labels')
-                modelTerms <- sapply(terms, function(x) as.list(strsplit(x, ':')), USE.NAMES=FALSE)
+                modelTerms <- lapply(terms, jmvcore::decomposeTerm)
             } else {
                 modelTerms <- as.list(factors)
-            }
-
-            for (i in seq_along(modelTerms)) {
-                term <- modelTerms[[i]]
-                quoted <- grepl('^`.*`$', term)
-                term[quoted] <- substring(term[quoted], 2, nchar(term[quoted])-1)
-                modelTerms[[i]] <- term
             }
 
             covs <- NULL
