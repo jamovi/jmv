@@ -13,6 +13,28 @@ setSingularityWarning = function(self) {
     )
 }
 
+#' Reject the analysis if factors contain levels without observations
+#'
+#' @param self        The analysis object (for translation)
+#' @param data        The data the analysis is run on
+#' @param factorNames The names of the factors to check
+#' @keywords internal
+rejectEmptyLevels = function(self, data, factorNames) {
+    for (factorName in factorNames) {
+        counts <- table(data[[factorName]])
+        emptyLevels <- names(counts)[counts == 0]
+
+        if (length(emptyLevels) > 0) {
+            jmvcore::reject(
+                .("Factor '{factorName}' contains levels with no observations: {levels}. This can happen when all observations of a level are excluded by filters or removed due to missing values. To run the analysis, remove these unused levels from the factor."),
+                code=exceptions$dataError,
+                factorName=factorName,
+                levels=paste0("'", emptyLevels, "'", collapse=', ')
+            )
+        }
+    }
+}
+
 #' Create contrast labels (for AN(C)OVA and rmANOVA)
 #'
 #' @param levels character vector with the (names of the) factor levels

@@ -70,3 +70,18 @@ testthat::test_that('All options in the anovaOneW work (sunny)', {
     testthat::expect_equal(37.101, postHoc$getCell(rowKey="1", "2[df]")$value, tolerance = 1e-5)
     testthat::expect_equal(5.5686e-05, postHoc$getCell(rowKey="1", "2[p]")$value, tolerance = 1e-9)
 })
+
+testthat::test_that("anovaOneW rejects group variables containing levels with no observations", {
+
+    # GIVEN ToothGrowth data with dose 1 filtered out but its level retained
+    dat <- ToothGrowth
+    dat$dose <- factor(dat$dose)
+    dat <- dat[dat$dose != 1, ]
+
+    # WHEN we run a One-Way ANOVA on the filtered data
+    # THEN the analysis should be rejected with an informative error message
+    testthat::expect_error(
+        jmv::anovaOneW(dat, deps = "len", group = "dose"),
+        "Factor 'dose' contains levels with no observations: '1'"
+    )
+})

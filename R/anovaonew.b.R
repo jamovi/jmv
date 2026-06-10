@@ -22,6 +22,7 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             if (ready) {
 
                 data <- private$.cleanData()
+                private$.dataCheck(data)
                 results <- private$.compute(data)
 
                 private$.populateAnovaTable(results)
@@ -423,6 +424,9 @@ anovaOneWClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 data <- na.omit(data)
 
             return(data)
+        },
+        .dataCheck = function(data) {
+            rejectEmptyLevels(self, data, self$options$group)
         },
         .descPlotSize = function() {
 

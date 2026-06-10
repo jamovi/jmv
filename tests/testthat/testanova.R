@@ -407,3 +407,18 @@ testthat::test_that("Contrasts work with special characters in variable name", {
     testthat::expect_equal(contr$t, -1.091, tolerance=1e-3)
     testthat::expect_equal(contr$p, 0.307, tolerance=1e-3)
 })
+
+testthat::test_that("ANOVA rejects factors containing levels with no observations", {
+
+    # GIVEN ToothGrowth data with dose 1 filtered out but its level retained
+    dat <- datasets::ToothGrowth
+    dat$dose <- factor(dat$dose)
+    dat <- dat[dat$dose != "1", ]
+
+    # WHEN we run a Standard ANOVA on the filtered data
+    # THEN the analysis should be rejected with an informative error message
+    testthat::expect_error(
+        jmv::ANOVA(data = dat, dep = "len", factors = "dose"),
+        "Factor 'dose' contains levels with no observations: '1'"
+    )
+})
