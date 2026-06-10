@@ -1185,7 +1185,7 @@ contTablesClass <- R6::R6Class(
                     rhs <- c(rhs, self$options$layers)
                 }
             }
-            jmvcore:::composeFormula('.COUNTS', list(rhs))
+            jmvcore:::composeFormula(self$options$counts, list(rhs))
         }
     )
 )
