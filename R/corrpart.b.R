@@ -192,22 +192,26 @@ corrPartClass <- R6::R6Class(
                         matrix$setRow(rowNo=i, values)
 
                         if (flag) {
-                            if (result$rp < .001)
+                            if (is.na(result$rp))
+                                {}  # do nothing
+                            else if (result$rp < .001)
                                 matrix$addSymbol(rowNo=i, paste0(colVarName, '[r]'), '***')
                             else if (result$rp < .01)
                                 matrix$addSymbol(rowNo=i, paste0(colVarName, '[r]'), '**')
                             else if (result$rp < .05)
                                 matrix$addSymbol(rowNo=i, paste0(colVarName, '[r]'), '*')
 
-                            if (result$rhop < .001)
+                            if (is.na(result$rhop))
+                                {}  # do nothing
+                            else if (result$rhop < .001)
                                 matrix$addSymbol(rowNo=i, paste0(colVarName, '[rho]'), '***')
                             else if (result$rhop < .01)
                                 matrix$addSymbol(rowNo=i, paste0(colVarName, '[rho]'), '**')
                             else if (result$rhop < .05)
                                 matrix$addSymbol(rowNo=i, paste0(colVarName, '[rho]'), '*')
 
-                            if ( ! self$options$kendall)
-                            {}  # do nothing
+                            if ( ! self$options$kendall || is.na(result$taup))
+                                {}  # do nothing
                             else if (result$taup < .001)
                                 matrix$addSymbol(rowNo=i, paste0(colVarName, '[tau]'), '***')
                             else if (result$taup < .01)

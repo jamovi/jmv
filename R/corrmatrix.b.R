@@ -159,7 +159,7 @@ corrMatrixClass <- R6::R6Class(
                         matrix$addFootnote(rowNo=i, paste0(colVarName, '[r]'), .('Pearson correlation cannot be calculated for non-numeric values'))
 
                     if (flag) {
-                        if ( ! self$options$pearson || mtord)
+                        if ( ! self$options$pearson || mtord || is.na(result$rp))
                             {}  # do nothing
                         else if (result$rp < .001)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[r]'), '***')
@@ -168,7 +168,7 @@ corrMatrixClass <- R6::R6Class(
                         else if (result$rp < .05)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[r]'), '*')
 
-                        if ( ! self$options$spearman)
+                        if ( ! self$options$spearman || is.na(result$rhop))
                             {}  # do nothing
                         else if (result$rhop < .001)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[rho]'), '***')
@@ -177,7 +177,7 @@ corrMatrixClass <- R6::R6Class(
                         else if (result$rhop < .05)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[rho]'), '*')
 
-                        if ( ! self$options$kendall)
+                        if ( ! self$options$kendall || is.na(result$taup))
                             {}  # do nothing
                         else if (result$taup < .001)
                             matrix$addSymbol(rowNo=i, paste0(colVarName, '[tau]'), '***')
