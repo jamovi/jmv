@@ -274,3 +274,33 @@ testthat::test_that("conttables rejects NA counts with a clear error", {
         ignore.case=TRUE
     )
 })
+
+testthat::test_that("generated syntax has an empty formula LHS without counts", {
+    # GIVEN a contingency table with rows and columns but no counts variable
+    data <- data.frame(
+        dose = factor(c("a", "b", "a", "b")),
+        supp = factor(c("x", "y", "x", "y"))
+    )
+
+    # WHEN running the analysis
+    results <- jmv::contTables(data=data, rows="dose", cols="supp")
+
+    # THEN the generated syntax has an empty formula left-hand side rather than
+    #   a .COUNTS placeholder
+    testthat::expect_match(results$analysis$asSource(), "formula = ~ dose:supp", fixed=TRUE)
+})
+
+testthat::test_that("generated syntax uses the counts variable as formula LHS", {
+    # GIVEN a contingency table with a counts variable
+    data <- data.frame(
+        dose = factor(c("a", "b", "a", "b")),
+        supp = factor(c("x", "y", "x", "y")),
+        freq = c(1, 2, 3, 4)
+    )
+
+    # WHEN running the analysis
+    results <- jmv::contTables(data=data, rows="dose", cols="supp", counts="freq")
+
+    # THEN the counts variable appears as the formula's left-hand side
+    testthat::expect_match(results$analysis$asSource(), "formula = freq ~ dose:supp", fixed=TRUE)
+})
