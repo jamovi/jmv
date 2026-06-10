@@ -998,14 +998,9 @@ ancovaClass <- R6::R6Class(
                     )
                 }
 
-                if (any(table(self$finalData[[factorName]]) == 0)) {
-                    jmvcore::reject(
-                        .("Factor '{factorName}' contains unused levels (after removing rows with missing values)"),
-                        code=exceptions$dataError,
-                        factorName=factorName
-                    )
-                }
             }
+
+            rejectEmptyLevels(self, self$finalData, factors)
         }),
     #### Active bindings ----
     active=list(
