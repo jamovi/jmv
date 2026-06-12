@@ -1000,8 +1000,10 @@ descriptivesClass <- R6::R6Class(
                 # the case values aren't available during init, so set the
                 # counts type here; only show decimals for non-integer counts
                 # (i.e. when weighted by non-integer weights)
-                if ( ! all(freq == round(freq), na.rm=TRUE))
-                    table$addColumn(name='counts', title=.('Counts'), type='number')
+                if ( ! all(freq == round(freq), na.rm=TRUE)) {
+                    countsColumn <- table$columns[['counts']]
+                    countsColumn$.__enclos_env__$private$.type <- 'number'
+                }
 
                 tableVars <- c(var, splitBy)
                 allLevels <- lapply(jmvcore::select(self$data, tableVars), levels)
