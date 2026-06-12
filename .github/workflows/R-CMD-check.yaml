@@ -49,7 +49,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck, any::XML, any::roxygen2, github::jamovi/jmvcore
+          extra-packages: any::rcmdcheck, any::XML, any::roxygen2, github::jamovi/jamovi/jmvcore
           needs: check
 
       - name: Document
