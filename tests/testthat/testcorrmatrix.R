@@ -123,3 +123,32 @@ testthat::test_that('All options in the corrMatrix work (sunny)', {
     testthat::expect_equal(13, as.numeric(corTable$getCell(rowKey="var 3", "var 1[n]")$value))
     testthat::expect_equal(11, as.numeric(corTable$getCell(rowKey="var 3", "var 2[n]")$value))
 })
+
+testthat::test_that('corrMatrix does not error on NaN p-values with flagging enabled', {
+    # GIVEN a variable paired with a constant column (zero variance), which
+    # makes cor.test return an NA p-value
+    df <- data.frame(
+        `var 1` = c(8, 51, 2, 74, 1, 91, 5, 25, 1, 59, 5, 32, 7),
+        `constant` = rep(3, 13),
+        check.names = FALSE
+    )
+
+    # WHEN we run a correlation with significance flagging enabled
+    # THEN the analysis should not error (the flag logic used to do
+    # `if (p < .001)` on NA and crash with "missing value where TRUE/FALSE needed")
+    testthat::expect_error(
+        r <- jmv::corrMatrix(
+            data = df,
+            vars = c("var 1", "constant"),
+            pearson = TRUE,
+            spearman = TRUE,
+            kendall = TRUE,
+            flag = TRUE
+        ),
+        regexp = NA
+    )
+
+    # AND the degenerate correlation should be reported as a missing value
+    corTable <- r$matrix
+    testthat::expect_true(is.na(as.numeric(corTable$getCell(rowKey="constant", "var 1[rho]")$value)))
+})
