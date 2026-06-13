@@ -168,16 +168,19 @@ params <- list(
     list(
         weights = NULL,
         expected_counts = c(1, 1, 1, 1, 1),
+        expected_type = "integer",
         info = "No weights"
     ),
     list(
         weights = c(1, 2, 3, 4, 5),
         expected_counts = c(1, 2, 3, 4, 5),
+        expected_type = "integer",
         info = "Integer weights"
     ),
     list(
         weights = c(0.5, 1, 1.5, 2, 2.5),
         expected_counts = c(0.5, 1, 1.5, 2, 2.5),
+        expected_type = "number",
         info = "Non-integer weights"
     )
 )
@@ -194,6 +197,10 @@ testthat::test_that("Weighted grouped frequency table is displayed correctly", {
         # THEN the counts in the frequency table are correct
         r <- desc$frequencies[[1]]$asDF
         testthat::expect_equal(r$counts, param$expected_counts, info = param$info)
+
+        # AND the counts are only displayed as decimals for non-integer weights
+        countsType <- desc$frequencies[[1]]$getColumn("counts")$type
+        testthat::expect_equal(countsType, param$expected_type, info = param$info)
     }
 })
 

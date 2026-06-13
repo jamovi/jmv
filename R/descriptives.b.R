@@ -627,7 +627,7 @@ descriptivesClass <- R6::R6Class(
 
                 for (var in tableVars)
                     table$addColumn(name=var, title=var, type="text", combineBelow=TRUE)
-                table$addColumn(name='counts', title=.('Counts'), type='number')
+                table$addColumn(name='counts', title=.('Counts'), type='integer')
                 table$addColumn(name='pc', title=.('% of Total'), type='number', format='pc')
                 table$addColumn(name='cumpc', title=.('Cumulative %'), type='number', format='pc')
 
@@ -996,6 +996,14 @@ descriptivesClass <- R6::R6Class(
 
                 table <- tables$get(var)
                 freq <- freqs[[var]]
+
+                # the case values aren't available during init, so set the
+                # counts type here; only show decimals for non-integer counts
+                # (i.e. when weighted by non-integer weights)
+                if ( ! all(freq == round(freq), na.rm=TRUE)) {
+                    countsColumn <- table$columns[['counts']]
+                    countsColumn$.__enclos_env__$private$.type <- 'number'
+                }
 
                 tableVars <- c(var, splitBy)
                 allLevels <- lapply(jmvcore::select(self$data, tableVars), levels)
