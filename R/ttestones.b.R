@@ -112,21 +112,21 @@ ttestOneSClass <- R6::R6Class(
                     } else if (length(column) == 0) {
                         res <- createError(.('Variable does not contain enough observations'))
                     } else {
-                        # Pin R's pre-4.6 default so results don't change with the R version:
-                        # use exact inference only for small samples with no zero-differences
-                        # or ties. R 4.6.0's new default applies Pratt's exact method to
-                        # tied/zero data, which would otherwise shift the statistic, p-value
-                        # and effect size relative to earlier R.
-                        diffs <- column - testValue
-                        nonzero <- diffs[diffs != 0]
+                        # R >= 4.6 keeps zero-differences in the signed-rank statistic
+                        # regardless of the 'exact' argument, which shifts the statistic,
+                        # p-value and effect size. Drop zero-differences ourselves so jmv
+                        # always reports the classic Wilcoxon test, identical across R
+                        # versions. Exact inference is used only for small samples with no
+                        # zero-differences and no ties.
+                        nonzero <- column[column != testValue]
                         useExact <- length(nonzero) < 50 &&
-                                    length(nonzero) == length(diffs) &&
-                                    ! any(duplicated(abs(nonzero)))
+                                    length(nonzero) == length(column) &&
+                                    ! any(duplicated(abs(nonzero - testValue)))
 
                         res <- try(
                             suppressWarnings(
                                 wilcox.test(
-                                    column, 
+                                    nonzero,
                                     mu=testValue,
                                     alternative=Ha,
                                     paired=FALSE,
@@ -134,7 +134,7 @@ ttestOneSClass <- R6::R6Class(
                                     conf.level=cl,
                                     exact=useExact
                                 )
-                            ), 
+                            ),
                             silent=TRUE
                         )
                     }

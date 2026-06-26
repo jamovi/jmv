@@ -75,22 +75,23 @@ ttestPSClass <- R6::R6Class(
                 else {
                     stud <- try(t.test(column1, column2, paired=TRUE, conf.level=confInt, alternative=Ha), silent=TRUE)
 
-                    # Pin R's pre-4.6 default so results don't change with the R version:
-                    # use exact inference only for small samples with no zero-differences or
-                    # ties. R 4.6.0's new default applies Pratt's exact method to tied/zero
-                    # data, which would otherwise shift the statistic, p-value and effect size.
-                    diffs <- na.omit(column1 - column2)
-                    nonzero <- diffs[diffs != 0]
-                    useExact <- length(nonzero) < 50 &&
-                                length(nonzero) == length(diffs) &&
-                                ! any(duplicated(abs(nonzero)))
+                    # R >= 4.6 keeps zero-differences in the signed-rank statistic regardless
+                    # of the 'exact' argument, which shifts the statistic, p-value and effect
+                    # size. Drop the zero-difference pairs ourselves so jmv always reports the
+                    # classic Wilcoxon test, identical across R versions. Exact inference is
+                    # used only for small samples with no zero-differences and no ties.
+                    diffs <- column1 - column2
+                    keep <- ! is.na(diffs) & diffs != 0
+                    useExact <- sum(keep) < 50 &&
+                                sum(keep) == sum(! is.na(diffs)) &&
+                                ! any(duplicated(abs(diffs[keep])))
                     wilc <- try(suppressWarnings(
                         wilcox.test(
-                            column1, 
-                            column2, 
-                            alternative=Ha, 
-                            paired=TRUE, 
-                            conf.int=TRUE, 
+                            column1[keep],
+                            column2[keep],
+                            alternative=Ha,
+                            paired=TRUE,
+                            conf.int=TRUE,
                             conf.level=confInt,
                             exact=useExact
                         )
