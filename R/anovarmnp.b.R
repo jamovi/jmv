@@ -1,4 +1,6 @@
 
+#' @importFrom stats p.adjust.methods pt
+#' @importFrom utils combn
 anovaRMNPClass <- R6::R6Class(
   "anovaRMNPClass",
   inherit=anovaRMNPBase,

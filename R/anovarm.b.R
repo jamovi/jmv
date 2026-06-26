@@ -1,5 +1,6 @@
 
 #' @importFrom jmvcore .
+#' @importFrom stats contr.helmert contr.treatment
 anovaRMClass <- R6::R6Class(
     "anovaRMClass",
     inherit=anovaRMBase,
@@ -1366,7 +1367,7 @@ calcUnivariateTests <- function(SSP, SSPE, P, df, error_df) {
 #' @keywords internal
 getContrastFunction <- function(type) {
     if        (type == "deviation") {
-        emmc <- function(levs, ref = 1, ...) {
+        return(function(levs, ref = 1, ...) {
             ref = emmeans::.num.key(levs, ref)
             k <- length(levs)
             if (length(ref) == 0 || (min(ref) < 1) || (max(ref) > k))
@@ -1375,13 +1376,13 @@ getContrastFunction <- function(type) {
             names(M) <- sprintf("%s - %s", levs[-ref], rep(paste(levs, collapse = ", "), k - 1))
             attr(M, "desc") <- "Deviation contrasts"
             M
-        }
+        })
     } else if (type == "simple") {
-        emmc <- emmeans::trt.vs.ctrl1.emmc
+        return(emmeans::trt.vs.ctrl1.emmc)
     } else if (type == "simple_k") {
-        emmc <- emmeans::trt.vs.ctrlk.emmc
+        return(emmeans::trt.vs.ctrlk.emmc)
     } else if (type == "difference") {
-        emmc <- function(levs, ref = length(levs), ...) {
+        return(function(levs, ref = length(levs), ...) {
             ref = emmeans::.num.key(levs, ref)
             k <- length(levs)
             if (length(ref) == 0 || (ref != 1 && ref != k))
@@ -1390,9 +1391,9 @@ getContrastFunction <- function(type) {
             names(M) <- sprintf("%s - %s", levs[seq(2, k - 0)], vapply(seq(k - 1), function(n) paste(levs[seq(1, n)], collapse = ", "), character(1)))
             attr(M, "desc") <- "Difference contrasts"
             M
-        }
+        })
     } else if (type == "helmert") {
-        emmc <- function(levs, ref = 1, ...) {
+        return(function(levs, ref = 1, ...) {
             ref = emmeans::.num.key(levs, ref)
             k <- length(levs)
             if (length(ref) == 0 || (ref != 1 && ref != k))
@@ -1402,16 +1403,14 @@ getContrastFunction <- function(type) {
             names(M) <- sprintf("%s - %s", levs[seq(k - 1)], vapply(seq(k - 1), function(n) paste(levs[-seq(1, n)], collapse = ", "), character(1)))
             attr(M, "desc") <- "Helmert contrasts"
             M
-        }
+        })
     } else if (type == "repeated") {
-        emmc <- function(levs, ref = 1, ...) emmeans::consec.emmc(levs, ref = ref, reverse = TRUE, ...)
+        return(function(levs, ref = 1, ...) emmeans::consec.emmc(levs, ref = ref, reverse = TRUE, ...))
     } else if (type == "polynomial") {
-        emmc <- emmeans::poly.emmc
+        return(emmeans::poly.emmc)
     } else {
         stop(sprintf("Unknown contrast type: %s", type), call. = FALSE)
     }
-
-    return(emmc)
 }
 
 #' Summarize an Anova object from a repeated measures model into a single table
