@@ -212,15 +212,15 @@ anovaRMClass <- R6::R6Class(
             for (contrast in self$options$contrasts) {
                 if (contrast$type == 'none')
                     next()
-                
+
                 levels <- private$.contrastLevels(contrast$var)
                 if (is.null(levels))
                     next()
 
                 table <- tables$addItem(contrast)
-                
+
                 labels <- contrastLabels(levels, contrast$type, self) # defined in utilsanova.R
-                # emmeans:::poly.emmc permits maximally 6 degrees, thus we need to limit the labels
+                # emmeans::poly.emmc permits maximally 6 degrees, thus we need to limit the labels
                 if (contrast$type == 'polynomial') {
                     if (length(labels) > 6) {
                         labels <- labels[seq(6)]
@@ -230,7 +230,7 @@ anovaRMClass <- R6::R6Class(
                 for (label in labels)
                     table$addRow(rowKey=label, list(contrast=label))
             }
-        },        
+        },
         .initPostHocTables=function() {
             bs <- self$options$bs
             rm <- self$options$rm
@@ -1357,7 +1357,7 @@ calcUnivariateTests <- function(SSP, SSPE, P, df, error_df) {
 }
 
 #' Define contrasts
-#' Some contrast are already defined in `emmeans` (simple) and just "linked", 
+#' Some contrast are already defined in `emmeans` (simple) and just "linked",
 #' for others (e.g., deviation) the respective function needs to be defined
 #' (cf. https://rdrr.io/cran/emmeans/src/R/emm-contr.R)
 #'
@@ -1377,9 +1377,9 @@ getContrastFunction <- function(type) {
             M
         }
     } else if (type == "simple") {
-        emmc <- emmeans:::trt.vs.ctrl1.emmc
+        emmc <- emmeans::trt.vs.ctrl1.emmc
     } else if (type == "simple_k") {
-        emmc <- emmeans:::trt.vs.ctrlk.emmc
+        emmc <- emmeans::trt.vs.ctrlk.emmc
     } else if (type == "difference") {
         emmc <- function(levs, ref = length(levs), ...) {
             ref = emmeans::.num.key(levs, ref)
@@ -1404,9 +1404,9 @@ getContrastFunction <- function(type) {
             M
         }
     } else if (type == "repeated") {
-        emmc <- function(levs, ref = 1, ...) emmeans:::consec.emmc(levs, ref = ref, reverse = TRUE, ...)
+        emmc <- function(levs, ref = 1, ...) emmeans::consec.emmc(levs, ref = ref, reverse = TRUE, ...)
     } else if (type == "polynomial") {
-        emmc <- emmeans:::poly.emmc
+        emmc <- emmeans::poly.emmc
     } else {
         stop(sprintf("Unknown contrast type: %s", type), call. = FALSE)
     }
