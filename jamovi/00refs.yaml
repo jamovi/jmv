@@ -2,8 +2,8 @@
 refs:
     emmeans:
         type: 'software'
-        author: Lenth, R.
-        year: 2025
+        author: Lenth, R., & Piaskowski, J.
+        year: 2026
         title: 'emmeans: Estimated Marginal Means, aka Least-Squares Means'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=emmeans'
         url: https://cran.r-project.org/package=emmeans
@@ -11,7 +11,7 @@ refs:
     afex:
         type: 'software'
         author: Singmann, H.
-        year: 2024
+        year: 2025
         title: 'afex: Analysis of Factorial Experiments'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=afex'
         url: https://cran.r-project.org/package=afex
@@ -19,15 +19,15 @@ refs:
     R:
         type: 'software'
         author: R Core Team
-        year: 2025
-        title: 'A Language and Envionment for Statistical Computing'
-        publisher: '(Version 4.5) [Computer software]. Retrieved from https://cran.r-project.org/'
+        year: 2026
+        title: 'A Language and Environment for Statistical Computing'
+        publisher: '(Version 4.6) [Computer software]. Retrieved from https://cran.r-project.org/'
         url: https://cran.r-project.org/
 
     BF:
         type: 'software'
         author: Morey, R. D., Rouder, J. N., Jamil, T., Urbanek, S., Forner, K., & Ly, A.
-        year: 2024
+        year: 2026
         title: 'BayesFactor: Computation of Bayes Factors for Common Designs'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=BayesFactor'
         url: https://cran.r-project.org/package=BayesFactor
@@ -44,8 +44,8 @@ refs:
 
     car:
         type: 'software'
-        author: Fox, J., & Weisberg, S.
-        year: 2024
+        author: Fox, J., Weisberg, S., & Price, B.
+        year: 2026
         title: 'car: Companion to Applied Regression'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=car'
         url: https://cran.r-project.org/package=car
@@ -53,7 +53,7 @@ refs:
     ggplot2:
         type: 'software'
         author: Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K., Wilke, C., Woo, K., Yutani, H., Dunnington, D., van den Brand, T., & Posit, PBC
-        year: 2025
+        year: 2026
         title: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=ggplot2'
         url: https://cran.r-project.org/package=ggplot2
@@ -61,7 +61,7 @@ refs:
     ggridges:
         type: 'software'
         author: Wilke, C.
-        year: 2024
+        year: 2025
         title: 'ggridges: Ridgeline Plots in ggplot2'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=ggridges'
         url: https://cran.r-project.org/package=ggridges
@@ -70,14 +70,14 @@ refs:
         type: 'software'
         author: Jarek, S.
         year: 2024
-        title: 'mvnormtest: Normality test for multivariate variables'
+        title: 'mvnormtest: Normality Test for Multivariate Variables'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=mvnormtest'
         url: https://cran.r-project.org/package=mvnormtest
 
     ROCR:
         type: 'software'
-        author: Sing, T., Sander, O., Beerenwinkel, N., & Lengauer, T., Unterthiner, T., & Ernst, F. G. M.
-        year: 2020
+        author: Sing, T., Sander, O., Beerenwinkel, N., Lengauer, T., Unterthiner, T., & Ernst, F. G. M.
+        year: 2026
         title: 'ROCR: Visualizing the Performance of Scoring Classifiers'
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=ROCR'
         url: https://cran.r-project.org/package=ROCR
@@ -109,7 +109,7 @@ refs:
     vcdExtra:
         type: 'software'
         author: Friendly, M., Turner, H., Zeileis, A., Murdoch, D., & Firth, D.
-        year: 2023
+        year: 2026
         title: "vcdExtra: 'vcd' Extensions and Additions"
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=vcdExtra'
         url: https://cran.r-project.org/package=vcdExtra
@@ -117,7 +117,7 @@ refs:
     exact2x2:
         type: 'software'
         author: Fay, M. P., Hunsberger, S. A., Nason, M., Gabriel, E., & Lumbard, K.
-        year: 2024
+        year: 2025
         title: "exact2x2: Exact Tests and Confidence Intervals for 2x2 Tables"
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=exact2x2'
         url: https://cran.r-project.org/package=exact2x2
@@ -125,7 +125,7 @@ refs:
     psych:
         type: 'software'
         author: Revelle, W.
-        year: 2025
+        year: 2026
         title: "psych: Procedures for Psychological, Psychometric, and Personality Research"
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=psych'
         url: https://cran.r-project.org/package=psych
@@ -133,7 +133,7 @@ refs:
     lavaan:
         type: 'software'
         author: Rosseel, Y., Jorgensen, T. D., De Wilde, L., Oberski, D., Byrnes,  J., Vanbrabant, L., Savalei, V., Merkle, E., Hallquist, M., Rhemtulla, M., Katsikatsou, M., Barendse, M., Rockwood,  N., Scharf, F., Du,  H., Jamil, H., Classe,  F.
-        year: 2024
+        year: 2025
         title: "lavaan: Latent Variable Analysis"
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=lavaan'
         url: https://cran.r-project.org/package=lavaan
@@ -141,7 +141,7 @@ refs:
     semPlot:
         type: 'software'
         author: Epskamp, S.
-        year: 2022
+        year: 2026
         title: "semPlot: Path Diagrams and Visual Analysis of Various SEM Packages' Output"
         publisher: '[R package]. Retrieved from https://cran.r-project.org/package=semPlot'
         url: https://cran.r-project.org/package=semPlot
