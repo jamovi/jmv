@@ -32,7 +32,7 @@ propTest2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "nominal",
                     "ordinal"),
                 permitted=list(
-                    "factor"))
+                    "factor", "numeric", "continuous"))
             private$..areCounts <- jmvcore::OptionBool$new(
                 "areCounts",
                 areCounts,
