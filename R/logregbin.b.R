@@ -76,6 +76,12 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             return(private$.deviance)
         },
+        logLik = function() {
+            if (is.null(private$.logLik))
+                private$.logLik <- private$.computeLogLik()
+
+            return(private$.logLik)
+        },
         AIC = function() {
             if (is.null(private$.AIC))
                 private$.AIC <- private$.computeAIC()
@@ -167,6 +173,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         .lrtModelComparison = NULL,
         .lrtModelTerms = NULL,
         .deviance = NULL,
+        .logLik = NULL,
         .AIC = NULL,
         .BIC = NULL,
         .pseudoR2 = NULL,
@@ -227,14 +234,41 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             data <- self$dataProcessed
             formulas <- self$formulas
 
-            if (is.numeric(modelNo))
+            if (is.numeric(modelNo)) {
                 formulas <- formulas[modelNo]
+            }
 
+            raw_weights <- self$weights
+            weight_scale_ratio <- 1
+            if (!is.null(raw_weights)) {
+                sum_w <- sum(raw_weights)
+                n_rows <- length(raw_weights)
+                if (sum_w != 0) {
+                    weight_scale_ratio <- n_rows / sum_w
+                    norm_weights <- raw_weights * weight_scale_ratio
+                } else {
+                    norm_weights <- raw_weights
+                }
+                
+                data$.NORM_WEIGHTS <- norm_weights
+            }
+          
             models <- list()
             for (i in seq_along(formulas)) {
-                models[[i]] <- stats::glm(
-                    formulas[[i]],  data=data, family="binomial", weights=self$weights
-                )
+                if (! is.null(raw_weights)) {
+                    models[[i]] <- stats::glm(
+                        formulas[[i]],  
+                        data=data, 
+                        family="binomial", 
+                        weights=.NORM_WEIGHTS
+                    )
+              
+                    models[[i]]$prior.weights <- raw_weights
+                    models[[i]]$weight_scale_ratio <- weight_scale_ratio
+                } else {
+                    models[[i]] <- stats::glm(formulas[[i]], data=data, family="binomial")
+                    models[[i]]$weight_scale_ratio <- 1
+                }
             }
 
             return(models)
@@ -287,12 +321,54 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         .computeLrtModelTerms = function() {
             lrtModelTerms <- list()
             for (i in seq_along(self$models)) {
-                lrtModelTerms[[i]] <- car::Anova(
-                    self$models[[i]],
+                # If weights are used, the model object has 'raw' weights in prior.weights (from .computeModels swap)
+                # But car::Anova uses the call/formula which has 'normalized' weights.
+                # This mismatch causes car::Anova to calculate incorrect stats.
+                # We interpret a local copy of the model with restored normalized weights.
+                
+                model <- self$models[[i]]
+                if (! is.null(model$weight_scale_ratio)) {
+                     model$prior.weights <- model$data$.NORM_WEIGHTS
+                }
+
+                lrt <- car::Anova(
+                    model,
                     test="LR",
                     type=3,
                     singular.ok=TRUE
                 )
+                
+                # Use a fresh model to avoid prior.weights swap issues and environment scope problems
+                modelOrig <- self$models[[i]]
+                formula <- self$formulas[[i]]
+                data <- modelOrig$data
+                
+                # Check if weights are used (if .NORM_WEIGHTS column exists)
+                weights <- NULL
+                if (".NORM_WEIGHTS" %in% names(data)) {
+                    weights <- as.name(".NORM_WEIGHTS")
+                }
+                
+                # Use do.call to avoid scope issues with 'weights' argument (avoiding stats::weights conflict)
+                args <- list(formula=formula, data=data, family=stats::binomial)
+                if ( ! is.null(weights))
+                    args$weights <- weights
+                    
+                model <- do.call(stats::glm, args)
+
+                lrt <- car::Anova(
+                    model,
+                    test="LR",
+                    type=3,
+                    singular.ok=TRUE
+                )
+                
+                if (! is.null(modelOrig$weight_scale_ratio)) {
+                    lrt[['LR Chisq']] <- lrt[['LR Chisq']] / modelOrig$weight_scale_ratio
+                    lrt[['Pr(>Chisq)']] <- stats::pchisq(lrt[['LR Chisq']], lrt[['Df']], lower.tail=FALSE)
+                }
+                
+                lrtModelTerms[[i]] <- lrt
             }
 
             return(lrtModelTerms)
@@ -300,39 +376,78 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         .computeDeviance = function() {
             dev <- list()
             for (i in seq_along(self$models))
-                dev[[i]] <- self$models[[i]]$deviance
+                dev[[i]] <- -2 * self$logLik[[i]]
 
             return(dev)
         },
+        #' Calculate log-likelihood manually
+        #'
+        #' @description
+        #' Manually calculates the log-likelihood to correctly handle non-integer weights,
+        #' bypassing stats::glm behavior which rounds weights/counts for binomial family.
+        .computeLogLik = function() {
+            logLik <- list()
+            for (i in seq_along(self$models)) {
+                logLik[[i]] <- private$.calcLogLik(self$models[[i]])
+            }
+            return(logLik)
+        },
+        #' Calculate AIC manually
+        #'
+        #' @description
+        #' Uses the manually calculated log-likelihood to compute AIC, ensuring consistency
+        #' with weighted data where stats::AIC would fail due to rounding.
         .computeAIC = function() {
             AIC <- list()
-            for (i in seq_along(self$models))
-                AIC[[i]] <- stats::AIC(self$models[[i]])
+            for (i in seq_along(self$models)) {
+                k <- self$models[[i]]$rank
+                AIC[[i]] <- 2 * k - 2 * self$logLik[[i]]
+            }
 
             return(AIC)
         },
+        #' Calculate BIC manually
+        #'
+        #' @description
+        #' Uses the manually calculated log-likelihood and sum(weights) as sample size
+        #' to compute BIC, ensuring consistency with weighted data.
         .computeBIC = function() {
             BIC <- list()
-            for (i in seq_along(self$models))
-                BIC[[i]] <- stats::BIC(self$models[[i]])
+            for (i in seq_along(self$models)) {
+                 model <- self$models[[i]]
+                 k <- model$rank
+                 n <- sum(model$prior.weights)
+                 BIC[[i]] <- k * log(n) - 2 * self$logLik[[i]]
+            }
 
             return(BIC)
         },
         .computePseudoR2 = function() {
             pR2 <- list()
             for (i in seq_along(self$models)) {
-                dev <- self$deviance[[i]]
-                nullDev <- self$models[[i]]$null.deviance
-                n <- length(self$models[[i]]$fitted.values)
+                model <- self$models[[i]]
+                y <- model$y
+                mu <- model$fitted.values
+                w <- model$prior.weights
+                n <- sum(w)
 
-                r2mf <- 1 - dev/nullDev
+                ll <- self$logLik[[i]]
+
+                # Null model logLik
+                y_bar <- sum(w * y) / sum(w)
+                logLikNull <- sum(w * (y * log(y_bar) + (1 - y) * log(1 - y_bar)))
+
+                dev <- -2 * ll
+                nullDev <- -2 * logLikNull
+
+                r2mf <- 1 - dev / nullDev
                 r2cs <- 1 - exp(-(nullDev - dev) / n)
                 r2n <- r2cs / (1 - exp(-nullDev / n))
 
-                meanFittedProbs <- tapply(
-                    self$models[[i]]$fitted.values, self$models[[i]]$y, mean, na.rm=TRUE
-                )
-                r2t <- unname(diff(meanFittedProbs))
+                # For Tjur's R2, we need weighted means of fitted probs for y=0 and y=1
+                mu_y1 <- sum(mu[y == 1] * w[y == 1]) / sum(w[y == 1])
+                mu_y0 <- sum(mu[y == 0] * w[y == 0]) / sum(w[y == 0])
+                r2t <- mu_y1 - mu_y0
 
                 pR2[[i]] <- list(r2mf=r2mf, r2cs=r2cs, r2n=r2n, r2t=r2t)
             }
@@ -341,8 +456,20 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         .computeModelTest = function() {
             modelTest <- list()
             for (i in seq_along(self$models)) {
-                chi <- self$models[[i]]$null.deviance - self$deviance[[i]]
-                df <- self$models[[i]]$df.null - self$models[[i]]$df.residual
+                model <- self$models[[i]]
+                
+                # Calculate null probability
+                w <- model$prior.weights
+                y <- model$y
+                mu_null <- sum(w * y) / sum(w)
+              
+                # Calculate Null Deviance MANUALLY (On the correct Raw Scale)
+                ll_null <- private$.calcLogLik(model, mu = mu_null)
+                null_deviance <- -2 * ll_null
+              
+                # Calculate Chi-Square
+                chi <- null_deviance - self$deviance[[i]]
+                df <- model$df.null - model$df.residual
                 p <- 1 - pchisq(chi, df)
 
                 modelTest[[i]] <- list(chi=chi, df=df, p=p)
@@ -370,15 +497,35 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         },
         .computeCICoefEst = function(type="LOR") {
             if (type == "OR")
-                level <- self$options$ciWidthOR/100
+                width <- self$options$ciWidthOR
             else
-                level <- self$options$ciWidth/100
+                width <- self$options$ciWidth
+          
+            alpha <- (1 - (width / 100)) / 2
+            z_crit <- stats::qnorm(1 - alpha)
 
             ci <- list()
             for (i in seq_along(self$models)) {
-                ci[[i]] <- confint.default(self$models[[i]], level=level)
-                if (type == "OR")
-                    ci[[i]] <- exp(ci[[i]])
+                model <- self$models[[i]]
+              
+                summ <- summary(model)
+                est <- summ$coefficients[, "Estimate"]
+                se_orig <- summ$coefficients[, "Std. Error"]
+              
+                ratio <- if (!is.null(model$weight_scale_ratio)) model$weight_scale_ratio else 1
+                se_correct <- se_orig * sqrt(ratio)
+              
+                moe <- z_crit * se_correct
+              
+                lower <- est - moe
+                upper <- est + moe
+              
+                if (type == "OR") {
+                    lower <- exp(lower)
+                    upper <- exp(upper)
+                }
+              
+                ci[[i]] <- cbind(lower, upper)
             }
             return(ci)
         },
@@ -386,9 +533,13 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             class <- list()
             for (i in seq_along(self$models)) {
                 pred <- ifelse(self$fitted[[i]] > self$options$cutOff, 1, 0)
-                df <- data.frame(response=factor(self$models[[i]]$y, levels=c(0,1)),
-                                 predicted=factor(pred, levels=c(0,1)))
-                class[[i]] <- stats::xtabs(~ response + predicted, data=df)
+                w <- self$models[[i]]$prior.weights
+                df <- data.frame(
+                    response=factor(self$models[[i]]$y, levels=c(0,1)),
+                    predicted=factor(pred, levels=c(0,1)),
+                    weights=w
+                )
+                class[[i]] <- stats::xtabs(weights ~ response + predicted, data=df)
             }
             return(class)
         },
@@ -396,10 +547,38 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             AUC <- list()
             for (i in seq_along(self$models)) {
                 prob <- self$fitted[[i]]
-                pred <- ROCR::prediction(prob, self$models[[i]]$y)
-                perf <- ROCR::performance(pred, measure = "auc")
-
-                AUC[[i]] <- unlist(perf@y.values)
+                y <- self$models[[i]]$y
+                w <- self$models[[i]]$prior.weights
+                
+                # Order by predicted probability descending
+                o <- order(prob, decreasing = TRUE)
+                prob_o <- prob[o]
+                y_o <- y[o]
+                w_o <- w[o]
+                
+                # Cumulative sums of weights for positives (y=1) and negatives (y=0)
+                TP <- cumsum(w_o * y_o)
+                FP <- cumsum(w_o * (1 - y_o))
+                
+                # Total weighted positives and negatives
+                P_tot <- TP[length(TP)]
+                N_tot <- FP[length(FP)]
+                
+                # TPR and FPR
+                TPR <- TP / P_tot
+                FPR <- FP / N_tot
+                
+                # Area under curve using trapezoidal rule
+                # We need to prepend 0 to TPR and FPR to start from (0,0)
+                TPR <- c(0, TPR)
+                FPR <- c(0, FPR)
+                
+                # diff(FPR) gives the width of each trapezoid/rectangle
+                # (TPR[-1] + TPR[-length(TPR)]) / 2 gives average height
+                
+                auc <- sum(diff(FPR) * (TPR[-1] + TPR[-length(TPR)]) / 2)
+                
+                AUC[[i]] <- auc
             }
             return(AUC)
         },
@@ -446,7 +625,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                                     model,
                                     formula,
                                     cov.reduce=FUN,
-                                    type='response',
+                                    type='link',
                                     options=list(level=self$options$ciWidthEmm / 100),
                                     weights=weights,
                                     data=self$dataProcessed,
@@ -455,7 +634,24 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                                 silent = TRUE
                             )
 
-                            emmTable[[j]] <- try(as.data.frame(summary(mm)), silent = TRUE)
+                            df <- try(as.data.frame(summary(mm)), silent = TRUE)
+                            
+                            if ( ! isError(df) && ! is.null(model$weight_scale_ratio)) {
+                                df$SE <- df$SE * sqrt(model$weight_scale_ratio)
+                                z_crit <- stats::qnorm(1 - (1 - (self$options$ciWidthEmm / 100)) / 2)
+                                df$asymp.LCL <- df$emmean - z_crit * df$SE
+                                df$asymp.UCL <- df$emmean + z_crit * df$SE
+                            }
+                            
+                            # Transform to response scale
+                            if ( ! isError(df)) {
+                                df$prob <- stats::plogis(df$emmean)
+                                df$asymp.LCL <- stats::plogis(df$asymp.LCL)
+                                df$asymp.UCL <- stats::plogis(df$asymp.UCL)
+                                emmTable[[j]] <- df
+                            } else {
+                                emmTable[[j]] <- df
+                            }
                         })
                     }
                 }
@@ -881,10 +1077,15 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             for (i in seq_along(termsAll)) {
                 table <- groups$get(key=i)$coef
 
-                model <- summary(self$models[[i]])
+                model <- self$models[[i]]
+                modelSummary <- summary(model)
+              
+                se_scale <- sqrt(model$weight_scale_ratio)
+              
                 CI <- self$CICoefEst[[i]]
                 CIOR <- self$CICoefEstOR[[i]]
-                coef<- model$coefficients
+              
+                coef<- modelSummary$coefficients
                 terms <- termsAll[[i]]
                 rowTerms <- jmvcore::decomposeTerms(rownames(coef))
 
@@ -892,8 +1093,10 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                     term <- terms[[j]]
 
                     # check which rows have the same length + same terms
-                    index <- which(length(term) == sapply(rowTerms, length) &
-                                       sapply(rowTerms, function(x) all(term %in% x)))
+                    index <- which(
+                        length(term) == sapply(rowTerms, length) & 
+                          sapply(rowTerms, function(x) all(term %in% x))
+                    )
 
                     if (length(index) != 1) {
                         table$setNote(
@@ -902,13 +1105,18 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                         )
                         next
                     }
-
+                  
+                    est <- coef[index, 'Estimate']
+                    se <- coef[index, 'Std. Error'] * se_scale
+                    z <- est / se
+                    p   <- 2 * (1 - stats::pnorm(abs(z)))
+                  
                     row <- list()
-                    row[["est"]] <- coef[index, 'Estimate']
-                    row[["se"]] <- coef[index, 'Std. Error']
-                    row[["odds"]] <- exp(coef[index, 'Estimate'])
-                    row[["z"]] <- coef[index, 'z value']
-                    row[["p"]] <- coef[index, 'Pr(>|z|)']
+                    row[["est"]] <- est
+                    row[["se"]] <- se
+                    row[["odds"]] <- exp(est)
+                    row[["z"]] <- z
+                    row[["p"]] <- p
                     row[["lower"]] <- CI[index, 1]
                     row[["upper"]] <- CI[index, 2]
                     row[["oddsLower"]] <- CIOR[index, 1]
@@ -1515,5 +1723,26 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             height <- xAxis + height
 
             return(c(width, height))
-        })
+        },
+        .calcLogLik = function(model, mu=NULL) {
+            # Extract basic data from the model
+            y <- model$y
+            w <- model$prior.weights
+          
+            # Determine Probabilities (mu)
+            # If mu is NULL, use the model's own fitted values (Full Model)
+            # If mu is provided (e.g., Null Model mean), use that.  
+            if (is.null(mu)) {
+                mu <- model$fitted.values
+            }
+          
+            # Safety Clamp (Avoid log(0))
+            mu <- ifelse(mu <= 1e-16, 1e-16, mu)
+            mu <- ifelse(mu >= 1 - 1e-16, 1 - 1e-16, mu)
+          
+            # Calculate Weighted Log-Likelihood
+            logLik <- sum(w * (y * log(mu) + (1 - y) * log(1 - mu)))
+            return(logLik)
+        }
+    )
 )

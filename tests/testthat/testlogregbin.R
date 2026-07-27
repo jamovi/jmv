@@ -344,6 +344,9 @@ testthat::test_that("Analysis works with global weights", {
         factors="factor",
         blocks=list(list("cov", "factor")),
         refLevels=refLevels,
+        ci=TRUE,
+        OR=TRUE,
+        ciOR=TRUE
     )
 
     # Test model fit table
@@ -359,6 +362,11 @@ testthat::test_that("Analysis works with global weights", {
     testthat::expect_equal(c(0.14, 0.085, NA, 0.201, 0.21), coefTable[['se']], tolerance = 1e-3)
     testthat::expect_equal(c(-1.418, -2.949, NA, 2.276, 0.128), coefTable[['z']], tolerance = 1e-3)
     testthat::expect_equal(c(0.156, 0.003, NA, 0.023, 0.899), coefTable[['p']], tolerance = 1e-3)
+    testthat::expect_equal(c(-0.474, -0.417, NA, 0.064, -0.385), coefTable[['lower']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.076, -0.084, NA, 0.851, 0.438), coefTable[['upper']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.820, 0.778, NA, 1.58, 1.027), coefTable[['odds']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.622, 0.659, NA, 1.066, 0.681), coefTable[['oddsLower']], tolerance = 1e-3)
+    testthat::expect_equal(c(1.079, 0.919, NA, 2.343, 1.550), coefTable[['oddsUpper']], tolerance = 1e-3)
 })
 
 testthat::test_that("Analysis adds note when design matrix is singular", {
@@ -438,3 +446,217 @@ testthat::test_that('Reference level defaults to first level for faulty referenc
     }
 })
 
+testthat::test_that("Analysis works with non-integer weights", {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    N <- 100
+    cov1 <- rnorm(N)
+    cov2 <- rnorm(N)
+    z <- 1 + 2 * cov1 + 3 * cov2
+    pr <- 1 / ( 1 + exp(-z))
+    dep <- factor(rbinom(N, 1, pr))
+    df <- data.frame(dep=rep(dep, 2), cov1=rep(cov1, 2), cov2=rep(cov2, 2))
+  
+    weights <- rep(0.5, N * 2)
+    attr(df, "jmv-weights") <- weights
+
+    r <- jmv::logRegBin(
+        data = df,
+        bic = TRUE,
+        dep = "dep",
+        covs = c("cov1", "cov2"),
+        blocks = list(list("cov1", "cov2")),
+        modelTest = TRUE,
+        pseudoR2 = c("r2mf", "r2cs", "r2n", "r2t")
+    )
+
+    # Test model fit table
+    modelFitTable <- r$modelFit$asDF
+    testthat::expect_equal(1, modelFitTable[['model']])
+    testthat::expect_equal(39.039, modelFitTable[['dev']], tolerance = 1e-3)
+    testthat::expect_equal(45.039, modelFitTable[['aic']], tolerance = 1e-3)
+    testthat::expect_equal(52.854, modelFitTable[['bic']], tolerance = 1e-3)
+    testthat::expect_equal(0.701, modelFitTable[['r2mf']], tolerance = 1e-3)
+    testthat::expect_equal(0.600, modelFitTable[['r2cs']], tolerance = 1e-3)
+    testthat::expect_equal(0.823, modelFitTable[['r2n']], tolerance = 1e-3)
+    testthat::expect_equal(0.733, modelFitTable[['r2t']], tolerance = 1e-3)
+    testthat::expect_equal(91.645, modelFitTable[['chi']], tolerance = 1e-3)
+    testthat::expect_equal(2, modelFitTable[['df']])
+    testthat::expect_equal(0, modelFitTable[['p']], tolerance = 1e-3)
+
+    # Test model coefficients table
+    coefTable <- r$models[[1]]$coef$asDF
+    testthat::expect_equal(c('Intercept', 'cov1', 'cov2'), coefTable[['term']])
+    testthat::expect_equal(c(0.926, 3.042, 4.929), coefTable[['est']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.461, 0.815, 1.166), coefTable[['se']], tolerance = 1e-3)
+    testthat::expect_equal(c(2.008, 3.734, 4.226), coefTable[['z']], tolerance = 1e-3)
+    testthat::expect_equal(c(0.045, 0, 0), coefTable[['p']], tolerance = 1e-3)
+})
+
+testthat::test_that("Analysis produces correct Class Table and AUC with weights", {
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+
+    # Weighted dataset: high weight on a "hard" error case to ensure visible difference if ignored
+    df_weighted <- data.frame(
+        y = c(1, 0, 0),
+        x = c(0.8, 0.9, 0.2), 
+        w = c(1, 10, 1) # Total N = 12
+    )
+    attr(df_weighted, "jmv-weights") <- df_weighted$w
+
+    # Expanded dataset (unweighted equivalent)
+    df_expanded <- df_weighted[rep(1:3, times=df_weighted$w), ]
+    attr(df_expanded, "jmv-weights") <- NULL
+
+    # Run Weighted Model
+    r_weighted <- jmv::logRegBin(
+        data = df_weighted,
+        dep = "y",
+        covs = "x",
+        blocks = list(list("x")),
+        class = TRUE,
+        auc = TRUE,
+        acc = TRUE
+    )
+
+    # Run Expanded Model
+    r_expanded <- jmv::logRegBin(
+        data = df_expanded,
+        dep = "y",
+        covs = "x",
+        blocks = list(list("x")),
+        class = TRUE,
+        auc = TRUE,
+        acc = TRUE
+    )
+
+    # Check AUC
+    auc_w <- r_weighted$models[[1]]$pred$measures$asDF[['auc']]
+    auc_e <- r_expanded$models[[1]]$pred$measures$asDF[['auc']]
+    testthat::expect_equal(auc_w, auc_e, tolerance = 1e-5)
+    
+    # Check Accuracy (derived from Class Table)
+    acc_w <- r_weighted$models[[1]]$pred$measures$asDF[['accuracy']]
+    acc_e <- r_expanded$models[[1]]$pred$measures$asDF[['accuracy']]
+    testthat::expect_equal(acc_w, acc_e, tolerance = 1e-5)
+
+    # Check Class Table Counts directly
+    ct_w <- r_weighted$models[[1]]$pred$class$asDF
+    ct_e <- r_expanded$models[[1]]$pred$class$asDF
+    
+    # 0 = Neg, 1 = Pos. 
+    # Columns: neg[0] (Obs 0, Pred 0), pos[0] (Obs 0, Pred 1), neg[1] (Obs 1, Pred 0), pos[1] (Obs 1, Pred 1)
+    # We compare the counts.
+    testthat::expect_equal(ct_w[['neg[0]']], ct_e[['neg[0]']])
+    testthat::expect_equal(ct_w[['pos[0]']], ct_e[['pos[0]']])
+    testthat::expect_equal(ct_w[['neg[1]']], ct_e[['neg[1]']])
+    testthat::expect_equal(ct_w[['pos[1]']], ct_e[['pos[1]']])
+})
+
+testthat::test_that("SPSS Parity: Frequency weights produce correct BIC and Deviance", {
+    # GIVEN a dataset with integer frequency weights
+    csv_path <- testthat::test_path("data", "logRegBin_weightsData.csv")
+    df <- read.csv(csv_path)
+    attr(df, "jmv-weights") <- df$w_freq
+    
+    # WHEN the analysis is run with BIC and Model Test enabled
+    r <- jmv::logRegBin(
+        data = df,
+        dep = "y",
+        covs = "x",
+        blocks = list(list("x")),
+        modelTest = TRUE,
+        bic = TRUE
+    )
+
+    # THEN the Model Fit statistics should match SPSS exactly (N treated as sum of weights = 61)
+    modelFit <- r$modelFit$asDF
+    # Deviance: 74.076 (Matches SPSS -2 Log Likelihood)
+    testthat::expect_equal(74.076, modelFit[['dev']], tolerance = 1e-3)
+    # AIC: 78.076 (74.076 + 2*2)
+    testthat::expect_equal(78.076, modelFit[['aic']], tolerance = 1e-3)
+    # BIC: 82.298 (74.076 + 2 * ln(61))
+    # This confirms n=61 (sum of weights) was used for the penalty
+    testthat::expect_equal(82.298, modelFit[['bic']], tolerance = 1e-3) 
+    # Chi-square: 10.078
+    testthat::expect_equal(10.078, modelFit[['chi']], tolerance = 1e-3)
+    # AND the coefficients should match the SPSS weighted estimates
+    coef <- r$models[[1]]$coef$asDF
+    testthat::expect_equal(0.052, coef[['est']][1], tolerance = 1e-3) # Intercept
+    testthat::expect_equal(0.669, coef[['est']][2], tolerance = 1e-3) # x
+})
+
+testthat::test_that("SPSS Parity: Large weights handle numerical stability and scale correctly", {
+    # GIVEN a dataset with large non-integer weights
+    csv_path <- testthat::test_path("data", "logRegBin_weightsData.csv")
+    df <- read.csv(csv_path)
+    attr(df, "jmv-weights") <- df$w_large
+
+    # WHEN the analysis is run
+    r <- jmv::logRegBin(
+        data = df,
+        dep = "y",
+        covs = "x",
+        blocks = list(list("x")),
+        modelTest = TRUE,
+        bic = TRUE
+    )
+
+    # THEN the model statistics match SPSS's
+    modelFit <- r$modelFit$asDF
+    testthat::expect_equal(2568.675, modelFit[['dev']], tolerance = 1e-3)
+    testthat::expect_equal(2572.675, modelFit[['aic']], tolerance = 1e-3)
+    testthat::expect_equal(238.026, modelFit[['chi']], tolerance = 1e-3)
+    # AND the coefficients should be stable and match SPSS 
+    coef <- r$models[[1]]$coef$asDF
+    testthat::expect_equal(-0.030, coef[['est']][1], tolerance = 1e-3) # Intercept
+    testthat::expect_equal(0.514, coef[['est']][2], tolerance = 1e-3) # x
+})
+
+testthat::test_that("Analysis handles perfect separation gracefully (weighted)", {
+    # GIVEN a dataset with Perfect Separation
+    # All x < 0 are y=0, All x > 0 are y=1
+    suppressWarnings(RNGversion("3.5.0"))
+    set.seed(1337)
+    
+    x <- c(rnorm(20, mean = -5), rnorm(20, mean = 5))
+    y <- ifelse(x > 0, 1, 0)
+    
+    # Add random weights to ensure the weighted code path is active
+    w <- runif(40, 1, 10)
+    
+    df <- data.frame(y=y, x=x)
+    attr(df, "jmv-weights") <- w
+    
+    # WHEN the analysis is run
+    # We wrap it in expect_error(..., NA) to assert that it DOES NOT throw an error (crash)
+    testthat::expect_error(
+        r <- jmv::logRegBin(
+            data = df,
+            dep = "y",
+            covs = "x",
+            blocks = list(list("x")),
+            refLevels = list(list(var="y", ref="0")),
+            ci = TRUE
+        ),
+        NA # NA implies "We expect NO error"
+    )
+    
+    # THEN we expect the analysis to have completed and produced a table
+    coef <- r$models[[1]]$coef$asDF
+    
+    # 1. Estimates should exist (they will be huge, e.g., > 10, but finite)
+    testthat::expect_true(!is.null(coef[['est']]))
+    testthat::expect_true(all(is.finite(coef[['est']])))
+    
+    # 2. Standard Errors should be massive (classic sign of separation)
+    # In perfect separation, SEs often explode to > 1000
+    testthat::expect_true(all(coef[['se']] > 100))
+    
+    # 3. Model Fit statistics should still be calculated
+    modelFit <- r$modelFit$asDF
+    testthat::expect_true(is.numeric(modelFit[['dev']]))
+    testthat::expect_true(is.numeric(modelFit[['aic']]))
+})
