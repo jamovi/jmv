@@ -44,21 +44,12 @@ The items making up the scale. All should be measuring the same construct.
 
 ### Scale Statistics
 
-**Cronbach's α** is
+**Cronbach's α** rises with the number of items regardless of their quality, so
+a long scale of mediocre items can still post a high α.
 
-    α = (k / (k − 1)) × (1 − Σsᵢ² / s_total²)
-
-where k is the number of items, sᵢ² the variance of item i, and s_total² the
-variance of the summed scale. α rises with the number of items regardless of
-their quality, so a long scale of mediocre items can still post a high α.
-
-**McDonald's ω** is computed from a one-factor model as
-
-    ω = (Σλᵢ)² / [(Σλᵢ)² + Σψᵢ]
-
-where λᵢ is item i's factor loading and ψᵢ its residual variance. jamovi
-reports omega **total**, from a single-factor solution — not omega
-hierarchical, which some sources mean by "ω".
+**McDonald's ω** is computed from a one-factor model. jamovi reports omega
+**total** — not omega hierarchical, which some sources mean by "ω", so check
+which figure you are comparing against.
 
 Because ω weights items by their loadings rather than treating them as
 interchangeable, it does not require tau-equivalence and is usually the more
@@ -81,14 +72,10 @@ will reveal.
   scale.
 - **Mean** and **Standard deviation** per item.
 - **Item-rest correlation** — the correlation between an item and the sum of
-  the *other* items:
-
-      r_ir = cor(xᵢ, Σⱼ≠ᵢ xⱼ)
-
-  The item is excluded from the total it is correlated against, which avoids
-  the inflation of correlating an item with a sum containing itself. Values
-  below about .3 suggest an item that does not belong; a negative value almost
-  always means the item needs reverse scoring.
+  the *other* items. The item is excluded from the total it is correlated
+  against, which avoids the inflation of correlating an item with a sum
+  containing itself. Values below about .3 suggest an item that does not
+  belong; a negative value almost always means the item needs reverse scoring.
 
 ### Reverse Scaled Items
 

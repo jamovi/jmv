@@ -72,8 +72,19 @@ no predictors.
 
 ### Effect Size
 
-η², partial η² and ω², as in ANOVA. Partial η² is the largest of the three and
-the most commonly reported — say which you used.
+The same three measures as ANOVA:
+
+    η²         = SS_effect / SS_total
+
+    partial η² = SS_effect / (SS_effect + SS_error)
+
+    ω²         = (SS_effect − df_effect × MS_error) / (SS_total + MS_error)
+
+Partial η² is always the largest and the most commonly reported — say which you
+used. Note that in ANCOVA these are computed on the model *including* the
+covariate, so a factor's η² is its share of variance after the covariate has
+taken its own, and will differ from the same factor's η² in an ANOVA without
+it.
 
 ### Model
 

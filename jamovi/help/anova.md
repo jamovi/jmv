@@ -54,16 +54,25 @@ with no predictors at all.
 
 ### Effect Size
 
-Three measures, and they answer different questions:
+Three measures, differing only in what they divide by:
 
-| Measure | What it is |
-|---|---|
-| η² | The share of *total* variance a term explains. Shares across terms sum to at most 1. |
-| partial η² | The share of variance a term explains once other terms are set aside. Terms do not sum to 1, and values run higher. |
-| ω² | Like η², but less biased upward in small samples. |
+    η²         = SS_effect / SS_total
 
-Report which one you used — η² and partial η² are frequently confused, and
-partial η² is the larger of the two.
+    partial η² = SS_effect / (SS_effect + SS_error)
+
+    ω²         = (SS_effect − df_effect × MS_error) / (SS_total + MS_error)
+
+η² is the share of *total* variance a term explains, so shares across terms sum
+to at most 1. Partial η² sets the other terms aside by excluding them from the
+denominator; terms therefore do not sum to 1, and values run higher — often
+much higher when the design has several strong effects.
+
+ω² subtracts the error expected by chance, which removes most of the upward
+bias the other two carry in small samples. It is the most accurate of the three
+and the least reported.
+
+Report which one you used. η² and partial η² are frequently confused, and
+partial η² is always the larger.
 
 ### Model
 

@@ -72,6 +72,10 @@ probably have warranted the parametric test.
 
 A single row giving χ², its degrees of freedom and a p-value.
 
+Ranking happens within each person, which is what makes the test immune to
+individual differences in scale use: only the ordering of a person's own
+responses contributes.
+
 A small p-value means the conditions are not all equivalent. It does not say
 which differ, or in which direction — the pairwise comparisons and the
 descriptives answer that.

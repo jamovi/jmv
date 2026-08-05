@@ -66,9 +66,13 @@ All four are reported by default.
 | Statistic | Notes |
 |---|---|
 | Pillai's Trace | The most robust to violated assumptions; the safe default. |
-| Wilks' Lambda | The most commonly reported, and the usual choice in write-ups. |
+| Wilks' Lambda | The most commonly reported. Smaller values mean stronger effects. |
 | Hotelling's Trace | Similar power to Wilks in most situations. |
 | Roy's Largest Root | The most powerful when the effect lies along a single dimension, the least robust otherwise. |
+
+Roy's uses only the strongest dimension and discards the rest, so it is the one
+most likely to disagree with the others — and when it alone is significant,
+that is a reason for caution rather than celebration.
 
 They usually agree. When they disagree, prefer Pillai's Trace, and note the
 disagreement rather than picking the one that suits.

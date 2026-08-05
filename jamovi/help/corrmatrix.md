@@ -52,9 +52,13 @@ far less affected by outliers.
 
 - **Pearson** — the default; linear association between continuous variables.
 - **Spearman** — Pearson's coefficient computed on ranks.
-- **Kendall's tau-b** — also rank-based, but built from concordant and
-  discordant pairs. More conservative than Spearman and better behaved in small
-  samples or with many tied values.
+- **Kendall's tau-b** — also rank-based, but built from counting pairs of
+  observations that agree in their ordering against those that disagree. More
+  conservative than Spearman — values are typically smaller for the same data —
+  and better behaved with many ties.
+
+Tick more than one to compare. A large gap between Pearson and Spearman is
+informative: it usually means outliers or a non-linear relationship.
 
 Tick more than one to compare. A large gap between Pearson and Spearman is
 informative: it usually means outliers or a non-linear relationship.

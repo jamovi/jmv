@@ -67,9 +67,19 @@ Continuous variables to adjust for.
 
 ### Effect Size
 
-η², partial η² and ω², as in factorial ANOVA. Partial η² is the most commonly
-reported for repeated measures, and is the largest of the three — say which one
-you used.
+The same three measures as factorial ANOVA:
+
+    η²         = SS_effect / SS_total
+
+    partial η² = SS_effect / (SS_effect + SS_error)
+
+    ω²         = (SS_effect − df_effect × MS_error) / (SS_total + MS_error)
+
+Partial η² is the most commonly reported for repeated measures and is the
+largest of the three. It matters more here than elsewhere which you quote:
+because the design removes between-subject variance from the error term, the
+error in the partial η² denominator is small, and the resulting values are
+substantially higher than the η² for the same effect.
 
 **Dependent Variable Label** sets the name used for the outcome in the output.
 It is cosmetic, but worth setting since the cells are named after conditions
@@ -86,10 +96,10 @@ variance is attributed in unbalanced designs; Type 3 is the default.
 - **Sphericity tests** — Mauchly's test. A significant result indicates
   sphericity is violated.
 - **Sphericity corrections** — **None**, **Greenhouse-Geisser** or
-  **Huynh-Feldt**. These adjust the degrees of freedom downward, making the
-  test more conservative. Greenhouse-Geisser is the safer, more conservative
-  choice; Huynh-Feldt is less conservative and preferred when the violation is
-  mild.
+  **Huynh-Feldt**. Both multiply the degrees of freedom by an estimate of how
+  far sphericity is violated, which always makes the test more conservative.
+  Greenhouse-Geisser is the more conservative of the two; Huynh-Feldt is less
+  so and preferred when the violation is mild.
 - **Homogeneity test** — Levene's test, relevant when between-subject factors
   are present.
 - **Q-Q Plot** — residual quantiles against a normal distribution.

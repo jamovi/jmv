@@ -85,8 +85,14 @@ variable in the analysis, so every test uses the same cases.
 - **Mean difference** — how far the mean sits from the test value, optionally
   with a **Confidence interval**. In the units of your measurement, so usually
   the most interpretable number in the output.
-- **Effect size** — Cohen's d for Student's test and rank biserial correlation
-  for Wilcoxon, optionally with a confidence interval.
+- **Effect size** — Cohen's d, the distance from the test value in standard
+  deviations:
+
+      d = (M − μ₀) / s
+
+  where μ₀ is the test value. For Wilcoxon the effect size is the rank biserial
+  correlation, computed after observations equal to the test value have been
+  dropped.
 - **Descriptives** — N, mean, median, standard deviation and standard error.
 - **Descriptives plots** — the mean with its confidence interval, drawn against
   the test value.

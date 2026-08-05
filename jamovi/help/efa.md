@@ -8,12 +8,9 @@ model: the factors are treated as unobserved causes of the variables, and each
 variable's variance is split into a part shared with the factors and a part
 unique to itself.
 
-Each variable is modelled as
-
-    xᵢ = λᵢ₁F₁ + λᵢ₂F₂ + … + εᵢ
-
-where λ are the loadings, F the factors, and εᵢ the unique part. Only the
-shared variance is analysed, which is the formal difference from PCA.
+Each variable is modelled as a weighted sum of the factors plus a part unique
+to itself. Only the shared variance is analysed, which is the formal difference
+from PCA.
 
 ## When to use it
 
@@ -100,20 +97,13 @@ are presentational and do not change the solution.
 
 ### Assumption Checks
 
-- **KMO measure of sampling adequacy** — the ratio of correlation to partial
-  correlation:
-
-      KMO = ΣΣr²ᵢⱼ / (ΣΣr²ᵢⱼ + ΣΣa²ᵢⱼ)
-
-  Above .8 is good; below .6 means the data are poorly suited to factoring.
+- **KMO measure of sampling adequacy** — compares the correlations against the
+  partial correlations. Above .8 is good; below .6 means the data are poorly
+  suited to factoring.
 
 - **Bartlett's test of sphericity** — tests the correlation matrix against an
-  identity matrix:
-
-      χ² = −[(n − 1) − (2p + 5)/6] × ln|R|
-
-  It should be significant, though with a reasonable sample it nearly always
-  is.
+  identity matrix. It should be significant, though with a reasonable sample it
+  nearly always is.
 
 ### Save
 
@@ -135,12 +125,8 @@ variable loads moderately on two, are the usual obstacle to naming factors and
 often signal that the variable is measuring more than one thing.
 
 **Uniqueness** is the share of a variable's variance not explained by the
-factors:
-
-    uniqueness = 1 − communality = 1 − Σλ²ᵢⱼ
-
-A uniqueness above about .7 means the variable has little in common with the
-rest and may not belong.
+factors — one minus its communality. A uniqueness above about .7 means the
+variable has little in common with the rest and may not belong.
 
 Where model fit measures are available, they indicate whether the retained
 number of factors reproduces the correlations adequately. Retaining too few

@@ -76,8 +76,23 @@ on *any* variable in the analysis, so every test uses the same cases.
 
 - **Mean difference** — the difference between the two group means, optionally
   with a **Confidence interval**.
-- **Effect size** — Cohen's d for Student's and Welch's, and rank biserial
-  correlation for Mann-Whitney U, optionally with a confidence interval.
+- **Effect size** — Cohen's d, optionally with a confidence interval. **The
+  denominator differs between the two tests.** For Student's it is the pooled
+  standard deviation, weighted by group size:
+
+      d = (M₁ − M₂) / √s²ₚ ,  s²ₚ = [(n₁−1)s₁² + (n₂−1)s₂²] / (n₁ + n₂ − 2)
+
+  For Welch's it is the unweighted average of the two variances:
+
+      d = (M₁ − M₂) / √s²ₐ ,  s²ₐ = (s₁² + s₂²) / 2
+
+  The two agree when the groups are the same size and spread, and diverge
+  otherwise — so a Student's d and a Welch's d in the same table are not
+  directly comparable.
+
+  For Mann-Whitney U the effect size is the rank biserial correlation:
+
+      r_rb = 1 − 2U / (n₁n₂)
 - **Descriptives** — group-wise N, mean, median, standard deviation and
   standard error.
 - **Descriptives plots** — the group means with confidence intervals.
@@ -97,6 +112,10 @@ on *any* variable in the analysis, so every test uses the same cases.
 
 One row per dependent variable per selected test, giving the test statistic,
 its degrees of freedom and a p-value, plus any additional statistics requested.
+
+Welch's degrees of freedom are usually fractional, because they are
+approximated from the two group variances rather than counted — that is
+expected, not an error.
 
 A small p-value (conventionally below .05) means the observed difference would
 be unlikely if the two population means were equal.

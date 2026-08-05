@@ -10,13 +10,8 @@ This is the confirmatory counterpart of exploratory factor analysis. Nothing is
 discovered — every loading you did not specify is fixed at zero, and the
 question is whether a model so constrained still fits the data.
 
-The model implies a covariance matrix
-
-    Σ = ΛΦΛ′ + Ψ
-
-where Λ holds the loadings, Φ the factor covariances and Ψ the residual
-variances. Fit is judged by how far this implied matrix departs from the
-observed one.
+The model implies a covariance matrix of its own, and fit is judged by how far
+that implied matrix departs from the observed one.
 
 ## When to use it
 
@@ -89,16 +84,16 @@ which is precisely why the approximate fit measures below exist.
 
 **Fit Measures**:
 
-| Measure | Formula | Conventional guide |
-|---|---|---|
-| CFI | 1 − (χ²ₘ − dfₘ) / (χ²₀ − df₀) | ≥ .95 good |
-| TLI | (χ²₀/df₀ − χ²ₘ/dfₘ) / (χ²₀/df₀ − 1) | ≥ .95 good |
-| RMSEA | √[(χ² − df) / (df × (n − 1))] | ≤ .06 good, ≤ .08 acceptable |
-| SRMR | Standardized mean residual covariance | ≤ .08 good |
-| AIC, BIC | Information criteria | Lower is better; comparison only |
+| Measure | Conventional guide |
+|---|---|
+| CFI | ≥ .95 good |
+| TLI | ≥ .95 good |
+| RMSEA | ≤ .06 good, ≤ .08 acceptable |
+| SRMR | ≤ .08 good |
+| AIC, BIC | Lower is better; for comparing models only |
 
-Subscript m is the fitted model and 0 the baseline model in which all variables
-are uncorrelated. RMSEA is reported with a 90% confidence interval — read the
+CFI and TLI compare the model against a baseline in which all variables are
+uncorrelated. RMSEA is reported with a 90% confidence interval — read the
 interval rather than the point estimate, since in a small sample it is often
 alarmingly wide.
 

@@ -80,8 +80,19 @@ on any variable in the analysis, so every pair uses the same cases.
 - **Mean difference** — the average difference within pairs, optionally with a
   **Confidence interval**. This is in the units of your measurement, which
   usually makes it the most interpretable number in the output.
-- **Effect size** — Cohen's d for Student's test and rank biserial correlation
-  for Wilcoxon, optionally with a confidence interval.
+- **Effect size** — Cohen's d, computed from the standard deviation of the
+  **differences**:
+
+      d = M_d / s_d
+
+  This is the variant often written d_z. Other software — G*Power among them —
+  frequently reports a version based on the standard deviations of the two raw
+  measurements instead. Those values are *smaller* whenever the two measures
+  correlate positively, which in a paired design they nearly always do, so
+  figures may not match across packages. Say which you used.
+
+  For Wilcoxon the effect size is the rank biserial correlation, computed after
+  zero differences have been dropped.
 - **Descriptives** — N, mean, median, standard deviation and standard error for
   each measurement.
 - **Descriptives plots** — the two means with confidence intervals.

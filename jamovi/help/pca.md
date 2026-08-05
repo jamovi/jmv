@@ -56,13 +56,9 @@ The variables to reduce. All should be continuous.
   known to over-retain; parallel analysis is preferable.
 - **Fixed number** — retains exactly the number you specify.
 
-An eigenvalue λⱼ is the variance captured by component j, and the proportion of
-total variance it explains is
-
-    proportion = λⱼ / Σλ = λⱼ / p
-
-where p is the number of variables, since each standardized variable
-contributes a variance of 1.
+An eigenvalue is the amount of variance a component captures. Because jamovi
+works from the correlation matrix, each variable contributes a variance of 1,
+so the eigenvalues sum to the number of variables.
 
 ### Rotation
 
@@ -105,22 +101,14 @@ on one.
 
 ### Assumption Checks
 
-- **KMO measure of sampling adequacy** — the ratio of correlation to partial
-  correlation:
-
-      KMO = ΣΣr²ᵢⱼ / (ΣΣr²ᵢⱼ + ΣΣa²ᵢⱼ)
-
-  where rᵢⱼ are correlations and aᵢⱼ partial correlations. Values above .8 are
-  good, below .6 mean the data are poorly suited to PCA.
+- **KMO measure of sampling adequacy** — compares the correlations against the
+  partial correlations. Values above .8 are good, below .6 mean the data are
+  poorly suited to PCA.
 
 - **Bartlett's test of sphericity** — tests whether the correlation matrix
-  differs from an identity matrix:
-
-      χ² = −[(n − 1) − (2p + 5)/6] × ln|R|
-
-  where |R| is the determinant of the correlation matrix. It should be
-  significant; with any reasonable sample it almost always is, so it is a weak
-  check compared with KMO.
+  differs from an identity matrix. It should be significant; with any
+  reasonable sample it almost always is, so it is a weak check compared with
+  KMO.
 
 ### Save
 
@@ -139,11 +127,8 @@ loading strongly on one component and weakly on the rest; variables loading
 moderately on several are the ones that make a solution hard to name.
 
 **Uniqueness** is the proportion of a variable's variance not captured by the
-retained components, so
-
-    uniqueness = 1 − communality
-
-A high uniqueness means the variable has little in common with the others.
+retained components — one minus its communality. A high uniqueness means the
+variable has little in common with the others.
 
 ### Component Statistics
 

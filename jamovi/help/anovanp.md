@@ -56,8 +56,14 @@ The nominal or ordinal variable defining the groups.
 ### Effect Size
 
 **ε²** (epsilon squared) is the proportion of variability in the ranks
-explained by the grouping variable. It runs from 0 to 1 and is the rank-based
-analogue of η².
+explained by the grouping variable — the rank-based analogue of η². jmv
+computes it from the test statistic:
+
+    ε² = H(n + 1) / (n² − 1)
+
+It runs from 0 to 1. Note that some sources define ε² as H/(n − 1) instead,
+which gives a different number; if you are comparing against another package,
+check which it reports.
 
 ### Post Hoc Tests
 
