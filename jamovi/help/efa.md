@@ -149,6 +149,8 @@ the solution hard to name.
 
 ## References
 
+- Kaiser, H. F. (1974). An index of factorial simplicity. *Psychometrika,
+  39*(1), 31–36.
 - Fabrigar, L. R., Wegener, D. T., MacCallum, R. C., & Strahan, E. J. (1999).
   Evaluating the use of exploratory factor analysis in psychological research.
   *Psychological Methods, 4*(3), 272–299.

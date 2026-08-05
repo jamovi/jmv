@@ -76,7 +76,7 @@ rather than absolute:
 
 | Measure | Notes |
 |---|---|
-| McFadden's R² | The default. Values are much lower than linear R²; .2–.4 already indicates good fit. |
+| McFadden's R² | The default. Values run far lower than a linear R²; McFadden put .2–.4 as excellent fit. |
 | Cox & Snell's R² | Cannot reach 1, even for a perfect model. |
 | Nagelkerke's R² | Cox & Snell rescaled so 1 is attainable. |
 | Tjur's R² | The difference in mean predicted probability between the two outcome groups. The most intuitive of the four. |
@@ -172,6 +172,9 @@ the log odds, are what you would report. Then tick **Classification table** and
 
 ## References
 
+- McFadden, D. (1979). Quantitative methods for analysing travel behaviour of
+  individuals. In D. A. Hensher & P. R. Stopher (Eds.), *Behavioural Travel
+  Modelling* (pp. 279–318). Croom Helm.
 - Hosmer, D. W., Lemeshow, S., & Sturdivant, R. X. (2013). *Applied Logistic
   Regression* (3rd ed.). Wiley.
 - Tjur, T. (2009). Coefficients of determination in logistic regression models.

@@ -97,9 +97,11 @@ uncorrelated. RMSEA is reported with a 90% confidence interval — read the
 interval rather than the point estimate, since in a small sample it is often
 alarmingly wide.
 
-These thresholds are conventions from simulation studies, not decision rules.
-Report several measures and describe fit honestly rather than hunting for the
-one that clears a cut-off.
+These thresholds come from Hu and Bentler's simulation study, and their actual
+recommendation was to read two indices together — CFI paired with either RMSEA
+or SRMR — rather than to treat any single number as a gate. Report them
+together and describe fit honestly rather than hunting for the one that clears
+a cut-off.
 
 ### Additional Output
 

@@ -77,7 +77,8 @@ test** against a model with no predictors.
 
 **Pseudo R²** offers McFadden's, Cox & Snell's, Nagelkerke's and Tjur's. None
 is a proportion of variance explained; McFadden's is the default, and its
-values run much lower than a linear R².
+values run far lower than a linear R² — McFadden put .2–.4 as excellent fit,
+not the .7 a linear model might invite you to expect.
 
 ### Model Coefficients
 
@@ -133,6 +134,9 @@ them; they are part of the machinery rather than a result.
 
 ## References
 
+- McFadden, D. (1979). Quantitative methods for analysing travel behaviour of
+  individuals. In D. A. Hensher & P. R. Stopher (Eds.), *Behavioural Travel
+  Modelling* (pp. 279–318). Croom Helm.
 - McCullagh, P. (1980). Regression models for ordinal data. *Journal of the
   Royal Statistical Society: Series B, 42*(2), 109–142.
 - Agresti, A. (2010). *Analysis of Ordinal Categorical Data* (2nd ed.). Wiley.

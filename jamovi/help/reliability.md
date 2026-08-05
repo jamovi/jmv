@@ -89,10 +89,22 @@ most common cause of an implausibly low α.
 
 The overall α and ω with the scale mean and standard deviation.
 
-Conventional thresholds put .7 as acceptable and .8 as good, but they are
-conventions rather than facts. A very high value — above about .95 — is not
-better; it usually means several items are near-duplicates and the scale is
-longer than it needs to be.
+The familiar rule that .7 is acceptable is a misreading of its own source.
+Nunnally, who is usually cited for it, tied the figure to the stage of
+research: .70 will do in early-stage work such as scale development, .80 for
+basic research, and .90 or above where decisions are being made about
+individual people. The qualification was dropped somewhere in the citation
+chain, leaving a bare threshold Nunnally never proposed.
+
+So read the value against your purpose. For a scale under development .7 is a
+reasonable floor; for an instrument that will inform decisions about
+individuals it is far too low.
+
+In ordinary research use, a value above about .95 is worth a second look for
+the opposite reason — it often means several items are near-duplicates and the
+scale is longer than it needs to be. That is a redundancy warning, not a
+contradiction of the above: where high reliability genuinely matters, .95 is
+the target rather than a symptom.
 
 ### Item Reliability Statistics
 
@@ -121,11 +133,13 @@ since everything else will be misleading until you do.
 
 ## References
 
+- Nunnally, J. C. (1978). *Psychometric Theory* (2nd ed.). McGraw-Hill.
+- Lance, C. E., Butts, M. M., & Michels, L. C. (2006). The sources of four
+  commonly reported cutoff criteria: What did they really say?
+  *Organizational Research Methods, 9*(2), 202–220.
 - Cronbach, L. J. (1951). Coefficient alpha and the internal structure of
   tests. *Psychometrika, 16*(3), 297–334.
 - McDonald, R. P. (1999). *Test Theory: A Unified Treatment*. Erlbaum.
-- Revelle, W. (2025). *psych: Procedures for Psychological, Psychometric, and
-  Personality Research* [R package].
 
 Cronbach's alpha and McDonald's omega are computed with psych.
 

@@ -72,7 +72,8 @@ test** against a model with no predictors.
 
 **Pseudo R²** offers McFadden's, Cox & Snell's, Nagelkerke's and Tjur's. None
 is a proportion of variance explained; McFadden's is the default, and its
-values run much lower than a linear R² would.
+values run far lower than a linear R² would — McFadden put .2–.4 as excellent
+fit, not the .7 a linear model might invite you to expect.
 
 ### Model Coefficients
 
@@ -135,6 +136,9 @@ coefficients to see which regions differ and how.
 
 ## References
 
+- McFadden, D. (1979). Quantitative methods for analysing travel behaviour of
+  individuals. In D. A. Hensher & P. R. Stopher (Eds.), *Behavioural Travel
+  Modelling* (pp. 279–318). Croom Helm.
 - Hosmer, D. W., Lemeshow, S., & Sturdivant, R. X. (2013). *Applied Logistic
   Regression* (3rd ed.). Wiley.
 - Agresti, A. (2013). *Categorical Data Analysis* (3rd ed.). Wiley.
