@@ -156,3 +156,13 @@ Wilcoxon test is the safer choice here.
 - Student. (1908). The probable error of a mean. *Biometrika, 6*(1), 1–25.
 - Wilcoxon, F. (1945). Individual comparisons by ranking methods. *Biometrics
   Bulletin, 1*(6), 80–83.
+- Kerby, D. S. (2014). The simple difference formula: An approach to teaching
+  nonparametric correlation. *Comprehensive Psychology, 3*.
+
+Bayes factors are computed with BayesFactor.
+
+- Morey, R. D., Rouder, J. N., Jamil, T., Urbanek, S., Forner, K., & Ly, A.
+  (2026). *BayesFactor: Computation of Bayes Factors for Common Designs* [R
+  package].
+- Revelle, W. (2026). *psych: Procedures for Psychological, Psychometric, and
+  Personality Research* [R package].

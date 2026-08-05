@@ -161,3 +161,16 @@ as well and compare it against Student's.
 - Student. (1908). The probable error of a mean. *Biometrika, 6*(1), 1–25.
 - Welch, B. L. (1947). The generalization of "Student's" problem when several
   different population variances are involved. *Biometrika, 34*, 28–35.
+- Kerby, D. S. (2014). The simple difference formula: An approach to teaching
+  nonparametric correlation. *Comprehensive Psychology, 3*.
+
+Bayes factors are computed with BayesFactor, Levene's test with car, and the
+confidence interval for Cohen's d with psych.
+
+- Morey, R. D., Rouder, J. N., Jamil, T., Urbanek, S., Forner, K., & Ly, A.
+  (2026). *BayesFactor: Computation of Bayes Factors for Common Designs* [R
+  package].
+- Fox, J., Weisberg, S., & Price, B. (2026). *car: Companion to Applied
+  Regression* [R package].
+- Revelle, W. (2026). *psych: Procedures for Psychological, Psychometric, and
+  Personality Research* [R package].

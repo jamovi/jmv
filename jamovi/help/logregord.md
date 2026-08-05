@@ -136,3 +136,12 @@ them; they are part of the machinery rather than a result.
 - McCullagh, P. (1980). Regression models for ordinal data. *Journal of the
   Royal Statistical Society: Series B, 42*(2), 109–142.
 - Agresti, A. (2010). *Analysis of Ordinal Categorical Data* (2nd ed.). Wiley.
+
+The model is fitted with MASS, and likelihood ratio tests are computed with
+car.
+
+- Ripley, B., Venables, W., Bates, D. M., Hornik, K., Gebhardt, A., & Firth,
+  D. (2025). *MASS: Support Functions and Datasets for Venables and Ripley's
+  MASS* [R package].
+- Fox, J., Weisberg, S., & Price, B. (2026). *car: Companion to Applied
+  Regression* [R package].

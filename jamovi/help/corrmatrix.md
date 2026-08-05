@@ -126,3 +126,7 @@ correlations — something no coefficient in the table would reveal.
   parents. *Proceedings of the Royal Society of London, 58*, 240–242.
 - Kendall, M. G. (1938). A new measure of rank correlation. *Biometrika,
   30*(1/2), 81–93.
+
+The scatterplot matrix is drawn with GGally.
+
+- Schloerke, B. (2025). *GGally: Extension to 'ggplot2'* [R package].

@@ -101,3 +101,8 @@ itself will not tell you.
 - Pearson, K. (1900). On the criterion that a given system of deviations from
   the probable... *Philosophical Magazine, 50*(302), 157–175.
 - Agresti, A. (2013). *Categorical Data Analysis* (3rd ed.). Wiley.
+
+The goodness of fit test uses R's own implementation.
+
+- R Core Team (2026). *A Language and Environment for Statistical Computing*
+  (Version 4.6) [Computer software].

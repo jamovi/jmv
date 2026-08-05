@@ -175,3 +175,12 @@ response as exploratory.
   *Journal of Statistical Software, 48*(2), 1–36.
 - Brown, T. A. (2015). *Confirmatory Factor Analysis for Applied Research*
   (2nd ed.). Guilford Press.
+
+The model is fitted with lavaan, and the path diagram drawn with semPlot.
+
+- Rosseel, Y., Jorgensen, T. D., De Wilde, L., Oberski, D., Byrnes,  J.,
+  Vanbrabant, L., Savalei, V., Merkle, E., Hallquist, M., Rhemtulla, M.,
+  Katsikatsou, M., Barendse, M., Rockwood,  N., Scharf, F., Du,  H., Jamil,
+  H., Classe,  F. (2025). *lavaan: Latent Variable Analysis* [R package].
+- Epskamp, S. (2026). *semPlot: Path Diagrams and Visual Analysis of Various
+  SEM Packages' Output* [R package].

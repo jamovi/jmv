@@ -178,3 +178,8 @@ width will stand apart.
   analysis. *Psychometrika, 30*(2), 179–185.
 - Kaiser, H. F. (1974). An index of factorial simplicity. *Psychometrika,
   39*(1), 31–36.
+
+Components, the KMO measure and Bartlett's test are computed with psych.
+
+- Revelle, W. (2026). *psych: Procedures for Psychological, Psychometric, and
+  Personality Research* [R package].

@@ -43,7 +43,7 @@ Most are self-explanatory, but a few are worth a note:
 
 | Statistic | Note |
 |---|---|
-| Mode | If several values tie, only the lowest is reported. |
+| Mode | If several values tie, only the first is reported — a footnote appears when this happens. |
 | Std. deviation, Variance | Computed with the sample (n − 1) denominator. |
 | Skewness | 0 means symmetric; positive means a long right tail. |
 | Kurtosis | Excess kurtosis — 0 means normal-like, positive means heavy tails. |
@@ -102,3 +102,17 @@ Put `LDLF` and `LDHF` into **Variables** and `Gender` into **Split by**.
 Tick **Histogram** to see the shape of each distribution, and **Box plot** with
 **Data** to compare the two genders. Under Statistics, add **Skewness** to
 quantify any asymmetry you see in the histograms.
+
+## References
+
+Weighted statistics are computed with matrixStats and Hmisc; the plots are
+drawn with ggplot2 and ggridges.
+
+- Bengtsson, H. (2025). *matrixStats: Functions that Apply to Rows and Columns
+  of Matrices* [R package].
+- Harrell, F. E., Jr. (2026). *Hmisc: Harrell Miscellaneous* [R package].
+- Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K., Wilke,
+  C., Woo, K., Yutani, H., Dunnington, D., van den Brand, T., & Posit, PBC
+  (2026). *ggplot2: Create Elegant Data Visualisations Using the Grammar of
+  Graphics* [R package].
+- Wilke, C. (2025). *ggridges: Ridgeline Plots in ggplot2* [R package].

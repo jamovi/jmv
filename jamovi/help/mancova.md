@@ -130,3 +130,8 @@ species most sharply.
   *The Annals of Mathematical Statistics, 26*(1), 117–121.
 - Olson, C. L. (1976). On choosing a test statistic in multivariate analysis of
   variance. *Psychological Bulletin, 83*(4), 579–586.
+
+The multivariate Shapiro-Wilk test is computed with mvnormtest.
+
+- Jarek, S. (2024). *mvnormtest: Normality Test for Multivariate Variables* [R
+  package].

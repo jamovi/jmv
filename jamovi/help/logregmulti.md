@@ -138,3 +138,13 @@ coefficients to see which regions differ and how.
 - Hosmer, D. W., Lemeshow, S., & Sturdivant, R. X. (2013). *Applied Logistic
   Regression* (3rd ed.). Wiley.
 - Agresti, A. (2013). *Categorical Data Analysis* (3rd ed.). Wiley.
+
+The model is fitted with nnet, likelihood ratio tests computed with car, and
+estimated marginal means with emmeans.
+
+- Ripley, B., Venables, W. (2025). *nnet: Feed-Forward Neural Networks and
+  Multinomial Log-Linear Models* [R package].
+- Fox, J., Weisberg, S., & Price, B. (2026). *car: Companion to Applied
+  Regression* [R package].
+- Lenth, R., & Piaskowski, J. (2026). *emmeans: Estimated Marginal Means, aka
+  Least-Squares Means* [R package].

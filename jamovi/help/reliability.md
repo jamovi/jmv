@@ -126,3 +126,8 @@ since everything else will be misleading until you do.
 - McDonald, R. P. (1999). *Test Theory: A Unified Treatment*. Erlbaum.
 - Revelle, W. (2025). *psych: Procedures for Psychological, Psychometric, and
   Personality Research* [R package].
+
+Cronbach's alpha and McDonald's omega are computed with psych.
+
+- Revelle, W. (2026). *psych: Procedures for Psychological, Psychometric, and
+  Personality Research* [R package].

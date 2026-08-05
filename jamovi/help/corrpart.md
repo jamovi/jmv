@@ -120,3 +120,6 @@ control variable.
 - Cohen, J., Cohen, P., West, S. G., & Aiken, L. S. (2003). *Applied Multiple
   Regression/Correlation Analysis for the Behavioral Sciences* (3rd ed.).
   Erlbaum.
+
+The partial and semipartial correlations are computed within jmv itself, not
+by an external package.

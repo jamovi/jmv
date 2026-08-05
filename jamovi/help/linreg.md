@@ -216,3 +216,11 @@ collinearity is a live concern here rather than a formality.
   Erlbaum.
 - Fox, J. (2015). *Applied Regression Analysis and Generalized Linear Models*
   (3rd ed.). Sage.
+
+Sums of squares, collinearity statistics and the Durbin-Watson test are
+computed with car; estimated marginal means with emmeans.
+
+- Fox, J., Weisberg, S., & Price, B. (2026). *car: Companion to Applied
+  Regression* [R package].
+- Lenth, R., & Piaskowski, J. (2026). *emmeans: Estimated Marginal Means, aka
+  Least-Squares Means* [R package].

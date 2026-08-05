@@ -48,7 +48,9 @@ alongside the p-value.
 **Rows** and **Columns** take the two categorical variables. If your data are
 already summarised — one row per cell with a frequency — put the frequency
 variable into **Counts (optional)**; otherwise leave it empty and jamovi counts
-the rows itself.
+the rows itself. Supplying a counts variable adds a notice above the results
+saying the data are weighted by it, which is confirmation rather than a
+problem.
 
 **Layers** splits the table by further variables, producing a separate
 contingency table per combination. This is how to check whether an association
@@ -177,3 +179,11 @@ residuals (adjusted Pearson)** to see which cells are responsible.
 - Pearson, K. (1900). On the criterion that a given system of deviations from
   the probable... *Philosophical Magazine, 50*(302), 157–175.
 - Agresti, A. (2013). *Categorical Data Analysis* (3rd ed.). Wiley.
+
+Nominal effect sizes and odds ratios are computed with vcd, and gamma with
+vcdExtra.
+
+- Meyer, D., Zeileis, A., Hornik, K., Gerber, F., & Friendly, M. (2024). *vcd:
+  Visualizing Categorical Data* [R package].
+- Friendly, M., Turner, H., Zeileis, A., Murdoch, D., & Firth, D. (2026).
+  *vcdExtra: 'vcd' Extensions and Additions* [R package].

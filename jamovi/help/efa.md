@@ -154,3 +154,8 @@ the solution hard to name.
   *Psychological Methods, 4*(3), 272–299.
 - Horn, J. L. (1965). A rationale and test for the number of factors in factor
   analysis. *Psychometrika, 30*(2), 179–185.
+
+Factors, the KMO measure and Bartlett's test are computed with psych.
+
+- Revelle, W. (2026). *psych: Procedures for Psychological, Psychometric, and
+  Personality Research* [R package].

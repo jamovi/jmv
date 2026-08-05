@@ -176,3 +176,14 @@ the log odds, are what you would report. Then tick **Classification table** and
   Regression* (3rd ed.). Wiley.
 - Tjur, T. (2009). Coefficients of determination in logistic regression models.
   *The American Statistician, 63*(4), 366–372.
+
+Likelihood ratio tests and collinearity statistics are computed with car, ROC
+analysis with ROCR, and estimated marginal means with emmeans.
+
+- Fox, J., Weisberg, S., & Price, B. (2026). *car: Companion to Applied
+  Regression* [R package].
+- Sing, T., Sander, O., Beerenwinkel, N., Lengauer, T., Unterthiner, T., &
+  Ernst, F. G. M. (2026). *ROCR: Visualizing the Performance of Scoring
+  Classifiers* [R package].
+- Lenth, R., & Piaskowski, J. (2026). *emmeans: Estimated Marginal Means, aka
+  Least-Squares Means* [R package].

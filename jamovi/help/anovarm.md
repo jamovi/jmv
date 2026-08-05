@@ -209,3 +209,10 @@ the corrections are unnecessary. With three or more levels you would tick
   204–209.
 - Greenhouse, S. W., & Geisser, S. (1959). On methods in the analysis of
   profile data. *Psychometrika, 24*(2), 95–112.
+
+The model is fitted with afex, which also supplies generalised eta squared;
+estimated marginal means come from emmeans.
+
+- Singmann, H. (2025). *afex: Analysis of Factorial Experiments* [R package].
+- Lenth, R., & Piaskowski, J. (2026). *emmeans: Estimated Marginal Means, aka
+  Least-Squares Means* [R package].

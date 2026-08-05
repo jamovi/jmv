@@ -103,3 +103,8 @@ directions of change are balanced. If only a handful of people changed, tick
 - McNemar, Q. (1947). Note on the sampling error of the difference between
   correlated proportions or percentages. *Psychometrika, 12*(2), 153–157.
 - Agresti, A. (2013). *Categorical Data Analysis* (3rd ed.). Wiley.
+
+The exact test is computed with exact2x2.
+
+- Fay, M. P., Hunsberger, S. A., Nason, M., Gabriel, E., & Lumbard, K. (2025).
+  *exact2x2: Exact Tests and Confidence Intervals for 2x2 Tables* [R package].

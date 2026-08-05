@@ -120,3 +120,8 @@ Measures ANOVA**.
   implicit in the analysis of variance. *Journal of the American Statistical
   Association, 32*(200), 675–701.
 - Conover, W. J. (1999). *Practical Nonparametric Statistics* (3rd ed.). Wiley.
+
+The Friedman test uses R's own implementation.
+
+- R Core Team (2026). *A Language and Environment for Statistical Computing*
+  (Version 4.6) [Computer software].

@@ -193,3 +193,11 @@ this analysis is about.
   Oliver and Boyd.
 - Miller, G. A., & Chapman, J. P. (2001). Misunderstanding analysis of
   covariance. *Journal of Abnormal Psychology, 110*(1), 40–48.
+
+Sums of squares are computed with car, and estimated marginal means and effect
+sizes with emmeans.
+
+- Fox, J., Weisberg, S., & Price, B. (2026). *car: Companion to Applied
+  Regression* [R package].
+- Lenth, R., & Piaskowski, J. (2026). *emmeans: Estimated Marginal Means, aka
+  Least-Squares Means* [R package].

@@ -202,3 +202,11 @@ differently at different doses, which is what the interaction term is testing.
   Boyd.
 - Tukey, J. W. (1949). Comparing individual means in the analysis of variance.
   *Biometrics, 5*(2), 99–114.
+
+The model is fitted through the ANCOVA analysis, using car for the sums of
+squares and emmeans for the estimated marginal means.
+
+- Fox, J., Weisberg, S., & Price, B. (2026). *car: Companion to Applied
+  Regression* [R package].
+- Lenth, R., & Piaskowski, J. (2026). *emmeans: Estimated Marginal Means, aka
+  Least-Squares Means* [R package].

@@ -142,3 +142,11 @@ its degrees of freedom before trusting any of it.
 - Agresti, A. (2013). *Categorical Data Analysis* (3rd ed.). Wiley.
 - Bishop, Y. M. M., Fienberg, S. E., & Holland, P. W. (1975). *Discrete
   Multivariate Analysis: Theory and Practice*. MIT Press.
+
+Likelihood ratio tests are computed with car, and estimated marginal means
+with emmeans.
+
+- Fox, J., Weisberg, S., & Price, B. (2026). *car: Companion to Applied
+  Regression* [R package].
+- Lenth, R., & Piaskowski, J. (2026). *emmeans: Estimated Marginal Means, aka
+  Least-Squares Means* [R package].

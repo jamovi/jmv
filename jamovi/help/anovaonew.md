@@ -153,3 +153,8 @@ Test** to Games-Howell to find out which species actually differ from which.
 - Games, P. A., & Howell, J. F. (1976). Pairwise multiple comparison procedures
   with unequal n's and/or variances. *Journal of Educational Statistics, 1*(2),
   113–125.
+
+Levene's test is computed with car.
+
+- Fox, J., Weisberg, S., & Price, B. (2026). *car: Companion to Applied
+  Regression* [R package].

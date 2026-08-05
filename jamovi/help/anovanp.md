@@ -121,3 +121,9 @@ the test, not the group medians.
   583–621.
 - Dunn, O. J. (1964). Multiple comparisons using rank sums. *Technometrics,
   6*(3), 241–252.
+
+The Kruskal-Wallis test uses R's own implementation; the pairwise procedures
+are implemented in jmv.
+
+- R Core Team (2026). *A Language and Environment for Statistical Computing*
+  (Version 4.6) [Computer software].
