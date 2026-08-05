@@ -83,9 +83,9 @@ on any variable in the analysis, so every pair uses the same cases.
 - **Effect size** — Cohen's d, computed from the standard deviation of the
   **differences**:
 
-      d = M_d / s_d
+  $$d = \frac{M_d}{s_d}$$
 
-  This is the variant often written d_z. Other software — G*Power among them —
+  This is the variant often written $d_z$. Other software — G*Power among them —
   frequently reports a version based on the standard deviations of the two raw
   measurements instead. Those values are *smaller* whenever the two measures
   correlate positively, which in a paired design they nearly always do, so

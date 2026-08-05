@@ -74,11 +74,11 @@ no predictors.
 
 The same three measures as ANOVA:
 
-    η²         = SS_effect / SS_total
-
-    partial η² = SS_effect / (SS_effect + SS_error)
-
-    ω²         = (SS_effect − df_effect × MS_error) / (SS_total + MS_error)
+$$\begin{aligned}
+\eta^2 &= \frac{SS_{effect}}{SS_{total}} \\[4pt]
+\eta_p^2 &= \frac{SS_{effect}}{SS_{effect} + SS_{error}} \\[4pt]
+\omega^2 &= \frac{SS_{effect} - df_{effect} \cdot MS_{error}}{SS_{total} + MS_{error}}
+\end{aligned}$$
 
 Partial η² is always the largest and the most commonly reported — say which you
 used. Note that in ANCOVA these are computed on the model *including* the

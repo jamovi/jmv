@@ -80,11 +80,17 @@ on *any* variable in the analysis, so every test uses the same cases.
   denominator differs between the two tests.** For Student's it is the pooled
   standard deviation, weighted by group size:
 
-      d = (M₁ − M₂) / √s²ₚ ,  s²ₚ = [(n₁−1)s₁² + (n₂−1)s₂²] / (n₁ + n₂ − 2)
+  $$\begin{aligned}
+  d &= \frac{M_1 - M_2}{s_p} \\[4pt]
+  s_p^2 &= \frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}
+  \end{aligned}$$
 
   For Welch's it is the unweighted average of the two variances:
 
-      d = (M₁ − M₂) / √s²ₐ ,  s²ₐ = (s₁² + s₂²) / 2
+  $$\begin{aligned}
+  d &= \frac{M_1 - M_2}{s_a} \\[4pt]
+  s_a^2 &= \frac{s_1^2 + s_2^2}{2}
+  \end{aligned}$$
 
   The two agree when the groups are the same size and spread, and diverge
   otherwise — so a Student's d and a Welch's d in the same table are not
@@ -92,7 +98,7 @@ on *any* variable in the analysis, so every test uses the same cases.
 
   For Mann-Whitney U the effect size is the rank biserial correlation:
 
-      r_rb = 1 − 2U / (n₁n₂)
+  $$r_{rb} = 1 - \frac{2U}{n_1 n_2}$$
 - **Descriptives** — group-wise N, mean, median, standard deviation and
   standard error.
 - **Descriptives plots** — the group means with confidence intervals.

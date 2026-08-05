@@ -88,9 +88,9 @@ variable in the analysis, so every test uses the same cases.
 - **Effect size** — Cohen's d, the distance from the test value in standard
   deviations:
 
-      d = (M − μ₀) / s
+  $$d = \frac{M - \mu_0}{s}$$
 
-  where μ₀ is the test value. For Wilcoxon the effect size is the rank biserial
+  where $\mu_0$ is the test value. For Wilcoxon the effect size is the rank biserial
   correlation, computed after observations equal to the test value have been
   dropped.
 - **Descriptives** — N, mean, median, standard deviation and standard error.
