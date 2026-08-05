@@ -67,19 +67,28 @@ Continuous variables to adjust for.
 
 ### Effect Size
 
-The same three measures as factorial ANOVA:
+**Four** measures here, one more than factorial ANOVA offers:
 
 $$\begin{aligned}
 \eta^2 &= \frac{SS_{effect}}{SS_{total}} \\[4pt]
-\eta_p^2 &= \frac{SS_{effect}}{SS_{effect} + SS_{error}} \\[4pt]
-\omega^2 &= \frac{SS_{effect} - df_{effect} \cdot MS_{error}}{SS_{total} + MS_{error}}
+\eta_p^2 &= \frac{SS_{effect}}{SS_{effect} + SS_{error}}
 \end{aligned}$$
 
-Partial η² is the most commonly reported for repeated measures and is the
-largest of the three. It matters more here than elsewhere which you quote:
-because the design removes between-subject variance from the error term, the
-error in the partial η² denominator is small, and the resulting values are
-substantially higher than the η² for the same effect.
+**Generalised η²** is the extra one, and it exists for this design in
+particular. Partial η² divides by an error term from which between-subject
+variance has already been removed, which inflates it and makes it
+incomparable with the partial η² from a between-subjects study of the same
+effect. Generalised η² puts the measured sources of variance back into the
+denominator so that values *can* be compared across designs, which is what
+makes it the one to report when your effect will sit alongside published
+between-subjects work. It is taken from the `afex` package rather than computed
+by jamovi.
+
+**ω²** is also available, less biased than η² in small samples.
+
+Partial η² remains the most commonly reported, and is the largest. Say which
+you used — with repeated measures the gap between η² and partial η² is wider
+than elsewhere, for exactly the reason above.
 
 **Dependent Variable Label** sets the name used for the outcome in the output.
 It is cosmetic, but worth setting since the cells are named after conditions

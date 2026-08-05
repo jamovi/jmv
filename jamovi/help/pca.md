@@ -67,17 +67,22 @@ easier to interpret, without changing how much variance they explain in total.
 
 | Rotation | Type |
 |---|---|
-| Varimax | Orthogonal — components stay uncorrelated |
+| Varimax | Orthogonal (the default) — components stay uncorrelated |
 | Quartimax | Orthogonal |
 | Promax | Oblique — components may correlate |
-| Oblimin | Oblique (the default) |
+| Oblimin | Oblique |
 | Simplimax | Oblique |
 | None | No rotation |
 
-Oblique rotations allow the components to correlate, which is usually more
+The default is **Varimax**, which forces the components to be uncorrelated.
+Note that Exploratory Factor Analysis defaults to Oblimin instead — so the same
+data run through the two analyses will differ partly because of the rotation,
+not only because of the method.
+
+Oblique rotations allow the components to correlate, which is often more
 realistic. If they turn out nearly uncorrelated, an oblique rotation gives
-almost the same answer as an orthogonal one — so the oblique default costs
-little.
+almost the same answer as an orthogonal one, so switching to one costs little
+and assumes less.
 
 ### Factor Loadings
 

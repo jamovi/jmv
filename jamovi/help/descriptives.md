@@ -74,8 +74,8 @@ with the **Mean** and with **Label outliers**.
 ### Descriptives
 
 One column per variable (or per group, when splitting) and one row per
-requested statistic. **N** and **Missing** are always shown, so you can see how
-much data each summary rests on.
+requested statistic. **N** and **Missing** are on by default, so unless you
+untick them you can always see how much data each summary rests on.
 
 ### Frequencies
 

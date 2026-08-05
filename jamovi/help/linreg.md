@@ -112,9 +112,16 @@ predictors.
   levels, where the individual coefficients each test only one contrast.
 - **Estimate** — the coefficients themselves, optionally with a **Confidence
   interval**.
-- **Standardized Estimate** — coefficients in standard deviation units, so
-  predictors measured on different scales can be compared, optionally with a
-  confidence interval. Only continuous predictors are standardized.
+- **Standardized Estimate** — coefficients from a model refitted on
+  standardized data, so predictors measured on different scales can be
+  compared, optionally with a confidence interval.
+
+  Only continuous columns are standardized; factors are left as they are, and
+  the outcome is standardized along with the predictors. So a continuous
+  predictor's standardized estimate is the familiar β — the change in outcome
+  SDs per predictor SD — while a factor's is the group difference expressed in
+  outcome SDs only. The two are not on the same footing, despite sharing a
+  column. The intercept is left blank.
 
 ### Assumption Checks
 
