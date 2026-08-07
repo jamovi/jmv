@@ -66,7 +66,10 @@ holds within subgroups.
 | χ² continuity correction | Yates's correction, for 2×2 tables. Conservative, and increasingly regarded as unnecessary. |
 | Likelihood ratio | An alternative to χ² that usually agrees closely. |
 | Fisher's exact test | Exact rather than approximate; the right choice when expected counts are small. |
-| z test for difference in 2 proportions | Compares two proportions directly, for 2×2 tables. |
+
+**z test for difference in 2 proportions** sits slightly apart from the four
+above. Rather than testing whether the two variables are associated, it
+compares two proportions directly, and is available for 2×2 tables only.
 
 **Comparative Measures (2×2 only)** — available only for 2×2 tables:
 **Difference in proportions**, **Log odds ratio**, **Odds ratio** and
