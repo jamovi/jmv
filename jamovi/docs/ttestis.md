@@ -17,7 +17,8 @@ means are.
 Use this analysis when each row of your data is a different person (or unit),
 and a single grouping variable splits them into exactly two groups.
 
-- If the same people were measured twice, use **Paired Samples T-Test** instead.
+- If the same people were measured twice, use **Paired Samples T-Test**
+  instead.
 - If the grouping variable has three or more levels, use **One-Way ANOVA**.
 - If you want to compare one group's mean against a fixed value, use
   **One Sample T-Test**.
@@ -76,8 +77,8 @@ on *any* variable in the analysis, so every test uses the same cases.
 
 - **Mean difference** — the difference between the two group means, optionally
   with a **Confidence interval**.
-- **Effect size** — Cohen's d, optionally with a confidence interval. **The
-  denominator differs between the two tests.** For Student's it is the pooled
+- **Effect size** — Cohen's d, optionally with a confidence interval. The
+  denominator **differs between the two tests**. For Student's it is the pooled
   standard deviation, weighted by group size:
 
   $$\begin{aligned}

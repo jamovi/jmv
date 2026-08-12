@@ -167,10 +167,10 @@ Put `Sepal.Length`, `Sepal.Width`, `Petal.Length` and `Petal.Width` into
 **Variables**.
 
 Leave the number of components on **parallel analysis**, and tick **Scree
-plot** and **Initial eigenvalues** to see the decision it made. Tick **KMO** and
-**Bartlett's test** under Assumption Checks. With only four variables this is a
-small example — the petal measurements will load together strongly, and sepal
-width will stand apart.
+plot** and **Initial eigenvalues** to see the decision it made. Tick **KMO**
+and **Bartlett's test** under Assumption Checks. With only four variables this
+is a small example — the petal measurements will load together strongly, and
+sepal width will stand apart.
 
 ## References
 

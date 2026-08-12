@@ -102,8 +102,9 @@ are slightly less generous than the raw correlation's.
 
 ## Example
 
-Using the `bugs` dataset, we ask whether ratings of low-disgust and high-disgust
-bugs are related beyond a general tendency to rate everything highly.
+Using the `bugs` dataset, we ask whether ratings of low-disgust and
+high-disgust bugs are related beyond a general tendency to rate everything
+highly.
 
 Put `LDLF` and `HDLF` into **Variables**, and `LDHF` into **Control
 Variables**.

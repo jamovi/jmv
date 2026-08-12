@@ -25,7 +25,8 @@ sense to treat them as facets of one thing.
 
 The outcomes should be conceptually related. Bundling unrelated measures into a
 MANCOVA to avoid multiple comparisons produces a test whose significance is
-hard to interpret, because there is no coherent thing the factors are affecting.
+hard to interpret, because there is no coherent thing the factors are
+affecting.
 
 ## Assumptions
 

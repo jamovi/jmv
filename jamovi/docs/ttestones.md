@@ -16,7 +16,8 @@ Use this analysis when you have one variable and a meaningful number to compare
 it against — a scale midpoint, a published norm, a chance level, or zero for a
 set of difference scores.
 
-- If you are comparing two groups of people, use **Independent Samples T-Test**.
+- If you are comparing two groups of people, use **Independent Samples
+  T-Test**.
 - If you are comparing two measurements from the same people, use **Paired
   Samples T-Test**.
 - If you have no particular value in mind and just want to describe the
@@ -90,9 +91,9 @@ variable in the analysis, so every test uses the same cases.
 
   $$d = \frac{M - \mu_0}{s}$$
 
-  where $\mu_0$ is the test value. For Wilcoxon the effect size is the rank biserial
-  correlation, computed after observations equal to the test value have been
-  dropped.
+  where $\mu_0$ is the test value. For Wilcoxon the effect size is the rank
+  biserial correlation, computed after observations equal to the test value
+  have been dropped.
 - **Descriptives** — N, mean, median, standard deviation and standard error.
 - **Descriptives plots** — the mean with its confidence interval, drawn against
   the test value.

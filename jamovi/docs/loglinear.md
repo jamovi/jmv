@@ -21,8 +21,9 @@ test particular interactions rather than overall association.
   Tables** is far more direct and gives effect sizes and residuals.
 - With one categorical variable, use **Proportion Test (N Outcomes)**.
 - If one variable is naturally an outcome to be predicted from the others, a
-  logistic regression usually answers the question more directly — **Binomial**,
-  **Multinomial** or **Ordinal Logistic Regression** depending on its levels.
+  logistic regression usually answers the question more directly —
+  **Binomial**, **Multinomial** or **Ordinal Logistic Regression** depending on
+  its levels.
 
 The distinguishing feature of this analysis is that no variable is the outcome.
 The count is. All the categorical variables enter as predictors on equal

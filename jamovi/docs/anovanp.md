@@ -117,8 +117,8 @@ the test, not the group medians.
 ## References
 
 - Kruskal, W. H., & Wallis, W. A. (1952). Use of ranks in one-criterion
-  variance analysis. *Journal of the American Statistical Association, 47*(260),
-  583–621.
+  variance analysis. *Journal of the American Statistical Association,
+  47*(260), 583–621.
 - Dunn, O. J. (1964). Multiple comparisons using rank sums. *Technometrics,
   6*(3), 241–252.
 

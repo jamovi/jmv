@@ -383,8 +383,8 @@ options:
       default: true
       description:
           ui: >
-            weigh each cell equally. (Cells are weighed according to the cell
-            frequency by default.)
+            weigh each cell equally (the default); when unchecked, cells are
+            weighed according to their frequency.
           R: >
             `TRUE` (default) or `FALSE`, weigh each cell equally or weigh them according to
             the cell frequency

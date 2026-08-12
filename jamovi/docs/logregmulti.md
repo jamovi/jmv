@@ -62,8 +62,8 @@ interest in a later one. Interaction terms are built here.
 
 Sets the baseline level for the outcome and for each factor. The outcome's
 reference level is the category everything else is compared against, so it
-shapes the entire output — choose the one that makes the comparisons meaningful,
-usually the most common category or a natural "none of the above".
+shapes the entire output — choose the one that makes the comparisons
+meaningful, usually the most common category or a natural "none of the above".
 
 ### Model Fit
 
