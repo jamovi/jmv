@@ -35,6 +35,10 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 
+# Quarto
+.quarto/
+*.quarto_ipynb
+
 # R Environment Variables
 .Renviron
 
@@ -55,6 +59,9 @@ inst/i18n
 .Rprofile
 renv/
 renv.lock
+
+# brainstorming specs
+docs/superpowers/
 
 # other files / folders
 temp/
