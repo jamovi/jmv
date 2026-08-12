@@ -8,7 +8,9 @@ more predictors, which may be continuous, categorical, or both.
 Rather than predicting the outcome directly, the model predicts the
 **probability** of one of the two levels, and does so on a scale that keeps the
 prediction between 0 and 1. The cost of that is interpretation: coefficients
-come out as log odds, which is why the odds ratio option exists.
+come out as log odds, which is why the odds ratio option exists. Underneath it
+is the [same linear model](topics/linear-models.md) as ordinary regression,
+predicting a transformation of the outcome rather than the outcome itself.
 
 ## When to use it
 
@@ -123,6 +125,10 @@ the analysis produces.
   the log odds.
 - **Cook's distance** — identifies cases that disproportionately influence the
   fit.
+
+Logistic regression drops the normality and constant-variance assumptions, so
+the checks here differ from the linear model's; see
+[checking assumptions](topics/assumption-checks.md) for the ones that remain.
 
 ### Save
 

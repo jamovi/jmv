@@ -85,6 +85,9 @@ disagreement rather than picking the one that suits.
 - **Q-Q plot** — a multivariate Q-Q plot; points close to the diagonal indicate
   multivariate normality.
 
+See [checking assumptions](topics/assumption-checks.md) for why these tests
+mislead in very small and very large samples, and what to do when one fails.
+
 ## Results
 
 ### Multivariate Tests

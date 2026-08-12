@@ -25,8 +25,9 @@ Use this when one variable is the outcome and the rest are predictors.
 - If all your predictors are categorical, **ANOVA** fits the same model and
   presents it in the form usually expected for experiments.
 
-ANOVA and regression are the same underlying model. Choose on the basis of
-which output your readers expect, not on which is correct.
+ANOVA and regression are [the same underlying
+model](topics/linear-models.md). Choose on the basis of which output your
+readers expect, not on which is correct.
 
 ## Assumptions
 
@@ -136,6 +137,9 @@ predictors.
 - **Collinearity statistics** — VIF and tolerance per predictor. A common rule
   of thumb treats VIF above 5 (or 10) as a concern, though there is no sharp
   threshold.
+
+See [checking assumptions](topics/assumption-checks.md) for why these tests
+mislead in very small and very large samples, and what to do when one fails.
 
 **Data Summary** flags unusual cases: **Cook's distance** measures how much the
 model would change if a case were dropped, and **Mahalanobis distance**

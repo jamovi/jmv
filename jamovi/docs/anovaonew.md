@@ -86,6 +86,9 @@ cases.
 - **Homogeneity test** — Levene's test for equal variances. A significant
   result points you to Welch's.
 
+See [checking assumptions](topics/assumption-checks.md) for why these tests
+mislead in very small and very large samples, and what to do when one fails.
+
 ### Post-Hoc Tests
 
 Having found that the groups are not all equal, post-hoc tests compare them

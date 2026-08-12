@@ -112,6 +112,9 @@ on *any* variable in the analysis, so every test uses the same cases.
 - **Q-Q plot** — plots the residual quantiles against a normal distribution.
   Points close to the diagonal indicate normality.
 
+See [checking assumptions](topics/assumption-checks.md) for why these tests
+mislead in very small and very large samples, and what to do when one fails.
+
 ## Results
 
 ### Independent Samples T-Test

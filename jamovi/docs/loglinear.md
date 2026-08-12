@@ -7,8 +7,9 @@ predicted from the categorical variables that define it. It is a Poisson
 regression on cell frequencies.
 
 Where a χ² test asks whether two variables are associated, this asks how the
-counts are generated — and because it is a regression, it extends to any number
-of variables and to specific interactions between them. Association between two
+counts are generated — and because it is
+[a regression](topics/linear-models.md), it extends to any number of variables
+and to specific interactions between them. Association between two
 variables appears here as an interaction term.
 
 ## When to use it

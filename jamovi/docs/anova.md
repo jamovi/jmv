@@ -22,7 +22,7 @@ categorical.
 - If you want to adjust for a continuous variable, use **ANCOVA**.
 - If you have several outcome variables to test together, use **MANCOVA**.
 - If your predictors are continuous, use **Linear Regression** — which is the
-  same underlying model, presented differently.
+  [same underlying model](topics/linear-models.md), presented differently.
 
 ## Assumptions
 
@@ -89,6 +89,9 @@ all three types agree, so this only matters when cells are unequal.
 - **Homogeneity test** — Levene's test for equal variances across cells.
 - **Normality test** — the Shapiro-Wilk test on the residuals.
 - **Q-Q Plot** — residual quantiles against a normal distribution.
+
+See [checking assumptions](topics/assumption-checks.md) for why these tests
+mislead in very small and very large samples, and what to do when one fails.
 
 ### Contrasts
 

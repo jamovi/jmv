@@ -4,7 +4,8 @@
 
 Tests how a continuous outcome depends on one or more categorical factors while
 adjusting for one or more continuous covariates. It is ANOVA with covariates
-added.
+added — the [same linear model](topics/linear-models.md) as the rest of that
+family, taking both kinds of predictor at once.
 
 The covariate does two things. It removes variance the factors were never going
 to explain, which makes the tests of the factors more sensitive. And it reports
@@ -103,6 +104,9 @@ remove interactions that theory says do not belong.
 
 Note that none of these test homogeneity of regression slopes; that is done
 through Model Terms as described above.
+
+See [checking assumptions](topics/assumption-checks.md) for why these tests
+mislead in very small and very large samples, and what to do when one fails.
 
 ### Contrasts
 

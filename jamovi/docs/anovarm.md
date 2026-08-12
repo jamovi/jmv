@@ -116,7 +116,8 @@ variance is attributed in unbalanced designs; Type 3 is the default.
 Mauchly's test has low power in small samples and excessive power in large
 ones, so many analysts skip it and simply apply a correction by default. If you
 do report a correction, the fractional degrees of freedom in the output are the
-corrected ones.
+corrected ones. That pattern is not peculiar to Mauchly's — see
+[checking assumptions](topics/assumption-checks.md).
 
 ### Contrasts
 
