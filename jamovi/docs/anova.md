@@ -122,7 +122,11 @@ standard choice for all-pairs comparisons; **Bonferroni** is conservative;
 correction** should be reported as such.
 
 **Effect size** adds Cohen's d for each comparison, optionally with a
-**Confidence interval**.
+**Confidence interval**. It is computed from the model's residual standard
+deviation, so it will not match a t-test's d on the same pair.
+
+See [marginal means and post hoc tests](topics/marginal-means-and-post-hoc.md)
+for what to do when the omnibus test and the pairwise comparisons disagree.
 
 Contrasts and post-hoc tests answer different questions. Use contrasts when you
 knew what you wanted to compare in advance, post-hoc tests when you are looking
@@ -131,8 +135,9 @@ across all pairs.
 ### Estimated Marginal Means
 
 Model-predicted means for the levels of a term, averaging over the other
-factors. In an unbalanced design these differ from the raw group means, and are
-generally the ones to report because they are not distorted by unequal cell
+factors. In an unbalanced design these
+[differ from the raw group means](topics/marginal-means-and-post-hoc.md), and
+are generally the ones to report because they are not distorted by unequal cell
 sizes.
 
 Each term you add gets its own set of output. **Marginal means plots** draw

@@ -64,6 +64,9 @@ Some concepts recur across many analyses and are documented once:
   regression are the same model with different output.
 - [Checking assumptions](topics/assumption-checks.md) — how to read a normality
   or equal-variance test, and what to do when one fails.
+- [Marginal means and post hoc tests](topics/marginal-means-and-post-hoc.md) —
+  what to do after a significant omnibus test, and why the marginal means do
+  not match the descriptives.
 
 ## Example datasets
 

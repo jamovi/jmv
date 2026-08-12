@@ -154,7 +154,9 @@ holding covariates at their means. Available as **Marginal means tables** and
 weights** option.
 
 This is how to make a model containing factors interpretable, and how to plot
-an interaction.
+an interaction. See
+[marginal means and post hoc tests](topics/marginal-means-and-post-hoc.md) for
+why these are not the raw group means.
 
 ### Save
 

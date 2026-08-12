@@ -129,7 +129,10 @@ is the natural hypothesis.
 ### Post Hoc Tests
 
 All-pairs comparisons with a correction for their number. **Tukey**,
-**Bonferroni**, **Holm** and **No correction** are available.
+**Scheffe**, **Bonferroni**, **Holm** and **No correction** are available. See
+[marginal means and post hoc tests](topics/marginal-means-and-post-hoc.md) for
+choosing between them, and for why these comparisons are made on the marginal
+means rather than the raw ones.
 
 ### Estimated Marginal Means
 

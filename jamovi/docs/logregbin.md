@@ -101,7 +101,9 @@ with the predictor, below 1 that they fall. Note that the null value is 1, not
 Model-predicted probabilities for the levels of a term, averaging over the
 other predictors, as **tables** or **plots**. These are on the probability
 scale rather than the log-odds scale, which makes them the most readable output
-the analysis produces.
+the analysis produces. They are model predictions rather than observed
+proportions; see
+[marginal means and post hoc tests](topics/marginal-means-and-post-hoc.md).
 
 ### Prediction
 

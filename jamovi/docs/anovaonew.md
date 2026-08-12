@@ -92,7 +92,9 @@ mislead in very small and very large samples, and what to do when one fails.
 ### Post-Hoc Tests
 
 Having found that the groups are not all equal, post-hoc tests compare them
-pair by pair, correcting for the number of comparisons made.
+pair by pair, correcting for the number of comparisons made. This analysis
+offers a different pair of methods from the rest of the ANOVA family; see
+[marginal means and post hoc tests](topics/marginal-means-and-post-hoc.md).
 
 - **Games-Howell (unequal variances)** — pairs with Welch's; does not assume
   equal variances.

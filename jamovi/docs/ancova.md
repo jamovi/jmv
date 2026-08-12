@@ -120,7 +120,8 @@ All-pairs comparisons with a **Correction**: Tukey (the default), Scheffe,
 Bonferroni, Holm, or none. **Effect size** adds Cohen's d per comparison, with
 an optional **Confidence interval**.
 
-In ANCOVA these comparisons are made on the adjusted means, not the raw group
+In ANCOVA these comparisons are made on the
+[adjusted means](topics/marginal-means-and-post-hoc.md), not the raw group
 means.
 
 ### Estimated Marginal Means
