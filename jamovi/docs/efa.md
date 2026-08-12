@@ -134,18 +134,24 @@ leaves systematic residuals.
 
 ## Example
 
-Using the `Big5` dataset, we ask how many dimensions underlie the personality
-items and which items belong to which.
+Using the `Big5` dataset, we ask whether the five personality dimensions
+themselves share structure — whether they reduce to a smaller number of
+higher-order factors.
 
-Put the personality items into **Variables**.
+Put all five dimensions into **Variables**.
 
 Leave the number of factors on **parallel analysis** and the rotation on
-**Oblimin**, since personality dimensions are expected to correlate. Tick
-**Scree plot**, **Factor correlations** and, under Assumption Checks, **KMO**.
+**Oblimin**, since higher-order personality factors are expected to correlate.
+Tick **Scree plot**, **Factor correlations** and, under Assumption Checks,
+**KMO**.
 
 Read the loadings with **Hide loadings below** at 0.3, then look for variables
 that appear under no factor or under two — those are the ones that will make
 the solution hard to name.
+
+Note how thin the basis is: five variables is little to factor, and the KMO
+will say so. An EFA is normally run on individual items, where the same reading
+applies but the solution is far better determined.
 
 ## References
 

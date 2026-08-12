@@ -120,10 +120,12 @@ The inter-item correlation matrix, if requested.
 
 ## Example
 
-Using the `Big5` dataset, we check whether a set of items forms a consistent
-scale.
+Using the `bugs` dataset, we check whether the four insect ratings hang
+together as a single measure of hostility towards insects.
 
-Put the relevant items into **Items**.
+Put `LDLF`, `LDHF`, `HDLF` and `HDHF` into **Items**. Each is a rating of how
+much the person wanted to kill an insect, for insects crossing low and high
+disgustingness with low and high frighteningness.
 
 Tick **McDonald's ω** alongside the default α, and under Item Statistics tick
 **Item-rest correlation** and **Cronbach's α (if item is dropped)**. Any item

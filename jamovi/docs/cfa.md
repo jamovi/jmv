@@ -153,21 +153,26 @@ The model drawn with its estimates.
 
 ## Example
 
-Using the `Big5` dataset, we test whether the personality items conform to the
-five-factor structure they were written for.
+Using the `Big5` dataset, we test a claim made in advance of these data: that
+the five personality dimensions are themselves organised under two higher-order
+factors, plasticity and stability.
 
-Under **Factors**, create five factors and assign each item to the dimension it
-was designed to measure. This is the hypothesis, and it must be specified
-before looking at the data.
+Under **Factors**, create two factors. Assign `Extraversion` and `Openness` to
+the first, and `Neuroticism`, `Agreeableness` and `Conscientiousness` to the
+second. That the model comes from published theory rather than from these data
+is what makes the test confirmatory.
 
 Leave the default fit measures, and tick **Standardized estimate** under
-Estimates so loadings are comparable. Read the fit measures together with the
-χ² test — with a large sample expect χ² to be significant even when CFI, TLI
-and RMSEA are acceptable.
+Estimates so loadings are comparable. Expect `Neuroticism` to load negatively:
+the second factor is stability and neuroticism is its opposite pole, so a
+negative loading is the model behaving as specified rather than a fault.
+
+Read the fit measures together with the χ² test — with a large sample expect χ²
+to be significant even when CFI, TLI and RMSEA are acceptable.
 
 If fit is poor, tick **Residuals observed correlation matrix** to see which
-item pairs the model reproduces badly, and treat anything you change in
-response as exploratory.
+pairs of dimensions the model reproduces badly, and treat anything you change
+in response as exploratory.
 
 ## References
 
@@ -177,6 +182,9 @@ response as exploratory.
   *Journal of Statistical Software, 48*(2), 1–36.
 - Brown, T. A. (2015). *Confirmatory Factor Analysis for Applied Research*
   (2nd ed.). Guilford Press.
+- DeYoung, C. G. (2006). Higher-order factors of the Big Five in a
+  multi-informant sample. *Journal of Personality and Social Psychology,
+  91*(6), 1138–1151.
 
 The model is fitted with lavaan, and the path diagram drawn with semPlot.
 
