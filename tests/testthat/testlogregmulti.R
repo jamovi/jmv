@@ -330,4 +330,21 @@ testthat::test_that('Reference level defaults to first level for faulty referenc
     }
 })
 
+testthat::test_that("logRegMulti rejects data with no rows left after missing values", {
+    set.seed(1)
+    n <- 30
 
+    # GIVEN a covariate whose values are all missing, so no rows survive
+    data <- data.frame(dep=factor(sample(c("lo", "mid", "hi"), n, replace=TRUE)), cov=rep(NA_real_, n))
+
+    # WHEN running logRegMulti
+    # THEN the analysis is rejected saying the dataset has no rows left
+    testthat::expect_error(
+        jmv::logRegMulti(
+            data, dep="dep", covs="cov", blocks=list(list("cov")),
+            refLevels=list(list(var="dep", ref="lo"))
+        ),
+        regexp="contains 0 rows",
+        ignore.case=TRUE
+    )
+})

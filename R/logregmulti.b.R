@@ -162,6 +162,7 @@ logRegMultiClass <- R6::R6Class(
             }
 
             private$.errorCheck()
+            private$.dataCheck()
 
             private$.populateModelFitTable()
             private$.populateModelCompTable()
@@ -1019,6 +1020,12 @@ logRegMultiClass <- R6::R6Class(
                     code=''
                 )
             }
+        },
+        .dataCheck = function() {
+            # rows are only dropped once the data has been processed, so this
+            # is checked here rather than in .errorCheck()
+
+            rejectEmptyData(self, self$dataProcessed)
         },
         .cleanData = function() {
             dep <- self$options$dep

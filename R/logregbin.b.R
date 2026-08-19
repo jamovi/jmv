@@ -1366,6 +1366,8 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             # with missing values have been dropped, so this is checked on the
             # processed data rather than in .errorCheck()
 
+            rejectEmptyData(self, self$dataProcessed)
+
             dep <- self$options$dep
             factors <- self$options$factors
 

@@ -77,3 +77,18 @@ rejectSingleLevelFactors = function(self, data, factorNames) {
         }
     }
 }
+
+
+#' Reject the analysis if no rows are left after removing missing values
+#'
+#' @param self The analysis object (for translation)
+#' @param data The data the analysis is run on, after removing missing values
+#' @keywords internal
+rejectEmptyData = function(self, data) {
+    if (nrow(data) == 0) {
+        jmvcore::reject(
+            .("The dataset contains 0 rows (after removing rows with missing values)"),
+            code=exceptions$dataError
+        )
+    }
+}

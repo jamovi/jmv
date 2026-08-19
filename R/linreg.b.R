@@ -1477,6 +1477,8 @@ linRegClass <- R6::R6Class(
             # with missing values have been dropped, so this is checked on the
             # processed data rather than on the raw data
 
+            rejectEmptyData(self, self$dataProcessed)
+
             factors <- self$options$factors
             if (length(factors) == 0)
                 return()
