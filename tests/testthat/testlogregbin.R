@@ -438,3 +438,65 @@ testthat::test_that('Reference level defaults to first level for faulty referenc
     }
 })
 
+
+testthat::test_that("logRegBin rejects factors with fewer than two observed levels", {
+    set.seed(1)
+    n <- 40
+    dep <- factor(sample(c("no", "yes"), n, replace=TRUE))
+
+    # GIVEN a factor whose second level has no observations left
+    f <- factor(rep("a", n), levels=c("a", "b"))
+    data <- data.frame(dep=dep, f=f)
+
+    # WHEN running logRegBin with that factor as a predictor
+    # THEN the analysis is rejected naming the factor, rather than failing on contrasts
+    testthat::expect_error(
+        jmv::logRegBin(
+            data, dep="dep", factors="f", blocks=list(list("f")),
+            refLevels=list(list(var="dep", ref="no"), list(var="f", ref="a"))
+        ),
+        regexp="'f'.*fewer than two levels with observations",
+        ignore.case=TRUE
+    )
+})
+
+testthat::test_that("logRegBin rejects a dependent variable with fewer than two observed levels", {
+    set.seed(1)
+    n <- 40
+
+    # GIVEN a dependent variable whose second level has no observations
+    dep <- factor(rep("no", n), levels=c("no", "yes"))
+    f <- factor(sample(c("a", "b"), n, replace=TRUE))
+    data <- data.frame(dep=dep, f=f)
+
+    # WHEN running logRegBin
+    # THEN the analysis is rejected naming the dependent variable
+    testthat::expect_error(
+        jmv::logRegBin(
+            data, dep="dep", factors="f", blocks=list(list("f")),
+            refLevels=list(list(var="dep", ref="no"), list(var="f", ref="a"))
+        ),
+        regexp="'dep'.*fewer than two levels with observations",
+        ignore.case=TRUE
+    )
+})
+
+testthat::test_that("logRegBin still runs when a factor has unused levels but two observed", {
+    set.seed(1)
+    n <- 40
+    dep <- factor(sample(c("no", "yes"), n, replace=TRUE))
+
+    # GIVEN a factor with three declared levels of which two have observations
+    f <- factor(sample(c("a", "b"), n, replace=TRUE), levels=c("a", "b", "c"))
+    data <- data.frame(dep=dep, f=f)
+
+    # WHEN running logRegBin
+    r <- jmv::logRegBin(
+        data, dep="dep", factors="f", blocks=list(list("f")),
+        refLevels=list(list(var="dep", ref="no"), list(var="f", ref="a"))
+    )
+
+    # THEN the analysis runs and estimates the contrast for the observed levels
+    testthat::expect_equal("b – a", r$models[[1]]$coef$asDF$term[3])
+    testthat::expect_false(is.na(r$models[[1]]$coef$asDF$est[3]))
+})

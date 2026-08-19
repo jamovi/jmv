@@ -50,3 +50,30 @@ setRefLevelWarning = function(self, changedVars) {
         self, message, name="refLevelWarning", type=jmvcore::NoticeType$STRONG_WARNING
     )
 }
+
+
+#' Reject the analysis if factors have fewer than two levels with observations
+#'
+#' Unlike `rejectEmptyLevels()` this permits unused levels, as long as at least
+#' two levels are observed; the models fitted by the regression analyses cope
+#' with the unused ones. Fewer than two observed levels leaves no contrast to
+#' estimate, which R reports as 'contrasts can be applied only to factors with
+#' 2 or more levels'.
+#'
+#' @param self        The analysis object (for translation)
+#' @param data        The data the analysis is run on, after removing missing values
+#' @param factorNames The names of the factors to check, as named in `data`
+#' @keywords internal
+rejectSingleLevelFactors = function(self, data, factorNames) {
+    for (factorName in factorNames) {
+        counts <- table(data[[factorName]])
+
+        if (sum(counts > 0) < 2) {
+            jmvcore::reject(
+                .("Factor '{factorName}' has fewer than two levels with observations. This can happen when all observations of a level are excluded by filters or removed due to missing values."),
+                code=exceptions$dataError,
+                factorName=factorName
+            )
+        }
+    }
+}

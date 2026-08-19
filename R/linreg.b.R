@@ -178,6 +178,8 @@ linRegClass <- R6::R6Class(
             if (is.null(self$options$dep) || self$nModels < 1 || length(self$options$blocks[[1]]) == 0)
                 return()
 
+            private$.dataCheck()
+
             if (any(unlist(private$.getIsAliased())))
                 setSingularityWarning(self)
 
@@ -1469,6 +1471,20 @@ linRegClass <- R6::R6Class(
             }
 
             return(formulas)
+        },
+        .dataCheck = function() {
+            # the levels of a factor can end up without observations after rows
+            # with missing values have been dropped, so this is checked on the
+            # processed data rather than on the raw data
+
+            factors <- self$options$factors
+            if (length(factors) == 0)
+                return()
+
+            data <- self$dataProcessed[unlist(jmvcore::toB64(factors))]
+            names(data) <- factors
+
+            rejectSingleLevelFactors(self, data, factors)
         },
         .cleanData = function(naOmit=TRUE, naSkip=NULL) {
             dep <- self$options$dep

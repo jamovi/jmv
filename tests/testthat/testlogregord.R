@@ -190,3 +190,24 @@ testthat::test_that('Reference level defaults to first level for faulty referenc
         testthat::expect_match(r[[1]]$content, "reference level was not found", info=param$info)
     }
 })
+
+testthat::test_that("logRegOrd rejects factors with fewer than two observed levels", {
+    set.seed(1)
+    n <- 60
+
+    # GIVEN a factor whose second level has no observations left
+    dep <- factor(sample(c("lo", "mid", "hi"), n, replace=TRUE))
+    f <- factor(rep("a", n), levels=c("a", "b"))
+    data <- data.frame(dep=dep, f=f)
+
+    # WHEN running logRegOrd with that factor as a predictor
+    # THEN the analysis is rejected naming the factor, rather than failing internally
+    testthat::expect_error(
+        jmv::logRegOrd(
+            data, dep="dep", factors="f", blocks=list(list("f")),
+            refLevels=list(list(var="f", ref="a"))
+        ),
+        regexp="'f'.*fewer than two levels with observations",
+        ignore.case=TRUE
+    )
+})
