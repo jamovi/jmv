@@ -1362,9 +1362,9 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             }
         },
         .dataCheck = function() {
-            # the levels of a factor can end up without observations after rows
-            # with missing values have been dropped, so this is checked on the
-            # processed data rather than in .errorCheck()
+            # the levels of a variable can end up without observations after
+            # rows with missing values have been dropped, so this is checked on
+            # the processed data rather than in .errorCheck()
 
             rejectEmptyData(self, self$dataProcessed)
 
@@ -1375,15 +1375,7 @@ logRegBinClass <- if (requireNamespace('jmvcore')) R6::R6Class(
             data <- self$dataProcessed[unlist(jmvcore::toB64(columns))]
             names(data) <- columns
 
-            if (sum(table(data[[dep]]) > 0) < 2) {
-                jmvcore::reject(
-                    .("The dependent variable '{dep}' has fewer than two levels with observations. This can happen when all observations of a level are excluded by filters or removed due to missing values."),
-                    code=exceptions$dataError,
-                    dep=dep
-                )
-            }
-
-            rejectSingleLevelFactors(self, data, factors)
+            rejectSingleLevelVars(self, data, dep=dep, factors=factors)
         },
         .cleanData = function(naOmit=TRUE, naSkip=NULL) {
             dep <- self$options$dep

@@ -229,3 +229,24 @@ testthat::test_that("logRegOrd rejects data with no rows left after missing valu
         ignore.case=TRUE
     )
 })
+
+testthat::test_that("logRegOrd rejects a dependent variable with fewer than two observed levels", {
+    set.seed(1)
+    n <- 60
+
+    # GIVEN a dependent variable whose other levels have no observations
+    dep <- factor(rep("lo", n), levels=c("lo", "mid", "hi"))
+    f <- factor(sample(c("a", "b"), n, replace=TRUE))
+    data <- data.frame(dep=dep, f=f)
+
+    # WHEN running logRegOrd
+    # THEN the analysis is rejected naming the dependent variable
+    testthat::expect_error(
+        jmv::logRegOrd(
+            data, dep="dep", factors="f", blocks=list(list("f")),
+            refLevels=list(list(var="f", ref="a"))
+        ),
+        regexp="'dep'.*fewer than two levels with observations",
+        ignore.case=TRUE
+    )
+})

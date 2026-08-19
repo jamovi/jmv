@@ -1486,7 +1486,7 @@ linRegClass <- R6::R6Class(
             data <- self$dataProcessed[unlist(jmvcore::toB64(factors))]
             names(data) <- factors
 
-            rejectSingleLevelFactors(self, data, factors)
+            rejectSingleLevelVars(self, data, factors=factors)
         },
         .cleanData = function(naOmit=TRUE, naSkip=NULL) {
             dep <- self$options$dep

@@ -1022,10 +1022,20 @@ logRegMultiClass <- R6::R6Class(
             }
         },
         .dataCheck = function() {
-            # rows are only dropped once the data has been processed, so this
-            # is checked here rather than in .errorCheck()
+            # the levels of a variable can end up without observations after
+            # rows with missing values have been dropped, so this is checked on
+            # the processed data rather than in .errorCheck()
 
             rejectEmptyData(self, self$dataProcessed)
+
+            dep <- self$options$dep
+            factors <- self$options$factors
+
+            columns <- c(dep, factors)
+            data <- self$dataProcessed[unlist(jmvcore::toB64(columns))]
+            names(data) <- columns
+
+            rejectSingleLevelVars(self, data, dep=dep, factors=factors)
         },
         .cleanData = function() {
             dep <- self$options$dep
