@@ -63,3 +63,26 @@ testthat::test_that('All options in the propTestN work with counts', {
     testthat::expect_equal(3, testTable[['df']])
     testthat::expect_equal(0, testTable[['p']], tolerance = 1e-3)
 })
+
+testthat::test_that('propTestN rejects invalid counts with a clear error', {
+    # GIVEN a variable with one count per level
+    var <- factor(c('a', 'b', 'c'))
+
+    # WHEN running propTestN with a counts variable containing an invalid value
+    # THEN the analysis is rejected with a clear error message
+    testthat::expect_error(
+        jmv::propTestN(data.frame(var=var, counts=c(5, -2, 3)), 'var', 'counts'),
+        regexp='negative',
+        ignore.case=TRUE
+    )
+    testthat::expect_error(
+        jmv::propTestN(data.frame(var=var, counts=c(5, Inf, 3)), 'var', 'counts'),
+        regexp='infinite',
+        ignore.case=TRUE
+    )
+    testthat::expect_error(
+        jmv::propTestN(data.frame(var=var, counts=c(5, NA, 3)), 'var', 'counts'),
+        regexp='missing values',
+        ignore.case=TRUE
+    )
+})
