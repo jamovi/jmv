@@ -519,3 +519,24 @@ testthat::test_that("logRegBin rejects data with no rows left after missing valu
         ignore.case=TRUE
     )
 })
+
+testthat::test_that("logRegBin rejects a dependent variable with more than two levels", {
+    set.seed(1)
+    n <- 40
+
+    # GIVEN a dependent variable with three levels
+    dep <- factor(sample(c("a", "b", "c"), n, replace=TRUE))
+    f <- factor(sample(c("x", "y"), n, replace=TRUE))
+    data <- data.frame(dep=dep, f=f)
+
+    # WHEN running logRegBin
+    # THEN the analysis is rejected, as binomial regression needs two levels
+    testthat::expect_error(
+        jmv::logRegBin(
+            data, dep="dep", factors="f", blocks=list(list("f")),
+            refLevels=list(list(var="dep", ref="a"), list(var="f", ref="x"))
+        ),
+        regexp="more than two levels",
+        ignore.case=TRUE
+    )
+})
