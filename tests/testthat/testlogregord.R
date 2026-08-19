@@ -250,3 +250,24 @@ testthat::test_that("logRegOrd rejects a dependent variable with fewer than two 
         ignore.case=TRUE
     )
 })
+
+testthat::test_that("logRegOrd rejects a dependent variable with only two levels", {
+    set.seed(1)
+    n <- 40
+
+    # GIVEN a dependent variable with two levels
+    dep <- factor(sample(c("a", "b"), n, replace=TRUE))
+    f <- factor(sample(c("x", "y"), n, replace=TRUE))
+    data <- data.frame(dep=dep, f=f)
+
+    # WHEN running logRegOrd
+    # THEN the analysis is rejected, pointing at binomial logistic regression
+    testthat::expect_error(
+        jmv::logRegOrd(
+            data, dep="dep", factors="f", blocks=list(list("f")),
+            refLevels=list(list(var="f", ref="x"))
+        ),
+        regexp="consider doing a binomial",
+        ignore.case=TRUE
+    )
+})
