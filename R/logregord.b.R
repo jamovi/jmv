@@ -157,7 +157,6 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                 return()
             }
 
-            private$.errorCheck()
             private$.dataCheck()
 
             private$.populateModelFitTable()
@@ -686,11 +685,11 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
 
             return(formulas)
         },
-        .errorCheck = function() {
+        .dataCheck = function() {
             dep <- self$options$dep
-            column <- self$dataProcessed[[jmvcore::toB64(dep)]]
+            factors <- self$options$factors
 
-            if (length(levels(column)) == 2) {
+            if (length(levels(self$dataProcessed[[jmvcore::toB64(dep)]])) == 2) {
                 jmvcore::reject(
                     jmvcore::format(
                         .('The dependent variable "{dep}" has only two levels, consider doing a binomial logistic regression.'),
@@ -699,16 +698,11 @@ logRegOrdClass <- if (requireNamespace('jmvcore')) R6::R6Class(
                     code=''
                 )
             }
-        },
-        .dataCheck = function() {
-            # the levels of a variable can end up without observations after
-            # rows with missing values have been dropped, so this is checked on
-            # the processed data rather than in .errorCheck()
+
+            # the checks below count observations, which levels only lose once
+            # rows with missing values have been dropped
 
             rejectEmptyData(self, self$dataProcessed)
-
-            dep <- self$options$dep
-            factors <- self$options$factors
 
             columns <- c(dep, factors)
             data <- self$dataProcessed[unlist(jmvcore::toB64(columns))]
