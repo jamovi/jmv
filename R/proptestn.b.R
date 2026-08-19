@@ -1,3 +1,4 @@
+#' @importFrom jmvcore .
 
 propTestNClass <- R6::R6Class(
     "propTestNClass",
@@ -16,6 +17,13 @@ propTestNClass <- R6::R6Class(
                     countsData <- jmvcore::toNumeric(countsData)
                 else
                     countsData <- suppressWarnings(as.numeric(as.character(countsData)))
+
+                if (any(countsData < 0, na.rm=TRUE))
+                    jmvcore::reject(.('Counts may not be negative'))
+                if (any(is.infinite(countsData)))
+                    jmvcore::reject(.('Counts may not be infinite'))
+                if (any(is.na(countsData)))
+                    jmvcore::reject(.('Counts may not contain missing values'))
 
                 data <- data.frame(var=var, counts=countsData)
                 counts <- xtabs(counts ~ var, data=data)
