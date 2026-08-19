@@ -211,3 +211,21 @@ testthat::test_that("logRegOrd rejects factors with fewer than two observed leve
         ignore.case=TRUE
     )
 })
+
+testthat::test_that("logRegOrd rejects data with no rows left after missing values", {
+    set.seed(1)
+    n <- 30
+
+    # GIVEN a covariate whose values are all missing, so no rows survive
+    data <- data.frame(dep=factor(sample(c("lo", "mid", "hi"), n, replace=TRUE)), cov=rep(NA_real_, n))
+
+    # WHEN running logRegOrd
+    # THEN the analysis is rejected saying the dataset has no rows left
+    testthat::expect_error(
+        jmv::logRegOrd(
+            data, dep="dep", covs="cov", blocks=list(list("cov"))
+        ),
+        regexp="contains 0 rows",
+        ignore.case=TRUE
+    )
+})

@@ -500,3 +500,22 @@ testthat::test_that("logRegBin still runs when a factor has unused levels but tw
     testthat::expect_equal("b – a", r$models[[1]]$coef$asDF$term[3])
     testthat::expect_false(is.na(r$models[[1]]$coef$asDF$est[3]))
 })
+
+testthat::test_that("logRegBin rejects data with no rows left after missing values", {
+    set.seed(1)
+    n <- 30
+
+    # GIVEN a covariate whose values are all missing, so no rows survive
+    data <- data.frame(dep=factor(sample(c("no", "yes"), n, replace=TRUE)), cov=rep(NA_real_, n))
+
+    # WHEN running logRegBin
+    # THEN the analysis is rejected saying the dataset has no rows left
+    testthat::expect_error(
+        jmv::logRegBin(
+            data, dep="dep", covs="cov", blocks=list(list("cov")),
+            refLevels=list(list(var="dep", ref="no"))
+        ),
+        regexp="contains 0 rows",
+        ignore.case=TRUE
+    )
+})
