@@ -6,8 +6,12 @@ reliabilityClass <- R6::R6Class(
     #### Active bindings ----
     active = list(
         dataProcessed = function() {
-            if (is.null(private$.dataProcessed))
-                private$.dataProcessed <- private$.cleanData()
+            if (is.null(private$.dataProcessed)) {
+                private$.checkData(self$data)
+                data <- private$.cleanData()
+                private$.checkProcessedData(data)
+                private$.dataProcessed <- data
+            }
 
             return(private$.dataProcessed)
         },
@@ -264,6 +268,7 @@ reliabilityClass <- R6::R6Class(
 
             attr(data, 'row.names') <- rownames(self$data)
             attr(data, 'class') <- 'data.frame'
+
             data <- jmvcore::naOmit(data)
 
             for (item in self$options$revItems) {
@@ -275,23 +280,48 @@ reliabilityClass <- R6::R6Class(
                 data[[item]] <- adjust - dataItem
             }
 
-            private$.errorCheck(data)
-
             return(data)
         },
-        .errorCheck = function(data) {
+        .checkData = function(data) {
+            # cleaning drops the rows with missing values, which empties every
+            # item as soon as one of them is all missing, so the items are
+            # checked on the data as it comes in
+
             items <- self$options$vars
+            columns <- data[items]
 
-            infItems <- sapply(data, function(x) any(is.infinite(x)))
-            allNAItems <- sapply(data, function(x) all(is.na(x)))
-            noVarItems <- sapply(data, function(x) var(x, na.rm = TRUE) == 0)
+            infItems <- items[sapply(columns, function(x) any(is.infinite(x)))]
+            if (length(infItems) > 0)
+                jmvcore::reject(
+                    .("Item '{item}' contains infinite values"),
+                    code=exceptions$dataError,
+                    item=infItems[1]
+                )
 
-            if (any(infItems))
-                jmvcore::reject(.("Item '{item}' contains infinite values"), code='', item=items[infItems])
-            if (any(allNAItems))
-                jmvcore::reject(.("Item '{item}' contains only missing values"), code='', item=items[allNAItems])
-            if (any(noVarItems))
-                jmvcore::reject(.("Item '{item}' has no variance"), code='', item=items[noVarItems])
+            allNAItems <- items[sapply(columns, function(x) all(is.na(x)))]
+            if (length(allNAItems) > 0)
+                jmvcore::reject(
+                    .("Item '{item}' contains only missing values"),
+                    code=exceptions$dataError,
+                    item=allNAItems[1]
+                )
+        },
+        .checkProcessedData = function(data) {
+            # what an item is left to be analysed with only shows once the rows
+            # with missing values are dropped
+
+            rejectEmptyData(self, data)
+
+            items <- self$options$vars
+            columns <- data[items]
+
+            noVarItems <- items[sapply(columns, function(x) ! isTRUE(var(x) > 0))]
+            if (length(noVarItems) > 0)
+                jmvcore::reject(
+                    .("Item '{item}' has no variance"),
+                    code=exceptions$dataError,
+                    item=noVarItems[1]
+                )
         },
         .getNegCorItems = function() {
             if (is.null(private$.negCorItems))

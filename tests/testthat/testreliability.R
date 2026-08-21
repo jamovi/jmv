@@ -75,3 +75,53 @@ testthat::test_that('Error is thrown for infinite values', {
         fixed=TRUE
     )
 })
+
+testthat::test_that('Error names the item that contains only missing values', {
+    # GIVEN an item whose values are all missing
+    df <- data.frame(
+        y1 = c(4,4,3,4,8,0,9,8,8,6,0,3),
+        y2 = c(3,2,5,4,6,1,7,7,6,5,1,2),
+        allNA = rep(NA_real_, 12)
+    )
+
+    # WHEN running reliability
+    # THEN the analysis is rejected naming the all missing item, and only it
+    error <- testthat::expect_error(
+        jmv::reliability(df, c("y1", "y2", "allNA")),
+        "Item 'allNA' contains only missing values",
+        fixed=TRUE
+    )
+    testthat::expect_length(conditionMessage(error), 1)
+})
+
+testthat::test_that('Error is thrown when no rows are left after missing values', {
+    # GIVEN two items that never have a value on the same row
+    df <- data.frame(
+        y1 = c(4,4,3,4,8,0,NA,NA,NA,NA,NA,NA),
+        y2 = c(NA,NA,NA,NA,NA,NA,7,7,6,5,1,2)
+    )
+
+    # WHEN running reliability
+    # THEN the analysis is rejected saying the dataset has no rows left
+    testthat::expect_error(
+        jmv::reliability(df, c("y1", "y2")),
+        regexp="contains 0 rows",
+        ignore.case=TRUE
+    )
+})
+
+testthat::test_that('Error is thrown when a single row is left after missing values', {
+    # GIVEN items that share a value on one row only
+    df <- data.frame(
+        y1 = c(4,4,3,4,8,0,9,NA,NA,NA,NA,NA),
+        y2 = c(NA,NA,NA,NA,NA,NA,7,7,6,5,1,2)
+    )
+
+    # WHEN running reliability
+    # THEN the analysis is rejected saying the items have no variance
+    testthat::expect_error(
+        jmv::reliability(df, c("y1", "y2")),
+        "Item 'y1' has no variance",
+        fixed=TRUE
+    )
+})
