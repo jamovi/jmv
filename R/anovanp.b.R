@@ -136,6 +136,11 @@ anovaNPClass <- R6::R6Class(
             # Ensure g is a factor
             g <- as.factor(g)
 
+            # Exclude observations with a missing value or group
+            complete <- complete.cases(x, g)
+            x <- x[complete]
+            g <- g[complete]
+
             # Calculate ranks
             N <- length(x)
             ranks <- rank(x)
