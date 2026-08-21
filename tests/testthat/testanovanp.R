@@ -52,7 +52,28 @@ testthat::test_that('Dunn test in the anovaNP works (rainy)', {
     
     # Dunn's Test comparisonsDunn table
     comp <- r$comparisonsDunn[[1]]$asDF
-    testthat::expect_equal(c(-2.137, -0.216, 1.921), comp$z, tolerance = 1e-3)
-    testthat::expect_equal(c(0.033, 0.829, 0.055), comp$p, tolerance = 1e-3)
-    testthat::expect_equal(c(0.098, 1.000, 0.164), comp$padj, tolerance = 1e-3)
+    testthat::expect_equal(c(-2.725, -0.142, 2.583), comp$z, tolerance = 1e-3)
+    testthat::expect_equal(c(0.006, 0.887, 0.010), comp$p, tolerance = 1e-3)
+    testthat::expect_equal(c(0.019, 1.000, 0.029), comp$padj, tolerance = 1e-3)
+})
+
+testthat::test_that('Dunn test excludes rows with a missing group value', {
+    # GIVEN data in which one row has a missing group value
+    factor <- as.factor(c(rep(c("a", "b", "c"), each=6)))
+    dep <-  c(0,4,19,5,9,15,1,4,19,10,13,7,5,12,2,23,6,13)
+
+    data <- data.frame(f = factor, dep = dep)
+    data$f[1] <- NA
+
+    # WHEN the Dunn test is run
+    r <- jmv::anovaNP(data, deps='dep', group='f', pairsDunn=TRUE)
+    comp <- r$comparisonsDunn[[1]]$asDF
+
+    # THEN it gives the same results as removing that row beforehand
+    expected <- jmv::anovaNP(na.omit(data), deps='dep', group='f', pairsDunn=TRUE)
+    expComp <- expected$comparisonsDunn[[1]]$asDF
+
+    testthat::expect_equal(expComp$z, comp$z, tolerance = 1e-3)
+    testthat::expect_equal(expComp$p, comp$p, tolerance = 1e-3)
+    testthat::expect_equal(expComp$padj, comp$padj, tolerance = 1e-3)
 })
