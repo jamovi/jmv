@@ -110,6 +110,7 @@ pcaClass <- R6::R6Class(
             private$.initLoadingsTable()
             private$.initModelFitTable()
             private$.initEigenTable()
+            private$.initCorrCountTable()
             private$.initKMOTable()
             private$.initFactorCor()
         },
@@ -124,6 +125,7 @@ pcaClass <- R6::R6Class(
             private$.populateFactorSummaryTable()
             private$.populateFactorCorTable()
             private$.populateModelFitTable()
+            private$.populateCorrCountTable()
             private$.populateKMOTable()
             private$.populateBartlettTable()
             private$.prepareScreePlot()
@@ -249,6 +251,21 @@ pcaClass <- R6::R6Class(
 
             for (i in seq_along(self$options$vars))
                 table$addRow(rowKey=i, values=list(comp = as.character(i)))
+        },
+        .initCorrCountTable = function() {
+            group <- self$results$dataSummary
+            vars <- self$options$vars
+
+            for (t in c("Min", "Max")) {
+                table <- group[[paste0("corrAbove", t)]]
+                title <- jmvcore::format(.("Correlations Above {} Threshold ({})"),
+                                         ifelse(t == "Min", .("Minimum"), .("Maximum")),
+                                         self$options[[paste0("countCorr", t)]])
+                table$setTitle(title)
+                for (i in seq_along(vars)) {
+                    table$addColumn(name = sprintf("c%d", i), title = "", type = 'integer')
+                }
+            }
         },
         .initKMOTable = function() {
             table <- self$results$assump$kmo
@@ -411,6 +428,30 @@ pcaClass <- R6::R6Class(
                 row['p'] <- r$p
 
                 table$setRow(rowNo=1, values=row)
+            }
+        },
+        .populateCorrCountTable = function() {
+            group <- self$results$dataSummary
+            vars <- self$options$vars
+            if (length(vars) >= 1) {
+                corrMatrix = abs(cor(sapply(self$data[, vars], jmvcore::toNumeric), use = "pairwise"))
+                diag(corrMatrix) <- NA
+
+                for (t in c("Min", "Max")) {
+                    thresh <- as.numeric(self$options[[paste0("countCorr", t)]])
+                    if (is.na(thresh)) next
+                    if (thresh <= 0 || thresh >= 1)
+                        jmvcore::reject(.("Values for the Correlation Min. / Max. need to be Numeric and Between 0 and 1"))
+                    table  <- group[[paste0("corrAbove", t)]]
+                    # sort the columns by the number of correlations above threshold (increasing for min: lower counts
+                    # on the left, decreasing for max: higher counts on the left)
+                    counts <- sort(colSums(corrMatrix > thresh, na.rm = TRUE), decreasing = (t == "Max"))
+                    cnames <- names(counts)
+                    table$setRow(rowNo = 1, setNames(as.list(counts), sprintf("c%d", seq_along(vars))))
+                    for (i in seq_along(cnames)) {
+                         table$columns[[i + 1]]$setTitle(cnames[i])
+                    }
+                }
             }
         },
         .populateKMOTable = function() {
