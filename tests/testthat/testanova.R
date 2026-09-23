@@ -237,6 +237,12 @@ testthat::test_that('All options in the ANOVA work (sunny)', {
         tolerance=1e-3
     )
 
+    # Test note in main table
+    testthat::expect_equal(
+        "Type 3 Sums of Squares",
+        r$main$notes$Note$note
+    )
+
     # Test note in post-hoc tables
     testthat::expect_equal(
         "Comparisons are based on estimated marginal means",

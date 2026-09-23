@@ -146,6 +146,14 @@ ancovaClass <- R6::R6Class(
 
             table    <- self$results$main
 
+            table$setNote(
+                'Note',
+                jmvcore::format(
+                    .("Type {ssType} Sums of Squares"),
+                    ssType=self$options$ss
+                )
+            )
+
             if (self$options$modelTest) {
                 table$addRow(rowKey='.', list(name=.('Overall model')))
                 table$addFormat(rowKey='.', col=1, format=Cell.BEGIN_END_GROUP)
