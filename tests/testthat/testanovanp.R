@@ -52,7 +52,7 @@ testthat::test_that('Dunn test in the anovaNP works (rainy)', {
     
     # Dunn's Test comparisonsDunn table
     comp <- r$comparisonsDunn[[1]]$asDF
-    testthat::expect_equal(c(-2.137, -0.216, 1.921), comp$z, tolerance = 1e-3)
-    testthat::expect_equal(c(0.033, 0.829, 0.055), comp$p, tolerance = 1e-3)
-    testthat::expect_equal(c(0.098, 1.000, 0.164), comp$padj, tolerance = 1e-3)
+    testthat::expect_equal(c(-2.725, -0.142, 2.583), comp$z, tolerance = 1e-3)
+    testthat::expect_equal(c(0.006, 0.887, 0.010), comp$p, tolerance = 1e-3)
+    testthat::expect_equal(c(0.019, 1.000, 0.029), comp$padj, tolerance = 1e-3)
 })

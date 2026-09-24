@@ -67,7 +67,11 @@ anovaNPClass <- R6::R6Class(
                     # Dunn's tests
                     if (self$options$get('pairsDunn')) {
                         tableDunn <- self$results$get('comparisonsDunn')$get(depName)
-                        resultDunn <- private$.dunnTest(depColumn, groupColumn)
+                        subset <- data.frame(
+                            y=jmvcore::toNumeric(depColumn),
+                            x=groupColumn)
+                        subset <- na.omit(subset)
+                        resultDunn <- private$.dunnTest(subset$y, subset$x)
 
                         for (i in 1:nrow(resultDunn)) {
                             pair <- c(resultDunn$group1[i], resultDunn$group2[i])
