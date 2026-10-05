@@ -123,6 +123,37 @@ items:
               format: zto,pvalue
               superTitle: Model Test
 
+    - name: dataSummary
+      title: Data Summary
+      type: Group
+      items:
+        - name: corrAboveMin
+          title: ""
+          type: Table
+          visible: (countCorrMin != "")
+          rows: 1
+          clearWith:
+            - vars
+            - countCorrMin
+          columns:
+            - name: header
+              title: ""
+              type: text
+              content: N
+        - name: corrAboveMax
+          title: ""
+          type: Table
+          visible: (countCorrMax != "")
+          rows: 1
+          clearWith:
+            - vars
+            - countCorrMax
+          columns:
+            - name: header
+              title: ""
+              type: text
+              content: N
+
     - name: assump
       title: Assumption Checks
       type: Group
