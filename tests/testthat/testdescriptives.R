@@ -163,6 +163,77 @@ testthat::test_that("Grouped frequency table is displayed correctly", {
     testthat::expect_equal(c(0.13, 0.23, 0.33, 0.4, 0.55, 0.61, 0.74, 0.84, 1), freq$cumpc)
 })
 
+testthat::test_that("Frequency table total row is displayed correctly", {
+    df <- data.frame(dep = factor(c("a", "a", "b", "c", "c", "c")))
+
+    desc <- jmv::descriptives(data = df, vars = "dep", freq = TRUE, freqTotal = TRUE)
+    freq <- desc$frequencies[[1]]$asDF
+
+    testthat::expect_equal(c("a", "b", "c", "Total"), freq$dep)
+    testthat::expect_equal(c(2, 1, 3, 6), freq$counts)
+    testthat::expect_equal(c(2, 1, 3, 6) / 6, freq$pc)
+    testthat::expect_equal(c(2, 3, 6, NA) / 6, freq$cumpc)
+})
+
+testthat::test_that("Frequency table group totals are displayed correctly", {
+    df <- data.frame(
+        dep = factor(c("a", "a", "b", "b", "b", "a")),
+        g1 = factor(c("x", "y", "x", "y", "x", "x")),
+        g2 = factor(c("p", "p", "q", "q", "p", "q"))
+    )
+
+    desc <- jmv::descriptives(
+        data = df, vars = "dep", splitBy = c("g1", "g2"), freq = TRUE,
+        freqTotal = TRUE, freqGroupTotals = TRUE
+    )
+    freq <- desc$frequencies[[1]]$asDF
+
+    testthat::expect_equal(rep(c("a", "b", "Total"), each=5), freq$dep)
+    testthat::expect_equal(rep(c("x", "x", "y", "y", "Total"), times=3), freq$g1)
+    testthat::expect_equal(rep(c("p", "q", "p", "q", "Total"), times=3), freq$g2)
+    testthat::expect_equal(c(1, 1, 1, 0, 3, 1, 1, 0, 1, 3, 2, 2, 1, 1, 6), freq$counts)
+    testthat::expect_equal(c(1, 1, 1, 0, 3, 1, 1, 0, 1, 3, 2, 2, 1, 1, 6) / 6, freq$pc)
+    testthat::expect_equal(
+        c(1, 2, 3, 3, NA, 4, 5, 5, 6, NA, NA, NA, NA, NA, NA) / 6,
+        freq$cumpc
+    )
+})
+
+testthat::test_that("Frequency table group totals are ignored without split by", {
+    df <- data.frame(dep = factor(c("a", "b", "b")))
+
+    desc <- jmv::descriptives(data = df, vars = "dep", freq = TRUE, freqGroupTotals = TRUE)
+    freq <- desc$frequencies[[1]]$asDF
+
+    testthat::expect_equal(c("a", "b"), freq$dep)
+    testthat::expect_equal(c(1, 2), freq$counts)
+})
+
+testthat::test_that("Frequency table percentage columns can be hidden", {
+    df <- data.frame(dep = factor(c("a", "b", "b")))
+
+    desc <- jmv::descriptives(data = df, vars = "dep", freq = TRUE, freqCumPc = FALSE)
+    testthat::expect_equal(c("dep", "counts", "pc"), names(desc$frequencies[[1]]$asDF))
+
+    desc <- jmv::descriptives(data = df, vars = "dep", freq = TRUE, freqPc = FALSE)
+    testthat::expect_equal(c("dep", "counts", "cumpc"), names(desc$frequencies[[1]]$asDF))
+})
+
+testthat::test_that("Frequency table totals are zero for empty data set", {
+    df <- data.frame(
+        dep = factor(levels = letters[1:2]),
+        group = factor(levels = LETTERS[1:2])
+    )
+
+    desc <- jmv::descriptives(
+        data = df, vars = "dep", splitBy = "group", freq = TRUE,
+        freqTotal = TRUE, freqGroupTotals = TRUE
+    )
+    freq <- desc$frequencies[[1]]$asDF
+
+    testthat::expect_equal(rep(0, 9), freq$counts)
+    testthat::expect_equal(rep(0, 9), freq$pc)
+})
 
 params <- list(
     list(

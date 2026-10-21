@@ -43,6 +43,10 @@ items:
           visible: (levels($key))
           clearWith:
             - splitBy
+            - freqTotal
+            - freqGroupTotals
+            - freqPc
+            - freqCumPc
           columns: []
 
     - name: extremeValues

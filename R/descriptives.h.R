@@ -9,6 +9,10 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             vars = NULL,
             splitBy = NULL,
             freq = FALSE,
+            freqTotal = FALSE,
+            freqGroupTotals = FALSE,
+            freqPc = TRUE,
+            freqCumPc = TRUE,
             desc = "columns",
             hist = FALSE,
             dens = FALSE,
@@ -72,6 +76,22 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 "freq",
                 freq,
                 default=FALSE)
+            private$..freqTotal <- jmvcore::OptionBool$new(
+                "freqTotal",
+                freqTotal,
+                default=FALSE)
+            private$..freqGroupTotals <- jmvcore::OptionBool$new(
+                "freqGroupTotals",
+                freqGroupTotals,
+                default=FALSE)
+            private$..freqPc <- jmvcore::OptionBool$new(
+                "freqPc",
+                freqPc,
+                default=TRUE)
+            private$..freqCumPc <- jmvcore::OptionBool$new(
+                "freqCumPc",
+                freqCumPc,
+                default=TRUE)
             private$..desc <- jmvcore::OptionList$new(
                 "desc",
                 desc,
@@ -233,6 +253,10 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$.addOption(private$..vars)
             self$.addOption(private$..splitBy)
             self$.addOption(private$..freq)
+            self$.addOption(private$..freqTotal)
+            self$.addOption(private$..freqGroupTotals)
+            self$.addOption(private$..freqPc)
+            self$.addOption(private$..freqCumPc)
             self$.addOption(private$..desc)
             self$.addOption(private$..hist)
             self$.addOption(private$..dens)
@@ -274,6 +298,10 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         vars = function() private$..vars$value,
         splitBy = function() private$..splitBy$value,
         freq = function() private$..freq$value,
+        freqTotal = function() private$..freqTotal$value,
+        freqGroupTotals = function() private$..freqGroupTotals$value,
+        freqPc = function() private$..freqPc$value,
+        freqCumPc = function() private$..freqCumPc$value,
         desc = function() private$..desc$value,
         hist = function() private$..hist$value,
         dens = function() private$..dens$value,
@@ -314,6 +342,10 @@ descriptivesOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         ..vars = NA,
         ..splitBy = NA,
         ..freq = NA,
+        ..freqTotal = NA,
+        ..freqGroupTotals = NA,
+        ..freqPc = NA,
+        ..freqCumPc = NA,
         ..desc = NA,
         ..hist = NA,
         ..dens = NA,
@@ -403,7 +435,11 @@ descriptivesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                     title="Frequencies of $key",
                     visible="(levels($key))",
                     clearWith=list(
-                        "splitBy"),
+                        "splitBy",
+                        "freqTotal",
+                        "freqGroupTotals",
+                        "freqPc",
+                        "freqCumPc"),
                     columns=list())))
             self$add(jmvcore::Array$new(
                 options=options,
@@ -538,6 +574,15 @@ descriptivesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   \code{vars}
 #' @param freq \code{TRUE} or \code{FALSE} (default), provide frequency tables
 #'   (nominal, ordinal variables only)
+#' @param freqTotal \code{TRUE} or \code{FALSE} (default), provide a total row
+#'   in the frequency tables
+#' @param freqGroupTotals \code{TRUE} or \code{FALSE} (default), provide total
+#'   rows for each level of the variable and for each split by group in the
+#'   frequency tables
+#' @param freqPc \code{TRUE} (default) or \code{FALSE}, provide the percentage
+#'   of total in the frequency tables
+#' @param freqCumPc \code{TRUE} (default) or \code{FALSE}, provide the
+#'   cumulative percentage in the frequency tables
 #' @param desc \code{'rows'} or \code{'columns'} (default), display the
 #'   variables across the rows or across the columns (default)
 #' @param hist \code{TRUE} or \code{FALSE} (default), provide histograms
@@ -616,6 +661,10 @@ descriptives <- function(
     vars,
     splitBy = NULL,
     freq = FALSE,
+    freqTotal = FALSE,
+    freqGroupTotals = FALSE,
+    freqPc = TRUE,
+    freqCumPc = TRUE,
     desc = "columns",
     hist = FALSE,
     dens = FALSE,
@@ -686,6 +735,10 @@ descriptives <- function(
         vars = vars,
         splitBy = splitBy,
         freq = freq,
+        freqTotal = freqTotal,
+        freqGroupTotals = freqGroupTotals,
+        freqPc = freqPc,
+        freqCumPc = freqCumPc,
         desc = desc,
         hist = hist,
         dens = dens,

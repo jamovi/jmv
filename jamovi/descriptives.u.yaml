@@ -215,6 +215,42 @@ children:
                         format: number
                         enable: (extreme)
   - type: CollapseBox
+    label: Frequency Tables
+    collapsed: true
+    children:
+      - type: LayoutBox
+        stretchFactor: 1
+        margin: large
+        cell:
+          column: 0
+          row: 0
+        children:
+          - type: Label
+            label: Columns
+            children:
+              - type: CheckBox
+                name: freqPc
+                enable: (freq)
+              - type: CheckBox
+                name: freqCumPc
+                enable: (freq)
+      - type: LayoutBox
+        stretchFactor: 1
+        margin: large
+        cell:
+          column: 1
+          row: 0
+        children:
+          - type: Label
+            label: Rows
+            children:
+              - type: CheckBox
+                name: freqTotal
+                enable: (freq)
+              - type: CheckBox
+                name: freqGroupTotals
+                enable: (freq)
+  - type: CollapseBox
     label: Plots
     collapsed: true
     children:
