@@ -365,6 +365,63 @@ descriptivesClass <- R6::R6Class(
 
             return(table(df))
         },
+        .freqRows = function(var, splitBy) {
+            # describes the rows of a frequency table, so that init and run
+            # agree on the layout. index selects the cells of the frequency
+            # array to sum (TRUE sums over a variable)
+            tableVars <- c(var, splitBy)
+            allLevels <- lapply(jmvcore::select(self$data, tableVars), levels)
+            grid <- rev(expand.grid(rev(allLevels)))
+            groupTotals <- self$options$freqGroupTotals && length(splitBy) > 0
+
+            newRow <- function(labels, index, total=FALSE, newGroup=FALSE) {
+                labels <- as.list(labels)
+                names(labels) <- tableVars
+                list(labels=labels, index=index, total=total, newGroup=newGroup)
+            }
+
+            rows <- list()
+            for (row in seq_len(nrow(grid))) {
+                levels <- grid[row, , drop=TRUE]
+                rows[[length(rows) + 1]] <- newRow(
+                    sapply(levels, as.character),
+                    lapply(levels, as.integer)
+                )
+
+                lastOfLevel <- row == nrow(grid) || grid[row + 1, var] != grid[row, var]
+                if (groupTotals && lastOfLevel) {
+                    rows[[length(rows) + 1]] <- newRow(
+                        c(as.character(levels[[var]]), rep(.('Total'), length(splitBy))),
+                        c(list(as.integer(levels[[var]])), as.list(rep(TRUE, length(splitBy)))),
+                        total=TRUE
+                    )
+                }
+            }
+
+            if (groupTotals) {
+                splitGrid <- rev(expand.grid(rev(allLevels[splitBy])))
+                for (row in seq_len(nrow(splitGrid))) {
+                    levels <- splitGrid[row, , drop=TRUE]
+                    rows[[length(rows) + 1]] <- newRow(
+                        c(.('Total'), sapply(levels, as.character)),
+                        c(list(TRUE), lapply(levels, as.integer)),
+                        total=TRUE,
+                        newGroup=row == 1
+                    )
+                }
+            }
+
+            if (self$options$freqTotal) {
+                rows[[length(rows) + 1]] <- newRow(
+                    rep(.('Total'), length(tableVars)),
+                    as.list(rep(TRUE, length(tableVars))),
+                    total=TRUE,
+                    newGroup= ! groupTotals
+                )
+            }
+
+            return(rows)
+        },
         .computeExtreme = function(df) {
             extremeN = self$options$extremeN
 
@@ -620,22 +677,25 @@ descriptivesClass <- R6::R6Class(
                     next()
 
                 tableVars <- c(var, splitBy)
-                allLevels <- lapply(jmvcore::select(self$data, tableVars), levels)
-                grid <- rev(expand.grid(rev(allLevels)))
-
                 table <- tables$get(var)
 
-                for (var in tableVars)
-                    table$addColumn(name=var, title=var, type="text", combineBelow=TRUE)
+                for (col in tableVars)
+                    table$addColumn(name=col, title=col, type="text", combineBelow=TRUE)
                 table$addColumn(name='counts', title=.('Counts'), type='integer')
-                table$addColumn(name='pc', title=.('% of Total'), type='number', format='pc')
-                table$addColumn(name='cumpc', title=.('Cumulative %'), type='number', format='pc')
+                table$addColumn(
+                    name='pc', title=.('% of Total'), type='number', format='pc',
+                    visible=self$options$freqPc
+                )
+                table$addColumn(
+                    name='cumpc', title=.('Cumulative %'), type='number', format='pc',
+                    visible=self$options$freqCumPc
+                )
 
-                for (row in seq_len(nrow(grid))) {
-                    rowValues <- list()
-                    for (col in tableVars)
-                        rowValues[[col]] <- as.character(grid[row, col])
-                    table$addRow(rowKey=row, values=rowValues)
+                rows <- private$.freqRows(var, splitBy)
+                for (row in seq_along(rows)) {
+                    table$addRow(rowKey=row, values=rows[[row]]$labels)
+                    if (rows[[row]]$newGroup)
+                        table$addFormat(rowNo=row, col=1, Cell.BEGIN_GROUP)
                 }
             }
         },
@@ -1005,20 +1065,22 @@ descriptivesClass <- R6::R6Class(
                     countsColumn$.__enclos_env__$private$.type <- 'number'
                 }
 
-                tableVars <- c(var, splitBy)
-                allLevels <- lapply(jmvcore::select(self$data, tableVars), levels)
-                grid <- rev(expand.grid(rev(allLevels)))
-
                 n <- sum(freq)
                 cumsum <- 0
 
-                for (row in seq_len(nrow(grid))) {
-                    counts <- as.numeric(do.call("[", c(list(freq), grid[row, ])))
-                    cumsum <- cumsum + counts
+                rows <- private$.freqRows(var, splitBy)
+                for (row in seq_along(rows)) {
+                    counts <- sum(do.call("[", c(list(freq), rows[[row]]$index)))
                     pc <- counts / n
-                    cumpc <- cumsum / n
                     if (is.na(pc)) pc <- 0
-                    if (is.na(cumpc)) cumpc <- 0
+
+                    if (rows[[row]]$total) {
+                        cumpc <- ''
+                    } else {
+                        cumsum <- cumsum + counts
+                        cumpc <- cumsum / n
+                        if (is.na(cumpc)) cumpc <- 0
+                    }
 
                     table$setRow(rowNo=row, value=list(counts=counts, pc=pc, cumpc=cumpc))
                 }

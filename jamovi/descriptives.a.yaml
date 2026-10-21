@@ -112,6 +112,42 @@ options:
             `TRUE` or `FALSE` (default), provide frequency tables (nominal, ordinal
             variables only)
 
+    - name: freqTotal
+      title: Total row
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide a total row in the frequency
+            tables
+
+    - name: freqGroupTotals
+      title: Group totals
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), provide total rows for each level of
+            the variable and for each split by group in the frequency tables
+
+    - name: freqPc
+      title: Percentage of total
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide the percentage of total in the
+            frequency tables
+
+    - name: freqCumPc
+      title: Cumulative percentage
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE`, provide the cumulative percentage in the
+            frequency tables
+
     - name: desc
       title: Descriptives
       type: List
