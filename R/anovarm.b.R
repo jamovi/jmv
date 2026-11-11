@@ -645,14 +645,12 @@ anovaRMClass <- R6::R6Class(
 
                 contrastMeans <- emmeans::lsmeans(model, specs = as.formula(paste("~", jmvcore::toB64(contrast$var))))
                 contrastSummary <- summary(emmeans::contrast(contrastMeans, method = getContrastFunction(contrast$type), adjust = "none"))
-                contrastNamesB64 <- contrastLabels(jmvcore::toB64(levels), contrast$type, self) # defined in utilsanova.R
 
+                # fill by position: row labels are translated, emmeans labels are not
                 if (nrow(contrastSummary) == table$rowCount) {
-                    for (i in seq(table$rowCount)) {
-                        if (contrastSummary[i, 1] == contrastNamesB64[[i]])
-                            table$setRow(rowNo = i, values = setNames(contrastSummary[i, c("estimate", "SE", "t.ratio", "p.value")],
-                                                                                         c("est",      "se", "t",       "p")))
-                    }
+                    for (i in seq(table$rowCount))
+                        table$setRow(rowNo = i, values = setNames(contrastSummary[i, c("estimate", "SE", "t.ratio", "p.value")],
+                                                                                     c("est",      "se", "t",       "p")))
                 }
             }
         },
